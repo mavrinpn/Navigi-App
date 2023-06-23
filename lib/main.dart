@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/utils/colors.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'feature/login/ui/login_screen.dart';
 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyRepositoryProviders());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -28,14 +32,17 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sound machine',
+      title: 'Smart',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        primaryColor: AppColors.mainBackgroundColors,
+        fontFamily: GoogleFonts.nunito().fontFamily,
       ),
-      color: const Color(0xff292B57),
       routes: {
+        '/login_screen': (context) => const LoginScreen(),
       },
-      home: Container(),
+      color: const Color(0xff292B57),
+      home: const HomePage(),
     );
   }
 }
@@ -65,12 +72,11 @@ class HomePage extends StatelessWidget {
   const HomePage({Key? key,})
       : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-        child: Container(),
+        child: LoginScreen(),
       ),
     );
   }
