@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:smart/utils/colors.dart';
 
@@ -57,7 +58,7 @@ class _MaskTextFormFieldState extends State<MaskTextFormField> {
               filled: true,
               enabledBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(
-                  color: AppColors.lightGrayColors,
+                  color: AppColors.lightGray,
                   width: 1.0,
                 ),
               ),
@@ -76,21 +77,13 @@ class _MaskTextFormFieldState extends State<MaskTextFormField> {
               prefixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    width: 20,
-                    height: 20,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(widget.prefIcon),
-                        )
-                    ),
-                  ),
+                  SvgPicture.asset(widget.prefIcon, width: 20, height: 20, color: AppColors.black,),
                   const SizedBox(
                     width: 10,
                   ),
                   const Text(
                     '| ',
-                    style: TextStyle(fontSize: 25, color: Colors.black),
+                    style: TextStyle(fontSize: 25, color: AppColors.lightGray),
                   ),
                   const SizedBox(
                     width: 10,

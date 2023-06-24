@@ -33,13 +33,13 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: SafeArea(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -77,7 +77,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                           controller: phoneController,
                           keyboardType: TextInputType.phone,
                           width: width * 0.95,
-                          prefIcon: 'Assets/Phone.png',
+                          prefIcon: 'Assets/icons/phone.svg',
                           mask: maskPhoneFormatter,
                           validator: (value) {
                             if (maskPhoneFormatter.getUnmaskedText().length !=

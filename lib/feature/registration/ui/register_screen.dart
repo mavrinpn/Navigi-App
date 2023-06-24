@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:smart/utils/fonts.dart';
 
@@ -61,13 +62,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {});
     }
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: SafeArea(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
           child: Form(
             key: _formKey,
             child: Column(
@@ -101,7 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: nameController,
                         keyboardType: TextInputType.phone,
                         width: width * 0.95,
-                        prefIcon: 'Assets/People.png',
+                        prefIcon: 'Assets/icons/profile.svg',
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Erreur! Réessayez ou entrez dautres informations.';
@@ -116,7 +117,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       controller: phoneController,
                       keyboardType: TextInputType.phone,
                       width: width * 0.95,
-                      prefIcon: 'Assets/Phone.png',
+                      prefIcon: 'Assets/icons/phone.svg',
                       validator: (value) {
                         if (maskPhoneFormatter
                             .getUnmaskedText()
@@ -134,7 +135,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: firstPasswordController,
                         keyboardType: TextInputType.phone,
                         width: width * 0.95,
-                        prefIcon: 'Assets/Key.png',
+                        prefIcon: 'Assets/icons/key.svg',
                         obscureText: true,
                         validator: (value) {
                           if (value! != secondPasswordController.text ||
@@ -151,7 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: secondPasswordController,
                         keyboardType: TextInputType.phone,
                         width: width * 0.95,
-                        prefIcon: 'Assets/Key.png',
+                        prefIcon: 'Assets/icons/key.svg',
                         obscureText: true,
                         validator: (value) {
                           if (value! != firstPasswordController.text ||
@@ -169,31 +170,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           horizontal: 20, vertical: 0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: Checkbox(
-                              checkColor: Colors.white,
-                              side: const BorderSide(width: 1),
-                              value: isTapCheckBox,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isTapCheckBox = !isTapCheckBox!;
-                                });
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2.5),
+                            child: SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: Checkbox(
+                                splashRadius: 2,
+                                checkColor: Colors.white,
+                                  activeColor: AppColors.pink,
+                                side: const BorderSide(width: 1, color: AppColors.lightGray),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+                                value: isTapCheckBox,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isTapCheckBox = !isTapCheckBox;
+                                  });
 
-                                if (checkFields(
-                                    maskPhoneFormatter.getUnmaskedText(),
-                                    nameController.text,
-                                    firstPasswordController.text,
-                                    secondPasswordController.text)) {
-                                  isTouch = true;
+                                  if (checkFields(
+                                      maskPhoneFormatter.getUnmaskedText(),
+                                      nameController.text,
+                                      firstPasswordController.text,
+                                      secondPasswordController.text)) {
+                                    isTouch = true;
+                                    setState(() {});
+                                    return;
+                                  }
+                                  isTouch = false;
                                   setState(() {});
-                                  return;
-                                }
-                                isTouch = false;
-                                setState(() {});
-                              },
+                                },
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -215,8 +223,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     CustomElevatedButton(
                       callback: () {
-                        if (_formKey.currentState!.validate()) {
+                        if (!_formKey.currentState!.validate() || !isTouch) {
                           setState(() {});
+                          return;
                         }
                         Navigator.pushNamed(context, '/home_screen');
                       },

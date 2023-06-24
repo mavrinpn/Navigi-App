@@ -38,7 +38,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Smart',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: AppColors.mainBackgroundColors,
+        primaryColor: AppColors.mainBackground,
         fontFamily: GoogleFonts.nunito().fontFamily,
       ),
       routes: {
@@ -81,6 +81,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: LoginFirstScreen(),
       ),

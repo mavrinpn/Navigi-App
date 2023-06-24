@@ -8,11 +8,11 @@ import 'colors.dart';
 class AppTypography {
   const AppTypography._();
 
-  static const _colorBlack = Colors.black;
-  static const _lightGray = AppColors.lightGrayColors;
+  static const _colorBlack = AppColors.black;
+  static const _lightGray = AppColors.lightGray;
   static const _white = Colors.white;
   static const _pink = AppColors.pink;
-  static final _font = GoogleFonts.heebo();
+  static final _font = GoogleFonts.nunito();
   static final fontTheme = GoogleFonts.heeboTextTheme();
 
   static final font14black = _font.copyWith(

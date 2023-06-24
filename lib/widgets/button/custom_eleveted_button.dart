@@ -14,19 +14,18 @@ class CustomElevatedButton extends StatelessWidget {
   final Color activeColor;
   final Color mortColor;
 
-  const CustomElevatedButton(
-      {Key? key,
-        required this.callback,
-        required this.text,
-        required this.styleText,
-        this.width = double.infinity,
-        this.height = 50,
-        this.padding = const EdgeInsets.all(10),
-        this.isTouch = false,
-        this.activeColor = AppColors.isTouchButtonColorPink,
-        this.mortColor = AppColors.isNotTouchButtonColor,
-      })
-      : super(key: key);
+  const CustomElevatedButton({
+    Key? key,
+    required this.callback,
+    required this.text,
+    required this.styleText,
+    this.width = double.infinity,
+    this.height = 50,
+    this.padding = const EdgeInsets.all(10),
+    this.isTouch = false,
+    this.activeColor = AppColors.isTouchButtonColorPink,
+    this.mortColor = AppColors.isNotTouchButton,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +37,7 @@ class CustomElevatedButton extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(14))),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
+            elevation: 0,
             backgroundColor: isTouch ? activeColor : mortColor,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(14)))),
