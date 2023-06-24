@@ -1,16 +1,19 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:smart/utils/colors.dart';
 
 // Project imports:
+
 import '../../utils/fonts.dart';
 
-class CustomTextFormField extends StatefulWidget {
-  const CustomTextFormField({
+class MaskTextFormField extends StatefulWidget {
+  const MaskTextFormField({
     Key? key,
     required this.controller,
     required this.keyboardType,
     required this.prefIcon,
+    required this.mask,
     required this.onChanged,
     this.height = 80,
     this.width = double.infinity,
@@ -25,13 +28,14 @@ class CustomTextFormField extends StatefulWidget {
   final bool obscureText;
   final String prefIcon;
   final FormFieldValidator<String>? validator;
+  final MaskTextInputFormatter mask;
   final void Function(String?) onChanged;
 
   @override
-  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
+  State<MaskTextFormField> createState() => _MaskTextFormFieldState();
 }
 
-class _CustomTextFormFieldState extends State<CustomTextFormField> {
+class _MaskTextFormFieldState extends State<MaskTextFormField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -41,6 +45,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           padding: const EdgeInsets.all(10),
           child: TextFormField(
             validator: widget.validator,
+            inputFormatters: [widget.mask],
             maxLines: 1,
             obscureText: widget.obscureText,
             keyboardType: widget.keyboardType,
@@ -75,9 +80,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                     width: 20,
                     height: 20,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(widget.prefIcon),
-                      )
+                        image: DecorationImage(
+                          image: AssetImage(widget.prefIcon),
+                        )
                     ),
                   ),
                   const SizedBox(

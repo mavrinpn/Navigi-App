@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:smart/utils/fonts.dart';
 
+import '../../../utils/colors.dart';
 import '../../../widgets/button/custom_eleveted_button.dart';
 import '../../../widgets/textField/custom_text_field.dart';
+import '../../../widgets/textField/mask_text_field.dart';
+
+final maskPhoneFormatter = MaskTextInputFormatter(
+    mask: '+## (###) ###-###',
+    filter: {"#": RegExp(r'[0-9]')},
+    type: MaskAutoCompletionType.lazy);
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -19,14 +27,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  bool isError = false;
+  bool isTouch = false;
+  bool isTapCheckBox = false;
 
-  bool isTap = false;
+  bool checkFields(String phone, String name, String firstPassword,
+      String secondPassword) {
+    return phone.length == 11 &&
+        name.isNotEmpty &&
+        firstPassword == secondPassword &&
+        firstPassword.length >= 8 &&
+        isTapCheckBox;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
+
+    void checkIsTouch() {
+      if (checkFields(maskPhoneFormatter.getUnmaskedText(), nameController.text,
+          firstPasswordController.text, secondPasswordController.text)) {
+        isTouch = true;
+        setState(() {});
+        return;
+      }
+      isTouch = false;
+      setState(() {});
+    }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -65,44 +98,75 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 30,
                     ),
                     CustomTextFormField(
-                      controller: nameController,
-                      keyboardType: TextInputType.phone,
-                      width: width * 0.95,
-                      isError: isError,
-                      prefIcon: 'Assets/People.png',
+                        controller: nameController,
+                        keyboardType: TextInputType.phone,
+                        width: width * 0.95,
+                        prefIcon: 'Assets/People.png',
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Erreur! Réessayez ou entrez dautres informations.';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          checkIsTouch();
+                        }
                     ),
-                    CustomTextFormField(
+                    MaskTextFormField(
                       controller: phoneController,
                       keyboardType: TextInputType.phone,
                       width: width * 0.95,
-                      isError: isError,
                       prefIcon: 'Assets/Phone.png',
-                    ),
-                    CustomTextFormField(
-                      controller: firstPasswordController,
-                      keyboardType: TextInputType.phone,
-                      width: width * 0.95,
-                      isError: isError,
-                      prefIcon: 'Assets/Key.png',
-                      obscureText: true,
-                    ),
-                    CustomTextFormField(
-                      controller: secondPasswordController,
-                      keyboardType: TextInputType.phone,
-                      width: width * 0.95,
-                      isError: isError,
-                      prefIcon: 'Assets/Key.png',
-                      obscureText: true,
                       validator: (value) {
-                        if (value!.isEmpty) return 'null';
-                        if (value!.length > 1) {
-                          return 'asdfsdfa';
+                        if (maskPhoneFormatter
+                            .getUnmaskedText()
+                            .length != 11) {
+                          return 'Erreur! Réessayez ou entrez dautres informations.';
                         }
+                        return null;
                       },
+                      onChanged: (value) {
+                        checkIsTouch();
+                      },
+                      mask: maskPhoneFormatter,
+                    ),
+                    CustomTextFormField(
+                        controller: firstPasswordController,
+                        keyboardType: TextInputType.phone,
+                        width: width * 0.95,
+                        prefIcon: 'Assets/Key.png',
+                        obscureText: true,
+                        validator: (value) {
+                          if (value! != secondPasswordController.text ||
+                              value.length < 8) {
+                            return 'Erreur! Réessayez ou entrez dautres informations.';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          checkIsTouch();
+                        }
+                    ),
+                    CustomTextFormField(
+                        controller: secondPasswordController,
+                        keyboardType: TextInputType.phone,
+                        width: width * 0.95,
+                        prefIcon: 'Assets/Key.png',
+                        obscureText: true,
+                        validator: (value) {
+                          if (value! != firstPasswordController.text ||
+                              value.length < 8) {
+                            return 'Erreur! Réessayez ou entrez dautres informations.';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          checkIsTouch();
+                        }
                     ),
                     Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -110,20 +174,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             width: 20,
                             height: 20,
                             child: Checkbox(
-                                checkColor: Colors.white,
-                                side: const BorderSide(width: 1),
-                                value: isTap,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    isTap = value!;
-                                  });
-                                },
+                              checkColor: Colors.white,
+                              side: const BorderSide(width: 1),
+                              value: isTapCheckBox,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  isTapCheckBox = !isTapCheckBox!;
+                                });
+
+                                if (checkFields(
+                                    maskPhoneFormatter.getUnmaskedText(),
+                                    nameController.text,
+                                    firstPasswordController.text,
+                                    secondPasswordController.text)) {
+                                  isTouch = true;
+                                  setState(() {});
+                                  return;
+                                }
+                                isTouch = false;
+                                setState(() {});
+                              },
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 15,
                           ),
-                          Container(
+                          SizedBox(
                             width: width - 75,
                             child: Text(
                               'Jaccepte les conditions dutilisation et confirme que jaccepte la politique de confidentialité.',
@@ -140,15 +216,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     CustomElevatedButton(
                       callback: () {
                         if (_formKey.currentState!.validate()) {
-                          isError = true;
                           setState(() {});
                         }
+                        Navigator.pushNamed(context, '/home_screen');
                       },
                       text: 'Se faire enregistrer',
                       styleText: AppTypography.font14white,
                       height: 52,
+                      isTouch: isTouch,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 0),
+                      activeColor: AppColors.isTouchButtonColorDark,
                     ),
                     const SizedBox(
                       height: 16,

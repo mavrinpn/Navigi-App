@@ -11,6 +11,8 @@ class CustomElevatedButton extends StatelessWidget {
   final TextStyle styleText;
   final EdgeInsets padding;
   final bool isTouch;
+  final Color activeColor;
+  final Color mortColor;
 
   const CustomElevatedButton(
       {Key? key,
@@ -21,6 +23,8 @@ class CustomElevatedButton extends StatelessWidget {
         this.height = 50,
         this.padding = const EdgeInsets.all(10),
         this.isTouch = false,
+        this.activeColor = AppColors.isTouchButtonColorPink,
+        this.mortColor = AppColors.isNotTouchButtonColor,
       })
       : super(key: key);
 
@@ -34,7 +38,7 @@ class CustomElevatedButton extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(14))),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-            backgroundColor: isTouch ? AppColors.isTouchButtonColor : AppColors.isNotTouchButtonColor,
+            backgroundColor: isTouch ? activeColor : mortColor,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(14)))),
         onPressed: callback,

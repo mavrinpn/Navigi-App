@@ -50,4 +50,16 @@ class AppTypography {
     fontSize: 16,
     decoration: TextDecoration.underline,
   );
+  static final font10pink = _font.copyWith(
+    color: _pink,
+    fontSize: 10,
+    fontWeight: FontWeight.w600,
+    decoration: TextDecoration.none,
+  );
+  static final font10lightGray = _font.copyWith(
+    color: _lightGray,
+    fontSize: 10,
+    fontWeight: FontWeight.w600,
+    decoration: TextDecoration.none,
+  );
 }

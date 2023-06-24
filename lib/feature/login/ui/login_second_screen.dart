@@ -17,7 +17,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  bool isError = false;
+  bool isTouch = false;
 
   @override
   Widget build(BuildContext context) {
@@ -63,20 +63,36 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                         controller: passwordController,
                         keyboardType: TextInputType.phone,
                         width: width * 0.95,
-                        isError: isError,
                         prefIcon: 'Assets/Key.png',
                         obscureText: true,
+                        validator: (value) {
+                          if (value!.length < 8) {
+                            return 'Erreur! Réessayez ou entrez dautres informations.';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          if (value!.length > 8) {
+                            isTouch = true;
+                            setState(() {});
+                            return;
+                          }
+                          isTouch = false;
+                          setState(() {});
+                        },
                       ),
                       SizedBox(
                         height: height * 0.18,
                       ),
                       CustomElevatedButton(
                         callback: () {
-                          if (_formKey.currentState!.validate()) {
-                            isError = true;
+                          if (!_formKey.currentState!.validate()) {
                             setState(() {});
+                            return;
                           }
+                          Navigator.pushNamed(context, '/home_screen');
                         },
+                        isTouch: isTouch,
                         text: 'Entrer',
                         styleText: AppTypography.font14white,
                         height: 52,
@@ -114,20 +130,20 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                       onPressed: () {},
                       shape: const CircleBorder(),
                       constraints:
-                      const BoxConstraints(maxWidth: 40, maxHeight: 40),
+                          const BoxConstraints(maxWidth: 40, maxHeight: 40),
                       child:
-                      const Image(image: AssetImage('Assets/facebook.png')),
+                          const Image(image: AssetImage('Assets/facebook.png')),
                     ),
                     const SizedBox(
                       width: 5,
                     ),
                     RawMaterialButton(
                       constraints:
-                      const BoxConstraints(maxWidth: 40, maxHeight: 40),
+                          const BoxConstraints(maxWidth: 40, maxHeight: 40),
                       onPressed: () {},
                       shape: const CircleBorder(),
                       child:
-                      const Image(image: AssetImage('Assets/google.png')),
+                          const Image(image: AssetImage('Assets/google.png')),
                     ),
                   ],
                 ),
