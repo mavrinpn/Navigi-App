@@ -10,6 +10,8 @@ class AppTypography {
 
   static const _colorBlack = Colors.black;
   static const _lightGray = AppColors.lightGrayColors;
+  static const _white = Colors.white;
+  static const _pink = AppColors.pink;
   static final _font = GoogleFonts.heebo();
   static final fontTheme = GoogleFonts.heeboTextTheme();
 
@@ -31,10 +33,21 @@ class AppTypography {
     fontWeight: FontWeight.w400,
     fontSize: 14,
   );
+  static final font14white = _font.copyWith(
+    color: _white,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+  );
   static final font17black = _font.copyWith(
     color: _colorBlack,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
     fontSize: 17,
+  );
+  static final font16UnderLinePink = _font.copyWith(
+    color: _pink,
+    fontSize: 16,
+    decoration: TextDecoration.underline,
   );
 }

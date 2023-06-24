@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/feature/registration/ui/register_screen.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'feature/login/ui/login_screen.dart';
+import 'feature/login/ui/login_first_screen.dart';
+import 'feature/login/ui/login_second_screen.dart';
 
 
 Future<void> main() async {
@@ -39,7 +41,9 @@ class _MyAppState extends State<MyApp> {
         fontFamily: GoogleFonts.nunito().fontFamily,
       ),
       routes: {
-        '/login_screen': (context) => const LoginScreen(),
+        '/login_first_screen': (context) => const LoginFirstScreen(),
+        '/login_second_screen': (context) => const LoginSecondScreen(),
+        '/register_screen' : (context) => const RegisterScreen(),
       },
       color: const Color(0xff292B57),
       home: const HomePage(),
@@ -76,7 +80,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: LoginScreen(),
+        child: LoginFirstScreen(),
       ),
     );
   }
