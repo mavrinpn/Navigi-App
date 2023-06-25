@@ -90,7 +90,10 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                             setState(() {});
                             return;
                           }
-                          Navigator.pushNamed(context, '/home_screen');
+
+                          if (isTouch) {
+                            Navigator.pushNamed(context, '/home_screen');
+                          }
                         },
                         isTouch: isTouch,
                         text: 'Entrer',

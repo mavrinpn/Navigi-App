@@ -107,8 +107,10 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                               setState(() {});
                               return;
                             }
-                            Navigator.pushNamed(
-                                context, '/login_second_screen');
+                            if(isTouch){
+                              Navigator.pushNamed(
+                                  context, '/login_second_screen');
+                            }
                           },
                           text: 'Entrer',
                           styleText: AppTypography.font14white,

@@ -180,7 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               child: Checkbox(
                                 splashRadius: 2,
                                 checkColor: Colors.white,
-                                  activeColor: AppColors.pink,
+                                  activeColor: AppColors.red,
                                 side: const BorderSide(width: 1, color: AppColors.lightGray),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
                                 value: isTapCheckBox,

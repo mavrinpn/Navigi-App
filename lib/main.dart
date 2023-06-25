@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,9 +10,10 @@ import 'feature/home/ui/home_screen.dart';
 import 'feature/login/ui/login_first_screen.dart';
 import 'feature/login/ui/login_second_screen.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
   runApp(const MyApp());
 }
 
@@ -44,8 +46,8 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/login_first_screen': (context) => const LoginFirstScreen(),
         '/login_second_screen': (context) => const LoginSecondScreen(),
-        '/register_screen' : (context) => const RegisterScreen(),
-        '/home_screen' : (context) => const HomeScreen(),
+        '/register_screen': (context) => const RegisterScreen(),
+        '/home_screen': (context) => const HomeScreen(),
       },
       color: const Color(0xff292B57),
       home: const HomePage(),
@@ -56,11 +58,10 @@ class _MyAppState extends State<MyApp> {
 class MyRepositoryProviders extends StatelessWidget {
   MyRepositoryProviders({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(providers: [
-    ], child: const MyBlocProviders());
+    return MultiRepositoryProvider(
+        providers: [], child: const MyBlocProviders());
   }
 }
 
@@ -69,14 +70,14 @@ class MyBlocProviders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-    ], child: const MyApp());
+    return MultiBlocProvider(providers: [], child: const MyApp());
   }
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key,})
-      : super(key: key);
+  const HomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

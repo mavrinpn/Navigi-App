@@ -11,7 +11,7 @@ class AppTypography {
   static const _colorBlack = AppColors.black;
   static const _lightGray = AppColors.lightGray;
   static const _white = Colors.white;
-  static const _pink = AppColors.pink;
+  static const _pink = AppColors.red;
   static final _font = GoogleFonts.nunito();
   static final fontTheme = GoogleFonts.heeboTextTheme();
 
