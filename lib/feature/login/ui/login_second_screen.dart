@@ -63,7 +63,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                         controller: passwordController,
                         keyboardType: TextInputType.phone,
                         width: width * 0.95,
-                        prefIcon: 'Assets/Key.png',
+                        prefIcon: 'Assets/icons/key.svg',
                         obscureText: true,
                         validator: (value) {
                           if (value!.length < 8) {
