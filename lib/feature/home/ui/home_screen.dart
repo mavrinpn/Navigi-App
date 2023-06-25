@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
             selectedLabelStyle: AppTypography.font10pink,
             unselectedLabelStyle: AppTypography.font10lightGray,
             onTap: onSelectTab,
-            selectedItemColor: AppColors.pink,
+            selectedItemColor: AppColors.red,
             unselectedItemColor: AppColors.lightGray,
           ),
         ),
@@ -99,7 +99,7 @@ class NavigatorBarItem extends StatelessWidget {
         asset,
         height: 24,
         width: 24,
-        color: isSelected ? AppColors.pink : AppColors.lightGray,
+        color: isSelected ? AppColors.red : AppColors.lightGray,
     );
   }
 }

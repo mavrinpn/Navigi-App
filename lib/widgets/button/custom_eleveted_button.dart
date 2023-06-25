@@ -23,7 +23,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.height = 50,
     this.padding = const EdgeInsets.all(10),
     this.isTouch = false,
-    this.activeColor = AppColors.isTouchButtonColorPink,
+    this.activeColor = AppColors.isTouchButtonColorRed,
     this.mortColor = AppColors.isNotTouchButton,
   }) : super(key: key);
 
