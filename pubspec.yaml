@@ -21,15 +21,13 @@ dependencies:
 
 
   cupertino_icons: ^1.0.2
+  flutter_native_splash: ^2.3.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
-
-
-
 
 flutter:
 
@@ -38,3 +36,7 @@ flutter:
   assets:
     - Assets/
     - Assets/icons/
+
+flutter_native_splash:
+  color: "#42a5f5"
+  background_image: "Assets/logo.png"

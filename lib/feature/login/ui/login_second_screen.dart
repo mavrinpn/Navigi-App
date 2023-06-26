@@ -36,7 +36,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                 height: 62,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("Assets/logo.png"), fit: BoxFit.cover),
+                      image: AssetImage("Assets/logo.png")),
                 ),
               ),
               const SizedBox(
