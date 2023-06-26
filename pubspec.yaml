@@ -32,12 +32,11 @@ dev_dependencies:
 
 flutter_native_splash:
   color: "#ED5434"
-  background_image: "Assets/splash_logo.png"
+  image: "Assets/splash.png"
 
 flutter:
   uses-material-design: true
   assets:
     - Assets/
     - Assets/icons/
-    - Assets/splash_logo.png
 
