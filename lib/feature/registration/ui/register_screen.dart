@@ -119,7 +119,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       CustomTextFormField(
                           controller: nameController,
-                          keyboardType: TextInputType.phone,
+                          keyboardType: TextInputType.text,
                           width: width * 0.95,
                           prefIcon: 'Assets/icons/profile.svg',
                           validator: (value) {
@@ -152,7 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       CustomTextFormField(
                           controller: firstPasswordController,
-                          keyboardType: TextInputType.phone,
+                          keyboardType: TextInputType.text,
                           width: width * 0.95,
                           prefIcon: 'Assets/icons/key.svg',
                           obscureText: true,
@@ -169,7 +169,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       CustomTextFormField(
                           controller: secondPasswordController,
-                          keyboardType: TextInputType.phone,
+                          keyboardType: TextInputType.text,
                           width: width * 0.95,
                           prefIcon: 'Assets/icons/key.svg',
                           obscureText: true,

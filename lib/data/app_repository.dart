@@ -11,7 +11,7 @@ enum AuthStateEnum {wait, loading, auth, unAuth}
 class AppRepository {
   final Client client;
   final Account account;
-  late final User user;
+  late User user;
   String? sessionID;
 
   static const sessionIdKey = 'sessionID';
@@ -35,6 +35,7 @@ class AppRepository {
       authState.add(AuthStateEnum.auth);
     } catch (e) {
       authState.add(AuthStateEnum.unAuth);
+      rethrow;
     }
   }
 

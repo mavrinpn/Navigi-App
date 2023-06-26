@@ -14,17 +14,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Widget> _widgetOptions = <Widget>[
-    const Text(''),
-    const Text(''),
-    const Text(''),
-    const Text(''),
-  ];
-
   int _selectedTab = 0;
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _widgetOptions = <Widget>[
+      Center(child: TextButton(onPressed: () {BlocProvider.of<AuthCubit>(context).logout();}, child: const Text('Выйти'))),
+      const Text(''),
+      const Text(''),
+      const Text(''),
+    ];
+
+
     void onSelectTab(int index) {
       if (_selectedTab == index) return;
       setState(() {
@@ -34,9 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return WillPopScope(
       child: Scaffold(
-        appBar: AppBar(
-          actions: [TextButton(child: const Text('Выход'), onPressed: () {BlocProvider.of<AuthCubit>(context).logout();},)],
-        ),
         body: _widgetOptions[_selectedTab],
         bottomNavigationBar: ClipRRect(
           child: BottomNavigationBar(
