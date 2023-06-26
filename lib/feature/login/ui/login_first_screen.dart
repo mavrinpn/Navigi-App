@@ -46,7 +46,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
     if (state is AuthSuccessState) {
 
     } else if (state is AuthFailState) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('ошибка')));
+      //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('ошибка')));
     }
   },
   child: GestureDetector(

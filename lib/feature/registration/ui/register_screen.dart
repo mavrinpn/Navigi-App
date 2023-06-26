@@ -76,8 +76,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (state is AuthSuccessState) {
           Navigator.pop(context);
         } else if (state is AuthFailState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('ошибка')));
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //     const SnackBar(content: Text('ошибка')));
         }
       },
 
@@ -104,7 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         decoration: const BoxDecoration(
                           image: DecorationImage(
                               image: AssetImage("Assets/logo.png"),
-                              fit: BoxFit.cover),
+                              ),
                         ),
                       ),
                       const SizedBox(

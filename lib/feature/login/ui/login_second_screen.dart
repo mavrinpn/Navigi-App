@@ -39,8 +39,8 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
         if (state is AuthSuccessState) {
           Navigator.pop(context);
         } else if (state is AuthFailState) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('ошибка')));
+          //ScaffoldMessenger.of(context)
+            //  .showSnackBar(const SnackBar(content: Text('ошибка')));
         }
       },
       child: GestureDetector(
