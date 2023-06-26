@@ -80,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SnackBar(content: Text('ошибка')));
         }
       },
-<<<<<<< HEAD
+
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
@@ -97,27 +97,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       SizedBox(
                         height: height * 0.05,
-=======
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                    Container(
-                      width: 230,
-                      height: 62,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("Assets/logo.png")),
->>>>>>> origin/develop
                       ),
                       Container(
                         width: 124,
