@@ -80,8 +80,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: height * 0.05,
                     ),
                     Container(
-                      width: 124,
-                      height: 34,
+                      width: 230,
+                      height: 62,
                       decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage("Assets/logo.png")),
