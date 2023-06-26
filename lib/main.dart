@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 import 'package:appwrite/appwrite.dart';
 import 'package:easy_localization/easy_localization.dart';
+=======
+>>>>>>> origin/develop
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +19,6 @@ import 'feature/login/ui/login_second_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
 
   Bloc.observer = CustomBlocObserver();
   runApp(MyRepositoryProviders());
