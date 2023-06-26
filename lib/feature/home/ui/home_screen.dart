@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/bloc/auth_cubit.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -32,6 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return WillPopScope(
       child: Scaffold(
+        appBar: AppBar(
+          actions: [TextButton(child: const Text('Выход'), onPressed: () {BlocProvider.of<AuthCubit>(context).logout();},)],
+        ),
         body: _widgetOptions[_selectedTab],
         bottomNavigationBar: ClipRRect(
           child: BottomNavigationBar(

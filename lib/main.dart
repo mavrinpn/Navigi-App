@@ -1,8 +1,12 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/bloc/auth_cubit.dart';
+import 'package:smart/data/app_repository.dart';
 import 'package:smart/feature/registration/ui/register_screen.dart';
+import 'package:smart/services/custom_bloc_observer.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,7 +18,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
-  runApp(const MyApp());
+  Bloc.observer = CustomBlocObserver();
+  runApp(MyRepositoryProviders());
 }
 
 class MyApp extends StatefulWidget {
@@ -57,11 +62,17 @@ class _MyAppState extends State<MyApp> {
 
 class MyRepositoryProviders extends StatelessWidget {
   MyRepositoryProviders({Key? key}) : super(key: key);
+  final client = Client()
+      .setEndpoint('http://89.253.237.166/v1') // Your API Endpoint
+      .setProject('64987d0f7f186b7e2b45');
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
-        providers: [], child: const MyBlocProviders());
+    return MultiRepositoryProvider(providers: [
+      RepositoryProvider(
+        create: (_) => AppRepository(client: client)..checkLogin(),
+      ),
+    ], child: const MyBlocProviders());
   }
 }
 
@@ -70,7 +81,13 @@ class MyBlocProviders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [], child: const MyApp());
+    return MultiBlocProvider(providers: [
+      BlocProvider(
+        create: (_) => AuthCubit(
+            appRepository: RepositoryProvider.of<AppRepository>(context)),
+        lazy: false,
+      )
+    ], child: const MyApp());
   }
 }
 
@@ -81,10 +98,18 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Center(
-        child: LoginFirstScreen(),
+      body: BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, state) {
+          if (state is AuthSuccessState) {
+            return const HomeScreen();
+          } else {
+            return const Center(
+              child: LoginFirstScreen(),
+            );
+          }
+        },
       ),
     );
   }

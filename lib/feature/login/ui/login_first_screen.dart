@@ -1,5 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/bloc/auth_cubit.dart';
+import 'package:smart/utils/dialods.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -33,7 +36,20 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    return GestureDetector(
+    return BlocListener<AuthCubit, AuthState>(
+  listener: (context, state) {
+    if (state is AuthLoadingState) {
+      Dialogs.showModal(context, const Center(child: CircularProgressIndicator()));
+    } else {
+      Dialogs.hide(context);
+    }
+    if (state is AuthSuccessState) {
+
+    } else if (state is AuthFailState) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('ошибка')));
+    }
+  },
+  child: GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
@@ -108,6 +124,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                               return;
                             }
                             if(isTouch){
+                              BlocProvider.of<AuthCubit>(context).setPhone(maskPhoneFormatter.getUnmaskedText());
                               Navigator.pushNamed(
                                   context, '/login_second_screen');
                             }
@@ -176,6 +193,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
           ),
         ),
       ),
-    );
+    ),
+);
   }
 }

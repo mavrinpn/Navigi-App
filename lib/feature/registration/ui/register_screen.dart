@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:smart/bloc/auth_cubit.dart';
+import 'package:smart/data/app_repository.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../../../utils/colors.dart';
+import '../../../utils/dialods.dart';
 import '../../../widgets/button/custom_eleveted_button.dart';
 import '../../../widgets/textField/custom_text_field.dart';
 import '../../../widgets/textField/mask_text_field.dart';
@@ -62,197 +66,218 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {});
     }
 
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is AuthLoadingState) {
+          Dialogs.showModal(context, const CircularProgressIndicator());
+        } else {
+          Dialogs.hide(context);
+        }
+        if (state is AuthSuccessState) {
+          Navigator.pop(context);
+        } else if (state is AuthFailState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('ошибка')));
+        }
       },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                    Container(
-                      width: 124,
-                      height: 34,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("Assets/logo.png"),
-                            fit: BoxFit.cover),
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: SafeArea(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: height * 0.05,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    Text(
-                      'Enregistrement',
-                      style: AppTypography.font24black.copyWith(fontSize: 20),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    CustomTextFormField(
-                        controller: nameController,
+                      Container(
+                        width: 124,
+                        height: 34,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("Assets/logo.png"),
+                              fit: BoxFit.cover),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      Text(
+                        'Enregistrement',
+                        style: AppTypography.font24black.copyWith(fontSize: 20),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      CustomTextFormField(
+                          controller: nameController,
+                          keyboardType: TextInputType.phone,
+                          width: width * 0.95,
+                          prefIcon: 'Assets/icons/profile.svg',
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Erreur! Réessayez ou entrez dautres informations.';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            checkIsTouch();
+                          }
+                      ),
+                      MaskTextFormField(
+                        controller: phoneController,
                         keyboardType: TextInputType.phone,
                         width: width * 0.95,
-                        prefIcon: 'Assets/icons/profile.svg',
+                        prefIcon: 'Assets/icons/phone.svg',
                         validator: (value) {
-                          if (value!.isEmpty) {
+                          if (maskPhoneFormatter
+                              .getUnmaskedText()
+                              .length != 11) {
                             return 'Erreur! Réessayez ou entrez dautres informations.';
                           }
                           return null;
                         },
                         onChanged: (value) {
                           checkIsTouch();
-                        }
-                    ),
-                    MaskTextFormField(
-                      controller: phoneController,
-                      keyboardType: TextInputType.phone,
-                      width: width * 0.95,
-                      prefIcon: 'Assets/icons/phone.svg',
-                      validator: (value) {
-                        if (maskPhoneFormatter
-                            .getUnmaskedText()
-                            .length != 11) {
-                          return 'Erreur! Réessayez ou entrez dautres informations.';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        checkIsTouch();
-                      },
-                      mask: maskPhoneFormatter,
-                    ),
-                    CustomTextFormField(
-                        controller: firstPasswordController,
-                        keyboardType: TextInputType.phone,
-                        width: width * 0.95,
-                        prefIcon: 'Assets/icons/key.svg',
-                        obscureText: true,
-                        validator: (value) {
-                          if (value! != secondPasswordController.text ||
-                              value.length < 8) {
-                            return 'Erreur! Réessayez ou entrez dautres informations.';
-                          }
-                          return null;
                         },
-                        onChanged: (value) {
-                          checkIsTouch();
-                        }
-                    ),
-                    CustomTextFormField(
-                        controller: secondPasswordController,
-                        keyboardType: TextInputType.phone,
-                        width: width * 0.95,
-                        prefIcon: 'Assets/icons/key.svg',
-                        obscureText: true,
-                        validator: (value) {
-                          if (value! != firstPasswordController.text ||
-                              value.length < 8) {
-                            return 'Erreur! Réessayez ou entrez dautres informations.';
+                        mask: maskPhoneFormatter,
+                      ),
+                      CustomTextFormField(
+                          controller: firstPasswordController,
+                          keyboardType: TextInputType.phone,
+                          width: width * 0.95,
+                          prefIcon: 'Assets/icons/key.svg',
+                          obscureText: true,
+                          validator: (value) {
+                            if (value! != secondPasswordController.text ||
+                                value.length < 8) {
+                              return 'Erreur! Réessayez ou entrez dautres informations.';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            checkIsTouch();
                           }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          checkIsTouch();
-                        }
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2.5),
-                            child: SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: Checkbox(
-                                splashRadius: 2,
-                                checkColor: Colors.white,
+                      ),
+                      CustomTextFormField(
+                          controller: secondPasswordController,
+                          keyboardType: TextInputType.phone,
+                          width: width * 0.95,
+                          prefIcon: 'Assets/icons/key.svg',
+                          obscureText: true,
+                          validator: (value) {
+                            if (value! != firstPasswordController.text ||
+                                value.length < 8) {
+                              return 'Erreur! Réessayez ou entrez dautres informations.';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            checkIsTouch();
+                          }
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 2.5),
+                              child: SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: Checkbox(
+                                  splashRadius: 2,
+                                  checkColor: Colors.white,
                                   activeColor: AppColors.red,
-                                side: const BorderSide(width: 1, color: AppColors.lightGray),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
-                                value: isTapCheckBox,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    isTapCheckBox = !isTapCheckBox;
-                                  });
+                                  side: const BorderSide(
+                                      width: 1, color: AppColors.lightGray),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(2)),
+                                  value: isTapCheckBox,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      isTapCheckBox = !isTapCheckBox;
+                                    });
 
-                                  if (checkFields(
-                                      maskPhoneFormatter.getUnmaskedText(),
-                                      nameController.text,
-                                      firstPasswordController.text,
-                                      secondPasswordController.text)) {
-                                    isTouch = true;
+                                    if (checkFields(
+                                        maskPhoneFormatter.getUnmaskedText(),
+                                        nameController.text,
+                                        firstPasswordController.text,
+                                        secondPasswordController.text)) {
+                                      isTouch = true;
+                                      setState(() {});
+                                      return;
+                                    }
+                                    isTouch = false;
                                     setState(() {});
-                                    return;
-                                  }
-                                  isTouch = false;
-                                  setState(() {});
-                                },
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          SizedBox(
-                            width: width - 75,
-                            child: Text(
-                              'Jaccepte les conditions dutilisation et confirme que jaccepte la politique de confidentialité.',
-                              style: AppTypography.font14black,
+                            const SizedBox(
+                              width: 15,
                             ),
-                          )
-                        ],
+                            SizedBox(
+                              width: width - 75,
+                              child: Text(
+                                'Jaccepte les conditions dutilisation et confirme que jaccepte la politique de confidentialité.',
+                                style: AppTypography.font14black,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    CustomElevatedButton(
-                      callback: () {
-                        if (!_formKey.currentState!.validate() || !isTouch) {
-                          setState(() {});
-                          return;
-                        }
-                        Navigator.pushNamed(context, '/home_screen');
-                      },
-                      text: 'Se faire enregistrer',
-                      styleText: AppTypography.font14white,
-                      height: 52,
-                      isTouch: isTouch,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 0),
-                      activeColor: AppColors.isTouchButtonColorDark,
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    InkWell(
-                      child: Text('Entrée',
-                          style: AppTypography.font16UnderLinePink),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/login_first_screen');
-                      },
-                    ),
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      CustomElevatedButton(
+                        callback: () {
+                          if (!_formKey.currentState!.validate() || !isTouch) {
+                            setState(() {});
+                            return;
+                          }
+                          BlocProvider.of<AuthCubit>(context).registerWithEmail(
+                              email: AppRepository.convertPhoneToEmail(
+                                  maskPhoneFormatter.getUnmaskedText()),
+                              name: nameController.text.trim(),
+                              password: firstPasswordController.text.trim());
+                        },
+                        text: 'Se faire enregistrer',
+                        styleText: AppTypography.font14white,
+                        height: 52,
+                        isTouch: isTouch,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 0),
+                        activeColor: AppColors.isTouchButtonColorDark,
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      InkWell(
+                        child: Text('Entrée',
+                            style: AppTypography.font16UnderLinePink),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/login_first_screen');
+                        },
+                      ),
+                      SizedBox(
+                        height: height * 0.05,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
