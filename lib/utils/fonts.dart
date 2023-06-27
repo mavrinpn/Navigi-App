@@ -18,7 +18,7 @@ class AppTypography {
   static final font14black = _font.copyWith(
     color: _colorBlack,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.normal,
+    fontWeight: FontWeight.w400,
     fontSize: 14,
   );
   static final font24black = _font.copyWith(

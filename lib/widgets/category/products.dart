@@ -1,0 +1,30 @@
+import 'package:flutter/material.dart';
+import 'package:smart/utils/fonts.dart';
+
+import '../../utils/colors.dart';
+
+class ProductWidget extends StatelessWidget {
+  const ProductWidget(
+      {super.key, required this.name});
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.backgroundLightGray,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+        child: Text(
+          name,
+          style: AppTypography.font14black.copyWith(fontSize: 12),
+        ),
+      ),
+    );
+  }
+}
