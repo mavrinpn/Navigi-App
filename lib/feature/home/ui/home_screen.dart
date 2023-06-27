@@ -18,11 +18,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _widgetOptions = <Widget>[
+    final List<Widget> widgetOptions = <Widget>[
       Center(child: TextButton(onPressed: () {BlocProvider.of<AuthCubit>(context).logout();}, child: const Text('Выйти'))),
       const Text(''),
       const Text(''),
-      const Text(''),
+      Center(child: TextButton(onPressed: () {Navigator.pushNamed(context, '/create_category_screen');}, child: const Text('Создать'))),
     ];
 
 
@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return WillPopScope(
       child: Scaffold(
-        body: _widgetOptions[_selectedTab],
+        body: widgetOptions[_selectedTab],
         bottomNavigationBar: ClipRRect(
           child: BottomNavigationBar(
             iconSize: 30,
