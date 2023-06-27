@@ -6,11 +6,18 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/models/category.dart';
 
-import '../models/subCategory.dart';
+import '../models/item.dart';
+import '../models/subcategory.dart';
 
 enum LoadingStateEnum { wait, loading, success, fail }
 
 enum AuthStateEnum { wait, loading, auth, unAuth }
+
+const String postDatabase = 'annonces';
+const String postCollection = 'anounces';
+const String itemsCollection = 'items';
+const String categoriesCollection = 'categories';
+const String subcategoriesCollection = 'sub_categories';
 
 class AppRepository {
   final Client client;
@@ -18,8 +25,6 @@ class AppRepository {
   final Databases databases;
   late User user;
   String? sessionID;
-  List<Category> categories = [];
-  List<SubCategory> subcategories = [];
 
   static const sessionIdKey = 'sessionID';
 
@@ -27,15 +32,10 @@ class AppRepository {
       : account = Account(client),
         databases = Databases(client) {
     checkLogin();
-    loadCategories();
   }
 
   BehaviorSubject<AuthStateEnum> authState =
       BehaviorSubject<AuthStateEnum>.seeded(AuthStateEnum.wait);
-  BehaviorSubject<LoadingStateEnum> categoriesState =
-      BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
-  BehaviorSubject<LoadingStateEnum> subCategoriesState =
-      BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
 
   static String convertPhoneToEmail(String phone) {
     return '$phone@gmail.com';
@@ -89,53 +89,5 @@ class AppRepository {
     } catch (e) {
       authState.add(AuthStateEnum.unAuth);
     }
-  }
-
-  Future loadCategories() async {
-    categoriesState.add(LoadingStateEnum.loading);
-    try {
-      final res = await databases.listDocuments(
-          databaseId: 'annonces', collectionId: 'categories');
-
-      res.documents.forEach((element) {
-        print(element.data);
-      });
-      categories = [];
-      for (var doc in res.documents) {
-        categories.add(mapToCategory(doc.data));
-      }
-      categoriesState.add(LoadingStateEnum.success);
-    } catch (e) {
-      categoriesState.add(LoadingStateEnum.fail);
-      rethrow;
-    }
-  }
-
-  Future loadSubCategories(String categoryID) async {
-    subCategoriesState.add(LoadingStateEnum.loading);
-    try {
-      subcategories = <SubCategory>[];
-      final res = await databases.listDocuments(
-          databaseId: 'annonces',
-          collectionId: 'sub_categories',
-          queries: [Query.equal('categorie_id', categoryID)]);
-      for (var doc in res.documents) {
-        subcategories.add(mapToSubCategory(doc.data));
-      }
-      subCategoriesState.add(LoadingStateEnum.success);
-    } catch (e) {
-      subCategoriesState.add(LoadingStateEnum.fail);
-      rethrow;
-    }
-  }
-
-  Category mapToCategory(Map<String, dynamic> json) {
-    return Category(
-        imageUrl: json['image_url'], name: json['name'], id: json['\$id']);
-  }
-
-  SubCategory mapToSubCategory(Map<String, dynamic> json) {
-    return SubCategory(
-        name: json['name'], id: json['\$id'], categoryId: json['categorie_id']);
   }
 }

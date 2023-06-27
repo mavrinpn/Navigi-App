@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/bloc/auth_cubit.dart';
 import 'package:smart/data/app_repository.dart';
 import 'package:smart/feature/create/bloc/category/category_cubit.dart';
+import 'package:smart/feature/create/bloc/item_search/item_search_cubit.dart';
+import 'package:smart/feature/create/data/creting_manager.dart';
 import 'package:smart/feature/registration/ui/register_screen.dart';
 import 'package:smart/services/custom_bloc_observer.dart';
 import 'package:smart/utils/colors.dart';
@@ -79,6 +81,9 @@ class MyRepositoryProviders extends StatelessWidget {
       RepositoryProvider(
         create: (_) => AppRepository(client: client),
       ),
+      RepositoryProvider(
+        create: (_) => CreatingManager(client: client),
+      ),
     ], child: const MyBlocProviders());
   }
 }
@@ -96,12 +101,17 @@ class MyBlocProviders extends StatelessWidget {
       ),
       BlocProvider(
         create: (_) => CategoryCubit(
-            appRepository: RepositoryProvider.of<AppRepository>(context)),
+            creatingManager: RepositoryProvider.of<CreatingManager>(context)),
         lazy: false,
       ),
       BlocProvider(
         create: (_) => SubCategoryCubit(
-            appRepository: RepositoryProvider.of<AppRepository>(context)),
+            creatingManager: RepositoryProvider.of<CreatingManager>(context)),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => ItemSearchCubit(
+            creatingManager: RepositoryProvider.of<CreatingManager>(context)),
         lazy: false,
       ),
     ], child: const MyApp());

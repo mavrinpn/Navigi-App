@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create/bloc/sub_category/sub_category_cubit.dart';
 import 'package:smart/widgets/category/sub_category.dart';
 
-import '../../../models/subCategory.dart';
+import '../../../models/subcategory.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 
@@ -28,7 +28,7 @@ class SubCategoryScreen extends StatelessWidget {
           if (state is SubCategorySuccessState) {
             return ListView(
             children: state.subcategories
-                .map((e) => SubCategoryWidget(name: e.name))
+                .map((e) => SubCategoryWidget(name: e.name ?? ''))
                 .toList(),
           );
           } else if (state is SubCategoryFailState) {

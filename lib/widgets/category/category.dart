@@ -7,9 +7,9 @@ import 'package:smart/utils/fonts.dart';
 
 class CategoryWidget extends StatelessWidget {
   CategoryWidget({super.key, required Category category})
-      : name = category.name,
-        imageUrl = category.imageUrl,
-        id = category.id;
+      : name = category.name ?? '',
+        imageUrl = category.imageUrl ?? '',
+        id = category.id ?? '';
 
   final String name;
   final String imageUrl;

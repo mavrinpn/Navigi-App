@@ -1,24 +1,24 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:smart/feature/create/data/creting_manager.dart';
 
 import '../../../../data/app_repository.dart';
-import '../../../../models/subCategory.dart';
+import '../../../../models/subcategory.dart';
 
 part 'sub_category_state.dart';
 
 class SubCategoryCubit extends Cubit<SubCategoryState> {
-  final AppRepository appRepository;
+  final CreatingManager creatingManager;
 
-  SubCategoryCubit({required this.appRepository}) : super(SubCategoryInitial()) {
-    appRepository.subCategoriesState.stream.listen((event) {
+  SubCategoryCubit({required this.creatingManager}) : super(SubCategoryInitial()) {
+    creatingManager.subCategoriesState.stream.listen((event) {
       if (event == LoadingStateEnum.loading) emit(SubCategoryLoadingState());
-      if (event == LoadingStateEnum.success) emit(SubCategorySuccessState(subcategories: appRepository.subcategories));
+      if (event == LoadingStateEnum.success) emit(SubCategorySuccessState(subcategories: creatingManager.subcategories));
       if (event == LoadingStateEnum.fail) emit(SubCategoryFailState());
     });
   }
 
   void loadSubCategories(String categoryId) {
-    appRepository.loadSubCategories(categoryId);
+    creatingManager.loadSubCategories(categoryId);
   }
 
 }
