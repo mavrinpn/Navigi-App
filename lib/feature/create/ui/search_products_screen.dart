@@ -41,6 +41,9 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                 height: 46,
                 hintText: '',
                 width: 1000,
+                onChange: (value) {
+                  print(value);
+                },
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 26, 0, 13),
