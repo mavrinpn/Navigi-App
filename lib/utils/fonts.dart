@@ -67,4 +67,9 @@ class AppTypography {
     fontSize: 20,
     fontWeight: FontWeight.w700,
   );
+  static final font16black = _font.copyWith(
+    color: _colorBlack,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  );
 }
