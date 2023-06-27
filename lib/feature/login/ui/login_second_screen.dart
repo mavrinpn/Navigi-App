@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:smart/bloc/auth_cubit.dart';
 import 'package:smart/data/app_repository.dart';
 import 'package:smart/utils/fonts.dart';
@@ -54,15 +55,8 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
-                    width: 230,
-                    height: 62,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("Assets/logo.png"),
-                          ),
-                    ),
-                  ),
+
+                  SvgPicture.asset('Assets/icons/logo.svg', width: 195, height: 43,),
                   const SizedBox(
                     height: 50,
                   ),
@@ -157,24 +151,26 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         RawMaterialButton(
-                          onPressed: () {},
-                          shape: const CircleBorder(),
-                          constraints:
-                              const BoxConstraints(maxWidth: 40, maxHeight: 40),
-                          child: const Image(
-                              image: AssetImage('Assets/facebook.png')),
-                        ),
+                            onPressed: () {},
+                            shape: const CircleBorder(),
+                            constraints: const BoxConstraints(
+                                maxWidth: 40, maxHeight: 40),
+                            child: SvgPicture.asset(
+                              'Assets/icons/facebook.svg',
+                              width: 40,
+                            )),
                         const SizedBox(
                           width: 5,
                         ),
                         RawMaterialButton(
-                          constraints:
-                              const BoxConstraints(maxWidth: 40, maxHeight: 40),
-                          onPressed: () {},
-                          shape: const CircleBorder(),
-                          child:
-                              const Image(image: AssetImage('Assets/google.png')),
-                        ),
+                            constraints: const BoxConstraints(
+                                maxWidth: 40, maxHeight: 40),
+                            onPressed: () {},
+                            shape: const CircleBorder(),
+                            child: SvgPicture.asset(
+                              'Assets/icons/google.svg',
+                              width: 40,
+                            )),
                       ],
                     ),
                   ),

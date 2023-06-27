@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/feature/create/bloc/sub_category/sub_category_cubit.dart';
 import 'package:smart/widgets/category/sub_category.dart';
 
 import '../../../models/subCategory.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 
-List<SubCategory> list = [
-  SubCategory(name: 'a', categoryId: ''),
-  SubCategory(name: 'a', categoryId: ''),
-  SubCategory(name: 'a', categoryId: ''),
-  SubCategory(name: 'a', categoryId: ''),
-  SubCategory(name: 'a', categoryId: ''),
-  SubCategory(name: 'a', categoryId: ''),
-  SubCategory(name: 'a', categoryId: ''),
-  SubCategory(name: 'a', categoryId: ''),
-];
 
 class SubCategoryScreen extends StatelessWidget {
   const SubCategoryScreen({super.key});
@@ -31,10 +23,20 @@ class SubCategoryScreen extends StatelessWidget {
           style: AppTypography.font20black,
         ),
       ),
-      body: ListView(
-        children: list
-            .map((e) => SubCategoryWidget(name: e.name))
-            .toList(),
+      body: BlocBuilder<SubCategoryCubit, SubCategoryState>(
+        builder: (context, state) {
+          if (state is SubCategorySuccessState) {
+            return ListView(
+            children: state.subcategories
+                .map((e) => SubCategoryWidget(name: e.name))
+                .toList(),
+          );
+          } else if (state is SubCategoryFailState) {
+            return const Center(child: Text('проблемс'),);
+          } else {
+            return const Center(child: CircularProgressIndicator(),);
+          }
+        },
       ),
     );
   }

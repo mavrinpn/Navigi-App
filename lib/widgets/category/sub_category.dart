@@ -20,7 +20,7 @@ class SubCategoryWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Immobilier',
+              name,
               style: AppTypography.font16black,
             ),
             const Icon(
