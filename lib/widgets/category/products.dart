@@ -22,7 +22,7 @@ class ProductWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
         child: Text(
           name,
-          style: AppTypography.font14black.copyWith(fontSize: 12),
+          style: AppTypography.font14black.copyWith(fontSize: 16),
         ),
       ),
     );

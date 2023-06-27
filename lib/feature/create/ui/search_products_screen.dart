@@ -45,9 +45,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                 hintText: '',
                 width: 1000,
                 onChange: (value) {
-                  log(value);
-                  BlocProvider.of<ItemSearchCubit>(context)
-                      .initialSearch(value);
+                  BlocProvider.of<ItemSearchCubit>(context).searchItems(value);
                 },
               ),
               Padding(
@@ -61,7 +59,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                 builder: (context, state) {
                   if (state is SearchSuccessState || state is SearchLoadingState) {
                     return Wrap(
-                      children: RepositoryProvider.of<CreatingManager>(context).items
+                      children: RepositoryProvider.of<CreatingManager>(context).searchItems
                           .map((e) => Padding(
                                 padding: const EdgeInsets.all(3),
                                 child: ProductWidget(

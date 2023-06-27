@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create/bloc/sub_category/sub_category_cubit.dart';
 import 'package:smart/widgets/category/sub_category.dart';
 
-import '../../../models/subcategory.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 

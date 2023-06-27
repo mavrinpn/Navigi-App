@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:smart/feature/create/data/creting_manager.dart';
 
@@ -27,10 +29,20 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
 
   void setSubcategory(String subcategory) {
     currentSubcategory = subcategory;
+
+    creatingManager.initialLoadItems('', currentSubcategory);
+    creatingManager.clearSearchItems();
+
     emit(SearchEmptyState());
   }
 
-  void initialSearch(String query) {
-    creatingManager.searchItems(query, currentSubcategory);
+  void searchItems(String query) {
+    if(query.isEmpty){
+      creatingManager.clearSearchItems();
+      emit(SearchEmptyState());
+      return;
+    }
+
+    creatingManager.searchItemsByName(query);
   }
 }
