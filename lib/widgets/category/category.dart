@@ -10,22 +10,27 @@ class CategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 108,
-      height: 160,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Container(
-            width: 108,
-            height: 100,
-            decoration: const BoxDecoration(
-                image: DecorationImage(image: AssetImage(Assets.assetsGoogle),fit: BoxFit.cover)),
-          ),
-          const SizedBox(height: 12,),
-          Text('Immobilier', style: AppTypography.font24black.copyWith(fontSize: 12),),
-        ],
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, '/create_sub_category_screen');
+      },
+      child: SizedBox(
+        width: 108,
+        height: 160,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Container(
+              width: 108,
+              height: 100,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(image: AssetImage(Assets.assetsGoogle),fit: BoxFit.cover)),
+            ),
+            const SizedBox(height: 12,),
+            Text('Immobilier', style: AppTypography.font24black.copyWith(fontSize: 12),),
+          ],
+        ),
       ),
     );
   }

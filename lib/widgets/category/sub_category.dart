@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart/generated/assets.dart';
 import 'package:smart/utils/fonts.dart';
 
 class SubCategoryWidget extends StatelessWidget {
@@ -10,24 +9,26 @@ class SubCategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 108,
-      height: 130,
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            'Immobilier',
-            style: AppTypography.font16black,
-          ),
-          InkWell(
-            onTap: () {},
-            child: Icon(
-              Icons.arrow_forward_ios,
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, '/create_search_products_screen');
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Immobilier',
+              style: AppTypography.font16black,
             ),
-          )
-        ],
+            const Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -11,6 +11,8 @@ import 'package:smart/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'feature/create/ui/category_screen.dart';
+import 'feature/create/ui/search_products_screen.dart';
+import 'feature/create/ui/sub_category_screen.dart';
 import 'feature/home/ui/home_screen.dart';
 import 'feature/login/ui/login_first_screen.dart';
 import 'feature/login/ui/login_second_screen.dart';
@@ -54,6 +56,8 @@ class _MyAppState extends State<MyApp> {
         '/register_screen': (context) => const RegisterScreen(),
         '/home_screen': (context) => const HomeScreen(),
         '/create_category_screen': (context) => const CategoryScreen(),
+        '/create_sub_category_screen': (context) => const SubCategoryScreen(),
+        '/create_search_products_screen': (context) => const SearchProductsScreen(),
       },
       color: const Color(0xff292B57),
       home: const HomePage(),

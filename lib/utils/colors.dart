@@ -9,4 +9,5 @@ class AppColors {
   static const red = Color(0xFFED5434);
   static const isTouchButtonColorDark = Color(0xFF313131);
   static const black = Color(0xff323232);
+  static const whiteGray = Color(0xffDEE2E7);
 }

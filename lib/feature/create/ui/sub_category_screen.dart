@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart/widgets/category/sub_category.dart';
 
 import '../../../models/subCategory.dart';
 import '../../../utils/colors.dart';
@@ -30,11 +31,9 @@ class SubCategoryScreen extends StatelessWidget {
           style: AppTypography.font20black,
         ),
       ),
-      body: GridView.count(
-        crossAxisCount: 3,
-        childAspectRatio: 108 / 120,
+      body: ListView(
         children: list
-            .map((e) => (name: e.name, imageUrl: e.imageUrl))
+            .map((e) => SubCategoryWidget(name: e.name))
             .toList(),
       ),
     );
