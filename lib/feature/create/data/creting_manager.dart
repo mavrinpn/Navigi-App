@@ -65,13 +65,14 @@ class CreatingManager {
           databaseId: postDatabase,
           collectionId: itemsCollection,
           queries: [Query.search('name', query)]);
-      items = [];
+      items.clear();
       for (var doc in res.documents) {
         items.add(SubCategoryItem.fromJson(doc.data));
       }
       searchState.add(LoadingStateEnum.success);
     } catch (e) {
       searchState.add(LoadingStateEnum.fail);
+      rethrow;
     }
   }
 }

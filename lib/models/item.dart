@@ -7,10 +7,10 @@ class SubCategoryItem {
 
   SubCategoryItem({required this.name, required this.subcategoryId, required this.parametrs});
 
-  SubCategoryItem.fromJson(Map<String, dynamic> json) {
-    name = json['name'] ?? '';
-    subcategoryId = json['sub_category'] ?? '';
-    final mapString = json['parametrs'];
-    parametrs = jsonDecode(jsonEncode(mapString));
+  SubCategoryItem.fromJson(Map<String, dynamic> json1) {
+    name = json1['name'] ?? '';
+    subcategoryId = json1['sub_category'] ?? '';
+    final mapString = json1['parametrs'];
+    parametrs = jsonDecode(mapString);
   }
 }

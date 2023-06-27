@@ -10,7 +10,8 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
   final CreatingManager creatingManager;
   String currentSubcategory = '';
 
-  ItemSearchCubit({required this.creatingManager}) : super(ItemSearchInitial()) {
+  ItemSearchCubit({required this.creatingManager})
+      : super(ItemSearchInitial()) {
     creatingManager.searchState.stream.listen((event) {
       if (event == LoadingStateEnum.loading) emit(SearchLoadingState());
       if (event == LoadingStateEnum.fail) emit(SearchFailState());
@@ -24,7 +25,10 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
     });
   }
 
-  void setSubcategory (String subcategory) => currentSubcategory = subcategory;
+  void setSubcategory(String subcategory) {
+    currentSubcategory = subcategory;
+    emit(SearchEmptyState());
+  }
 
   void initialSearch(String query) {
     creatingManager.searchItems(query, currentSubcategory);

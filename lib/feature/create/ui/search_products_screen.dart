@@ -1,10 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/feature/create/bloc/item_search/item_search_cubit.dart';
+import 'package:smart/feature/create/data/creting_manager.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/category/products.dart';
 import '../../../widgets/textField/outline_text_field.dart';
-
-List<String> list  = ['asdf','asdf','asdf'];
 
 class SearchProductsScreen extends StatefulWidget {
   const SearchProductsScreen({super.key});
@@ -42,18 +45,45 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                 hintText: '',
                 width: 1000,
                 onChange: (value) {
-                  print(value);
+                  log(value);
+                  BlocProvider.of<ItemSearchCubit>(context)
+                      .initialSearch(value);
                 },
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 26, 0, 13),
-                child: Text('Requêtes populaires',style: AppTypography.font16black.copyWith(fontSize: 14),),
+                child: Text(
+                  'Requêtes populaires',
+                  style: AppTypography.font16black.copyWith(fontSize: 14),
+                ),
               ),
-              Wrap(
-                children: list.map((e) => Padding(
-                  padding: const EdgeInsets.all(3),
-                  child: ProductWidget(name: e,),
-                )).toList(),
+              BlocBuilder<ItemSearchCubit, ItemSearchState>(
+                builder: (context, state) {
+                  if (state is SearchSuccessState || state is SearchLoadingState) {
+                    return Wrap(
+                      children: RepositoryProvider.of<CreatingManager>(context).items
+                          .map((e) => Padding(
+                                padding: const EdgeInsets.all(3),
+                                child: ProductWidget(
+                                  name: e.name ?? '',
+                                ),
+                              ))
+                          .toList(),
+                    );
+                  } else if (state is SearchEmptyState) {
+                    return const Center(
+                      child: Text('ниче не найдено'),
+                    );
+                  } else if (state is SearchFailState) {
+                    return const Center(
+                      child: Text('ошибка'),
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
               )
             ],
           ),

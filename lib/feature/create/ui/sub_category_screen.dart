@@ -28,7 +28,7 @@ class SubCategoryScreen extends StatelessWidget {
           if (state is SubCategorySuccessState) {
             return ListView(
             children: state.subcategories
-                .map((e) => SubCategoryWidget(name: e.name ?? ''))
+                .map((e) => SubCategoryWidget(name: e.name ?? '', id: e.id ?? ''))
                 .toList(),
           );
           } else if (state is SubCategoryFailState) {

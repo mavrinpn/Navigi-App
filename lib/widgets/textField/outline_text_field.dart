@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart/utils/colors.dart';
 
 import '../../utils/fonts.dart';
 
@@ -34,13 +35,15 @@ class OutLineTextField extends StatelessWidget {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(13)),
             borderSide: BorderSide(
-              color: Color(0xffE01748),
+              width: 2,
+              color: AppColors.whiteGray,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(13)),
             borderSide: BorderSide(
-              color: Color(0xffE01748),
+              width: 2,
+              color: AppColors.whiteGray,
             ),
           ),
         ),
