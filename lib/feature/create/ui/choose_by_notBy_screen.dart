@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create/data/creting_announcement_manager.dart';
@@ -45,11 +47,13 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
               children: [
                 CustomCheckBox(
                     isActive: isBy,
-                    onChanged: (bool? value) {
-                      isBy = !isBy;
-                      setState(() {});
+                    onChanged: () {
+                      setState(() {
+                        isBy = true;
+                      });
+                      log('true');
                     }),
-                SizedBox(
+                const SizedBox(
                   width: 14,
                 ),
                 Text(
@@ -59,18 +63,19 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
               children: [
                 CustomCheckBox(
                     isActive: !isBy,
-                    onChanged: (bool? value) {
-                      isBy = !isBy;
-                      setState(() {});
+                    onChanged: () {
+                      setState(() {
+                        isBy = false;
+                      });
                     }),
-                SizedBox(
+                const SizedBox(
                   width: 14,
                 ),
                 Text('Utilisé',
@@ -88,10 +93,8 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
         text: 'Continuer',
         styleText: AppTypography.font14white,
         callback: () {
-          if (true) {
             repository.setIsBy(!isBy);
-            print(repository.isBy);
-          }
+            Navigator.pushNamed(context, '/create_description');
         },
         isTouch: true,
       ),

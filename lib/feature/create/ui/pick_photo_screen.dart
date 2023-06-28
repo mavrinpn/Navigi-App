@@ -21,9 +21,7 @@ class PickPhotosScreen extends StatefulWidget {
 }
 
 class _PickPhotosScreenState extends State<PickPhotosScreen> {
-  bool photosSelected = false;
   ImagePicker picker = ImagePicker();
-  List<XFile> images = [];
 
   @override
   Widget build(BuildContext context) {
@@ -31,23 +29,14 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
 
     Future pickImages() async {
-      images = await picker.pickMultiImage();
-      log(images.length.toString());
+      repository.images = await picker.pickMultiImage();
+      setState(() {});
     }
 
     Future addImages() async {
       final imgs = await picker.pickMultiImage();
-      images.addAll(imgs);
+      repository.images.addAll(imgs);
       setState(() {});
-    }
-
-    void select() async {
-      pickImages().then((value) => {
-            setState(() {
-              photosSelected = true;
-              log('setState ${images.length}');
-            })
-          });
     }
 
     return Scaffold(
@@ -74,14 +63,14 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
               const SizedBox(
                 height: 26,
               ),
-              !photosSelected
+              !repository.images.isNotEmpty
                   ? CustomElevatedButton(
                       isTouch: true,
                       activeColor: AppColors.isTouchButtonColorDark,
                       padding: EdgeInsets.zero,
                       height: 52,
                       callback: () {
-                        select();
+                        pickImages();
                       },
                       text: '',
                       styleText: AppTypography.font14white,
@@ -106,8 +95,9 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                   : Expanded(
                       //height: MediaQuery.of(context).size.height - 320,
                       child: GridView.builder(
-                        physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
-                        itemCount: images.length + 1,
+                        physics: const BouncingScrollPhysics(
+                            decelerationRate: ScrollDecelerationRate.fast),
+                        itemCount: repository.images.length + 1,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 mainAxisExtent: 113,
@@ -115,19 +105,29 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                                 crossAxisSpacing: 7,
                                 crossAxisCount: 3),
                         itemBuilder: (_, int index) {
-                          if (index != images.length) {
-                            return ImageWidget(path: images[index].path);
+                          if (index != repository.images.length) {
+                            return ImageWidget(
+                              path: repository.images[index].path,
+                              callback: () {
+                                repository.images.removeAt(index);
+                                setState(() {});
+                              },
+                            );
                           } else {
-                            return AddImageWidget(callback: addImages,);
+                            return AddImageWidget(
+                              callback: addImages,
+                            );
                           }
                         },
                       ),
                     ),
-              const SizedBox(height: 80,)
+              const SizedBox(
+                height: 80,
+              )
             ],
           ),
         ),
-        floatingActionButton: photosSelected
+        floatingActionButton: repository.images.isNotEmpty
             ? CustomElevatedButton(
                 isTouch: true,
                 width: MediaQuery.of(context).size.width - 30,
@@ -137,7 +137,8 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                 styleText: AppTypography.font14white,
                 callback: () {
                   setState(() {
-                    repository.setImages(images);
+                    repository.setImages(repository.images);
+                    Navigator.pushNamed(context, '/create_by_not_by_screen');
                   });
                 })
             : Container());
@@ -145,9 +146,10 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
 }
 
 class ImageWidget extends StatelessWidget {
-  ImageWidget({super.key, required this.path});
+  ImageWidget({super.key, required this.path, required this.callback});
 
   final String path;
+  final VoidCallback callback;
 
   @override
   Widget build(BuildContext context) {
@@ -169,9 +171,14 @@ class ImageWidget extends StatelessWidget {
                       image: FileImage(File(path)), fit: BoxFit.cover)),
             ),
           ),
-          Container(
-            alignment: Alignment.topRight,
-            child: SvgPicture.asset('Assets/icons/delete_button.svg', width: 24,)
+          InkWell(
+            onTap: callback,
+            child: Container(
+                alignment: Alignment.topRight,
+                child: SvgPicture.asset(
+                  'Assets/icons/delete_button.svg',
+                  width: 24,
+                )),
           ),
         ],
       ),
@@ -181,7 +188,9 @@ class ImageWidget extends StatelessWidget {
 
 class AddImageWidget extends StatelessWidget {
   const AddImageWidget({super.key, required this.callback});
+
   final VoidCallback callback;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(

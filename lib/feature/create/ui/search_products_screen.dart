@@ -24,7 +24,8 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
     final repository =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
     productsController.text = repository.searchController;
-    productsController.selection = TextSelection.fromPosition(TextPosition(offset: productsController.text.length));
+    productsController.selection = TextSelection.fromPosition(
+        TextPosition(offset: productsController.text.length));
     final width = MediaQuery.of(context).size.width;
 
     bool isTouch = repository.searchController.isNotEmpty;
@@ -60,6 +61,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                 repository.setSearchController(value);
                 BlocProvider.of<ItemSearchCubit>(context).searchItems(value);
                 setIsTouch(value.isNotEmpty);
+                setState(() {});
               },
             ),
             Padding(
@@ -82,6 +84,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                                   repository.setSearchController(e.name ?? '');
                                   repository.setItem(e);
                                   setState(() {});
+                                  Navigator.pushNamed(context, '/create_pick_photos_screen');
                                 },
                                 name: e.name ?? '',
                               ),
@@ -114,7 +117,6 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
         styleText: AppTypography.font14white,
         callback: () {
           if (isTouch) {
-
             Navigator.pushNamed(context, '/create_pick_photos_screen');
           }
         },
