@@ -67,6 +67,8 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
             height: 52,
             text: 'Continuer',
             styleText: AppTypography.font14white,
-            callback: () {}));
+            callback: () {
+              Navigator.pushNamed(context, '/loading_screen');
+            }));
   }
 }
