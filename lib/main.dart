@@ -54,6 +54,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: AppColors.mainBackground,
         fontFamily: GoogleFonts.nunito().fontFamily,
+
       ),
       routes: {
         '/login_first_screen': (context) => const LoginFirstScreen(),

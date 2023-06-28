@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smart/models/creating_data.dart';
 
@@ -123,4 +125,7 @@ class CreatingAnnouncementManager {
 
   void setItem(SubCategoryItem newItem) => currentItem = newItem;
 
+  void setImages(List<XFile> images) {
+    creatingData.images = images.map((e) => File(e.path)).toList();
+  }
 }

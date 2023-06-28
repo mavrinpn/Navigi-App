@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create/bloc/item_search/item_search_cubit.dart';
@@ -16,14 +17,14 @@ class SearchProductsScreen extends StatefulWidget {
 }
 
 class _SearchProductsScreenState extends State<SearchProductsScreen> {
+  final productsController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final repository =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
-
-    final productsController =
-        TextEditingController(text: repository.searchController);
-
+    productsController.text = repository.searchController;
+    productsController.selection = TextSelection.fromPosition(TextPosition(offset: productsController.text.length));
     final width = MediaQuery.of(context).size.width;
 
     bool isTouch = repository.searchController.isNotEmpty;
@@ -59,7 +60,6 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                 repository.setSearchController(value);
                 BlocProvider.of<ItemSearchCubit>(context).searchItems(value);
                 setIsTouch(value.isNotEmpty);
-                setState(() {});
               },
             ),
             Padding(
@@ -80,6 +80,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                               child: ProductWidget(
                                 onTap: () {
                                   repository.setSearchController(e.name ?? '');
+                                  repository.setItem(e);
                                   setState(() {});
                                 },
                                 name: e.name ?? '',
@@ -113,7 +114,8 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
         styleText: AppTypography.font14white,
         callback: () {
           if (isTouch) {
-            Navigator.pushNamed(context, '/create_photo_screen');
+
+            Navigator.pushNamed(context, '/create_pick_photos_screen');
           }
         },
         isTouch: isTouch,
