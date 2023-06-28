@@ -30,7 +30,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
           backgroundColor: AppColors.empty,
           elevation: 0,
           title: Text(
-            'Ajouter une annonce',
+            'Indiquez le nom',
             style: AppTypography.font20black,
           ),
         ),

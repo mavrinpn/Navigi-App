@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+  import 'package:flutter/material.dart';
 
 import '../../utils/colors.dart';
 import '../../utils/fonts.dart';
@@ -12,7 +12,8 @@ class CustomElevatedButton extends StatelessWidget {
   final EdgeInsets padding;
   final bool isTouch;
   final Color activeColor;
-  final Color mortColor;
+  final Color disableColor;
+  final Widget? child;
 
   const CustomElevatedButton({
     Key? key,
@@ -23,8 +24,9 @@ class CustomElevatedButton extends StatelessWidget {
     this.height = 50,
     this.padding = const EdgeInsets.all(10),
     this.isTouch = false,
+    this.child,
     this.activeColor = AppColors.isTouchButtonColorRed,
-    this.mortColor = AppColors.isNotTouchButton,
+    this.disableColor = AppColors.isNotTouchButton,
   }) : super(key: key);
 
   @override
@@ -38,11 +40,11 @@ class CustomElevatedButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             elevation: 0,
-            backgroundColor: isTouch ? activeColor : mortColor,
+            backgroundColor: isTouch ? activeColor : disableColor,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(14)))),
         onPressed: callback,
-        child: Text(
+        child: child ?? Text(
           text,
           style: styleText,
         ),

@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smart/models/creating_data.dart';
 
 import '../../../data/app_repository.dart';
 import '../../../models/models.dart';
@@ -11,7 +14,8 @@ class CreatingAnnouncementManager {
   CreatingAnnouncementManager({required this.client}) : databases = Databases(client) {
     loadCategories();
   }
-
+  CreatingData creatingData = CreatingData();
+  SubCategoryItem? currentItem;
   List<Category> categories = [];
   List<SubCategory> subcategories = [];
   List<SubCategoryItem> items = [];
@@ -53,6 +57,7 @@ class CreatingAnnouncementManager {
       for (var doc in res.documents) {
         subcategories.add(SubCategory.fromJson(doc.data));
       }
+      creatingData.categoryId = categoryID;
       subCategoriesState.add(LoadingStateEnum.success);
     } catch (e) {
       subCategoriesState.add(LoadingStateEnum.fail);
@@ -88,6 +93,7 @@ class CreatingAnnouncementManager {
       for (var doc in res.documents) {
         items.add(SubCategoryItem.fromJson(doc.data));
       }
+      creatingData.subcategoryId = subcategoryId;
       searchState.add(LoadingStateEnum.success);
     } catch (e) {
       searchState.add(LoadingStateEnum.fail);
@@ -97,7 +103,6 @@ class CreatingAnnouncementManager {
 
   void searchItemsByName(String query) {
     searchState.add(LoadingStateEnum.loading);
-
     List<SubCategoryItem> resList = [];
     for(var item in items){
       if(item.name!.contains(query.toLowerCase())){
@@ -105,7 +110,6 @@ class CreatingAnnouncementManager {
       }
     }
     searchItems = resList;
-
     searchState.add(LoadingStateEnum.success);
   }
 
@@ -116,4 +120,7 @@ class CreatingAnnouncementManager {
   void setSearchController(String value){
     searchController = value;
   }
+
+  void setItem(SubCategoryItem newItem) => currentItem = newItem;
+
 }
