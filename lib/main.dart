@@ -1,5 +1,4 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +16,6 @@ import 'feature/create/bloc/sub_category/sub_category_cubit.dart';
 import 'feature/create/ui/category_screen.dart';
 import 'feature/create/ui/pick_photo_screen.dart';
 import 'feature/create/ui/choose_by_notBy_screen.dart';
-import 'feature/create/ui/photo_screen.dart';
 import 'feature/create/ui/search_products_screen.dart';
 import 'feature/create/ui/sub_category_screen.dart';
 import 'feature/home/ui/home_screen.dart';
