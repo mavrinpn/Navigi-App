@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create/data/creting_announcement_manager.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
+import '../../../widgets/button/custom_eleveted_button.dart';
 
 class PhotoScreen extends StatefulWidget {
   const PhotoScreen({super.key});
@@ -16,6 +17,8 @@ class _PhotoScreenState extends State<PhotoScreen> {
   Widget build(BuildContext context) {
     final repository =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
+
+    final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
         appBar: AppBar(
@@ -44,7 +47,20 @@ class _PhotoScreenState extends State<PhotoScreen> {
               ),
             ],
           ),
-        )
+        ),
+      floatingActionButton: CustomElevatedButton(
+        width: width - 30,
+        padding: const EdgeInsets.all(0),
+        height: 52,
+        text: 'Continuer',
+        styleText: AppTypography.font14white,
+        callback: () {
+          if (true) {
+            Navigator.pushNamed(context, '/create_by_not_by_screen');
+          }
+        },
+        isTouch: true,
+      ),
     );
   }
 }

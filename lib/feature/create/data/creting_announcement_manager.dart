@@ -17,6 +17,7 @@ class CreatingAnnouncementManager {
   List<SubCategoryItem> items = [];
   List<SubCategoryItem> searchItems = [];
   String searchController = '';
+  bool isBy = false;
 
   BehaviorSubject<LoadingStateEnum> categoriesState =
       BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
@@ -115,5 +116,9 @@ class CreatingAnnouncementManager {
 
   void setSearchController(String value){
     searchController = value;
+  }
+
+  void setIsBy(bool value){
+    isBy = value;
   }
 }
