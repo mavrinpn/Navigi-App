@@ -106,7 +106,8 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                   : Expanded(
                       //height: MediaQuery.of(context).size.height - 320,
                       child: GridView.builder(
-                        physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
+                        physics: const BouncingScrollPhysics(
+                            decelerationRate: ScrollDecelerationRate.fast),
                         itemCount: images.length + 1,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
@@ -118,12 +119,16 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                           if (index != images.length) {
                             return ImageWidget(path: images[index].path);
                           } else {
-                            return AddImageWidget(callback: addImages,);
+                            return AddImageWidget(
+                              callback: addImages,
+                            );
                           }
                         },
                       ),
                     ),
-              const SizedBox(height: 80,)
+              const SizedBox(
+                height: 80,
+              )
             ],
           ),
         ),
@@ -136,9 +141,8 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                 text: 'Continuer',
                 styleText: AppTypography.font14white,
                 callback: () {
-                  setState(() {
-                    repository.setImages(images);
-                  });
+                  repository.setImages(images);
+                  Navigator.pushNamed(context, '/create_options_screen');
                 })
             : Container());
   }
@@ -170,9 +174,11 @@ class ImageWidget extends StatelessWidget {
             ),
           ),
           Container(
-            alignment: Alignment.topRight,
-            child: SvgPicture.asset('Assets/icons/delete_button.svg', width: 24,)
-          ),
+              alignment: Alignment.topRight,
+              child: SvgPicture.asset(
+                'Assets/icons/delete_button.svg',
+                width: 24,
+              )),
         ],
       ),
     );
@@ -181,7 +187,9 @@ class ImageWidget extends StatelessWidget {
 
 class AddImageWidget extends StatelessWidget {
   const AddImageWidget({super.key, required this.callback});
+
   final VoidCallback callback;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(

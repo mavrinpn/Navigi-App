@@ -13,7 +13,7 @@ import '../../../widgets/textField/custom_text_field.dart';
 import '../../../widgets/textField/mask_text_field.dart';
 
 final maskPhoneFormatter = MaskTextInputFormatter(
-    mask: '+## (###) ###-###',
+    mask: '+213 ## ### ###',
     filter: {"#": RegExp(r'[0-9]')},
     type: MaskAutoCompletionType.lazy);
 
@@ -37,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool checkFields(String phone, String name, String firstPassword,
       String secondPassword) {
-    return phone.length == 11 &&
+    return phone.length == 8 &&
         name.isNotEmpty &&
         firstPassword == secondPassword &&
         firstPassword.length >= 8 &&
@@ -132,7 +132,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         validator: (value) {
                           if (maskPhoneFormatter
                               .getUnmaskedText()
-                              .length != 11) {
+                              .length != 8) {
                             return 'Erreur! Réessayez ou entrez dautres informations.';
                           }
                           return null;

@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:smart/models/variable_paramets.dart';
+
 class SubCategoryItem {
   String? name;
   String? subcategoryId;
@@ -15,12 +17,12 @@ class SubCategoryItem {
     parameters = jsonDecode(mapString);
   }
 
-  List<VariableParameter> getVariableParameters() {
-    List<VariableParameter> vp = [];
+  List<VariableParameters> getVariableParameters() {
+    List<VariableParameters> vp = [];
 
     parameters!.forEach((key, value) {
       if (value.runtimeType == List<dynamic>) {
-        vp.add(VariableParameter(key: key, variants: value));
+        vp.add(VariableParameters(key: key, variants: value));
       }
     });
     return vp;
@@ -37,20 +39,6 @@ class SubCategoryItem {
     return sp;
   }
 }
-
-class VariableParameter {
-  String key;
-  List variants;
-
-  VariableParameter({required this.key, required this.variants});
-
-  @override
-  String toString() => '$key: $variants';
-
-  String toJsonParameter(dynamic value) =>
-      '"$key": ${value.runtimeType != String ? value : '"$value"'}';
-}
-
 class ItemParameters {
   String staticParameters;
   String? variableParameters;

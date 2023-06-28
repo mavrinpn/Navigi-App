@@ -12,7 +12,7 @@ import '../../../widgets/textField/custom_text_field.dart';
 import '../../../widgets/textField/mask_text_field.dart';
 
 final maskPhoneFormatter = MaskTextInputFormatter(
-    mask: '+## (###) ###-###',
+    mask: '+213 ## ### ###',
     filter: {"#": RegExp(r'[0-9]')},
     type: MaskAutoCompletionType.lazy);
 
@@ -94,14 +94,14 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                             mask: maskPhoneFormatter,
                             validator: (value) {
                               if (maskPhoneFormatter.getUnmaskedText().length !=
-                                  11) {
+                                  8) {
                                 return 'Erreur! Réessayez ou entrez dautres informations.';
                               }
                               return null;
                             },
                             onChanged: (value) {
                               if (maskPhoneFormatter.getUnmaskedText().length ==
-                                  11) {
+                                  8) {
                                 isTouch = true;
                                 setState(() {});
                                 return;

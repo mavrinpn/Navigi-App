@@ -45,7 +45,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
               children: [
                 CustomCheckBox(
                     isActive: isBy,
-                    onChanged: (bool? value) {
+                    onChanged: () {
                       isBy = !isBy;
                       setState(() {});
                     }),
@@ -66,7 +66,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
               children: [
                 CustomCheckBox(
                     isActive: !isBy,
-                    onChanged: (bool? value) {
+                    onChanged: () {
                       isBy = !isBy;
                       setState(() {});
                     }),
