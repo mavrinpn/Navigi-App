@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:smart/utils/colors.dart';
+import 'package:smart/utils/fonts.dart';
 
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({super.key});
@@ -29,12 +30,7 @@ class LoadingScreen extends StatelessWidget {
                 child: Text(
                   'La modération de l\'annonce est en cours',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xFF313131),
-                    fontSize: 24,
-                    fontFamily: 'SF Pro Display',
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: AppTypography.font24dark,
                 ),
               ),
               const SizedBox(
@@ -45,12 +41,7 @@ class LoadingScreen extends StatelessWidget {
                 child: Text(
                   'Ne bloquez pas l\'application pendant le traitement de votre annonce',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xFF9B9FAA),
-                    fontSize: 14,
-                    fontFamily: 'SF Pro Display',
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: AppTypography.font14light
                 ),
               )
             ],
