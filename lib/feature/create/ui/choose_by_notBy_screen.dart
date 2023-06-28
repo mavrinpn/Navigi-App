@@ -46,9 +46,6 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
                 CustomCheckBox(
                     isActive: isBy,
                     onChanged: () {
-                      isBy = !isBy;
-                      setState(() {});
-                    onChanged: () {
                       setState(() {
                         isBy = true;
                       });
@@ -70,9 +67,6 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
               children: [
                 CustomCheckBox(
                     isActive: !isBy,
-                    onChanged: () {
-                      isBy = !isBy;
-                      setState(() {});
                     onChanged: () {
                       setState(() {
                         isBy = false;
@@ -97,7 +91,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
         styleText: AppTypography.font14white,
         callback: () {
             repository.setIsBy(!isBy);
-            Navigator.pushNamed(context, '/create_description');
+            Navigator.pushNamed(context, '/create_options_screen');
         },
         isTouch: true,
       ),

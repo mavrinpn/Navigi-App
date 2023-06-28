@@ -12,12 +12,6 @@ import '../../../widgets/dropDownSingleCheckBox/custon_dropDown_single_checkbox.
 import '../../../widgets/textField/outline_text_field.dart';
 import '../../../widgets/textField/under_line_text_field.dart';
 
-List<VariableParameters> list = [
-  VariableParameters(key: 'sdf', variants: ['asdf', 'asfa', 'asf']),
-  VariableParameters(key: 'sdf', variants: ['asdf', 'asfa', 'asf']),
-  VariableParameters(key: 'sdf', variants: ['asdf', 'asfa', 'asf']),
-  VariableParameters(key: 'sdf', variants: ['asdf', 'asfa', 'asf']),
-];
 
 class OptionsScreen extends StatefulWidget {
   const OptionsScreen({super.key});
@@ -28,18 +22,19 @@ class OptionsScreen extends StatefulWidget {
 
 class _OptionsScreenState extends State<OptionsScreen> {
   final productsController = TextEditingController();
-
   final priseController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final repository = RepositoryProvider.of<CreatingAnnouncementManager>(context);
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData.fallback(),
         backgroundColor: AppColors.empty,
         elevation: 0,
         title: Text(
-          'Indiquez le nom',
+          'Сaractéristiques',
           style: AppTypography.font20black,
         ),
       ),
@@ -62,17 +57,28 @@ class _OptionsScreenState extends State<OptionsScreen> {
               onChange: (String value) {},
               suffixIcon: 'DZD',
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             Expanded(
                 child: ListView(
-              children: list
+              children: (repository.currentItem != null ? repository.currentItem!.getVariableParameters() : [])
                   .map((e) => CustomDropDownSingleCheckBox(paramets: e))
                   .toList(),
             ))
           ],
         ),
+      ),
+      floatingActionButton: CustomElevatedButton(
+        width: MediaQuery.of(context).size.width - 30,
+        padding: const EdgeInsets.all(0),
+        height: 52,
+        text: 'Continuer',
+        styleText: AppTypography.font14white,
+        callback: () {
+          Navigator.pushNamed(context, '/create_description');
+        },
+        isTouch: true,
       ),
     );
   }

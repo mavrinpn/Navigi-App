@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:appwrite/appwrite.dart';
@@ -79,6 +80,7 @@ class CreatingAnnouncementManager {
       items.clear();
       for (var doc in res.documents) {
         items.add(SubCategoryItem.fromJson(doc.data));
+        log(doc.data['name']);
       }
       creatingData.subcategoryId = subcategoryId;
       searchState.add(LoadingStateEnum.success);
@@ -93,7 +95,7 @@ class CreatingAnnouncementManager {
 
     List<SubCategoryItem> resList = [];
     for (var item in items) {
-      if (item.name!.contains(query.toLowerCase())) {
+      if (item.name!.toLowerCase().contains(query.toLowerCase())) {
         resList.add(item);
       }
     }

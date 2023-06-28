@@ -2,6 +2,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:smart/bloc/auth_cubit.dart';
 import 'package:smart/data/app_repository.dart';
 import 'package:smart/feature/create/bloc/category/category_cubit.dart';
@@ -140,10 +141,18 @@ class HomePage extends StatelessWidget {
         builder: (context, state) {
           if (state is AuthSuccessState) {
             return const HomeScreen();
-          } else {
+          } else  if (state is AuthFailState){
             return const Center(
               child: LoginFirstScreen(),
             );
+          }  else {
+            return Center(child:  SpinKitFadingCircle(
+              itemBuilder: (_, ind) {return const Padding(
+                padding: EdgeInsets.all(1.8),
+                child: DecoratedBox(decoration: BoxDecoration(color: AppColors.red, shape: BoxShape.circle)),
+              );},
+              size: 86,
+            ),);
           }
         },
       ),
