@@ -84,6 +84,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                                   repository.setSearchController(e.name ?? '');
                                   repository.setItem(e);
                                   setState(() {});
+                                  Navigator.pushNamed(context, '/create_pick_photos_screen');
                                 },
                                 name: e.name ?? '',
                               ),

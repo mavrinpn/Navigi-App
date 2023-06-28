@@ -10,6 +10,8 @@ class OutLineTextField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType keyBoardType;
   final bool obscureText;
+  final int maxLines;
+  final int? maxLength;
   final ValueChanged<String>? onChange;
 
   const OutLineTextField({
@@ -19,8 +21,10 @@ class OutLineTextField extends StatelessWidget {
     this.width = 290,
     this.height = 50,
     this.obscureText = false,
+    this.maxLines = 1,
+    this.maxLength,
     this.keyBoardType = TextInputType.text,
-    required this.onChange,
+    this.onChange,
   }) : super(key: key);
 
   @override
@@ -30,7 +34,9 @@ class OutLineTextField extends StatelessWidget {
       height: height,
       alignment: Alignment.center,
       child: TextFormField(
-        onChanged: onChange,
+        maxLines: maxLines,
+        maxLength: maxLength,
+        onChanged: onChange ?? (value) {},
         style: AppTypography.font16black.copyWith(fontSize: 15),
         decoration: const InputDecoration(
           enabledBorder: OutlineInputBorder(

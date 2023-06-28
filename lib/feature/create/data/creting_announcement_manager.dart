@@ -12,17 +12,19 @@ class CreatingAnnouncementManager {
   final Client client;
   final Databases databases;
 
-  CreatingAnnouncementManager({required this.client}) : databases = Databases(client) {
+  CreatingAnnouncementManager({required this.client})
+      : databases = Databases(client) {
     loadCategories();
   }
+
   CreatingData creatingData = CreatingData();
   SubCategoryItem? currentItem;
   List<Category> categories = [];
   List<SubCategory> subcategories = [];
   List<SubCategoryItem> items = [];
   List<SubCategoryItem> searchItems = [];
+  List<XFile> images = [];
   String searchController = '';
-  bool isBy = false;
 
   BehaviorSubject<LoadingStateEnum> categoriesState =
       BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
@@ -90,8 +92,8 @@ class CreatingAnnouncementManager {
     searchState.add(LoadingStateEnum.loading);
 
     List<SubCategoryItem> resList = [];
-    for(var item in items){
-      if(item.name!.contains(query.toLowerCase())){
+    for (var item in items) {
+      if (item.name!.contains(query.toLowerCase())) {
         resList.add(item);
       }
     }
@@ -100,16 +102,16 @@ class CreatingAnnouncementManager {
     searchState.add(LoadingStateEnum.success);
   }
 
-  void clearSearchItems(){
+  void clearSearchItems() {
     searchItems.clear();
   }
 
-  void setSearchController(String value){
+  void setSearchController(String value) {
     searchController = value;
   }
 
-  void setIsBy(bool value){
-    isBy = value;
+  void setIsBy(bool value) {
+    creatingData.type = value;
   }
 
   void setItem(SubCategoryItem newItem) => currentItem = newItem;

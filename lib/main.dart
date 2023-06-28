@@ -7,6 +7,7 @@ import 'package:smart/data/app_repository.dart';
 import 'package:smart/feature/create/bloc/category/category_cubit.dart';
 import 'package:smart/feature/create/bloc/item_search/item_search_cubit.dart';
 import 'package:smart/feature/create/data/creting_announcement_manager.dart';
+import 'package:smart/feature/create/ui/descritpion_screen.dart';
 import 'package:smart/feature/registration/ui/register_screen.dart';
 import 'package:smart/services/custom_bloc_observer.dart';
 import 'package:smart/utils/colors.dart';
@@ -15,6 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'feature/create/bloc/sub_category/sub_category_cubit.dart';
 import 'feature/create/ui/category_screen.dart';
 import 'feature/create/ui/options_screen.dart';
+import 'feature/create/ui/loading_screen.dart';
 import 'feature/create/ui/pick_photo_screen.dart';
 import 'feature/create/ui/choose_by_notBy_screen.dart';
 import 'feature/create/ui/search_products_screen.dart';
@@ -66,6 +68,8 @@ class _MyAppState extends State<MyApp> {
         '/create_search_products_screen': (context) => const SearchProductsScreen(),
         '/create_pick_photos_screen': (context) => const PickPhotosScreen(),
         '/create_by_not_by_screen' : (context) => const ByNotByScreen(),
+        '/create_description' : (context) => const DescriptionScreen(),
+        '/loading_screen' : (context) => const LoadingScreen(),
         '/create_options_screen' : (context) => const OptionsScreen(),
       },
       color: const Color(0xff292B57),

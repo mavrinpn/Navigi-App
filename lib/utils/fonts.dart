@@ -72,4 +72,17 @@ class AppTypography {
     fontSize: 16,
     fontWeight: FontWeight.w600,
   );
+
+  static const font24dark = TextStyle(
+    color: AppColors.isTouchButtonColorDark,
+    fontSize: 24,
+    fontFamily: 'SF Pro Display',
+    fontWeight: FontWeight.w700,
+  );
+  static const font14light = TextStyle(
+    color: AppColors.lightGray,
+    fontSize: 14,
+    fontFamily: 'SF Pro Display',
+    fontWeight: FontWeight.w400,
+  );
 }

@@ -48,6 +48,10 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
                     onChanged: () {
                       isBy = !isBy;
                       setState(() {});
+                    onChanged: () {
+                      setState(() {
+                        isBy = true;
+                      });
                     }),
                 SizedBox(
                   width: 14,
@@ -59,7 +63,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
@@ -69,8 +73,12 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
                     onChanged: () {
                       isBy = !isBy;
                       setState(() {});
+                    onChanged: () {
+                      setState(() {
+                        isBy = false;
+                      });
                     }),
-                SizedBox(
+                const SizedBox(
                   width: 14,
                 ),
                 Text('Utilisé',
@@ -88,10 +96,8 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
         text: 'Continuer',
         styleText: AppTypography.font14white,
         callback: () {
-          if (true) {
             repository.setIsBy(!isBy);
-            print(repository.isBy);
-          }
+            Navigator.pushNamed(context, '/create_description');
         },
         isTouch: true,
       ),
