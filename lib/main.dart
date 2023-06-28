@@ -15,6 +15,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'feature/create/bloc/sub_category/sub_category_cubit.dart';
 import 'feature/create/ui/category_screen.dart';
+import 'feature/create/ui/pick_photo_screen.dart';
 import 'feature/create/ui/choose_by_notBy_screen.dart';
 import 'feature/create/ui/photo_screen.dart';
 import 'feature/create/ui/search_products_screen.dart';
@@ -64,7 +65,7 @@ class _MyAppState extends State<MyApp> {
         '/create_category_screen': (context) => const CategoryScreen(),
         '/create_sub_category_screen': (context) => const SubCategoryScreen(),
         '/create_search_products_screen': (context) => const SearchProductsScreen(),
-        '/create_photo_screen' : (context) => const PhotoScreen(),
+        '/create_pick_photos_screen': (context) => const PickPhotosScreen(),
         '/create_by_not_by_screen' : (context) => const ByNotByScreen(),
       },
       color: const Color(0xff292B57),

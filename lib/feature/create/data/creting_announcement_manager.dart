@@ -11,7 +11,8 @@ class CreatingAnnouncementManager {
   CreatingAnnouncementManager({required this.client}) : databases = Databases(client) {
     loadCategories();
   }
-
+  CreatingData creatingData = CreatingData();
+  SubCategoryItem? currentItem;
   List<Category> categories = [];
   List<SubCategory> subcategories = [];
   List<SubCategoryItem> items = [];
@@ -54,6 +55,7 @@ class CreatingAnnouncementManager {
       for (var doc in res.documents) {
         subcategories.add(SubCategory.fromJson(doc.data));
       }
+      creatingData.categoryId = categoryID;
       subCategoriesState.add(LoadingStateEnum.success);
     } catch (e) {
       subCategoriesState.add(LoadingStateEnum.fail);
@@ -61,23 +63,6 @@ class CreatingAnnouncementManager {
     }
   }
 
-  // Future searchItems(String query, subcategoryId) async {
-  //   searchState.add(LoadingStateEnum.loading);
-  //   try {
-  //     final res = await databases.listDocuments(
-  //         databaseId: postDatabase,
-  //         collectionId: itemsCollection,
-  //         queries: [Query.search('name', query)]);
-  //     items.clear();
-  //     for (var doc in res.documents) {
-  //       items.add(SubCategoryItem.fromJson(doc.data));
-  //     }
-  //     searchState.add(LoadingStateEnum.success);
-  //   } catch (e) {
-  //     searchState.add(LoadingStateEnum.fail);
-  //     rethrow;
-  //   }
-  // }
   Future initialLoadItems(String query, subcategoryId) async {
     searchState.add(LoadingStateEnum.loading);
     try {
@@ -89,6 +74,7 @@ class CreatingAnnouncementManager {
       for (var doc in res.documents) {
         items.add(SubCategoryItem.fromJson(doc.data));
       }
+      creatingData.subcategoryId = subcategoryId;
       searchState.add(LoadingStateEnum.success);
     } catch (e) {
       searchState.add(LoadingStateEnum.fail);
@@ -120,5 +106,11 @@ class CreatingAnnouncementManager {
 
   void setIsBy(bool value){
     isBy = value;
+  }
+
+  void setItem(SubCategoryItem newItem) => currentItem = newItem;
+
+  void setImages(List<XFile> images) {
+    creatingData.images = images.map((e) => File(e.path)).toList();
   }
 }

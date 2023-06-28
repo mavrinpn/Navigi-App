@@ -8,6 +8,9 @@ class Assets {
   static const String assetsMask = 'Assets/Mask.png';
   static const String assetsSplash = 'Assets/splash.png';
   static const String assetsSplashLogo = 'Assets/splash_logo.png';
+  static const String assetsTestImage = 'Assets/test_image.png';
+  static const String iconsAddImage = 'Assets/icons/add_image.svg';
+  static const String iconsDeleteButton = 'Assets/icons/delete_button.svg';
   static const String iconsEmail = 'Assets/icons/email.svg';
   static const String iconsError = 'Assets/icons/error.svg';
   static const String iconsFacebook = 'Assets/icons/facebook.svg';
