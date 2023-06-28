@@ -4,11 +4,11 @@ import 'package:rxdart/rxdart.dart';
 import '../../../data/app_repository.dart';
 import '../../../models/models.dart';
 
-class CreatingManager {
+class CreatingAnnouncementManager {
   final Client client;
   final Databases databases;
 
-  CreatingManager({required this.client}) : databases = Databases(client) {
+  CreatingAnnouncementManager({required this.client}) : databases = Databases(client) {
     loadCategories();
   }
 
@@ -16,6 +16,7 @@ class CreatingManager {
   List<SubCategory> subcategories = [];
   List<SubCategoryItem> items = [];
   List<SubCategoryItem> searchItems = [];
+  String searchController = '';
 
   BehaviorSubject<LoadingStateEnum> categoriesState =
       BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
@@ -110,5 +111,9 @@ class CreatingManager {
 
   void clearSearchItems(){
     searchItems.clear();
+  }
+
+  void setSearchController(String value){
+    searchController = value;
   }
 }

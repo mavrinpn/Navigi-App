@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:smart/feature/create/data/creting_manager.dart';
+import 'package:smart/feature/create/data/creting_announcement_manager.dart';
 
 import '../../../../data/app_repository.dart';
 import '../../../../models/item.dart';
@@ -9,7 +9,7 @@ import '../../../../models/item.dart';
 part 'item_search_state.dart';
 
 class ItemSearchCubit extends Cubit<ItemSearchState> {
-  final CreatingManager creatingManager;
+  final CreatingAnnouncementManager creatingManager;
   String currentSubcategory = '';
 
   ItemSearchCubit({required this.creatingManager})
@@ -29,6 +29,12 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
 
   void setSubcategory(String subcategory) {
     currentSubcategory = subcategory;
+
+
+    if(creatingManager.searchController != ''){
+      creatingManager.searchItemsByName(creatingManager.searchController);
+      return;
+    }
 
     creatingManager.initialLoadItems('', currentSubcategory);
     creatingManager.clearSearchItems();

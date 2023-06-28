@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create/bloc/item_search/item_search_cubit.dart';
-import 'package:smart/feature/create/data/creting_manager.dart';
+import 'package:smart/feature/create/data/creting_announcement_manager.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/category/products.dart';
@@ -17,10 +15,15 @@ class SearchProductsScreen extends StatefulWidget {
 }
 
 class _SearchProductsScreenState extends State<SearchProductsScreen> {
-  final productsController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+    final repository = RepositoryProvider.of<CreatingAnnouncementManager>(context);
+
+    final productsController = TextEditingController(
+        text: repository.searchController.isEmpty
+            ? ''
+            : repository.searchController);
+
     return Scaffold(
         appBar: AppBar(
           iconTheme: const IconThemeData.fallback(),
@@ -41,10 +44,11 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
               ),
               OutLineTextField(
                 controller: productsController,
-                height: 46,
+                height: 50,
                 hintText: '',
                 width: 1000,
                 onChange: (value) {
+                  repository.setSearchController(value);
                   BlocProvider.of<ItemSearchCubit>(context).searchItems(value);
                 },
               ),
@@ -57,9 +61,11 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
               ),
               BlocBuilder<ItemSearchCubit, ItemSearchState>(
                 builder: (context, state) {
-                  if (state is SearchSuccessState || state is SearchLoadingState) {
+                  if (state is SearchSuccessState ||
+                      state is SearchLoadingState) {
                     return Wrap(
-                      children: RepositoryProvider.of<CreatingManager>(context).searchItems
+                      children: repository
+                          .searchItems
                           .map((e) => Padding(
                                 padding: const EdgeInsets.all(3),
                                 child: ProductWidget(

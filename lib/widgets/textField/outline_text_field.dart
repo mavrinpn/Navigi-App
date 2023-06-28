@@ -28,9 +28,10 @@ class OutLineTextField extends StatelessWidget {
     return Container(
       width: width,
       height: height,
+      alignment: Alignment.center,
       child: TextFormField(
         onChanged: onChange,
-        style: AppTypography.font16black.copyWith(fontSize: 14),
+        style: AppTypography.font16black.copyWith(fontSize: 15),
         decoration: const InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(13)),

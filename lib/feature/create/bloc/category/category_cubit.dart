@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:smart/feature/create/data/creting_manager.dart';
+import 'package:smart/feature/create/data/creting_announcement_manager.dart';
 
 import '../../../../data/app_repository.dart';
 import '../../../../models/category.dart';
@@ -8,7 +8,7 @@ import '../../../../models/category.dart';
 part 'category_state.dart';
 
 class CategoryCubit extends Cubit<CategoryState> {
-  final CreatingManager creatingManager;
+  final CreatingAnnouncementManager creatingManager;
 
   CategoryCubit({required this.creatingManager}) : super(CategoryInitial()) {
     creatingManager.categoriesState.stream.listen((event) {
