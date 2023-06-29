@@ -123,6 +123,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
         styleText: AppTypography.font14white,
         callback: () {
           if (isTouch) {
+            creatingAnnouncementManager.setItem(itemManager.hasItemInSearchedItems(), name: productsController.text);
             Navigator.pushNamed(context, '/create_pick_photos_screen');
           }
         },

@@ -31,6 +31,7 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
   List<SubCategoryItem> getItems() => itemManager.searchedItems;
 
   void setSubcategory(String subcategory) {
+    creatingManager.setSubCategory(subcategory);
     itemManager.searchController = '';
     itemManager.initialLoadItems('', subcategory);
     itemManager.clearSearchItems();

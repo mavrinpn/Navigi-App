@@ -62,9 +62,9 @@ class ItemManager {
     searchController = value;
   }
 
-  SubCategoryItem? hasItemInSearchedItems(String value){
+  SubCategoryItem? hasItemInSearchedItems(){
     for(var item in searchedItems){
-      if(value == item.name){
+      if(searchController == item.name){
         return item;
       }
     }

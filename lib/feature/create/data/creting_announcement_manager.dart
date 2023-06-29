@@ -22,9 +22,11 @@ class CreatingAnnouncementManager {
 
   void setCategory (String categoryId) => creatingData.categoryId = categoryId;
 
+  void setSubCategory (String subcategoryId) => creatingData.subcategoryId = subcategoryId;
+
   void setIsBy(bool by) => creatingData.type = by;
 
-  void setItem(SubCategoryItem newItem) => currentItem = newItem;
+  void setItem(SubCategoryItem? newItem, {String? name}) => currentItem = newItem ?? SubCategoryItem.withName(name!, creatingData.subcategoryId!)..initialParameters();
 
   void setImages(List<XFile> images) {
     creatingData.images = images.map((e) => File(e.path)).toList();
