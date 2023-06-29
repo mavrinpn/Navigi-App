@@ -12,7 +12,6 @@ import '../../../widgets/dropDownSingleCheckBox/custon_dropDown_single_checkbox.
 import '../../../widgets/textField/outline_text_field.dart';
 import '../../../widgets/textField/under_line_text_field.dart';
 
-
 class OptionsScreen extends StatefulWidget {
   const OptionsScreen({super.key});
 
@@ -26,7 +25,8 @@ class _OptionsScreenState extends State<OptionsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final repository = RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    final repository =
+        RepositoryProvider.of<CreatingAnnouncementManager>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -60,9 +60,11 @@ class _OptionsScreenState extends State<OptionsScreen> {
             const SizedBox(
               height: 16,
             ),
-            Expanded(
-                child: ListView(
-              children: (repository.currentItem != null ? repository.currentItem!.getVariableParameters() : [])
+            SingleChildScrollView(
+                child: Column(
+              children: (repository.currentItem != null
+                      ? repository.currentItem!.getVariableParameters()
+                      : [])
                   .map((e) => CustomDropDownSingleCheckBox(paramets: e))
                   .toList(),
             ))
