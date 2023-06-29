@@ -14,56 +14,13 @@ class CreatingAnnouncementManager {
   final Databases databases;
 
   CreatingAnnouncementManager({required this.client})
-      : databases = Databases(client) {
-    loadCategories();
-  }
+      : databases = Databases(client);
 
   CreatingData creatingData = CreatingData();
   SubCategoryItem? currentItem;
-  List<Category> categories = [];
-  List<SubCategory> subcategories = [];
   List<XFile> images = [];
 
-  BehaviorSubject<LoadingStateEnum> categoriesState =
-      BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
-  BehaviorSubject<LoadingStateEnum> subCategoriesState =
-      BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
-
-  Future loadCategories() async {
-    categoriesState.add(LoadingStateEnum.loading);
-    try {
-      final res = await databases.listDocuments(
-          databaseId: postDatabase, collectionId: categoriesCollection);
-
-      categories = [];
-      for (var doc in res.documents) {
-        categories.add(Category.fromJson(doc.data));
-      }
-      categoriesState.add(LoadingStateEnum.success);
-    } catch (e) {
-      categoriesState.add(LoadingStateEnum.fail);
-      rethrow;
-    }
-  }
-
-  Future loadSubCategories(String categoryID) async {
-    subCategoriesState.add(LoadingStateEnum.loading);
-    try {
-      subcategories = <SubCategory>[];
-      final res = await databases.listDocuments(
-          databaseId: postDatabase,
-          collectionId: subcategoriesCollection,
-          queries: [Query.equal('categorie_id', categoryID)]);
-      for (var doc in res.documents) {
-        subcategories.add(SubCategory.fromJson(doc.data));
-      }
-      creatingData.categoryId = categoryID;
-      subCategoriesState.add(LoadingStateEnum.success);
-    } catch (e) {
-      subCategoriesState.add(LoadingStateEnum.fail);
-      rethrow;
-    }
-  }
+  void setCategory (String categoryId) => creatingData.categoryId = categoryId;
 
   void setIsBy(bool by) => creatingData.type = by;
 

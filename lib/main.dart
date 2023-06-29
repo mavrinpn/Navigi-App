@@ -7,6 +7,7 @@ import 'package:smart/bloc/auth_cubit.dart';
 import 'package:smart/data/app_repository.dart';
 import 'package:smart/feature/create/bloc/category/category_cubit.dart';
 import 'package:smart/feature/create/bloc/item_search/item_search_cubit.dart';
+import 'package:smart/feature/create/data/categories_manager.dart';
 import 'package:smart/feature/create/data/creting_announcement_manager.dart';
 import 'package:smart/feature/create/ui/descritpion_screen.dart';
 import 'package:smart/feature/registration/ui/register_screen.dart';
@@ -67,12 +68,13 @@ class _MyAppState extends State<MyApp> {
         '/home_screen': (context) => const HomeScreen(),
         '/create_category_screen': (context) => const CategoryScreen(),
         '/create_sub_category_screen': (context) => const SubCategoryScreen(),
-        '/create_search_products_screen': (context) => const SearchProductsScreen(),
+        '/create_search_products_screen': (context) =>
+            const SearchProductsScreen(),
         '/create_pick_photos_screen': (context) => const PickPhotosScreen(),
-        '/create_by_not_by_screen' : (context) => const ByNotByScreen(),
-        '/create_description' : (context) => const DescriptionScreen(),
-        '/loading_screen' : (context) => const LoadingScreen(),
-        '/create_options_screen' : (context) => const OptionsScreen(),
+        '/create_by_not_by_screen': (context) => const ByNotByScreen(),
+        '/create_description': (context) => const DescriptionScreen(),
+        '/loading_screen': (context) => const LoadingScreen(),
+        '/create_options_screen': (context) => const OptionsScreen(),
       },
       color: const Color(0xff292B57),
       home: const HomePage(),
@@ -98,6 +100,9 @@ class MyRepositoryProviders extends StatelessWidget {
       RepositoryProvider(
         create: (_) => ItemManager(client: client),
       ),
+      RepositoryProvider(
+        create: (_) => CategoriesManager(client: client),
+      ),
     ], child: const MyBlocProviders());
   }
 }
@@ -115,17 +120,24 @@ class MyBlocProviders extends StatelessWidget {
       ),
       BlocProvider(
         create: (_) => CategoryCubit(
-            creatingManager: RepositoryProvider.of<CreatingAnnouncementManager>(context)),
+            creatingManager:
+                RepositoryProvider.of<CreatingAnnouncementManager>(context),
+            categoriesManager:
+                RepositoryProvider.of<CategoriesManager>(context)),
         lazy: false,
       ),
       BlocProvider(
         create: (_) => SubCategoryCubit(
-            creatingManager: RepositoryProvider.of<CreatingAnnouncementManager>(context)),
+            creatingManager:
+                RepositoryProvider.of<CreatingAnnouncementManager>(context),
+            categoriesManager:
+                RepositoryProvider.of<CategoriesManager>(context)),
         lazy: false,
       ),
       BlocProvider(
         create: (_) => ItemSearchCubit(
-            creatingManager: RepositoryProvider.of<CreatingAnnouncementManager>(context),
+            creatingManager:
+                RepositoryProvider.of<CreatingAnnouncementManager>(context),
             itemManager: RepositoryProvider.of<ItemManager>(context)),
         lazy: false,
       ),
@@ -146,18 +158,24 @@ class HomePage extends StatelessWidget {
         builder: (context, state) {
           if (state is AuthSuccessState) {
             return const HomeScreen();
-          } else  if (state is AuthFailState){
+          } else if (state is AuthFailState) {
             return const Center(
               child: LoginFirstScreen(),
             );
-          }  else {
-            return Center(child:  SpinKitFadingCircle(
-              itemBuilder: (_, ind) {return const Padding(
-                padding: EdgeInsets.all(1.8),
-                child: DecoratedBox(decoration: BoxDecoration(color: AppColors.red, shape: BoxShape.circle)),
-              );},
-              size: 86,
-            ),);
+          } else {
+            return Center(
+              child: SpinKitFadingCircle(
+                itemBuilder: (_, ind) {
+                  return const Padding(
+                    padding: EdgeInsets.all(1.8),
+                    child: DecoratedBox(
+                        decoration: BoxDecoration(
+                            color: AppColors.red, shape: BoxShape.circle)),
+                  );
+                },
+                size: 86,
+              ),
+            );
           }
         },
       ),
