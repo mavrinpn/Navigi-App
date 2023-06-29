@@ -15,6 +15,7 @@ import 'package:smart/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'feature/create/bloc/sub_category/sub_category_cubit.dart';
+import 'feature/create/data/item_manager.dart';
 import 'feature/create/ui/category_screen.dart';
 import 'feature/create/ui/options_screen.dart';
 import 'feature/create/ui/loading_screen.dart';
@@ -94,6 +95,9 @@ class MyRepositoryProviders extends StatelessWidget {
       RepositoryProvider(
         create: (_) => CreatingAnnouncementManager(client: client),
       ),
+      RepositoryProvider(
+        create: (_) => ItemManager(client: client),
+      ),
     ], child: const MyBlocProviders());
   }
 }
@@ -121,7 +125,8 @@ class MyBlocProviders extends StatelessWidget {
       ),
       BlocProvider(
         create: (_) => ItemSearchCubit(
-            creatingManager: RepositoryProvider.of<CreatingAnnouncementManager>(context)),
+            creatingManager: RepositoryProvider.of<CreatingAnnouncementManager>(context),
+            itemManager: RepositoryProvider.of<ItemManager>(context)),
         lazy: false,
       ),
     ], child: const MyApp());

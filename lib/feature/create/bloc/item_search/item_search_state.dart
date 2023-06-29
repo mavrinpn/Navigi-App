@@ -6,10 +6,7 @@ class ItemSearchInitial extends ItemSearchState {}
 
 class SearchLoadingState extends ItemSearchState {}
 
-class SearchSuccessState extends ItemSearchState {
-  List<SubCategoryItem> items;
-  SearchSuccessState({required this.items});
-}
+class SearchSuccessState extends ItemSearchState {}
 
 class SearchEmptyState extends ItemSearchState {}
 

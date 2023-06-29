@@ -17,12 +17,12 @@ class SubCategoryItem {
     parameters = jsonDecode(mapString);
   }
 
-  List<VariableParameters> getVariableParameters() {
-    List<VariableParameters> vp = [];
+  List<VariableParameter> getVariableParameters() {
+    List<VariableParameter> vp = [];
 
     parameters!.forEach((key, value) {
       if (value.runtimeType == List<dynamic>) {
-        vp.add(VariableParameters(key: key, variants: value));
+        vp.add(VariableParameter(key: key, variants: value));
       }
     });
     return vp;
@@ -41,7 +41,8 @@ class SubCategoryItem {
 }
 class ItemParameters {
   String staticParameters;
-  String? variableParameters;
+  String? selectedVariableParameters;
+  List<VariableParameter>? variableParametersList;
 
-  ItemParameters({required this.staticParameters, this.variableParameters});
+  ItemParameters({required this.staticParameters, this.selectedVariableParameters, this.variableParametersList});
 }

@@ -22,16 +22,11 @@ class CreatingAnnouncementManager {
   SubCategoryItem? currentItem;
   List<Category> categories = [];
   List<SubCategory> subcategories = [];
-  List<SubCategoryItem> items = [];
-  List<SubCategoryItem> searchItems = [];
   List<XFile> images = [];
-  String searchController = '';
 
   BehaviorSubject<LoadingStateEnum> categoriesState =
       BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
   BehaviorSubject<LoadingStateEnum> subCategoriesState =
-      BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
-  BehaviorSubject<LoadingStateEnum> searchState =
       BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
 
   Future loadCategories() async {
@@ -70,52 +65,7 @@ class CreatingAnnouncementManager {
     }
   }
 
-  Future initialLoadItems(String query, subcategoryId) async {
-    searchState.add(LoadingStateEnum.loading);
-    try {
-      final res = await databases.listDocuments(
-        databaseId: postDatabase,
-        collectionId: itemsCollection,
-        queries: [Query.search('sub_category', subcategoryId)]
-      );
-      items.clear();
-      for (var doc in res.documents) {
-        items.add(SubCategoryItem.fromJson(doc.data));
-        log(doc.data['name']);
-      }
-      creatingData.subcategoryId = subcategoryId;
-      searchState.add(LoadingStateEnum.success);
-    } catch (e) {
-      searchState.add(LoadingStateEnum.fail);
-      rethrow;
-    }
-  }
-
-  void searchItemsByName(String query) {
-    searchState.add(LoadingStateEnum.loading);
-
-    List<SubCategoryItem> resList = [];
-    for (var item in items) {
-      if (item.name!.toLowerCase().contains(query.toLowerCase())) {
-        resList.add(item);
-      }
-    }
-    searchItems = resList;
-
-    searchState.add(LoadingStateEnum.success);
-  }
-
-  void clearSearchItems() {
-    searchItems.clear();
-  }
-
-  void setSearchController(String value) {
-    searchController = value;
-  }
-
-  void setIsBy(bool value) {
-    creatingData.type = value;
-  }
+  void setIsBy(bool by) => creatingData.type = by;
 
   void setItem(SubCategoryItem newItem) => currentItem = newItem;
 

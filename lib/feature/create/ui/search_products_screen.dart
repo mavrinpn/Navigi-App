@@ -23,12 +23,15 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
   Widget build(BuildContext context) {
     final repository =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
-    productsController.text = repository.searchController;
+
+    final cubit = BlocProvider.of<ItemSearchCubit>(context);
+
+    productsController.text = cubit.getSearchText();
     productsController.selection = TextSelection.fromPosition(
         TextPosition(offset: productsController.text.length));
     final width = MediaQuery.of(context).size.width;
 
-    bool isTouch = repository.searchController.isNotEmpty;
+    bool isTouch = cubit.getSearchText().isNotEmpty;
 
     void setIsTouch(bool isT) {
       isTouch = isT;
@@ -58,7 +61,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
               hintText: '',
               width: 1000,
               onChange: (value) {
-                repository.setSearchController(value);
+                //repository.setSearchController(value);
                 BlocProvider.of<ItemSearchCubit>(context).searchItems(value);
                 setIsTouch(value.isNotEmpty);
                 setState(() {});
@@ -76,12 +79,12 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                 if (state is SearchSuccessState ||
                     state is SearchLoadingState) {
                   return Wrap(
-                    children: repository.searchItems
+                    children: cubit.getItems()
                         .map((e) => Padding(
                               padding: const EdgeInsets.all(3),
                               child: ProductWidget(
                                 onTap: () {
-                                  repository.setSearchController(e.name ?? '');
+                                  cubit.setItemName(e.name!);
                                   repository.setItem(e);
                                   setState(() {});
                                   Navigator.pushNamed(context, '/create_pick_photos_screen');

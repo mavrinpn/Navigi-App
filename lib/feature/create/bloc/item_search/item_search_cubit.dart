@@ -5,21 +5,22 @@ import 'package:smart/feature/create/data/creting_announcement_manager.dart';
 
 import '../../../../data/app_repository.dart';
 import '../../../../models/item.dart';
+import '../../data/item_manager.dart';
 
 part 'item_search_state.dart';
 
 class ItemSearchCubit extends Cubit<ItemSearchState> {
   final CreatingAnnouncementManager creatingManager;
-  String currentSubcategory = '';
+  final ItemManager itemManager;
 
-  ItemSearchCubit({required this.creatingManager})
+  ItemSearchCubit({required this.creatingManager, required this.itemManager})
       : super(ItemSearchInitial()) {
-    creatingManager.searchState.stream.listen((event) {
+    itemManager.searchState.stream.listen((event) {
       if (event == LoadingStateEnum.loading) emit(SearchLoadingState());
       if (event == LoadingStateEnum.fail) emit(SearchFailState());
       if (event == LoadingStateEnum.success) {
-        if (creatingManager.searchItems.isNotEmpty) {
-          emit(SearchSuccessState(items: creatingManager.items));
+        if (itemManager.searchItems.isNotEmpty) {
+          emit(SearchSuccessState());
         } else {
           emit(SearchEmptyState());
         }
@@ -27,22 +28,29 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
     });
   }
 
+  List<SubCategoryItem> getItems() => itemManager.searchItems;
+
   void setSubcategory(String subcategory) {
-    currentSubcategory = subcategory;
-    creatingManager.searchController = '';
-    creatingManager.initialLoadItems('', currentSubcategory);
-    creatingManager.clearSearchItems();
+    itemManager.searchController = '';
+    itemManager.initialLoadItems('', subcategory);
+    itemManager.clearSearchItems();
 
     emit(SearchEmptyState());
   }
 
+  void setItemName(String name) => itemManager.setSearchController(name);
+
   void searchItems(String query) {
+    itemManager.searchController = query;
+
     if(query.isEmpty){
-      creatingManager.clearSearchItems();
+      itemManager.clearSearchItems();
       emit(SearchEmptyState());
       return;
     }
 
-    creatingManager.searchItemsByName(query);
+    itemManager.searchItemsByName(query);
   }
+
+  String getSearchText() => itemManager.searchController;
 }

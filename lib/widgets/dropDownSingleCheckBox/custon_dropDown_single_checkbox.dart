@@ -10,7 +10,7 @@ import '../../utils/colors.dart';
 class CustomDropDownSingleCheckBox extends StatefulWidget {
   const CustomDropDownSingleCheckBox({super.key, required this.paramets});
 
-  final VariableParameters paramets;
+  final VariableParameter paramets;
 
   @override
   State<CustomDropDownSingleCheckBox> createState() =>

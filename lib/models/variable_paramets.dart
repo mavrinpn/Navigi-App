@@ -1,8 +1,8 @@
-class VariableParameters {
+class VariableParameter {
   String key;
   List variants;
 
-  VariableParameters({required this.key, required this.variants});
+  VariableParameter({required this.key, required this.variants});
 
   @override
   String toString() => '$key: $variants';
