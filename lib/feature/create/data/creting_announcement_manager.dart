@@ -76,6 +76,7 @@ class CreatingAnnouncementManager {
       final res = await databases.listDocuments(
         databaseId: postDatabase,
         collectionId: itemsCollection,
+        queries: [Query.search('sub_category', subcategoryId)]
       );
       items.clear();
       for (var doc in res.documents) {
