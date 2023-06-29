@@ -19,7 +19,7 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
       if (event == LoadingStateEnum.loading) emit(SearchLoadingState());
       if (event == LoadingStateEnum.fail) emit(SearchFailState());
       if (event == LoadingStateEnum.success) {
-        if (itemManager.searchItems.isNotEmpty) {
+        if (itemManager.searchedItems.isNotEmpty) {
           emit(SearchSuccessState());
         } else {
           emit(SearchEmptyState());
@@ -28,7 +28,7 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
     });
   }
 
-  List<SubCategoryItem> getItems() => itemManager.searchItems;
+  List<SubCategoryItem> getItems() => itemManager.searchedItems;
 
   void setSubcategory(String subcategory) {
     itemManager.searchController = '';

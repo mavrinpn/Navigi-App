@@ -171,15 +171,16 @@ class ImageWidget extends StatelessWidget {
                       image: FileImage(File(path)), fit: BoxFit.cover)),
             ),
           ),
-          InkWell(
-            onTap: callback,
-            child: Container(
-                alignment: Alignment.topRight,
+          Container(
+            padding: const EdgeInsets.only(right: 6),
+              alignment: Alignment.topRight,
+              child: InkWell(
+                onTap: callback,
                 child: SvgPicture.asset(
                   'Assets/icons/delete_button.svg',
-                  width: 24,
-                )),
-          ),
+                  width: 27,
+                ),
+              )),
         ],
       ),
     );

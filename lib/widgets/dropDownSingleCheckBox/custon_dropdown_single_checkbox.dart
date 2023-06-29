@@ -8,9 +8,15 @@ import '../../models/variable_paramets.dart';
 import '../../utils/colors.dart';
 
 class CustomDropDownSingleCheckBox extends StatefulWidget {
-  const CustomDropDownSingleCheckBox({super.key, required this.paramets});
+  const CustomDropDownSingleCheckBox(
+      {super.key,
+      required this.parameters,
+      required this.onChange,
+      required this.currentVariable});
 
-  final VariableParameter paramets;
+  final Function(String?) onChange;
+  final VariableParameter parameters;
+  final String currentVariable;
 
   @override
   State<CustomDropDownSingleCheckBox> createState() =>
@@ -19,17 +25,14 @@ class CustomDropDownSingleCheckBox extends StatefulWidget {
 
 class _CustomDropDownSingleCheckBoxState
     extends State<CustomDropDownSingleCheckBox> {
-  bool isOpen = false;
-
-  String currentVariable = '';
+  bool isOpen = true;
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 16, 0, 16),
       child: AnimatedContainer(
-        height: isOpen ? 36.5 * (widget.paramets.variants.length + 1) : 25,
+        height: isOpen ? 36.5 * (widget.parameters.variants.length + 1) : 25,
         duration: const Duration(milliseconds: 100),
         child: SingleChildScrollView(
           child: Column(children: [
@@ -42,7 +45,7 @@ class _CustomDropDownSingleCheckBoxState
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.paramets.key,
+                    widget.parameters.key,
                     style: AppTypography.font16black.copyWith(fontSize: 18),
                   ),
                   !isOpen
@@ -61,24 +64,25 @@ class _CustomDropDownSingleCheckBoxState
             if (isOpen) ...[
               SingleChildScrollView(
                 child: Column(
-                      children: widget.paramets.variants.map((e) => Row(
-                        children: [
-                          CustomCheckBox(
-                              isActive: e.toString() == currentVariable,
-                              onChanged: () {
-                                currentVariable = e.toString();
-                                setState(() {});
-                              }),
-                          Text(
-                            e.toString(),
-                            maxLines: 1,
-                            overflow: TextOverflow.clip,
-                            style:
-                            AppTypography.font14black.copyWith(fontSize: 16),
-                          ),
-                        ],
-                      )).toList(),
-                    ),
+                  children: widget.parameters.variants
+                      .map((e) => Row(
+                            children: [
+                              CustomCheckBox(
+                                  isActive: e.toString() == widget.currentVariable,
+                                  onChanged: () {
+                                    widget.onChange(e.toString());
+                                  }),
+                              Text(
+                                e.toString(),
+                                maxLines: 1,
+                                overflow: TextOverflow.clip,
+                                style: AppTypography.font14black
+                                    .copyWith(fontSize: 16),
+                              ),
+                            ],
+                          ))
+                      .toList(),
+                ),
               ),
             ]
           ]),

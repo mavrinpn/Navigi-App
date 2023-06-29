@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create/bloc/item_search/item_search_cubit.dart';
 import 'package:smart/feature/create/data/creting_announcement_manager.dart';
+import 'package:smart/feature/create/data/item_manager.dart';
+import 'package:smart/models/item.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_eleveted_button.dart';
@@ -21,8 +23,10 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final repository =
+    final creatingAnnouncementManager =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    final itemManager =
+        RepositoryProvider.of<ItemManager>(context);
 
     final cubit = BlocProvider.of<ItemSearchCubit>(context);
 
@@ -61,7 +65,6 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
               hintText: '',
               width: 1000,
               onChange: (value) {
-                //repository.setSearchController(value);
                 BlocProvider.of<ItemSearchCubit>(context).searchItems(value);
                 setIsTouch(value.isNotEmpty);
                 setState(() {});
@@ -85,7 +88,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                               child: ProductWidget(
                                 onTap: () {
                                   cubit.setItemName(e.name!);
-                                  repository.setItem(e);
+                                  creatingAnnouncementManager.setItem(e);
                                   setState(() {});
                                   Navigator.pushNamed(context, '/create_pick_photos_screen');
                                 },

@@ -14,7 +14,7 @@ class ItemManager {
   ItemManager({required this.client}) : databases = Databases(client);
 
   List<SubCategoryItem> items = [];
-  List<SubCategoryItem> searchItems = [];
+  List<SubCategoryItem> searchedItems = [];
   String searchController = '';
 
   BehaviorSubject<LoadingStateEnum> searchState =
@@ -30,7 +30,7 @@ class ItemManager {
       );
       items.clear();
       for (var doc in res.documents) {
-        items.add(SubCategoryItem.fromJson(doc.data));
+        items.add(SubCategoryItem.fromJson(doc.data)..initialParameters());
         log(doc.data['name']);
       }
       searchState.add(LoadingStateEnum.success);
@@ -49,16 +49,25 @@ class ItemManager {
         resList.add(item);
       }
     }
-    searchItems = resList;
+    searchedItems = resList;
 
     searchState.add(LoadingStateEnum.success);
   }
 
   void clearSearchItems() {
-    searchItems.clear();
+    searchedItems.clear();
   }
 
   void setSearchController(String value) {
     searchController = value;
+  }
+
+  SubCategoryItem? hasItemInSearchedItems(String value){
+    for(var item in searchedItems){
+      if(value == item.name){
+        return item;
+      }
+    }
+    return null;
   }
 }

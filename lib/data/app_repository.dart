@@ -1,13 +1,7 @@
-import 'dart:developer';
-
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smart/models/category.dart';
-
-import '../models/item.dart';
-import '../models/subcategory.dart';
 
 enum LoadingStateEnum { wait, loading, success, fail }
 

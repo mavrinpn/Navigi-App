@@ -1,12 +1,15 @@
 class VariableParameter {
   String key;
   List variants;
+  String currentValue;
 
-  VariableParameter({required this.key, required this.variants});
+  VariableParameter({required this.key, required this.variants}) : currentValue = variants[0].toString();
 
   @override
   String toString() => '$key: $variants';
 
-  String toJsonParameter(dynamic value) =>
-      '"$key": ${value.runtimeType != String ? value : '"$value"'}';
+  String toJsonParameter() =>
+      '"$key": "$currentValue"';
+
+  void setVariant(String value) => currentValue = value;
 }

@@ -7,8 +7,13 @@ class SubCategoryItem {
   String? name;
   String? subcategoryId;
   Map<String, dynamic>? parameters;
+  late ItemParameters itemParameters;
 
-  SubCategoryItem({required this.name, required this.subcategoryId, required this.parameters});
+  SubCategoryItem({required this.name, required this.subcategoryId, required this.parameters}) : super () {initialParameters();}
+
+  void initialParameters() {
+    itemParameters = ItemParameters(staticParameters: _getStaticParameters(), variableParametersList: _getVariableParameters());
+  }
 
   SubCategoryItem.fromJson(Map<String, dynamic> json1) {
     name = json1['name'] ?? '';
@@ -17,7 +22,13 @@ class SubCategoryItem {
     parameters = jsonDecode(mapString);
   }
 
-  List<VariableParameter> getVariableParameters() {
+  SubCategoryItem.withName(String name,String subCategory) {
+    name = name;
+    subcategoryId = subCategory;
+    parameters = {};
+  }
+
+  List<VariableParameter> _getVariableParameters() {
     List<VariableParameter> vp = [];
 
     parameters!.forEach((key, value) {
@@ -28,7 +39,7 @@ class SubCategoryItem {
     return vp;
   }
 
-  List<String> getStaticParameters()
+  List<String> _getStaticParameters()
   {
     List<String> sp = [];
     parameters!.forEach((key, value) {
@@ -40,9 +51,8 @@ class SubCategoryItem {
   }
 }
 class ItemParameters {
-  String staticParameters;
-  String? selectedVariableParameters;
-  List<VariableParameter>? variableParametersList;
+  List<String> staticParameters;
+  List<VariableParameter> variableParametersList;
 
-  ItemParameters({required this.staticParameters, this.selectedVariableParameters, this.variableParametersList});
+  ItemParameters({required this.staticParameters, required this.variableParametersList});
 }
