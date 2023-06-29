@@ -20,7 +20,7 @@ class UnderLineTextField extends StatelessWidget {
     this.width = 290,
     this.height = 50,
     this.obscureText = false,
-    this.keyBoardType = TextInputType.number,
+    this.keyBoardType = TextInputType.phone,
     required this.onChange,
     required this.suffixIcon
   }) : super(key: key);
@@ -30,10 +30,12 @@ class UnderLineTextField extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      alignment: Alignment.center,
+      alignment: Alignment.bottomCenter,
       child: TextFormField(
+        textAlign: TextAlign.start,
+        textAlignVertical: TextAlignVertical.bottom,
         onChanged: onChange,
-        style: AppTypography.font16black.copyWith(fontSize: 15),
+        style: AppTypography.font16black,
         decoration: InputDecoration(
           enabledBorder: const UnderlineInputBorder(
             borderSide: BorderSide(

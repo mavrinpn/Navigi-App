@@ -50,7 +50,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
                         isBy = true;
                       });
                     }),
-                SizedBox(
+                const SizedBox(
                   width: 14,
                 ),
                 Text(

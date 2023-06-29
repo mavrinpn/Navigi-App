@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/checkBox/custom_check_box.dart';
 
+import '../../feature/create/data/creting_announcement_manager.dart';
 import '../../models/variable_paramets.dart';
 import '../../utils/colors.dart';
 
@@ -19,17 +21,20 @@ class _CustomDropDownSingleCheckBoxState
     extends State<CustomDropDownSingleCheckBox> {
   bool isOpen = false;
 
+  String currentVariable = '';
+
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        isOpen = !isOpen;
-        setState(() {});
-      },
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 16, 0, 16),
-        child: Column(children: [
-          Row(
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 16, 0, 16),
+      child: Column(children: [
+        InkWell(
+          onTap: () {
+            isOpen = !isOpen;
+            setState(() {});
+          },
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
@@ -48,27 +53,27 @@ class _CustomDropDownSingleCheckBoxState
                     )
             ],
           ),
-          if (isOpen) ...[
-            Container(
-              padding: EdgeInsets.all(10),
-                height: 100,
-                child: ListView(
-                  children: widget.paramets.variants
-                      .map((e) => Row(
-                        children: [
-                          CustomCheckBox(isActive: false, onChanged: () {}),
-                          Text(
-                                e.toString(),
-                                style: AppTypography.font14black
-                                    .copyWith(fontSize: 16),
-                              ),
-                        ],
-                      ))
-                      .toList(),
-                )),
-          ]
-        ]),
-      ),
+        ),
+        if (isOpen) ...[
+          Column(
+                children: widget.paramets.variants.map((e) => Row(
+                  children: [
+                    CustomCheckBox(
+                        isActive: e.toString() == currentVariable,
+                        onChanged: () {
+                          currentVariable = e.toString();
+                          setState(() {});
+                        }),
+                    Text(
+                      e.toString(),
+                      style:
+                      AppTypography.font14black.copyWith(fontSize: 16),
+                    ),
+                  ],
+                )).toList(),
+              ),
+        ]
+      ]),
     );
   }
 }
