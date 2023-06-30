@@ -13,11 +13,11 @@ class LoadingScreen extends StatelessWidget {
     return WillPopScope(
       child: BlocListener<CreatingAnounceCubit, CreatingAnounceState>(
         listener: (context, state) {
-          if (state is CreatingSuccessState) Navigator.of(context).pushNamed('/home_screen');
+          if (state is CreatingSuccessState) Navigator.of(context).popUntil(ModalRoute.withName('/'));
           if (state is CreatingFailState) {
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('ошибка')));
-            Navigator.of(context).pushNamed('/home_screen');
+            Navigator.of(context).popUntil(ModalRoute.withName('/'));
           }
         },
         child: Scaffold(

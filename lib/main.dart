@@ -63,6 +63,7 @@ class _MyAppState extends State<MyApp> {
         fontFamily: GoogleFonts.nunito().fontFamily,
       ),
       routes: {
+        '/': (context) => const HomePage(),
         '/login_first_screen': (context) => const LoginFirstScreen(),
         '/login_second_screen': (context) => const LoginSecondScreen(),
         '/register_screen': (context) => const RegisterScreen(),
@@ -78,7 +79,6 @@ class _MyAppState extends State<MyApp> {
         '/create_options_screen': (context) => const OptionsScreen(),
       },
       color: const Color(0xff292B57),
-      home: const HomePage(),
     );
   }
 }
