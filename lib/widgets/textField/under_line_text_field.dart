@@ -11,7 +11,10 @@ class UnderLineTextField extends StatelessWidget {
   final TextInputType keyBoardType;
   final bool obscureText;
   final ValueChanged<String>? onChange;
+  final VoidCallback? onEditingComplete;
+  final Function(dynamic)? onTapOutside;
   final String suffixIcon;
+  final String? Function(String?)? validator;
 
   const UnderLineTextField(
       {Key? key,
@@ -22,6 +25,9 @@ class UnderLineTextField extends StatelessWidget {
       this.obscureText = false,
       this.keyBoardType = TextInputType.phone,
       required this.onChange,
+      this.onEditingComplete,
+      this.onTapOutside,
+        this.validator,
       required this.suffixIcon})
       : super(key: key);
 
@@ -32,10 +38,14 @@ class UnderLineTextField extends StatelessWidget {
       height: height,
       alignment: Alignment.bottomCenter,
       child: TextFormField(
+        validator: validator,
+        onTap: () => controller.selection = TextSelection(baseOffset: 0, extentOffset: controller.value.text.length),
+        onTapOutside: onTapOutside,
         keyboardType: keyBoardType,
         textAlign: TextAlign.start,
         textAlignVertical: TextAlignVertical.bottom,
         onChanged: onChange,
+        onEditingComplete: onEditingComplete,
         style: AppTypography.font16black,
         decoration: InputDecoration(
             enabledBorder: const UnderlineInputBorder(

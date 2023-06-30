@@ -6,10 +6,7 @@ class VariableParameter {
   VariableParameter({required this.key, required this.variants}) : currentValue = variants[0].toString();
 
   @override
-  String toString() => '$key: $variants';
-
-  String toJsonParameter() =>
-      '"$key": "$currentValue"';
+  String toString() => '"$key": "$currentValue"';
 
   void setVariant(String value) => currentValue = value;
 }

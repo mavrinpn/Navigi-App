@@ -15,13 +15,14 @@ import 'package:smart/services/custom_bloc_observer.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'feature/create/bloc/creating/creating_anounce_cubit.dart';
 import 'feature/create/bloc/sub_category/sub_category_cubit.dart';
 import 'feature/create/data/item_manager.dart';
 import 'feature/create/ui/category_screen.dart';
 import 'feature/create/ui/options_screen.dart';
 import 'feature/create/ui/loading_screen.dart';
 import 'feature/create/ui/pick_photo_screen.dart';
-import 'feature/create/ui/choose_by_notBy_screen.dart';
+import 'feature/create/ui/choose_type_screen.dart';
 import 'feature/create/ui/search_products_screen.dart';
 import 'feature/create/ui/sub_category_screen.dart';
 import 'feature/home/ui/home_screen.dart';
@@ -110,6 +111,7 @@ class MyRepositoryProviders extends StatelessWidget {
 class MyBlocProviders extends StatelessWidget {
   const MyBlocProviders({Key? key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
@@ -139,6 +141,13 @@ class MyBlocProviders extends StatelessWidget {
             creatingManager:
                 RepositoryProvider.of<CreatingAnnouncementManager>(context),
             itemManager: RepositoryProvider.of<ItemManager>(context)),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => CreatingAnounceCubit(
+            creatingAnnouncementManager:
+                RepositoryProvider.of<CreatingAnnouncementManager>(context),
+            ),
         lazy: false,
       ),
     ], child: const MyApp());

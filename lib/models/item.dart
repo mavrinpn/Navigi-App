@@ -22,8 +22,8 @@ class SubCategoryItem {
     parameters = jsonDecode(mapString);
   }
 
-  SubCategoryItem.withName(String name,String subCategory) {
-    name = name;
+  SubCategoryItem.withName(String _name,String subCategory) {
+    name = _name;
     subcategoryId = subCategory;
     parameters = {};
   }
@@ -49,10 +49,27 @@ class SubCategoryItem {
     });
     return sp;
   }
+
+  String getTitle() => '$name ${itemParameters.getParametersValues()}';
+
 }
 class ItemParameters {
   List<String> staticParameters;
   List<VariableParameter> variableParametersList;
 
   ItemParameters({required this.staticParameters, required this.variableParametersList});
+
+  String buildJsonFormatParameters() {
+    return '{${staticParameters.join(', ')}, ${variableParametersList.join(', ')}}';
+  }
+
+  String getParametersValues () {
+    List<String> values = [];
+
+    for (var param in variableParametersList) {
+      values.add(param.currentValue);
+    }
+
+    return values.join(' ');
+  }
 }

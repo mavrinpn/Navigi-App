@@ -87,7 +87,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
         width: width - 30,
         text: 'Continuer',
         callback: () {
-            repository.setIsBy(!isBy);
+            repository.setType(!isBy);
             Navigator.pushNamed(context, '/create_options_screen');
         },
         isTouch: true,

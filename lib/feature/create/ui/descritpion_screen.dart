@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart/feature/create/bloc/creating/creating_anounce_cubit.dart';
 import 'package:smart/feature/create/bloc/item_search/item_search_cubit.dart';
 import 'package:smart/feature/create/data/creting_announcement_manager.dart';
 import 'package:smart/widgets/button/custom_eleveted_button.dart';
@@ -65,6 +66,8 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
             width: MediaQuery.of(context).size.width - 30,
             text: 'Continuer',
             callback: () {
+              repository.setDescription(descriptionController.text);
+              BlocProvider.of<CreatingAnounceCubit>(context).createAnounce();
               Navigator.pushNamed(context, '/loading_screen');
             }));
   }
