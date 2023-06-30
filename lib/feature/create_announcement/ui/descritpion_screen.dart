@@ -1,18 +1,11 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:smart/feature/create/bloc/creating/creating_anounce_cubit.dart';
-import 'package:smart/feature/create/bloc/item_search/item_search_cubit.dart';
-import 'package:smart/feature/create/data/creting_announcement_manager.dart';
 import 'package:smart/widgets/button/custom_eleveted_button.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
-import '../../../widgets/category/products.dart';
 import '../../../widgets/textField/outline_text_field.dart';
+import '../bloc/creating/creating_anounce_cubit.dart';
+import '../data/creting_announcement_manager.dart';
 
 class DescriptionScreen extends StatefulWidget {
   const DescriptionScreen({super.key});

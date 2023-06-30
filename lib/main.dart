@@ -5,26 +5,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:smart/bloc/auth_cubit.dart';
 import 'package:smart/data/app_repository.dart';
-import 'package:smart/feature/create/bloc/category/category_cubit.dart';
-import 'package:smart/feature/create/bloc/item_search/item_search_cubit.dart';
-import 'package:smart/feature/create/data/categories_manager.dart';
-import 'package:smart/feature/create/data/creting_announcement_manager.dart';
-import 'package:smart/feature/create/ui/descritpion_screen.dart';
 import 'package:smart/feature/registration/ui/register_screen.dart';
 import 'package:smart/services/custom_bloc_observer.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'feature/create/bloc/creating/creating_anounce_cubit.dart';
-import 'feature/create/bloc/sub_category/sub_category_cubit.dart';
-import 'feature/create/data/item_manager.dart';
-import 'feature/create/ui/category_screen.dart';
-import 'feature/create/ui/options_screen.dart';
-import 'feature/create/ui/loading_screen.dart';
-import 'feature/create/ui/pick_photo_screen.dart';
-import 'feature/create/ui/choose_type_screen.dart';
-import 'feature/create/ui/search_products_screen.dart';
-import 'feature/create/ui/sub_category_screen.dart';
+import 'feature/create_announcement/bloc/category/category_cubit.dart';
+import 'feature/create_announcement/bloc/creating/creating_anounce_cubit.dart';
+import 'feature/create_announcement/bloc/item_search/item_search_cubit.dart';
+import 'feature/create_announcement/bloc/sub_category/sub_category_cubit.dart';
+import 'feature/create_announcement/data/categories_manager.dart';
+import 'feature/create_announcement/data/creting_announcement_manager.dart';
+import 'feature/create_announcement/data/item_manager.dart';
+import 'feature/create_announcement/ui/category_screen.dart';
+import 'feature/create_announcement/ui/choose_type_screen.dart';
+import 'feature/create_announcement/ui/descritpion_screen.dart';
+import 'feature/create_announcement/ui/loading_screen.dart';
+import 'feature/create_announcement/ui/options_screen.dart';
+import 'feature/create_announcement/ui/pick_photo_screen.dart';
+import 'feature/create_announcement/ui/search_products_screen.dart';
+import 'feature/create_announcement/ui/sub_category_screen.dart';
 import 'feature/home/ui/home_screen.dart';
 import 'feature/login/ui/login_first_screen.dart';
 import 'feature/login/ui/login_second_screen.dart';
@@ -168,9 +168,7 @@ class HomePage extends StatelessWidget {
           if (state is AuthSuccessState) {
             return const HomeScreen();
           } else if (state is AuthFailState) {
-            return const Center(
-              child: LoginFirstScreen(),
-            );
+            return const LoginFirstScreen();
           } else {
             return Center(
               child: SpinKitFadingCircle(
