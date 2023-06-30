@@ -115,12 +115,9 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
           ],
         ),
       ),
-      floatingActionButton: CustomElevatedButton(
+      floatingActionButton: CustomElevatedButton.orangeContinue(
         width: width - 30,
-        padding: const EdgeInsets.all(0),
-        height: 52,
         text: 'Continuer',
-        styleText: AppTypography.font14white,
         callback: () {
           if (isTouch) {
             creatingAnnouncementManager.setItem(itemManager.hasItemInSearchedItems(), name: productsController.text);

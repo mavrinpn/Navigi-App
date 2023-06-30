@@ -128,13 +128,10 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
           ),
         ),
         floatingActionButton: repository.images.isNotEmpty
-            ? CustomElevatedButton(
+            ? CustomElevatedButton.orangeContinue(
                 isTouch: true,
                 width: MediaQuery.of(context).size.width - 30,
-                padding: const EdgeInsets.all(0),
-                height: 52,
                 text: 'Continuer',
-                styleText: AppTypography.font14white,
                 callback: () {
                   setState(() {
                     repository.setImages(repository.images);

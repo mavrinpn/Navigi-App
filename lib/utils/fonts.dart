@@ -33,11 +33,12 @@ class AppTypography {
     fontWeight: FontWeight.w400,
     fontSize: 14,
   );
-  static final font14white = _font.copyWith(
+  static const font14white = TextStyle(
     color: _white,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
     fontSize: 14,
+    fontFamily: 'SF Pro Display',
   );
   static final font17black = _font.copyWith(
     color: _colorBlack,

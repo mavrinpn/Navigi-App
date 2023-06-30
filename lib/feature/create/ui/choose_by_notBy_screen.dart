@@ -83,12 +83,9 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
           ],
         ),
       ),
-      floatingActionButton: CustomElevatedButton(
+      floatingActionButton: CustomElevatedButton.orangeContinue(
         width: width - 30,
-        padding: const EdgeInsets.all(0),
-        height: 52,
         text: 'Continuer',
-        styleText: AppTypography.font14white,
         callback: () {
             repository.setIsBy(!isBy);
             Navigator.pushNamed(context, '/create_options_screen');

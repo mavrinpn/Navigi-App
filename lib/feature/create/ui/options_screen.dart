@@ -82,12 +82,9 @@ class _OptionsScreenState extends State<OptionsScreen> {
           ],
         ),
       ),
-      floatingActionButton: CustomElevatedButton(
+      floatingActionButton: CustomElevatedButton.orangeContinue(
         width: MediaQuery.of(context).size.width - 30,
-        padding: const EdgeInsets.all(0),
-        height: 52,
         text: 'Continuer',
-        styleText: AppTypography.font14white,
         callback: () {
           Navigator.pushNamed(context, '/create_description');
         },

@@ -60,13 +60,10 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
             ],
           ),
         ),
-        floatingActionButton: CustomElevatedButton(
+        floatingActionButton: CustomElevatedButton.orangeContinue(
             isTouch: descriptionController.text.isNotEmpty,
             width: MediaQuery.of(context).size.width - 30,
-            padding: const EdgeInsets.all(0),
-            height: 52,
             text: 'Continuer',
-            styleText: AppTypography.font14white,
             callback: () {
               Navigator.pushNamed(context, '/loading_screen');
             }));

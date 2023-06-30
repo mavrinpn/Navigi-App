@@ -1,4 +1,5 @@
   import 'package:flutter/material.dart';
+import 'package:smart/utils/fonts.dart';
 
 import '../../utils/colors.dart';
 
@@ -22,6 +23,20 @@ class CustomElevatedButton extends StatelessWidget {
     this.width = double.infinity,
     this.height = 50,
     this.padding = const EdgeInsets.all(10),
+    this.isTouch = false,
+    this.child,
+    this.activeColor = AppColors.isTouchButtonColorRed,
+    this.disableColor = AppColors.isNotTouchButton,
+  }) : super(key: key);
+
+  const CustomElevatedButton.orangeContinue({
+    Key? key,
+    required this.callback,
+    required this.text,
+    this.styleText = AppTypography.font14white,
+    this.width = double.infinity,
+    this.height = 52,
+    this.padding = const EdgeInsets.all(0),
     this.isTouch = false,
     this.child,
     this.activeColor = AppColors.isTouchButtonColorRed,
