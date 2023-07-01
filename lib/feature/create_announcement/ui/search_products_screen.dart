@@ -1,15 +1,13 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart/feature/create/bloc/item_search/item_search_cubit.dart';
-import 'package:smart/feature/create/data/creting_announcement_manager.dart';
-import 'package:smart/feature/create/data/item_manager.dart';
-import 'package:smart/models/item.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_eleveted_button.dart';
 import '../../../widgets/category/products.dart';
 import '../../../widgets/textField/outline_text_field.dart';
+import '../bloc/item_search/item_search_cubit.dart';
+import '../data/creting_announcement_manager.dart';
+import '../data/item_manager.dart';
 
 class SearchProductsScreen extends StatefulWidget {
   const SearchProductsScreen({super.key});

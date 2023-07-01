@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart/feature/create/bloc/item_search/item_search_cubit.dart';
 import 'package:smart/utils/fonts.dart';
+
+import '../../feature/create_announcement/bloc/item_search/item_search_cubit.dart';
 
 class SubCategoryWidget extends StatelessWidget {
   const SubCategoryWidget(

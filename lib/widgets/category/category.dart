@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:smart/feature/create/bloc/sub_category/sub_category_cubit.dart';
-import 'package:smart/generated/assets.dart';
 import 'package:smart/models/category.dart';
 import 'package:smart/utils/fonts.dart';
+
+import '../../feature/create_announcement/bloc/sub_category/sub_category_cubit.dart';
 
 class CategoryWidget extends StatefulWidget {
   CategoryWidget({super.key, required Category category})

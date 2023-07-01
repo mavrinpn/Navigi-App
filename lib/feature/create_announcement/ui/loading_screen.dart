@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:smart/feature/create/bloc/creating/creating_anounce_cubit.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
+
+import '../bloc/creating/creating_anounce_cubit.dart';
 
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({super.key});
