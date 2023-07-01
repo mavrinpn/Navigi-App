@@ -11,9 +11,9 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit({required this.appRepository}) : super(AuthInitial()) {
     appRepository.authState.stream.listen((event) {
-      if (event == AuthStateEnum.auth) emit(AuthSuccessState());
-      if (event == AuthStateEnum.loading) emit(AuthLoadingState());
-      if (event == AuthStateEnum.unAuth) emit(AuthFailState());
+      if (event == LoadingStateEnum.success) emit(AuthSuccessState());
+      if (event == LoadingStateEnum.loading) emit(AuthLoadingState());
+      if (event == LoadingStateEnum.fail) emit(AuthFailState());
     });
   }
 

@@ -5,7 +5,7 @@ class CreatingData {
   String? subcategoryId;
   String? title;
   String? description;
-  List<File>? images;
+  List<String>? images;
   bool? type;
   double? price;
   String? itemName;

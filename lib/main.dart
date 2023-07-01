@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:smart/bloc/app_cubit.dart';
 import 'package:smart/bloc/auth_cubit.dart';
 import 'package:smart/data/app_repository.dart';
 import 'package:smart/feature/create/bloc/category/category_cubit.dart';
@@ -12,6 +13,7 @@ import 'package:smart/feature/create/data/creting_announcement_manager.dart';
 import 'package:smart/feature/create/ui/descritpion_screen.dart';
 import 'package:smart/feature/registration/ui/register_screen.dart';
 import 'package:smart/services/custom_bloc_observer.dart';
+import 'package:smart/services/file_storage.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -52,9 +54,12 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitDown,
     ]);
   }
-
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       title: 'Smart',
       debugShowCheckedModeBanner: false,
@@ -121,6 +126,11 @@ class MyBlocProviders extends StatelessWidget {
         lazy: false,
       ),
       BlocProvider(
+        create: (_) => AppCubit(
+            appRepository: RepositoryProvider.of<AppRepository>(context)),
+        lazy: false,
+      ),
+      BlocProvider(
         create: (_) => CategoryCubit(
             creatingManager:
                 RepositoryProvider.of<CreatingAnnouncementManager>(context),
@@ -163,11 +173,11 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: BlocBuilder<AuthCubit, AuthState>(
+      body: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
-          if (state is AuthSuccessState) {
+          if (state is AppAuthState) {
             return const HomeScreen();
-          } else if (state is AuthFailState) {
+          } else if (state is AppUnAuthState) {
             return const Center(
               child: LoginFirstScreen(),
             );

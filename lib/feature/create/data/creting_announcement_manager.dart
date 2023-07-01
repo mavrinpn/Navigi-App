@@ -37,7 +37,7 @@ class CreatingAnnouncementManager {
   }
 
   void setImages(List<XFile> images) {
-    creatingData.images = images.map((e) => File(e.path)).toList();
+    creatingData.images = images.map((e) => e.path).toList();
   }
 
   void setDescription(String description) => creatingData.description = description;

@@ -69,7 +69,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthLoadingState) {
-          Dialogs.showModal(context, const CircularProgressIndicator());
+          Dialogs.showModal(
+              context, const Center(child: CircularProgressIndicator()));
         } else {
           Dialogs.hide(context);
         }

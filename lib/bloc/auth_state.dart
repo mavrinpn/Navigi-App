@@ -10,5 +10,3 @@ class AuthLoadingState extends AuthState {}
 class AuthSuccessState extends AuthState {}
 
 class AuthFailState extends AuthState  {}
-
-class UnAuthState extends AuthState {}

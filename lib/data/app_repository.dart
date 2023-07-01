@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 enum LoadingStateEnum { wait, loading, success, fail }
 
-enum AuthStateEnum { wait, loading, auth, unAuth }
+enum AuthStateEnum {wait,  auth, unAuth }
 
 const String postDatabase = 'annonces';
 const String postCollection = 'anounces';
@@ -28,24 +28,27 @@ class AppRepository {
     checkLogin();
   }
 
-  BehaviorSubject<AuthStateEnum> authState =
-      BehaviorSubject<AuthStateEnum>.seeded(AuthStateEnum.wait);
+  BehaviorSubject<LoadingStateEnum> authState =
+      BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
+
+  BehaviorSubject<AuthStateEnum> appState = BehaviorSubject<AuthStateEnum>.seeded(AuthStateEnum.wait);
 
   static String convertPhoneToEmail(String phone) {
     return '$phone@gmail.com';
   }
 
   void _auth(Future<Session> method) async {
-    authState.add(AuthStateEnum.loading);
+    authState.add(LoadingStateEnum.loading);
     try {
       final promise = await method;
       sessionID = promise.$id;
       final prefs = await SharedPreferences.getInstance();
       prefs.setString(sessionIdKey, sessionID!);
       user = await account.get();
-      authState.add(AuthStateEnum.auth);
+      authState.add(LoadingStateEnum.success);
+      appState.add(AuthStateEnum.auth);
     } catch (e) {
-      authState.add(AuthStateEnum.unAuth);
+      authState.add(LoadingStateEnum.fail);
       rethrow;
     }
   }
@@ -54,7 +57,8 @@ class AppRepository {
     await account.deleteSession(sessionId: sessionID!);
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
-    authState.add(AuthStateEnum.unAuth);
+    authState.add(LoadingStateEnum.wait);
+    appState.add(AuthStateEnum.unAuth);
   }
 
   void registerWithEmail(
@@ -70,18 +74,17 @@ class AppRepository {
       _auth(account.createEmailSession(email: email, password: password));
 
   void checkLogin() async {
-    authState.add(AuthStateEnum.loading);
     try {
       final prefs = await SharedPreferences.getInstance();
       sessionID = prefs.getString(sessionIdKey);
       if (sessionID != null) {
         user = await account.get();
-        authState.add(AuthStateEnum.auth);
+        appState.add(AuthStateEnum.auth);
       } else {
-        authState.add(AuthStateEnum.unAuth);
+        appState.add(AuthStateEnum.unAuth);
       }
     } catch (e) {
-      authState.add(AuthStateEnum.unAuth);
+      appState.add(AuthStateEnum.unAuth);
     }
   }
 }
