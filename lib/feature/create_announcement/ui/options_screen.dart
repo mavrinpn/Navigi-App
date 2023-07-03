@@ -60,7 +60,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                   } catch (e) {
                     n = -1;
                   }
-                  if (n < 0) {
+                  if (n < 0 || n > 20000000) {
                     isTouch = false;
                     return 'Erreur! Réessayez ou entrez dautres informations.';
                   }
