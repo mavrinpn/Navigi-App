@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:appwrite/appwrite.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
@@ -43,9 +41,9 @@ class CreatingAnnouncementManager {
 
   void setPrice(String price) => creatingData.price = double.parse(price);
 
-  void _setParameters() => creatingData.parameters = currentItem!.itemParameters.buildJsonFormatParameters();
+  void _setParameters() => creatingData.parameters = currentItem!.parameters.buildJsonFormatParameters();
 
-  void _setTitle() => creatingData.title = currentItem!.getTitle();
+  void _setTitle() => creatingData.title = currentItem!.title;
 
   void setInfoFormItem() {
     _setParameters();

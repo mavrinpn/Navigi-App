@@ -1,5 +1,3 @@
-import 'dart:io';
-
 class CreatingData {
   String? categoryId;
   String? subcategoryId;

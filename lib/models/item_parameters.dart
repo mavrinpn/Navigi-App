@@ -1,6 +1,22 @@
-class ItemParameters {
-  String staticParameters;
-  String? variableParameters;
+part of 'item.dart';
 
-  ItemParameters({required this.staticParameters, this.variableParameters});
+class ItemParameters {
+  List<String> staticParameters;
+  List<VariableParameter> variableParametersList;
+
+  ItemParameters({required this.staticParameters, required this.variableParametersList});
+
+  String buildJsonFormatParameters() {
+    return '{${staticParameters.join(', ')}, ${variableParametersList.join(', ')}}';
+  }
+
+  String getParametersValues () {
+    List<String> values = [];
+
+    for (var param in variableParametersList) {
+      values.add(param.currentValue);
+    }
+
+    return values.join(' ');
+  }
 }

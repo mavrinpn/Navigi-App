@@ -1,7 +1,3 @@
-
-
-import 'dart:developer';
-
 import 'package:appwrite/appwrite.dart';
 
 class FileStorageManager {

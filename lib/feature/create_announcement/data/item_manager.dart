@@ -44,7 +44,7 @@ class ItemManager {
 
     List<SubCategoryItem> resList = [];
     for (var item in items) {
-      if (item.name!.toLowerCase().contains(query.toLowerCase())) {
+      if (item.name.toLowerCase().contains(query.toLowerCase())) {
         resList.add(item);
       }
     }

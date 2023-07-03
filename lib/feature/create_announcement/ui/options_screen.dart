@@ -95,7 +95,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                   child: Column(
                 children: (repository.currentItem != null
                         ? repository
-                            .currentItem!.itemParameters.variableParametersList
+                            .currentItem!.parameters.variableParametersList
                         : [])
                     .map((e) => CustomDropDownSingleCheckBox(
                           parameters: e,

@@ -1,5 +1,18 @@
-import 'package:loading_animations/loading_animations.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import 'colors.dart';
 
 abstract class AppAnimations {
-  static LoadingRotating circleLoading = LoadingRotating.square();
+  static final circleFadingAnimation = SpinKitFadingCircle(
+    itemBuilder: (_, ind) {
+      return const Padding(
+        padding: EdgeInsets.all(1.8),
+        child: DecoratedBox(
+            decoration:
+                BoxDecoration(color: AppColors.red, shape: BoxShape.circle)),
+      );
+    },
+    size: 86,
+  );
 }

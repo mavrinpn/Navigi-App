@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import '../data/app_repository.dart';
+import '../../data/app_repository.dart';
 
 part 'app_state.dart';
 

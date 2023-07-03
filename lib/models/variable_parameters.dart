@@ -1,3 +1,5 @@
+part of 'item.dart';
+
 class VariableParameter {
   String key;
   List variants;

@@ -85,12 +85,12 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                               padding: const EdgeInsets.all(3),
                               child: ProductWidget(
                                 onTap: () {
-                                  cubit.setItemName(e.name!);
+                                  cubit.setItemName(e.name);
                                   creatingAnnouncementManager.setItem(e);
                                   setState(() {});
                                   Navigator.pushNamed(context, '/create_pick_photos_screen');
                                 },
-                                name: e.name ?? '',
+                                name: e.name,
                               ),
                             ))
                         .toList(),

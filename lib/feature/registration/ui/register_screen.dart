@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:smart/bloc/auth_cubit.dart';
+import 'package:smart/bloc/auth/auth_cubit.dart';
 import 'package:smart/data/app_repository.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../../../utils/colors.dart';
-import '../../../utils/dialods.dart';
+import '../../../utils/dialogs.dart';
 import '../../../widgets/button/custom_eleveted_button.dart';
 import '../../../widgets/textField/custom_text_field.dart';
 import '../../../widgets/textField/mask_text_field.dart';

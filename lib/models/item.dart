@@ -1,36 +1,54 @@
 import 'dart:convert';
 
-import 'package:smart/models/variable_paramets.dart';
+part 'item_parameters.dart';
+
+part 'variable_parameters.dart';
 
 class SubCategoryItem {
-  String? name;
-  String? subcategoryId;
-  Map<String, dynamic>? parameters;
-  late ItemParameters itemParameters;
+  final String _name;
+  final String _subcategoryId;
+  final Map<String, dynamic> _parameters;
+  late ItemParameters _itemParameters;
 
-  SubCategoryItem({required this.name, required this.subcategoryId, required this.parameters}) : super () {initialParameters();}
+  SubCategoryItem(
+      {required String name,
+      required String subcategoryId,
+      required Map<String, dynamic> parameters})
+      : _parameters = parameters,
+        _subcategoryId = subcategoryId,
+        _name = name,
+        super() {
+    initialParameters();
+  }
+
+  String get name => _name;
+
+  String get subcategory => _subcategoryId;
+
+  ItemParameters get parameters => _itemParameters;
+
+  String get title => '$_name ${_itemParameters.getParametersValues()}';
+
+  SubCategoryItem.fromJson(Map<String, dynamic> json1)
+      : _name = json1['name'] ?? '',
+        _subcategoryId = json1['sub_category'] ?? '',
+        _parameters = jsonDecode(json1['parametrs']);
+
+  SubCategoryItem.withName(String name, String subCategory)
+      : _name = name,
+        _subcategoryId = subCategory,
+        _parameters = {};
 
   void initialParameters() {
-    itemParameters = ItemParameters(staticParameters: _getStaticParameters(), variableParametersList: _getVariableParameters());
-  }
-
-  SubCategoryItem.fromJson(Map<String, dynamic> json1) {
-    name = json1['name'] ?? '';
-    subcategoryId = json1['sub_category'] ?? '';
-    final mapString = json1['parametrs'];
-    parameters = jsonDecode(mapString);
-  }
-
-  SubCategoryItem.withName(String _name,String subCategory) {
-    name = _name;
-    subcategoryId = subCategory;
-    parameters = {};
+    _itemParameters = ItemParameters(
+        staticParameters: _getStaticParameters(),
+        variableParametersList: _getVariableParameters());
   }
 
   List<VariableParameter> _getVariableParameters() {
     List<VariableParameter> vp = [];
 
-    parameters!.forEach((key, value) {
+    _parameters.forEach((key, value) {
       if (value.runtimeType == List<dynamic>) {
         vp.add(VariableParameter(key: key, variants: value));
       }
@@ -38,37 +56,13 @@ class SubCategoryItem {
     return vp;
   }
 
-  List<String> _getStaticParameters()
-  {
+  List<String> _getStaticParameters() {
     List<String> sp = [];
-    parameters!.forEach((key, value) {
+    _parameters.forEach((key, value) {
       if (value.runtimeType != List<dynamic>) {
         sp.add('"$key": ${value.runtimeType != String ? value : '"$value"'}');
       }
     });
     return sp;
-  }
-
-  String getTitle() => '$name ${itemParameters.getParametersValues()}';
-
-}
-class ItemParameters {
-  List<String> staticParameters;
-  List<VariableParameter> variableParametersList;
-
-  ItemParameters({required this.staticParameters, required this.variableParametersList});
-
-  String buildJsonFormatParameters() {
-    return '{${staticParameters.join(', ')}, ${variableParametersList.join(', ')}}';
-  }
-
-  String getParametersValues () {
-    List<String> values = [];
-
-    for (var param in variableParametersList) {
-      values.add(param.currentValue);
-    }
-
-    return values.join(' ');
   }
 }

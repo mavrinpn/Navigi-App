@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:smart/utils/colors.dart';
+import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../bloc/creating/creating_anounce_cubit.dart';
@@ -28,16 +27,7 @@ class LoadingScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SpinKitFadingCircle(
-                  itemBuilder: (_, ind) {
-                    return const Padding(
-                      padding: EdgeInsets.all(1.8),
-                      child: DecoratedBox(decoration: BoxDecoration(
-                          color: AppColors.red, shape: BoxShape.circle)),
-                    );
-                  },
-                  size: 86,
-                ),
+                AppAnimations.circleFadingAnimation,
                 const SizedBox(
                   height: 44,
                 ),

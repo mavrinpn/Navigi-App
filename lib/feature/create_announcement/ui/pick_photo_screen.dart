@@ -60,7 +60,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                 height: 26,
               ),
               !repository.images.isNotEmpty
-                  ? CustomElevatedButton(
+                  ? CustomElevatedButton.withIcon(
                       isTouch: true,
                       activeColor: AppColors.isTouchButtonColorDark,
                       padding: EdgeInsets.zero,
@@ -68,24 +68,12 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                       callback: () {
                         pickImages();
                       },
-                      text: '',
+                      text: 'Ajouter des photos',
                       styleText: AppTypography.font14white,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Ajouter des photos',
-                            style: AppTypography.font14white,
-                          )
-                        ],
+                      icon: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 24,
                       ),
                     )
                   : Expanded(
@@ -139,7 +127,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
 }
 
 class ImageWidget extends StatelessWidget {
-  ImageWidget({super.key, required this.path, required this.callback});
+  const ImageWidget({super.key, required this.path, required this.callback});
 
   final String path;
   final VoidCallback callback;
