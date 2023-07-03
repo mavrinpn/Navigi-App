@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/bloc/auth/auth_cubit.dart';
 import 'package:smart/utils/fonts.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/widgets/button/custom_eleveted_button.dart';
 
 import '../../../utils/colors.dart';
 
@@ -19,12 +20,32 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> widgetOptions = <Widget>[
-      Center(child: TextButton(onPressed: () {BlocProvider.of<AuthCubit>(context).logout();}, child: const Text('Выйти'))),
+      Center(
+          child: TextButton(
+              onPressed: () {
+                BlocProvider.of<AuthCubit>(context).logout();
+              },
+              child: const Text('Выйти'))),
       const Text(''),
       const Text(''),
-      Center(child: TextButton(onPressed: () {Navigator.pushNamed(context, '/create_category_screen');}, child: const Text('Создать'))),
+      //Center(child: TextButton(onPressed: () {}, child: const Text('Создать'))),
+      Center(
+        child: CustomElevatedButton.withIcon(
+          callback: () {
+            Navigator.pushNamed(context, '/create_category_screen');
+          },
+          width: MediaQuery.of(context).size.width - 30,
+          text: 'Ajouter une annonce',
+          styleText: AppTypography.font14white,
+          isTouch: true,
+          icon: const Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 24,
+          ),
+        ),
+      )
     ];
-
 
     void onSelectTab(int index) {
       if (_selectedTab == index) return;
@@ -74,7 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 label: 'Mon profil',
               ),
             ],
-
             selectedLabelStyle: AppTypography.font10pink,
             unselectedLabelStyle: AppTypography.font10lightGray,
             onTap: onSelectTab,
@@ -99,10 +119,10 @@ class NavigatorBarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SvgPicture.asset(
-        asset,
-        height: 24,
-        width: 24,
-        color: isSelected ? AppColors.red : AppColors.lightGray,
+      asset,
+      height: 24,
+      width: 24,
+      color: isSelected ? AppColors.red : AppColors.lightGray,
     );
   }
 }

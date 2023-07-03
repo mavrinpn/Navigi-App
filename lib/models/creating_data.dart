@@ -16,7 +16,7 @@ class CreatingData {
     return 'category: $categoryId, \nsubcategory: $subcategoryId, \ndescription: $description, \ntype: $type, \nprice: $price \nparameters: $parameters';
   }
 
-  Map<String, dynamic> toJason(String creatorId) =>
+  Map<String, dynamic> toJason(String creatorId, List<String> urls) =>
       {
         'name': title,
         'description': description,
@@ -26,6 +26,7 @@ class CreatingData {
         'parametrs': parameters != '{, }' ? parameters : '{}',
         'creator_id': creatorId,
         'place_id': placeId,
+        'images': urls
       };
 
   void clear () {

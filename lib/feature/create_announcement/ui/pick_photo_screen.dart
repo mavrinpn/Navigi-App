@@ -63,8 +63,6 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                   ? CustomElevatedButton.withIcon(
                       isTouch: true,
                       activeColor: AppColors.isTouchButtonColorDark,
-                      padding: EdgeInsets.zero,
-                      height: 52,
                       callback: () {
                         pickImages();
                       },

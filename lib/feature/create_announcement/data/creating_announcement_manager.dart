@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smart/feature/create_announcement/data/storage_manager.dart';
 
 import '../../../data/app_repository.dart';
 import '../../../models/creating_data.dart';
@@ -9,10 +10,11 @@ import '../../../models/models.dart';
 class CreatingAnnouncementManager {
   final Client client;
   final Databases databases;
+  final Storage storage;
   final Account account;
 
   CreatingAnnouncementManager({required this.client})
-      : databases = Databases(client), account = Account(client);
+      : databases = Databases(client), account = Account(client), storage = Storage(client);
 
   CreatingData creatingData = CreatingData();
   SubCategoryItem? currentItem;
@@ -55,7 +57,10 @@ class CreatingAnnouncementManager {
     try {
       final user = await account.get();
       final uid = user.$id;
-      await databases.createDocument(databaseId: postDatabase, collectionId: postCollection, documentId: ID.unique(), data: creatingData.toJason(uid));
+
+      final List<String> urls = await uploadImages(creatingData.images ?? []);
+
+      await databases.createDocument(databaseId: postDatabase, collectionId: postCollection, documentId: ID.unique(), data: creatingData.toJason(uid, urls));
       images.clear();
       creatingData.clear;
       creatingState.add(LoadingStateEnum.success);
@@ -65,4 +70,18 @@ class CreatingAnnouncementManager {
     }
   }
 
+  Future<List<String>> uploadImages(List<String> paths) async {
+    List<String> urls = [];
+
+    for (String path in paths) {
+      try {
+        final file = await storage.createFile(bucketId: anouncmentsImagesId, fileId: ID.unique(), file: InputFile.fromPath(path: path));
+        urls.add(createViewUrl(file.$id, file.bucketId));
+      } catch (e) {}
+    }
+    return urls;
+  }
+
+  String createViewUrl(String fileID, String bucketID) =>
+      'http://89.253.237.166/v1/storage/buckets/$bucketID/files/$fileID/view?project=64987d0f7f186b7e2b45';
 }

@@ -17,7 +17,7 @@ class ItemManager {
   String searchController = '';
 
   BehaviorSubject<LoadingStateEnum> searchState =
-  BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
+      BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
 
   Future initialLoadItems(String query, subcategoryId) async {
     searchState.add(LoadingStateEnum.loading);
@@ -25,8 +25,7 @@ class ItemManager {
       final res = await databases.listDocuments(
           databaseId: postDatabase,
           collectionId: itemsCollection,
-          queries: [Query.search('sub_category', subcategoryId)]
-      );
+          queries: [Query.search('sub_category', subcategoryId)]);
       items.clear();
       for (var doc in res.documents) {
         items.add(SubCategoryItem.fromJson(doc.data)..initialParameters());
@@ -61,9 +60,9 @@ class ItemManager {
     searchController = value;
   }
 
-  SubCategoryItem? hasItemInSearchedItems(){
-    for(var item in searchedItems){
-      if(searchController == item.name){
+  SubCategoryItem? hasItemInSearchedItems() {
+    for (var item in searchedItems) {
+      if (searchController == item.name) {
         return item;
       }
     }

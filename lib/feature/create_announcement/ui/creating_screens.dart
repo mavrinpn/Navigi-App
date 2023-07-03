@@ -1,6 +1,6 @@
 export 'category_screen.dart';
 export 'choose_type_screen.dart';
-export 'descritpion_screen.dart';
+export 'description_screen.dart';
 export 'loading_screen.dart';
 export 'options_screen.dart';
 export 'pick_photo_screen.dart';
