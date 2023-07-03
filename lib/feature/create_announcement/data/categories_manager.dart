@@ -8,8 +8,7 @@ class CategoriesManager {
   final Client client;
   final Databases databases;
 
-  CategoriesManager({required this.client})
-      : databases = Databases(client) {
+  CategoriesManager({required this.client}) : databases = Databases(client) {
     loadCategories();
   }
 
@@ -17,9 +16,9 @@ class CategoriesManager {
   List<SubCategory> subcategories = [];
 
   BehaviorSubject<LoadingStateEnum> categoriesState =
-  BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
+      BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
   BehaviorSubject<LoadingStateEnum> subCategoriesState =
-  BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
+      BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
 
   Future loadCategories() async {
     categoriesState.add(LoadingStateEnum.loading);

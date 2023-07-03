@@ -3,7 +3,7 @@ import 'package:bloc/bloc.dart';
 import '../../../../data/app_repository.dart';
 import '../../../../models/category.dart';
 import '../../data/categories_manager.dart';
-import '../../data/creting_announcement_manager.dart';
+import '../../data/creating_announcement_manager.dart';
 
 part 'category_state.dart';
 

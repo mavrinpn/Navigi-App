@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart/widgets/category/sub_category.dart';
+import 'package:smart/widgets/category/subcategory.dart';
 
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
-import '../bloc/sub_category/sub_category_cubit.dart';
+import '../bloc/sub_category/subcategory_cubit.dart';
 
 
 class SubCategoryScreen extends StatelessWidget {
@@ -22,15 +22,15 @@ class SubCategoryScreen extends StatelessWidget {
           style: AppTypography.font20black,
         ),
       ),
-      body: BlocBuilder<SubCategoryCubit, SubCategoryState>(
+      body: BlocBuilder<SubcategoryCubit, SubcategoryState>(
         builder: (context, state) {
-          if (state is SubCategorySuccessState) {
+          if (state is SubcategorySuccessState) {
             return ListView(
             children: state.subcategories
                 .map((e) => SubCategoryWidget(name: e.name ?? '', id: e.id ?? ''))
                 .toList(),
           );
-          } else if (state is SubCategoryFailState) {
+          } else if (state is SubcategoryFailState) {
             return const Center(child: Text('проблемс'),);
           } else {
             return const Center(child: CircularProgressIndicator(),);

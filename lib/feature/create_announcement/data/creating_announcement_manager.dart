@@ -50,7 +50,7 @@ class CreatingAnnouncementManager {
     _setTitle();
   }
 
-  void createAnounce() async {
+  void createAnnouncement() async {
     creatingState.add(LoadingStateEnum.loading);
     try {
       final user = await account.get();

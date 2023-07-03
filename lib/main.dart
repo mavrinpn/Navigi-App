@@ -14,7 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'bloc/app/app_cubit.dart';
 import 'feature/create_announcement/bloc/creating_blocs.dart';
 import 'feature/create_announcement/data/categories_manager.dart';
-import 'feature/create_announcement/data/creting_announcement_manager.dart';
+import 'feature/create_announcement/data/creating_announcement_manager.dart';
 import 'feature/create_announcement/data/item_manager.dart';
 import 'feature/home/ui/home_screen.dart';
 import 'feature/login/ui/login_first_screen.dart';
@@ -129,7 +129,7 @@ class MyBlocProviders extends StatelessWidget {
         lazy: false,
       ),
       BlocProvider(
-        create: (_) => SubCategoryCubit(
+        create: (_) => SubcategoryCubit(
             creatingManager:
                 RepositoryProvider.of<CreatingAnnouncementManager>(context),
             categoriesManager:
@@ -144,7 +144,7 @@ class MyBlocProviders extends StatelessWidget {
         lazy: false,
       ),
       BlocProvider(
-        create: (_) => CreatingAnounceCubit(
+        create: (_) => CreatingAnnouncementCubit(
             creatingAnnouncementManager:
                 RepositoryProvider.of<CreatingAnnouncementManager>(context),
             ),

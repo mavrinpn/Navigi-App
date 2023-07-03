@@ -4,8 +4,8 @@ import 'package:smart/widgets/button/custom_eleveted_button.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/textField/outline_text_field.dart';
-import '../bloc/creating/creating_anounce_cubit.dart';
-import '../data/creting_announcement_manager.dart';
+import '../bloc/creating/creating_announcement_cubit.dart';
+import '../data/creating_announcement_manager.dart';
 
 class DescriptionScreen extends StatefulWidget {
   const DescriptionScreen({super.key});
@@ -60,7 +60,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
             text: 'Continuer',
             callback: () {
               repository.setDescription(descriptionController.text);
-              BlocProvider.of<CreatingAnounceCubit>(context).createAnounce();
+              BlocProvider.of<CreatingAnnouncementCubit>(context).createAnnouncement();
               Navigator.pushNamed(context, '/loading_screen');
             }));
   }

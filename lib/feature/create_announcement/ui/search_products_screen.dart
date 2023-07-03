@@ -6,7 +6,7 @@ import '../../../widgets/button/custom_eleveted_button.dart';
 import '../../../widgets/category/products.dart';
 import '../../../widgets/textField/outline_text_field.dart';
 import '../bloc/item_search/item_search_cubit.dart';
-import '../data/creting_announcement_manager.dart';
+import '../data/creating_announcement_manager.dart';
 import '../data/item_manager.dart';
 
 class SearchProductsScreen extends StatefulWidget {

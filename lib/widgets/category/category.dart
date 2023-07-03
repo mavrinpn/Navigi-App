@@ -4,7 +4,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:smart/models/category.dart';
 import 'package:smart/utils/fonts.dart';
 
-import '../../feature/create_announcement/bloc/sub_category/sub_category_cubit.dart';
+import '../../feature/create_announcement/bloc/sub_category/subcategory_cubit.dart';
 
 class CategoryWidget extends StatefulWidget {
   CategoryWidget({super.key, required Category category})
@@ -38,7 +38,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
 
     return InkWell(
       onTap: () {
-        BlocProvider.of<SubCategoryCubit>(context).loadSubCategories(widget.id);
+        BlocProvider.of<SubcategoryCubit>(context).loadSubCategories(widget.id);
         Navigator.pushNamed(context, '/create_sub_category_screen');
       },
       child: SizedBox(

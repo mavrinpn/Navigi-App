@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
 
-import '../bloc/creating/creating_anounce_cubit.dart';
+import '../bloc/creating/creating_announcement_cubit.dart';
 
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({super.key});
@@ -11,7 +11,7 @@ class LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: BlocListener<CreatingAnounceCubit, CreatingAnounceState>(
+      child: BlocListener<CreatingAnnouncementCubit, CreatingAnnouncementState>(
         listener: (context, state) {
           if (state is CreatingSuccessState) Navigator.of(context).popUntil(ModalRoute.withName('/'));
           if (state is CreatingFailState) {

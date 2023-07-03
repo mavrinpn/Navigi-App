@@ -2,14 +2,14 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:smart/data/app_repository.dart';
 
-import '../../data/creting_announcement_manager.dart';
+import '../../data/creating_announcement_manager.dart';
 
-part 'creating_anounce_state.dart';
+part 'creating_announcement_state.dart';
 
-class CreatingAnounceCubit extends Cubit<CreatingAnounceState> {
+class CreatingAnnouncementCubit extends Cubit<CreatingAnnouncementState> {
   CreatingAnnouncementManager creatingAnnouncementManager;
 
-  CreatingAnounceCubit({required this.creatingAnnouncementManager}) : super(CreatingAnounceInitial()) {
+  CreatingAnnouncementCubit({required this.creatingAnnouncementManager}) : super(CreatingAnnouncementInitial()) {
     creatingAnnouncementManager.creatingState.stream.listen((event) {
       if (event == LoadingStateEnum.loading) emit(CreatingLoadingState());
       if (event == LoadingStateEnum.success) emit(CreatingSuccessState());
@@ -17,5 +17,5 @@ class CreatingAnounceCubit extends Cubit<CreatingAnounceState> {
     });
   }
 
-  createAnounce() => creatingAnnouncementManager.createAnounce();
+  createAnnouncement() => creatingAnnouncementManager.createAnnouncement();
 }
