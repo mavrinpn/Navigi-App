@@ -12,8 +12,7 @@ class AppTypography {
   static const _lightGray = AppColors.lightGray;
   static const _white = Colors.white;
   static const _pink = AppColors.red;
-  static final _font = GoogleFonts.nunito();
-  static final fontTheme = GoogleFonts.heeboTextTheme();
+  static const _font = TextStyle(fontFamily: 'SF Pro Display',);
 
   static final font14black = _font.copyWith(
     color: _colorBlack,
@@ -38,7 +37,6 @@ class AppTypography {
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
     fontSize: 14,
-    fontFamily: 'SF Pro Display',
   );
   static final font17black = _font.copyWith(
     color: _colorBlack,
@@ -74,16 +72,14 @@ class AppTypography {
     fontWeight: FontWeight.w600,
   );
 
-  static const font24dark = TextStyle(
+  static final font24dark = _font.copyWith(
     color: AppColors.isTouchButtonColorDark,
     fontSize: 24,
-    fontFamily: 'SF Pro Display',
     fontWeight: FontWeight.w700,
   );
-  static const font14light = TextStyle(
+  static final font14light = _font.copyWith(
     color: AppColors.lightGray,
     fontSize: 14,
-    fontFamily: 'SF Pro Display',
     fontWeight: FontWeight.w400,
   );
 }

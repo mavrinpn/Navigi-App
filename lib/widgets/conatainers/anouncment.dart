@@ -35,7 +35,7 @@ class AnnouncementContainer extends StatelessWidget {
               height: 98,
               decoration: ShapeDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(data.imageUrl),
+                  image: NetworkImage(data.imageUrl ?? ''),
                   fit: BoxFit.fill,
                 ),
                 shape: RoundedRectangleBorder(
@@ -56,7 +56,7 @@ class AnnouncementContainer extends StatelessWidget {
                       SizedBox(
                         width: 173,
                         child: Text(
-                          data.title,
+                          data.title ?? '',
                           style: TextStyle(
                             color: Color(0xFF313131),
                             fontSize: 12,
@@ -70,7 +70,7 @@ class AnnouncementContainer extends StatelessWidget {
                   ),
                   const SizedBox(height: 8,),
                   Text(
-                   data.creatorName,
+                   data.creatorName ?? "",
                     style: TextStyle(
                       color: Color(0xFF9B9FAA),
                       fontSize: 12,
