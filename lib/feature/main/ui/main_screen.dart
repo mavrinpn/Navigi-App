@@ -18,6 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   final searchController = TextEditingController();
   late ScrollController scrollController;
 
+
   @override
   void initState() {
     scrollController = ScrollController()..addListener(_scrollListener);
