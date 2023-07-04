@@ -15,9 +15,12 @@ class Announcement {
   Announcement.fromJson({required Map<String, dynamic> json})
       : title = json['name'],
         creatorName = 'aboba',
-        price = json['price'],
+        price = double.parse(json['price'].toString()),
         imageUrl = json['images'][0],
         announcementId = json['\$id'];
+
+  @override
+  String toString() => title;
 
   String get stringPrice {
     String reversed = price.toString().split('.')[0].split('').reversed.join();

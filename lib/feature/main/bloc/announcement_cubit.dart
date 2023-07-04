@@ -21,6 +21,7 @@ class AnnouncementCubit extends Cubit<AnnouncementState> {
       emit(AnnouncementsSuccessState());
     } catch (e) {
       emit(AnnouncementsFailState());
+      rethrow;
     }
   }
 }

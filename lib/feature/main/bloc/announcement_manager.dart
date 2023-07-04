@@ -18,7 +18,7 @@ class AnnouncementManager {
     final res = await _databases.listDocuments(
         databaseId: postDatabase,
         collectionId: postCollection,
-        queries: _lastId != null
+        queries: _lastId == null
             ? [Query.limit(_amount)]
             : [Query.limit(_amount), Query.cursorAfter(_lastId!)]);
 
