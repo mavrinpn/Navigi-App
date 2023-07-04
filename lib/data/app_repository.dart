@@ -3,18 +3,9 @@ import 'package:appwrite/models.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/announcement.dart';
-import '../models/category.dart';
-
 enum LoadingStateEnum { wait, loading, success, fail }
 
 enum AuthStateEnum {wait,  auth, unAuth }
-
-const String postDatabase = 'annonces';
-const String postCollection = 'anounces';
-const String itemsCollection = 'items';
-const String categoriesCollection = 'categories';
-const String subcategoriesCollection = 'sub_categories';
 
 class AppRepository {
   final Client client;

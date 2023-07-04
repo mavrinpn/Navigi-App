@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 
-import '../../../data/app_repository.dart';
 import '../../../widgets/category/category.dart';
 import '../../../widgets/textField/outline_text_field.dart';
 import '../../create_announcement/bloc/category/category_cubit.dart';

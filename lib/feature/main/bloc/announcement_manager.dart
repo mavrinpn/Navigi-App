@@ -1,7 +1,7 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:smart/data/app_repository.dart';
 
 import '../../../models/announcement.dart';
+import '../../../utils/constants.dart';
 
 class AnnouncementManager {
   final Databases _databases;

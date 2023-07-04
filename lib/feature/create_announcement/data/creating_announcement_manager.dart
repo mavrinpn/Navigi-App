@@ -1,11 +1,11 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:smart/feature/create_announcement/data/storage_manager.dart';
 
 import '../../../data/app_repository.dart';
 import '../../../models/creating_data.dart';
 import '../../../models/models.dart';
+import '../../../utils/constants.dart';
 
 class CreatingAnnouncementManager {
   final Client client;

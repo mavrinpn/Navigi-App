@@ -25,6 +25,7 @@ class Announcement {
     for (int i = 0; i < reversed.length; i += 4) {
       try {
         reversed = '${reversed.substring(0, i)} ${reversed.substring(i)}';
+      // ignore: empty_catches
       } catch (e) {}
     }
 
