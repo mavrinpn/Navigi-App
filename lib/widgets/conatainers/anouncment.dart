@@ -1,24 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 
 class AnnouncementContainer extends StatefulWidget {
-  AnnouncementContainer({super.key, required this.announcement});
+  AnnouncementContainer({super.key, required this.announcement}) : _image = NetworkImage(announcement.imageUrl);
 
   final Announcement announcement;
   bool liked = false;
+  final NetworkImage _image;
 
   @override
   State<AnnouncementContainer> createState() => _AnnouncementContainerState();
 }
 
 class _AnnouncementContainerState extends State<AnnouncementContainer> {
-  bool liked = false;
+  bool loading = true;
 
   @override
   Widget build(BuildContext context) {
+    widget._image.resolve(const ImageConfiguration()).addListener(
+      ImageStreamListener(
+            (info, call) {
+          loading = false;
+          setState(() {});
+        },
+      ),
+    );
     return Padding(
       padding: const EdgeInsets.all(15),
       child: Container(
@@ -40,17 +50,25 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
         ),
         child: Row(
           children: [
-            Container(
+            loading ? Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                width: 108,
+                height: 98,
+
+                decoration: BoxDecoration(
+                    color: Colors.grey[300]!,
+                    borderRadius: BorderRadius.circular(14)
+                ),
+              ),
+            ) : Container(
               width: 108,
               height: 98,
-              decoration: ShapeDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(widget.announcement.imageUrl),
-                  fit: BoxFit.cover,
-                ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6)),
-              ),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  image: DecorationImage(
+                      image:widget._image, fit: BoxFit.cover)),
             ),
             const SizedBox(
               width: 10,

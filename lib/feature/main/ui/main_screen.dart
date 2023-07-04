@@ -7,6 +7,7 @@ import 'package:smart/utils/fonts.dart';
 import '../../../utils/animations.dart';
 import '../../../widgets/category/category.dart';
 import '../../../widgets/conatainers/anouncment.dart';
+import '../../../widgets/textField/elevated_text_field.dart';
 import '../../../widgets/textField/outline_text_field.dart';
 import '../../create_announcement/bloc/category/category_cubit.dart';
 import '../bloc/announcement_cubit.dart';
@@ -50,11 +51,11 @@ class _MainScreenState extends State<MainScreen> {
           controller: _controller,
           slivers: [
             SliverAppBar(
-              expandedHeight: 60,
+              expandedHeight: 70,
               backgroundColor: AppColors.empty,
               flexibleSpace: Padding(
-                padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-                child: OutLineTextField(
+                padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                child: ElevatedTextField(
                   width: MediaQuery.of(context).size.width - 100,
                   height: 52,
                   hintText: 'Recherche a Alger',
