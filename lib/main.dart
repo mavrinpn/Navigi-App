@@ -19,6 +19,7 @@ import 'feature/create_announcement/data/item_manager.dart';
 import 'feature/home/ui/home_screen.dart';
 import 'feature/login/ui/login_first_screen.dart';
 import 'feature/login/ui/login_second_screen.dart';
+import 'feature/main/ui/main_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -72,6 +73,7 @@ class _MyAppState extends State<MyApp> {
         '/create_description': (context) => const DescriptionScreen(),
         '/loading_screen': (context) => const LoadingScreen(),
         '/create_options_screen': (context) => const OptionsScreen(),
+        '/main_screen' : (context) => const MainScreen(),
       },
       color: const Color(0xff292B57),
     );

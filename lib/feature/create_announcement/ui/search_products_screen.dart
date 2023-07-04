@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
-import '../../../widgets/button/custom_elevated_button.dart';
+import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/category/products.dart';
 import '../../../widgets/textField/outline_text_field.dart';
 import '../bloc/item_search/item_search_cubit.dart';
@@ -59,9 +59,9 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
             ),
             OutLineTextField(
               controller: productsController,
-              height: 50,
+              height: 55,
               hintText: '',
-              width: 1000,
+              width: double.infinity,
               onChange: (value) {
                 BlocProvider.of<ItemSearchCubit>(context).searchItems(value);
                 setIsTouch(value.isNotEmpty);
@@ -113,7 +113,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
           ],
         ),
       ),
-      floatingActionButton: CustomElevatedButton.orangeContinue(
+      floatingActionButton: CustomTextButton.orangeContinue(
         width: width - 30,
         text: 'Continuer',
         callback: () {

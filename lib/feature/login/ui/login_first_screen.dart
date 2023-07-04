@@ -6,7 +6,7 @@ import 'package:smart/bloc/auth/auth_cubit.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-import '../../../widgets/button/custom_elevated_button.dart';
+import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/mask_text_field.dart';
 
 final maskPhoneFormatter = MaskTextInputFormatter(
@@ -98,7 +98,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                         SizedBox(
                           height: height * 0.18,
                         ),
-                        CustomElevatedButton(
+                        CustomTextButton(
                           callback: () {
                             if (!_formKey.currentState!.validate()) {
                               isError = true;

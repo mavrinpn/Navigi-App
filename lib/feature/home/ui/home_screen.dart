@@ -6,6 +6,8 @@ import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_elevated_button.dart';
 
 import '../../../utils/colors.dart';
+import '../../../widgets/button/custom_text_button.dart';
+import '../../main/ui/main_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -20,28 +22,40 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> widgetOptions = <Widget>[
-      Center(
-          child: TextButton(
-              onPressed: () {
-                BlocProvider.of<AuthCubit>(context).logout();
-              },
-              child: const Text('Выйти'))),
+      const MainScreen(),
       const Text(''),
       const Text(''),
-      //Center(child: TextButton(onPressed: () {}, child: const Text('Создать'))),
       Center(
-        child: CustomElevatedButton.withIcon(
-          callback: () {
-            Navigator.pushNamed(context, '/create_category_screen');
-          },
-          width: MediaQuery.of(context).size.width - 30,
-          text: 'Ajouter une annonce',
-          styleText: AppTypography.font14white,
-          isTouch: true,
-          icon: const Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 24,
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomTextButton.withIcon(
+                callback: () {
+                  Navigator.pushNamed(context, '/create_category_screen');
+                },
+                text: 'Ajouter une annonce',
+                styleText: AppTypography.font14white,
+                isTouch: true,
+                icon: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              CustomElevatedButton(
+                  icon: "Assets/icons/delete.svg",
+                  title: "Supprimer le profil",
+                  onPress: () {
+                    BlocProvider.of<AuthCubit>(context).logout();
+                  },
+                  height: 52,
+                  width: double.infinity)
+            ],
           ),
         ),
       )

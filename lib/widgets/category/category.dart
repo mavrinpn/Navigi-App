@@ -9,12 +9,10 @@ import '../../feature/create_announcement/bloc/sub_category/subcategory_cubit.da
 class CategoryWidget extends StatefulWidget {
   CategoryWidget({super.key, required Category category})
       : name = category.name ?? '',
-        //imageUrl = category.imageUrl ?? '',
         id = category.id ?? '',
         _image = NetworkImage(category.imageUrl!);
 
   final String name;
-  //final String imageUrl;
   final String id;
   final NetworkImage _image;
 

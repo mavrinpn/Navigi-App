@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart/widgets/button/custom_elevated_button.dart';
+import '../../../widgets/button/custom_text_button.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
+import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/outline_text_field.dart';
 import '../bloc/creating/creating_announcement_cubit.dart';
 import '../data/creating_announcement_manager.dart';
@@ -54,7 +55,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
             ],
           ),
         ),
-        floatingActionButton: CustomElevatedButton.orangeContinue(
+        floatingActionButton: CustomTextButton.orangeContinue(
             isTouch: descriptionController.text.isNotEmpty,
             width: MediaQuery.of(context).size.width - 30,
             text: 'Continuer',

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smart/widgets/button/custom_elevated_button.dart';
+import '../../../widgets/button/custom_text_button.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../data/creating_announcement_manager.dart';
@@ -60,7 +60,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                 height: 26,
               ),
               !repository.images.isNotEmpty
-                  ? CustomElevatedButton.withIcon(
+                  ? CustomTextButton.withIcon(
                       isTouch: true,
                       activeColor: AppColors.isTouchButtonColorDark,
                       callback: () {
@@ -110,7 +110,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
           ),
         ),
         floatingActionButton: repository.images.isNotEmpty
-            ? CustomElevatedButton.orangeContinue(
+            ? CustomTextButton.orangeContinue(
                 isTouch: true,
                 width: MediaQuery.of(context).size.width - 30,
                 text: 'Continuer',

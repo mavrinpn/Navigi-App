@@ -7,7 +7,7 @@ import 'package:smart/data/app_repository.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../../../utils/dialogs.dart';
-import '../../../widgets/button/custom_elevated_button.dart';
+import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/custom_text_field.dart';
 
 class LoginSecondScreen extends StatefulWidget {
@@ -102,7 +102,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                           SizedBox(
                             height: height * 0.18,
                           ),
-                          CustomElevatedButton(
+                          CustomTextButton(
                             callback: () {
                               if (!_formKey.currentState!.validate()) {
                                 setState(() {});

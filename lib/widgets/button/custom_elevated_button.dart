@@ -1,94 +1,67 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../../utils/colors.dart';
 
-class CustomElevatedButton extends StatelessWidget {
-  final VoidCallback callback;
-  final String text;
+class CustomElevatedButton extends StatefulWidget {
+  const CustomElevatedButton(
+      {super.key,
+      required this.icon,
+      required this.title,
+      required this.onPress,
+      required this.height,
+      required this.width});
+
   final double width;
   final double height;
-  final TextStyle styleText;
-  final EdgeInsets padding;
-  final bool isTouch;
-  final Color activeColor;
-  final Color disableColor;
-  final Widget? child;
+  final String icon;
+  final String title;
+  final VoidCallback onPress;
 
-  const CustomElevatedButton({
-    Key? key,
-    required this.callback,
-    required this.text,
-    required this.styleText,
-    this.width = double.infinity,
-    this.height = 50,
-    this.padding = const EdgeInsets.all(10),
-    this.isTouch = false,
-    this.child,
-    this.activeColor = AppColors.isTouchButtonColorRed,
-    this.disableColor = AppColors.isNotTouchButton,
-  }) : super(key: key);
+  @override
+  State<CustomElevatedButton> createState() => _CustomElevatedButtonState();
+}
 
-  CustomElevatedButton.withIcon({
-    Key? key,
-    required this.callback,
-    required this.text,
-    required this.styleText,
-    this.width = double.infinity,
-    this.height = 52,
-    this.padding = EdgeInsets.zero,
-    this.isTouch = false,
-    this.activeColor = AppColors.isTouchButtonColorRed,
-    this.disableColor = AppColors.isNotTouchButton,
-    required Widget icon,
-  }) : child = Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      icon,
-      const SizedBox(
-        width: 10,
-      ),
-      Text(
-        text,
-        style: AppTypography.font14white,
-      )
-    ],
-  ), super(key: key);
-
-  const CustomElevatedButton.orangeContinue({
-    Key? key,
-    required this.callback,
-    required this.text,
-    this.styleText = AppTypography.font14white,
-    this.width = double.infinity,
-    this.height = 52,
-    this.padding = const EdgeInsets.all(0),
-    this.isTouch = false,
-    this.child,
-    this.activeColor = AppColors.isTouchButtonColorRed,
-    this.disableColor = AppColors.isNotTouchButton,
-  }) : super(key: key);
-
+class _CustomElevatedButtonState extends State<CustomElevatedButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width,
-      height: height,
-      padding: padding,
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(14))),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            elevation: 0,
-            backgroundColor: isTouch ? activeColor : disableColor,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(14)))),
-        onPressed: callback,
-        child: child ?? Text(
-          text,
-          style: styleText,
+        width: widget.width,
+        height: widget.height,
+        decoration: ShapeDecoration(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          shadows: const [
+            BoxShadow(
+              color: Color(0x19000000),
+              blurRadius: 18,
+              offset: Offset(0, 0),
+              spreadRadius: 0,
+            )
+          ],
         ),
-      ),
-    );
+        child: TextButton(
+          onPressed: widget.onPress,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                widget.icon,
+                width: 24,
+                height: 24,
+                color: AppColors.black,
+              ),
+              const SizedBox(width: 10,),
+              Text(
+                widget.title,
+                style: AppTypography.font14black
+                    .copyWith(fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+        ));
   }
 }

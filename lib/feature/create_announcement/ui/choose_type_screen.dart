@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/widgets/checkBox/custom_check_box.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
-import '../../../widgets/button/custom_elevated_button.dart';
+import '../../../widgets/button/custom_text_button.dart';
 import '../data/creating_announcement_manager.dart';
 
 class ByNotByScreen extends StatefulWidget {
@@ -83,7 +83,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
           ],
         ),
       ),
-      floatingActionButton: CustomElevatedButton.orangeContinue(
+      floatingActionButton: CustomTextButton.orangeContinue(
         width: width - 30,
         text: 'Continuer',
         callback: () {
