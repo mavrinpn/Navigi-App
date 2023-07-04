@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/models/announcement.dart';
+import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 
-class AnnouncementContainer extends StatelessWidget {
-  const AnnouncementContainer({super.key, required this.announcement});
+class AnnouncementContainer extends StatefulWidget {
+  AnnouncementContainer({super.key, required this.announcement});
 
   final Announcement announcement;
+  bool liked = false;
+
+  @override
+  State<AnnouncementContainer> createState() => _AnnouncementContainerState();
+}
+
+class _AnnouncementContainerState extends State<AnnouncementContainer> {
+  bool liked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +45,16 @@ class AnnouncementContainer extends StatelessWidget {
               height: 98,
               decoration: ShapeDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(announcement.imageUrl),
-                  fit: BoxFit.fill,
+                  image: NetworkImage(widget.announcement.imageUrl),
+                  fit: BoxFit.cover,
                 ),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6)),
               ),
             ),
-            const SizedBox(width: 10,),
+            const SizedBox(
+              width: 10,
+            ),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,28 +67,39 @@ class AnnouncementContainer extends StatelessWidget {
                     children: [
                       SizedBox(
                         width: 173,
-                        child: Text(
-                          announcement.title,
-                          style: AppTypography.font12dark
-                        ),
+                        child: Text(widget.announcement.title,
+                            style: AppTypography.font12dark),
                       ),
-                      SvgPicture.asset('Assets/icons/follow_2.svg', width: 24)
+                      InkWell(
+                        child: SvgPicture.asset(
+                          'Assets/icons/follow_2.svg',
+                          width: 24,
+                          color: widget.liked
+                              ? AppColors.red
+                              : AppColors.whiteGray,
+                        ),
+                        onTap: () {
+                          setState(() {
+                            widget.liked = !widget.liked;
+                          });
+                        },
+                      )
                     ],
                   ),
-                  const SizedBox(height: 8,),
-                  Text(
-                   announcement.creatorName,
-                    style: AppTypography.font12lightGray
+                  const SizedBox(
+                    height: 8,
                   ),
-                  const SizedBox(height: 8,),
+                  Text(widget.announcement.creatorName,
+                      style: AppTypography.font12lightGray),
+                  const SizedBox(
+                    height: 8,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Text(
-                        announcement.stringPrice,
-                        style: AppTypography.font16boldRed
-                      ),
+                      Text(widget.announcement.stringPrice,
+                          style: AppTypography.font16boldRed),
                     ],
                   )
                 ],

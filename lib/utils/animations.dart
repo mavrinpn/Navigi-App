@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:loading_animations/loading_animations.dart';
 
 import 'colors.dart';
 
@@ -15,4 +16,6 @@ abstract class AppAnimations {
     },
     size: 86,
   );
+
+  static final bouncingLine = LoadingBouncingLine.circle(backgroundColor: AppColors.red, size: 40,);
 }

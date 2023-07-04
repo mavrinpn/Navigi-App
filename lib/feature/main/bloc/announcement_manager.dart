@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:appwrite/appwrite.dart';
 
 import '../../../models/announcement.dart';
@@ -10,24 +12,31 @@ class AnnouncementManager {
       : _databases = Databases(client);
 
   String? _lastId;
-  static const int _amount = 25;
+  static const int _amount = 3;
 
   List<Announcement> announcements = [];
 
   Future<void> getAnnouncements() async {
-    final res = await _databases.listDocuments(
-        databaseId: postDatabase,
-        collectionId: postCollection,
-        queries: _lastId == null
-            ? [Query.limit(_amount)]
-            : [Query.limit(_amount), Query.cursorAfter(_lastId!)]);
+    try {
+      final res = await _databases.listDocuments(
+          databaseId: postDatabase,
+          collectionId: postCollection,
+          queries: _lastId == null
+              ? [Query.limit(_amount)]
+              : [Query.limit(_amount), Query.cursorAfter(_lastId!)]);
 
-    List<Announcement> newAnnounces = [];
-    for (var doc in res.documents) {
-      newAnnounces.add(Announcement.fromJson(json: doc.data));
+      List<Announcement> newAnnounces = [];
+      for (var doc in res.documents) {
+        newAnnounces.add(Announcement.fromJson(json: doc.data));
+      }
+
+      announcements.addAll(newAnnounces);
+      _lastId = newAnnounces.last.announcementId;
+    } catch (e) {
+      if (e.toString() != 'Bad state: No element') {
+        rethrow;
+      }
     }
 
-    announcements.addAll(newAnnounces);
-    _lastId = newAnnounces.last.announcementId;
   }
 }

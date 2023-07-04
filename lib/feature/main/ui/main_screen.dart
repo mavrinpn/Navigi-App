@@ -4,6 +4,7 @@ import 'package:smart/feature/main/bloc/announcement_manager.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 
+import '../../../utils/animations.dart';
 import '../../../widgets/category/category.dart';
 import '../../../widgets/conatainers/anouncment.dart';
 import '../../../widgets/textField/outline_text_field.dart';
@@ -54,10 +55,7 @@ class _MainScreenState extends State<MainScreen> {
               flexibleSpace: Padding(
                 padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
                 child: OutLineTextField(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width - 100,
+                  width: MediaQuery.of(context).size.width - 100,
                   height: 52,
                   hintText: 'Recherche a Alger',
                   controller: searchController,
@@ -96,14 +94,14 @@ class _MainScreenState extends State<MainScreen> {
                                 decelerationRate: ScrollDecelerationRate.fast),
                             scrollDirection: Axis.horizontal,
                             children: state.categories
-                                .map((e) =>
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 0),
-                                  child: CategoryWidget(
-                                    category: e,
-                                  ),
-                                ))
+                                .map((e) => Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 0),
+                                      child: CategoryWidget(
+                                        category: e,
+                                        isActive: false,
+                                      ),
+                                    ))
                                 .toList(),
                           ),
                         );
@@ -132,7 +130,7 @@ class _MainScreenState extends State<MainScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Catégories',
+                        Text('Recommandations',
                             textAlign: TextAlign.center,
                             style: AppTypography.font20black),
                         Text('Regarder tout',
@@ -146,22 +144,31 @@ class _MainScreenState extends State<MainScreen> {
             ),
             BlocBuilder<AnnouncementCubit, AnnouncementState>(
               builder: (context, state) {
-                if (state is AnnouncementsSuccessState) {
-                  return SliverList(
-                      delegate: SliverChildListDelegate(repository.announcements
-                          .map((e) =>
-                          AnnouncementContainer(
+                var list = repository.announcements
+                    .map((e) => Container(
+                          child: AnnouncementContainer(
                             announcement: e,
-                          ))
-                          .toList()));
-                }
-                else {
-                  return const SliverToBoxAdapter(
-                    child: Center(
-                      child: CircularProgressIndicator(),
+                          ),
+                        ))
+                    .toList();
+
+                if (state is AnnouncementsLoadingState) {
+                  list.add(Container(
+                    child: Center(child: AppAnimations.bouncingLine),
+                  ));
+                } else if (state is AnnouncementsFailState) {
+                  list.add(Container(
+                    child: const Center(
+                      child: Text('проблемс'),
                     ),
-                  );
+                  ));
                 }
+
+                return SliverList(
+                  delegate: SliverChildListDelegate(
+                    list,
+                  ),
+                );
               },
             )
           ],

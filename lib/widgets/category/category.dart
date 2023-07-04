@@ -5,13 +5,15 @@ import 'package:smart/models/category.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../../feature/create_announcement/bloc/sub_category/subcategory_cubit.dart';
+import '../../utils/colors.dart';
 
 class CategoryWidget extends StatefulWidget {
-  CategoryWidget({super.key, required Category category})
+  CategoryWidget({super.key, required Category category, this.isActive = true})
       : name = category.name ?? '',
         id = category.id ?? '',
         _image = NetworkImage(category.imageUrl!);
 
+  final bool isActive;
   final String name;
   final String id;
   final NetworkImage _image;
@@ -35,9 +37,16 @@ class _CategoryWidgetState extends State<CategoryWidget> {
     );
 
     return InkWell(
+      focusColor: AppColors.empty,
+      hoverColor: AppColors.empty,
+      highlightColor: AppColors.empty,
+      splashColor: AppColors.empty,
       onTap: () {
-        BlocProvider.of<SubcategoryCubit>(context).loadSubCategories(widget.id);
-        Navigator.pushNamed(context, '/create_sub_category_screen');
+        if (widget.isActive) {
+          BlocProvider.of<SubcategoryCubit>(context).loadSubCategories(widget.id);
+          Navigator.pushNamed(context, '/create_sub_category_screen');
+        }
+
       },
       child: SizedBox(
         width: 108,
