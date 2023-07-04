@@ -4,9 +4,9 @@ import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
 
 class AnnouncementContainer extends StatelessWidget {
-  const AnnouncementContainer({super.key, required this.data});
+  const AnnouncementContainer({super.key, required this.announcement});
 
-  final Announcement data;
+  final Announcement announcement;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class AnnouncementContainer extends StatelessWidget {
               height: 98,
               decoration: ShapeDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(data.imageUrl),
+                  image: NetworkImage(announcement.imageUrl),
                   fit: BoxFit.fill,
                 ),
                 shape: RoundedRectangleBorder(
@@ -57,7 +57,7 @@ class AnnouncementContainer extends StatelessWidget {
                       SizedBox(
                         width: 173,
                         child: Text(
-                          data.title,
+                          announcement.title,
                           style: AppTypography.font12dark
                         ),
                       ),
@@ -66,7 +66,7 @@ class AnnouncementContainer extends StatelessWidget {
                   ),
                   const SizedBox(height: 8,),
                   Text(
-                   data.creatorName,
+                   announcement.creatorName,
                     style: AppTypography.font12lightGray
                   ),
                   const SizedBox(height: 8,),
@@ -75,7 +75,7 @@ class AnnouncementContainer extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Text(
-                        data.stringPrice,
+                        announcement.stringPrice,
                         style: AppTypography.font16boldRed
                       ),
                     ],
