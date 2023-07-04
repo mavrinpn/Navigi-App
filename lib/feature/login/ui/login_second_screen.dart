@@ -7,7 +7,7 @@ import 'package:smart/data/app_repository.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../../../utils/dialogs.dart';
-import '../../../widgets/button/custom_eleveted_button.dart';
+import '../../../widgets/button/custom_elevated_button.dart';
 import '../../../widgets/textField/custom_text_field.dart';
 
 class LoginSecondScreen extends StatefulWidget {

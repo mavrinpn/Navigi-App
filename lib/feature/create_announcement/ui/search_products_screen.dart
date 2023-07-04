@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
-import '../../../widgets/button/custom_eleveted_button.dart';
+import '../../../widgets/button/custom_elevated_button.dart';
 import '../../../widgets/category/products.dart';
 import '../../../widgets/textField/outline_text_field.dart';
 import '../bloc/item_search/item_search_cubit.dart';

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/widgets/checkBox/custom_check_box.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
-import '../../../widgets/button/custom_eleveted_button.dart';
+import '../../../widgets/button/custom_elevated_button.dart';
 import '../data/creating_announcement_manager.dart';
 
 class ByNotByScreen extends StatefulWidget {

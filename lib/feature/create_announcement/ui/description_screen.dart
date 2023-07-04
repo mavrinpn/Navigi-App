@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart/widgets/button/custom_eleveted_button.dart';
+import 'package:smart/widgets/button/custom_elevated_button.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/textField/outline_text_field.dart';

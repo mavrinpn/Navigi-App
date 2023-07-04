@@ -8,7 +8,7 @@ import 'package:smart/utils/fonts.dart';
 
 import '../../../utils/colors.dart';
 import '../../../utils/dialogs.dart';
-import '../../../widgets/button/custom_eleveted_button.dart';
+import '../../../widgets/button/custom_elevated_button.dart';
 import '../../../widgets/textField/custom_text_field.dart';
 import '../../../widgets/textField/mask_text_field.dart';
 
