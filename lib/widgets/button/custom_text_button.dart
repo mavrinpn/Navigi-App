@@ -25,8 +25,8 @@ class CustomTextButton extends StatelessWidget {
     this.padding = const EdgeInsets.all(10),
     this.isTouch = false,
     this.child,
-    this.activeColor = AppColors.isTouchButtonColorRed,
-    this.disableColor = AppColors.isNotTouchButton,
+    this.activeColor = AppColors.red,
+    this.disableColor = AppColors.disable,
   }) : super(key: key);
 
   CustomTextButton.withIcon({
@@ -38,8 +38,8 @@ class CustomTextButton extends StatelessWidget {
     this.height = 52,
     this.padding = EdgeInsets.zero,
     this.isTouch = false,
-    this.activeColor = AppColors.isTouchButtonColorRed,
-    this.disableColor = AppColors.isNotTouchButton,
+    this.activeColor = AppColors.red,
+    this.disableColor = AppColors.disable,
     required Widget icon,
   }) : child = Row(
     mainAxisAlignment: MainAxisAlignment.center,
@@ -65,8 +65,8 @@ class CustomTextButton extends StatelessWidget {
     this.padding = const EdgeInsets.all(0),
     this.isTouch = false,
     this.child,
-    this.activeColor = AppColors.isTouchButtonColorRed,
-    this.disableColor = AppColors.isNotTouchButton,
+    this.activeColor = AppColors.red,
+    this.disableColor = AppColors.disable,
   }) : super(key: key);
 
   @override
