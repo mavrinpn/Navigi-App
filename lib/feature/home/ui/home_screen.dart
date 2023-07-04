@@ -6,6 +6,7 @@ import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_elevated_button.dart';
 
 import '../../../utils/colors.dart';
+import '../../../widgets/conatainers/anouncment.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -26,9 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 BlocProvider.of<AuthCubit>(context).logout();
               },
               child: const Text('Выйти'))),
+      Center(child: const AnnouncementContainer()),
       const Text(''),
-      const Text(''),
-      //Center(child: TextButton(onPressed: () {}, child: const Text('Создать'))),
       Center(
         child: CustomElevatedButton.withIcon(
           callback: () {
