@@ -18,7 +18,22 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final searchController = TextEditingController();
-  final scrollController = ScrollController();
+  late ScrollController scrollController;
+
+  @override
+  void initState() {
+    scrollController = ScrollController()..addListener(_scrollListener);
+    super.initState();
+  }
+
+  _scrollListener() {
+  }
+
+  @override
+  void dispose() {
+    scrollController.removeListener(_scrollListener);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,12 +130,15 @@ class _MainScreenState extends State<MainScreen> {
                       ],
                     ),
                   ),
-                  ListView.builder(
-                    controller: scrollController,
-                    itemCount: 100,
-                    itemBuilder: (BuildContext context, index) {
-                      return Text("$index");
-                    },
+                  SizedBox(
+                    width: 300,
+                    child: ListView.builder(
+                      controller: scrollController,
+                      itemCount: 100,
+                      itemBuilder: (BuildContext context, index) {
+                        return Text("$index");
+                      },
+                    ),
                   )
                 ],
               ),
