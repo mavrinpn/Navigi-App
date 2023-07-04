@@ -130,6 +130,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   SizedBox(
                     width: 300,
+                    height: 500,
                     child: ListView.builder(
                       controller: scrollController,
                       itemCount: 100,
