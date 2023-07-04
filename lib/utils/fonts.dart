@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:google_fonts/google_fonts.dart';
-
 import 'colors.dart';
 
 
@@ -73,7 +71,7 @@ class AppTypography {
   );
 
   static final font24dark = _font.copyWith(
-    color: AppColors.isTouchButtonColorDark,
+    color: AppColors.dark,
     fontSize: 24,
     fontWeight: FontWeight.w700,
   );
@@ -81,5 +79,22 @@ class AppTypography {
     color: AppColors.lightGray,
     fontSize: 14,
     fontWeight: FontWeight.w400,
+  );
+
+  static final font12dark = _font.copyWith(
+    color: AppColors.dark,
+    fontSize: 12,
+    fontWeight: FontWeight.w600
+  );
+  static final font12lightGray = _font.copyWith(
+    color: AppColors.lightGray,
+    fontSize: 12,
+    fontWeight: FontWeight.w600
+  );
+
+  static final font16boldRed = _font.copyWith(
+    color: AppColors.red,
+    fontSize: 16,
+    fontWeight: FontWeight.w700
   );
 }

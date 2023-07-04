@@ -29,7 +29,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
             border: Border.all(
                 width: 2,
                 color: widget.isActive
-                    ? AppColors.isTouchButtonColorRed
+                    ? AppColors.red
                     : AppColors.lightGray),
             borderRadius: BorderRadius.circular(12),
           ),
@@ -40,7 +40,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
               child: CircleAvatar(
                 radius: 5,
                 backgroundColor: widget.isActive
-                    ? AppColors.isTouchButtonColorRed
+                    ? AppColors.red
                     : AppColors.empty,
               )),
         ),

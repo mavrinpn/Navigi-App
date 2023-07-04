@@ -62,7 +62,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
               !repository.images.isNotEmpty
                   ? CustomTextButton.withIcon(
                       isTouch: true,
-                      activeColor: AppColors.isTouchButtonColorDark,
+                      activeColor: AppColors.dark,
                       callback: () {
                         pickImages();
                       },

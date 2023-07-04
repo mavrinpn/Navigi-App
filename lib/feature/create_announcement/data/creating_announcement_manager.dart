@@ -1,11 +1,11 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:smart/feature/create_announcement/data/storage_manager.dart';
 
 import '../../../data/app_repository.dart';
 import '../../../models/creating_data.dart';
 import '../../../models/models.dart';
+import '../../../utils/constants.dart';
 
 class CreatingAnnouncementManager {
   final Client client;
@@ -75,7 +75,7 @@ class CreatingAnnouncementManager {
 
     for (String path in paths) {
       try {
-        final file = await storage.createFile(bucketId: anouncmentsImagesId, fileId: ID.unique(), file: InputFile.fromPath(path: path));
+        final file = await storage.createFile(bucketId: announcementsImagesId, fileId: ID.unique(), file: InputFile.fromPath(path: path));
         urls.add(createViewUrl(file.$id, file.bucketId));
       // ignore: empty_catches
       } catch (e) {}

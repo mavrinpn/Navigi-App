@@ -253,7 +253,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         isTouch: isTouch,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 0),
-                        activeColor: AppColors.isTouchButtonColorDark,
+                        activeColor: AppColors.dark,
                       ),
                       const SizedBox(
                         height: 16,

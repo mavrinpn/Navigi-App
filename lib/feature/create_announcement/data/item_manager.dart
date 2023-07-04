@@ -5,6 +5,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../data/app_repository.dart';
 import '../../../models/item.dart';
+import '../../../utils/constants.dart';
 
 class ItemManager {
   final Client client;

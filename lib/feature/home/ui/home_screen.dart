@@ -48,8 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 20,
               ),
               CustomElevatedButton(
-                  icon: "Assets/icons/delete.svg",
-                  title: "Supprimer le profil",
+                  icon: "Assets/icons/exit.svg",
+                  title: "Se déconnecter du compte",
                   onPress: () {
                     BlocProvider.of<AuthCubit>(context).logout();
                   },

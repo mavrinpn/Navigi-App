@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/models/announcement.dart';
+import 'package:smart/utils/fonts.dart';
 
 class AnnouncementContainer extends StatelessWidget {
   const AnnouncementContainer({super.key, required this.data});
@@ -35,7 +36,7 @@ class AnnouncementContainer extends StatelessWidget {
               height: 98,
               decoration: ShapeDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(data.imageUrl ?? ''),
+                  image: NetworkImage(data.imageUrl),
                   fit: BoxFit.fill,
                 ),
                 shape: RoundedRectangleBorder(
@@ -56,13 +57,8 @@ class AnnouncementContainer extends StatelessWidget {
                       SizedBox(
                         width: 173,
                         child: Text(
-                          data.title ?? '',
-                          style: TextStyle(
-                            color: Color(0xFF313131),
-                            fontSize: 12,
-                            fontFamily: 'SF Pro Display',
-                            fontWeight: FontWeight.w600,
-                          ),
+                          data.title,
+                          style: AppTypography.font12dark
                         ),
                       ),
                       SvgPicture.asset('Assets/icons/follow_2.svg', width: 24)
@@ -70,13 +66,8 @@ class AnnouncementContainer extends StatelessWidget {
                   ),
                   const SizedBox(height: 8,),
                   Text(
-                   data.creatorName ?? "",
-                    style: TextStyle(
-                      color: Color(0xFF9B9FAA),
-                      fontSize: 12,
-                      fontFamily: 'SF Pro Display',
-                      fontWeight: FontWeight.w400,
-                    ),
+                   data.creatorName,
+                    style: AppTypography.font12lightGray
                   ),
                   const SizedBox(height: 8,),
                   Row(
@@ -85,12 +76,7 @@ class AnnouncementContainer extends StatelessWidget {
                     children: [
                       Text(
                         data.stringPrice,
-                        style: TextStyle(
-                          color: Color(0xFFED5434),
-                          fontSize: 16,
-                          fontFamily: 'SF Pro Display',
-                          fontWeight: FontWeight.w700,
-                        ),
+                        style: AppTypography.font16boldRed
                       ),
                     ],
                   )
