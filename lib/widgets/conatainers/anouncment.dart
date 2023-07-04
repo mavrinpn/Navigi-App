@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/models/announcement.dart';
 
 class AnnouncementContainer extends StatelessWidget {
-  const AnnouncementContainer({super.key});
+  const AnnouncementContainer({super.key, required this.data});
+
+  final Announcement data;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +34,8 @@ class AnnouncementContainer extends StatelessWidget {
               width: 108,
               height: 98,
               decoration: ShapeDecoration(
-                image: const DecorationImage(
-                  image: AssetImage('Assets/defaul.png'),
+                image: DecorationImage(
+                  image: NetworkImage(data.imageUrl),
                   fit: BoxFit.fill,
                 ),
                 shape: RoundedRectangleBorder(
@@ -53,13 +56,12 @@ class AnnouncementContainer extends StatelessWidget {
                       SizedBox(
                         width: 173,
                         child: Text(
-                          'Apple iPad Pro 12.9" (2020) 256GB Wi-Fi Space Grey',
+                          data.title,
                           style: TextStyle(
                             color: Color(0xFF313131),
                             fontSize: 12,
                             fontFamily: 'SF Pro Display',
                             fontWeight: FontWeight.w600,
-
                           ),
                         ),
                       ),
@@ -68,7 +70,7 @@ class AnnouncementContainer extends StatelessWidget {
                   ),
                   const SizedBox(height: 8,),
                   Text(
-                    'Le Vendeur John E.',
+                   data.creatorName,
                     style: TextStyle(
                       color: Color(0xFF9B9FAA),
                       fontSize: 12,
@@ -82,7 +84,7 @@ class AnnouncementContainer extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Text(
-                        '18 500 DZD',
+                        data.stringPrice,
                         style: TextStyle(
                           color: Color(0xFFED5434),
                           fontSize: 16,
