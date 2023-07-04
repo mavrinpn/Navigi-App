@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/bloc/auth/auth_cubit.dart';
 import 'package:smart/data/app_repository.dart';
 import 'package:smart/feature/create_announcement/ui/creating_screens.dart';
+import 'package:smart/feature/main/bloc/announcement_cubit.dart';
+import 'package:smart/feature/main/bloc/announcement_manager.dart';
 import 'package:smart/feature/registration/ui/register_screen.dart';
 import 'package:smart/services/custom_bloc_observer.dart';
 import 'package:smart/utils/animations.dart';
@@ -101,6 +103,9 @@ class MyRepositoryProviders extends StatelessWidget {
       RepositoryProvider(
         create: (_) => CategoriesManager(client: client),
       ),
+      RepositoryProvider(
+        create: (_) => AnnouncementManager(client: client),
+      ),
     ], child: const MyBlocProviders());
   }
 }
@@ -149,6 +154,13 @@ class MyBlocProviders extends StatelessWidget {
         create: (_) => CreatingAnnouncementCubit(
             creatingAnnouncementManager:
                 RepositoryProvider.of<CreatingAnnouncementManager>(context),
+            ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => AnnouncementCubit(
+            announcementManager:
+                RepositoryProvider.of<AnnouncementManager>(context),
             ),
         lazy: false,
       ),

@@ -75,7 +75,7 @@ class CreatingAnnouncementManager {
 
     for (String path in paths) {
       try {
-        final file = await storage.createFile(bucketId: anouncmentsImagesId, fileId: ID.unique(), file: InputFile.fromPath(path: path));
+        final file = await storage.createFile(bucketId: announcementsImagesId, fileId: ID.unique(), file: InputFile.fromPath(path: path));
         urls.add(createViewUrl(file.$id, file.bucketId));
       // ignore: empty_catches
       } catch (e) {}
