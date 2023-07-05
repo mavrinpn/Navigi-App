@@ -17,18 +17,8 @@ class AnnouncementContainer extends StatefulWidget {
 }
 
 class _AnnouncementContainerState extends State<AnnouncementContainer> {
-  bool loading = true;
-
   @override
   Widget build(BuildContext context) {
-    widget._image.resolve(const ImageConfiguration()).addListener(
-      ImageStreamListener(
-            (info, call) {
-          loading = false;
-          setState(() {});
-        },
-      ),
-    );
     return Padding(
       padding: const EdgeInsets.all(15),
       child: InkWell(
@@ -54,26 +44,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
           ),
           child: Row(
             children: [
-              loading ? Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  width: 108,
-                  height: 98,
-
-                  decoration: BoxDecoration(
-                      color: Colors.grey[300]!,
-                      borderRadius: BorderRadius.circular(14)
-                  ),
-                ),
-              ) : Container(
-                width: 108,
-                height: 98,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    image: DecorationImage(
-                        image:widget._image, fit: BoxFit.cover)),
-              ),
+              CustomNetworkImage(width: 108, height: 98, url: widget.announcement.imageUrl),
               const SizedBox(
                 width: 10,
               ),

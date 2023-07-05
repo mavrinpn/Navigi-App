@@ -1,3 +1,8 @@
+import 'package:smart/models/static_parameters.dart';
+
+part 'full_announcement.dart';
+part 'creator_data.dart';
+
 class Announcement {
   final String title;
   final String creatorName;
