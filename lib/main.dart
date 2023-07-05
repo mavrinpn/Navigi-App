@@ -14,6 +14,7 @@ import 'package:smart/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'bloc/app/app_cubit.dart';
+import 'feature/announcement/bloc/announcement_cubit.dart';
 import 'feature/announcement/ui/announcement_screen.dart';
 import 'feature/create_announcement/bloc/creating_blocs.dart';
 import 'feature/create_announcement/data/categories_manager.dart';
@@ -156,6 +157,13 @@ class MyBlocProviders extends StatelessWidget {
         create: (_) => CreatingAnnouncementCubit(
             creatingAnnouncementManager:
                 RepositoryProvider.of<CreatingAnnouncementManager>(context),
+            ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => AnnouncementsCubit(
+            announcementManager:
+                RepositoryProvider.of<AnnouncementManager>(context),
             ),
         lazy: false,
       ),

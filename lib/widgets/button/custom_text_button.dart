@@ -50,7 +50,7 @@ class CustomTextButton extends StatelessWidget {
       ),
       Text(
         text,
-        style: AppTypography.font14white,
+        style: styleText,
       )
     ],
   ), super(key: key);

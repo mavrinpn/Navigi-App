@@ -13,7 +13,7 @@ class AnnouncementManager {
   static const int _amount = 3;
 
   List<Announcement> announcements = [];
-  AnnouncementData? _lastAnnouncement;
+  Announcement? lastAnnouncement;
 
   Future<void> getAllAnnouncements() async {
     try {
@@ -38,16 +38,16 @@ class AnnouncementManager {
     }
   }
 
-  Future<AnnouncementData> getAnnouncementById(String id) async {
-    if (id == _lastAnnouncement?.announcementId) {
-      return _lastAnnouncement!;
+  Future<Announcement> getAnnouncementById(String id) async {
+    if (id == lastAnnouncement?.announcementId) {
+      return lastAnnouncement!;
     } else {
       final res = await _databases.getDocument(
           databaseId: postDatabase,
           collectionId: postCollection,
           documentId: id);
-      final announcement = AnnouncementData.fromJson(json: res.data);
-      _lastAnnouncement = announcement;
+      final announcement = Announcement.fromJson(json: res.data);
+      lastAnnouncement = announcement;
       return announcement;
     }
   }

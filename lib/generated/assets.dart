@@ -27,5 +27,4 @@ class Assets {
   static const String iconsPhone = 'Assets/icons/phone.svg';
   static const String iconsProfile = 'Assets/icons/profile.svg';
   static const String iconsSearch = 'Assets/icons/search.svg';
-
 }

@@ -1,5 +1,3 @@
-part of 'announcement.dart';
-
 class CreatorData {
   final String name;
   final double score;

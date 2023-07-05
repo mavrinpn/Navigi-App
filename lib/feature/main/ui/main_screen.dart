@@ -34,7 +34,7 @@ class _MainScreenState extends State<MainScreen> {
         double maxScroll = _controller.position.maxScrollExtent;
         double currentScroll = _controller.position.pixels;
         if (currentScroll == maxScroll) {
-          BlocProvider.of<AnnouncementCubit>(context).loadAnnounces();
+          BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces();
         }
       }
     });
@@ -142,7 +142,7 @@ class _MainScreenState extends State<MainScreen> {
                 ],
               ),
             ),
-            BlocBuilder<AnnouncementCubit, AnnouncementState>(
+            BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
               builder: (context, state) {
                 var list = repository.announcements
                     .map((e) => Container(

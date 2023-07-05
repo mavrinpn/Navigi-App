@@ -9,7 +9,7 @@ class CustomNetworkImage extends StatefulWidget {
       required String url})
       : _image = NetworkImage(url);
 
-  NetworkImage _image;
+  final NetworkImage _image;
   final double width;
   final double height;
 

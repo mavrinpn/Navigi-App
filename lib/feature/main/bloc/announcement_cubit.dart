@@ -5,10 +5,10 @@ import 'announcement_manager.dart';
 
 part 'announcement_state.dart';
 
-class AnnouncementCubit extends Cubit<AnnouncementState> {
+class AnnouncementsCubit extends Cubit<AnnouncementsState> {
   final AnnouncementManager _announcementManager;
 
-  AnnouncementCubit({required AnnouncementManager announcementManager})
+  AnnouncementsCubit({required AnnouncementManager announcementManager})
       : _announcementManager = announcementManager,
         super(AnnouncementInitial()) {
     loadAnnounces();
@@ -18,7 +18,7 @@ class AnnouncementCubit extends Cubit<AnnouncementState> {
     emit(AnnouncementsLoadingState());
     try {
       await _announcementManager.getAllAnnouncements();
-      await Future.delayed(const Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 3));
       emit(AnnouncementsSuccessState());
     } catch (e) {
       emit(AnnouncementsFailState());
