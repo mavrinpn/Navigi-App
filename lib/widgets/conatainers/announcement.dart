@@ -5,6 +5,8 @@ import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 
+import '../images/network_image.dart';
+
 class AnnouncementContainer extends StatefulWidget {
   AnnouncementContainer({super.key, required this.announcement}) : _image = NetworkImage(announcement.imageUrl);
 
