@@ -14,6 +14,7 @@ import 'package:smart/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'bloc/app/app_cubit.dart';
+import 'feature/announcement/ui/announcement_screen.dart';
 import 'feature/create_announcement/bloc/creating_blocs.dart';
 import 'feature/create_announcement/data/categories_manager.dart';
 import 'feature/create_announcement/data/creating_announcement_manager.dart';
@@ -76,6 +77,7 @@ class _MyAppState extends State<MyApp> {
         '/loading_screen': (context) => const LoadingScreen(),
         '/create_options_screen': (context) => const OptionsScreen(),
         '/main_screen' : (context) => const MainScreen(),
+        '/announcement_screen' : (context) => const AnnouncementScreen(),
       },
       color: const Color(0xff292B57),
     );

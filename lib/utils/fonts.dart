@@ -9,7 +9,7 @@ class AppTypography {
   static const _colorBlack = AppColors.black;
   static const _lightGray = AppColors.lightGray;
   static const _white = Colors.white;
-  static const _pink = AppColors.red;
+  static const _red = AppColors.red;
   static const _font = TextStyle(fontFamily: 'SF Pro Display',);
 
   static final font14black = _font.copyWith(
@@ -43,14 +43,20 @@ class AppTypography {
     fontSize: 17,
   );
   static final font16UnderLinePink = _font.copyWith(
-    color: _pink,
+    color: _red,
     fontSize: 16,
     decoration: TextDecoration.underline,
   );
-  static final font10pink = _font.copyWith(
-    color: _pink,
+  static final font10red = _font.copyWith(
+    color: _red,
     fontSize: 10,
     fontWeight: FontWeight.w600,
+    decoration: TextDecoration.none,
+  );
+  static final font22red = _font.copyWith(
+    color: _red,
+    fontSize: 22,
+    fontWeight: FontWeight.w700,
     decoration: TextDecoration.none,
   );
   static final font10lightGray = _font.copyWith(
@@ -96,5 +102,10 @@ class AppTypography {
     color: AppColors.red,
     fontSize: 16,
     fontWeight: FontWeight.w700
+  );
+  static final font18black = _font.copyWith(
+    color: _colorBlack,
+    fontSize: 18,
+    fontWeight: FontWeight.w500
   );
 }

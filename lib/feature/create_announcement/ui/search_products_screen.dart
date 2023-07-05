@@ -88,7 +88,6 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                                   cubit.setItemName(e.name);
                                   creatingAnnouncementManager.setItem(e);
                                   setState(() {});
-                                  Navigator.pushNamed(context, '/create_pick_photos_screen');
                                 },
                                 name: e.name,
                               ),

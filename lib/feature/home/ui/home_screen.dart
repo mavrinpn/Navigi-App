@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 label: 'Mon profil',
               ),
             ],
-            selectedLabelStyle: AppTypography.font10pink,
+            selectedLabelStyle: AppTypography.font10red,
             unselectedLabelStyle: AppTypography.font10lightGray,
             onTap: onSelectTab,
             selectedItemColor: AppColors.red,

@@ -34,7 +34,7 @@ class CustomTextButton extends StatelessWidget {
     required this.callback,
     required this.text,
     required this.styleText,
-    this.width = double.infinity,
+    this.width = 1000,
     this.height = 52,
     this.padding = EdgeInsets.zero,
     this.isTouch = false,
