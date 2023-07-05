@@ -1,3 +1,5 @@
+import 'package:smart/models/static_parameters.dart';
+
 part 'full_announcement.dart';
 part 'creator_data.dart';
 

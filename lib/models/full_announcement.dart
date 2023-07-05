@@ -2,27 +2,46 @@ part of 'announcement.dart';
 
 class AnnouncementData {
   final String title;
-  final String creatorName;
+  final String description;
+  final int totalViews;
   final double price;
-  final String imageUrl;
+  final List images;
   final String announcementId;
+  final StaticParameters staticParameters;
+  final CreatorData creatorData;
+  final String _createdAt;
 
   AnnouncementData(
       {required this.title,
-        required this.price,
-        required this.imageUrl,
-        required this.announcementId,
-        required this.creatorName});
+      required String created,
+      required this.description,
+      required this.totalViews,
+      required this.price,
+      required this.images,
+      required this.announcementId,
+      required this.staticParameters,
+      required this.creatorData})
+      : _createdAt = created;
 
   AnnouncementData.fromJson({required Map<String, dynamic> json})
       : title = json['name'],
-        creatorName = 'aboba',
+        description = json['description'],
+        creatorData = CreatorData(),
         price = double.parse(json['price'].toString()),
-        imageUrl = json['images'][0],
+        images = json['images'],
+        staticParameters = StaticParameters(parameters: json['parametrs']),
+        totalViews = json['total_views'],
+        _createdAt = json['\$createdAt'],
         announcementId = json['\$id'];
 
   @override
   String toString() => title;
+
+  String get createdAt {
+    final gotData = DateTime.parse(_createdAt);
+    return '${gotData.month}.${gotData.day} ${gotData.hour}:${gotData.minute}';
+
+  } //TODO как-то распарсить надо
 
   String get stringPrice {
     String reversed = price.toString().split('.')[0].split('').reversed.join();
