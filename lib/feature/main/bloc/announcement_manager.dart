@@ -48,8 +48,15 @@ class AnnouncementManager {
           collectionId: postCollection,
           documentId: id);
       final announcement = Announcement.fromJson(json: res.data);
+      incTotalViews(announcement.announcementId, announcement.totalViews);
       lastAnnouncement = announcement;
       return announcement;
+    }
+  }
+
+  void incTotalViews(String id, int views) async {
+    if (!_viewdAnnouncements.contains(id)) {
+      _databases.updateDocument(databaseId: postDatabase, collectionId: postCollection, documentId: id, data: {'total_views': views + 1});
     }
   }
 }
