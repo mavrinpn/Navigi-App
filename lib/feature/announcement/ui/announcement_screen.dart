@@ -8,7 +8,9 @@ import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 
+
 import '../../../utils/colors.dart';
+import '../../../widgets/accaunt/account_small_info.dart';
 import '../../../widgets/button/custom_icon_button.dart';
 import '../../../widgets/images/network_image.dart';
 import '../../main/bloc/announcement_cubit.dart';
@@ -47,7 +49,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.pushReplacementNamed(context, '/home_screen');
                     },
                     child: const Icon(
                       Icons.arrow_back,
@@ -110,7 +112,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         highlightColor: AppColors.empty,
                         splashColor: AppColors.empty,
                         onTap: () {
-                          Navigator.pushReplacement(
+                          Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (_) => const PhotoViews()));
@@ -315,6 +317,9 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         softWrap: true,
                       ),
                     ),
+                    SizedBox(height: 26,),
+                    AccountSmallInfo(creatorData: lastAnnouncement.creatorData,),
+                    SizedBox(height: 100,)
                   ],
                 ),
               ),
