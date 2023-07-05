@@ -16,7 +16,7 @@ class AnnouncementManager {
 
   List<Announcement> announcements = [];
 
-  Future<void> getAnnouncements() async {
+  Future<void> getAllAnnouncements() async {
     try {
       final res = await _databases.listDocuments(
           databaseId: postDatabase,

@@ -1,21 +1,20 @@
-part 'full_announcement.dart';
-part 'creator_data.dart';
+part of 'announcement.dart';
 
-class Announcement {
+class AnnouncementData {
   final String title;
   final String creatorName;
   final double price;
   final String imageUrl;
   final String announcementId;
 
-  Announcement(
+  AnnouncementData(
       {required this.title,
-      required this.price,
-      required this.imageUrl,
-      required this.announcementId,
-      required this.creatorName});
+        required this.price,
+        required this.imageUrl,
+        required this.announcementId,
+        required this.creatorName});
 
-  Announcement.fromJson({required Map<String, dynamic> json})
+  AnnouncementData.fromJson({required Map<String, dynamic> json})
       : title = json['name'],
         creatorName = 'aboba',
         price = double.parse(json['price'].toString()),
@@ -31,7 +30,7 @@ class Announcement {
     for (int i = 0; i < reversed.length; i += 4) {
       try {
         reversed = '${reversed.substring(0, i)} ${reversed.substring(i)}';
-      // ignore: empty_catches
+        // ignore: empty_catches
       } catch (e) {}
     }
 
