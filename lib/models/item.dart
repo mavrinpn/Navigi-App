@@ -2,7 +2,7 @@ import 'dart:convert';
 
 part 'item_parameters.dart';
 
-part 'variable_parameters.dart';
+part 'parameter.dart';
 
 class SubCategoryItem {
   final String _name;
@@ -45,12 +45,12 @@ class SubCategoryItem {
         variableParametersList: _getVariableParameters());
   }
 
-  List<VariableParameter> _getVariableParameters() {
-    List<VariableParameter> vp = [];
+  List<Parameter> _getVariableParameters() {
+    List<Parameter> vp = [];
 
     _parameters.forEach((key, value) {
       if (value.runtimeType == List<dynamic>) {
-        vp.add(VariableParameter(key: key, variants: value));
+        vp.add(Parameter(key: key, variants: value));
       }
     });
     return vp;

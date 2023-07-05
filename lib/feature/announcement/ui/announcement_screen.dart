@@ -8,12 +8,11 @@ import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 
-
 import '../../../utils/colors.dart';
 import '../../../widgets/accaunt/account_small_info.dart';
 import '../../../widgets/button/custom_icon_button.dart';
 import '../../../widgets/images/network_image.dart';
-import '../../main/bloc/announcement_cubit.dart';
+import '../bloc/announcement_cubit.dart';
 
 int activePage = 0;
 
@@ -33,12 +32,9 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
         PageController(viewportFraction: 0.9, initialPage: activePage);
 
     final width = MediaQuery.of(context).size.width;
-    return BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
+    return BlocBuilder<AnnouncementCubit, AnnouncementState>(
       builder: (context, state) {
-        if (state is AnnouncementsSuccessState) {
-          final lastAnnouncement =
-              RepositoryProvider.of<AnnouncementManager>(context).lastAnnouncement;
-
+        if (state is AnnouncementSuccessState) {
           return Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: false,
@@ -49,7 +45,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.pushReplacementNamed(context, '/home_screen');
+                      Navigator.pop(context);
                     },
                     child: const Icon(
                       Icons.arrow_back,
@@ -112,13 +108,13 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         highlightColor: AppColors.empty,
                         splashColor: AppColors.empty,
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (_) => const PhotoViews()));
                         },
                         child: PageView.builder(
-                            itemCount: lastAnnouncement!.images.length,
+                            itemCount: state.data.images.length,
                             pageSnapping: true,
                             controller: pageController,
                             onPageChanged: (int page) {
@@ -132,7 +128,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                                 child: CustomNetworkImage(
                                   width: 320,
                                   height: 258,
-                                  url: lastAnnouncement.images[index],
+                                  url: state.data.images[index],
                                 ),
                               );
                             }),
@@ -143,8 +139,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: indicators(
-                          lastAnnouncement.images.length, activePage),
+                      children:
+                          indicators(state.data.images.length, activePage),
                     ),
                     const SizedBox(
                       height: 12,
@@ -167,7 +163,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                                 width: 6,
                               ),
                               Text(
-                                lastAnnouncement.createdAt,
+                                state.data.createdAt,
                                 style: AppTypography.font14lightGray
                                     .copyWith(fontSize: 12),
                               ),
@@ -184,7 +180,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                               const SizedBox(
                                 width: 6,
                               ),
-                              Text(lastAnnouncement.totalViews.toString(),
+                              Text(state.data.totalViews.toString(),
                                   style: AppTypography.font14lightGray
                                       .copyWith(fontSize: 12)),
                             ],
@@ -197,9 +193,27 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           horizontal: 15, vertical: 6),
                       alignment: Alignment.topLeft,
                       child: Text(
-                        lastAnnouncement.title,
+                        state.data.title,
                         style: AppTypography.font18black,
                         softWrap: true,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 12, 15, 18),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset('Assets/icons/point.svg'),
+                          RichText(
+                              text: TextSpan(children: [
+                            TextSpan(
+                                text: ' ${state.data.creatorData.place}',
+                                style: AppTypography.font14black),
+                            TextSpan(
+                                text: '  ${state.data.creatorData.distance}',
+                                style: AppTypography.font14lightGray),
+                          ]))
+                        ],
                       ),
                     ),
                     Padding(
@@ -209,7 +223,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            lastAnnouncement.stringPrice,
+                            state.data.stringPrice,
                             style: AppTypography.font22red,
                           ),
                         ],
@@ -270,8 +284,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       physics: const BouncingScrollPhysics(
                           decelerationRate: ScrollDecelerationRate.fast),
                       child: Column(
-                        children: lastAnnouncement
-                            .staticParameters.parameters
+                        children: state.data.staticParameters.parameters
                             .map((e) => Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 15, vertical: 5),
@@ -312,22 +325,30 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width - 30,
                       child: Text(
-                        lastAnnouncement.description,
+                        state.data.description,
                         style: AppTypography.font14black.copyWith(height: 2),
                         softWrap: true,
                       ),
                     ),
-                    SizedBox(height: 26,),
-                    AccountSmallInfo(creatorData: lastAnnouncement.creatorData,),
-                    SizedBox(height: 100,)
+                    const SizedBox(
+                      height: 26,
+                    ),
+                    AccountSmallInfo(
+                      creatorData: state.data.creatorData,
+                    ),
+                    const SizedBox(
+                      height: 100,
+                    )
                   ],
                 ),
               ),
             ),
           );
-        }else{
-          return Center(
-            child: AppAnimations.circleFadingAnimation,
+        } else {
+          return Scaffold(
+            body: Center(
+              child: AppAnimations.circleFadingAnimation,
+            ),
           );
         }
       },
@@ -363,47 +384,54 @@ class _PhotoViewsState extends State<PhotoViews> {
     final currentAnnouncement =
         RepositoryProvider.of<AnnouncementManager>(context).lastAnnouncement;
 
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (_) => const AnnouncementScreen()));
+        return true;
+      },
+      child: Scaffold(
         backgroundColor: Colors.black,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            InkWell(
-                onTap: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const AnnouncementScreen()));
-                },
-                child: const Icon(Icons.arrow_back))
-          ],
-        ),
-      ),
-      body: PhotoViewGallery.builder(
-        scrollPhysics: const BouncingScrollPhysics(),
-        builder: (BuildContext context, int index) {
-          return PhotoViewGalleryPageOptions(
-            imageProvider: NetworkImage(currentAnnouncement.images[index]),
-            initialScale: PhotoViewComputedScale.contained * 0.8,
-          );
-        },
-        onPageChanged: (int page) {
-          setState(() {
-            activePage = page;
-          });
-        },
-        itemCount: currentAnnouncement!.images.length,
-        loadingBuilder: (context, event) => const Center(
-          child: SizedBox(
-            width: 20.0,
-            height: 20.0,
-            child: CircularProgressIndicator(),
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              InkWell(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const AnnouncementScreen()));
+                  },
+                  child: const Icon(Icons.arrow_back))
+            ],
           ),
         ),
-        pageController: pageController,
+        body: PhotoViewGallery.builder(
+          scrollPhysics: const BouncingScrollPhysics(),
+          builder: (BuildContext context, int index) {
+            return PhotoViewGalleryPageOptions(
+              imageProvider: NetworkImage(currentAnnouncement.images[index]),
+              initialScale: PhotoViewComputedScale.contained * 0.8,
+            );
+          },
+          onPageChanged: (int page) {
+            setState(() {
+              activePage = page;
+            });
+          },
+          itemCount: currentAnnouncement!.images.length,
+          loadingBuilder: (context, event) => const Center(
+            child: SizedBox(
+              width: 20.0,
+              height: 20.0,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+          pageController: pageController,
+        ),
       ),
     );
   }

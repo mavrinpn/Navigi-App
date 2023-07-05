@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:smart/models/announcement.dart';
 
 import '../../main/bloc/announcement_manager.dart';
 
@@ -13,12 +13,12 @@ class AnnouncementCubit extends Cubit<AnnouncementState> {
         super(AnnouncementInitial());
 
   void loadAnnouncementById(String id) async {
-    emit(AnnouncementsLoadingState());
+    emit(AnnouncementLoadingState());
     try {
-      await _announcementManager.getAnnouncementById(id);
-      emit(AnnouncementsSuccessState());
+      final data = await _announcementManager.getAnnouncementById(id);
+      emit(AnnouncementSuccessState(data: data));
     } catch (e) {
-      emit(AnnouncementsFailState());
+      emit(AnnouncementFailState());
       rethrow;
     }
   }

@@ -8,13 +8,13 @@ class StaticParameters {
   StaticParameters({required String parameters})
       : _stringParameters = parameters;
 
-  List<VariableParameter> _getStaticParameters() {
-    List<VariableParameter> sp = [];
+  List<Parameter> _getStaticParameters() {
+    List<Parameter> sp = [];
     jsonDecode(_stringParameters).forEach((key, value) {
-      sp.add(VariableParameter(key: key, variants: [value]));
+      sp.add(Parameter(key: key, variants: [value]));
     });
     return sp;
   }
 
-  List<VariableParameter> get parameters => _getStaticParameters();
+  List<Parameter> get parameters => _getStaticParameters();
 }

@@ -10,4 +10,5 @@ class AppColors {
   static const black = Color(0xff323232);
   static const whiteGray = Color(0xffDEE2E7);
   static const backgroundLightGray = Color(0xffF4F5F6);
+  static const stars = Color(0xffFFB039);
 }

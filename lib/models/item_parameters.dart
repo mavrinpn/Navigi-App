@@ -2,7 +2,7 @@ part of 'item.dart';
 
 class ItemParameters {
   List<String> staticParameters;
-  List<VariableParameter> variableParametersList;
+  List<Parameter> variableParametersList;
 
   ItemParameters({required this.staticParameters, required this.variableParametersList});
 

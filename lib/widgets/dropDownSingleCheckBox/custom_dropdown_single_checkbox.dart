@@ -13,7 +13,7 @@ class CustomDropDownSingleCheckBox extends StatefulWidget {
       required this.currentVariable});
 
   final Function(String?) onChange;
-  final VariableParameter parameters;
+  final Parameter parameters;
   final String currentVariable;
 
   @override

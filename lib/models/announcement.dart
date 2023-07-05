@@ -41,9 +41,14 @@ class Announcement {
 
   String get createdAt {
     final gotData = DateTime.parse(_createdAt);
-    return '${gotData.month}.${gotData.day} ${gotData.hour}:${gotData.minute}';
+    final String month = _addZeroInStart(gotData.month);
+    final String day = _addZeroInStart(gotData.day);
+    final String hour = _addZeroInStart(gotData.hour);
+    final String minutes = _addZeroInStart(gotData.minute);
+    return '$month.$day $hour:$minutes';
+  }
 
-  } //TODO как-то распарсить надо
+  String _addZeroInStart(int num) => num.toString().length > 1 ? num.toString() : '0$num';
 
   String get stringPrice {
     String reversed = price.toString().split('.')[0].split('').reversed.join();

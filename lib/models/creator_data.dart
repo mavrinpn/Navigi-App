@@ -7,7 +7,7 @@ class CreatorData {
   CreatorData(
       {this.name = 'John E.',
       this.place = 'Ville',
-      this.score = 4.9,
+      this.score = 4.1,
       int d = 4})
       : _distance = d;
 

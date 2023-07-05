@@ -1,12 +1,14 @@
 part of 'announcement_cubit.dart';
 
-@immutable
 abstract class AnnouncementState {}
 
 class AnnouncementInitial extends AnnouncementState {}
 
-class AnnouncementsLoadingState extends AnnouncementState {}
+class AnnouncementLoadingState extends AnnouncementState {}
 
-class AnnouncementsSuccessState extends AnnouncementState {}
+class AnnouncementSuccessState extends AnnouncementState {
+  Announcement data;
+  AnnouncementSuccessState({required this.data});
+}
 
-class AnnouncementsFailState extends AnnouncementState {}
+class AnnouncementFailState extends AnnouncementState {}

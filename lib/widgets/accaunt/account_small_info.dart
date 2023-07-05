@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/models/creator_data.dart';
+import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 
 class AccountSmallInfo extends StatefulWidget {
@@ -94,8 +95,8 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                             valueLabelMargin: EdgeInsets.zero,
                             maxValueVisibility: true,
                             valueLabelVisibility: false,
-                            starOffColor: const Color(0xffe7e8ea),
-                            starColor: Colors.yellow,
+                            starOffColor: AppColors.disable,
+                            starColor: AppColors.stars,
                           ),
                         ),
                         const SizedBox(width: 12),

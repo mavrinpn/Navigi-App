@@ -12,6 +12,7 @@ class AnnouncementManager {
   String? _lastId;
   static const int _amount = 3;
 
+  List<String> _viewdAnnouncements = [];
   List<Announcement> announcements = [];
   Announcement? lastAnnouncement;
 
