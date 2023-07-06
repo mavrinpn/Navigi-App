@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/bloc/auth/auth_cubit.dart';
 import 'package:smart/data/app_repository.dart';
+import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
+import 'package:smart/feature/create_announcement/data/places_manager.dart';
 import 'package:smart/feature/create_announcement/ui/creating_screens.dart';
 import 'package:smart/feature/main/bloc/announcement_cubit.dart';
 import 'package:smart/feature/main/bloc/announcement_manager.dart';
@@ -21,6 +23,7 @@ import 'feature/create_announcement/bloc/creating_blocs.dart';
 import 'feature/create_announcement/data/categories_manager.dart';
 import 'feature/create_announcement/data/creating_announcement_manager.dart';
 import 'feature/create_announcement/data/item_manager.dart';
+import 'feature/create_announcement/ui/search_place_screen.dart';
 import 'feature/home/ui/home_screen.dart';
 import 'feature/login/ui/login_first_screen.dart';
 import 'feature/login/ui/login_second_screen.dart';
@@ -76,10 +79,11 @@ class _MyAppState extends State<MyApp> {
         '/create_pick_photos_screen': (context) => const PickPhotosScreen(),
         '/create_by_not_by_screen': (context) => const ByNotByScreen(),
         '/create_description': (context) => const DescriptionScreen(),
+        '/create_search_places_screen': (context) => const SearchPlaceScreen(),
         '/loading_screen': (context) => const LoadingScreen(),
         '/create_options_screen': (context) => const OptionsScreen(),
-        '/main_screen' : (context) => const MainScreen(),
-        '/announcement_screen' : (context) => const AnnouncementScreen(),
+        '/main_screen': (context) => const MainScreen(),
+        '/announcement_screen': (context) => const AnnouncementScreen(),
       },
       color: const Color(0xff292B57),
     );
@@ -112,13 +116,15 @@ class MyRepositoryProviders extends StatelessWidget {
       RepositoryProvider(
         create: (_) => AnnouncementManager(client: client),
       ),
+      RepositoryProvider(
+        create: (_) => PlacesManager(databaseManager: dbManager),
+      ),
     ], child: const MyBlocProviders());
   }
 }
 
 class MyBlocProviders extends StatelessWidget {
   const MyBlocProviders({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +142,8 @@ class MyBlocProviders extends StatelessWidget {
       BlocProvider(
         create: (_) => CategoryCubit(
             categoriesManager:
-                RepositoryProvider.of<CategoriesManager>(context))..loadCategories(),
+                RepositoryProvider.of<CategoriesManager>(context))
+          ..loadCategories(),
         lazy: false,
       ),
       BlocProvider(
@@ -156,23 +163,31 @@ class MyBlocProviders extends StatelessWidget {
       ),
       BlocProvider(
         create: (_) => CreatingAnnouncementCubit(
-            creatingAnnouncementManager:
-                RepositoryProvider.of<CreatingAnnouncementManager>(context),
-            ),
+          creatingAnnouncementManager:
+              RepositoryProvider.of<CreatingAnnouncementManager>(context),
+        ),
         lazy: false,
       ),
       BlocProvider(
         create: (_) => AnnouncementsCubit(
-            announcementManager:
-                RepositoryProvider.of<AnnouncementManager>(context),
-            ),
+          announcementManager:
+              RepositoryProvider.of<AnnouncementManager>(context),
+        ),
         lazy: false,
       ),
       BlocProvider(
         create: (_) => AnnouncementCubit(
-            announcementManager:
-                RepositoryProvider.of<AnnouncementManager>(context),
-            ),
+          announcementManager:
+              RepositoryProvider.of<AnnouncementManager>(context),
+        ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => PlacesCubit(
+          creatingManager:
+              RepositoryProvider.of<CreatingAnnouncementManager>(context),
+          placesManager: RepositoryProvider.of<PlacesManager>(context),
+        ),
         lazy: false,
       ),
     ], child: const MyApp());
@@ -197,9 +212,7 @@ class HomePage extends StatelessWidget {
               child: LoginFirstScreen(),
             );
           } else {
-            return Center(
-              child: AppAnimations.circleFadingAnimation
-            );
+            return Center(child: AppAnimations.circleFadingAnimation);
           }
         },
       ),

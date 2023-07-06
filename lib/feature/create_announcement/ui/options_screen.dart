@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
@@ -116,7 +117,8 @@ class _OptionsScreenState extends State<OptionsScreen> {
           callback: () {
             repository.setPrice(priseController.text);
             repository.setInfoFormItem();
-            Navigator.pushNamed(context, '/create_description');
+            BlocProvider.of<PlacesCubit>(context).initialLoad();
+            Navigator.pushNamed(context, '/create_search_places_screen');
           },
           isTouch: isTouch,
         ),
