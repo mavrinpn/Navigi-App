@@ -206,7 +206,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => MapSample(placeData: state.data.placeData,)));
+                                  builder: (_) => Aboba(placeData: state.data.placeData,)));
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
