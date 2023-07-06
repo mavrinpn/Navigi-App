@@ -58,27 +58,22 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
           const SizedBox(
             height: 8,
           ),
-          InkWell(
-            onTap: () {},
-            focusColor: AppColors.empty,
-            hoverColor: AppColors.empty,
-            highlightColor: AppColors.empty,
-            splashColor: AppColors.empty,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SvgPicture.asset('Assets/icons/point.svg'),
-                RichText(
-                    text: TextSpan(children: [
-                  TextSpan(
-                      text: ' ${widget.announcement.creatorData.place}',
-                      style: AppTypography.font14black),
-                  TextSpan(
-                      text: '  ${widget.announcement.creatorData.distance}',
-                      style: AppTypography.font14lightGray),
-                ]))
-              ],
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SvgPicture.asset('Assets/icons/point.svg'),
+              RichText(
+                maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  text: TextSpan(children: [
+                TextSpan(
+                    text: ' ${widget.announcement.creatorData.place.name}',
+                    style: AppTypography.font14black),
+                TextSpan(
+                    text: '  ${widget.announcement.creatorData.distance}',
+                    style: AppTypography.font14lightGray),
+              ]))
+            ],
           ),
           const SizedBox(
             height: 8,
