@@ -104,7 +104,7 @@ class MyRepositoryProviders extends StatelessWidget {
         create: (_) => CreatingAnnouncementManager(client: client),
       ),
       RepositoryProvider(
-        create: (_) => ItemManager(client: client),
+        create: (_) => ItemManager(databaseManager: dbManager),
       ),
       RepositoryProvider(
         create: (_) => CategoriesManager(databaseManger: dbManager),

@@ -41,4 +41,16 @@ class DatabaseManger {
       rethrow;
     }
   }
+
+  Future<List<SubCategoryItem>> loadItems(String subcategory) async {
+    final res = await _databases.listDocuments(
+        databaseId: postDatabase,
+        collectionId: itemsCollection,
+        queries: [Query.search('sub_category', subcategory)]);
+    List<SubCategoryItem> items = [];
+    for (var doc in res.documents) {
+      items.add(SubCategoryItem.fromJson(doc.data)..initialParameters());
+    }
+    return items;
+  }
 }

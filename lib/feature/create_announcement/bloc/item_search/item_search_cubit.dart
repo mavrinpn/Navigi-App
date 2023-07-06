@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import '../../../../data/app_repository.dart';
+
 import '../../../../models/item.dart';
 import '../../data/creating_announcement_manager.dart';
 import '../../data/item_manager.dart';
@@ -11,43 +11,37 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
   final ItemManager itemManager;
 
   ItemSearchCubit({required this.creatingManager, required this.itemManager})
-      : super(ItemSearchInitial()) {
-    itemManager.searchState.stream.listen((event) {
-      if (event == LoadingStateEnum.loading) emit(SearchLoadingState());
-      if (event == LoadingStateEnum.fail) emit(SearchFailState());
-      if (event == LoadingStateEnum.success) {
-        if (itemManager.searchedItems.isNotEmpty) {
-          emit(SearchSuccessState());
-        } else {
-          emit(SearchEmptyState());
-        }
-      }
-    });
-  }
+      : super(ItemSearchInitial());
 
   List<SubCategoryItem> getItems() => itemManager.searchedItems;
 
   void setSubcategory(String subcategory) {
-    creatingManager.setSubcategory(subcategory);
-    itemManager.searchController = '';
-    itemManager.initialLoadItems('', subcategory);
-    itemManager.clearSearchItems();
-
-    emit(SearchEmptyState());
+    emit(SearchLoadingState());
+    try {
+      creatingManager.setSubcategory(subcategory);
+      itemManager.searchController = '';
+      itemManager.initialLoadItems('', subcategory);
+      itemManager.clearSearchItems();
+      emit(SearchEmptyState());
+    } catch (e) {
+      emit(SearchFailState());
+    }
   }
 
   void setItemName(String name) => itemManager.setSearchController(name);
 
   void searchItems(String query) {
+    emit(SearchLoadingState());
     itemManager.searchController = query;
 
-    if(query.isEmpty){
+    if (query.isEmpty) {
       itemManager.clearSearchItems();
       emit(SearchEmptyState());
       return;
     }
 
     itemManager.searchItemsByName(query);
+    emit(SearchSuccessState());
   }
 
   String getSearchText() => itemManager.searchController;

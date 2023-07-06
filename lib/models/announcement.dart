@@ -1,6 +1,7 @@
 import 'package:smart/models/static_parameters.dart';
 
-import 'creator_data.dart';
+part 'creator_data.dart';
+part 'place.dart';
 
 class Announcement {
   final String title;
@@ -10,6 +11,7 @@ class Announcement {
   final List images;
   final String announcementId;
   final StaticParameters staticParameters;
+  final PlaceData placeData;
   final CreatorData creatorData;
   final String _createdAt;
 
@@ -22,7 +24,8 @@ class Announcement {
       required this.images,
       required this.announcementId,
       required this.staticParameters,
-      required this.creatorData})
+      required this.creatorData,
+      required this.placeData})
       : _createdAt = created;
 
   Announcement.fromJson({required Map<String, dynamic> json})
@@ -34,7 +37,9 @@ class Announcement {
         staticParameters = StaticParameters(parameters: json['parametrs']),
         totalViews = json['total_views'],
         _createdAt = json['\$createdAt'],
-        announcementId = json['\$id'];
+        announcementId = json['\$id'],
+        placeData = PlaceData.fish()
+  ;
 
   @override
   String toString() => title;
