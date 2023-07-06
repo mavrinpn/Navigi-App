@@ -41,7 +41,7 @@ class OutLineTextField extends StatelessWidget {
         maxLength: maxLength,
         onChanged: onChange ?? (value) {},
         style: AppTypography.font16black.copyWith(fontSize: 15),
-        textAlignVertical: TextAlignVertical.bottom,
+        textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: AppTypography.font14lightGray,

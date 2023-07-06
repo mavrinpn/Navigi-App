@@ -17,7 +17,7 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
   void loadAnnounces() async {
     emit(AnnouncementsLoadingState());
     try {
-      await _announcementManager.getAllAnnouncements();
+      await _announcementManager.addLimitAnnouncements();
       await Future.delayed(const Duration(seconds: 3));
       emit(AnnouncementsSuccessState());
     } catch (e) {

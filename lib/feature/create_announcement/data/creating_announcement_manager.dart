@@ -5,18 +5,19 @@ import 'package:rxdart/rxdart.dart';
 import '../../../data/app_repository.dart';
 import '../../../models/creating_data.dart';
 import '../../../models/models.dart';
-import '../../../utils/constants.dart';
+import '../../../services/database_manager.dart';
+import '../../../services/file_storage.dart';
 
 class CreatingAnnouncementManager {
   final Client client;
-  final Databases databases;
-  final Storage storage;
+  final DatabaseManger dbManager;
+  final FileStorageManager storageManager;
   final Account account;
 
   CreatingAnnouncementManager({required this.client})
-      : databases = Databases(client),
+      : dbManager = DatabaseManger(client: client),
         account = Account(client),
-        storage = Storage(client);
+        storageManager = FileStorageManager(client: client);
 
   CreatingData creatingData = CreatingData();
   SubCategoryItem? currentItem;
@@ -70,11 +71,8 @@ class CreatingAnnouncementManager {
 
       final List<String> urls = await uploadImages(creatingData.images ?? []);
 
-      await databases.createDocument(
-          databaseId: postDatabase,
-          collectionId: postCollection,
-          documentId: ID.unique(),
-          data: creatingData.toJason(uid, urls));
+      await dbManager.createAnnouncement(uid, urls, creatingData);
+
       images.clear();
       creatingData.clear;
       creatingState.add(LoadingStateEnum.success);
@@ -85,21 +83,8 @@ class CreatingAnnouncementManager {
   }
 
   Future<List<String>> uploadImages(List<String> paths) async {
-    List<String> urls = [];
+    List<String> urls = await storageManager.uploadImages(paths);
 
-    for (String path in paths) {
-      try {
-        final file = await storage.createFile(
-            bucketId: announcementsImagesId,
-            fileId: ID.unique(),
-            file: InputFile.fromPath(path: path));
-        urls.add(createViewUrl(file.$id, file.bucketId));
-        // ignore: empty_catches
-      } catch (e) {}
-    }
     return urls;
   }
-
-  String createViewUrl(String fileID, String bucketID) =>
-      'http://89.253.237.166/v1/storage/buckets/$bucketID/files/$fileID/view?project=64987d0f7f186b7e2b45';
 }

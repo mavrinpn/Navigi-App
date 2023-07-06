@@ -1,37 +1,25 @@
 import 'package:appwrite/appwrite.dart';
 
 import '../../../models/announcement.dart';
-import '../../../utils/constants.dart';
+import '../../../services/database_manager.dart';
 
 class AnnouncementManager {
-  final Databases _databases;
+  final DatabaseManger dbManager;
 
   AnnouncementManager({required Client client})
-      : _databases = Databases(client);
+      : dbManager = DatabaseManger(client: client);
 
   String? _lastId;
   static const int _amount = 3;
 
-  List<String> _viewdAnnouncements = [];
+  List<String> viewsAnnouncements = [];
   List<Announcement> announcements = [];
   Announcement? lastAnnouncement;
 
-  Future<void> getAllAnnouncements() async {
+  Future<void> addLimitAnnouncements() async {
     try {
-      final res = await _databases.listDocuments(
-          databaseId: postDatabase,
-          collectionId: postCollection,
-          queries: _lastId == null
-              ? [Query.limit(_amount)]
-              : [Query.limit(_amount), Query.cursorAfter(_lastId!)]);
-
-      List<Announcement> newAnnounces = [];
-      for (var doc in res.documents) {
-        newAnnounces.add(Announcement.fromJson(json: doc.data));
-      }
-
-      announcements.addAll(newAnnounces);
-      _lastId = newAnnounces.last.announcementId;
+      announcements.addAll(await dbManager.getLimitAnnouncements(_lastId, _amount));
+      _lastId = announcements.last.announcementId;
     } catch (e) {
       if (e.toString() != 'Bad state: No element') {
         rethrow;
@@ -43,11 +31,7 @@ class AnnouncementManager {
     if (id == lastAnnouncement?.announcementId) {
       return lastAnnouncement!;
     } else {
-      final res = await _databases.getDocument(
-          databaseId: postDatabase,
-          collectionId: postCollection,
-          documentId: id);
-      final announcement = Announcement.fromJson(json: res.data);
+      final announcement = await dbManager.getAnnouncementById(id);
       incTotalViews(announcement.announcementId, announcement.totalViews);
       lastAnnouncement = announcement;
       return announcement;
@@ -55,8 +39,8 @@ class AnnouncementManager {
   }
 
   void incTotalViews(String id, int views) async {
-    if (!_viewdAnnouncements.contains(id)) {
-      _databases.updateDocument(databaseId: postDatabase, collectionId: postCollection, documentId: id, data: {'total_views': views + 1}); //TODO переделать на серверную
+    if (!viewsAnnouncements.contains(id)) {
+      dbManager.incTotalViewsById(id, views);
     }
   }
 }
