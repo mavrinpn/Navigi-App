@@ -30,7 +30,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
           backgroundColor: AppColors.empty,
           elevation: 0,
           title: Text(
-            'Description',
+            'Informations',
             style: AppTypography.font20black,
           ),
         ),
@@ -39,11 +39,19 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
                     height: 16,
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      'Titre',
+                      style: AppTypography.font16black.copyWith(fontSize: 18),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
                   OutLineTextField(
                     hintText: 'name',
                     controller: titleController,
@@ -58,11 +66,19 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
                     height: 16,
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      'Description',
+                      style: AppTypography.font16black.copyWith(fontSize: 18),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
                   OutLineTextField(
                     hintText: 'description',
                     controller: descriptionController,
