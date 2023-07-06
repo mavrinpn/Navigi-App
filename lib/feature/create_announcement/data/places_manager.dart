@@ -44,6 +44,7 @@ class PlacesManager {
 
   String? searchPlaceIdByName(value){
     for(var item in places){
+      print('${item.name} $value == ${item.name == value}');
       if(item.name == value){
         print(item.id);
         return item.id;

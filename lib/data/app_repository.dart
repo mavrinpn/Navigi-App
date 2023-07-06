@@ -7,7 +7,7 @@ enum LoadingStateEnum { wait, loading, success, fail }
 
 enum AuthStateEnum {wait,  auth, unAuth }
 
-class AppRepository {
+class AuthRepository {
   final Client client;
   final Account account;
   final Databases databases;
@@ -16,7 +16,7 @@ class AppRepository {
 
   static const sessionIdKey = 'sessionID';
 
-  AppRepository({required this.client})
+  AuthRepository({required this.client})
       : account = Account(client),
         databases = Databases(client) {
     checkLogin();

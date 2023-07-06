@@ -11,36 +11,28 @@ class DatabaseManger {
   DatabaseManger({required Client client}) : _databases = Databases(client);
 
   Future<List<Category>> getAllCategories() async {
-    try {
-      final res = await _databases.listDocuments(
-          databaseId: postDatabase, collectionId: categoriesCollection);
+    final res = await _databases.listDocuments(
+        databaseId: postDatabase, collectionId: categoriesCollection);
 
-      List<Category> categories = [];
-      for (var doc in res.documents) {
-        categories.add(Category.fromJson(doc.data));
-      }
-      return categories;
-    } catch (e) {
-      rethrow;
+    List<Category> categories = [];
+    for (var doc in res.documents) {
+      categories.add(Category.fromJson(doc.data));
     }
+    return categories;
   }
 
   Future<List<Subcategory>> getAllSubCategoriesByCategoryId(
       String categoryID) async {
-    try {
-      List<Subcategory> subcategories = <Subcategory>[];
-      final res = await _databases.listDocuments(
-          databaseId: postDatabase,
-          collectionId: subcategoriesCollection,
-          queries: [Query.equal('categorie_id', categoryID)]);
+    List<Subcategory> subcategories = <Subcategory>[];
+    final res = await _databases.listDocuments(
+        databaseId: postDatabase,
+        collectionId: subcategoriesCollection,
+        queries: [Query.equal('categorie_id', categoryID)]);
 
-      for (var doc in res.documents) {
-        subcategories.add(Subcategory.fromJson(doc.data));
-      }
-      return subcategories;
-    } catch (e) {
-      rethrow;
+    for (var doc in res.documents) {
+      subcategories.add(Subcategory.fromJson(doc.data));
     }
+    return subcategories;
   }
 
   Future<List<SubCategoryItem>> loadItems(String subcategory) async {
@@ -56,42 +48,31 @@ class DatabaseManger {
   }
 
   Future<List<PlaceData>> getAllPlaces() async {
-    try {
-      final res = await _databases.listDocuments(
-          databaseId: placeDatabase, collectionId: placeCollection);
+    final res = await _databases.listDocuments(
+        databaseId: placeDatabase, collectionId: placeCollection);
 
-      List<PlaceData> places = [];
-      for (var doc in res.documents) {
-        places.add(PlaceData.fromJson(doc.data));
-      }
-      return places;
-    } catch (e) {
-      rethrow;
+    List<PlaceData> places = [];
+    for (var doc in res.documents) {
+      places.add(PlaceData.fromJson(doc.data));
     }
+    return places;
   }
 
   Future<List<Announcement>> getLimitAnnouncements(
       String? lastId, int amount) async {
-    try {
-      final res = await _databases.listDocuments(
-          databaseId: postDatabase,
-          collectionId: postCollection,
-          queries: lastId == null
-              ? [Query.limit(amount)]
-              : [Query.limit(amount), Query.cursorAfter(lastId)]);
+    final res = await _databases.listDocuments(
+        databaseId: postDatabase,
+        collectionId: postCollection,
+        queries: lastId == null
+            ? [Query.limit(amount)]
+            : [Query.limit(amount), Query.cursorAfter(lastId)]);
 
-      List<Announcement> newAnnounces = [];
-      for (var doc in res.documents) {
-        newAnnounces.add(Announcement.fromJson(json: doc.data));
-      }
-
-      return newAnnounces;
-    } catch (e) {
-      if (e.toString() != 'Bad state: No element') {
-        rethrow;
-      }
+    List<Announcement> newAnnounces = [];
+    for (var doc in res.documents) {
+      newAnnounces.add(Announcement.fromJson(json: doc.data));
     }
-    return [];
+
+    return newAnnounces;
   }
 
   Future<Announcement> getAnnouncementById(String id) async {
@@ -109,7 +90,8 @@ class DatabaseManger {
         data: {'total_views': views + 1});
   }
 
-  Future<void> createAnnouncement(String uid, List<String> urls, CreatingData creatingData) async {
+  Future<void> createAnnouncement(
+      String uid, List<String> urls, CreatingData creatingData) async {
     await _databases.createDocument(
         databaseId: postDatabase,
         collectionId: postCollection,

@@ -6,7 +6,7 @@ import '../../data/app_repository.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AppRepository appRepository;
+  AuthRepository appRepository;
   String phone = '';
 
   AuthCubit({required this.appRepository}) : super(AuthInitial()) {

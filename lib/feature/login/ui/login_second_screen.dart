@@ -111,7 +111,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
 
                               if (isTouch) {
                                 bloc.loginWithEmail(
-                                    email: AppRepository.convertPhoneToEmail(
+                                    email: AuthRepository.convertPhoneToEmail(
                                         bloc.getPhone()),
                                     password: passwordController.text.trim());
                               }

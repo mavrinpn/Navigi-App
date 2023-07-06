@@ -102,7 +102,7 @@ class MyRepositoryProviders extends StatelessWidget {
 
     return MultiRepositoryProvider(providers: [
       RepositoryProvider(
-        create: (_) => AppRepository(client: client),
+        create: (_) => AuthRepository(client: client),
       ),
       RepositoryProvider(
         create: (_) => CreatingAnnouncementManager(client: client),
@@ -131,12 +131,12 @@ class MyBlocProviders extends StatelessWidget {
     return MultiBlocProvider(providers: [
       BlocProvider(
         create: (_) => AuthCubit(
-            appRepository: RepositoryProvider.of<AppRepository>(context)),
+            appRepository: RepositoryProvider.of<AuthRepository>(context)),
         lazy: false,
       ),
       BlocProvider(
         create: (_) => AppCubit(
-            appRepository: RepositoryProvider.of<AppRepository>(context)),
+            appRepository: RepositoryProvider.of<AuthRepository>(context)),
         lazy: false,
       ),
       BlocProvider(

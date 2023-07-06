@@ -242,7 +242,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             return;
                           }
                           BlocProvider.of<AuthCubit>(context).registerWithEmail(
-                              email: AppRepository.convertPhoneToEmail(
+                              email: AuthRepository.convertPhoneToEmail(
                                   maskPhoneFormatter.getUnmaskedText()),
                               name: nameController.text.trim(),
                               password: firstPasswordController.text.trim());

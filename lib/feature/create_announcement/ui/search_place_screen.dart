@@ -19,7 +19,6 @@ class SearchPlaceScreen extends StatefulWidget {
 
 class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
   final placeController = TextEditingController();
-
   bool isTouch = false;
 
   @override
