@@ -16,11 +16,13 @@ class DescriptionScreen extends StatefulWidget {
 
 class _DescriptionScreenState extends State<DescriptionScreen> {
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final repository =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    titleController.text = repository.creatingData.title!;
 
     return Scaffold(
         appBar: AppBar(
@@ -32,34 +34,58 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
             style: AppTypography.font20black,
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 16,
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  OutLineTextField(
+                    hintText: 'name',
+                    controller: titleController,
+                    maxLines: 5,
+                    height: 100,
+                    width: double.infinity,
+                    maxLength: 100,
+                  )
+                ],
               ),
-              OutLineTextField(
-                hintText: 'description',
-                controller: descriptionController,
-                maxLines: 20,
-                height: 310,
-                width: double.infinity,
-                maxLength: 500,
-                onChange: (value) {
-                  setState(() {});
-                },
-              )
-            ],
-          ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  OutLineTextField(
+                    hintText: 'description',
+                    controller: descriptionController,
+                    maxLines: 20,
+                    height: 310,
+                    width: double.infinity,
+                    maxLength: 500,
+                    onChange: (value) {
+                      setState(() {});
+                    },
+                  )
+                ],
+              ),
+            ),
+          ],
         ),
         floatingActionButton: CustomTextButton.orangeContinue(
-            isTouch: descriptionController.text.isNotEmpty,
+            isTouch: descriptionController.text.isNotEmpty && titleController.text.isNotEmpty,
             width: MediaQuery.of(context).size.width - 30,
             text: 'Continuer',
             callback: () {
               repository.setDescription(descriptionController.text);
+              repository.setTitle(titleController.text);
               BlocProvider.of<CreatingAnnouncementCubit>(context).createAnnouncement();
               Navigator.pushNamed(context, '/loading_screen');
             }));

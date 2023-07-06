@@ -46,132 +46,135 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
       body: SafeArea(
-        child: CustomScrollView(
-          controller: _controller,
-          slivers: [
-            SliverAppBar(
-              expandedHeight: 70,
-              backgroundColor: AppColors.empty,
-              flexibleSpace: Padding(
-                padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-                child: ElevatedTextField(
-                  width: MediaQuery.of(context).size.width - 100,
-                  height: 52,
-                  hintText: 'Recherche a Alger',
-                  controller: searchController,
-                  icon: "Assets/icons/only_search.svg",
+        child: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
+          builder: (context, state) {
+            var list = repository.announcements
+                .map((e) => Container(
+                      child: AnnouncementContainer(
+                        announcement: e,
+                      ),
+                    ))
+                .toList();
+
+            return CustomScrollView(
+              controller: _controller,
+              slivers: [
+                SliverAppBar(
+                  expandedHeight: 70,
+                  backgroundColor: AppColors.empty,
+                  flexibleSpace: Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                    child: ElevatedTextField(
+                      width: MediaQuery.of(context).size.width - 100,
+                      height: 52,
+                      hintText: 'Recherche a Alger',
+                      controller: searchController,
+                      icon: "Assets/icons/only_search.svg",
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 11,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Catégories',
-                            textAlign: TextAlign.center,
-                            style: AppTypography.font20black),
-                        Text('Regarder tout',
-                            style: AppTypography.font14lightGray
-                                .copyWith(fontSize: 12)),
-                      ],
-                    ),
-                  ),
-                  BlocBuilder<CategoryCubit, CategoryState>(
-                    builder: (context, state) {
-                      if (state is CategorySuccessState) {
-                        return SizedBox(
-                          width: double.infinity,
-                          height: 160,
-                          child: ListView(
-                            physics: const BouncingScrollPhysics(
-                                decelerationRate: ScrollDecelerationRate.fast),
-                            scrollDirection: Axis.horizontal,
-                            children: state.categories
-                                .map((e) => Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 0),
-                                      child: CategoryWidget(
-                                        category: e,
-                                        isActive: false,
-                                      ),
-                                    ))
-                                .toList(),
-                          ),
-                        );
-                      } else if (state is CategoryFailState) {
-                        return const Center(
-                          child: Text('Проблемс'),
-                        );
-                      } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 11,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Recommandations',
-                            textAlign: TextAlign.center,
-                            style: AppTypography.font20black),
-                        Text('Regarder tout',
-                            style: AppTypography.font14lightGray
-                                .copyWith(fontSize: 12)),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
-              builder: (context, state) {
-                var list = repository.announcements
-                    .map((e) => Container(
-                          child: AnnouncementContainer(
-                            announcement: e,
-                          ),
-                        ))
-                    .toList();
 
-                if (state is AnnouncementsLoadingState) {
-                  list.add(Container(
-                    child: Center(child: AppAnimations.bouncingLine),
-                  ));
-                } else if (state is AnnouncementsFailState) {
-                  list.add(Container(
-                    child: const Center(
-                      child: Text('проблемс'),
-                    ),
-                  ));
-                }
-
-                return SliverList(
-                  delegate: SliverChildListDelegate(
-                    list,
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 11,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Catégories',
+                                textAlign: TextAlign.center,
+                                style: AppTypography.font20black),
+                            Text('Regarder tout',
+                                style: AppTypography.font14lightGray
+                                    .copyWith(fontSize: 12)),
+                          ],
+                        ),
+                      ),
+                      BlocBuilder<CategoryCubit, CategoryState>(
+                        builder: (context, state) {
+                          if (state is CategorySuccessState) {
+                            return SizedBox(
+                              width: double.infinity,
+                              height: 160,
+                              child: ListView(
+                                physics: const BouncingScrollPhysics(
+                                    decelerationRate:
+                                        ScrollDecelerationRate.fast),
+                                scrollDirection: Axis.horizontal,
+                                children: state.categories
+                                    .map((e) => Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 0),
+                                          child: CategoryWidget(
+                                            category: e,
+                                            isActive: false,
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
+                            );
+                          } else if (state is CategoryFailState) {
+                            return const Center(
+                              child: Text('Проблемс'),
+                            );
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
+                      ),
+                    ],
                   ),
-                );
-              },
-            )
-          ],
+                ),
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 11,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Recommandations',
+                                textAlign: TextAlign.center,
+                                style: AppTypography.font20black),
+                            Text('Regarder tout',
+                                style: AppTypography.font14lightGray
+                                    .copyWith(fontSize: 12)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 22),
+                  sliver: SliverGrid(
+                    delegate: SliverChildListDelegate(list),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 1 / 1.67,
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10),
+                  ),
+                ),
+                if (state is AnnouncementsLoadingState) ...[
+                  SliverToBoxAdapter(
+                    child: Container(
+                      child: Center(child: AppAnimations.bouncingLine),
+                    ),
+                  )
+                ],
+              ],
+            );
+          },
         ),
       ),
     );

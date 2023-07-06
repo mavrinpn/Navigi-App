@@ -10,8 +10,8 @@ class CategoriesManager {
   List<Subcategory> subcategories = [];
 
   Future loadCategories() async =>
-      categories = await databaseManger.loadCategories();
+      categories = await databaseManger.getAllCategories();
 
   Future loadSubCategories(String categoryID) async =>
-      subcategories = await databaseManger.loadSubCategories(categoryID);
+      subcategories = await databaseManger.getAllSubCategoriesByCategoryId(categoryID);
 }

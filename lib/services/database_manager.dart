@@ -9,7 +9,7 @@ class DatabaseManger {
   DatabaseManger({required Client client}) : _databases = Databases(client);
 
 
-  Future<List<Category>> loadCategories() async {
+  Future<List<Category>> getAllCategories() async {
     try {
       final res = await _databases.listDocuments(
           databaseId: postDatabase, collectionId: categoriesCollection);
@@ -24,7 +24,7 @@ class DatabaseManger {
     }
   }
 
-  Future<List<Subcategory>> loadSubCategories(String categoryID) async {
+  Future<List<Subcategory>> getAllSubCategoriesByCategoryId(String categoryID) async {
     try {
       List<Subcategory> subcategories = <Subcategory>[];
       final res = await _databases.listDocuments(
