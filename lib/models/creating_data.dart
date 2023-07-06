@@ -8,7 +8,7 @@ class CreatingData {
   double? price;
   String? itemName;
   String? parameters;
-  String? placeId = 'aboba';
+  String? placeId;
 
 
   @override
@@ -39,6 +39,6 @@ class CreatingData {
     price = null;
     itemName = null;
     parameters = null;
-    placeId = 'aboba';
+    placeId = null;
   }
 }

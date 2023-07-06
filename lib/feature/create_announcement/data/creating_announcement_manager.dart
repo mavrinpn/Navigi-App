@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smart/models/announcement.dart';
 
 import '../../../data/app_repository.dart';
 import '../../../models/creating_data.dart';
@@ -41,6 +42,8 @@ class CreatingAnnouncementManager {
           ..initialParameters();
     creatingData.itemName = currentItem!.name;
   }
+
+  void setPlaceById(String id) =>  creatingData.placeId = id;
 
   void setImages(List<XFile> images) {
     creatingData.images = images.map((e) => e.path).toList();

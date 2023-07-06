@@ -55,6 +55,21 @@ class DatabaseManger {
     return items;
   }
 
+  Future<List<PlaceData>> getAllPlaces() async {
+    try {
+      final res = await _databases.listDocuments(
+          databaseId: placeDatabase, collectionId: placeCollection);
+
+      List<PlaceData> places = [];
+      for (var doc in res.documents) {
+        places.add(PlaceData.fromJson(doc.data));
+      }
+      return places;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<Announcement>> getLimitAnnouncements(
       String? lastId, int amount) async {
     try {
