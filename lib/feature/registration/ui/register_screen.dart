@@ -6,6 +6,7 @@ import 'package:smart/bloc/auth/auth_cubit.dart';
 import 'package:smart/data/app_repository.dart';
 import 'package:smart/utils/fonts.dart';
 
+import '../../../utils/animations.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/dialogs.dart';
 import '../../../widgets/button/custom_text_button.dart';
@@ -70,7 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       listener: (context, state) {
         if (state is AuthLoadingState) {
           Dialogs.showModal(
-              context, const Center(child: CircularProgressIndicator()));
+              context, Center(child: AppAnimations.bouncingLine));
         } else {
           Dialogs.hide(context);
         }

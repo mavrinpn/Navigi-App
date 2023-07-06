@@ -432,11 +432,11 @@ class _PhotoViewsState extends State<PhotoViews> {
             });
           },
           itemCount: currentAnnouncement!.images.length,
-          loadingBuilder: (context, event) => const Center(
+          loadingBuilder: (context, event) => Center(
             child: SizedBox(
               width: 20.0,
               height: 20.0,
-              child: CircularProgressIndicator(),
+              child: AppAnimations.bouncingLine,
             ),
           ),
           pageController: pageController,

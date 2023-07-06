@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/category/category.dart';
@@ -43,8 +44,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
             child: Text('Проблемс'),
           );
         } else {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: AppAnimations.bouncingLine,
           );
         }
       },
