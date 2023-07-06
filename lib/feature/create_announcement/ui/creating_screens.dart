@@ -6,3 +6,4 @@ export 'options_screen.dart';
 export 'pick_photo_screen.dart';
 export 'search_products_screen.dart';
 export 'subcategory_screen.dart';
+export 'search_place_screen.dart';

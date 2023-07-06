@@ -23,7 +23,6 @@ import 'feature/create_announcement/bloc/creating_blocs.dart';
 import 'feature/create_announcement/data/categories_manager.dart';
 import 'feature/create_announcement/data/creating_announcement_manager.dart';
 import 'feature/create_announcement/data/item_manager.dart';
-import 'feature/create_announcement/ui/search_place_screen.dart';
 import 'feature/home/ui/home_screen.dart';
 import 'feature/login/ui/login_first_screen.dart';
 import 'feature/login/ui/login_second_screen.dart';

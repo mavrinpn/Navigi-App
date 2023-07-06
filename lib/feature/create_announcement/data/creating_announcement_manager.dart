@@ -71,7 +71,6 @@ class CreatingAnnouncementManager {
     try {
       final user = await account.get();
       final uid = user.$id;
-
       final List<String> urls = await uploadImages(creatingData.images ?? []);
 
       await dbManager.createAnnouncement(uid, urls, creatingData);
@@ -85,9 +84,6 @@ class CreatingAnnouncementManager {
     }
   }
 
-  Future<List<String>> uploadImages(List<String> paths) async {
-    List<String> urls = await storageManager.uploadImages(paths);
-
-    return urls;
-  }
+  Future<List<String>> uploadImages(List<String> paths) async =>
+      await storageManager.uploadImages(paths);
 }

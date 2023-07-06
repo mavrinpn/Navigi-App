@@ -122,8 +122,8 @@ class _MainScreenState extends State<MainScreen> {
                               child: Text('Проблемс'),
                             );
                           } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
+                            return Center(
+                              child: AppAnimations.bouncingLine,
                             );
                           }
                         },

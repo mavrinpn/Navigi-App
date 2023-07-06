@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/utils/animations.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
@@ -103,8 +104,8 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                     child: Text('ошибка'),
                   );
                 } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return Center(
+                    child: AppAnimations.bouncingLine,
                   );
                 }
               },

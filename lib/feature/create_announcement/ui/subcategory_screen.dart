@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/utils/animations.dart';
 import 'package:smart/widgets/category/subcategory.dart';
 
 import '../../../utils/colors.dart';
@@ -33,7 +34,7 @@ class SubCategoryScreen extends StatelessWidget {
           } else if (state is SubcategoryFailState) {
             return const Center(child: Text('проблемс'),);
           } else {
-            return const Center(child: CircularProgressIndicator(),);
+            return Center(child: AppAnimations.bouncingLine);
           }
         },
       ),

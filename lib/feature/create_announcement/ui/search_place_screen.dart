@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/data/places_manager.dart';
 
+import '../../../utils/animations.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
@@ -109,8 +110,8 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
                     child: Text('ошибка'),
                   );
                 } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return Center(
+                    child: AppAnimations.bouncingLine,
                   );
                 }
               },

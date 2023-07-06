@@ -1,6 +1,5 @@
 import 'package:smart/models/announcement.dart';
 
-import '../../../models/item.dart';
 import '../../../services/database_manager.dart';
 
 class PlacesManager {
@@ -45,11 +44,9 @@ class PlacesManager {
   String? searchPlaceIdByName(value){
     for(var item in places){
       if(item.name == value){
-        print(item.id);
         return item.id;
       }
     }
-
     return null;
   }
 }
