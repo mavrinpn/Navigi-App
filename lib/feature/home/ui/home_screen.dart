@@ -71,8 +71,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return WillPopScope(
       child: Scaffold(
         body: widgetOptions[_selectedTab],
-        bottomNavigationBar: ClipRRect(
+        bottomNavigationBar: Container(
+          decoration: const BoxDecoration(
+            border: Border(top: BorderSide(color: Color(0xffDEE2E7), width: 1))
+          ),
           child: BottomNavigationBar(
+            backgroundColor: const Color(0xffFBFBFC),
             iconSize: 30,
             type: BottomNavigationBarType.fixed,
             currentIndex: _selectedTab,

@@ -56,7 +56,7 @@ class AnnouncementManager {
 
   void incTotalViews(String id, int views) async {
     if (!_viewdAnnouncements.contains(id)) {
-      _databases.updateDocument(databaseId: postDatabase, collectionId: postCollection, documentId: id, data: {'total_views': views + 1});
+      _databases.updateDocument(databaseId: postDatabase, collectionId: postCollection, documentId: id, data: {'total_views': views + 1}); //TODO переделать на серверную
     }
   }
 }

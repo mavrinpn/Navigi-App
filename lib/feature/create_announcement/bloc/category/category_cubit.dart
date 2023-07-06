@@ -8,14 +8,18 @@ import '../../data/creating_announcement_manager.dart';
 part 'category_state.dart';
 
 class CategoryCubit extends Cubit<CategoryState> {
-  final CreatingAnnouncementManager creatingManager;
   final CategoriesManager categoriesManager;
 
-  CategoryCubit({required this.creatingManager, required this.categoriesManager}) : super(CategoryInitial()) {
-    categoriesManager.categoriesState.stream.listen((event) {
-      if (event == LoadingStateEnum.loading) emit(CategoryLoadingState());
-      if (event == LoadingStateEnum.success) emit(CategorySuccessState(categories: categoriesManager.categories));
-      if (event == LoadingStateEnum.fail) emit(CategoryFailState());
-    });
+  CategoryCubit({required this.categoriesManager}) : super(CategoryInitial());
+
+  void loadCategories() async {
+    emit(CategoryLoadingState());
+    try{
+      await categoriesManager.loadCategories();
+      emit(CategorySuccessState(categories: categoriesManager.categories));
+    } catch (e) {
+      emit(CategoryFailState());
+      rethrow;
+    }
   }
 }

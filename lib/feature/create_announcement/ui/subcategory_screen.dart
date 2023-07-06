@@ -4,7 +4,7 @@ import 'package:smart/widgets/category/subcategory.dart';
 
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
-import '../bloc/sub_category/subcategory_cubit.dart';
+import '../bloc/subcategory/subcategory_cubit.dart';
 
 
 class SubCategoryScreen extends StatelessWidget {

@@ -6,7 +6,6 @@ import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../../feature/announcement/bloc/announcement_cubit.dart';
-import '../../feature/main/bloc/announcement_manager.dart';
 import '../images/network_image.dart';
 
 class AnnouncementContainer extends StatefulWidget {

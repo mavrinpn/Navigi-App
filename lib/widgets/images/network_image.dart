@@ -25,6 +25,7 @@ class _CustomNetworkImageState extends State<CustomNetworkImage> {
     widget._image.resolve(const ImageConfiguration()).addListener(
       ImageStreamListener(
         (info, call) {
+          if (!mounted) return;
           setState(() {
             loading = false;
           });

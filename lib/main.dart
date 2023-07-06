@@ -9,6 +9,7 @@ import 'package:smart/feature/main/bloc/announcement_cubit.dart';
 import 'package:smart/feature/main/bloc/announcement_manager.dart';
 import 'package:smart/feature/registration/ui/register_screen.dart';
 import 'package:smart/services/custom_bloc_observer.dart';
+import 'package:smart/services/database_manager.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -93,6 +94,8 @@ class MyRepositoryProviders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DatabaseManger dbManager = DatabaseManger(client: client);
+
     return MultiRepositoryProvider(providers: [
       RepositoryProvider(
         create: (_) => AppRepository(client: client),
@@ -104,7 +107,7 @@ class MyRepositoryProviders extends StatelessWidget {
         create: (_) => ItemManager(client: client),
       ),
       RepositoryProvider(
-        create: (_) => CategoriesManager(client: client),
+        create: (_) => CategoriesManager(databaseManger: dbManager),
       ),
       RepositoryProvider(
         create: (_) => AnnouncementManager(client: client),
@@ -132,10 +135,8 @@ class MyBlocProviders extends StatelessWidget {
       ),
       BlocProvider(
         create: (_) => CategoryCubit(
-            creatingManager:
-                RepositoryProvider.of<CreatingAnnouncementManager>(context),
             categoriesManager:
-                RepositoryProvider.of<CategoriesManager>(context)),
+                RepositoryProvider.of<CategoriesManager>(context))..loadCategories(),
         lazy: false,
       ),
       BlocProvider(

@@ -7,7 +7,7 @@ class SubcategoryInitial extends SubcategoryState {}
 class SubcategoryLoadingState extends SubcategoryState {}
 
 class SubcategorySuccessState extends SubcategoryState {
-  List<SubCategory> subcategories;
+  List<Subcategory> subcategories;
   SubcategorySuccessState({required this.subcategories});
 }
 
