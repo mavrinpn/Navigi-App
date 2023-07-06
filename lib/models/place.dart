@@ -8,8 +8,6 @@ class PlaceData {
 
   PlaceData({required this.x, required this.y, required this.name, required this.id});
 
-  set name(String namee) => name = namee;
-
   PlaceData.fromJson(Map<String, dynamic> json):
       id = json['\$id'],
       x = json['x_point'],
