@@ -19,6 +19,6 @@ class PlaceData {
   PlaceData.fish()
       : x = 37.570802,
         y = 126.975959,
-        name = '',
-        id = '';
+        name = 'Séoul',
+        id = '64a69ed363ce7489b87c';
 }
