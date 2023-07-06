@@ -8,7 +8,6 @@ class DatabaseManger {
 
   DatabaseManger({required Client client}) : _databases = Databases(client);
 
-
   Future<List<Category>> loadCategories() async {
     try {
       final res = await _databases.listDocuments(
@@ -25,20 +24,27 @@ class DatabaseManger {
   }
 
   Future<List<Subcategory>> loadSubCategories(String categoryID) async {
-    try {
-      List<Subcategory> subcategories = <Subcategory>[];
-      final res = await _databases.listDocuments(
-          databaseId: postDatabase,
-          collectionId: subcategoriesCollection,
-          queries: [Query.equal('categorie_id', categoryID)]);
+    List<Subcategory> subcategories = <Subcategory>[];
+    final res = await _databases.listDocuments(
+        databaseId: postDatabase,
+        collectionId: subcategoriesCollection,
+        queries: [Query.equal('categorie_id', categoryID)]);
 
-      for (var doc in res.documents) {
-        subcategories.add(Subcategory.fromJson(doc.data));
-      }
-      return subcategories;
-
-    } catch (e) {
-      rethrow;
+    for (var doc in res.documents) {
+      subcategories.add(Subcategory.fromJson(doc.data));
     }
+    return subcategories;
+  }
+
+  Future<List<SubCategoryItem>> loadItems(String subcategory) async {
+    final res = await _databases.listDocuments(
+        databaseId: postDatabase,
+        collectionId: itemsCollection,
+        queries: [Query.search('sub_category', subcategory)]);
+    List<SubCategoryItem> items = [];
+    for (var doc in res.documents) {
+      items.add(SubCategoryItem.fromJson(doc.data)..initialParameters());
+    }
+    return items;
   }
 }

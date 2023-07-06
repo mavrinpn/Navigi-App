@@ -29,6 +29,7 @@ dependencies:
   shimmer: ^3.0.0
   photo_view: ^0.14.0
   flutter_rating_stars: ^1.0.3+4
+  google_maps_flutter: ^2.3.1
 
 dev_dependencies:
   flutter_test:

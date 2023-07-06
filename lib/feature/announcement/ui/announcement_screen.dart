@@ -13,6 +13,7 @@ import '../../../widgets/accaunt/account_small_info.dart';
 import '../../../widgets/button/custom_icon_button.dart';
 import '../../../widgets/images/network_image.dart';
 import '../bloc/announcement_cubit.dart';
+import 'map.dart';
 
 int activePage = 0;
 
@@ -200,20 +201,28 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(15, 12, 15, 18),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SvgPicture.asset('Assets/icons/point.svg'),
-                          RichText(
-                              text: TextSpan(children: [
-                            TextSpan(
-                                text: ' ${state.data.creatorData.place}',
-                                style: AppTypography.font14black),
-                            TextSpan(
-                                text: '  ${state.data.creatorData.distance}',
-                                style: AppTypography.font14lightGray),
-                          ]))
-                        ],
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => MapSample(placeData: state.data.placeData,)));
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SvgPicture.asset('Assets/icons/point.svg'),
+                            RichText(
+                                text: TextSpan(children: [
+                              TextSpan(
+                                  text: ' ${state.data.creatorData.place.name}',
+                                  style: AppTypography.font14black),
+                              TextSpan(
+                                  text: '  ${state.data.creatorData.distance}',
+                                  style: AppTypography.font14lightGray),
+                            ]))
+                          ],
+                        ),
                       ),
                     ),
                     Padding(

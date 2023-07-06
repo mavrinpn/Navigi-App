@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:smart/models/creator_data.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
+
+import '../../models/announcement.dart';
 
 class AccountSmallInfo extends StatefulWidget {
   const AccountSmallInfo({super.key, required this.creatorData});
@@ -113,7 +114,7 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                         RichText(
                             text: TextSpan(children: [
                           TextSpan(
-                              text:  ' '+ widget.creatorData.place, style: AppTypography.font14black),
+                              text:  ' ${widget.creatorData.place.name}', style: AppTypography.font14black),
                           TextSpan(
                               text:  '  ${widget.creatorData.distance}',
                               style: AppTypography.font14lightGray),
