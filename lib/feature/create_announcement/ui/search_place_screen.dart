@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/data/places_manager.dart';
+
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
@@ -19,6 +20,8 @@ class SearchPlaceScreen extends StatefulWidget {
 class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
   final placeController = TextEditingController();
 
+  bool isTouch = false;
+
   @override
   Widget build(BuildContext context) {
     final creatingAnnouncementManager =
@@ -31,9 +34,9 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
     placeController.text = cubit.getSearchText();
     placeController.selection = TextSelection.fromPosition(
         TextPosition(offset: placeController.text.length));
+
     final width = MediaQuery.of(context).size.width;
 
-    bool isTouch = cubit.getSearchText().isNotEmpty;
 
     void setIsTouch(bool isT) {
       isTouch = isT;
@@ -64,7 +67,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
               width: double.infinity,
               onChange: (value) {
                 BlocProvider.of<PlacesCubit>(context).searchItems(value);
-                setIsTouch(placeManager.searchPlaceIdByName(value) == null);
+                setIsTouch(placeManager.searchPlaceIdByName(value) != null);
                 setState(() {});
               },
             ),
@@ -89,6 +92,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
                                   cubit.setItemName(e.name);
                                   creatingAnnouncementManager
                                       .setPlaceById(e.id);
+                                  setIsTouch(true);
                                   setState(() {});
                                 },
                                 name: e.name,
@@ -119,8 +123,8 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
         text: 'Continuer',
         callback: () {
           if (isTouch) {
-            print(placeManager.searchPlaceIdByName(placeController.text));
-            creatingAnnouncementManager.setPlaceById(placeManager.searchPlaceIdByName(placeController.text)!);
+            creatingAnnouncementManager.setPlaceById(
+                placeManager.searchPlaceIdByName(placeController.text)!);
             Navigator.pushNamed(context, '/create_description');
           }
         },
