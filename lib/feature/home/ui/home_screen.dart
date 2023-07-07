@@ -25,8 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final List<Widget> widgetOptions = <Widget>[
       const MainScreen(),
-      const Text(''),
-      const Text(''),
+      const Text('Messages'),
+      const Text('Delection'),
       Center(
         child: Padding(
           padding: const EdgeInsets.all(15.0),

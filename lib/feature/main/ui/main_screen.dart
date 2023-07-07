@@ -51,11 +51,9 @@ class _MainScreenState extends State<MainScreen> {
         child: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
           builder: (context, state) {
             var list = repository.announcements
-                .map((e) => Container(
-                      child: AnnouncementContainer(
-                        announcement: e,
-                      ),
-                    ))
+                .map((e) => AnnouncementContainer(
+                  announcement: e,
+                ))
                 .toList();
 
             return CustomScrollView(
@@ -164,7 +162,7 @@ class _MainScreenState extends State<MainScreen> {
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             childAspectRatio: 1 / 1.67,
                             crossAxisCount: 2,
-                            crossAxisSpacing: 10),
+                            crossAxisSpacing: 12),
                   ),
                 ),
                 if (state is AnnouncementsLoadingState) ...[

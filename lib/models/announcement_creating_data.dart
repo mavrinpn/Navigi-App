@@ -16,7 +16,7 @@ class AnnouncementCreatingData {
     return 'category: $categoryId, \nsubcategory: $subcategoryId, \ndescription: $description, \ntype: $type, \nprice: $price \nparameters: $parameters';
   }
 
-  Map<String, dynamic> toJason(String creatorId, List<String> urls) =>
+  Map<String, dynamic> toJson(String creatorId, List<String> urls) =>
       {
         'name': title,
         'description': description,

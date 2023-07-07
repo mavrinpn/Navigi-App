@@ -64,8 +64,8 @@ class DatabaseManger {
         databaseId: postDatabase,
         collectionId: postCollection,
         queries: lastId == null
-            ? [Query.limit(amount)]
-            : [Query.limit(amount), Query.cursorAfter(lastId)]);
+            ? [Query.limit(amount), Query.orderDesc('\$createdAt')]
+            : [Query.limit(amount), Query.cursorAfter(lastId), Query.orderDesc('\$createdAt')]);
 
     List<Announcement> newAnnounces = [];
     for (var doc in res.documents) {
@@ -96,6 +96,6 @@ class DatabaseManger {
         databaseId: postDatabase,
         collectionId: postCollection,
         documentId: ID.unique(),
-        data: creatingData.toJason(uid, urls));
+        data: creatingData.toJson(uid, urls));
   }
 }
