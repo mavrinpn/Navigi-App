@@ -56,13 +56,13 @@ class CreatingAnnouncementManager {
   void _setParameters() => creatingData.parameters =
       currentItem!.parameters.buildJsonFormatParameters();
 
-  void _setTitle() => creatingData.title = currentItem!.title;
+
+  String get buildTitle => currentItem!.title;
 
   void setTitle(String title) => creatingData.title = title;
 
   void setInfoFormItem() {
     _setParameters();
-    _setTitle();
   }
 
   void createAnnouncement() async {
