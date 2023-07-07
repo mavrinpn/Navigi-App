@@ -98,7 +98,7 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                             maxValueVisibility: true,
                             valueLabelVisibility: false,
                             starOffColor: AppColors.disable,
-                            starColor: AppColors.stars,
+                            starColor: AppColors.starsActive,
                           ),
                         ),
                         const SizedBox(width: 12),

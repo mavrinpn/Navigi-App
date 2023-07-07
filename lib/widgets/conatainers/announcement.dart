@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,7 +11,7 @@ import '../../utils/colors.dart';
 import '../images/network_image.dart';
 
 class AnnouncementContainer extends StatefulWidget {
-  AnnouncementContainer({super.key, required this.announcement});
+  const AnnouncementContainer({super.key, required this.announcement});
 
   final Announcement announcement;
 

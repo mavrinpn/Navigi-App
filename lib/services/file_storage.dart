@@ -16,7 +16,6 @@ class FileStorageManager {
         final file = await storage.createFile(bucketId: announcementsImagesId, fileId: ID.unique(), file: InputFile.fromPath(path: path));
         urlsList.add(createViewUrl(file.$id, file.bucketId));
       }
-      print(urlsList);
       return urlsList;
 
     } catch (e) {
