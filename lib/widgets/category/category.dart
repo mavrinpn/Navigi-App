@@ -8,7 +8,12 @@ import '../../feature/create_announcement/bloc/subcategory/subcategory_cubit.dar
 import '../../utils/colors.dart';
 
 class CategoryWidget extends StatefulWidget {
-  CategoryWidget({super.key, required Category category, this.isActive = true})
+  CategoryWidget(
+      {super.key,
+      required Category category,
+      this.isActive = true,
+      required this.height,
+      required this.width})
       : name = category.name ?? '',
         id = category.id ?? '',
         url = category.imageUrl!;
@@ -17,6 +22,8 @@ class CategoryWidget extends StatefulWidget {
   final String name;
   final String id;
   final String url;
+  final double width;
+  final double height;
 
   @override
   State<CategoryWidget> createState() => _CategoryWidgetState();

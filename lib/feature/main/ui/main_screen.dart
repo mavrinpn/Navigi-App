@@ -112,6 +112,8 @@ class _MainScreenState extends State<MainScreen> {
                                           child: CategoryWidget(
                                             category: e,
                                             isActive: false,
+                                            width: 108,
+                                            height: 160,
                                           ),
                                         ))
                                     .toList(),
