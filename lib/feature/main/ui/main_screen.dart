@@ -13,8 +13,6 @@ import '../../../widgets/textField/elevated_text_field.dart';
 import '../../create_announcement/bloc/category/category_cubit.dart';
 import '../bloc/announcement_cubit.dart';
 
-var list = [1, 2, 3, 4, 5, 6, 7];
-
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -52,13 +50,8 @@ class _MainScreenState extends State<MainScreen> {
           builder: (context, state) {
             var list = repository.announcements
                 .map((e) => AnnouncementContainer(
-<<<<<<< HEAD
-                  announcement: e,
-                ))
-=======
                       announcement: e,
                     ))
->>>>>>> origin/develop
                 .toList();
 
             return CustomScrollView(
