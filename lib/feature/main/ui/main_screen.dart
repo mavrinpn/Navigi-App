@@ -52,28 +52,32 @@ class _MainScreenState extends State<MainScreen> {
           builder: (context, state) {
             var list = repository.announcements
                 .map((e) => AnnouncementContainer(
-                  announcement: e,
-                ))
+                      announcement: e,
+                    ))
                 .toList();
 
             return CustomScrollView(
               controller: _controller,
+              physics: const BouncingScrollPhysics(
+                  decelerationRate: ScrollDecelerationRate.fast),
               slivers: [
                 SliverAppBar(
-                  expandedHeight: 70,
                   backgroundColor: AppColors.empty,
+                  elevation: 0,
+                  pinned: true,
+                  collapsedHeight: 64,
+                  expandedHeight: 64,
                   flexibleSpace: Padding(
                     padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
                     child: ElevatedTextField(
                       width: MediaQuery.of(context).size.width - 100,
-                      height: 52,
+                      height: 44,
                       hintText: 'Recherche a Alger',
                       controller: searchController,
                       icon: "Assets/icons/only_search.svg",
                     ),
                   ),
                 ),
-
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
