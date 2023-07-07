@@ -96,6 +96,6 @@ class DatabaseManger {
         databaseId: postDatabase,
         collectionId: postCollection,
         documentId: ID.unique(),
-        data: creatingData.toJason(uid, urls));
+        data: creatingData.toJson(uid, urls));
   }
 }

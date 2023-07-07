@@ -24,6 +24,8 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return InkWell(
       onTap: () async {
         Navigator.pushNamed(context, '/announcement_screen');
@@ -34,12 +36,12 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomNetworkImage(
-              width: 180, height: 155, url: widget.announcement.images[0]),
+              width: double.infinity, height: width / 2  - 52, url: widget.announcement.images[0]),
           const SizedBox(
             height: 10,
           ),
           SizedBox(
-            width: 160,
+            width: double.infinity,
             child: Text(
               widget.announcement.title,
               style: AppTypography.font12dark,

@@ -12,6 +12,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
   bloc: ^8.1.2
   meta: any
   flutter_bloc: ^8.1.3
