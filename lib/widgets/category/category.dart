@@ -45,8 +45,8 @@ class _CategoryWidgetState extends State<CategoryWidget> {
         }
       },
       child: SizedBox(
-        width: 108,
-        height: 160,
+        width: widget.width,
+        height: widget.height,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
