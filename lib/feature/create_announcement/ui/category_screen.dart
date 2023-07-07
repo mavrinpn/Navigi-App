@@ -34,8 +34,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
               crossAxisCount: 3,
               childAspectRatio: 108 / 120,
               children: state.categories
-                  .map(
-                      (e) => CategoryWidget(category: e,))
+                  .map((e) => CategoryWidget(
+                        category: e,
+                        width: double.infinity,
+                        height: double.infinity,
+                      ))
                   .toList(),
             ),
           );
