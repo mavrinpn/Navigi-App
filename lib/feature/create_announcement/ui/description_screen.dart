@@ -22,7 +22,13 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
   Widget build(BuildContext context) {
     final repository =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
+
     titleController.text = repository.creatingData.title!;
+
+    descriptionController.selection = TextSelection.fromPosition(
+        TextPosition(offset: descriptionController.text.length));
+    titleController.selection = TextSelection.fromPosition(
+        TextPosition(offset: titleController.text.length));
 
     return Scaffold(
         appBar: AppBar(
@@ -34,66 +40,75 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
             style: AppTypography.font20black,
           ),
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      'Titre',
-                      style: AppTypography.font16black.copyWith(fontSize: 18),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 16,
                     ),
-                  ),
-                  const SizedBox(height: 5),
-                  OutLineTextField(
-                    hintText: 'name',
-                    controller: titleController,
-                    maxLines: 5,
-                    height: 100,
-                    width: double.infinity,
-                    maxLength: 100,
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      'Description',
-                      style: AppTypography.font16black.copyWith(fontSize: 18),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Titre',
+                        style: AppTypography.font16black.copyWith(fontSize: 18),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 5),
-                  OutLineTextField(
-                    hintText: 'description',
-                    controller: descriptionController,
-                    maxLines: 20,
-                    height: 310,
-                    width: double.infinity,
-                    maxLength: 500,
-                    onChange: (value) {
-                      setState(() {});
-                    },
-                  )
-                ],
+                    const SizedBox(height: 5),
+                    OutLineTextField(
+                      hintText: 'name',
+                      controller: titleController,
+                      maxLines: 5,
+                      height: 100,
+                      width: double.infinity,
+                      maxLength: 100,
+                      onChange: (value) {
+                        if (value.isNotEmpty) {
+                          repository.setTitle(value);
+                        } else {
+                          repository.setTitle(repository.buildTitle);
+                        }
+                      },
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Description',
+                        style: AppTypography.font16black.copyWith(fontSize: 18),
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    OutLineTextField(
+                      hintText: 'description',
+                      controller: descriptionController,
+                      maxLines: 20,
+                      height: 310,
+                      width: double.infinity,
+                      maxLength: 500,
+                      onChange: (value) {
+                        setState(() {});
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
         floatingActionButton: CustomTextButton.orangeContinue(
             isTouch: descriptionController.text.isNotEmpty && titleController.text.isNotEmpty,
@@ -102,6 +117,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
             callback: () {
               repository.setDescription(descriptionController.text);
               repository.setTitle(titleController.text);
+              repository.setInfoFormItem();
               BlocProvider.of<CreatingAnnouncementCubit>(context).createAnnouncement();
               Navigator.pushNamed(context, '/loading_screen');
             }));

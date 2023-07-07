@@ -125,6 +125,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
           if (isTouch) {
             creatingAnnouncementManager.setPlaceById(
                 placeManager.searchPlaceIdByName(placeController.text)!);
+            creatingAnnouncementManager.setTitle(creatingAnnouncementManager.buildTitle);
             Navigator.pushNamed(context, '/create_description');
           }
         },
