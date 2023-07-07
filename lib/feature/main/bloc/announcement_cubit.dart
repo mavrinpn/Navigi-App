@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import 'announcement_manager.dart';
+import '../../../services/managers/announcement_manager.dart';
 
 part 'announcement_state.dart';
 

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import '../../../../models/subcategory.dart';
-import '../../data/categories_manager.dart';
-import '../../data/creating_announcement_manager.dart';
+import '../../../../services/managers/categories_manager.dart';
+import '../../../../services/managers/creating_announcement_manager.dart';
 
 part 'subcategory_state.dart';
 

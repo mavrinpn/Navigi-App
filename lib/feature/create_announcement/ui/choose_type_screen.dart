@@ -4,7 +4,7 @@ import 'package:smart/widgets/checkBox/custom_check_box.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
-import '../data/creating_announcement_manager.dart';
+import '../../../services/managers/creating_announcement_manager.dart';
 
 class ByNotByScreen extends StatefulWidget {
   const ByNotByScreen({super.key});

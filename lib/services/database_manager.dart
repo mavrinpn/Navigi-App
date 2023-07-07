@@ -1,7 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 
 import '../models/announcement.dart';
-import '../models/creating_data.dart';
+import '../models/announcement_creating_data.dart';
 import '../models/models.dart';
 import '../utils/constants.dart';
 
@@ -91,7 +91,7 @@ class DatabaseManger {
   }
 
   Future<void> createAnnouncement(
-      String uid, List<String> urls, CreatingData creatingData) async {
+      String uid, List<String> urls, AnnouncementCreatingData creatingData) async {
     await _databases.createDocument(
         databaseId: postDatabase,
         collectionId: postCollection,

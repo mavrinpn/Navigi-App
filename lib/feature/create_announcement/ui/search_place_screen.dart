@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
-import 'package:smart/feature/create_announcement/data/places_manager.dart';
 
+import '../../../services/managers/places_manager.dart';
 import '../../../utils/animations.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/category/products.dart';
 import '../../../widgets/textField/outline_text_field.dart';
-import '../data/creating_announcement_manager.dart';
+import '../../../services/managers/creating_announcement_manager.dart';
 
 class SearchPlaceScreen extends StatefulWidget {
   const SearchPlaceScreen({super.key});
@@ -66,7 +66,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
               hintText: '',
               width: double.infinity,
               onChange: (value) {
-                BlocProvider.of<PlacesCubit>(context).searchItems(value);
+                BlocProvider.of<PlacesCubit>(context).searchPlaces(value);
                 setIsTouch(placeManager.searchPlaceIdByName(value) != null);
                 setState(() {});
               },
@@ -89,7 +89,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
                               padding: const EdgeInsets.all(3),
                               child: ProductWidget(
                                 onTap: () {
-                                  cubit.setItemName(e.name);
+                                  cubit.setPlaceName(e.name);
                                   creatingAnnouncementManager
                                       .setPlaceById(e.id);
                                   setIsTouch(true);

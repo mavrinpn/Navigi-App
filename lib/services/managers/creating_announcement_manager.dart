@@ -1,13 +1,12 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:smart/models/announcement.dart';
 
-import '../../../data/app_repository.dart';
-import '../../../models/creating_data.dart';
-import '../../../models/models.dart';
-import '../../../services/database_manager.dart';
-import '../../../services/file_storage.dart';
+import '../../data/app_repository.dart';
+import '../../models/announcement_creating_data.dart';
+import '../../models/models.dart';
+import '../database_manager.dart';
+import '../file_storage.dart';
 
 class CreatingAnnouncementManager {
   final Client client;
@@ -20,7 +19,7 @@ class CreatingAnnouncementManager {
         account = Account(client),
         storageManager = FileStorageManager(client: client);
 
-  CreatingData creatingData = CreatingData();
+  AnnouncementCreatingData creatingData = AnnouncementCreatingData();
   SubCategoryItem? currentItem;
   List<XFile> images = [];
 

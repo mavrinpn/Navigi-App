@@ -6,7 +6,7 @@ import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/dropDownSingleCheckBox/custom_dropdown_single_checkbox.dart';
 import '../../../widgets/textField/under_line_text_field.dart';
-import '../data/creating_announcement_manager.dart';
+import '../../../services/managers/creating_announcement_manager.dart';
 
 class OptionsScreen extends StatefulWidget {
   const OptionsScreen({super.key});

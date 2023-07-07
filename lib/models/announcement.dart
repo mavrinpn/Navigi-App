@@ -1,4 +1,4 @@
-import 'package:smart/models/static_parameters.dart';
+import 'package:smart/models/item/static_parameters.dart';
 
 part 'creator_data.dart';
 part 'place.dart';

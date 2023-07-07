@@ -1,7 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 
-import '../../../models/announcement.dart';
-import '../../../services/database_manager.dart';
+import '../../models/announcement.dart';
+import '../database_manager.dart';
 
 class AnnouncementManager {
   final DatabaseManger dbManager;
@@ -10,19 +10,24 @@ class AnnouncementManager {
       : dbManager = DatabaseManger(client: client);
 
   String? _lastId;
-  static const int _amount = 3;
+  bool _canGetMore = true;
+  static const int _amount = 6;
 
   List<String> viewsAnnouncements = [];
   List<Announcement> announcements = [];
   Announcement? lastAnnouncement;
 
   Future<void> addLimitAnnouncements() async {
-    try {
-      announcements.addAll(await dbManager.getLimitAnnouncements(_lastId, _amount));
-      _lastId = announcements.last.announcementId;
-    } catch (e) {
-      if (e.toString() != 'Bad state: No element') {
-        rethrow;
+    if (_canGetMore) {
+      try {
+        announcements.addAll(await dbManager.getLimitAnnouncements(_lastId, _amount));
+        _lastId = announcements.last.announcementId;
+      } catch (e) {
+        if (e.toString() != 'Bad state: No element') {
+          rethrow;
+        } else {
+          _canGetMore = false;
+        }
       }
     }
   }

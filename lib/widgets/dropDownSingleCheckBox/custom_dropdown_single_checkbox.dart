@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/checkBox/custom_check_box.dart';
 
-import '../../models/item.dart';
+import '../../models/item/item.dart';
 import '../../utils/colors.dart';
 
 class CustomDropDownSingleCheckBox extends StatefulWidget {

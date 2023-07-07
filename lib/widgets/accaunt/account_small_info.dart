@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
+import 'package:smart/generated/assets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
@@ -48,7 +49,7 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                 height: 64,
                 decoration: const ShapeDecoration(
                   image: DecorationImage(
-                    image: AssetImage("Assets/randomPeople.png"),
+                    image: AssetImage(Assets.assetsRandomPeople),
                     fit: BoxFit.fill,
                   ),
                   shape: OvalBorder(),
@@ -110,7 +111,7 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SvgPicture.asset('Assets/icons/point.svg'),
+                        SvgPicture.asset(Assets.iconsPoint),
                         RichText(
                             text: TextSpan(children: [
                           TextSpan(

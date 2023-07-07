@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
-import '../data/creating_announcement_manager.dart';
+import '../../../services/managers/creating_announcement_manager.dart';
 
 class PickPhotosScreen extends StatefulWidget {
   const PickPhotosScreen({super.key});

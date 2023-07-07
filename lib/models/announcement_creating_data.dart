@@ -1,4 +1,4 @@
-class CreatingData {
+class AnnouncementCreatingData {
   String? categoryId;
   String? subcategoryId;
   String? title;

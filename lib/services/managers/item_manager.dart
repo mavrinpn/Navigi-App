@@ -1,4 +1,4 @@
-import '../../../models/item.dart';
+import '../../models/item/item.dart';
 import '../../../services/database_manager.dart';
 
 class ItemManager {

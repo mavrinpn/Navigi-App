@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:smart/models/announcement.dart';
 
-import '../../data/creating_announcement_manager.dart';
-import '../../data/places_manager.dart';
+import '../../../../services/managers/creating_announcement_manager.dart';
+import '../../../../services/managers/places_manager.dart';
 part 'places_state.dart';
 
 class PlacesCubit extends Cubit<PlacesState> {
@@ -26,9 +26,9 @@ class PlacesCubit extends Cubit<PlacesState> {
 
   List<PlaceData> getPlaces() => placesManager.searchedPlaces;
 
-  void setItemName(String name) => placesManager.setSearchController(name);
+  void setPlaceName(String name) => placesManager.setSearchController(name);
 
-  void searchItems(String query) {
+  void searchPlaces(String query) {
     emit(PlacesLoadingState());
     placesManager.searchController = query;
 

@@ -5,7 +5,7 @@ import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/textField/outline_text_field.dart';
 import '../bloc/creating/creating_announcement_cubit.dart';
-import '../data/creating_announcement_manager.dart';
+import '../../../services/managers/creating_announcement_manager.dart';
 
 class DescriptionScreen extends StatefulWidget {
   const DescriptionScreen({super.key});
