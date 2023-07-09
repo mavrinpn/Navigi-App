@@ -23,7 +23,6 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Container(
         width: double.infinity,
-        height: 92,
         padding: const EdgeInsets.all(14),
         decoration: ShapeDecoration(
           color: Colors.white,

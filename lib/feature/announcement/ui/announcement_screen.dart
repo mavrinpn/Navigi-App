@@ -47,12 +47,20 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
+                    focusColor: AppColors.empty,
+                    hoverColor: AppColors.empty,
+                    highlightColor: AppColors.empty,
+                    splashColor: AppColors.empty,
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: AppColors.black,
+                    child: const SizedBox(
+                      width: 35,
+                      height: 48,
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: AppColors.black,
+                      ),
                     ),
                   ),
                   Row(
