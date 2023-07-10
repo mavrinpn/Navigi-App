@@ -6,7 +6,7 @@ class Assets {
   static const String assetsGoogle = 'Assets/google.png';
   static const String assetsLogo = 'Assets/logo.png';
   static const String assetsMapMarker = 'Assets/map_marker.png';
-  static const String assetsMask = 'Assets/mmask.png';
+  static const String assetsMask = 'Assets/mask.png';
   static const String assetsRandomPeople = 'Assets/randomPeople.png';
   static const String assetsSplash = 'Assets/splash.png';
   static const String assetsSplashLogo = 'Assets/splash_logo.png';
@@ -21,6 +21,7 @@ class Assets {
   static const String iconsExit = 'Assets/icons/exit.svg';
   static const String iconsEye = 'Assets/icons/eye.svg';
   static const String iconsFacebook = 'Assets/icons/facebook.svg';
+  static const String iconsFaq = 'Assets/icons/faq.svg';
   static const String iconsFollow = 'Assets/icons/follow.svg';
   static const String iconsFollow2 = 'Assets/icons/follow_2.svg';
   static const String iconsFrame = 'Assets/icons/Frame.svg';
@@ -29,11 +30,15 @@ class Assets {
   static const String iconsLike = 'Assets/icons/like.svg';
   static const String iconsLogo = 'Assets/icons/logo.svg';
   static const String iconsMenuDotsVertical = 'Assets/icons/menu-dots-vertical.svg';
+  static const String iconsMessages = 'Assets/icons/messages.svg';
   static const String iconsOnlySearch = 'Assets/icons/only_search.svg';
   static const String iconsPhone = 'Assets/icons/phone.svg';
   static const String iconsPoint = 'Assets/icons/point.svg';
   static const String iconsProfile = 'Assets/icons/profile.svg';
+  static const String iconsProfileSettings = 'Assets/icons/profile_settings.svg';
   static const String iconsSearch = 'Assets/icons/search.svg';
+  static const String iconsSecurity = 'Assets/icons/security.svg';
+  static const String iconsTermsOfUse = 'Assets/icons/terms_of_use.svg';
   static const String iconsThreeDots = 'Assets/icons/three_dots.svg';
 
 }

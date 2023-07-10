@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart/bloc/auth/auth_cubit.dart';
-import 'package:smart/data/app_repository.dart';
+import 'package:smart/data/auth_repository.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/ui/creating_screens.dart';
 import 'package:smart/feature/main/bloc/announcement_cubit.dart';
@@ -93,10 +93,13 @@ class MyRepositoryProviders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DatabaseManger dbManager = DatabaseManger(client: client);
-
+    FileStorageManager storageManager = FileStorageManager(client: client);
     return MultiRepositoryProvider(providers: [
       RepositoryProvider(
-        create: (_) => AuthRepository(client: client),
+        create: (_) => AuthRepository(
+            client: client,
+            databaseManger: dbManager,
+            fileStorageManager: storageManager),
       ),
       RepositoryProvider(
         create: (_) => CreatingAnnouncementManager(client: client),

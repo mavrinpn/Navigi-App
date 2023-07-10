@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:smart/data/app_repository.dart';
+import 'package:smart/data/auth_repository.dart';
 
 import '../../../../services/managers/creating_announcement_manager.dart';
 

@@ -2,7 +2,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../data/app_repository.dart';
+import '../../data/auth_repository.dart';
 import '../../models/announcement_creating_data.dart';
 import '../../models/models.dart';
 import '../database_manager.dart';
