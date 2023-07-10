@@ -4,23 +4,26 @@ import '../utils/constants.dart';
 
 class FileStorageManager {
   Client client;
-  Storage storage;
+  Storage _storage;
 
-  FileStorageManager({required this.client}) : storage = Storage(client);
+  FileStorageManager({required this.client}) : _storage = Storage(client);
 
   Future<List<String>> uploadImages(List<String> listOfPaths) async {
-    try {
+
       List<String> urlsList = [];
 
       for (var path in listOfPaths) {
-        final file = await storage.createFile(bucketId: announcementsImagesId, fileId: ID.unique(), file: InputFile.fromPath(path: path));
+        final file = await _storage.createFile(bucketId: announcementsBucketId, fileId: ID.unique(), file: InputFile.fromPath(path: path));
         urlsList.add(createViewUrl(file.$id, file.bucketId));
       }
       return urlsList;
 
-    } catch (e) {
-      rethrow;
-    }
+
+  }
+
+  Future<String> uploadAvatar(String path) async {
+    final res = await _storage.createFile(bucketId: avatarsBucketId, fileId: ID.unique(), file: InputFile.fromPath(path: path));
+    return createViewUrl(res.$createdAt, avatarsBucketId);
   }
 
   String createViewUrl(String fileID, String bucketID) =>

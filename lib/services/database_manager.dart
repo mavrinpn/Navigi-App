@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:smart/models/user.dart';
 
 import '../models/announcement.dart';
 import '../models/announcement_creating_data.dart';
@@ -97,5 +98,25 @@ class DatabaseManger {
         collectionId: postCollection,
         documentId: ID.unique(),
         data: creatingData.toJson(uid, urls));
+  }
+
+  Future<void> createUser({required String name, required String uid, required String phone}) async {
+    await _databases.createDocument(databaseId: usersDatabase, collectionId: usersCollection, documentId: uid, data: {
+      'name': name,
+      'phone': phone
+    });
+  }
+
+  Future<UserData> getUserData({required String uid}) async {
+    final res = await _databases.getDocument(databaseId: usersDatabase, collectionId: usersCollection, documentId: uid);
+    return UserData.fromJson(res.data);
+  }
+
+  Future<void> editProfile({required String uid,  String? name, String? phone, String? imageUrl}) async {
+    await _databases.updateDocument(databaseId: usersDatabase, collectionId: usersCollection, documentId: uid, data: {
+      if (name != null) 'name': name,
+      if (phone != null) 'phone': phone,
+      if (imageUrl != null) 'image': imageUrl
+    });
   }
 }
