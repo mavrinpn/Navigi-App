@@ -30,7 +30,7 @@ class UserData {
     final int year = gotData.year;
     final String month = _addZeroInStart(gotData.month);
     final String day = _addZeroInStart(gotData.day);
-    return '$year.$month.$day';
+    return '$day.$month.$year';
   }
 
   String get displayName => _capitalizeName();
