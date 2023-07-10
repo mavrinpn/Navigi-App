@@ -1,5 +1,5 @@
 class UserData {
-  final String name;
+  String name;
   final double score;
   final bool verified;
   final String imageUrl;
@@ -20,9 +20,12 @@ class UserData {
       : name = json['name'],
         score = 4.9,
         verified = json['verified'],
-        imageUrl = json['image'] ?? 'http://89.253.237.166/v1/storage/buckets/64abdd27c9326a1cdfde/files/64abe12a025c0060fe51/view?project=64987d0f7f186b7e2b45',
+        imageUrl = json['image'] ??
+            'http://89.253.237.166/v1/storage/buckets/64abdd27c9326a1cdfde/files/64abe12a025c0060fe51/view?project=64987d0f7f186b7e2b45',
         _atService = json['\$createdAt'],
-        phone = json['phone'];
+        phone = json['phone'] {
+    _capitalizeName();
+  }
 
   String get atService {
     final gotData = DateTime.parse(_atService);
@@ -32,5 +35,20 @@ class UserData {
     return '$year.$month.$day';
   }
 
-  String _addZeroInStart(int num) => num.toString().length > 1 ? num.toString() : '0$num';
+  void _capitalizeName() {
+    if (name.split(' ').length > 1) {
+      String last = name.split(' ')[name.split(' ').length - 1];
+      String first = name.substring(0, name.lastIndexOf(last));
+
+      name = '${first[0].toUpperCase() + first.substring(1).toLowerCase()} ${last[0].toUpperCase()}.';
+    } else {
+      name = name[0].toUpperCase() + name.substring(1).toLowerCase();
+    }
+
+
+
+  }
+
+  String _addZeroInStart(int num) =>
+      num.toString().length > 1 ? num.toString() : '0$num';
 }
