@@ -11,4 +11,6 @@ class AppColors {
   static const whiteGray = Color(0xffDEE2E7);
   static const backgroundLightGray = Color(0xffF4F5F6);
   static const starsActive = Color(0xffFFB039);
+  static const blue = Color(0xFF0E7DE4);
+  static const backgroundIcon = Color(0x19ED5434);
 }

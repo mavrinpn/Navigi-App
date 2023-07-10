@@ -11,7 +11,7 @@ import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 
 import '../../../utils/colors.dart';
-import '../../../widgets/accaunt/account_small_info.dart';
+import '../../../widgets/accaont/account_small_info.dart';
 import '../../../widgets/button/custom_icon_button.dart';
 import '../../../widgets/images/network_image.dart';
 import '../bloc/announcement_cubit.dart';

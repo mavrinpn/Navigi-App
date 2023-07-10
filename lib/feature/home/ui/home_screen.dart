@@ -1,15 +1,10 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:smart/bloc/auth/auth_cubit.dart';
 import 'package:smart/utils/fonts.dart';
-import 'package:smart/widgets/button/custom_elevated_button.dart';
 
 import '../../../utils/colors.dart';
-import '../../../widgets/button/custom_text_button.dart';
 import '../../main/ui/main_screen.dart';
+import '../../profile/ui/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -27,40 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
       const MainScreen(),
       const Text('Messages'),
       const Text('Delection'),
-      Center(
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CustomTextButton.withIcon(
-                callback: () {
-                  Navigator.pushNamed(context, '/create_category_screen');
-                },
-                text: 'Ajouter une annonce',
-                styleText: AppTypography.font14white,
-                isTouch: true,
-                icon: const Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomElevatedButton(
-                  icon: "Assets/icons/exit.svg",
-                  title: "Se déconnecter du compte",
-                  onPress: () {
-                    BlocProvider.of<AuthCubit>(context).logout();
-                  },
-                  height: 52,
-                  width: double.infinity)
-            ],
-          ),
-        ),
-      )
+      const ProfileScreen(),
     ];
 
     void onSelectTab(int index) {
