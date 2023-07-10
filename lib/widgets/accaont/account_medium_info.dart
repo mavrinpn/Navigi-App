@@ -1,3 +1,4 @@
+import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:smart/generated/assets.dart';
@@ -5,12 +6,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 
-import '../../models/announcement.dart';
+import '../../models/user.dart';
 
 class AccountMediumInfo extends StatefulWidget {
-  const AccountMediumInfo({super.key, required this.creatorData});
+  const AccountMediumInfo({super.key, required this.user});
 
-  final CreatorData creatorData;
+  final UserData user;
 
   @override
   State<AccountMediumInfo> createState() => _AccountMediumInfoState();
@@ -33,8 +34,8 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
               width: 100,
               height: 100,
               child: Stack(children: [
-                const Image(
-                  image: AssetImage(Assets.assetsRandomPeople),
+                 Image(
+                  image: NetworkImage(widget.user.imageUrl),
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,
@@ -53,19 +54,12 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Le Vendeur',
-                    style: AppTypography.font14lightGray.copyWith(fontSize: 12),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
                   Row(
                     children: [
                       SizedBox(
                         width: 70,
                         child: Text(
-                          widget.creatorData.name,
+                          widget.user.name,
                           style: AppTypography.font20black,
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
@@ -74,7 +68,7 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(5, 0, 0, 4),
                         child: RatingStars(
-                          value: widget.creatorData.score,
+                          value: widget.user.score,
                           starBuilder: (index, color) => Icon(
                             Icons.star,
                             color: color,
@@ -95,7 +89,7 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
                       ),
                       const SizedBox(width: 12),
                       Text(
-                        '${widget.creatorData.score}',
+                        '${widget.user.score}',
                         style: AppTypography.font14black.copyWith(fontSize: 12),
                       ),
                     ],
@@ -104,7 +98,7 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
                     height: 5,
                   ),
                   Text(
-                    'data',
+                    'Sur le service de ${widget.user.atService}',
                     style: AppTypography.font12lightGray
                         .copyWith(fontWeight: FontWeight.w400),
                   ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:smart/models/announcement.dart';
 
 import '../../../bloc/auth/auth_cubit.dart';
+import '../../../models/user.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/accaont/account_medium_info.dart';
@@ -44,7 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             children: [
               AccountMediumInfo(
-                creatorData: CreatorData(),
+                user: UserData(),
               ),
               const SizedBox(
                 height: 40,
