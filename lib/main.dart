@@ -57,6 +57,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: AppColors.mainBackground,
+        scaffoldBackgroundColor: AppColors.mainBackground,
         fontFamily: GoogleFonts.nunito().fontFamily,
       ),
       routes: {

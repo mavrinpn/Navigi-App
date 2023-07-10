@@ -45,6 +45,7 @@ class _MainScreenState extends State<MainScreen> {
     final repository = RepositoryProvider.of<AnnouncementManager>(context);
 
     return Scaffold(
+
       body: SafeArea(
         child: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
           builder: (context, state) {
@@ -60,13 +61,13 @@ class _MainScreenState extends State<MainScreen> {
                   decelerationRate: ScrollDecelerationRate.fast),
               slivers: [
                 SliverAppBar(
-                  backgroundColor: AppColors.empty,
+                  backgroundColor: AppColors.mainBackground,
                   elevation: 0,
                   pinned: true,
-                  collapsedHeight: 64,
-                  expandedHeight: 64,
+                  collapsedHeight: 74,
+                  expandedHeight: 74,
                   flexibleSpace: Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                    padding: const EdgeInsets.fromLTRB(15, 20, 15, 10),
                     child: ElevatedTextField(
                       width: MediaQuery.of(context).size.width - 100,
                       height: 44,
