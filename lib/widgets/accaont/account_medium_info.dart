@@ -1,10 +1,9 @@
-import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
-import 'package:smart/generated/assets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/widgets/images/network_image.dart';
 
 import '../../models/user.dart';
 
@@ -34,11 +33,11 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
               width: 100,
               height: 100,
               child: Stack(children: [
-                 Image(
-                  image: NetworkImage(widget.user.imageUrl),
+                CustomNetworkImage(
                   width: 100,
                   height: 100,
-                  fit: BoxFit.cover,
+                  url: widget.user.imageUrl,
+                  borderRadius: 50,
                 ),
                 Container(
                     alignment: Alignment.topRight,

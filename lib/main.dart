@@ -8,6 +8,7 @@ import 'package:smart/data/auth_repository.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/ui/creating_screens.dart';
 import 'package:smart/feature/main/bloc/announcement_cubit.dart';
+import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/registration/ui/register_screen.dart';
 import 'package:smart/services/services.dart';
 import 'package:smart/utils/animations.dart';
@@ -184,6 +185,13 @@ class MyBlocProviders extends StatelessWidget {
           creatingManager:
               RepositoryProvider.of<CreatingAnnouncementManager>(context),
           placesManager: RepositoryProvider.of<PlacesManager>(context),
+        ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => UserCubit(
+          authRepository:
+              RepositoryProvider.of<AuthRepository>(context),
         ),
         lazy: false,
       ),

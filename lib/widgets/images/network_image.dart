@@ -6,12 +6,14 @@ class CustomNetworkImage extends StatefulWidget {
       {super.key,
       required this.width,
       required this.height,
+        this.borderRadius = 14,
       required String url})
       : _image = NetworkImage(url);
 
   final NetworkImage _image;
   final double width;
   final double height;
+  final double borderRadius;
 
   @override
   State<CustomNetworkImage> createState() => _CustomNetworkImageState();
@@ -42,14 +44,14 @@ class _CustomNetworkImageState extends State<CustomNetworkImage> {
               height: widget.height,
               decoration: BoxDecoration(
                   color: Colors.grey[300]!,
-                  borderRadius: BorderRadius.circular(14)),
+                  borderRadius: BorderRadius.circular(widget.borderRadius)),
             ),
           )
         : Container(
             width: widget.width,
             height: widget.height,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(widget.borderRadius),
                 image:
                     DecorationImage(image: widget._image, fit: BoxFit.cover)),
           );

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/data/auth_repository.dart';
+import 'package:smart/feature/profile/bloc/user_cubit.dart';
+import 'package:smart/utils/animations.dart';
 
 import '../../../bloc/auth/auth_cubit.dart';
 import '../../../models/user.dart';
@@ -38,81 +41,89 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              AccountMediumInfo(
-                user: UserData(),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              CustomTextButton.withIcon(
-                callback: () {
-                  Navigator.pushNamed(context, '/create_category_screen');
-                },
-                text: 'Ajouter une annonce',
-                styleText: AppTypography.font14white,
-                isTouch: true,
-                icon: const Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 24,
+      body: BlocBuilder<UserCubit, UserState>(
+        builder: (context, state) {
+          if (state is ProfileSuccessState) {
+            return Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    AccountMediumInfo(
+                      user: RepositoryProvider.of<AuthRepository>(context).userData,
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    CustomTextButton.withIcon(
+                      callback: () {
+                        Navigator.pushNamed(context, '/create_category_screen');
+                      },
+                      text: 'Ajouter une annonce',
+                      styleText: AppTypography.font14white,
+                      isTouch: true,
+                      icon: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(height: 40,),
+                    RowButton(
+                      title: 'Mes données',
+                      icon: 'Assets/icons/profile_settings.svg',
+                      onTap: () {},
+                    ),
+                    RowButton(
+                      title: 'Mes commentaires',
+                      icon: 'Assets/icons/messages.svg',
+                      onTap: () {},
+                    ),
+                    RowButton(
+                      title: 'FAQ',
+                      icon: 'Assets/icons/faq.svg',
+                      onTap: () {},
+                    ),
+                    RowButton(
+                      title: 'Politique de confidentialité',
+                      icon: 'Assets/icons/security.svg',
+                      onTap: () {},
+                    ),
+                    RowButton(
+                      title: 'Conditions dutilisation',
+                      icon: 'Assets/icons/terms_of_use.svg',
+                      onTap: () {},
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomElevatedButton(
+                        icon: "Assets/icons/exit.svg",
+                        title: "Se déconnecter du compte",
+                        onPress: () {
+                          BlocProvider.of<AuthCubit>(context).logout();
+                        },
+                        height: 52,
+                        width: double.infinity)
+                  ],
                 ),
               ),
-              const SizedBox(height: 40,),
-              RowButton(
-                title: 'Mes données',
-                icon: 'Assets/icons/profile_settings.svg',
-                onTap: () {},
-              ),
-              RowButton(
-                title: 'Mes commentaires',
-                icon: 'Assets/icons/messages.svg',
-                onTap: () {},
-              ),
-              RowButton(
-                title: 'FAQ',
-                icon: 'Assets/icons/faq.svg',
-                onTap: () {},
-              ),
-              RowButton(
-                title: 'Politique de confidentialité',
-                icon: 'Assets/icons/security.svg',
-                onTap: () {},
-              ),
-              RowButton(
-                title: 'Conditions dutilisation',
-                icon: 'Assets/icons/terms_of_use.svg',
-                onTap: () {},
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomElevatedButton(
-                  icon: "Assets/icons/exit.svg",
-                  title: "Se déconnecter du compte",
-                  onPress: () {
-                    BlocProvider.of<AuthCubit>(context).logout();
-                  },
-                  height: 52,
-                  width: double.infinity)
-            ],
-          ),
-        ),
+            );
+          } else {
+            return Center(child: AppAnimations.circleFadingAnimation);
+          }
+
+        },
       ),
     );
   }
 }
 
 class RowButton extends StatelessWidget {
-  const RowButton(
-      {super.key,
-      required this.title,
-      required this.icon,
-      required this.onTap});
+  const RowButton({super.key,
+    required this.title,
+    required this.icon,
+    required this.onTap});
 
   final String icon;
   final String title;
@@ -127,7 +138,9 @@ class RowButton extends StatelessWidget {
         hoverColor: AppColors.empty,
         highlightColor: AppColors.empty,
         splashColor: AppColors.empty,
-        onTap: () {print(1);} ,
+        onTap: () {
+          print(1);
+        },
         child: SizedBox(
           width: double.infinity,
           child: Row(
@@ -137,8 +150,8 @@ class RowButton extends StatelessWidget {
                 width: 30,
                 height: 30,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: AppColors.backgroundIcon
+                    borderRadius: BorderRadius.circular(8),
+                    color: AppColors.backgroundIcon
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),

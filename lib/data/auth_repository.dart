@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:image_picker/image_picker.dart';
@@ -47,14 +49,19 @@ class AuthRepository {
     return '$phone@gmail.com';
   }
 
-  void _auth(Future<Session> method) async {
+  Future<void> _auth(Future<Session> method, {Future? requiredMethod}) async {
     authState.add(LoadingStateEnum.loading);
     try {
       final promise = await method;
       sessionID = promise.$id;
+
       final prefs = await SharedPreferences.getInstance();
       prefs.setString(sessionIdKey, sessionID!);
+
       _user = await _account.get();
+      if (requiredMethod != null) {
+        await requiredMethod;
+      }
       authState.add(LoadingStateEnum.success);
       getUserData();
       appState.add(AuthStateEnum.auth);
@@ -78,9 +85,10 @@ class AuthRepository {
       required String name}) async {
     final User res = await _account.create(
         userId: ID.unique(), email: email, password: password, name: name);
-    await _databaseManger.createUser(
-        name: res.name, uid: res.$id, phone: email);
-    _auth(_account.createEmailSession(email: email, password: password));
+
+    await _auth(_account.createEmailSession(email: email, password: password),
+        requiredMethod: _databaseManger.createUser(
+            name: res.name, uid: res.$id, phone: email));
   }
 
   void loginWithEmail({required String email, required String password}) =>
@@ -92,6 +100,7 @@ class AuthRepository {
       sessionID = prefs.getString(sessionIdKey);
       if (sessionID != null) {
         _user = await _account.get();
+        getUserData();
         appState.add(AuthStateEnum.auth);
       } else {
         appState.add(AuthStateEnum.unAuth);
