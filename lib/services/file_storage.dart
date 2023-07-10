@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:appwrite/appwrite.dart';
 
 import '../utils/constants.dart';
@@ -21,9 +23,9 @@ class FileStorageManager {
 
   }
 
-  Future<String> uploadAvatar(String path) async {
-    final res = await _storage.createFile(bucketId: avatarsBucketId, fileId: ID.unique(), file: InputFile.fromPath(path: path));
-    return createViewUrl(res.$createdAt, avatarsBucketId);
+  Future<String> uploadAvatar(Uint8List bytes) async {
+    final res = await _storage.createFile(bucketId: avatarsBucketId, fileId: ID.unique(), file: InputFile.fromBytes(bytes: bytes, filename: 'userAvatar'));
+    return createViewUrl(res.$id, avatarsBucketId);
   }
 
   String createViewUrl(String fileID, String bucketID) =>

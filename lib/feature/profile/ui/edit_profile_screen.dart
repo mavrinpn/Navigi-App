@@ -1,8 +1,11 @@
-import 'dart:ui';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
@@ -24,6 +27,37 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController placeController = TextEditingController();
 
+  CroppedFile? image;
+
+  Uint8List? bytes;
+  String? changedName;
+  String? phone;
+
+  void pickImage() async {
+    final file = await ImagePicker().pickImage(source: ImageSource.gallery);
+    image = await ImageCropper().cropImage(
+      sourcePath: file!.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+      ],
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      cropStyle: CropStyle.circle,
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: AppColors.dark,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true),
+        IOSUiSettings(
+          title: 'Cropper',
+        ),
+      ],
+    );
+    bytes = await image?.readAsBytes();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = RepositoryProvider.of<AuthRepository>(context).userData;
@@ -31,8 +65,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     nameController.text = user.name;
     phoneController.text = user.phone;
 
-
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Row(
@@ -70,43 +104,53 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   const SizedBox(
                     height: 15,
                   ),
-                  SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: Stack(
-                      children: [
-                        CustomNetworkImage(
-                          width: 100,
-                          height: 100,
-                          url: user.imageUrl,
-                          borderRadius: 50,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Colors.black.withOpacity(0.3)),
-                        ),
-                        Container(
-                            alignment: Alignment.center,
-                            child: SvgPicture.asset(
-                              'Assets/icons/camera.svg',
-                              width: 32,
-                              height: 32,
-                            ))
-                      ],
+                  InkWell(
+                    onTap: pickImage,
+                    child: SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: Stack(
+                        children: [
+                          image == null
+                              ? CustomNetworkImage(
+                                  width: 100,
+                                  height: 100,
+                                  url: user.imageUrl,
+                                  borderRadius: 50,
+                                )
+                              : ClipOval(
+                                  child: Image.memory(bytes!, width: 100)),
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: Colors.black.withOpacity(0.3)),
+                          ),
+                          Container(
+                              alignment: Alignment.center,
+                              child: SvgPicture.asset(
+                                'Assets/icons/camera.svg',
+                                width: 32,
+                                height: 32,
+                              ))
+                        ],
+                      ),
                     ),
                   ),
                   CustomTextFormField(
                     controller: nameController,
                     keyboardType: TextInputType.text,
                     prefIcon: 'Assets/icons/profile.svg',
-                    onChanged: (String? o) {},
+                    onChanged: (String? o) {
+                      changedName = o != user.name ? o : null;
+                    },
                   ),
                   CustomTextFormField(
                     controller: phoneController,
                     keyboardType: TextInputType.text,
                     prefIcon: 'Assets/icons/phone.svg',
-                    onChanged: (String? o) {},
+                    onChanged: (String? o) {
+                      phone = o != user.phone ? o : null;
+                    },
                   ),
                   CustomTextFormField(
                     controller: emailController,
@@ -125,14 +169,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               Column(
                 children: [
                   CustomTextButton(
-                      callback: () {},
-                      text: 'Enregistrer',
-                      styleText: AppTypography.font14white
-                          .copyWith(fontWeight: FontWeight.w600),
-                      isTouch: true,
+                    callback: () {
+                      BlocProvider.of<UserCubit>(context).editProfile(
+                          name: changedName, phone: phone, bytes: bytes);
+                    },
+                    text: 'Enregistrer',
+                    styleText: AppTypography.font14white
+                        .copyWith(fontWeight: FontWeight.w600),
+                    isTouch: true,
                     activeColor: AppColors.black,
                   ),
-                  SizedBox(height: 30,),
+                  const SizedBox(
+                    height: 30,
+                  ),
                 ],
               )
             ],

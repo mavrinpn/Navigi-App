@@ -23,9 +23,7 @@ class UserData {
         imageUrl = json['image'] ??
             'http://89.253.237.166/v1/storage/buckets/64abdd27c9326a1cdfde/files/64abe12a025c0060fe51/view?project=64987d0f7f186b7e2b45',
         _atService = json['\$createdAt'],
-        phone = json['phone'] {
-    _capitalizeName();
-  }
+        phone = json['phone'];
 
   String get atService {
     final gotData = DateTime.parse(_atService);
@@ -35,18 +33,19 @@ class UserData {
     return '$year.$month.$day';
   }
 
-  void _capitalizeName() {
+  String get displayName => _capitalizeName();
+
+  String _capitalizeName() {
+    String n;
     if (name.split(' ').length > 1) {
       String last = name.split(' ')[name.split(' ').length - 1];
       String first = name.substring(0, name.lastIndexOf(last));
 
-      name = '${first[0].toUpperCase() + first.substring(1).toLowerCase()} ${last[0].toUpperCase()}.';
+      n = '${first[0].toUpperCase() + first.substring(1).toLowerCase()} ${last[0].toUpperCase()}.';
     } else {
-      name = name[0].toUpperCase() + name.substring(1).toLowerCase();
+      n = name[0].toUpperCase() + name.substring(1).toLowerCase();
     }
-
-
-
+    return n;
   }
 
   String _addZeroInStart(int num) =>

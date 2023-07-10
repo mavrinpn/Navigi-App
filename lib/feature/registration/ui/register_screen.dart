@@ -263,7 +263,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: Text('Entrée',
                             style: AppTypography.font16UnderLinePink),
                         onTap: () {
-                          Navigator.pushNamed(context, '/login_first_screen');
+                          Navigator.pop(context);
                         },
                       ),
                       SizedBox(

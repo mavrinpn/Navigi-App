@@ -58,7 +58,7 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
                     child: Wrap(
                       children: [
                         Text(
-                          widget.user.name,
+                          widget.user.displayName,
                           style: AppTypography.font20black,
                           maxLines: 2,
                           softWrap: true,

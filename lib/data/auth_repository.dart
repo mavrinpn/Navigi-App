@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
@@ -110,16 +111,16 @@ class AuthRepository {
     }
   }
 
-  void editProfile({String? name, String? phone, XFile? image}) async {
+  void editProfile({String? name, String? phone, Uint8List? bytes}) async {
     profileState.add(LoadingStateEnum.loading);
     try {
       String? imageUrl;
-      if (image != null) {
-        imageUrl = await _fileStorageManager.uploadAvatar(image.path);
+      if (bytes != null) {
+        imageUrl = await _fileStorageManager.uploadAvatar(bytes);
       }
       await _databaseManger.editProfile(
           uid: _user.$id, name: name, phone: phone, imageUrl: imageUrl);
-      profileState.add(LoadingStateEnum.success);
+      getUserData();
     } catch (e) {
       profileState.add(LoadingStateEnum.fail);
       rethrow;

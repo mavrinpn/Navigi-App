@@ -6,7 +6,6 @@ import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/utils/animations.dart';
 
 import '../../../bloc/auth/auth_cubit.dart';
-import '../../../models/user.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/accaont/account_medium_info.dart';
@@ -50,7 +49,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   children: [
                     AccountMediumInfo(
-                      user: RepositoryProvider.of<AuthRepository>(context).userData,
+                      user: RepositoryProvider.of<AuthRepository>(context)
+                          .userData,
                     ),
                     const SizedBox(
                       height: 40,
@@ -68,11 +68,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         size: 24,
                       ),
                     ),
-                    const SizedBox(height: 40,),
+                    const SizedBox(
+                      height: 40,
+                    ),
                     RowButton(
                       title: 'Mes données',
                       icon: 'Assets/icons/profile_settings.svg',
-                      onTap: () {Navigator.pushNamed(context, '/edit_profile_screen');},
+                      onTap: () {
+                        Navigator.pushNamed(context, '/edit_profile_screen');
+                      },
                     ),
                     RowButton(
                       title: 'Mes commentaires',
@@ -112,7 +116,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           } else {
             return Center(child: AppAnimations.circleFadingAnimation);
           }
-
         },
       ),
     );
@@ -120,10 +123,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 }
 
 class RowButton extends StatelessWidget {
-  const RowButton({super.key,
-    required this.title,
-    required this.icon,
-    required this.onTap});
+  const RowButton(
+      {super.key,
+      required this.title,
+      required this.icon,
+      required this.onTap});
 
   final String icon;
   final String title;
@@ -149,14 +153,19 @@ class RowButton extends StatelessWidget {
                 height: 30,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: AppColors.backgroundIcon
-                ),
+                    color: AppColors.backgroundIcon),
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
-                  child: SvgPicture.asset(icon, width: 20, height: 20,),
+                  child: SvgPicture.asset(
+                    icon,
+                    width: 20,
+                    height: 20,
+                  ),
                 ),
               ),
-              const SizedBox(width: 12,),
+              const SizedBox(
+                width: 12,
+              ),
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
