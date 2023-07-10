@@ -22,7 +22,7 @@ class CustomTextButton extends StatelessWidget {
     required this.styleText,
     this.width = double.infinity,
     this.height = 50,
-    this.padding = const EdgeInsets.all(10),
+    this.padding = const EdgeInsets.all(0),
     this.isTouch = false,
     this.child,
     this.activeColor = AppColors.red,

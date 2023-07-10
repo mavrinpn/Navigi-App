@@ -22,6 +22,7 @@ import 'feature/home/ui/home_screen.dart';
 import 'feature/login/ui/login_first_screen.dart';
 import 'feature/login/ui/login_second_screen.dart';
 import 'feature/main/ui/main_screen.dart';
+import 'feature/profile/ui/edit_profile_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,6 +60,8 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: AppColors.mainBackground,
         scaffoldBackgroundColor: AppColors.mainBackground,
+        appBarTheme: const AppBarTheme(
+            backgroundColor: AppColors.mainBackground, elevation: 0),
         fontFamily: GoogleFonts.nunito().fontFamily,
       ),
       routes: {
@@ -79,6 +82,7 @@ class _MyAppState extends State<MyApp> {
         '/create_options_screen': (context) => const OptionsScreen(),
         '/main_screen': (context) => const MainScreen(),
         '/announcement_screen': (context) => const AnnouncementScreen(),
+        '/edit_profile_screen': (context) => const EditProfileScreen(),
       },
       color: const Color(0xff292B57),
     );
@@ -190,8 +194,7 @@ class MyBlocProviders extends StatelessWidget {
       ),
       BlocProvider(
         create: (_) => UserCubit(
-          authRepository:
-              RepositoryProvider.of<AuthRepository>(context),
+          authRepository: RepositoryProvider.of<AuthRepository>(context),
         ),
         lazy: false,
       ),

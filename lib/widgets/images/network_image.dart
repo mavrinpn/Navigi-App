@@ -6,7 +6,7 @@ class CustomNetworkImage extends StatefulWidget {
       {super.key,
       required this.width,
       required this.height,
-        this.borderRadius = 14,
+      this.borderRadius = 14,
       required String url})
       : _image = NetworkImage(url);
 

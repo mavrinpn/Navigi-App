@@ -78,15 +78,32 @@ class _MaskTextFormFieldState extends State<MaskTextFormField> {
               ),
               prefixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  SvgPicture.asset(widget.prefIcon, width: 20, height: 20, color: AppColors.black,),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                        widget.prefIcon,
+                        width: 20,
+                        height: 20,
+                        color: AppColors.black,
+                      ),
+                      const SizedBox(
+                        height: 6,
+                      )
+                    ],
+                  ),
                   const SizedBox(
                     width: 10,
                   ),
-                  const Text(
-                    '| ',
-                    style: TextStyle(fontSize: 25, color: AppColors.lightGray),
-                  ),
+                  Column(mainAxisSize: MainAxisSize.min, children: [
+                    SvgPicture.asset('Assets/icons/line.svg',
+                        color: AppColors.lightGray),
+                    const SizedBox(
+                      height: 4,
+                    )
+                  ]),
                   const SizedBox(
                     width: 10,
                   )

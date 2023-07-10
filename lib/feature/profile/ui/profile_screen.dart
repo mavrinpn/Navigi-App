@@ -72,7 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     RowButton(
                       title: 'Mes données',
                       icon: 'Assets/icons/profile_settings.svg',
-                      onTap: () {},
+                      onTap: () {Navigator.pushNamed(context, '/edit_profile_screen');},
                     ),
                     RowButton(
                       title: 'Mes commentaires',
@@ -138,9 +138,7 @@ class RowButton extends StatelessWidget {
         hoverColor: AppColors.empty,
         highlightColor: AppColors.empty,
         splashColor: AppColors.empty,
-        onTap: () {
-          print(1);
-        },
+        onTap: onTap,
         child: SizedBox(
           width: double.infinity,
           child: Row(

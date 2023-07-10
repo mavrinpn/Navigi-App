@@ -53,45 +53,57 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 70,
-                        child: Text(
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 162,
+                    child: Wrap(
+                      children: [
+                        Text(
                           widget.user.name,
                           style: AppTypography.font20black,
-                          softWrap: false,
+                          maxLines: 2,
+                          softWrap: true,
                           overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(5, 0, 0, 4),
-                        child: RatingStars(
-                          value: widget.user.score,
-                          starBuilder: (index, color) => Icon(
-                            Icons.star,
-                            color: color,
-                            size: 20,
-                          ),
-                          starCount: 5,
-                          starSize: 20,
-                          valueLabelColor: const Color(0xff9b9b9b),
-                          maxValue: 5,
-                          starSpacing: 2,
-                          valueLabelPadding: EdgeInsets.zero,
-                          valueLabelMargin: EdgeInsets.zero,
-                          maxValueVisibility: true,
-                          valueLabelVisibility: false,
-                          starOffColor: AppColors.disable,
-                          starColor: AppColors.starsActive,
+                        Container(width: 10),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
+                              child: RatingStars(
+                                value: widget.user.score,
+                                starBuilder: (index, color) => Icon(
+                                  Icons.star,
+                                  color: color,
+                                  size: 20,
+                                ),
+                                starCount: 5,
+                                starSize: 20,
+                                valueLabelColor: const Color(0xff9b9b9b),
+                                maxValue: 5,
+                                starSpacing: 2,
+                                valueLabelPadding: EdgeInsets.zero,
+                                valueLabelMargin: EdgeInsets.zero,
+                                maxValueVisibility: true,
+                                valueLabelVisibility: false,
+                                starOffColor: AppColors.disable,
+                                starColor: AppColors.starsActive,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(height: 3,),
+                                Text(
+                                  '${widget.user.score}',
+                                  style: AppTypography.font14black.copyWith(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        '${widget.user.score}',
-                        style: AppTypography.font14black.copyWith(fontSize: 12),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 5,
