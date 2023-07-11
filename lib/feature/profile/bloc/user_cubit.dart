@@ -21,11 +21,11 @@ class UserCubit extends Cubit<UserState> {
   void editProfile({String? name, String? phone, Uint8List? bytes}) async {
     try {
       await authRepository.editProfile(name: name, phone: phone, bytes: bytes);
+      emit(EditSuccessState());
+      authRepository.getUserData();
     } catch (e) {
       emit(EditFailState());
-      return;
+      rethrow;
     }
-    emit(EditSuccessState());
-    authRepository.getUserData();
   }
 }
