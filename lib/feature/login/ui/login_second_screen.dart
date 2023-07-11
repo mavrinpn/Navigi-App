@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart/bloc/auth/auth_cubit.dart';
 import 'package:smart/data/auth_repository.dart';
+import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../../../utils/dialogs.dart';
@@ -33,7 +34,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
       listener: (context, state) {
         if (state is AuthLoadingState) {
           Dialogs.showModal(
-              context, const Center(child: CircularProgressIndicator()));
+              context, Center(child: AppAnimations.circleFadingAnimation));
         } else {
           Dialogs.hide(context);
         }
@@ -41,7 +42,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
           Navigator.pop(context);
         } else if (state is AuthFailState) {
           ScaffoldMessenger.of(context)
-             .showSnackBar(const SnackBar(content: Text('ошибка')));
+              .showSnackBar(const SnackBar(content: Text('ошибка')));
         }
       },
       child: GestureDetector(
@@ -55,8 +56,11 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-
-                  SvgPicture.asset('Assets/icons/logo.svg', width: 195, height: 43,),
+                  SvgPicture.asset(
+                    'Assets/icons/logo.svg',
+                    width: 195,
+                    height: 43,
+                  ),
                   const SizedBox(
                     height: 50,
                   ),
@@ -139,7 +143,8 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                             text: 'Inscrivez-vous!',
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.pushNamed(context, '/register_screen');
+                                Navigator.pushNamed(
+                                    context, '/register_screen');
                               },
                             style: AppTypography.font16UnderLinePink)
                       ],
