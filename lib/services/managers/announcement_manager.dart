@@ -37,15 +37,16 @@ class AnnouncementManager {
       return lastAnnouncement!;
     } else {
       final announcement = await dbManager.getAnnouncementById(id);
-      incTotalViews(announcement.announcementId, announcement.totalViews);
+      incTotalViews(announcement.announcementId);
       lastAnnouncement = announcement;
       return announcement;
     }
   }
 
-  void incTotalViews(String id, int views) async {
+  void incTotalViews(String id) async {
     if (!viewsAnnouncements.contains(id)) {
-      dbManager.incTotalViewsById(id, views);
+      dbManager.incTotalViewsById(id);
+      viewsAnnouncements.add(id);
     }
   }
 }

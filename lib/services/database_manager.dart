@@ -52,7 +52,8 @@ class DatabaseManger {
         queries: [Query.search(subcategoryId, subcategory)]);
     List<SubCategoryItem> items = [];
     for (var doc in res.documents) {
-      items.add(SubCategoryItem.fromJson(doc.data)..initialParameters());
+      items.add(SubCategoryItem.fromJson(doc.data)
+        ..initialParameters());
     }
     return items;
   }
@@ -68,14 +69,18 @@ class DatabaseManger {
     return places;
   }
 
-  Future<List<Announcement>> getLimitAnnouncements(
-      String? lastId, int amount) async {
+  Future<List<Announcement>> getLimitAnnouncements(String? lastId,
+      int amount) async {
     final res = await _databases.listDocuments(
         databaseId: postDatabase,
         collectionId: postCollection,
         queries: lastId == null
             ? [Query.limit(amount), Query.orderDesc(createdAt)]
-            : [Query.limit(amount), Query.cursorAfter(lastId), Query.orderDesc(createdAt)]);
+            : [
+          Query.limit(amount),
+          Query.cursorAfter(lastId),
+          Query.orderDesc(createdAt)
+        ]);
 
     List<Announcement> newAnnounces = [];
     for (var doc in res.documents) {
@@ -92,16 +97,20 @@ class DatabaseManger {
     return announcement;
   }
 
-  Future<void> incTotalViewsById(String id, int views) async {
+  Future<void> incTotalViewsById(String id) async {
+    final res = await _databases.getDocument(databaseId: postDatabase,
+        collectionId: postCollection,
+        documentId: id);
+
     await _databases.updateDocument(
         databaseId: postDatabase,
         collectionId: postCollection,
         documentId: id,
-        data: {totalViews: views + 1});
+        data: {totalViews: res.data[totalViews] + 1});
   }
 
-  Future<void> createAnnouncement(
-      String uid, List<String> urls, AnnouncementCreatingData creatingData) async {
+  Future<void> createAnnouncement(String uid, List<String> urls,
+      AnnouncementCreatingData creatingData) async {
     await _databases.createDocument(
         databaseId: postDatabase,
         collectionId: postCollection,
@@ -109,23 +118,36 @@ class DatabaseManger {
         data: creatingData.toJson(uid, urls));
   }
 
-  Future<void> createUser({required String name, required String uid, required String phone}) async {
-    await _databases.createDocument(databaseId: usersDatabase, collectionId: usersCollection, documentId: uid, data: {
-      userName: name,
-      userPhone: phone
-    });
+  Future<void> createUser({required String name,
+    required String uid,
+    required String phone}) async {
+    await _databases.createDocument(
+        databaseId: usersDatabase,
+        collectionId: usersCollection,
+        documentId: uid,
+        data: {userName: name, userPhone: phone});
   }
 
   Future<UserData> getUserData({required String uid}) async {
-    final res = await _databases.getDocument(databaseId: usersDatabase, collectionId: usersCollection, documentId: uid);
+    final res = await _databases.getDocument(
+        databaseId: usersDatabase,
+        collectionId: usersCollection,
+        documentId: uid);
     return UserData.fromJson(res.data);
   }
 
-  Future<void> editProfile({required String uid,  String? name, String? phone, String? imageUrl}) async {
-    await _databases.updateDocument(databaseId: usersDatabase, collectionId: usersCollection, documentId: uid, data: {
-      if (name != null) userName: name,
-      if (phone != null) userPhone: phone,
-      if (imageUrl != null) userImageUrl: imageUrl
-    });
+  Future<void> editProfile({required String uid,
+    String? name,
+    String? phone,
+    String? imageUrl}) async {
+    await _databases.updateDocument(
+        databaseId: usersDatabase,
+        collectionId: usersCollection,
+        documentId: uid,
+        data: {
+          if (name != null) userName: name,
+          if (phone != null) userPhone: phone,
+          if (imageUrl != null) userImageUrl: imageUrl
+        });
   }
 }

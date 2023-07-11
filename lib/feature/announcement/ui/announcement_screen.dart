@@ -458,11 +458,14 @@ class _PhotoViewsState extends State<PhotoViews> {
                 pageController: pageController,
               ),
             ),
-            const SizedBox(height: 30,),
+            const SizedBox(
+              height: 30,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children:
-                  indicators(currentAnnouncement.images.length, activePage, size: 10),
+              children: indicators(
+                  currentAnnouncement.images.length, activePage,
+                  size: 10),
             ),
             const SizedBox(
               height: 20,
