@@ -111,7 +111,7 @@ class AuthRepository {
     }
   }
 
-  void editProfile({String? name, String? phone, Uint8List? bytes}) async {
+  Future editProfile({String? name, String? phone, Uint8List? bytes}) async {
     profileState.add(LoadingStateEnum.loading);
     try {
       String? imageUrl;
@@ -120,7 +120,6 @@ class AuthRepository {
       }
       await _databaseManger.editProfile(
           uid: _user.$id, name: name, phone: phone, imageUrl: imageUrl);
-      getUserData();
     } catch (e) {
       profileState.add(LoadingStateEnum.fail);
       rethrow;

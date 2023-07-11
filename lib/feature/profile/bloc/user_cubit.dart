@@ -18,6 +18,13 @@ class UserCubit extends Cubit<UserState> {
     });
   }
 
-  void editProfile({String? name, String? phone, Uint8List? bytes}) =>
-      authRepository.editProfile(name: name, phone: phone, bytes: bytes);
+  void editProfile({String? name, String? phone, Uint8List? bytes}) async {
+    try {
+      await authRepository.editProfile(name: name, phone: phone, bytes: bytes);
+    } catch (e) {
+      emit(EditFailState());
+    }
+    emit(EditSuccessState());
+    authRepository.getUserData();
+  }
 }

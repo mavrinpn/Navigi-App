@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
-          if (state is ProfileSuccessState) {
+          if (state is ProfileSuccessState || state is EditSuccessState || state is EditFailState) {
             return Padding(
               padding: const EdgeInsets.all(15.0),
               child: SingleChildScrollView(
