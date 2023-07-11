@@ -83,10 +83,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Container(
+                child: const SizedBox(
                     width: 30,
                     height: 48,
-                    child: const Icon(
+                    child: Icon(
                       Icons.arrow_back,
                       color: AppColors.black,
                     )),
