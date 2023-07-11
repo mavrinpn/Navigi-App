@@ -11,7 +11,7 @@ import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 
 import '../../../utils/colors.dart';
-import '../../../widgets/accaont/account_small_info.dart';
+import '../../../widgets/accuont/account_small_info.dart';
 import '../../../widgets/button/custom_icon_button.dart';
 import '../../../widgets/images/network_image.dart';
 import '../bloc/announcement_cubit.dart';
@@ -433,7 +433,7 @@ class _PhotoViewsState extends State<PhotoViews> {
           builder: (BuildContext context, int index) {
             return PhotoViewGalleryPageOptions(
               imageProvider: NetworkImage(currentAnnouncement.images[index]),
-              initialScale: PhotoViewComputedScale.contained * 0.8,
+              initialScale: PhotoViewComputedScale.contained,
             );
           },
           onPageChanged: (int page) {

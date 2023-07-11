@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
+import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
@@ -60,7 +61,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = RepositoryProvider.of<AuthRepository>(context).userData;
+    final user = RepositoryProvider
+        .of<AuthRepository>(context)
+        .userData;
 
     nameController.text = user.name;
     phoneController.text = user.phone;
@@ -93,100 +96,117 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ],
         ),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  InkWell(
-                    onTap: pickImage,
-                    child: SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: Stack(
+      body: BlocBuilder<UserCubit, UserState>(
+          builder: (context, state) {
+            if (state is ProfileSuccessState) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
                         children: [
-                          image == null
-                              ? CustomNetworkImage(
-                                  width: 100,
-                                  height: 100,
-                                  url: user.imageUrl,
-                                  borderRadius: 50,
-                                )
-                              : ClipOval(
-                                  child: Image.memory(bytes!, width: 100)),
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: Colors.black.withOpacity(0.3)),
+                          const SizedBox(
+                            height: 15,
                           ),
-                          Container(
-                              alignment: Alignment.center,
-                              child: SvgPicture.asset(
-                                'Assets/icons/camera.svg',
-                                width: 32,
-                                height: 32,
-                              ))
+                          InkWell(
+                            onTap: pickImage,
+                            child: SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: Stack(
+                                children: [
+                                  image == null
+                                      ? CustomNetworkImage(
+                                    width: 100,
+                                    height: 100,
+                                    url: user.imageUrl,
+                                    borderRadius: 50,
+                                  )
+                                      : ClipOval(
+                                      child:
+                                      Image.memory(bytes!, width: 100)),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        color: Colors.black.withOpacity(0.3)),
+                                  ),
+                                  Container(
+                                      alignment: Alignment.center,
+                                      child: SvgPicture.asset(
+                                        'Assets/icons/camera.svg',
+                                        width: 32,
+                                        height: 32,
+                                      ))
+                                ],
+                              ),
+                            ),
+                          ),
+                          CustomTextFormField(
+                            controller: nameController,
+                            keyboardType: TextInputType.text,
+                            prefIcon: 'Assets/icons/profile.svg',
+                            onChanged: (String? o) {
+                              changedName = o != user.name ? o : null;
+                            },
+                          ),
+                          CustomTextFormField(
+                            controller: phoneController,
+                            keyboardType: TextInputType.text,
+                            prefIcon: 'Assets/icons/phone.svg',
+                            onChanged: (String? o) {
+                              phone = o != user.phone ? o : null;
+                            },
+                          ),
+                          CustomTextFormField(
+                            controller: emailController,
+                            keyboardType: TextInputType.text,
+                            prefIcon: 'Assets/icons/email.svg',
+                            onChanged: (String? o) {},
+                          ),
+                          CustomTextFormField(
+                            controller: placeController,
+                            keyboardType: TextInputType.text,
+                            prefIcon: 'Assets/icons/point2.svg',
+                            onChanged: (String? o) {},
+                          ),
                         ],
                       ),
-                    ),
+                      Column(
+                        children: [
+                          CustomTextButton(
+                            callback: () {
+                              BlocProvider.of<UserCubit>(context).editProfile(
+                                  name: changedName,
+                                  phone: phone,
+                                  bytes: bytes);
+                            },
+                            text: 'Enregistrer',
+                            styleText: AppTypography.font14white
+                                .copyWith(fontWeight: FontWeight.w600),
+                            isTouch: true,
+                            activeColor: AppColors.black,
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                        ],
+                      )
+                    ],
                   ),
-                  CustomTextFormField(
-                    controller: nameController,
-                    keyboardType: TextInputType.text,
-                    prefIcon: 'Assets/icons/profile.svg',
-                    onChanged: (String? o) {
-                      changedName = o != user.name ? o : null;
-                    },
-                  ),
-                  CustomTextFormField(
-                    controller: phoneController,
-                    keyboardType: TextInputType.text,
-                    prefIcon: 'Assets/icons/phone.svg',
-                    onChanged: (String? o) {
-                      phone = o != user.phone ? o : null;
-                    },
-                  ),
-                  CustomTextFormField(
-                    controller: emailController,
-                    keyboardType: TextInputType.text,
-                    prefIcon: 'Assets/icons/email.svg',
-                    onChanged: (String? o) {},
-                  ),
-                  CustomTextFormField(
-                    controller: placeController,
-                    keyboardType: TextInputType.text,
-                    prefIcon: 'Assets/icons/point2.svg',
-                    onChanged: (String? o) {},
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  CustomTextButton(
-                    callback: () {
-                      BlocProvider.of<UserCubit>(context).editProfile(
-                          name: changedName, phone: phone, bytes: bytes);
-                    },
-                    text: 'Enregistrer',
-                    styleText: AppTypography.font14white
-                        .copyWith(fontWeight: FontWeight.w600),
-                    isTouch: true,
-                    activeColor: AppColors.black,
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
+                ),
+              );
+            }
+            else if (state is ProfileLoadingState) {
+              return Center(
+                child: AppAnimations.circleFadingAnimation,
+              );
+            }
+            else{
+              return const Center(child: Text('проблемс'),);
+            }
+          }
       ),
     );
   }

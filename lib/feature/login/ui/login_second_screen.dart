@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart/bloc/auth/auth_cubit.dart';
 import 'package:smart/data/auth_repository.dart';
+import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../../../utils/dialogs.dart';
@@ -33,7 +34,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
       listener: (context, state) {
         if (state is AuthLoadingState) {
           Dialogs.showModal(
-              context, const Center(child: CircularProgressIndicator()));
+              context, Center(child: AppAnimations.circleFadingAnimation));
         } else {
           Dialogs.hide(context);
         }

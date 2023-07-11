@@ -8,7 +8,7 @@ import 'package:smart/utils/animations.dart';
 import '../../../bloc/auth/auth_cubit.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
-import '../../../widgets/accaont/account_medium_info.dart';
+import '../../../widgets/accuont/account_medium_info.dart';
 import '../../../widgets/button/custom_elevated_button.dart';
 import '../../../widgets/button/custom_text_button.dart';
 
