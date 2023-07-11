@@ -11,6 +11,10 @@ const String subcategoryId = 'sub_category';
 const String createdAt = '\$createdAt';
 const String totalViews = 'total_views';
 
+const String userName = 'name';
+const String userPhone = 'phone';
+const String userImageUrl = 'image';
+
 class DatabaseManger {
   final Databases _databases;
 
@@ -107,8 +111,8 @@ class DatabaseManger {
 
   Future<void> createUser({required String name, required String uid, required String phone}) async {
     await _databases.createDocument(databaseId: usersDatabase, collectionId: usersCollection, documentId: uid, data: {
-      'name': name,
-      'phone': phone
+      userName: name,
+      userPhone: phone
     });
   }
 
@@ -119,9 +123,9 @@ class DatabaseManger {
 
   Future<void> editProfile({required String uid,  String? name, String? phone, String? imageUrl}) async {
     await _databases.updateDocument(databaseId: usersDatabase, collectionId: usersCollection, documentId: uid, data: {
-      if (name != null) 'name': name,
-      if (phone != null) 'phone': phone,
-      if (imageUrl != null) 'image': imageUrl
+      if (name != null) userName: name,
+      if (phone != null) userPhone: phone,
+      if (imageUrl != null) userImageUrl: imageUrl
     });
   }
 }
