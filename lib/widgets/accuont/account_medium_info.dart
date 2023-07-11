@@ -93,7 +93,7 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SizedBox(height: 3,),
+                                const SizedBox(height: 3,),
                                 Text(
                                   '${widget.user.score}',
                                   style: AppTypography.font14black.copyWith(fontSize: 12),

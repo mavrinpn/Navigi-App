@@ -6,6 +6,11 @@ import '../models/announcement_creating_data.dart';
 import '../models/models.dart';
 import '../utils/constants.dart';
 
+const String categoryId = 'categorie_id';
+const String subcategoryId = 'sub_category';
+const String createdAt = '\$createdAt';
+const String totalViews = 'total_views';
+
 class DatabaseManger {
   final Databases _databases;
 
@@ -28,7 +33,7 @@ class DatabaseManger {
     final res = await _databases.listDocuments(
         databaseId: postDatabase,
         collectionId: subcategoriesCollection,
-        queries: [Query.equal('categorie_id', categoryID)]);
+        queries: [Query.equal(categoryId, categoryID)]);
 
     for (var doc in res.documents) {
       subcategories.add(Subcategory.fromJson(doc.data));
@@ -40,7 +45,7 @@ class DatabaseManger {
     final res = await _databases.listDocuments(
         databaseId: postDatabase,
         collectionId: itemsCollection,
-        queries: [Query.search('sub_category', subcategory)]);
+        queries: [Query.search(subcategoryId, subcategory)]);
     List<SubCategoryItem> items = [];
     for (var doc in res.documents) {
       items.add(SubCategoryItem.fromJson(doc.data)..initialParameters());
@@ -65,8 +70,8 @@ class DatabaseManger {
         databaseId: postDatabase,
         collectionId: postCollection,
         queries: lastId == null
-            ? [Query.limit(amount), Query.orderDesc('\$createdAt')]
-            : [Query.limit(amount), Query.cursorAfter(lastId), Query.orderDesc('\$createdAt')]);
+            ? [Query.limit(amount), Query.orderDesc(createdAt)]
+            : [Query.limit(amount), Query.cursorAfter(lastId), Query.orderDesc(createdAt)]);
 
     List<Announcement> newAnnounces = [];
     for (var doc in res.documents) {
@@ -88,7 +93,7 @@ class DatabaseManger {
         databaseId: postDatabase,
         collectionId: postCollection,
         documentId: id,
-        data: {'total_views': views + 1});
+        data: {totalViews: views + 1});
   }
 
   Future<void> createAnnouncement(
