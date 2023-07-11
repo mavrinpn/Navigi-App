@@ -23,6 +23,7 @@ class UserCubit extends Cubit<UserState> {
       await authRepository.editProfile(name: name, phone: phone, bytes: bytes);
     } catch (e) {
       emit(EditFailState());
+      return;
     }
     emit(EditSuccessState());
     authRepository.getUserData();

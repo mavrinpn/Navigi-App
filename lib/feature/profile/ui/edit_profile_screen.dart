@@ -14,6 +14,7 @@ import 'package:smart/widgets/button/custom_text_button.dart';
 
 import '../../../data/auth_repository.dart';
 import '../../../widgets/images/network_image.dart';
+import '../../../widgets/snackBar/snack_bar.dart';
 import '../../../widgets/textField/custom_text_field.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -62,9 +63,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = RepositoryProvider
-        .of<AuthRepository>(context)
-        .userData;
+    final user = RepositoryProvider.of<AuthRepository>(context).userData;
 
     nameController.text = user.name;
     phoneController.text = user.phone;
@@ -102,119 +101,119 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ),
         ),
         body: BlocListener<UserCubit, UserState>(
-          listener: (context, state) {
-            if (state is ProfileLoadingState) {
-              Dialogs.showModal(context, Center(child: AppAnimations.circleFadingAnimation,));
-            } else {
-              Dialogs.hide(context);
-            } 
-            if (state is EditSuccessState) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Avec succès')));
-            } else if (state is EditFailState) {
-
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Essayez plus tard')));
-            }
-          },
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      InkWell(
-                        onTap: pickImage,
-                        child: SizedBox(
-                          width: 100,
-                          height: 100,
-                          child: Stack(
-                            children: [
-                              image == null
-                                  ? CustomNetworkImage(
-                                width: 100,
-                                height: 100,
-                                url: user.imageUrl,
-                                borderRadius: 50,
-                              )
-                                  : ClipOval(
-                                  child:
-                                  Image.memory(bytes!, width: 100)),
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                        50),
-                                    color: Colors.black.withOpacity(0.3)),
-                              ),
-                              Container(
-                                  alignment: Alignment.center,
-                                  child: SvgPicture.asset(
-                                    'Assets/icons/camera.svg',
-                                    width: 32,
-                                    height: 32,
-                                  ))
-                            ],
+            listener: (context, state) {
+              if (state is ProfileLoadingState) {
+                Dialogs.showModal(
+                    context,
+                    Center(
+                      child: AppAnimations.circleFadingAnimation,
+                    ));
+              } else {
+                Dialogs.hide(context);
+              }
+              if (state is EditSuccessState) {
+                CustomSnackBar.showSnackBarWithIcon(
+                    context, 'Avec succès', 'Assets/icons/heart_out_line.svg');
+              } else if (state is EditFailState) {
+                CustomSnackBar.showSnackBar(context, 'Essayez plus tard');
+              }
+            },
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        InkWell(
+                          onTap: pickImage,
+                          child: SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: Stack(
+                              children: [
+                                image == null
+                                    ? CustomNetworkImage(
+                                        width: 100,
+                                        height: 100,
+                                        url: user.imageUrl,
+                                        borderRadius: 50,
+                                      )
+                                    : ClipOval(
+                                        child:
+                                            Image.memory(bytes!, width: 100)),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Colors.black.withOpacity(0.3)),
+                                ),
+                                Container(
+                                    alignment: Alignment.center,
+                                    child: SvgPicture.asset(
+                                      'Assets/icons/camera.svg',
+                                      width: 32,
+                                      height: 32,
+                                    ))
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      CustomTextFormField(
-                        controller: nameController,
-                        keyboardType: TextInputType.text,
-                        prefIcon: 'Assets/icons/profile.svg',
-                        onChanged: (String? o) {
-                          changedName = o != user.name ? o : null;
-                        },
-                      ),
-                      CustomTextFormField(
-                        controller: phoneController,
-                        keyboardType: TextInputType.text,
-                        prefIcon: 'Assets/icons/phone.svg',
-                        onChanged: (String? o) {
-                          phone = o != user.phone ? o : null;
-                        },
-                      ),
-                      CustomTextFormField(
-                        controller: emailController,
-                        keyboardType: TextInputType.text,
-                        prefIcon: 'Assets/icons/email.svg',
-                        onChanged: (String? o) {},
-                      ),
-                      CustomTextFormField(
-                        controller: placeController,
-                        keyboardType: TextInputType.text,
-                        prefIcon: 'Assets/icons/point2.svg',
-                        onChanged: (String? o) {},
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      CustomTextButton(
-                        callback: () {
-                          BlocProvider.of<UserCubit>(context).editProfile(
-                              name: changedName,
-                              phone: phone,
-                              bytes: bytes);
-                        },
-                        text: 'Enregistrer',
-                        styleText: AppTypography.font14white
-                            .copyWith(fontWeight: FontWeight.w600),
-                        isTouch: true,
-                        activeColor: AppColors.black,
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                    ],
-                  )
-                ],
+                        CustomTextFormField(
+                          controller: nameController,
+                          keyboardType: TextInputType.text,
+                          prefIcon: 'Assets/icons/profile.svg',
+                          onChanged: (String? o) {
+                            changedName = o != user.name ? o : null;
+                          },
+                        ),
+                        CustomTextFormField(
+                          controller: phoneController,
+                          keyboardType: TextInputType.text,
+                          prefIcon: 'Assets/icons/phone.svg',
+                          onChanged: (String? o) {
+                            phone = o != user.phone ? o : null;
+                          },
+                        ),
+                        CustomTextFormField(
+                          controller: emailController,
+                          keyboardType: TextInputType.text,
+                          prefIcon: 'Assets/icons/email.svg',
+                          onChanged: (String? o) {},
+                        ),
+                        CustomTextFormField(
+                          controller: placeController,
+                          keyboardType: TextInputType.text,
+                          prefIcon: 'Assets/icons/point2.svg',
+                          onChanged: (String? o) {},
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        CustomTextButton(
+                          callback: () {
+                            BlocProvider.of<UserCubit>(context).editProfile(
+                                name: changedName, phone: phone, bytes: bytes);
+                          },
+                          text: 'Enregistrer',
+                          styleText: AppTypography.font14white
+                              .copyWith(fontWeight: FontWeight.w600),
+                          isTouch: true,
+                          activeColor: AppColors.black,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-          )
-        ),
+            )),
       ),
     );
   }
