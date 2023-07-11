@@ -216,7 +216,9 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => Aboba(placeData: state.data.placeData,)));
+                                  builder: (_) => Aboba(
+                                        placeData: state.data.placeData,
+                                      )));
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,12 +377,12 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
   }
 }
 
-List<Widget> indicators(imagesLength, currentIndex) {
+List<Widget> indicators(imagesLength, currentIndex, {double size = 5}) {
   return List<Widget>.generate(imagesLength, (index) {
     return Container(
       margin: const EdgeInsets.all(3),
-      width: 5,
-      height: 5,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
           color: currentIndex == index ? AppColors.red : AppColors.lightGray,
           shape: BoxShape.circle),
@@ -428,28 +430,44 @@ class _PhotoViewsState extends State<PhotoViews> {
             ],
           ),
         ),
-        body: PhotoViewGallery.builder(
-          scrollPhysics: const BouncingScrollPhysics(),
-          builder: (BuildContext context, int index) {
-            return PhotoViewGalleryPageOptions(
-              imageProvider: NetworkImage(currentAnnouncement.images[index]),
-              initialScale: PhotoViewComputedScale.contained,
-            );
-          },
-          onPageChanged: (int page) {
-            setState(() {
-              activePage = page;
-            });
-          },
-          itemCount: currentAnnouncement!.images.length,
-          loadingBuilder: (context, event) => Center(
-            child: SizedBox(
-              width: 20.0,
-              height: 20.0,
-              child: AppAnimations.bouncingLine,
+        body: Column(
+          children: [
+            Expanded(
+              child: PhotoViewGallery.builder(
+                scrollPhysics: const BouncingScrollPhysics(),
+                builder: (BuildContext context, int index) {
+                  return PhotoViewGalleryPageOptions(
+                    imageProvider:
+                        NetworkImage(currentAnnouncement.images[index]),
+                    initialScale: PhotoViewComputedScale.contained,
+                  );
+                },
+                onPageChanged: (int page) {
+                  setState(() {
+                    activePage = page;
+                  });
+                },
+                itemCount: currentAnnouncement!.images.length,
+                loadingBuilder: (context, event) => Center(
+                  child: SizedBox(
+                    width: 20.0,
+                    height: 20.0,
+                    child: AppAnimations.circleFadingAnimation,
+                  ),
+                ),
+                pageController: pageController,
+              ),
             ),
-          ),
-          pageController: pageController,
+            const SizedBox(height: 30,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children:
+                  indicators(currentAnnouncement.images.length, activePage, size: 10),
+            ),
+            const SizedBox(
+              height: 20,
+            )
+          ],
         ),
       ),
     );
