@@ -35,6 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               'Assets/icons/setting.svg',
               width: 24,
               height: 24,
+              // ignore: deprecated_member_use
               color: AppColors.black,
             ),
           ],

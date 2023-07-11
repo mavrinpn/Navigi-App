@@ -104,6 +104,7 @@ class NavigatorBarItem extends StatelessWidget {
       asset,
       height: 24,
       width: 24,
+      // ignore: deprecated_member_use
       color: isSelected ? AppColors.red : AppColors.lightGray,
     );
   }

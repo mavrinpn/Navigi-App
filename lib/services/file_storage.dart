@@ -6,7 +6,7 @@ import '../utils/constants.dart';
 
 class FileStorageManager {
   Client client;
-  Storage _storage;
+  final Storage _storage;
 
   FileStorageManager({required this.client}) : _storage = Storage(client);
 
