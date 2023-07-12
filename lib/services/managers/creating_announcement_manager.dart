@@ -6,7 +6,7 @@ import '../../data/auth_repository.dart';
 import '../../models/announcement_creating_data.dart';
 import '../../models/models.dart';
 import '../database_manager.dart';
-import '../file_storage.dart';
+import '../storage_manager.dart';
 
 class CreatingAnnouncementManager {
   final Client client;

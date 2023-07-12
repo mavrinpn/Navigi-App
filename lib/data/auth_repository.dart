@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/models/user.dart';
 import 'package:smart/services/database_manager.dart';
-import 'package:smart/services/file_storage.dart';
+import 'package:smart/services/storage_manager.dart';
 
 enum LoadingStateEnum { wait, loading, success, fail }
 
