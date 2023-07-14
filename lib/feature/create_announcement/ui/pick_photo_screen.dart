@@ -24,14 +24,9 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
     final repository =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
 
-    Future pickImages() async {
-      repository.images = await picker.pickMultiImage();
-      setState(() {});
-    }
-
     Future addImages() async {
-      final imgs = await picker.pickMultiImage();
-      repository.images.addAll(imgs);
+      final images = await picker.pickMultiImage(imageQuality: 50);
+      repository.images.addAll(images);
       setState(() {});
     }
 
@@ -64,7 +59,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                       isTouch: true,
                       activeColor: AppColors.dark,
                       callback: () {
-                        pickImages();
+                        addImages();
                       },
                       text: 'Ajouter des photos',
                       styleText: AppTypography.font14white,

@@ -43,6 +43,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       aspectRatioPresets: [
         CropAspectRatioPreset.square,
       ],
+      compressQuality: 50,
       aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
       cropStyle: CropStyle.circle,
       uiSettings: [

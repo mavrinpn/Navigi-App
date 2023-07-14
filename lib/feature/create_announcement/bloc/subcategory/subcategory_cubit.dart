@@ -15,7 +15,7 @@ class SubcategoryCubit extends Cubit<SubcategoryState> {
     emit(SubcategoryLoadingState());
     try {
       creatingManager.setCategory(categoryId);
-      await categoriesManager.loadSubCategories(categoryId);
+      await categoriesManager.loadSubcategory(categoryId);
       emit(SubcategorySuccessState(subcategories: categoriesManager.subcategories));
     } catch (e) {
       emit(SubcategoryFailState());
