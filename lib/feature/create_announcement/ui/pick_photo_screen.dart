@@ -3,11 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:image_picker/image_picker.dart';
-import '../../../widgets/button/custom_text_button.dart';
+import 'package:smart/utils/animations.dart';
+
+import '../../../services/managers/creating_announcement_manager.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
-import '../../../services/managers/creating_announcement_manager.dart';
+import '../../../widgets/button/custom_text_button.dart';
 
 class PickPhotosScreen extends StatefulWidget {
   const PickPhotosScreen({super.key});
@@ -17,7 +18,6 @@ class PickPhotosScreen extends StatefulWidget {
 }
 
 class _PickPhotosScreenState extends State<PickPhotosScreen> {
-  ImagePicker picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +25,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
 
     Future addImages() async {
-      final images = await picker.pickMultiImage(imageQuality: 50);
-      repository.images.addAll(images);
+      await repository.pickImages();
       setState(() {});
     }
 
@@ -146,7 +145,7 @@ class ImageWidget extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(right: 6),
+              padding: const EdgeInsets.only(right: 6),
               alignment: Alignment.topRight,
               child: InkWell(
                 onTap: callback,
@@ -184,6 +183,23 @@ class AddImageWidget extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ImagePreparingWidget extends StatelessWidget {
+  const ImagePreparingWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 105,
+      height: 98,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        color: AppColors.backgroundLightGray,
+      ),
+      child: Center(child: AppAnimations.bouncingLine),
     );
   }
 }

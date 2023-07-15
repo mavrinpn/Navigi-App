@@ -10,12 +10,12 @@ class FileStorageManager {
 
   FileStorageManager({required this.client}) : _storage = Storage(client);
 
-  Future<List<String>> uploadImages(List<String> listOfPaths) async {
+  Future<List<String>> uploadImages(List<Uint8List> listOfBytes) async {
 
       List<String> urlsList = [];
 
-      for (var path in listOfPaths) {
-        final file = await _storage.createFile(bucketId: announcementsBucketId, fileId: ID.unique(), file: InputFile.fromPath(path: path));
+      for (var bytes in listOfBytes) {
+        final file = await _storage.createFile(bucketId: announcementsBucketId, fileId: ID.unique(), file: InputFile.fromBytes(bytes: bytes, filename: 'image.jpg'));
         urlsList.add(createViewUrl(file.$id, file.bucketId));
       }
       return urlsList;

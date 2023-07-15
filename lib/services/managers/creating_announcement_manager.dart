@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:appwrite/appwrite.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -13,6 +16,7 @@ class CreatingAnnouncementManager {
   final DatabaseManger dbManager;
   final FileStorageManager storageManager;
   final Account account;
+  final _picker = ImagePicker();
 
   CreatingAnnouncementManager({required this.client})
       : dbManager = DatabaseManger(client: client),
@@ -22,11 +26,37 @@ class CreatingAnnouncementManager {
   AnnouncementCreatingData creatingData = AnnouncementCreatingData();
   SubCategoryItem? currentItem;
   List<XFile> images = [];
+  List<Uint8List> imagesAsBytes = [];
+  Future? compressingImages;
 
   BehaviorSubject<LoadingStateEnum> creatingState =
       BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
 
   String get prise => (creatingData.price ?? 0).toString();
+
+  Future<List<XFile>> pickImages() async {
+    final _images = await _picker.pickMultiImage();
+
+    images.addAll(_images);
+
+    compressingImages = compressImages(_images);
+    return _images;
+  }
+
+  Future<void> compressImages(List<XFile> images) async {
+    for (var image in images) {
+      final bytes = await image.readAsBytes();
+      final res = await _compressImage(bytes);
+      imagesAsBytes.add(res);
+    }
+  }
+
+  Future<Uint8List> _compressImage(Uint8List list) async =>
+      await FlutterImageCompress.compressWithList(
+        list,
+        minWidth: 400,
+        quality: 96,
+      );
 
   void setCategory(String categoryId) => creatingData.categoryId = categoryId;
 
@@ -42,7 +72,7 @@ class CreatingAnnouncementManager {
     creatingData.itemName = currentItem!.name;
   }
 
-  void setPlaceById(String id) =>  creatingData.placeId = id;
+  void setPlaceById(String id) => creatingData.placeId = id;
 
   void setImages(List<XFile> images) {
     creatingData.images = images.map((e) => e.path).toList();
@@ -55,7 +85,6 @@ class CreatingAnnouncementManager {
 
   void _setParameters() => creatingData.parameters =
       currentItem!.parameters.buildJsonFormatParameters();
-
 
   String get buildTitle => currentItem!.title;
 
@@ -70,7 +99,8 @@ class CreatingAnnouncementManager {
     try {
       final user = await account.get();
       final uid = user.$id;
-      final List<String> urls = await uploadImages(creatingData.images ?? []);
+      await compressingImages;
+      final List<String> urls = await uploadImages(imagesAsBytes);
 
       await dbManager.createAnnouncement(uid, urls, creatingData);
 
@@ -83,6 +113,6 @@ class CreatingAnnouncementManager {
     }
   }
 
-  Future<List<String>> uploadImages(List<String> paths) async =>
-      await storageManager.uploadImages(paths);
+  Future<List<String>> uploadImages(List<Uint8List> bytesList) async =>
+      await storageManager.uploadImages(bytesList);
 }
