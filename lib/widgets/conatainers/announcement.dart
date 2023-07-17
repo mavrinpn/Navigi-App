@@ -36,7 +36,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomNetworkImage(
-              width: double.infinity, height: width / 2  - 52, url: widget.announcement.images[0]),
+              width: width / 2  - 32, height: (width / 2  - 32) * 1.032, url: widget.announcement.images[0]),
           const SizedBox(
             height: 10,
           ),
@@ -51,7 +51,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
             ),
           ),
           const SizedBox(
-            height: 8,
+            height: 5,
           ),
           Text(
             widget.announcement.creatorData.name,
@@ -60,7 +60,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(
-            height: 8,
+            height: 5,
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,7 +80,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
             ],
           ),
           const SizedBox(
-            height: 8,
+            height: 5,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
