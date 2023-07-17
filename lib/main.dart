@@ -13,6 +13,7 @@ import 'package:smart/feature/registration/ui/register_screen.dart';
 import 'package:smart/services/services.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
+import 'package:smart/widgets/splash.dart';
 
 import 'bloc/app/app_cubit.dart';
 import 'feature/announcement/bloc/announcement_cubit.dart';
@@ -220,7 +221,7 @@ class HomePage extends StatelessWidget {
               child: LoginFirstScreen(),
             );
           } else {
-            return Center(child: AppAnimations.circleFadingAnimation);
+            return const Splash();
           }
         },
       ),
