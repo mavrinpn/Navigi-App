@@ -16,7 +16,7 @@ class AnnouncementCubit extends Cubit<AnnouncementState> {
     emit(AnnouncementLoadingState());
     try {
       final data = await _announcementManager.getAnnouncementById(id);
-      emit(AnnouncementSuccessState(data: data));
+      emit(AnnouncementSuccessState(data: data!));
     } catch (e) {
       emit(AnnouncementFailState());
       rethrow;

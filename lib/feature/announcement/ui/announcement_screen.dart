@@ -227,7 +227,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             RichText(
                                 text: TextSpan(children: [
                               TextSpan(
-                                  text: ' ${state.data.creatorData.place.name}',
+                                  text: ' ${state.data.placeData.name}',
                                   style: AppTypography.font14black),
                               TextSpan(
                                   text: '  ${state.data.creatorData.distance}',

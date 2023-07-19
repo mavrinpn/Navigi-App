@@ -31,14 +31,14 @@ class Announcement {
   Announcement.fromJson({required Map<String, dynamic> json})
       : title = json['name'],
         description = json['description'],
-        creatorData = CreatorData(),
+        creatorData = CreatorData.fromJson(data: json['creator']),
         price = double.parse(json['price'].toString()),
         images = json['images'],
         staticParameters = StaticParameters(parameters: json['parametrs']),
         totalViews = json['total_views'],
         _createdAt = json['\$createdAt'],
         announcementId = json['\$id'],
-        placeData = PlaceData.fish()
+        placeData = PlaceData.fromJson(json['place'])
   ;
 
   @override

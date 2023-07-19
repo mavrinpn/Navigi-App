@@ -32,15 +32,20 @@ class AnnouncementManager {
     }
   }
 
-  Future<Announcement> getAnnouncementById(String id) async {
-    if (id == lastAnnouncement?.announcementId) {
-      return lastAnnouncement!;
-    } else {
-      final announcement = await dbManager.getAnnouncementById(id);
-      incTotalViews(announcement.announcementId);
-      lastAnnouncement = announcement;
-      return announcement;
+  Future<Announcement?> getAnnouncementById(String id) async {
+    for (var a in announcements) {
+      if (a.announcementId == id) return a;
     }
+    return null;
+
+    // if (id == lastAnnouncement?.announcementId) {
+    //   return lastAnnouncement!;
+    // } else {
+    //   final announcement = await dbManager.getAnnouncementById(id);
+    //   incTotalViews(announcement.announcementId);
+    //   lastAnnouncement = announcement;
+    //   return announcement;
+    // }
   }
 
   void incTotalViews(String id) async {

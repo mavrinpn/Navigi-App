@@ -165,7 +165,7 @@ class _MainScreenState extends State<MainScreen> {
                     delegate: SliverChildListDelegate(list),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 1 / 1.67,
+                            childAspectRatio: 1 / 1.7,
                             crossAxisCount: 2,
                             crossAxisSpacing: 12),
                   ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
-import 'package:smart/generated/assets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/generated/assets.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 
@@ -46,12 +46,15 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
               Container(
                 width: 64,
                 height: 64,
-                decoration: const ShapeDecoration(
+                decoration: ShapeDecoration(
                   image: DecorationImage(
-                    image: AssetImage(Assets.assetsRandomPeople),
+                    image: (widget.creatorData.imageUrl.isEmpty
+                            ? const AssetImage(Assets.assetsRandomPeople)
+                            : NetworkImage(widget.creatorData.imageUrl))
+                        as ImageProvider,
                     fit: BoxFit.fill,
                   ),
-                  shape: OvalBorder(),
+                  shape: const OvalBorder(),
                 ),
               ),
               Padding(
@@ -79,7 +82,7 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(5,0,0,4),
+                          padding: const EdgeInsets.fromLTRB(5, 0, 0, 4),
                           child: RatingStars(
                             value: widget.creatorData.score,
                             starBuilder: (index, color) => Icon(
@@ -101,7 +104,10 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                           ),
                         ),
                         const SizedBox(width: 12),
-                        Text('${widget.creatorData.score}', style: AppTypography.font14black,),
+                        Text(
+                          '${widget.creatorData.score}',
+                          style: AppTypography.font14black,
+                        ),
                       ],
                     ),
                     const SizedBox(
@@ -114,9 +120,10 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                         RichText(
                             text: TextSpan(children: [
                           TextSpan(
-                              text:  ' ${widget.creatorData.place.name}', style: AppTypography.font14black),
+                              text: ' ${widget.creatorData.place.name}',
+                              style: AppTypography.font14black),
                           TextSpan(
-                              text:  '  ${widget.creatorData.distance}',
+                              text: '  ${widget.creatorData.distance}',
                               style: AppTypography.font14lightGray),
                         ]))
                       ],

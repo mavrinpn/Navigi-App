@@ -13,6 +13,7 @@ class Assets {
   static const String assetsTestImage = 'Assets/test_image.png';
   static const String iconsAddImage = 'Assets/icons/add_image.svg';
   static const String iconsCalendar = 'Assets/icons/calendar.svg';
+  static const String iconsCamera = 'Assets/icons/camera.svg';
   static const String iconsDelete = 'Assets/icons/delete.svg';
   static const String iconsDeleteButton = 'Assets/icons/delete_button.svg';
   static const String iconsDzd = 'Assets/icons/dzd.svg';
@@ -26,19 +27,25 @@ class Assets {
   static const String iconsFollow2 = 'Assets/icons/follow_2.svg';
   static const String iconsFrame = 'Assets/icons/Frame.svg';
   static const String iconsGoogle = 'Assets/icons/google.svg';
+  static const String iconsHeartOutLine = 'Assets/icons/heart_out_line.svg';
+  static const String iconsIsNotConfirmed = 'Assets/icons/isNotConfirmed.svg';
   static const String iconsKey = 'Assets/icons/key.svg';
   static const String iconsLike = 'Assets/icons/like.svg';
+  static const String iconsLine = 'Assets/icons/line.svg';
   static const String iconsLogo = 'Assets/icons/logo.svg';
   static const String iconsMenuDotsVertical = 'Assets/icons/menu-dots-vertical.svg';
   static const String iconsMessages = 'Assets/icons/messages.svg';
   static const String iconsOnlySearch = 'Assets/icons/only_search.svg';
   static const String iconsPhone = 'Assets/icons/phone.svg';
   static const String iconsPoint = 'Assets/icons/point.svg';
+  static const String iconsPoint2 = 'Assets/icons/point2.svg';
   static const String iconsProfile = 'Assets/icons/profile.svg';
   static const String iconsProfileSettings = 'Assets/icons/profile_settings.svg';
   static const String iconsSearch = 'Assets/icons/search.svg';
   static const String iconsSecurity = 'Assets/icons/security.svg';
+  static const String iconsSetting = 'Assets/icons/setting.svg';
   static const String iconsTermsOfUse = 'Assets/icons/terms_of_use.svg';
   static const String iconsThreeDots = 'Assets/icons/three_dots.svg';
+  static const String iconsVerifiedUser = 'Assets/icons/verified-user.svg';
 
 }

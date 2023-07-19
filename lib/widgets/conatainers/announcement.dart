@@ -28,36 +28,57 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
 
     return InkWell(
       onTap: () async {
-        Navigator.pushNamed(context, '/announcement_screen');
+
         BlocProvider.of<AnnouncementCubit>(context)
             .loadAnnouncementById(widget.announcement.announcementId);
+        Navigator.pushNamed(context, '/announcement_screen');
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomNetworkImage(
-              width: width / 2  - 32, height: (width / 2  - 32) * 1.032, url: widget.announcement.images[0]),
+              width: width / 2 - 32,
+              height: (width / 2 - 32) * 1.032,
+              url: widget.announcement.images[0]),
           const SizedBox(
             height: 10,
           ),
           SizedBox(
-            width: double.infinity,
+            width: MediaQuery.of(context).size.width * 0.45,
             child: Text(
               widget.announcement.title,
               style: AppTypography.font12dark,
-              softWrap: true,
-              maxLines: 2,
+              softWrap: false,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ),
           const SizedBox(
             height: 5,
           ),
-          Text(
-            widget.announcement.creatorData.name,
-            style: AppTypography.font12lightGray,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+          Row(
+            children: [
+              Text(
+                widget.announcement.creatorData.name,
+                style: widget.announcement.creatorData.verified
+                    ? AppTypography.font12lightGray.copyWith(
+                        color: const Color(0xFF0F7EE4),
+                        fontWeight: FontWeight.w400)
+                    : AppTypography.font12lightGray
+                        .copyWith(fontWeight: FontWeight.w400),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              if (widget.announcement.creatorData.verified) ...[
+                const SizedBox(
+                  width: 5,
+                ),
+                SvgPicture.asset(
+                  'Assets/icons/verified-user.svg',
+                  width: 12,
+                )
+              ]
+            ],
           ),
           const SizedBox(
             height: 5,
@@ -66,17 +87,20 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SvgPicture.asset('Assets/icons/point.svg'),
-              RichText(
-                maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  text: TextSpan(children: [
-                TextSpan(
-                    text: ' ${widget.announcement.creatorData.place.name}',
-                    style: AppTypography.font14black),
-                TextSpan(
-                    text: '  ${widget.announcement.creatorData.distance}',
-                    style: AppTypography.font14lightGray),
-              ]))
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.3,
+                child: RichText(
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    text: TextSpan(children: [
+                      TextSpan(
+                          text: ' ${widget.announcement.placeData.name}',
+                          style: AppTypography.font14black),
+                      TextSpan(
+                          text: '  ${widget.announcement.creatorData.distance}',
+                          style: AppTypography.font14lightGray),
+                    ])),
+              )
             ],
           ),
           const SizedBox(

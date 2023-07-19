@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:smart/models/user.dart';
 
@@ -17,8 +19,11 @@ const String userImageUrl = 'image';
 
 class DatabaseManger {
   final Databases _databases;
+  final Functions _functions;
 
-  DatabaseManger({required Client client}) : _databases = Databases(client);
+  DatabaseManger({required Client client})
+      : _databases = Databases(client),
+        _functions = Functions(client);
 
   Future<List<Category>> getAllCategories() async {
     final res = await _databases.listDocuments(
@@ -52,8 +57,7 @@ class DatabaseManger {
         queries: [Query.search(subcategoryId, subcategory)]);
     List<SubCategoryItem> items = [];
     for (var doc in res.documents) {
-      items.add(SubCategoryItem.fromJson(doc.data)
-        ..initialParameters());
+      items.add(SubCategoryItem.fromJson(doc.data)..initialParameters());
     }
     return items;
   }
@@ -69,24 +73,34 @@ class DatabaseManger {
     return places;
   }
 
-  Future<List<Announcement>> getLimitAnnouncements(String? lastId,
-      int amount) async {
-    final res = await _databases.listDocuments(
-        databaseId: postDatabase,
-        collectionId: postCollection,
-        queries: lastId == null
-            ? [Query.limit(amount), Query.orderDesc(createdAt)]
-            : [
-          Query.limit(amount),
-          Query.cursorAfter(lastId),
-          Query.orderDesc(createdAt)
-        ]);
+  // Future<List<Announcement>> getLimitAnnouncements(
+  //     String? lastId, int amount) async {
+  //   final res = await _databases.listDocuments(
+  //       databaseId: postDatabase,
+  //       collectionId: postCollection,
+  //       queries: lastId == null
+  //           ? [Query.limit(amount), Query.orderDesc(createdAt)]
+  //           : [
+  //               Query.limit(amount),
+  //               Query.cursorAfter(lastId),
+  //               Query.orderDesc(createdAt)
+  //             ]);
+  //
+  //   List<Announcement> newAnnounces = [];
+  //   for (var doc in res.documents) {
+  //     newAnnounces.add(Announcement.fromJson(json: doc.data));
+  //   }
+  //
+  //   return newAnnounces;
+  // }
 
+  Future<List<Announcement>> getLimitAnnouncements(
+      String? lastId, int amount) async {
+    final res = await _functions.createExecution(functionId: '64b2f9bddb98c4afed2d');
     List<Announcement> newAnnounces = [];
-    for (var doc in res.documents) {
-      newAnnounces.add(Announcement.fromJson(json: doc.data));
+    for (var doc in jsonDecode(res.response)['result']['documents']) {
+      newAnnounces.add(Announcement.fromJson(json: doc));
     }
-
     return newAnnounces;
   }
 
@@ -98,9 +112,8 @@ class DatabaseManger {
   }
 
   Future<void> incTotalViewsById(String id) async {
-    final res = await _databases.getDocument(databaseId: postDatabase,
-        collectionId: postCollection,
-        documentId: id);
+    final res = await _databases.getDocument(
+        databaseId: postDatabase, collectionId: postCollection, documentId: id);
 
     await _databases.updateDocument(
         databaseId: postDatabase,
@@ -118,9 +131,10 @@ class DatabaseManger {
         data: creatingData.toJson(uid, urls));
   }
 
-  Future<void> createUser({required String name,
-    required String uid,
-    required String phone}) async {
+  Future<void> createUser(
+      {required String name,
+      required String uid,
+      required String phone}) async {
     await _databases.createDocument(
         databaseId: usersDatabase,
         collectionId: usersCollection,
@@ -136,10 +150,11 @@ class DatabaseManger {
     return UserData.fromJson(res.data);
   }
 
-  Future<void> editProfile({required String uid,
-    String? name,
-    String? phone,
-    String? imageUrl}) async {
+  Future<void> editProfile(
+      {required String uid,
+      String? name,
+      String? phone,
+      String? imageUrl}) async {
     await _databases.updateDocument(
         databaseId: usersDatabase,
         collectionId: usersCollection,
