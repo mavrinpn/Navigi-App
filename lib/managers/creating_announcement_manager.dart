@@ -8,8 +8,8 @@ import 'package:rxdart/rxdart.dart';
 import '../../data/auth_repository.dart';
 import '../../models/announcement_creating_data.dart';
 import '../../models/models.dart';
-import '../database_manager.dart';
-import '../storage_manager.dart';
+import '../services/database_manager.dart';
+import '../services/storage_manager.dart';
 
 class CreatingAnnouncementManager {
   final Client client;
@@ -35,12 +35,12 @@ class CreatingAnnouncementManager {
   String get prise => (creatingData.price ?? 0).toString();
 
   Future<List<XFile>> pickImages() async {
-    final _images = await _picker.pickMultiImage();
+    final resImages = await _picker.pickMultiImage();
 
-    images.addAll(_images);
+    images.addAll(resImages);
 
-    compressingImages = compressImages(_images);
-    return _images;
+    compressingImages = compressImages(resImages);
+    return resImages;
   }
 
   Future<void> compressImages(List<XFile> images) async {

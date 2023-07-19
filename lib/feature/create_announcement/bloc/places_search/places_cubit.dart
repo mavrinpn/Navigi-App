@@ -2,8 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:smart/models/announcement.dart';
 
-import '../../../../services/managers/creating_announcement_manager.dart';
-import '../../../../services/managers/places_manager.dart';
+import '../../../../managers/creating_announcement_manager.dart';
+import '../../../../managers/places_manager.dart';
+
 part 'places_state.dart';
 
 class PlacesCubit extends Cubit<PlacesState> {

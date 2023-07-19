@@ -96,9 +96,9 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                       TextSpan(
                           text: ' ${widget.announcement.placeData.name}',
                           style: AppTypography.font14black),
-                      TextSpan(
-                          text: '  ${widget.announcement.creatorData.distance}',
-                          style: AppTypography.font14lightGray),
+                      // TextSpan(
+                      //     text: '  ${widget.announcement.creatorData.distance}',
+                      //     style: AppTypography.font14lightGray),
                     ])),
               )
             ],

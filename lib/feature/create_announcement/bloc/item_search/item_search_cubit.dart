@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 
+import '../../../../managers/creating_announcement_manager.dart';
+import '../../../../managers/item_manager.dart';
 import '../../../../models/item/item.dart';
-import '../../../../services/managers/creating_announcement_manager.dart';
-import '../../../../services/managers/item_manager.dart';
 
 part 'item_search_state.dart';
 

@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/utils/animations.dart';
 
-import '../../../services/managers/creating_announcement_manager.dart';
+import '../../../managers/creating_announcement_manager.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';

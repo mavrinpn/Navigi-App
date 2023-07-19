@@ -1,5 +1,5 @@
 import '../../models/models.dart';
-import '../database_manager.dart';
+import '../services/database_manager.dart';
 
 class CategoriesManager {
   final DatabaseManger databaseManger;

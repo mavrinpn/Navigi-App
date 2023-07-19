@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/utils/animations.dart';
-import '../../../services/managers/item_manager.dart';
+import '../../../managers/creating_announcement_manager.dart';
+import '../../../managers/item_manager.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/category/products.dart';
 import '../../../widgets/textField/outline_text_field.dart';
 import '../bloc/item_search/item_search_cubit.dart';
-import '../../../services/managers/creating_announcement_manager.dart';
 
 class SearchProductsScreen extends StatefulWidget {
   const SearchProductsScreen({super.key});

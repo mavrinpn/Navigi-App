@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:smart/services/managers/announcement_manager.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 
+import '../../../managers/announcement_manager.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/accuont/account_small_info.dart';
 import '../../../widgets/button/custom_icon_button.dart';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../managers/creating_announcement_manager.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/textField/outline_text_field.dart';
 import '../bloc/creating/creating_announcement_cubit.dart';
-import '../../../services/managers/creating_announcement_manager.dart';
 
 class DescriptionScreen extends StatefulWidget {
   const DescriptionScreen({super.key});

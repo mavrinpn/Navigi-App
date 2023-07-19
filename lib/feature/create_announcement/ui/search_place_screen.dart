@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 
-import '../../../services/managers/places_manager.dart';
+import '../../../managers/creating_announcement_manager.dart';
+import '../../../managers/places_manager.dart';
 import '../../../utils/animations.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/category/products.dart';
 import '../../../widgets/textField/outline_text_field.dart';
-import '../../../services/managers/creating_announcement_manager.dart';
 
 class SearchPlaceScreen extends StatefulWidget {
   const SearchPlaceScreen({super.key});

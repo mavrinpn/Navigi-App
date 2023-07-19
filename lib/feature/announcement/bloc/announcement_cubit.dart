@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:smart/models/announcement.dart';
 
-import '../../../services/managers/announcement_manager.dart';
+import '../../../managers/announcement_manager.dart';
+
 
 part 'announcement_state.dart';
 

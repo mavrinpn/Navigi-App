@@ -11,7 +11,6 @@ import 'package:smart/feature/main/bloc/announcement_cubit.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/registration/ui/register_screen.dart';
 import 'package:smart/services/services.dart';
-import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/widgets/splash.dart';
 
@@ -24,6 +23,11 @@ import 'feature/login/ui/login_first_screen.dart';
 import 'feature/login/ui/login_second_screen.dart';
 import 'feature/main/ui/main_screen.dart';
 import 'feature/profile/ui/edit_profile_screen.dart';
+import 'managers/announcement_manager.dart';
+import 'managers/categories_manager.dart';
+import 'managers/creating_announcement_manager.dart';
+import 'managers/item_manager.dart';
+import 'managers/places_manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

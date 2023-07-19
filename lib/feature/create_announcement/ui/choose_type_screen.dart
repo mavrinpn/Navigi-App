@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/widgets/checkBox/custom_check_box.dart';
+import '../../../managers/creating_announcement_manager.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
-import '../../../services/managers/creating_announcement_manager.dart';
 
 class ByNotByScreen extends StatefulWidget {
   const ByNotByScreen({super.key});

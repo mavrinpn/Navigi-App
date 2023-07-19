@@ -1,7 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 
 import '../../models/announcement.dart';
-import '../database_manager.dart';
+import '../services/database_manager.dart';
 
 class AnnouncementManager {
   final DatabaseManger dbManager;

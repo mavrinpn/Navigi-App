@@ -96,7 +96,7 @@ class DatabaseManger {
 
   Future<List<Announcement>> getLimitAnnouncements(
       String? lastId, int amount) async {
-    final res = await _functions.createExecution(functionId: '64b2f9bddb98c4afed2d');
+    final res = await _functions.createExecution(functionId: '64b2f9bddb98c4afed2d', data: lastId);
     List<Announcement> newAnnounces = [];
     for (var doc in jsonDecode(res.response)['result']['documents']) {
       newAnnounces.add(Announcement.fromJson(json: doc));

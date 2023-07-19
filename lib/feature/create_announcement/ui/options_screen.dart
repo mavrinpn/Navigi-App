@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
+import '../../../managers/creating_announcement_manager.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/dropDownSingleCheckBox/custom_dropdown_single_checkbox.dart';
 import '../../../widgets/textField/under_line_text_field.dart';
-import '../../../services/managers/creating_announcement_manager.dart';
 
 class OptionsScreen extends StatefulWidget {
   const OptionsScreen({super.key});
