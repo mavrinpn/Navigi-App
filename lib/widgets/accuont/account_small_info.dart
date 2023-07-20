@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/generated/assets.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/widgets/images/network_image.dart';
 
 import '../../models/announcement.dart';
 
@@ -43,20 +44,24 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                width: 64,
-                height: 64,
-                decoration: ShapeDecoration(
-                  image: DecorationImage(
-                    image: (widget.creatorData.imageUrl.isEmpty
-                            ? const AssetImage(Assets.assetsRandomPeople)
-                            : NetworkImage(widget.creatorData.imageUrl))
-                        as ImageProvider,
-                    fit: BoxFit.fill,
-                  ),
-                  shape: const OvalBorder(),
-                ),
-              ),
+              widget.creatorData.imageUrl.isEmpty
+                  ? Container(
+                      width: 64,
+                      height: 64,
+                      decoration: const ShapeDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(Assets.assetsRandomPeople),
+                          fit: BoxFit.fill,
+                        ),
+                        shape: OvalBorder(),
+                      ),
+                    )
+                  : CustomNetworkImage(
+                      width: 64,
+                      height: 64,
+                      url: widget.creatorData.imageUrl,
+                      borderRadius: 32,
+                    ),
               Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: Column(
