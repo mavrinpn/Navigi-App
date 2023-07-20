@@ -34,7 +34,10 @@ class AnnouncementManager {
 
   Future<Announcement?> getAnnouncementById(String id) async {
     for (var a in announcements) {
-      if (a.announcementId == id) return a;
+      if (a.announcementId == id) {
+        lastAnnouncement = a;
+        return a;
+      }
     }
     return null;
 
@@ -43,7 +46,7 @@ class AnnouncementManager {
     // } else {
     //   final announcement = await dbManager.getAnnouncementById(id);
     //   incTotalViews(announcement.announcementId);
-    //   lastAnnouncement = announcement;
+    //
     //   return announcement;
     // }
   }
