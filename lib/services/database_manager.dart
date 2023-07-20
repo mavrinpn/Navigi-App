@@ -73,32 +73,11 @@ class DatabaseManger {
     return places;
   }
 
-  // Future<List<Announcement>> getLimitAnnouncements(
-  //     String? lastId, int amount) async {
-  //   final res = await _databases.listDocuments(
-  //       databaseId: postDatabase,
-  //       collectionId: postCollection,
-  //       queries: lastId == null
-  //           ? [Query.limit(amount), Query.orderDesc(createdAt)]
-  //           : [
-  //               Query.limit(amount),
-  //               Query.cursorAfter(lastId),
-  //               Query.orderDesc(createdAt)
-  //             ]);
-  //
-  //   List<Announcement> newAnnounces = [];
-  //   for (var doc in res.documents) {
-  //     newAnnounces.add(Announcement.fromJson(json: doc.data));
-  //   }
-  //
-  //   return newAnnounces;
-  // }
-
   Future<List<Announcement>> getLimitAnnouncements(
-      String? lastId, int amount) async {
-    final res = await _functions.createExecution(functionId: '64b2f9bddb98c4afed2d', data: lastId);
+      String? lastId) async {
+    final res = await _functions.createExecution(functionId: getAnnouncementFunctionID, data: lastId);
     List<Announcement> newAnnounces = [];
-    for (var doc in jsonDecode(res.response)['result']['documents']) {
+    for (var doc in jsonDecode(res.response)[responseResult][responseDocuments]) {
       newAnnounces.add(Announcement.fromJson(json: doc));
     }
     return newAnnounces;

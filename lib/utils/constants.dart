@@ -7,6 +7,10 @@ const String itemsCollection = 'items';
 const String categoriesCollection = 'categories';
 const String subcategoriesCollection = 'sub_categories';
 
+const String getAnnouncementFunctionID = '64b2f9bddb98c4afed2d';
+const String responseResult = 'result';
+const String responseDocuments = 'documents';
+
 const String placeCollection = 'places';
 
 const String usersCollection = 'users';

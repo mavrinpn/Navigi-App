@@ -11,7 +11,6 @@ class AnnouncementManager {
 
   String? _lastId;
   bool _canGetMore = true;
-  static const int _amount = 6;
 
   List<String> viewsAnnouncements = [];
   List<Announcement> announcements = [];
@@ -20,7 +19,7 @@ class AnnouncementManager {
   Future<void> addLimitAnnouncements() async {
     if (_canGetMore) {
       try {
-        announcements.addAll(await dbManager.getLimitAnnouncements(_lastId, _amount));
+        announcements.addAll(await dbManager.getLimitAnnouncements(_lastId));
         _lastId = announcements.last.announcementId;
       } catch (e) {
         if (e.toString() != 'Bad state: No element') {
@@ -40,15 +39,6 @@ class AnnouncementManager {
       }
     }
     return null;
-
-    // if (id == lastAnnouncement?.announcementId) {
-    //   return lastAnnouncement!;
-    // } else {
-    //   final announcement = await dbManager.getAnnouncementById(id);
-    //   incTotalViews(announcement.announcementId);
-    //
-    //   return announcement;
-    // }
   }
 
   void incTotalViews(String id) async {
