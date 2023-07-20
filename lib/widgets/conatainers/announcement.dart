@@ -28,7 +28,6 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
 
     return InkWell(
       onTap: () async {
-
         BlocProvider.of<AnnouncementCubit>(context)
             .loadAnnouncementById(widget.announcement.announcementId);
         Navigator.pushNamed(context, '/announcement_screen');
@@ -36,10 +35,15 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomNetworkImage(
-              width: width / 2 - 32,
-              height: (width / 2 - 32) * 1.032,
-              url: widget.announcement.images[0]),
+          Container(
+            width: width / 2 - 32,
+            height: (width / 2 - 32) * 1.032,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              color: Colors.grey[300],
+                image: DecorationImage(
+                    image: NetworkImage(widget.announcement.images[0]), fit: BoxFit.cover)),
+          ),
           const SizedBox(
             height: 10,
           ),

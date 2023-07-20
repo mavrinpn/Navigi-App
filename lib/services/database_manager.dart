@@ -73,11 +73,13 @@ class DatabaseManger {
     return places;
   }
 
-  Future<List<Announcement>> getLimitAnnouncements(
-      String? lastId) async {
-    final res = await _functions.createExecution(functionId: getAnnouncementFunctionID, data: lastId);
+  Future<List<Announcement>> getLimitAnnouncements(String? lastId) async {
+    final start = DateTime.now();
+    final res = await _functions.createExecution(
+        functionId: getAnnouncementFunctionID, data: lastId);
     List<Announcement> newAnnounces = [];
-    for (var doc in jsonDecode(res.response)[responseResult][responseDocuments]) {
+    for (var doc in jsonDecode(res.response)[responseResult]
+        [responseDocuments]) {
       newAnnounces.add(Announcement.fromJson(json: doc));
     }
     return newAnnounces;
