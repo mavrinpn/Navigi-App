@@ -28,7 +28,6 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
 
-    // Setup the listener.
     _controller.addListener(() async {
       if (_controller.position.atEdge) {
         double maxScroll = _controller.position.maxScrollExtent;
@@ -38,6 +37,13 @@ class _MainScreenState extends State<MainScreen> {
         }
       }
     });
+  }
+
+  @override
+  void dispose(){
+    super.dispose();
+
+    _controller.dispose();
   }
 
   @override
