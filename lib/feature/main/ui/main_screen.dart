@@ -32,7 +32,7 @@ class _MainScreenState extends State<MainScreen> {
       if (_controller.position.atEdge) {
         double maxScroll = _controller.position.maxScrollExtent;
         double currentScroll = _controller.position.pixels;
-        if (currentScroll >= maxScroll * 0.7) {
+        if (currentScroll >= maxScroll * 0.8) {
           BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces();
         }
       }

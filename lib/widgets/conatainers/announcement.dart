@@ -36,24 +36,15 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CachedNetworkImage(
-              imageUrl: widget.announcement.images[0],
-              memCacheWidth: 200,
-              memCacheHeight: 200,
-              imageBuilder: (ctx, provider) => Container(
-                    width: 160,
-                    height: 155,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        color: Colors.grey[300],
-                        image: DecorationImage(
-                            image: provider, fit: BoxFit.cover)),
-                  ),
-              placeholder: (_, __) => Container(
-                    width: 160,
-                    height: 155,
-                    color: Colors.grey[300],
-                  )),
+          Container(
+            width: 160,
+            height: 155,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                color: Colors.grey[300],
+                image: DecorationImage(
+                    image: NetworkImage(widget.announcement.images[0]), fit: BoxFit.cover)),
+          ),
           const SizedBox(
             height: 10,
           ),
