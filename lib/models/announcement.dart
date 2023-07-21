@@ -1,6 +1,9 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:smart/models/item/static_parameters.dart';
 
 part 'creator_data.dart';
+
 part 'place.dart';
 
 class Announcement {
@@ -13,6 +16,7 @@ class Announcement {
   final StaticParameters staticParameters;
   final PlaceData placeData;
   final CreatorData creatorData;
+  late final Widget previewImage;
   final String _createdAt;
 
   Announcement(
@@ -22,6 +26,7 @@ class Announcement {
       required this.totalViews,
       required this.price,
       required this.images,
+      required this.previewImage,
       required this.announcementId,
       required this.staticParameters,
       required this.creatorData,
@@ -38,8 +43,17 @@ class Announcement {
         totalViews = json['total_views'],
         _createdAt = json['\$createdAt'],
         announcementId = json['\$id'],
-        placeData = PlaceData.fromJson(json['place'])
-  ;
+        placeData = PlaceData.fromJson(json['place']) {
+    previewImage = Container(
+      width: 160,
+      height: 155,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          color: Colors.grey[300],
+          image: DecorationImage(
+              image: NetworkImage(images[0]), fit: BoxFit.cover)),
+    );
+  }
 
   @override
   String toString() => title;
@@ -53,7 +67,8 @@ class Announcement {
     return '$month.$day $hour:$minutes';
   }
 
-  String _addZeroInStart(int num) => num.toString().length > 1 ? num.toString() : '0$num';
+  String _addZeroInStart(int num) =>
+      num.toString().length > 1 ? num.toString() : '0$num';
 
   String get stringPrice {
     String reversed = price.toString().split('.')[0].split('').reversed.join();

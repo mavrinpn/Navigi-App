@@ -32,18 +32,11 @@ class _MainScreenState extends State<MainScreen> {
       if (_controller.position.atEdge) {
         double maxScroll = _controller.position.maxScrollExtent;
         double currentScroll = _controller.position.pixels;
-        if (currentScroll == maxScroll) {
+        if (currentScroll >= maxScroll * 0.7) {
           BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces();
         }
       }
     });
-  }
-
-  @override
-  void dispose(){
-    super.dispose();
-
-    _controller.dispose();
   }
 
   @override
@@ -54,11 +47,21 @@ class _MainScreenState extends State<MainScreen> {
       body: SafeArea(
         child: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
           builder: (context, state) {
-            var list = repository.announcements
-                .map((e) => AnnouncementContainer(
-                      announcement: e,
-                    ))
-                .toList();
+            List<Widget> list = [];
+
+            for (int i = 0; i < repository.announcements.length; i += 2) {
+              List<Widget> c = [];
+              c.add(AnnouncementContainer(
+                  announcement: repository.announcements[i]));
+              try {
+                c.add(AnnouncementContainer(
+                    announcement: repository.announcements[i + 1]));
+              } catch (e) {}
+              list.add(Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: c,
+              ));
+            }
 
             return CustomScrollView(
               controller: _controller,
@@ -166,13 +169,10 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 22),
-                  sliver: SliverGrid(
-                    delegate: SliverChildListDelegate(list),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 1 / 1.7,
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 12),
+                  sliver: SliverToBoxAdapter(
+                    child: Column(
+                      children: list,
+                    ),
                   ),
                 ),
                 if (state is AnnouncementsLoadingState) ...[

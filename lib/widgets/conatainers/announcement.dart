@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,7 +9,6 @@ import 'package:smart/utils/fonts.dart';
 
 import '../../feature/announcement/bloc/announcement_cubit.dart';
 import '../../utils/colors.dart';
-import '../images/network_image.dart';
 
 class AnnouncementContainer extends StatefulWidget {
   const AnnouncementContainer({super.key, required this.announcement});
@@ -25,7 +25,8 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-
+    final double imageWidth = width / 2 - 32;
+    final double imageHeight = (width / 2 - 32) * 1.032;
     return InkWell(
       onTap: () async {
         BlocProvider.of<AnnouncementCubit>(context)
@@ -35,20 +36,29 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: width / 2 - 32,
-            height: (width / 2 - 32) * 1.032,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              color: Colors.grey[300],
-                image: DecorationImage(
-                    image: NetworkImage(widget.announcement.images[0]), fit: BoxFit.cover)),
-          ),
+          CachedNetworkImage(
+              imageUrl: widget.announcement.images[0],
+              memCacheWidth: 200,
+              memCacheHeight: 200,
+              imageBuilder: (ctx, provider) => Container(
+                    width: 160,
+                    height: 155,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: Colors.grey[300],
+                        image: DecorationImage(
+                            image: provider, fit: BoxFit.cover)),
+                  ),
+              placeholder: (_, __) => Container(
+                    width: 160,
+                    height: 155,
+                    color: Colors.grey[300],
+                  )),
           const SizedBox(
             height: 10,
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.45,
+            width: imageWidth,
             child: Text(
               widget.announcement.title,
               style: AppTypography.font12dark,
