@@ -1,6 +1,4 @@
 // ignore_for_file: deprecated_member_use
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -37,8 +35,8 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 160,
-            height: 155,
+            width: imageWidth,
+            height: imageHeight,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
                 color: Colors.grey[300],

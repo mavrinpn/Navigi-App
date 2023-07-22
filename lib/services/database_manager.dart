@@ -74,7 +74,6 @@ class DatabaseManger {
   }
 
   Future<List<Announcement>> getLimitAnnouncements(String? lastId) async {
-    final start = DateTime.now();
     final res = await _functions.createExecution(
         functionId: getAnnouncementFunctionID, data: lastId);
     List<Announcement> newAnnounces = [];
