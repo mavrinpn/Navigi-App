@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:dio/dio.dart';
 import 'package:smart/models/user.dart';
 
 import '../models/announcement.dart';
@@ -17,13 +18,22 @@ const String userName = 'name';
 const String userPhone = 'phone';
 const String userImageUrl = 'image';
 
+const String apiKey =
+    '20f13c781d9882edfdf4eeb06436b7e63aa80ada4da94f6979c13fdde348874bb5b162ce0a34a54911ed93bf04068d556f988eb1868844cbbe1e908c49fadc70f773ab5fc8a5968ad658ad8e4acd5bf3193820bf73fb28ab8d61c74f0373114816c7ba44d7951cbeee3b62040de8b32980b5b6296adc0ab32fb40b83d4aadf5f';
+
 class DatabaseManger {
   final Databases _databases;
   final Functions _functions;
+  final Dio _dio;
 
   DatabaseManger({required Client client})
       : _databases = Databases(client),
-        _functions = Functions(client);
+        _functions = Functions(client),
+        _dio = Dio(BaseOptions(baseUrl: 'http://89.253.237.166/v1', headers: {
+          'X-Appwrite-Project': '64987d0f7f186b7e2b45',
+          'Content-Type': 'application/json',
+          'X-Appwrite-Key': apiKey
+        }));
 
   Future<List<Category>> getAllCategories() async {
     final res = await _databases.listDocuments(
@@ -76,9 +86,17 @@ class DatabaseManger {
   Future<List<Announcement>> getLimitAnnouncements(String? lastId) async {
     final res = await _functions.createExecution(
         functionId: getAnnouncementFunctionID, data: lastId);
+
+    // final res = await _dio
+    //     .post('/functions/$getAnnouncementFunctionID/executions', data: lastId);
+
+    // print(res.data);
+    // final response = jsonDecode(res.data['response']);
+
+    final response = jsonDecode(res.response);
+
     List<Announcement> newAnnounces = [];
-    for (var doc in jsonDecode(res.response)[responseResult]
-        [responseDocuments]) {
+    for (var doc in response[responseResult][responseDocuments]) {
       newAnnounces.add(Announcement.fromJson(json: doc));
     }
     return newAnnounces;
