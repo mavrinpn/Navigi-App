@@ -47,21 +47,23 @@ class _MainScreenState extends State<MainScreen> {
       body: SafeArea(
         child: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
           builder: (context, state) {
-            List<Widget> list = [];
-
-            for (int i = 0; i < repository.announcements.length; i += 2) {
-              List<Widget> c = [];
-              c.add(AnnouncementContainer(
-                  announcement: repository.announcements[i]));
-              try {
-                c.add(AnnouncementContainer(
-                    announcement: repository.announcements[i + 1]));
-              } catch (e) {}
-              list.add(Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: c,
-              ));
+            List<AnnouncementContainer> list = [];
+            for (var element in repository.announcements) {
+              list.add(AnnouncementContainer(announcement: element));
             }
+            // for (int i = 0; i < repository.announcements.length; i += 2) {
+            //   List<Widget> c = [];
+            //   c.add(AnnouncementContainer(
+            //       announcement: repository.announcements[i]));
+            //   try {
+            //     c.add(AnnouncementContainer(
+            //         announcement: repository.announcements[i + 1]));
+            //   } catch (e) {}
+            //   list.add(Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: c,
+            //   ));
+            // }
 
             return CustomScrollView(
               controller: _controller,
@@ -169,10 +171,17 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 22),
-                  sliver: SliverToBoxAdapter(
-                    child: Column(
-                      children: list,
-                    ),
+                  sliver: SliverGrid(
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      crossAxisSpacing: 10,
+                        mainAxisSpacing: 15,
+                        maxCrossAxisExtent:
+                            MediaQuery.of(context).size.width / 2 - 32,
+                        childAspectRatio: 160 / 272),
+                    delegate: SliverChildBuilderDelegate(
+                        (context, ind) => AnnouncementContainer(
+                            announcement: repository.announcements[ind]),
+                        childCount: repository.announcements.length),
                   ),
                 ),
                 if (state is AnnouncementsLoadingState) ...[
