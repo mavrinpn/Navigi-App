@@ -2,14 +2,15 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:smart/bloc/auth/auth_cubit.dart';
-import 'package:smart/data/auth_repository.dart';
+import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 import '../../../utils/dialogs.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/custom_text_field.dart';
+import '../data/auth_repository.dart';
 
 class LoginSecondScreen extends StatefulWidget {
   const LoginSecondScreen({Key? key}) : super(key: key);
@@ -41,8 +42,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
         if (state is AuthSuccessState) {
           Navigator.pop(context);
         } else if (state is AuthFailState) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('ошибка')));
+          CustomSnackBar.showSnackBar(context, 'ошибка бд');
         }
       },
       child: GestureDetector(

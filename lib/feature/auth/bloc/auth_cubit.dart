@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import '../../data/auth_repository.dart';
+import '../data/auth_repository.dart';
+
 
 part 'auth_state.dart';
 
@@ -11,9 +12,10 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit({required this.appRepository}) : super(AuthInitial()) {
     appRepository.authState.stream.listen((event) {
-      if (event == LoadingStateEnum.success) emit(AuthSuccessState());
-      if (event == LoadingStateEnum.loading) emit(AuthLoadingState());
-      if (event == LoadingStateEnum.fail) emit(AuthFailState());
+      if (event == EntranceStateEnum.success) emit(AuthSuccessState());
+      if (event == EntranceStateEnum.loading) emit(AuthLoadingState());
+      if (event == EntranceStateEnum.fail) emit(AuthFailState());
+      if (event == EntranceStateEnum.alreadyExist) emit(AlreadyExistState());
     });
   }
 

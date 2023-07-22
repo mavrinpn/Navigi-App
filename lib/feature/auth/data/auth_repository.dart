@@ -10,6 +10,8 @@ import 'package:smart/services/storage_manager.dart';
 
 enum LoadingStateEnum { wait, loading, success, fail }
 
+enum EntranceStateEnum { wait, loading, success, fail, alreadyExist }
+
 enum AuthStateEnum { wait, auth, unAuth }
 
 class AuthRepository {
@@ -35,8 +37,8 @@ class AuthRepository {
     checkLogin();
   }
 
-  BehaviorSubject<LoadingStateEnum> authState =
-      BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
+  BehaviorSubject<EntranceStateEnum> authState =
+      BehaviorSubject<EntranceStateEnum>.seeded(EntranceStateEnum.wait);
 
   BehaviorSubject<AuthStateEnum> appState =
       BehaviorSubject<AuthStateEnum>.seeded(AuthStateEnum.wait);
@@ -49,7 +51,7 @@ class AuthRepository {
   }
 
   Future<void> _auth(Future<Session> method, {Future? requiredMethod}) async {
-    authState.add(LoadingStateEnum.loading);
+    authState.add(EntranceStateEnum.loading);
     try {
       final promise = await method;
       sessionID = promise.$id;
@@ -61,11 +63,12 @@ class AuthRepository {
       if (requiredMethod != null) {
         await requiredMethod;
       }
-      authState.add(LoadingStateEnum.success);
+      authState.add(EntranceStateEnum.success);
       getUserData();
       appState.add(AuthStateEnum.auth);
     } catch (e) {
-      authState.add(LoadingStateEnum.fail);
+      if(e == "AppwriteException: general_rate_limit_exceeded, Rate limit for the current endpoint has been exceeded. Please try again after some time. (429)") print("asdf--------------------------");
+      authState.add(EntranceStateEnum.fail);
       rethrow;
     }
   }
@@ -74,7 +77,7 @@ class AuthRepository {
     await _account.deleteSession(sessionId: sessionID!);
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
-    authState.add(LoadingStateEnum.wait);
+    authState.add(EntranceStateEnum.wait);
     appState.add(AuthStateEnum.unAuth);
   }
 
@@ -82,8 +85,15 @@ class AuthRepository {
       {required String email,
       required String password,
       required String name}) async {
-    final User res = await _account.create(
-        userId: ID.unique(), email: email, password: password, name: name);
+    final User res;
+
+    try {
+      res = await _account.create(
+          userId: ID.unique(), email: email, password: password, name: name);
+    } catch (e) {
+      authState.add(EntranceStateEnum.alreadyExist);
+      return;
+    }
 
     await _auth(_account.createEmailSession(email: email, password: password),
         requiredMethod: _databaseManger.createUser(

@@ -3,7 +3,8 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import '../../../data/auth_repository.dart';
+import '../../auth/data/auth_repository.dart';
+
 
 part 'user_state.dart';
 

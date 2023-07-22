@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:smart/bloc/auth/auth_cubit.dart';
-import 'package:smart/data/auth_repository.dart';
+import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 import '../../../utils/animations.dart';
 import '../../../utils/colors.dart';
@@ -12,6 +12,7 @@ import '../../../utils/dialogs.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/custom_text_field.dart';
 import '../../../widgets/textField/mask_text_field.dart';
+import '../data/auth_repository.dart';
 
 final maskPhoneFormatter = MaskTextInputFormatter(
     mask: '+213 ## ### ###',
@@ -78,8 +79,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (state is AuthSuccessState) {
           Navigator.pop(context);
         } else if (state is AuthFailState) {
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //     const SnackBar(content: Text('ошибка')));
+          CustomSnackBar.showSnackBar(context, 'проблема бд');
+        }else if(state is AlreadyExistState){
+          CustomSnackBar.showSnackBar(context, 'такой пользователь уже зареган');
         }
       },
 

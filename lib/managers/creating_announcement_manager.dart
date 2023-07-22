@@ -5,9 +5,9 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../data/auth_repository.dart';
 import '../../models/announcement_creating_data.dart';
 import '../../models/models.dart';
+import '../feature/auth/data/auth_repository.dart';
 import '../services/database_manager.dart';
 import '../services/storage_manager.dart';
 

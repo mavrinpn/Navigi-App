@@ -12,10 +12,10 @@ import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 
-import '../../../data/auth_repository.dart';
 import '../../../widgets/images/network_image.dart';
 import '../../../widgets/snackBar/snack_bar.dart';
 import '../../../widgets/textField/custom_text_field.dart';
+import '../../auth/data/auth_repository.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
