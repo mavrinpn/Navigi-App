@@ -36,13 +36,23 @@ class DatabaseManger {
         }));
 
   Future<List<Category>> getAllCategories() async {
+    var w = Stopwatch()..start();
+
     final res = await _databases.listDocuments(
         databaseId: postDatabase, collectionId: categoriesCollection);
+
+    print('------------------------------------------------------------');
+    print('${w.elapsed.inMilliseconds}');
+    print('------------------------------------------------------------');
 
     List<Category> categories = [];
     for (var doc in res.documents) {
       categories.add(Category.fromJson(doc.data));
     }
+
+    print('------------------------------------------------------------');
+    print('${w.elapsed.inMilliseconds}');
+    print('------------------------------------------------------------');
     return categories;
   }
 
