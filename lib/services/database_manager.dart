@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:dio/dio.dart';
