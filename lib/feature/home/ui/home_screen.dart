@@ -37,7 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
         body: widgetOptions[_selectedTab],
         bottomNavigationBar: Container(
           decoration: const BoxDecoration(
-            border: Border(top: BorderSide(color: Color(0xffDEE2E7), width: 1))
+              border: Border(
+                  top: BorderSide(color: Color(0xffDEE2E7), width: 1))
           ),
           child: BottomNavigationBar(
             backgroundColor: const Color(0xffFBFBFC),

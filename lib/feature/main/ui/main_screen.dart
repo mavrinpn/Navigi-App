@@ -51,19 +51,6 @@ class _MainScreenState extends State<MainScreen> {
             for (var element in repository.announcements) {
               list.add(AnnouncementContainer(announcement: element));
             }
-            // for (int i = 0; i < repository.announcements.length; i += 2) {
-            //   List<Widget> c = [];
-            //   c.add(AnnouncementContainer(
-            //       announcement: repository.announcements[i]));
-            //   try {
-            //     c.add(AnnouncementContainer(
-            //         announcement: repository.announcements[i + 1]));
-            //   } catch (e) {}
-            //   list.add(Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: c,
-            //   ));
-            // }
 
             return CustomScrollView(
               controller: _controller,
@@ -179,9 +166,8 @@ class _MainScreenState extends State<MainScreen> {
                             MediaQuery.of(context).size.width / 2 - 32,
                         childAspectRatio: 160 / 272),
                     delegate: SliverChildBuilderDelegate(
-                        (context, ind) => AnnouncementContainer(
-                            announcement: repository.announcements[ind]),
-                        childCount: repository.announcements.length),
+                        (context, ind) => list[ind],
+                        childCount: list.length),
                   ),
                 ),
                 if (state is AnnouncementsLoadingState) ...[

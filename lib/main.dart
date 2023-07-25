@@ -101,9 +101,10 @@ class MyRepositoryProviders extends StatelessWidget {
       .setProject('64987d0f7f186b7e2b45');
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     DatabaseManger dbManager = DatabaseManger(client: client);
     FileStorageManager storageManager = FileStorageManager(client: client);
+
     return MultiRepositoryProvider(providers: [
       RepositoryProvider(
         create: (_) => AuthRepository(

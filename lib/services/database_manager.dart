@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:dio/dio.dart';
@@ -24,10 +25,12 @@ const String apiKey =
 class DatabaseManger {
   final Databases _databases;
   final Functions _functions;
+  final Client _client;
   final Dio _dio;
 
   DatabaseManger({required Client client})
-      : _databases = Databases(client),
+      : _client = client,
+        _databases = Databases(client),
         _functions = Functions(client),
         _dio = Dio(BaseOptions(baseUrl: 'http://89.253.237.166/v1', headers: {
           'X-Appwrite-Project': '64987d0f7f186b7e2b45',
@@ -36,23 +39,20 @@ class DatabaseManger {
         }));
 
   Future<List<Category>> getAllCategories() async {
+    await loadJWT();
+
     var w = Stopwatch()..start();
 
     final res = await _databases.listDocuments(
         databaseId: postDatabase, collectionId: categoriesCollection);
 
-    print('------------------------------------------------------------');
-    print('${w.elapsed.inMilliseconds}');
-    print('------------------------------------------------------------');
-
     List<Category> categories = [];
     for (var doc in res.documents) {
       categories.add(Category.fromJson(doc.data));
     }
+    log("${w.elapsed.inMilliseconds}");
+    log('-----------------------------');
 
-    print('------------------------------------------------------------');
-    print('${w.elapsed.inMilliseconds}');
-    print('------------------------------------------------------------');
     return categories;
   }
 
@@ -94,14 +94,11 @@ class DatabaseManger {
   }
 
   Future<List<Announcement>> getLimitAnnouncements(String? lastId) async {
+    await loadJWT();
+    var w = Stopwatch()..start();
+
     final res = await _functions.createExecution(
         functionId: getAnnouncementFunctionID, data: lastId);
-
-    // final res = await _dio
-    //     .post('/functions/$getAnnouncementFunctionID/executions', data: lastId);
-
-    // print(res.data);
-    // final response = jsonDecode(res.data['response']);
 
     final response = jsonDecode(res.response);
 
@@ -109,6 +106,10 @@ class DatabaseManger {
     for (var doc in response[responseResult][responseDocuments]) {
       newAnnounces.add(Announcement.fromJson(json: doc));
     }
+
+    log("${w.elapsed.inMilliseconds}");
+    log('-----------------------------');
+
     return newAnnounces;
   }
 
@@ -172,5 +173,17 @@ class DatabaseManger {
           if (phone != null) userPhone: phone,
           if (imageUrl != null) userImageUrl: imageUrl
         });
+  }
+
+  Future loadJWT() async{
+    var createJwt = await Account(_client).createJWT();
+
+    var dio1 = Dio(BaseOptions(baseUrl: 'http://89.253.237.166/v1', headers: {
+      'X-Appwrite-Project': '64987d0f7f186b7e2b45',
+      'Content-Type': 'application/json',
+      'X-Appwrite-JWT': createJwt.jwt,
+    }));
+
+    var result = dio1.get("/databases/annonces/collections/categories/documents");
   }
 }

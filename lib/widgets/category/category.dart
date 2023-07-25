@@ -48,9 +48,10 @@ class _CategoryWidgetState extends State<CategoryWidget> {
         width: widget.width,
         height: widget.height,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
+            const SizedBox(height: 15,),
             CustomNetworkImage(width: 108, height: 100, url: widget.url),
             const SizedBox(
               height: 12,
@@ -58,6 +59,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
             Text(
               widget.name,
               style: AppTypography.font24black.copyWith(fontSize: 12),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
