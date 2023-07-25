@@ -39,10 +39,6 @@ class DatabaseManger {
         }));
 
   Future<List<Category>> getAllCategories() async {
-    await loadJWT();
-
-    var w = Stopwatch()..start();
-
     final res = await _databases.listDocuments(
         databaseId: postDatabase, collectionId: categoriesCollection);
 
@@ -50,8 +46,6 @@ class DatabaseManger {
     for (var doc in res.documents) {
       categories.add(Category.fromJson(doc.data));
     }
-    log("${w.elapsed.inMilliseconds}");
-    log('-----------------------------');
 
     return categories;
   }
@@ -94,9 +88,6 @@ class DatabaseManger {
   }
 
   Future<List<Announcement>> getLimitAnnouncements(String? lastId) async {
-    await loadJWT();
-    var w = Stopwatch()..start();
-
     final res = await _functions.createExecution(
         functionId: getAnnouncementFunctionID, data: lastId);
 
@@ -106,9 +97,6 @@ class DatabaseManger {
     for (var doc in response[responseResult][responseDocuments]) {
       newAnnounces.add(Announcement.fromJson(json: doc));
     }
-
-    log("${w.elapsed.inMilliseconds}");
-    log('-----------------------------');
 
     return newAnnounces;
   }
@@ -173,17 +161,5 @@ class DatabaseManger {
           if (phone != null) userPhone: phone,
           if (imageUrl != null) userImageUrl: imageUrl
         });
-  }
-
-  Future loadJWT() async{
-    var createJwt = await Account(_client).createJWT();
-
-    var dio1 = Dio(BaseOptions(baseUrl: 'http://89.253.237.166/v1', headers: {
-      'X-Appwrite-Project': '64987d0f7f186b7e2b45',
-      'Content-Type': 'application/json',
-      'X-Appwrite-JWT': createJwt.jwt,
-    }));
-
-    var result = dio1.get("/databases/annonces/collections/categories/documents");
   }
 }

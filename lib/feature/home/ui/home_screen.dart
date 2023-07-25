@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/utils/fonts.dart';
 
+import '../../../managers/categories_manager.dart';
 import '../../../utils/colors.dart';
 import '../../main/ui/main_screen.dart';
 import '../../profile/ui/profile_screen.dart';
@@ -20,7 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final List<Widget> widgetOptions = <Widget>[
       const MainScreen(),
-      const Text('Messages'),
+      Center(
+        child: InkWell(onTap: () async{
+          var a = await RepositoryProvider.of<AnnouncementManager>(context).addLimitAnnouncements();
+        },
+          child: Text('asdf'),
+        ),
+      ),
       const Text('Delection'),
       const ProfileScreen(),
     ];
@@ -37,9 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
         body: widgetOptions[_selectedTab],
         bottomNavigationBar: Container(
           decoration: const BoxDecoration(
-              border: Border(
-                  top: BorderSide(color: Color(0xffDEE2E7), width: 1))
-          ),
+              border:
+                  Border(top: BorderSide(color: Color(0xffDEE2E7), width: 1))),
           child: BottomNavigationBar(
             backgroundColor: const Color(0xffFBFBFC),
             iconSize: 30,
