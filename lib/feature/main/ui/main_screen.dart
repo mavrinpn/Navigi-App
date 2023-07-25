@@ -47,11 +47,6 @@ class _MainScreenState extends State<MainScreen> {
       body: SafeArea(
         child: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
           builder: (context, state) {
-            List<AnnouncementContainer> list = [];
-            for (var element in repository.announcements) {
-              list.add(AnnouncementContainer(announcement: element));
-            }
-
             return CustomScrollView(
               controller: _controller,
               physics: const BouncingScrollPhysics(
@@ -160,14 +155,15 @@ class _MainScreenState extends State<MainScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 22),
                   sliver: SliverGrid(
                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      crossAxisSpacing: 10,
+                        crossAxisSpacing: 10,
                         mainAxisSpacing: 15,
                         maxCrossAxisExtent:
                             MediaQuery.of(context).size.width / 2 - 32,
                         childAspectRatio: 160 / 272),
                     delegate: SliverChildBuilderDelegate(
-                        (context, ind) => list[ind],
-                        childCount: list.length),
+                        (context, ind) => AnnouncementContainer(
+                            announcement: repository.announcements[ind]),
+                        childCount: repository.announcements.length),
                   ),
                 ),
                 if (state is AnnouncementsLoadingState) ...[
