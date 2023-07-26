@@ -7,7 +7,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../models/announcement_creating_data.dart';
 import '../../models/models.dart';
-import '../feature/auth/data/auth_repository.dart';
+import '../enum/enum.dart';
 import '../services/database_manager.dart';
 import '../services/storage_manager.dart';
 

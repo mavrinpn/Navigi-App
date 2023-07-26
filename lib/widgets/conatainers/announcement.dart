@@ -1,9 +1,11 @@
 // ignore_for_file: deprecated_member_use
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import '../../feature/announcement/bloc/announcement_cubit.dart';
 import '../../utils/colors.dart';
@@ -25,7 +27,12 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
     final width = MediaQuery.of(context).size.width;
     final double imageWidth = width / 2 - 32;
     final double imageHeight = (width / 2 - 32) * 1.032;
+
     return InkWell(
+      focusColor: AppColors.empty,
+      hoverColor: AppColors.empty,
+      highlightColor: AppColors.empty,
+      splashColor: AppColors.empty,
       onTap: () async {
         BlocProvider.of<AnnouncementCubit>(context)
             .loadAnnouncementById(widget.announcement.announcementId);
@@ -34,14 +41,16 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: imageWidth,
-            height: imageHeight,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
-                color: Colors.grey[300],
-                image: DecorationImage(
-                    image: NetworkImage(widget.announcement.images[0]), fit: BoxFit.cover)),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: SizedBox.fromSize(
+              child: FadeInImage.assetNetwork(
+                  placeholder: 'Assets/grey.png',
+                  image: widget.announcement.images[0],
+                  width: imageWidth,
+                  height: imageHeight,
+                  fit: BoxFit.cover),
+            ),
           ),
           const SizedBox(
             height: 10,

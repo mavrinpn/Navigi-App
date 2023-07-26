@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
+import '../../../enum/enum.dart';
 import '../../auth/data/auth_repository.dart';
 
 

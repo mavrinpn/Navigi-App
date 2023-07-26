@@ -8,11 +8,7 @@ import 'package:smart/models/user.dart';
 import 'package:smart/services/database_manager.dart';
 import 'package:smart/services/storage_manager.dart';
 
-enum LoadingStateEnum { wait, loading, success, fail }
-
-enum EntranceStateEnum { wait, loading, success, fail, alreadyExist }
-
-enum AuthStateEnum { wait, auth, unAuth }
+import '../../../enum/enum.dart';
 
 class AuthRepository {
   final Client client;
@@ -67,8 +63,7 @@ class AuthRepository {
       getUserData();
       appState.add(AuthStateEnum.auth);
     } catch (e) {
-      if(e == "AppwriteException: general_rate_limit_exceeded, Rate limit for the current endpoint has been exceeded. Please try again after some time. (429)") print("asdf--------------------------");
-      authState.add(EntranceStateEnum.fail);
+        authState.add(EntranceStateEnum.fail);
       rethrow;
     }
   }

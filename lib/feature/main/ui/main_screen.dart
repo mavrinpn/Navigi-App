@@ -33,6 +33,7 @@ class _MainScreenState extends State<MainScreen> {
         double maxScroll = _controller.position.maxScrollExtent;
         double currentScroll = _controller.position.pixels;
         if (currentScroll >= maxScroll * 0.8) {
+          print(1);
           BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces();
         }
       }
@@ -47,6 +48,8 @@ class _MainScreenState extends State<MainScreen> {
       body: SafeArea(
         child: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
           builder: (context, state) {
+            print(repository.announcements.length);
+
             return CustomScrollView(
               controller: _controller,
               physics: const BouncingScrollPhysics(
@@ -158,7 +161,7 @@ class _MainScreenState extends State<MainScreen> {
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 15,
                         maxCrossAxisExtent:
-                            MediaQuery.of(context).size.width / 2 - 32,
+                            MediaQuery.of(context).size.width / 2,
                         childAspectRatio: 160 / 272),
                     delegate: SliverChildBuilderDelegate(
                         (context, ind) => AnnouncementContainer(

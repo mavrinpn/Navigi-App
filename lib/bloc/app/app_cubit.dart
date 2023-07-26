@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
+import '../../enum/enum.dart';
 import '../../feature/auth/data/auth_repository.dart';
 
 
