@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:smart/models/item/static_parameters.dart';
 
@@ -17,8 +19,10 @@ class Announcement {
   final CreatorData creatorData;
   late final Widget previewImage;
   final String _createdAt;
+  late final Uint8List bytes;
+  final Future<Uint8List> futureBytes;
 
-  Announcement(
+  Announcement(this.bytes, this.futureBytes,
       {required this.title,
       required String created,
       required this.description,
@@ -32,7 +36,7 @@ class Announcement {
       required this.placeData})
       : _createdAt = created;
 
-  Announcement.fromJson({required Map<String, dynamic> json})
+  Announcement.fromJson({required Map<String, dynamic> json, required this.futureBytes})
       : title = json['name'],
         description = json['description'],
         creatorData = CreatorData.fromJson(data: json['creator']),
@@ -41,17 +45,14 @@ class Announcement {
         staticParameters = StaticParameters(parameters: json['parametrs']),
         totalViews = json['total_views'],
         _createdAt = json['\$createdAt'],
+
         announcementId = json['\$id'],
         placeData = PlaceData.fromJson(json['place']) {
-    previewImage = Container(
-      width: 160,
-      height: 155,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
-          color: Colors.grey[300],
-          image: DecorationImage(
-              image: NetworkImage(images[0]), fit: BoxFit.cover)),
-    );
+    loadBytes();
+  }
+
+  void loadBytes() async {
+    bytes = await futureBytes;
   }
 
   @override

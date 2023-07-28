@@ -24,6 +24,7 @@ const String apiKey =
 class DatabaseManger {
   final Databases _databases;
   final Functions _functions;
+  final Storage _storage;
   final Client _client;
   final Dio _dio;
 
@@ -31,6 +32,7 @@ class DatabaseManger {
       : _client = client,
         _databases = Databases(client),
         _functions = Functions(client),
+        _storage = Storage(client),
         _dio = Dio(BaseOptions(baseUrl: 'http://89.253.237.166/v1', headers: {
           'X-Appwrite-Project': '64987d0f7f186b7e2b45',
           'Content-Type': 'application/json',
@@ -86,26 +88,39 @@ class DatabaseManger {
     return places;
   }
 
+  _getIdFromUrl(String url) {
+    final splited = url.split('/');
+    return splited[splited.length - 2];
+  }
+
   Future<List<Announcement>> getLimitAnnouncements(String? lastId) async {
     final res = await _functions.createExecution(
         functionId: getAnnouncementFunctionID, data: lastId);
 
     final response = jsonDecode(res.response);
 
+    List<Future> waitList = [];
+
     List<Announcement> newAnnounces = [];
     for (var doc in response[responseResult][responseDocuments]) {
-      newAnnounces.add(Announcement.fromJson(json: doc));
+      final id = _getIdFromUrl(doc['images'][0]);
+
+      final futureBytes =
+          _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+
+      newAnnounces
+          .add(Announcement.fromJson(json: doc, futureBytes: futureBytes));
     }
 
     return newAnnounces;
   }
 
-  Future<Announcement> getAnnouncementById(String id) async {
-    final res = await _databases.getDocument(
-        databaseId: postDatabase, collectionId: postCollection, documentId: id);
-    final announcement = Announcement.fromJson(json: res.data);
-    return announcement;
-  }
+  // Future<Announcement> getAnnouncementById(String id) async {
+  //   final res = await _databases.getDocument(
+  //       databaseId: postDatabase, collectionId: postCollection, documentId: id);
+  //   final announcement = Announcement.fromJson(json: res.data);
+  //   return announcement;
+  // }
 
   Future<void> incTotalViewsById(String id) async {
     final res = await _databases.getDocument(

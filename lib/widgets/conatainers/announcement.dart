@@ -41,16 +41,31 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(14),
-            child: SizedBox.fromSize(
-              child: FadeInImage.assetNetwork(
-                  placeholder: 'Assets/grey.png',
-                  image: widget.announcement.images[0],
-                  fadeInDuration: const Duration(milliseconds: 50),
-                  width: imageWidth,
-                  height: imageHeight,
-                  fit: BoxFit.cover),
+          // ClipRRect(
+          //   borderRadius: BorderRadius.circular(14),
+          //   child: SizedBox.fromSize(
+          //     child: FadeInImage.assetNetwork(
+          //         placeholder: 'Assets/grey.png',
+          //         image: widget.announcement.images[0],
+          //         fadeInDuration: const Duration(milliseconds: 50),
+          //         width: imageWidth,
+          //         height: imageHeight,
+          //         fit: BoxFit.cover),
+          //   ),
+          // ),
+          FutureBuilder(
+            future: widget.announcement.futureBytes,
+            builder: (context, snapshot) => Container(
+              width: imageWidth,
+              height: imageHeight,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                image: snapshot.hasData ? DecorationImage(
+                  image: MemoryImage(widget.announcement.bytes),
+                  fit: BoxFit.cover
+                ) : null,
+                borderRadius: BorderRadius.circular(14)
+              ),
             ),
           ),
           const SizedBox(
