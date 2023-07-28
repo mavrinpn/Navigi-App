@@ -47,6 +47,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
               child: FadeInImage.assetNetwork(
                   placeholder: 'Assets/grey.png',
                   image: widget.announcement.images[0],
+                  fadeInDuration: const Duration(milliseconds: 50),
                   width: imageWidth,
                   height: imageHeight,
                   fit: BoxFit.cover),
