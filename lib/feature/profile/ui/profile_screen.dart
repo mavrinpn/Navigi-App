@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../main.dart';
 import '../../auth/bloc/auth_cubit.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
@@ -31,19 +33,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Mon profil', style: AppTypography.font20black),
-            SvgPicture.asset(
-              'Assets/icons/setting.svg',
-              width: 24,
-              height: 24,
-              // ignore: deprecated_member_use
-              color: AppColors.black,
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/settings_screen');
+              },
+              child: SvgPicture.asset(
+                'Assets/icons/setting.svg',
+                width: 24,
+                height: 24,
+                // ignore: deprecated_member_use
+                color: AppColors.black,
+              ),
             ),
           ],
         ),
       ),
       body: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
-          if (state is ProfileSuccessState || state is EditSuccessState || state is EditFailState) {
+          if (state is ProfileSuccessState ||
+              state is EditSuccessState ||
+              state is EditFailState) {
             return Padding(
               padding: const EdgeInsets.all(15.0),
               child: SingleChildScrollView(
@@ -60,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       callback: () {
                         Navigator.pushNamed(context, '/create_category_screen');
                       },
-                      text: 'Ajouter une annonce',
+                      text: AppLocalizations.of(context)!.addAnnouncement,
                       styleText: AppTypography.font14white,
                       isTouch: true,
                       icon: const Icon(
