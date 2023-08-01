@@ -12,7 +12,6 @@ import 'package:smart/feature/auth/ui/register_screen.dart';
 import 'package:smart/services/services.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/widgets/splash.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc/app/app_cubit.dart';
@@ -68,7 +67,7 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitDown,
     ]);
 
-    setLocale(Locale('fr'));
+    setLocale(Locale('ar'));
   }
 
   @override
