@@ -17,11 +17,13 @@ class ElevatedTextField extends StatelessWidget {
   final int? maxLength;
   final ValueChanged<String>? onChange;
   final String icon;
+  final VoidCallback onTap;
 
   const ElevatedTextField(
       {Key? key,
         required this.hintText,
         required this.controller,
+        required this.onTap,
         this.width = 290,
         this.height = 50,
         this.obscureText = false,
@@ -53,6 +55,7 @@ class ElevatedTextField extends StatelessWidget {
       ),
       alignment: Alignment.center,
       child: TextFormField(
+        onTap: onTap,
         maxLines: maxLines,
         maxLength: maxLength,
         onChanged: onChange ?? (value) {},

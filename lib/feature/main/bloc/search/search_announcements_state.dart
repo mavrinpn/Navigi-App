@@ -13,3 +13,5 @@ class SuccessSearch extends SearchAnnouncementsState {
 class FailSearch extends SearchAnnouncementsState {}
 
 class WaitSearch extends SearchAnnouncementsState {}
+
+class LoadingSearch extends SearchAnnouncementsState {}

@@ -97,9 +97,6 @@ class DatabaseManger {
   Future searchAnnouncementByQuery(String query) async {
     final List<String> queries = [
       Query.search('name', query),
-      Query.search('description', query),
-      Query.search('item_name', query),
-      Query.limit(40),
       Query.orderDesc('total_views')
     ];
 
@@ -108,17 +105,16 @@ class DatabaseManger {
         collectionId: postCollection,
         queries: queries);
 
+
     List<Announcement> newAnnounces = [];
     for (var doc in res.documents) {
       final id = _getIdFromUrl(doc.data['images'][0]);
-
-      log(id);
 
       final futureBytes =
           _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
 
       newAnnounces
-          .add(Announcement.fromJson(json: doc.data, futureBytes: futureBytes));
+          .add(Announcement.fromJson2(json: doc.data, futureBytes: futureBytes));
     }
 
     return newAnnounces;

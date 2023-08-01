@@ -51,6 +51,21 @@ class Announcement {
     loadBytes();
   }
 
+  Announcement.fromJson2(
+      {required Map<String, dynamic> json, required this.futureBytes})
+      : title = json['name'],
+        description = json['description'],
+        creatorData = CreatorData(),
+        price = double.parse(json['price'].toString()),
+        images = json['images'],
+        staticParameters = StaticParameters(parameters: json['parametrs']),
+        totalViews = json['total_views'],
+        _createdAt = json['\$createdAt'],
+        announcementId = json['\$id'],
+        placeData = PlaceData.fish() {
+    loadBytes();
+  }
+
   void loadBytes() async {
     bytes = await futureBytes;
   }
