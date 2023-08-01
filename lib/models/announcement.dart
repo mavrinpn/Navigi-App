@@ -36,7 +36,8 @@ class Announcement {
       required this.placeData})
       : _createdAt = created;
 
-  Announcement.fromJson({required Map<String, dynamic> json, required this.futureBytes})
+  Announcement.fromJson(
+      {required Map<String, dynamic> json, required this.futureBytes})
       : title = json['name'],
         description = json['description'],
         creatorData = CreatorData.fromJson(data: json['creator']),
@@ -45,7 +46,6 @@ class Announcement {
         staticParameters = StaticParameters(parameters: json['parametrs']),
         totalViews = json['total_views'],
         _createdAt = json['\$createdAt'],
-
         announcementId = json['\$id'],
         placeData = PlaceData.fromJson(json['place']) {
     loadBytes();
