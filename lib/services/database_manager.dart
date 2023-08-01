@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:dio/dio.dart';
@@ -89,8 +90,8 @@ class DatabaseManger {
   }
 
   _getIdFromUrl(String url) {
-    final splited = url.split('/');
-    return splited[splited.length - 2];
+    final split = url.split('/');
+    return split[split.length - 2];
   }
 
   Future<List<Announcement>> getLimitAnnouncements(String? lastId) async {
@@ -99,11 +100,11 @@ class DatabaseManger {
 
     final response = jsonDecode(res.response);
 
-    List<Future> waitList = [];
-
     List<Announcement> newAnnounces = [];
     for (var doc in response[responseResult][responseDocuments]) {
       final id = _getIdFromUrl(doc['images'][0]);
+
+      log(id);
 
       final futureBytes =
           _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
@@ -114,13 +115,6 @@ class DatabaseManger {
 
     return newAnnounces;
   }
-
-  // Future<Announcement> getAnnouncementById(String id) async {
-  //   final res = await _databases.getDocument(
-  //       databaseId: postDatabase, collectionId: postCollection, documentId: id);
-  //   final announcement = Announcement.fromJson(json: res.data);
-  //   return announcement;
-  // }
 
   Future<void> incTotalViewsById(String id) async {
     final res = await _databases.getDocument(
