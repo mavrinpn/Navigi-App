@@ -11,7 +11,6 @@ class FileStorageManager {
   FileStorageManager({required this.client}) : _storage = Storage(client);
 
   Future<List<String>> uploadImages(List<Uint8List> listOfBytes) async {
-
       List<String> urlsList = [];
 
       for (var bytes in listOfBytes) {
@@ -19,8 +18,6 @@ class FileStorageManager {
         urlsList.add(createViewUrl(file.$id, file.bucketId));
       }
       return urlsList;
-
-
   }
 
   Future<String> uploadAvatar(Uint8List bytes) async {

@@ -25,7 +25,6 @@ class Assets {
   static const String iconsFaq = 'Assets/icons/faq.svg';
   static const String iconsFollow = 'Assets/icons/follow.svg';
   static const String iconsFollow2 = 'Assets/icons/follow_2.svg';
-  static const String iconsFrame = 'Assets/icons/Frame.svg';
   static const String iconsGoogle = 'Assets/icons/google.svg';
   static const String iconsHeartOutLine = 'Assets/icons/heart_out_line.svg';
   static const String iconsIsNotConfirmed = 'Assets/icons/isNotConfirmed.svg';

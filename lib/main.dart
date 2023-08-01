@@ -1,4 +1,4 @@
-import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/appwrite.dart' as a;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +12,8 @@ import 'package:smart/feature/auth/ui/register_screen.dart';
 import 'package:smart/services/services.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/widgets/splash.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc/app/app_cubit.dart';
 import 'feature/announcement/bloc/announcement_cubit.dart';
@@ -23,6 +25,7 @@ import 'feature/home/ui/home_screen.dart';
 import 'feature/auth/ui/login_first_screen.dart';
 import 'feature/main/ui/main_screen.dart';
 import 'feature/profile/ui/edit_profile_screen.dart';
+import 'feature/settings/ui/settings_screen.dart';
 import 'managers/announcement_manager.dart';
 import 'managers/categories_manager.dart';
 import 'managers/creating_announcement_manager.dart';
@@ -41,9 +44,22 @@ class MyApp extends StatefulWidget {
 
   @override
   State<MyApp> createState() => _MyAppState();
+
+  static void setLocate(BuildContext context, Locale newLocale) {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.setLocale(newLocale);
+  }
 }
 
 class _MyAppState extends State<MyApp> {
+  Locale? _locale;
+
+  setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -51,6 +67,8 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+
+    setLocale(Locale('fr'));
   }
 
   @override
@@ -60,6 +78,9 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitDown,
     ]);
     return MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: _locale,
       title: 'Smart',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -88,6 +109,7 @@ class _MyAppState extends State<MyApp> {
         '/main_screen': (context) => const MainScreen(),
         '/announcement_screen': (context) => const AnnouncementScreen(),
         '/edit_profile_screen': (context) => const EditProfileScreen(),
+        '/settings_screen': (context) => const SettingsScreen(),
       },
       color: const Color(0xff292B57),
     );
@@ -96,12 +118,13 @@ class _MyAppState extends State<MyApp> {
 
 class MyRepositoryProviders extends StatelessWidget {
   MyRepositoryProviders({Key? key}) : super(key: key);
-  final client = Client()
+
+  final client = a.Client()
       .setEndpoint('http://89.253.237.166/v1')
       .setProject('64987d0f7f186b7e2b45');
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     DatabaseManger dbManager = DatabaseManger(client: client);
     FileStorageManager storageManager = FileStorageManager(client: client);
 
