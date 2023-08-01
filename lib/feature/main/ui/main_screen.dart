@@ -11,7 +11,7 @@ import '../../../widgets/category/category.dart';
 import '../../../widgets/conatainers/announcement.dart';
 import '../../../widgets/textField/elevated_text_field.dart';
 import '../../create_announcement/bloc/category/category_cubit.dart';
-import '../bloc/announcement_cubit.dart';
+import '../bloc/announcements/announcement_cubit.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

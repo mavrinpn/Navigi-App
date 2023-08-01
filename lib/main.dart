@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/ui/creating_screens.dart';
-import 'package:smart/feature/main/bloc/announcement_cubit.dart';
+import 'package:smart/feature/main/bloc/announcements/announcement_cubit.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/auth/ui/register_screen.dart';
 import 'package:smart/services/services.dart';
