@@ -13,7 +13,11 @@ class CreatingAnnouncementCubit extends Cubit<CreatingAnnouncementState> {
   CreatingAnnouncementCubit({required this.creatingAnnouncementManager}) : super(CreatingAnnouncementInitial()) {
     creatingAnnouncementManager.creatingState.stream.listen((event) {
       if (event == LoadingStateEnum.loading) emit(CreatingLoadingState());
-      if (event == LoadingStateEnum.success) emit(CreatingSuccessState());
+      if (event == LoadingStateEnum.success) {
+        creatingAnnouncementManager.images = [];
+        creatingAnnouncementManager.imagesAsBytes = [];
+        emit(CreatingSuccessState());
+      }
       if (event == LoadingStateEnum.fail) emit(CreatingFailState());
     });
   }
