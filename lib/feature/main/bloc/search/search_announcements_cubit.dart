@@ -16,7 +16,7 @@ class SearchAnnouncementsCubit extends Cubit<SearchAnnouncementsState> {
       emit(WaitSearch());
     } else {
       try {
-        final result = await announcementManager.searchAnnouncements(query);
+        final result = await announcementManager.searchItemsByNames(query);
         emit(SuccessSearch(result: result));
       } catch (e) {
         emit(FailSearch());

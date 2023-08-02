@@ -94,34 +94,24 @@ class DatabaseManger {
     return split[split.length - 2];
   }
 
-  Future searchAnnouncementByQuery(String query) async {
+  Future searchItemByQuery(String query) async {
     final List<String> queries = [
       Query.search('name', query),
-      Query.search('description', query),
-      Query.search('item_name', query),
       Query.limit(40),
-      Query.orderDesc('total_views')
     ];
-
     final res = await _databases.listDocuments(
         databaseId: postDatabase,
-        collectionId: postCollection,
+        collectionId: itemsCollection,
         queries: queries);
-
-    List<Announcement> newAnnounces = [];
+    List<SubCategoryItem> items = [];
     for (var doc in res.documents) {
-      final id = _getIdFromUrl(doc.data['images'][0]);
-
-      log(id);
-
-      final futureBytes =
-          _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
-
-      newAnnounces
-          .add(Announcement.fromJson(json: doc.data, futureBytes: futureBytes));
+      items.add(SubCategoryItem.fromJson(doc.data));
     }
+    return items;
+  }
 
-    return newAnnounces;
+  Future popularQueries() async {
+
   }
 
   Future<List<Announcement>> getLimitAnnouncements(String? lastId) async {

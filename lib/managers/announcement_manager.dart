@@ -20,8 +20,8 @@ class AnnouncementManager {
   List<Announcement> announcements = [];
   Announcement? lastAnnouncement;
 
-  Future<List<Announcement>> searchAnnouncements(String query) async =>
-      await dbManager.searchAnnouncementByQuery(query);
+  Future<List<Announcement>> searchItemsByNames(String query) async =>
+      await dbManager.searchItemByQuery(query);
 
   Future<void> addLimitAnnouncements() async {
     if (_canGetMore) {
