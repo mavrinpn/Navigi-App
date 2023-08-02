@@ -8,12 +8,14 @@ import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../../../managers/announcement_manager.dart';
+import '../../../managers/search_manager.dart';
 import '../../../utils/animations.dart';
 import '../../../widgets/category/category.dart';
 import '../../../widgets/conatainers/announcement.dart';
 import '../../../widgets/textField/elevated_text_field.dart';
 import '../../create_announcement/bloc/category/category_cubit.dart';
 import '../bloc/announcements/announcement_cubit.dart';
+import '../bloc/popularQueries/popular_queries_cubit.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -53,7 +55,9 @@ class _MainScreenState extends State<MainScreen> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
-    final repository = RepositoryProvider.of<AnnouncementManager>(context);
+    final announcementRepository =
+        RepositoryProvider.of<AnnouncementManager>(context);
+    final searchManager = RepositoryProvider.of<SearchManager>(context);
 
     return InkWell(
       focusColor: AppColors.empty,
@@ -74,6 +78,8 @@ class _MainScreenState extends State<MainScreen> {
                 children: [
                   ElevatedTextField(
                     onTap: () {
+                      BlocProvider.of<PopularQueriesCubit>(context)
+                          .loadPopularQueries();
                       setSearch(true);
                       setState(() {});
                     },
@@ -203,8 +209,10 @@ class _MainScreenState extends State<MainScreen> {
                             childAspectRatio: 160 / 272),
                         delegate: SliverChildBuilderDelegate(
                             (context, ind) => AnnouncementContainer(
-                                announcement: repository.announcements[ind]),
-                            childCount: repository.announcements.length),
+                                announcement:
+                                    announcementRepository.announcements[ind]),
+                            childCount:
+                                announcementRepository.announcements.length),
                       ),
                     ),
                     if (state is AnnouncementsLoadingState) ...[
@@ -233,22 +241,21 @@ class _MainScreenState extends State<MainScreen> {
                       child: BlocBuilder<SearchAnnouncementsCubit,
                           SearchAnnouncementsState>(
                         builder: (context, state) {
-                          if (state is SuccessSearch &&
+                          if (state is SearchSuccess &&
                               searchController.text.isNotEmpty) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: (state)
-                                  .result
+                              children: state.result
                                   .map((e) => Padding(
                                         padding: const EdgeInsets.all(15),
                                         child: Text(
-                                          e.title,
+                                          e.name,
                                           style: AppTypography.font14black,
                                         ),
                                       ))
                                   .toList(),
                             );
-                          } else if (state is WaitSearch ||
+                          } else if (state is SearchWait ||
                               searchController.text.isEmpty) {
                             return Column(
                               children: [
@@ -266,31 +273,42 @@ class _MainScreenState extends State<MainScreen> {
                                 ),
                                 SizedBox(
                                     height: 30,
-                                    child: ListView(
-                                      scrollDirection: Axis.horizontal,
-                                      children: repository.announcements
-                                          .sublist(0, 10)
-                                          .toList()
-                                          .map((e) => Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 6),
-                                                child: Container(
-                                                    alignment: Alignment.center,
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 14,
-                                                        vertical: 4),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20),
-                                                      color: AppColors
-                                                          .backgroundLightGray,
-                                                    ),
-                                                    child: Text(e.title)),
-                                              ))
-                                          .toList(),
+                                    child: BlocBuilder<PopularQueriesCubit,
+                                        PopularQueriesState>(
+                                      builder: (context, state) {
+                                        if(state is PopularQueriesSuccess){
+                                          return ListView(
+                                            scrollDirection: Axis.horizontal,
+                                            children: searchManager.popularQueries
+                                                .map((e) => Padding(
+                                              padding: const EdgeInsets
+                                                  .symmetric(
+                                                  horizontal: 6),
+                                              child: Container(
+                                                  alignment:
+                                                  Alignment.center,
+                                                  padding:
+                                                  const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 14,
+                                                      vertical: 4),
+                                                  decoration:
+                                                  BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .circular(20),
+                                                    color: AppColors
+                                                        .backgroundLightGray,
+                                                  ),
+                                                  child: Text(e)),
+                                            ))
+                                                .toList(),
+                                          );
+                                        } else if(state is PopularQueriesLoading){
+                                          return Center(child: AppAnimations.bouncingLine);
+                                        }
+                                        return Text('проблемс');
+                                      },
                                     )),
                                 const SizedBox(
                                   height: 32,
@@ -341,13 +359,18 @@ class _MainScreenState extends State<MainScreen> {
                                                     ),
                                                   ),
                                                 ),
-                                                const SizedBox(width: 10,),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
                                                 Expanded(
                                                   child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
                                                       Text(e.toString()),
-                                                      SvgPicture.asset('Assets/icons/dagger.svg')
+                                                      SvgPicture.asset(
+                                                          'Assets/icons/dagger.svg')
                                                     ],
                                                   ),
                                                 )
@@ -358,7 +381,7 @@ class _MainScreenState extends State<MainScreen> {
                                 )
                               ],
                             );
-                          } else if (state is LoadingSearch) {
+                          } else if (state is SearchLoading) {
                             return Center(child: AppAnimations.bouncingLine);
                           }
 

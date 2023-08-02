@@ -54,20 +54,37 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
           //   ),
           // ),
           FutureBuilder(
-            future: widget.announcement.futureBytes,
-            builder: (context, snapshot) => Container(
-              width: imageWidth,
-              height: imageHeight,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                image: snapshot.hasData ? DecorationImage(
-                  image: MemoryImage(widget.announcement.bytes),
-                  fit: BoxFit.cover
-                ) : null,
-                borderRadius: BorderRadius.circular(14)
-              ),
-            ),
-          ),
+              future: widget.announcement.futureBytes,
+              builder: (context, snapshot) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(14),
+                  child: snapshot.hasData
+                      ? Image.memory(
+                          width: imageWidth,
+                          widget.announcement.bytes,
+                          fit: BoxFit.cover,
+                          height: imageHeight,
+                          frameBuilder:
+                              ((context, child, frame, wasSynchronouslyLoaded) {
+                            return AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 300),
+                              child: frame != null
+                                  ? child
+                                  : Container(
+                                      height: imageHeight,
+                                      width: imageWidth,
+                                      color: Colors.grey[300],
+                                    ),
+                            );
+                          }),
+                        )
+                      : Container(
+                          height: imageHeight,
+                          width: imageWidth,
+                          color: Colors.grey[300],
+                        ),
+                );
+              }),
           const SizedBox(
             height: 10,
           ),

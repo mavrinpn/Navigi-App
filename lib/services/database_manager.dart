@@ -112,8 +112,9 @@ class DatabaseManger {
 
   Future<List<String>> popularQueries() async {
     final res = await _databases.listDocuments(
-        databaseId: postDatabase, collectionId: queriesCollection);
-    return res.documents.map((e) => e.data['name']).toList() as List<String>;
+        databaseId: postDatabase, collectionId: 'queries');
+
+    return res.documents.map((e) => e.data['name'].toString()).toList();
   }
 
   Future<List<Announcement>> getLimitAnnouncements(String? lastId) async {

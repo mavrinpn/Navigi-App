@@ -1,27 +1,27 @@
 import 'package:bloc/bloc.dart';
 
-import '../../../../managers/announcement_manager.dart';
-import '../../../../models/announcement.dart';
+import '../../../../managers/search_manager.dart';
+import '../../../../models/item/item.dart';
 
 part 'search_announcements_state.dart';
 
 class SearchAnnouncementsCubit extends Cubit<SearchAnnouncementsState> {
-  final AnnouncementManager announcementManager;
+  final SearchManager searchManager;
 
-  SearchAnnouncementsCubit({required this.announcementManager})
-      : super(WaitSearch());
+  SearchAnnouncementsCubit({required this.searchManager})
+      : super(SearchWait());
 
   void search(String query) async {
     if (query.isEmpty) {
-      emit(WaitSearch());
+      emit(SearchWait());
     } else {
-      emit(LoadingSearch());
+      emit(SearchLoading());
       try {
-        final result = await announcementManager.searchItemsByNames(query);
+        final result = await searchManager.searchItemsByName(query);
 
-        emit(SuccessSearch(result: result));
+        emit(SearchSuccess(result: result));
       } catch (e) {
-        emit(FailSearch());
+        emit(SearchFail());
         rethrow;
       }
     }

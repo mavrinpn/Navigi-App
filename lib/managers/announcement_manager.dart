@@ -2,6 +2,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/announcement.dart';
+import '../models/item/item.dart';
 import '../services/database_manager.dart';
 
 const String _historyKey = 'history';
@@ -19,9 +20,6 @@ class AnnouncementManager {
   List<String> viewsAnnouncements = [];
   List<Announcement> announcements = [];
   Announcement? lastAnnouncement;
-
-  Future<List<Announcement>> searchItemsByNames(String query) async =>
-      await dbManager.searchItemByQuery(query);
 
   Future<void> addLimitAnnouncements() async {
     if (_canGetMore) {

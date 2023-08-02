@@ -7,6 +7,7 @@ import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/ui/creating_screens.dart';
 import 'package:smart/feature/main/bloc/announcements/announcement_cubit.dart';
+import 'package:smart/feature/main/bloc/popularQueries/popular_queries_cubit.dart';
 import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/auth/ui/register_screen.dart';
@@ -31,6 +32,7 @@ import 'managers/categories_manager.dart';
 import 'managers/creating_announcement_manager.dart';
 import 'managers/item_manager.dart';
 import 'managers/places_manager.dart';
+import 'managers/search_manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -148,7 +150,9 @@ class MyRepositoryProviders extends StatelessWidget {
         create: (_) => AnnouncementManager(client: client),
       ),
       RepositoryProvider(
-        create: (_) => PlacesManager(databaseManager: dbManager),
+        create: (_) => PlacesManager(databaseManager: dbManager),),
+      RepositoryProvider(
+        create: (_) => SearchManager(client: client),
       ),
     ], child: const MyBlocProviders());
   }
@@ -228,9 +232,15 @@ class MyBlocProviders extends StatelessWidget {
         lazy: false,
       ),
       BlocProvider(
+        create: (_) => PopularQueriesCubit(
+          searchManager: RepositoryProvider.of<SearchManager>(context),
+        ),
+        lazy: false,
+      ),
+      BlocProvider(
         create: (_) => SearchAnnouncementsCubit(
-          announcementManager:
-              RepositoryProvider.of<AnnouncementManager>(context),
+          searchManager:
+              RepositoryProvider.of<SearchManager>(context),
         ),
         lazy: false,
       ),

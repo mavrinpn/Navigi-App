@@ -8,6 +8,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../managers/announcement_manager.dart';
 import '../../../utils/colors.dart';
@@ -257,7 +258,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           disableColor: AppColors.red,
                           width: MediaQuery.of(context).size.width - 62,
                           callback: () {},
-                          text: 'Écrire',
+                          text: AppLocalizations.of(context)!.write,
                           styleText: AppTypography.font14white,
                           icon: SvgPicture.asset(
                             'Assets/icons/email.svg',
@@ -278,7 +279,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     CustomTextButton.withIcon(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       callback: () {},
-                      text: 'Offrir votre prix',
+                      text: AppLocalizations.of(context)!.offrirVotrePrix,
                       styleText: AppTypography.font14black,
                       icon: SvgPicture.asset('Assets/icons/dzd.svg'),
                       disableColor: AppColors.backgroundLightGray,
@@ -291,7 +292,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       child: Row(
                         children: [
                           Text(
-                            'Caractéristiques',
+                            AppLocalizations.of(context)!.features,
                             style: AppTypography.font18black
                                 .copyWith(fontSize: 16),
                           ),
@@ -336,7 +337,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            'Description',
+                            AppLocalizations.of(context)!.description,
                             style: AppTypography.font16black
                                 .copyWith(fontWeight: FontWeight.w700),
                           ),

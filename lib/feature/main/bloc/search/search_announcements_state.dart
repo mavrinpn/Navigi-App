@@ -4,14 +4,14 @@ abstract class SearchAnnouncementsState {}
 
 class SearchAnnouncementsInitial extends SearchAnnouncementsState {}
 
-class SuccessSearch extends SearchAnnouncementsState {
-  List<Announcement> result;
+class SearchSuccess extends SearchAnnouncementsState {
+  List<SubCategoryItem> result;
 
-  SuccessSearch({required this.result});
+  SearchSuccess({required this.result});
 }
 
-class FailSearch extends SearchAnnouncementsState {}
+class SearchFail extends SearchAnnouncementsState {}
 
-class WaitSearch extends SearchAnnouncementsState {}
+class SearchWait extends SearchAnnouncementsState {}
 
-class LoadingSearch extends SearchAnnouncementsState {}
+class SearchLoading extends SearchAnnouncementsState {}

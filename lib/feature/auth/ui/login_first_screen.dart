@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/mask_text_field.dart';
@@ -55,7 +56,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                   height: 50,
                 ),
                 Text(
-                  'Bienvenue!',
+                  AppLocalizations.of(context)!.hello,
                   style: AppTypography.font24black,
                 ),
                 const SizedBox(height: 16),
