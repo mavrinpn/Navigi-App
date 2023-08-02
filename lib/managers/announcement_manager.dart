@@ -50,7 +50,7 @@ class AnnouncementManager {
 
     List<String> history = prefs.getStringList(_historyKey) ?? [];
 
-    if (history.length >= 5) {
+    if (history.length >= 10) {
       history.removeAt(0);
     }
 

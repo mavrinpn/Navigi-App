@@ -15,11 +15,14 @@ class SearchAnnouncementsCubit extends Cubit<SearchAnnouncementsState> {
     if (query.isEmpty) {
       emit(WaitSearch());
     } else {
+      emit(LoadingSearch());
       try {
         final result = await announcementManager.searchItemsByNames(query);
+
         emit(SuccessSearch(result: result));
       } catch (e) {
         emit(FailSearch());
+        rethrow;
       }
     }
   }

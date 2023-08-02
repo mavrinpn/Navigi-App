@@ -7,6 +7,7 @@ import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/ui/creating_screens.dart';
 import 'package:smart/feature/main/bloc/announcements/announcement_cubit.dart';
+import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/auth/ui/register_screen.dart';
 import 'package:smart/services/services.dart';
@@ -67,7 +68,7 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitDown,
     ]);
 
-    setLocale(Locale('ar'));
+    setLocale(const Locale('fr'));
   }
 
   @override
@@ -223,6 +224,13 @@ class MyBlocProviders extends StatelessWidget {
       BlocProvider(
         create: (_) => UserCubit(
           authRepository: RepositoryProvider.of<AuthRepository>(context),
+        ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => SearchAnnouncementsCubit(
+          announcementManager:
+              RepositoryProvider.of<AnnouncementManager>(context),
         ),
         lazy: false,
       ),
