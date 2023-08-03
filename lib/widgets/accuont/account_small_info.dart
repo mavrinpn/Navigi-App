@@ -8,6 +8,9 @@ import 'package:smart/widgets/images/network_image.dart';
 
 import '../../models/announcement.dart';
 
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class AccountSmallInfo extends StatefulWidget {
   const AccountSmallInfo({super.key, required this.creatorData});
 
@@ -20,6 +23,9 @@ class AccountSmallInfo extends StatefulWidget {
 class _AccountSmallInfoState extends State<AccountSmallInfo> {
   @override
   Widget build(BuildContext context) {
+
+    final localizations = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Container(
@@ -68,7 +74,7 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Le Vendeur',
+                      localizations.seller,
                       style:
                           AppTypography.font14lightGray.copyWith(fontSize: 12),
                     ),

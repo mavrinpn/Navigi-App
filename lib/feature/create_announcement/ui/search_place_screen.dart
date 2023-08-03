@@ -11,6 +11,9 @@ import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/category/products.dart';
 import '../../../widgets/textField/outline_text_field.dart';
 
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class SearchPlaceScreen extends StatefulWidget {
   const SearchPlaceScreen({super.key});
 
@@ -24,6 +27,9 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final localizations = AppLocalizations.of(context)!;
+
     final creatingAnnouncementManager =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
 

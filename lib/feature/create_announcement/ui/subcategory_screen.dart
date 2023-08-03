@@ -8,18 +8,24 @@ import '../../../utils/fonts.dart';
 import '../bloc/subcategory/subcategory_cubit.dart';
 
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+
 class SubCategoryScreen extends StatelessWidget {
   const SubCategoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    final localizations = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData.fallback(),
         backgroundColor: AppColors.empty,
         elevation: 0,
         title: Text(
-          'Ajouter une annonce',
+          localizations.addAnAd,
           style: AppTypography.font20black,
         ),
       ),

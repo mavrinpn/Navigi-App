@@ -10,6 +10,9 @@ import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+
 class PickPhotosScreen extends StatefulWidget {
   const PickPhotosScreen({super.key});
 
@@ -24,6 +27,9 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
     final repository =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
 
+
+    final localizations = AppLocalizations.of(context)!;
+
     Future addImages() async {
       await repository.pickImages();
       setState(() {});
@@ -35,7 +41,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
           backgroundColor: AppColors.empty,
           elevation: 0,
           title: Text(
-            'Photo',
+            localizations.photo,
             style: AppTypography.font20black,
           ),
         ),
@@ -60,7 +66,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                       callback: () {
                         addImages();
                       },
-                      text: 'Ajouter des photos',
+                      text: localizations.addPictures,
                       styleText: AppTypography.font14white,
                       icon: const Icon(
                         Icons.add,

@@ -17,6 +17,8 @@ import '../../create_announcement/bloc/category/category_cubit.dart';
 import '../bloc/announcements/announcement_cubit.dart';
 import '../bloc/popularQueries/popular_queries_cubit.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -125,7 +127,7 @@ class _MainScreenState extends State<MainScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Catégories',
+                                Text(AppLocalizations.of(context)!.categories,
                                     textAlign: TextAlign.center,
                                     style: AppTypography.font20black),
                                 Text('Regarder tout',
@@ -186,7 +188,7 @@ class _MainScreenState extends State<MainScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Recommandations',
+                                Text(AppLocalizations.of(context)!.recommendations,
                                     textAlign: TextAlign.center,
                                     style: AppTypography.font20black),
                                 Text('Regarder tout',

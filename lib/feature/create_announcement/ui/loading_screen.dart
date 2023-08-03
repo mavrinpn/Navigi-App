@@ -5,11 +5,16 @@ import 'package:smart/utils/fonts.dart';
 
 import '../bloc/creating/creating_announcement_cubit.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    final localizations = AppLocalizations.of(context)!;
+
     return WillPopScope(
       child: BlocListener<CreatingAnnouncementCubit, CreatingAnnouncementState>(
         listener: (context, state) {

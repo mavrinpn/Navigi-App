@@ -9,6 +9,9 @@ import '../../../utils/colors.dart';
 import '../../main/ui/main_screen.dart';
 import '../../profile/ui/profile_screen.dart';
 
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -21,6 +24,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final localizations = AppLocalizations.of(context)!;
+
+
     final List<Widget> widgetOptions = <Widget>[
       const MainScreen(),
       Center(
@@ -82,8 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   asset: 'Assets/icons/profile.svg',
                   isSelected: _selectedTab == 3,
                 ),
-                tooltip: 'Mon profil',
-                label: 'Mon profil',
+                tooltip: localizations.myProfile,
+                label: localizations.myProfile,
               ),
             ],
             selectedLabelStyle: AppTypography.font10red,

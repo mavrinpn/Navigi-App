@@ -8,6 +8,8 @@ import '../../../utils/fonts.dart';
 import '../../../widgets/singleCheckBox/CustomSinglCheckBox.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -25,6 +27,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     customLocate = CustomLocate(
         shortName: AppLocalizations.of(context)!.localeName,
         name: AppLocalizations.of(context)!.localeName == 'ar'

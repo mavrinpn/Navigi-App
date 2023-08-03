@@ -10,6 +10,9 @@ import '../../../widgets/category/products.dart';
 import '../../../widgets/textField/outline_text_field.dart';
 import '../bloc/item_search/item_search_cubit.dart';
 
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class SearchProductsScreen extends StatefulWidget {
   const SearchProductsScreen({super.key});
 
@@ -22,6 +25,8 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     final creatingAnnouncementManager =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
     final itemManager =

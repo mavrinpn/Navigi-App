@@ -6,6 +6,8 @@ import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class ByNotByScreen extends StatefulWidget {
   const ByNotByScreen({super.key});
 
@@ -22,6 +24,8 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
 
     final width = MediaQuery.of(context).size.width;
+
+    final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
@@ -54,7 +58,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
                   width: 14,
                 ),
                 Text(
-                  'Nouveau',
+                  localizations.nEw,
                   style: AppTypography.font16black
                       .copyWith(fontWeight: FontWeight.w400),
                 )
@@ -75,7 +79,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
                 const SizedBox(
                   width: 14,
                 ),
-                Text('Utilisé',
+                Text(localizations.used,
                     style: AppTypography.font16black
                         .copyWith(fontWeight: FontWeight.w400)),
               ],

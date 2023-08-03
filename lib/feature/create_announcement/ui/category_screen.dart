@@ -7,6 +7,8 @@ import 'package:smart/widgets/category/category.dart';
 
 import '../bloc/category/category_cubit.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
 
@@ -17,6 +19,9 @@ class CategoryScreen extends StatefulWidget {
 class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
+
+    final localizations = AppLocalizations.of(context)!;
+
     return BlocBuilder<CategoryCubit, CategoryState>(
       builder: (context, state) {
         if (state is CategorySuccessState) {
@@ -26,7 +31,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               backgroundColor: AppColors.empty,
               elevation: 0,
               title: Text(
-                'Ajouter une annonce',
+                localizations.addAnAd,
                 style: AppTypography.font20black,
               ),
             ),

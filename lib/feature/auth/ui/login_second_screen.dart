@@ -10,6 +10,8 @@ import 'package:smart/widgets/snackBar/snack_bar.dart';
 import '../../../utils/dialogs.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/custom_text_field.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../data/auth_repository.dart';
 
 class LoginSecondScreen extends StatefulWidget {
@@ -31,6 +33,8 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final bloc = BlocProvider.of<AuthCubit>(context);
+    final localizations = AppLocalizations.of(context)!;
+
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthLoadingState) {
@@ -65,7 +69,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                     height: 50,
                   ),
                   Text(
-                    'Bienvenue!',
+                    localizations.hello,
                     style: AppTypography.font24black,
                   ),
                   const SizedBox(height: 16),
@@ -136,11 +140,11 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                     text: TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                            text: 'Pas de compte? ',
+                            text: localizations.dontHaveAnAccount,
                             style: AppTypography.font14lightGray
                                 .copyWith(fontSize: 16)),
                         TextSpan(
-                            text: 'Inscrivez-vous!',
+                            text: localizations.createNewAccount,
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 Navigator.pushNamed(

@@ -14,6 +14,8 @@ import '../../../widgets/textField/custom_text_field.dart';
 import '../../../widgets/textField/mask_text_field.dart';
 import '../data/auth_repository.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 final maskPhoneFormatter = MaskTextInputFormatter(
     mask: '+213 ## ### ###',
     filter: {"#": RegExp(r'[0-9]')},
@@ -56,6 +58,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         .of(context)
         .size
         .height;
+
+    final localizations = AppLocalizations.of(context)!;
 
     void checkIsTouch() {
       if (checkFields(maskPhoneFormatter.getUnmaskedText(), nameController.text,

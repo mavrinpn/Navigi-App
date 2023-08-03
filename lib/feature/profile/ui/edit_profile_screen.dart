@@ -17,6 +17,8 @@ import '../../../widgets/snackBar/snack_bar.dart';
 import '../../../widgets/textField/custom_text_field.dart';
 import '../../auth/data/auth_repository.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 
@@ -69,6 +71,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     nameController.text = user.name;
     phoneController.text = user.phone;
 
+    final localizations = AppLocalizations.of(context)!;
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -95,7 +99,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 width: 13,
               ),
               Text(
-                'Mes données',
+                localizations.myInformations,
                 style: AppTypography.font20black,
               ),
             ],

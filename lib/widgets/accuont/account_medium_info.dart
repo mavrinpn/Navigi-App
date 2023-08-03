@@ -5,6 +5,9 @@ import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/images/network_image.dart';
 
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import '../../models/user.dart';
 
 class AccountMediumInfo extends StatefulWidget {
@@ -19,6 +22,9 @@ class AccountMediumInfo extends StatefulWidget {
 class _AccountMediumInfoState extends State<AccountMediumInfo> {
   @override
   Widget build(BuildContext context) {
+
+    final localizations = AppLocalizations.of(context)!;
+
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(

@@ -36,6 +36,8 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
+    final localizations = AppLocalizations.of(context)!;
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -113,7 +115,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                                   context, '/login_second_screen');
                             }
                           },
-                          text: 'Entrer',
+                          text: AppLocalizations.of(context)!.next,
                           styleText: AppTypography.font14white,
                           height: 52,
                           padding: const EdgeInsets.symmetric(
@@ -129,11 +131,11 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                   text: TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                          text: 'Pas de compte? ',
+                          text: localizations.dontHaveAnAccount,
                           style: AppTypography.font14lightGray
                               .copyWith(fontSize: 16)),
                       TextSpan(
-                          text: 'Inscrivez-vous!',
+                          text: localizations.createNewAccount,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               Navigator.pushNamed(

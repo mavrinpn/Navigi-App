@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/utils/animations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../main.dart';
-import '../../auth/bloc/auth_cubit.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/accuont/account_medium_info.dart';
 import '../../../widgets/button/custom_elevated_button.dart';
 import '../../../widgets/button/custom_text_button.dart';
+import '../../auth/bloc/auth_cubit.dart';
 import '../../auth/data/auth_repository.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -24,6 +25,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -32,7 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Mon profil', style: AppTypography.font20black),
+            Text(localizations.myProfile, style: AppTypography.font20black),
             InkWell(
               onTap: () {
                 Navigator.pushNamed(context, '/settings_screen');
@@ -82,19 +85,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: 40,
                     ),
                     RowButton(
-                      title: 'Mes données',
+                      title: localizations.myInformations,
                       icon: 'Assets/icons/profile_settings.svg',
                       onTap: () {
                         Navigator.pushNamed(context, '/edit_profile_screen');
                       },
                     ),
                     RowButton(
-                      title: 'Mes commentaires',
+                      title: localizations.myComments,
                       icon: 'Assets/icons/messages.svg',
                       onTap: () {},
                     ),
                     RowButton(
-                      title: 'FAQ',
+                      title: localizations.fAQ,
                       icon: 'Assets/icons/faq.svg',
                       onTap: () {},
                     ),

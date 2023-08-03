@@ -7,6 +7,9 @@ import '../../../utils/fonts.dart';
 import '../../../widgets/textField/outline_text_field.dart';
 import '../bloc/creating/creating_announcement_cubit.dart';
 
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class DescriptionScreen extends StatefulWidget {
   const DescriptionScreen({super.key});
 
@@ -20,6 +23,8 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     final repository =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
 
@@ -88,7 +93,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
-                        'Description',
+                        localizations.description,
                         style: AppTypography.font16black.copyWith(fontSize: 18),
                       ),
                     ),
