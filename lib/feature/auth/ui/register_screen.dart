@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
@@ -13,8 +14,6 @@ import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/custom_text_field.dart';
 import '../../../widgets/textField/mask_text_field.dart';
 import '../data/auth_repository.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final maskPhoneFormatter = MaskTextInputFormatter(
     mask: '+213 ## ### ###',
@@ -39,8 +38,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool isTouch = false;
   bool isTapCheckBox = false;
 
-  bool checkFields(String phone, String name, String firstPassword,
-      String secondPassword) {
+  bool checkFields(
+      String phone, String name, String firstPassword, String secondPassword) {
     return phone.length == 8 &&
         name.isNotEmpty &&
         firstPassword == secondPassword &&
@@ -50,14 +49,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    final height = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
 
     final localizations = AppLocalizations.of(context)!;
 
@@ -75,8 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthLoadingState) {
-          Dialogs.showModal(
-              context, Center(child: AppAnimations.bouncingLine));
+          Dialogs.showModal(context, Center(child: AppAnimations.bouncingLine));
         } else {
           Dialogs.hide(context);
         }
@@ -84,11 +76,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Navigator.pop(context);
         } else if (state is AuthFailState) {
           CustomSnackBar.showSnackBar(context, 'проблема бд');
-        }else if(state is AlreadyExistState){
-          CustomSnackBar.showSnackBar(context, 'такой пользователь уже зареган');
+        } else if (state is AlreadyExistState) {
+          CustomSnackBar.showSnackBar(
+              context, 'такой пользователь уже зареган');
         }
       },
-
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
@@ -99,14 +91,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     children: [
                       SizedBox(
                         height: height * 0.05,
                       ),
-                      SvgPicture.asset('Assets/icons/logo.svg', width: 195, height: 43,),
+                      SvgPicture.asset(
+                        'Assets/icons/logo.svg',
+                        width: 195,
+                        height: 43,
+                      ),
                       const SizedBox(
                         height: 32,
                       ),
@@ -130,17 +126,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           onChanged: (value) {
                             checkIsTouch();
-                          }
-                      ),
+                          }),
                       MaskTextFormField(
                         controller: phoneController,
                         keyboardType: TextInputType.phone,
                         width: width * 0.95,
                         prefIcon: 'Assets/icons/phone.svg',
                         validator: (value) {
-                          if (maskPhoneFormatter
-                              .getUnmaskedText()
-                              .length != 8) {
+                          if (maskPhoneFormatter.getUnmaskedText().length !=
+                              8) {
                             return 'Erreur! Réessayez ou entrez dautres informations.';
                           }
                           return null;
@@ -165,8 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           onChanged: (value) {
                             checkIsTouch();
-                          }
-                      ),
+                          }),
                       CustomTextFormField(
                           controller: secondPasswordController,
                           keyboardType: TextInputType.text,
@@ -182,8 +175,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           onChanged: (value) {
                             checkIsTouch();
-                          }
-                      ),
+                          }),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 0),
@@ -240,6 +232,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ],
                   ),
+                  const Spacer(),
                   Column(
                     children: [
                       CustomTextButton(
@@ -272,9 +265,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Navigator.pop(context);
                         },
                       ),
-                      SizedBox(
-                        height: height * 0.05,
-                      ),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ],
