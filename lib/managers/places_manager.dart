@@ -1,6 +1,6 @@
 import 'package:smart/models/announcement.dart';
 
-import '../services/database_manager.dart';
+import '../services/database_service.dart';
 
 class PlacesManager {
   final DatabaseManger databaseManager;

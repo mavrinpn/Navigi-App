@@ -142,5 +142,7 @@
   "pleaseDoNotLeaveTheAppWhileWeAreProcessingYourAd": "Veuillez ne pas quitter l'application pendant que nous traitons votre annonce.",
   "edit": "Éditer",
   "offrirVotrePrix": "Offrir votre prix",
-  "passwordOrEmailEnteredIncorrectly": "Not de passe ou email mal saisi"
+  "passwordOrEmailEnteredIncorrectly": "Not de passe ou email mal saisi",
+  "empty": "être vide"
+
 }

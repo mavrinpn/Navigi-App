@@ -435,4 +435,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get passwordOrEmailEnteredIncorrectly => 'Not de passe ou email mal saisi';
+
+  @override
+  String get empty => 'être vide';
 }

@@ -1,17 +1,17 @@
 part of 'search_announcements_cubit.dart';
 
-abstract class SearchAnnouncementsState {}
+abstract class SearchItemsState {}
 
-class SearchAnnouncementsInitial extends SearchAnnouncementsState {}
+class SearchItemsInitial extends SearchItemsState {}
 
-class SearchSuccess extends SearchAnnouncementsState {
+class SearchItemsSuccess extends SearchItemsState {
   List<SubCategoryItem> result;
 
-  SearchSuccess({required this.result});
+  SearchItemsSuccess({required this.result});
 }
 
-class SearchFail extends SearchAnnouncementsState {}
+class SearchItemsFail extends SearchItemsState {}
 
-class SearchWait extends SearchAnnouncementsState {}
+class SearchItemsWait extends SearchItemsState {}
 
-class SearchLoading extends SearchAnnouncementsState {}
+class SearchItemsLoading extends SearchItemsState {}

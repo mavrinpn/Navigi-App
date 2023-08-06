@@ -1,5 +1,5 @@
 import '../../models/item/item.dart';
-import '../../../services/database_manager.dart';
+import '../../../services/database_service.dart';
 
 class ItemManager {
   final DatabaseManger databaseManager;

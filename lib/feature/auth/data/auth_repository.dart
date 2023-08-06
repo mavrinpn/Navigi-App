@@ -5,8 +5,8 @@ import 'package:appwrite/models.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/models/user.dart';
-import 'package:smart/services/database_manager.dart';
-import 'package:smart/services/storage_manager.dart';
+import 'package:smart/services/database_service.dart';
+import 'package:smart/services/storage_service.dart';
 
 import '../../../enum/enum.dart';
 

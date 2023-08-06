@@ -8,8 +8,8 @@ import 'package:rxdart/rxdart.dart';
 import '../../models/announcement_creating_data.dart';
 import '../../models/models.dart';
 import '../enum/enum.dart';
-import '../services/database_manager.dart';
-import '../services/storage_manager.dart';
+import '../services/database_service.dart';
+import '../services/storage_service.dart';
 
 class CreatingAnnouncementManager {
   final Client client;

@@ -142,5 +142,6 @@
   "pleaseDoNotLeaveTheAppWhileWeAreProcessingYourAd": "Please do not leave the app while we are processing your ad.",
   "edit": "Edit",
   "offrirVotrePrix": "Offer your price",
-  "passwordOrEmailEnteredIncorrectly": "Password or email entered incorrectly"
+  "passwordOrEmailEnteredIncorrectly": "Password or email entered incorrectly",
+  "empty": "Empty"
 }

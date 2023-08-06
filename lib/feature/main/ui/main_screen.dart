@@ -14,6 +14,7 @@ import '../../../widgets/category/category.dart';
 import '../../../widgets/conatainers/announcement.dart';
 import '../../../widgets/textField/elevated_text_field.dart';
 import '../../create_announcement/bloc/category/category_cubit.dart';
+import '../../search/bloc/search_announcement_cubit.dart';
 import '../bloc/announcements/announcement_cubit.dart';
 import '../bloc/popularQueries/popular_queries_cubit.dart';
 
@@ -61,6 +62,10 @@ class _MainScreenState extends State<MainScreen> {
         RepositoryProvider.of<AnnouncementManager>(context);
     final searchManager = RepositoryProvider.of<SearchManager>(context);
 
+    searchController.text = searchManager.searchText;
+    searchController.selection = TextSelection.fromPosition(
+        TextPosition(offset: searchController.text.length));
+
     return InkWell(
       focusColor: AppColors.empty,
       hoverColor: AppColors.empty,
@@ -79,15 +84,26 @@ class _MainScreenState extends State<MainScreen> {
               child: Row(
                 children: [
                   ElevatedTextField(
+                    action: TextInputAction.search,
                     onTap: () {
-                      BlocProvider.of<PopularQueriesCubit>(context)
-                          .loadPopularQueries();
                       setSearch(true);
                       setState(() {});
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      BlocProvider.of<PopularQueriesCubit>(context)
+                          .loadPopularQueries();
+                    },
+                    onSubmitted: (String? a) {
+                      setSearch(false);
+                      setState(() {});
+                      BlocProvider.of<SearchAnnouncementCubit>(context)
+                          .searchAnnounces(a, true);
+                      Navigator.pushNamed(context, '/search_screen');
                     },
                     onChange: (String a) {
-                      BlocProvider.of<SearchAnnouncementsCubit>(context)
-                          .search(a);
+                      searchManager.setSearchText(searchController.text);
+                      setSearch(true);
+                      setState(() {});
+                      BlocProvider.of<SearchItemsCubit>(context).search(a);
                     },
                     width: isSearch
                         ? MediaQuery.of(context).size.width - 120
@@ -100,7 +116,6 @@ class _MainScreenState extends State<MainScreen> {
                   isSearch
                       ? TextButton(
                           onPressed: () {
-                            searchController.text = '';
                             setSearch(false);
                             setState(() {});
                           },
@@ -188,7 +203,9 @@ class _MainScreenState extends State<MainScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(AppLocalizations.of(context)!.recommendations,
+                                Text(
+                                    AppLocalizations.of(context)!
+                                        .recommendations,
                                     textAlign: TextAlign.center,
                                     style: AppTypography.font20black),
                                 Text('Regarder tout',
@@ -240,24 +257,36 @@ class _MainScreenState extends State<MainScreen> {
                     color: Colors.white,
                     padding: const EdgeInsets.all(15),
                     child: SingleChildScrollView(
-                      child: BlocBuilder<SearchAnnouncementsCubit,
-                          SearchAnnouncementsState>(
+                      child: BlocBuilder<SearchItemsCubit, SearchItemsState>(
                         builder: (context, state) {
-                          if (state is SearchSuccess &&
+                          if (state is SearchItemsSuccess &&
                               searchController.text.isNotEmpty) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: state.result
                                   .map((e) => Padding(
                                         padding: const EdgeInsets.all(15),
-                                        child: Text(
-                                          e.name,
-                                          style: AppTypography.font14black,
+                                        child: InkWell(
+                                          onTap: () {
+                                            setSearch(false);
+                                            searchManager.setSearchText(e.name);
+                                            setState(() {});
+                                            BlocProvider.of<
+                                                        SearchAnnouncementCubit>(
+                                                    context)
+                                                .searchAnnounces(e.name, true);
+                                            Navigator.pushNamed(
+                                                context, '/search_screen');
+                                          },
+                                          child: Text(
+                                            e.name,
+                                            style: AppTypography.font14black,
+                                          ),
                                         ),
                                       ))
                                   .toList(),
                             );
-                          } else if (state is SearchWait ||
+                          } else if (state is SearchItemsWait ||
                               searchController.text.isEmpty) {
                             return Column(
                               children: [
@@ -278,36 +307,59 @@ class _MainScreenState extends State<MainScreen> {
                                     child: BlocBuilder<PopularQueriesCubit,
                                         PopularQueriesState>(
                                       builder: (context, state) {
-                                        if(state is PopularQueriesSuccess){
+                                        if (state is PopularQueriesSuccess) {
                                           return ListView(
                                             scrollDirection: Axis.horizontal,
-                                            children: searchManager.popularQueries
+                                            children: searchManager
+                                                .popularQueries
                                                 .map((e) => Padding(
-                                              padding: const EdgeInsets
-                                                  .symmetric(
-                                                  horizontal: 6),
-                                              child: Container(
-                                                  alignment:
-                                                  Alignment.center,
-                                                  padding:
-                                                  const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 14,
-                                                      vertical: 4),
-                                                  decoration:
-                                                  BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadius
-                                                        .circular(20),
-                                                    color: AppColors
-                                                        .backgroundLightGray,
-                                                  ),
-                                                  child: Text(e)),
-                                            ))
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 6),
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          setSearch(false);
+                                                          searchManager
+                                                              .setSearchText(e);
+                                                          setState(() {});
+                                                          BlocProvider.of<
+                                                                      SearchAnnouncementCubit>(
+                                                                  context)
+                                                              .searchAnnounces(
+                                                                  e, true);
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              '/search_screen');
+                                                        },
+                                                        child: Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        14,
+                                                                    vertical:
+                                                                        4),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20),
+                                                              color: AppColors
+                                                                  .backgroundLightGray,
+                                                            ),
+                                                            child: Text(e)),
+                                                      ),
+                                                    ))
                                                 .toList(),
                                           );
-                                        } else if(state is PopularQueriesLoading){
-                                          return Center(child: AppAnimations.bouncingLine);
+                                        } else if (state
+                                            is PopularQueriesLoading) {
+                                          return Center(
+                                              child:
+                                                  AppAnimations.bouncingLine);
                                         }
                                         return Text('проблемс');
                                       },
@@ -320,7 +372,7 @@ class _MainScreenState extends State<MainScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Recherches populaires',
+                                      'Historique des recherches',
                                       style: AppTypography.font14black.copyWith(
                                           fontWeight: FontWeight.w600),
                                     ),
@@ -341,49 +393,64 @@ class _MainScreenState extends State<MainScreen> {
                                       .map((e) => Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 9),
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    color: AppColors
-                                                        .backgroundIcon,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                  ),
-                                                  width: 30,
-                                                  height: 30,
-                                                  child: Center(
-                                                    child: SvgPicture.asset(
-                                                      'Assets/icons/time.svg',
-                                                      width: 20,
-                                                      height: 20,
+                                            child: InkWell(
+                                              onTap: () {
+                                                setSearch(false);
+                                                searchManager.setSearchText(
+                                                    e.toString());
+                                                setState(() {});
+                                                BlocProvider.of<
+                                                            SearchAnnouncementCubit>(
+                                                        context)
+                                                    .searchAnnounces(
+                                                        e.toString(), true);
+                                                Navigator.pushNamed(
+                                                    context, '/search_screen');
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors
+                                                          .backgroundIcon,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                    width: 30,
+                                                    height: 30,
+                                                    child: Center(
+                                                      child: SvgPicture.asset(
+                                                        'Assets/icons/time.svg',
+                                                        width: 20,
+                                                        height: 20,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Expanded(
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(e.toString()),
-                                                      SvgPicture.asset(
-                                                          'Assets/icons/dagger.svg')
-                                                    ],
+                                                  const SizedBox(
+                                                    width: 10,
                                                   ),
-                                                )
-                                              ],
+                                                  Expanded(
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(e.toString()),
+                                                        SvgPicture.asset(
+                                                            'Assets/icons/dagger.svg')
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           ))
                                       .toList(),
                                 )
                               ],
                             );
-                          } else if (state is SearchLoading) {
+                          } else if (state is SearchItemsLoading) {
                             return Center(child: AppAnimations.bouncingLine);
                           }
 

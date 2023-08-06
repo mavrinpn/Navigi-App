@@ -435,4 +435,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordOrEmailEnteredIncorrectly => 'Password or email entered incorrectly';
+
+  @override
+  String get empty => 'Empty';
 }

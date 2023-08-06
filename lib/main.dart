@@ -13,6 +13,7 @@ import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/auth/ui/register_screen.dart';
 import 'package:smart/services/services.dart';
 import 'package:smart/utils/colors.dart';
+import 'package:smart/utils/constants.dart';
 import 'package:smart/widgets/splash.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -26,6 +27,8 @@ import 'feature/home/ui/home_screen.dart';
 import 'feature/auth/ui/login_first_screen.dart';
 import 'feature/main/ui/main_screen.dart';
 import 'feature/profile/ui/edit_profile_screen.dart';
+import 'feature/search/bloc/search_announcement_cubit.dart';
+import 'feature/search/ui/search_screen.dart';
 import 'feature/settings/ui/settings_screen.dart';
 import 'managers/announcement_manager.dart';
 import 'managers/categories_manager.dart';
@@ -112,6 +115,7 @@ class _MyAppState extends State<MyApp> {
         '/announcement_screen': (context) => const AnnouncementScreen(),
         '/edit_profile_screen': (context) => const EditProfileScreen(),
         '/settings_screen': (context) => const SettingsScreen(),
+        '/search_screen': (context) => const SearchScreen(),
       },
       color: const Color(0xff292B57),
     );
@@ -150,7 +154,8 @@ class MyRepositoryProviders extends StatelessWidget {
         create: (_) => AnnouncementManager(client: client),
       ),
       RepositoryProvider(
-        create: (_) => PlacesManager(databaseManager: dbManager),),
+        create: (_) => PlacesManager(databaseManager: dbManager),
+      ),
       RepositoryProvider(
         create: (_) => SearchManager(client: client),
       ),
@@ -238,9 +243,15 @@ class MyBlocProviders extends StatelessWidget {
         lazy: false,
       ),
       BlocProvider(
-        create: (_) => SearchAnnouncementsCubit(
-          searchManager:
-              RepositoryProvider.of<SearchManager>(context),
+        create: (_) => SearchItemsCubit(
+          searchManager: RepositoryProvider.of<SearchManager>(context),
+        ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => SearchAnnouncementCubit(
+          announcementManager:
+              RepositoryProvider.of<AnnouncementManager>(context),
         ),
         lazy: false,
       ),

@@ -2,10 +2,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/announcement.dart';
-import '../models/item/item.dart';
-import '../services/database_manager.dart';
-
-const String _historyKey = 'history';
+import '../services/database_service.dart';
 
 class AnnouncementManager {
   final DatabaseManger dbManager;
@@ -15,47 +12,28 @@ class AnnouncementManager {
       : dbManager = DatabaseManger(client: client);
 
   String? _lastId;
-  bool _canGetMore = true;
+  String? _searchLastId;
+  bool _canGetMoreAnnouncement = true;
+  bool _canGetMoreSearchAnnouncement = true;
 
   List<String> viewsAnnouncements = [];
   List<Announcement> announcements = [];
+  List<Announcement> searchAnnouncements = [];
   Announcement? lastAnnouncement;
 
   Future<void> addLimitAnnouncements() async {
-    if (_canGetMore) {
+    if (_canGetMoreAnnouncement) {
       try {
-        announcements.addAll(await dbManager.getLimitAnnouncements(_lastId));
+        announcements.addAll(await dbManager.loadLimitAnnouncements(_lastId));
         _lastId = announcements.last.announcementId;
       } catch (e) {
         if (e.toString() != 'Bad state: No element') {
           rethrow;
         } else {
-          _canGetMore = false;
+          _canGetMoreAnnouncement = false;
         }
       }
     }
-  }
-
-  Future<List<String>> getHistory() async {
-    final prefs = await _prefs;
-
-    final List<String> history = prefs.getStringList(_historyKey) ?? [];
-    return history;
-  }
-
-  Future<List<String>> saveInHistory(String query) async {
-    final prefs = await _prefs;
-
-    List<String> history = prefs.getStringList(_historyKey) ?? [];
-
-    if (history.length >= 10) {
-      history.removeAt(0);
-    }
-
-    history.add(query);
-    await prefs.setStringList(_historyKey, history);
-
-    return history;
   }
 
   Future<Announcement?> getAnnouncementById(String id) async {
@@ -72,6 +50,23 @@ class AnnouncementManager {
     if (!viewsAnnouncements.contains(id)) {
       dbManager.incTotalViewsById(id);
       viewsAnnouncements.add(id);
+    }
+  }
+
+  Future<void> loadSearchAnnouncement(String? searchText, bool isNew) async{
+    if (_canGetMoreSearchAnnouncement) {
+      try {
+        searchAnnouncements = isNew ? [] : searchAnnouncements;
+
+        searchAnnouncements.addAll(await dbManager.searchLimitAnnouncements(_searchLastId, searchText));
+        _searchLastId = searchAnnouncements.last.announcementId;
+      } catch (e) {
+        if (e.toString() != 'Bad state: No element') {
+          rethrow;
+        } else {
+          _canGetMoreSearchAnnouncement = false;
+        }
+      }
     }
   }
 }

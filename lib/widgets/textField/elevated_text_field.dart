@@ -18,20 +18,24 @@ class ElevatedTextField extends StatelessWidget {
   final ValueChanged<String>? onChange;
   final String icon;
   final VoidCallback onTap;
+  final Function(String)? onSubmitted;
+  final TextInputAction? action;
 
   const ElevatedTextField(
       {Key? key,
-        required this.hintText,
-        required this.controller,
-        required this.onTap,
-        this.width = 290,
-        this.height = 50,
-        this.obscureText = false,
-        this.maxLines = 1,
-        this.maxLength,
-        this.keyBoardType = TextInputType.text,
-        this.onChange,
-        this.icon = ""})
+      required this.hintText,
+      required this.controller,
+      required this.onTap,
+      this.width = 290,
+      this.height = 50,
+      this.obscureText = false,
+      this.maxLines = 1,
+      this.maxLength,
+      this.keyBoardType = TextInputType.text,
+      this.onChange,
+      this.icon = "",
+      this.onSubmitted,
+      this.action})
       : super(key: key);
 
   @override
@@ -54,8 +58,9 @@ class ElevatedTextField extends StatelessWidget {
         ],
       ),
       alignment: Alignment.center,
-      child: TextFormField(
-        onTap: onTap,
+      child: TextField(
+        textInputAction: action,
+        onSubmitted: onSubmitted,
         maxLines: maxLines,
         maxLength: maxLength,
         onChanged: onChange ?? (value) {},
@@ -63,22 +68,28 @@ class ElevatedTextField extends StatelessWidget {
         textAlignVertical: TextAlignVertical.bottom,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: AppTypography.font14lightGray.copyWith(color: AppColors.disable),
+          hintStyle:
+              AppTypography.font14lightGray.copyWith(color: AppColors.disable),
           prefixIcon: icon != ""
               ? Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(
-                width: 12,
-              ),
-              SvgPicture.asset(
-                icon,
-                width: 18,
-                height: 18,
-                color: AppColors.disable,
-              ),
-            ],
-          )
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        onTap();
+                      },
+                      child: SvgPicture.asset(
+                        icon,
+                        width: 18,
+                        height: 18,
+                        color: AppColors.disable,
+                      ),
+                    ),
+                  ],
+                )
               : null,
           enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(13)),

@@ -5,23 +5,23 @@ import '../../../../models/item/item.dart';
 
 part 'search_announcements_state.dart';
 
-class SearchAnnouncementsCubit extends Cubit<SearchAnnouncementsState> {
+class SearchItemsCubit extends Cubit<SearchItemsState> {
   final SearchManager searchManager;
 
-  SearchAnnouncementsCubit({required this.searchManager})
-      : super(SearchWait());
+  SearchItemsCubit({required this.searchManager})
+      : super(SearchItemsWait());
 
   void search(String query) async {
     if (query.isEmpty) {
-      emit(SearchWait());
+      emit(SearchItemsWait());
     } else {
-      emit(SearchLoading());
+      emit(SearchItemsLoading());
       try {
         final result = await searchManager.searchItemsByName(query);
 
-        emit(SearchSuccess(result: result));
+        emit(SearchItemsSuccess(result: result));
       } catch (e) {
-        emit(SearchFail());
+        emit(SearchItemsFail());
         rethrow;
       }
     }

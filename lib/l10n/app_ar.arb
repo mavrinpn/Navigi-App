@@ -142,5 +142,6 @@
   "pleaseDoNotLeaveTheAppWhileWeAreProcessingYourAd": "من فضلك لا تترك التطبيق بينما نقوم بمعالجة إعلانك",
   "edit": "عرض السعر الخاص بك",
   "offrirVotrePrix": "Offrir votre prix",
-  "passwordOrEmailEnteredIncorrectly": "تم إدخال كلمة المرور أو البريد الإلكتروني بشكل غير صحيح"
+  "passwordOrEmailEnteredIncorrectly": "تم إدخال كلمة المرور أو البريد الإلكتروني بشكل غير صحيح",
+  "empty": "فارغة"
 }

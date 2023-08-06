@@ -435,4 +435,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get passwordOrEmailEnteredIncorrectly => 'تم إدخال كلمة المرور أو البريد الإلكتروني بشكل غير صحيح';
+
+  @override
+  String get empty => 'فارغة';
 }
