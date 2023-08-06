@@ -432,4 +432,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offrirVotrePrix => 'Offer your price';
+
+  @override
+  String get passwordOrEmailEnteredIncorrectly => 'Password or email entered incorrectly';
 }

@@ -432,4 +432,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get offrirVotrePrix => 'Offrir votre prix';
+
+  @override
+  String get passwordOrEmailEnteredIncorrectly => 'تم إدخال كلمة المرور أو البريد الإلكتروني بشكل غير صحيح';
 }

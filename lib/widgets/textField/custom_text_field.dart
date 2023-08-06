@@ -19,6 +19,7 @@ class CustomTextFormField extends StatefulWidget {
     this.width = double.infinity,
     this.obscureText = false,
     this.validator,
+    this.hintText = '',
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -29,6 +30,7 @@ class CustomTextFormField extends StatefulWidget {
   final String prefIcon;
   final FormFieldValidator<String>? validator;
   final void Function(String?) onChanged;
+  final String hintText;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -47,11 +49,12 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             maxLines: 1,
             obscureText: widget.obscureText,
             keyboardType: widget.keyboardType,
-            textAlignVertical: TextAlignVertical.bottom,
+            textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
+              hintText: widget.hintText,
               isDense: true,
               fillColor: AppColors.empty,
-              hintStyle: AppTypography.font17black,
+              hintStyle: AppTypography.font17black.copyWith(color: AppColors.whiteGray),
               filled: true,
               enabledBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(
@@ -73,7 +76,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               ),
               prefixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Column(
                     mainAxisSize: MainAxisSize.min,

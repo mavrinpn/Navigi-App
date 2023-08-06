@@ -18,6 +18,7 @@ class MaskTextFormField extends StatefulWidget {
     required this.prefIcon,
     required this.mask,
     required this.onChanged,
+    this.hintText = '',
     this.height = 80,
     this.width = double.infinity,
     this.obscureText = false,
@@ -33,6 +34,7 @@ class MaskTextFormField extends StatefulWidget {
   final FormFieldValidator<String>? validator;
   final MaskTextInputFormatter mask;
   final void Function(String?) onChanged;
+  final String hintText;
 
   @override
   State<MaskTextFormField> createState() => _MaskTextFormFieldState();
@@ -52,11 +54,12 @@ class _MaskTextFormFieldState extends State<MaskTextFormField> {
             maxLines: 1,
             obscureText: widget.obscureText,
             keyboardType: widget.keyboardType,
-            textAlignVertical: TextAlignVertical.bottom,
+            textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
               isDense: true,
+              hintText: widget.hintText,
               fillColor: AppColors.empty,
-              hintStyle: AppTypography.font17black,
+              hintStyle: AppTypography.font17black.copyWith(color: AppColors.whiteGray),
               filled: true,
               enabledBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(
@@ -78,7 +81,7 @@ class _MaskTextFormFieldState extends State<MaskTextFormField> {
               ),
               prefixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Column(
                     mainAxisSize: MainAxisSize.min,

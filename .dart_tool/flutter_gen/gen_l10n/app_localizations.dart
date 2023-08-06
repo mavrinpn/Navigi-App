@@ -952,6 +952,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Offer your price'**
   String get offrirVotrePrix;
+
+  /// No description provided for @passwordOrEmailEnteredIncorrectly.
+  ///
+  /// In en, this message translates to:
+  /// **'Password or email entered incorrectly'**
+  String get passwordOrEmailEnteredIncorrectly;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

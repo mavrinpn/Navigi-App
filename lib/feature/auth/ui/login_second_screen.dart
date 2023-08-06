@@ -28,8 +28,12 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
 
   bool isTouch = false;
 
+  bool isErrorPassword = false;
+
   @override
   Widget build(BuildContext context) {
+    GlobalKey buttonKey = GlobalKey();
+
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final bloc = BlocProvider.of<AuthCubit>(context);
@@ -46,7 +50,8 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
         if (state is AuthSuccessState) {
           Navigator.pop(context);
         } else if (state is AuthFailState) {
-          CustomSnackBar.showSnackBar(context, 'ошибка бд');
+          CustomSnackBar.showSnackBar(context,
+              AppLocalizations.of(context)!.passwordOrEmailEnteredIncorrectly);
         }
       },
       child: GestureDetector(
@@ -55,6 +60,19 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
         },
         child: Scaffold(
           resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: Row(
+              children: [
+                InkWell(
+                    child: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.black,
+                ),
+                onTap:() {Navigator.pop(context);} )
+              ],
+            ),
+          ),
           body: SafeArea(
             child: Center(
               child: Column(
@@ -92,7 +110,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                             prefIcon: 'Assets/icons/key.svg',
                             obscureText: true,
                             validator: (value) {
-                              if (value!.length < 8) {
+                              if (value!.length < 8 || isErrorPassword) {
                                 return 'Erreur! Réessayez ou entrez dautres informations.';
                               }
                               return null;
@@ -111,6 +129,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                             height: height * 0.18,
                           ),
                           CustomTextButton(
+                            key: buttonKey,
                             callback: () {
                               if (!_formKey.currentState!.validate()) {
                                 setState(() {});
@@ -184,7 +203,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                     ),
                   ),
                   const SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
                 ],
               ),

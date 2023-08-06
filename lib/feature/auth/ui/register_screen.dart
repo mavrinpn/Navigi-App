@@ -16,7 +16,7 @@ import '../../../widgets/textField/mask_text_field.dart';
 import '../data/auth_repository.dart';
 
 final maskPhoneFormatter = MaskTextInputFormatter(
-    mask: '+213 ## ### ###',
+    mask: '+213 (###) ## ## ##',
     filter: {"#": RegExp(r'[0-9]')},
     type: MaskAutoCompletionType.lazy);
 
@@ -40,7 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool checkFields(
       String phone, String name, String firstPassword, String secondPassword) {
-    return phone.length == 8 &&
+    return phone.length == 9 &&
         name.isNotEmpty &&
         firstPassword == secondPassword &&
         firstPassword.length >= 8 &&
@@ -115,6 +115,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       CustomTextFormField(
                           controller: nameController,
+                          hintText: 'Votre nom',
                           keyboardType: TextInputType.text,
                           width: width * 0.95,
                           prefIcon: 'Assets/icons/profile.svg',
@@ -129,12 +130,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }),
                       MaskTextFormField(
                         controller: phoneController,
+                        hintText: '+213 (###) ## ## ##',
                         keyboardType: TextInputType.phone,
                         width: width * 0.95,
                         prefIcon: 'Assets/icons/phone.svg',
                         validator: (value) {
                           if (maskPhoneFormatter.getUnmaskedText().length !=
-                              8) {
+                              9) {
                             return 'Erreur! Réessayez ou entrez dautres informations.';
                           }
                           return null;
@@ -146,6 +148,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       CustomTextFormField(
                           controller: firstPasswordController,
+                          hintText: 'Trouver un mot de passe',
                           keyboardType: TextInputType.text,
                           width: width * 0.95,
                           prefIcon: 'Assets/icons/key.svg',
@@ -163,6 +166,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       CustomTextFormField(
                           controller: secondPasswordController,
                           keyboardType: TextInputType.text,
+                          hintText: 'Répétez le mot de passe',
                           width: width * 0.95,
                           prefIcon: 'Assets/icons/key.svg',
                           obscureText: true,

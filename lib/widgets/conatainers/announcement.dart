@@ -25,8 +25,8 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final double imageWidth = width / 2 - 32;
-    final double imageHeight = (width / 2 - 32) * 1.032;
+    final double imageWidth = width / 2 - 25;
+    final double imageHeight = (width / 2 - 25) * 1.032;
 
     return InkWell(
       focusColor: AppColors.empty,

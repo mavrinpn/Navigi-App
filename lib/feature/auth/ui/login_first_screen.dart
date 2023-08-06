@@ -11,7 +11,7 @@ import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/mask_text_field.dart';
 
 final maskPhoneFormatter = MaskTextInputFormatter(
-    mask: '+213 ## ### ###',
+    mask: '+213 (###) ## ## ##',
     filter: {"#": RegExp(r'[0-9]')},
     type: MaskAutoCompletionType.lazy);
 
@@ -80,16 +80,17 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                           width: width * 0.95,
                           prefIcon: 'Assets/icons/phone.svg',
                           mask: maskPhoneFormatter,
+                          hintText: '+213 (###) ## ## ##',
                           validator: (value) {
                             if (maskPhoneFormatter.getUnmaskedText().length !=
-                                8) {
+                                9) {
                               return 'Erreur! Réessayez ou entrez dautres informations.';
                             }
                             return null;
                           },
                           onChanged: (value) {
                             if (maskPhoneFormatter.getUnmaskedText().length ==
-                                8) {
+                                9) {
                               isTouch = true;
                               setState(() {});
                               return;
