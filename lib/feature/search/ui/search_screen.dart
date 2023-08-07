@@ -187,7 +187,8 @@ class _SearchScreenState extends State<SearchScreen> {
                         child: BlocBuilder<SearchItemsCubit, SearchItemsState>(
                           builder: (context, state) {
                             if (state is SearchItemsSuccess &&
-                                searchController.text.isNotEmpty) {
+                                searchController.text.isNotEmpty &&
+                                state.result.isNotEmpty) {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: state.result
@@ -213,198 +214,190 @@ class _SearchScreenState extends State<SearchScreen> {
                                         ))
                                     .toList(),
                               );
-                            } else if (state is SearchItemsWait ||
-                                searchController.text.isEmpty) {
-                              return Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Recherches populaires',
-                                        style: AppTypography.font14black
-                                            .copyWith(
-                                                fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 16,
-                                  ),
-                                  SizedBox(
-                                      height: 30,
-                                      child: BlocBuilder<PopularQueriesCubit,
-                                          PopularQueriesState>(
-                                        builder: (context, state) {
-                                          if (state is PopularQueriesSuccess &&
-                                              searchManager
-                                                  .popularQueries.isNotEmpty) {
-                                            return ListView(
-                                              scrollDirection: Axis.horizontal,
-                                              children: searchManager
-                                                  .popularQueries
-                                                  .map((e) => Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal: 6),
-                                                        child: InkWell(
-                                                          onTap: () {
-                                                            BlocProvider.of<
-                                                                        SearchAnnouncementCubit>(
-                                                                    context)
-                                                                .searchAnnounces(
-                                                                    e, true);
-                                                            searchManager
-                                                                .setSearch(
-                                                                    false);
-                                                            searchManager
-                                                                .setSearchText(
-                                                                    e);
-                                                            searchManager.saveInHistory(e);
-                                                            setState(() {});
-                                                          },
-                                                          child: Container(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: const EdgeInsets
-                                                                      .symmetric(
-                                                                  horizontal:
-                                                                      14,
-                                                                  vertical: 4),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                                color: AppColors
-                                                                    .backgroundLightGray,
-                                                              ),
-                                                              child: Text(e)),
-                                                        ),
-                                                      ))
-                                                  .toList(),
-                                            );
-                                          } else if (state
-                                              is PopularQueriesLoading) {
-                                            return Center(
-                                                child:
-                                                    AppAnimations.bouncingLine);
-                                          }
-                                          return const Text('проблемс');
-                                        },
-                                      )),
-                                  const SizedBox(
-                                    height: 32,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Historique des recherches',
-                                        style: AppTypography.font14black
-                                            .copyWith(
-                                                fontWeight: FontWeight.w600),
-                                      ),
-                                      Text(
-                                        'Nettoyer',
-                                        style: AppTypography.font12lightGray
-                                            .copyWith(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 7,
-                                  ),
-                                  FutureBuilder(
-                                      future: searchManager.getHistory(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          print(snapshot.data);
-
-                                          return Column(
-                                            children: snapshot.data!
+                            } else if (state is SearchItemsLoading) {
+                              return Center(child: AppAnimations.bouncingLine);
+                            }
+                            return Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Recherches populaires',
+                                      style: AppTypography.font14black.copyWith(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                SizedBox(
+                                    height: 30,
+                                    child: BlocBuilder<PopularQueriesCubit,
+                                        PopularQueriesState>(
+                                      builder: (context, state) {
+                                        if (state is PopularQueriesSuccess &&
+                                            searchManager
+                                                .popularQueries.isNotEmpty) {
+                                          return ListView(
+                                            scrollDirection: Axis.horizontal,
+                                            children: searchManager
+                                                .popularQueries
                                                 .map((e) => Padding(
                                                       padding: const EdgeInsets
                                                               .symmetric(
-                                                          vertical: 9),
+                                                          horizontal: 6),
                                                       child: InkWell(
                                                         onTap: () {
                                                           BlocProvider.of<
                                                                       SearchAnnouncementCubit>(
                                                                   context)
                                                               .searchAnnounces(
-                                                                  e.toString(),
-                                                                  true);
+                                                                  e, true);
                                                           searchManager
                                                               .setSearch(false);
                                                           searchManager
-                                                              .setSearchText(
-                                                                  e.toString());
+                                                              .setSearchText(e);
+                                                          searchManager
+                                                              .saveInHistory(e);
                                                           setState(() {});
                                                         },
-                                                        child: Row(
-                                                          children: [
-                                                            Container(
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: AppColors
-                                                                    .backgroundIcon,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                              ),
-                                                              width: 30,
-                                                              height: 30,
-                                                              child: Center(
-                                                                child:
-                                                                    SvgPicture
-                                                                        .asset(
-                                                                  'Assets/icons/time.svg',
-                                                                  width: 20,
-                                                                  height: 20,
-                                                                ),
-                                                              ),
+                                                        child: Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        14,
+                                                                    vertical:
+                                                                        4),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20),
+                                                              color: AppColors
+                                                                  .backgroundLightGray,
                                                             ),
-                                                            const SizedBox(
-                                                              width: 10,
-                                                            ),
-                                                            Expanded(
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Text(e
-                                                                      .toString()),
-                                                                  SvgPicture.asset(
-                                                                      'Assets/icons/dagger.svg')
-                                                                ],
-                                                              ),
-                                                            )
-                                                          ],
-                                                        ),
+                                                            child: Text(e)),
                                                       ),
                                                     ))
                                                 .toList(),
                                           );
-                                        } else {
+                                        } else if (state
+                                            is PopularQueriesLoading) {
                                           return Center(
-                                            child: CircularProgressIndicator(),
-                                          );
+                                              child:
+                                                  AppAnimations.bouncingLine);
                                         }
-                                      })
-                                ],
-                              );
-                            } else if (state is SearchItemsLoading) {
-                              return Center(child: AppAnimations.bouncingLine);
-                            }
-                            return const Text('asdf');
+                                        return const Text('проблемс');
+                                      },
+                                    )),
+                                const SizedBox(
+                                  height: 32,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Historique des recherches',
+                                      style: AppTypography.font14black.copyWith(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      'Nettoyer',
+                                      style: AppTypography.font12lightGray
+                                          .copyWith(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 7,
+                                ),
+                                FutureBuilder(
+                                    future: searchManager.getHistory(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        print(snapshot.data);
+
+                                        return Column(
+                                          children: snapshot.data!
+                                              .map((e) => Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 9),
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        BlocProvider.of<
+                                                                    SearchAnnouncementCubit>(
+                                                                context)
+                                                            .searchAnnounces(
+                                                                e.toString(),
+                                                                true);
+                                                        searchManager
+                                                            .setSearch(false);
+                                                        searchManager
+                                                            .setSearchText(
+                                                                e.toString());
+                                                        setState(() {});
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: AppColors
+                                                                  .backgroundIcon,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                            width: 30,
+                                                            height: 30,
+                                                            child: Center(
+                                                              child: SvgPicture
+                                                                  .asset(
+                                                                'Assets/icons/time.svg',
+                                                                width: 20,
+                                                                height: 20,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Expanded(
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(e
+                                                                    .toString()),
+                                                                SvgPicture.asset(
+                                                                    'Assets/icons/dagger.svg')
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ))
+                                              .toList(),
+                                        );
+                                      } else {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                    })
+                              ],
+                            );
                           },
                         ),
                       ),
