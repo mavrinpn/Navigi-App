@@ -43,6 +43,12 @@ class AnnouncementManager {
         return a;
       }
     }
+    for (var a in searchAnnouncements) {
+      if (a.announcementId == id) {
+        lastAnnouncement = a;
+        return a;
+      }
+    }
     return null;
   }
 
@@ -53,19 +59,21 @@ class AnnouncementManager {
     }
   }
 
-  Future<void> loadSearchAnnouncement(String? searchText, bool isNew) async{
-    if (_canGetMoreSearchAnnouncement) {
-      try {
-        searchAnnouncements = isNew ? [] : searchAnnouncements;
+  Future<void> loadSearchAnnouncement(String? searchText, bool isNew) async {
+    try {
+      if (isNew) {
+        searchAnnouncements = <Announcement>[];
+        _searchLastId = '';
+      }
 
-        searchAnnouncements.addAll(await dbManager.searchLimitAnnouncements(_searchLastId, searchText));
-        _searchLastId = searchAnnouncements.last.announcementId;
-      } catch (e) {
-        if (e.toString() != 'Bad state: No element') {
-          rethrow;
-        } else {
-          _canGetMoreSearchAnnouncement = false;
-        }
+      searchAnnouncements.addAll(
+          await dbManager.searchLimitAnnouncements(_searchLastId, searchText));
+      _searchLastId = searchAnnouncements.last.announcementId;
+    } catch (e) {
+      if (e.toString() != 'Bad state: No element') {
+        rethrow;
+      } else {
+        _canGetMoreSearchAnnouncement = false;
       }
     }
   }

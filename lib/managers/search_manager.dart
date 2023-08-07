@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/models/announcement.dart';
 
@@ -16,9 +17,13 @@ class SearchManager {
 
   var popularQueries = <String>[];
 
-  String? lastId;
   Announcement? lastAnnouncement;
   String searchText = '';
+
+  bool isSearch = false;
+
+
+  BehaviorSubject<String> searchTextStream = BehaviorSubject<String>.seeded('');
 
   Future<List<SubCategoryItem>> searchItemsByName(String query) async =>
       await dbManager.searchItemByQuery(query);
@@ -27,6 +32,10 @@ class SearchManager {
     if (popularQueries.isEmpty) {
       popularQueries = await dbManager.popularQueries();
     }
+  }
+
+  void setSearch(bool f) {
+    isSearch = f;
   }
 
   Future<List<String>> getHistory() async {
@@ -51,5 +60,9 @@ class SearchManager {
     return history;
   }
 
-  void setSearchText(String str) => searchText = str;
+  void setSearchText(String str) {
+    searchText = str;
+
+    searchTextStream.add(searchText);
+  }
 }

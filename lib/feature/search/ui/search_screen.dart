@@ -44,12 +44,6 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
-  bool isSearch = false;
-
-  void setSearch(bool f) {
-    isSearch = f;
-  }
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -59,9 +53,11 @@ class _SearchScreenState extends State<SearchScreen> {
     final announcementRepository =
         RepositoryProvider.of<AnnouncementManager>(context);
 
-    searchController.text = searchManager.searchText;
-    searchController.selection = TextSelection.fromPosition(
-        TextPosition(offset: searchController.text.length));
+    searchManager.searchTextStream.listen((value) {
+      searchController.text = searchManager.searchText;
+      searchController.selection = TextSelection.fromPosition(
+          TextPosition(offset: searchController.text.length));
+    });
 
     return Scaffold(
       body: Container(
@@ -79,8 +75,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   children: [
                     InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, 'home_screen.dart');
+                        searchManager.setSearchText('');
                         setState(() {});
+                        Navigator.pushNamed(context, '/home_screen');
                       },
                       child: const Icon(
                         Icons.arrow_back_ios,
@@ -89,37 +86,35 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                     ElevatedTextField(
                       action: TextInputAction.search,
-                      onTap: () {
-                        setSearch(true);
-                        setState(() {});
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        BlocProvider.of<PopularQueriesCubit>(context)
-                            .loadPopularQueries();
-                      },
                       onSubmitted: (String? a) {
-                        setSearch(false);
+                        searchManager.setSearch(false);
+                        searchManager.saveInHistory(a!);
+                        setState(() {});
                         BlocProvider.of<SearchAnnouncementCubit>(context)
                             .searchAnnounces(a, true);
                       },
                       onChange: (String a) {
                         searchManager.setSearchText(searchController.text);
-                        setSearch(true);
+                        searchManager.setSearch(true);
                         setState(() {});
                         BlocProvider.of<SearchItemsCubit>(context).search(a);
-                        searchManager.setSearchText(searchController.text);
+                        BlocProvider.of<PopularQueriesCubit>(context)
+                            .loadPopularQueries();
                       },
-                      width: isSearch
+                      width: searchManager.isSearch
                           ? MediaQuery.of(context).size.width - 160
                           : MediaQuery.of(context).size.width - 70,
                       height: 44,
                       hintText: 'Recherche a Alger',
                       controller: searchController,
                       icon: "Assets/icons/only_search.svg",
+                      onTap: () {},
                     ),
-                    isSearch
+                    searchManager.isSearch
                         ? TextButton(
                             onPressed: () {
-                              setSearch(false);
+                              FocusScope.of(context).requestFocus(FocusNode());
+                              searchManager.setSearch(false);
                               setState(() {});
                             },
                             child: const Text('Annulation'),
@@ -140,31 +135,26 @@ class _SearchScreenState extends State<SearchScreen> {
                         physics: const BouncingScrollPhysics(
                             decelerationRate: ScrollDecelerationRate.fast),
                         slivers: [
-                          if (state is SearchAnnouncementsSuccessState &&
-                              announcementRepository
-                                  .searchAnnouncements.isNotEmpty) ...[
-                            SliverPadding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 22, vertical: 20),
-                              sliver: SliverGrid(
-                                gridDelegate:
-                                    SliverGridDelegateWithMaxCrossAxisExtent(
-                                        crossAxisSpacing: 10,
-                                        mainAxisSpacing: 15,
-                                        maxCrossAxisExtent:
-                                            MediaQuery.of(context).size.width /
-                                                2,
-                                        childAspectRatio: 160 / 272),
-                                delegate: SliverChildBuilderDelegate(
-                                    (context, ind) => AnnouncementContainer(
-                                        announcement: announcementRepository
-                                            .searchAnnouncements[ind]),
-                                    childCount: announcementRepository
-                                        .searchAnnouncements.length),
-                              ),
+                          SliverPadding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 22, vertical: 20),
+                            sliver: SliverGrid(
+                              gridDelegate:
+                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 15,
+                                      maxCrossAxisExtent:
+                                          MediaQuery.of(context).size.width / 2,
+                                      childAspectRatio: 160 / 272),
+                              delegate: SliverChildBuilderDelegate(
+                                  (context, ind) => AnnouncementContainer(
+                                      announcement: announcementRepository
+                                          .searchAnnouncements[ind]),
+                                  childCount: announcementRepository
+                                      .searchAnnouncements.length),
                             ),
-                          ] else if (state
-                              is SearchAnnouncementsLoadingState) ...[
+                          ),
+                          if (state is SearchAnnouncementsLoadingState) ...[
                             SliverToBoxAdapter(
                               child: Center(child: AppAnimations.bouncingLine),
                             )
@@ -190,7 +180,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       duration: const Duration(milliseconds: 300),
                       width: width,
                       curve: Curves.fastOutSlowIn,
-                      height: isSearch ? height : 0,
+                      height: searchManager.isSearch ? height : 0,
                       color: Colors.white,
                       padding: const EdgeInsets.all(15),
                       child: SingleChildScrollView(
@@ -210,7 +200,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                       context)
                                                   .searchAnnounces(
                                                       e.name, true);
-                                              setSearch(false);
+                                              searchManager.setSearch(false);
                                               searchManager
                                                   .setSearchText(e.name);
                                               setState(() {});
@@ -245,7 +235,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                       child: BlocBuilder<PopularQueriesCubit,
                                           PopularQueriesState>(
                                         builder: (context, state) {
-                                          if (state is PopularQueriesSuccess) {
+                                          if (state is PopularQueriesSuccess &&
+                                              searchManager
+                                                  .popularQueries.isNotEmpty) {
                                             return ListView(
                                               scrollDirection: Axis.horizontal,
                                               children: searchManager
@@ -262,10 +254,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                     context)
                                                                 .searchAnnounces(
                                                                     e, true);
-                                                            setSearch(false);
+                                                            searchManager
+                                                                .setSearch(
+                                                                    false);
                                                             searchManager
                                                                 .setSearchText(
                                                                     e);
+                                                            searchManager.saveInHistory(e);
                                                             setState(() {});
                                                           },
                                                           child: Container(
@@ -325,66 +320,85 @@ class _SearchScreenState extends State<SearchScreen> {
                                   const SizedBox(
                                     height: 7,
                                   ),
-                                  Column(
-                                    children: List.generate(
-                                            10, (index) => index)
-                                        .map((e) => Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 9),
-                                              child: InkWell(
-                                                onTap: () {
-                                                  BlocProvider.of<
-                                                              SearchAnnouncementCubit>(
-                                                          context)
-                                                      .searchAnnounces(
-                                                          e.toString(), true);
-                                                  setSearch(false);
-                                                  searchManager.setSearchText(
-                                                      e.toString());
-                                                  setState(() {});
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                        color: AppColors
-                                                            .backgroundIcon,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                      ),
-                                                      width: 30,
-                                                      height: 30,
-                                                      child: Center(
-                                                        child: SvgPicture.asset(
-                                                          'Assets/icons/time.svg',
-                                                          width: 20,
-                                                          height: 20,
+                                  FutureBuilder(
+                                      future: searchManager.getHistory(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          print(snapshot.data);
+
+                                          return Column(
+                                            children: snapshot.data!
+                                                .map((e) => Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 9),
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          BlocProvider.of<
+                                                                      SearchAnnouncementCubit>(
+                                                                  context)
+                                                              .searchAnnounces(
+                                                                  e.toString(),
+                                                                  true);
+                                                          searchManager
+                                                              .setSearch(false);
+                                                          searchManager
+                                                              .setSearchText(
+                                                                  e.toString());
+                                                          setState(() {});
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: AppColors
+                                                                    .backgroundIcon,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              width: 30,
+                                                              height: 30,
+                                                              child: Center(
+                                                                child:
+                                                                    SvgPicture
+                                                                        .asset(
+                                                                  'Assets/icons/time.svg',
+                                                                  width: 20,
+                                                                  height: 20,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            Expanded(
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Text(e
+                                                                      .toString()),
+                                                                  SvgPicture.asset(
+                                                                      'Assets/icons/dagger.svg')
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ],
                                                         ),
                                                       ),
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Expanded(
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(e.toString()),
-                                                          SvgPicture.asset(
-                                                              'Assets/icons/dagger.svg')
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ))
-                                        .toList(),
-                                  )
+                                                    ))
+                                                .toList(),
+                                          );
+                                        } else {
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
+                                      })
                                 ],
                               );
                             } else if (state is SearchItemsLoading) {

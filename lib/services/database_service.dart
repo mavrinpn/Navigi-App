@@ -66,7 +66,7 @@ class DatabaseManger {
     return subcategories;
   }
 
-  Future<List<SubCategoryItem>> loadItems(String subcategory) async {
+  Future<List<SubCategoryItem>> loadItemsBySubcategory(String subcategory) async {
     final res = await _databases.listDocuments(
         databaseId: postDatabase,
         collectionId: itemsCollection,
@@ -140,6 +140,8 @@ class DatabaseManger {
 
   Future<List<Announcement>> searchLimitAnnouncements(
       String? lastId, String? searchText) async {
+
+    print(jsonEncode({'lastID': lastId, 'searchText': searchText}));
 
     final res = await _functions.createExecution(
         functionId: getAnnouncementFunctionID,

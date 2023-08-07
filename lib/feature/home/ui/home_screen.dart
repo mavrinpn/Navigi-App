@@ -9,7 +9,6 @@ import '../../../utils/colors.dart';
 import '../../main/ui/main_screen.dart';
 import '../../profile/ui/profile_screen.dart';
 
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,16 +23,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final localizations = AppLocalizations.of(context)!;
-
 
     final List<Widget> widgetOptions = <Widget>[
       const MainScreen(),
       Center(
-        child: InkWell(onTap: () async{
-          var a = await RepositoryProvider.of<AnnouncementManager>(context).addLimitAnnouncements();
-        },
+        child: InkWell(
+          onTap: () async {
+            var a = await RepositoryProvider.of<AnnouncementManager>(context)
+                .addLimitAnnouncements();
+          },
           child: Text('asdf'),
         ),
       ),

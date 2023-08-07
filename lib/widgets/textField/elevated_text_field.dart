@@ -59,6 +59,7 @@ class ElevatedTextField extends StatelessWidget {
       ),
       alignment: Alignment.center,
       child: TextField(
+        onTap: onTap,
         textInputAction: action,
         onSubmitted: onSubmitted,
         maxLines: maxLines,
@@ -77,16 +78,11 @@ class ElevatedTextField extends StatelessWidget {
                     const SizedBox(
                       width: 12,
                     ),
-                    InkWell(
-                      onTap: () {
-                        onTap();
-                      },
-                      child: SvgPicture.asset(
-                        icon,
-                        width: 18,
-                        height: 18,
-                        color: AppColors.disable,
-                      ),
+                    SvgPicture.asset(
+                      icon,
+                      width: 18,
+                      height: 18,
+                      color: AppColors.disable,
                     ),
                   ],
                 )
