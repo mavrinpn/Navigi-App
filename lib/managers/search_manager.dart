@@ -18,9 +18,8 @@ class SearchManager {
   var popularQueries = <String>[];
 
   Announcement? lastAnnouncement;
-  String searchText = '';
 
-  bool isSearch = false;
+  bool isSearch = true;
 
 
   BehaviorSubject<String> searchTextStream = BehaviorSubject<String>.seeded('');
@@ -42,7 +41,7 @@ class SearchManager {
     final prefs = await _prefs;
 
     final List<String> history = prefs.getStringList(_historyKey) ?? [];
-    return history;
+    return history.reversed.toList();
   }
 
   Future<List<String>> saveInHistory(String query) async {
@@ -60,9 +59,13 @@ class SearchManager {
     return history;
   }
 
-  void setSearchText(String str) {
-    searchText = str;
+  Future<void> deleteQueryByName(String name) async{
+    final prefs = await _prefs;
 
-    searchTextStream.add(searchText);
+    List<String> history = prefs.getStringList(_historyKey) ?? [];
+
+    history.remove(name);
+
+    await prefs.setStringList(_historyKey, history);
   }
 }

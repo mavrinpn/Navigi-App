@@ -44,6 +44,10 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
+  void setSearchText(String text) {
+    searchController.text = text;
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -53,11 +57,9 @@ class _SearchScreenState extends State<SearchScreen> {
     final announcementRepository =
         RepositoryProvider.of<AnnouncementManager>(context);
 
-    searchManager.searchTextStream.listen((value) {
-      searchController.text = searchManager.searchText;
-      searchController.selection = TextSelection.fromPosition(
-          TextPosition(offset: searchController.text.length));
-    });
+    searchController.selection = TextSelection(
+        baseOffset: searchController.text.length,
+        extentOffset: searchController.text.length);
 
     return Scaffold(
       body: Container(
@@ -75,7 +77,6 @@ class _SearchScreenState extends State<SearchScreen> {
                   children: [
                     InkWell(
                       onTap: () {
-                        searchManager.setSearchText('');
                         setState(() {});
                         Navigator.pushNamed(context, '/home_screen');
                       },
@@ -94,7 +95,6 @@ class _SearchScreenState extends State<SearchScreen> {
                             .searchAnnounces(a, true);
                       },
                       onChange: (String a) {
-                        searchManager.setSearchText(searchController.text);
                         searchManager.setSearch(true);
                         setState(() {});
                         BlocProvider.of<SearchItemsCubit>(context).search(a);
@@ -202,8 +202,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                   .searchAnnounces(
                                                       e.name, true);
                                               searchManager.setSearch(false);
-                                              searchManager
-                                                  .setSearchText(e.name);
+                                              setSearchText(e.name);
                                               setState(() {});
                                             },
                                             child: Text(
@@ -242,7 +241,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                           return ListView(
                                             scrollDirection: Axis.horizontal,
                                             children: searchManager
-                                                .popularQueries
+                                                .popularQueries.reversed
+                                                .toList()
                                                 .map((e) => Padding(
                                                       padding: const EdgeInsets
                                                               .symmetric(
@@ -256,8 +256,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                   e, true);
                                                           searchManager
                                                               .setSearch(false);
-                                                          searchManager
-                                                              .setSearchText(e);
+                                                          setSearchText(e);
                                                           searchManager
                                                               .saveInHistory(e);
                                                           setState(() {});
@@ -323,8 +322,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                     future: searchManager.getHistory(),
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
-                                        print(snapshot.data);
-
                                         return Column(
                                           children: snapshot.data!
                                               .map((e) => Padding(
@@ -340,9 +337,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                 true);
                                                         searchManager
                                                             .setSearch(false);
-                                                        searchManager
-                                                            .setSearchText(
-                                                                e.toString());
+
+                                                        setSearchText(
+                                                            e.toString());
                                                         setState(() {});
                                                       },
                                                       child: Row(
@@ -379,8 +376,21 @@ class _SearchScreenState extends State<SearchScreen> {
                                                               children: [
                                                                 Text(e
                                                                     .toString()),
-                                                                SvgPicture.asset(
-                                                                    'Assets/icons/dagger.svg')
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    searchManager
+                                                                        .deleteQueryByName(
+                                                                            e);
+                                                                    setState(
+                                                                        () {});
+                                                                  },
+                                                                  child: SvgPicture
+                                                                      .asset(
+                                                                          'Assets/icons/dagger.svg',
+                                                                    width: 25,
+                                                                    height: 25,
+                                                                  ),
+                                                                )
                                                               ],
                                                             ),
                                                           )

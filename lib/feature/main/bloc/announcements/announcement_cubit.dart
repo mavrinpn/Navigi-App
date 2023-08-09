@@ -12,13 +12,13 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
   AnnouncementsCubit({required AnnouncementManager announcementManager})
       : _announcementManager = announcementManager,
         super(AnnouncementInitial()) {
-    loadAnnounces();
+    loadAnnounces(true);
   }
 
-  void loadAnnounces() async {
+  void loadAnnounces(bool isNew) async {
     emit(AnnouncementsLoadingState());
     try {
-      await _announcementManager.addLimitAnnouncements();
+      await _announcementManager.addLimitAnnouncements(isNew);
       emit(AnnouncementsSuccessState());
     } catch (e) {
       emit(AnnouncementsFailState());

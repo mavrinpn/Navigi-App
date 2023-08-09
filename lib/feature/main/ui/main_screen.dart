@@ -40,8 +40,7 @@ class _MainScreenState extends State<MainScreen> {
         double maxScroll = _controller.position.maxScrollExtent;
         double currentScroll = _controller.position.pixels;
         if (currentScroll >= maxScroll * 0.8) {
-          print(1);
-          BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces();
+          BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(false);
         }
       }
     });
@@ -76,8 +75,9 @@ class _MainScreenState extends State<MainScreen> {
               child: Row(
                 children: [
                   ElevatedTextField(
-                    action: TextInputAction.search,
                     onTap: () {
+                      BlocProvider.of<PopularQueriesCubit>(context)
+                          .loadPopularQueries();
                       Navigator.pushNamed(context, '/search_screen');
                     },
                     width: isSearch
@@ -104,116 +104,123 @@ class _MainScreenState extends State<MainScreen> {
           ),
           body: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
             builder: (context, state) {
-              return CustomScrollView(
-                controller: _controller,
-                physics: const BouncingScrollPhysics(
-                    decelerationRate: ScrollDecelerationRate.fast),
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(AppLocalizations.of(context)!.categories,
-                                  textAlign: TextAlign.center,
-                                  style: AppTypography.font20black),
-                              Text('Regarder tout',
-                                  style: AppTypography.font14lightGray
-                                      .copyWith(fontSize: 12)),
-                            ],
-                          ),
-                        ),
-                        BlocBuilder<CategoryCubit, CategoryState>(
-                          builder: (context, state) {
-                            if (state is CategorySuccessState) {
-                              return SizedBox(
-                                width: double.infinity,
-                                height: 160,
-                                child: ListView(
-                                  physics: const BouncingScrollPhysics(
-                                      decelerationRate:
-                                          ScrollDecelerationRate.fast),
-                                  scrollDirection: Axis.horizontal,
-                                  children: state.categories
-                                      .map((e) => Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 0),
-                                            child: CategoryWidget(
-                                              category: e,
-                                              isActive: false,
-                                              width: 108,
-                                              height: 160,
-                                            ),
-                                          ))
-                                      .toList(),
-                                ),
-                              );
-                            } else if (state is CategoryFailState) {
-                              return const Center(
-                                child: Text('Проблемс'),
-                              );
-                            } else {
-                              return Center(
-                                child: AppAnimations.bouncingLine,
-                              );
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 11,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                  AppLocalizations.of(context)!.recommendations,
-                                  textAlign: TextAlign.center,
-                                  style: AppTypography.font20black),
-                              Text('Regarder tout',
-                                  style: AppTypography.font14lightGray
-                                      .copyWith(fontSize: 12)),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    sliver: SliverGrid(
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 15,
-                          maxCrossAxisExtent:
-                              MediaQuery.of(context).size.width / 2,
-                          childAspectRatio: 160 / 272),
-                      delegate: SliverChildBuilderDelegate(
-                          (context, ind) => AnnouncementContainer(
-                              announcement:
-                                  announcementRepository.announcements[ind]),
-                          childCount:
-                              announcementRepository.announcements.length),
-                    ),
-                  ),
-                  if (state is AnnouncementsLoadingState) ...[
+              return RefreshIndicator(
+                onRefresh: () async {
+                  BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(true);
+                },
+                child: CustomScrollView(
+                  controller: _controller,
+                  physics: const BouncingScrollPhysics(),
+                  slivers: [
                     SliverToBoxAdapter(
-                      child: Container(
-                        child: Center(child: AppAnimations.bouncingLine),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(AppLocalizations.of(context)!.categories,
+                                    textAlign: TextAlign.center,
+                                    style: AppTypography.font20black),
+                                Text('Regarder tout',
+                                    style: AppTypography.font14lightGray
+                                        .copyWith(fontSize: 12)),
+                              ],
+                            ),
+                          ),
+                          BlocBuilder<CategoryCubit, CategoryState>(
+                            builder: (context, state) {
+                              if (state is CategorySuccessState) {
+                                return SizedBox(
+                                  width: double.infinity,
+                                  height: 160,
+                                  child: ListView(
+                                    physics: const BouncingScrollPhysics(
+                                        decelerationRate:
+                                            ScrollDecelerationRate.fast),
+                                    scrollDirection: Axis.horizontal,
+                                    children: state.categories
+                                        .map((e) => Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 0),
+                                              child: CategoryWidget(
+                                                category: e,
+                                                isActive: false,
+                                                width: 108,
+                                                height: 160,
+                                              ),
+                                            ))
+                                        .toList(),
+                                  ),
+                                );
+                              } else if (state is CategoryFailState) {
+                                return const Center(
+                                  child: Text('Проблемс'),
+                                );
+                              } else {
+                                return Center(
+                                  child: AppAnimations.bouncingLine,
+                                );
+                              }
+                            },
+                          ),
+                        ],
                       ),
-                    )
+                    ),
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 11,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                    AppLocalizations.of(context)!
+                                        .recommendations,
+                                    textAlign: TextAlign.center,
+                                    style: AppTypography.font20black),
+                                Text('Regarder tout',
+                                    style: AppTypography.font14lightGray
+                                        .copyWith(fontSize: 12)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      sliver: SliverGrid(
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 15,
+                            maxCrossAxisExtent:
+                                MediaQuery.of(context).size.width / 2,
+                            childAspectRatio: 160 / 272),
+                        delegate: SliverChildBuilderDelegate(
+                            (context, ind) => AnnouncementContainer(
+                                announcement:
+                                    announcementRepository.announcements[ind]),
+                            childCount:
+                                announcementRepository.announcements.length),
+                      ),
+                    ),
+                    if (state is AnnouncementsLoadingState) ...[
+                      SliverToBoxAdapter(
+                        child: Container(
+                          child: Center(child: AppAnimations.bouncingLine),
+                        ),
+                      )
+                    ],
                   ],
-                ],
+                ),
               );
             },
           ),

@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: InkWell(
           onTap: () async {
             var a = await RepositoryProvider.of<AnnouncementManager>(context)
-                .addLimitAnnouncements();
+                .addLimitAnnouncements(false);
           },
           child: Text('asdf'),
         ),

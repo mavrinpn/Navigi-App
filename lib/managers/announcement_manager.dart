@@ -21,9 +21,14 @@ class AnnouncementManager {
   List<Announcement> searchAnnouncements = [];
   Announcement? lastAnnouncement;
 
-  Future<void> addLimitAnnouncements() async {
+  Future<void> addLimitAnnouncements(bool isNew) async {
     if (_canGetMoreAnnouncement) {
       try {
+        if (isNew) {
+          announcements = [];
+          _lastId = '';
+        }
+
         announcements.addAll(await dbManager.loadLimitAnnouncements(_lastId));
         _lastId = announcements.last.announcementId;
       } catch (e) {
