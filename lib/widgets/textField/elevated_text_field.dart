@@ -20,6 +20,7 @@ class ElevatedTextField extends StatelessWidget {
   final VoidCallback onTap;
   final Function(String)? onSubmitted;
   final TextInputAction? action;
+  final bool readOnly;
 
   const ElevatedTextField(
       {Key? key,
@@ -35,7 +36,8 @@ class ElevatedTextField extends StatelessWidget {
       this.onChange,
       this.icon = "",
       this.onSubmitted,
-      this.action})
+      this.action,
+      this.readOnly = false})
       : super(key: key);
 
   @override
@@ -59,6 +61,7 @@ class ElevatedTextField extends StatelessWidget {
       ),
       alignment: Alignment.center,
       child: TextField(
+        readOnly: readOnly,
         onTap: onTap,
         textInputAction: action,
         onSubmitted: onSubmitted,

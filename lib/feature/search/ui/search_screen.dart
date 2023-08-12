@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
 
 import '../../../managers/announcement_manager.dart';
 import '../../../managers/search_manager.dart';
@@ -10,7 +9,6 @@ import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/conatainers/announcement.dart';
 import '../../../widgets/textField/elevated_text_field.dart';
-import '../../main/bloc/announcements/announcement_cubit.dart';
 import '../../main/bloc/popularQueries/popular_queries_cubit.dart';
 import '../../main/bloc/search/search_announcements_cubit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

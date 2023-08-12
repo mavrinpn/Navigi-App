@@ -75,9 +75,12 @@ class _MainScreenState extends State<MainScreen> {
               child: Row(
                 children: [
                   ElevatedTextField(
+                    readOnly: true,
                     onTap: () {
                       BlocProvider.of<PopularQueriesCubit>(context)
                           .loadPopularQueries();
+                      BlocProvider.of<SearchAnnouncementCubit>(context)
+                          .searchAnnounces('', true);
                       Navigator.pushNamed(context, '/search_screen');
                     },
                     width: isSearch
@@ -106,7 +109,8 @@ class _MainScreenState extends State<MainScreen> {
             builder: (context, state) {
               return RefreshIndicator(
                 onRefresh: () async {
-                  BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(true);
+                  BlocProvider.of<AnnouncementsCubit>(context)
+                      .loadAnnounces(true);
                 },
                 child: CustomScrollView(
                   controller: _controller,
