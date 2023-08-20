@@ -41,18 +41,6 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ClipRRect(
-          //   borderRadius: BorderRadius.circular(14),
-          //   child: SizedBox.fromSize(
-          //     child: FadeInImage.assetNetwork(
-          //         placeholder: 'Assets/grey.png',
-          //         image: widget.announcement.images[0],
-          //         fadeInDuration: const Duration(milliseconds: 50),
-          //         width: imageWidth,
-          //         height: imageHeight,
-          //         fit: BoxFit.cover),
-          //   ),
-          // ),
           FutureBuilder(
               future: widget.announcement.futureBytes,
               builder: (context, snapshot) {
@@ -155,7 +143,8 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(widget.announcement.stringPrice,
-                  style: AppTypography.font16boldRed),
+                  style: AppTypography.font16boldRed,
+              textDirection: TextDirection.ltr,),
               InkWell(
                   focusColor: AppColors.empty,
                   hoverColor: AppColors.empty,
