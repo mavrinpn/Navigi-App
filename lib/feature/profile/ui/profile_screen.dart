@@ -102,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onTap: () {},
                     ),
                     RowButton(
-                      title: 'Politique de confidentialité',
+                      title: localizations.privacyPolicy,
                       icon: 'Assets/icons/security.svg',
                       onTap: () {},
                     ),

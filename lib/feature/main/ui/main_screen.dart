@@ -127,7 +127,7 @@ class _MainScreenState extends State<MainScreen> {
                                 Text(AppLocalizations.of(context)!.categories,
                                     textAlign: TextAlign.center,
                                     style: AppTypography.font20black),
-                                Text('Regarder tout',
+                                Text(AppLocalizations.of(context)!.viewAll, // TODO CHECK there are can be not this key
                                     style: AppTypography.font14lightGray
                                         .copyWith(fontSize: 12)),
                               ],
@@ -186,11 +186,10 @@ class _MainScreenState extends State<MainScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                    AppLocalizations.of(context)!
-                                        .recommendations,
+                                    AppLocalizations.of(context)!.recommendations,
                                     textAlign: TextAlign.center,
                                     style: AppTypography.font20black),
-                                Text('Regarder tout',
+                                Text(AppLocalizations.of(context)!.viewAll,
                                     style: AppTypography.font14lightGray
                                         .copyWith(fontSize: 12)),
                               ],

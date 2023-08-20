@@ -247,6 +247,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           Text(
                             state.data.stringPrice,
                             style: AppTypography.font22red,
+                            textDirection: TextDirection.ltr,
                           ),
                         ],
                       ),

@@ -7,6 +7,9 @@ import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/dropDownSingleCheckBox/custom_dropdown_single_checkbox.dart';
 import '../../../widgets/textField/under_line_text_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+
 
 class OptionsScreen extends StatefulWidget {
   const OptionsScreen({super.key});
@@ -33,7 +36,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
           backgroundColor: AppColors.empty,
           elevation: 0,
           title: Text(
-            'Сaractéristiques',
+            AppLocalizations.of(context)!.features,
             style: AppTypography.font20black,
           ),
         ),
@@ -46,7 +49,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                 height: 16,
               ),
               Text(
-                'Prix',
+                AppLocalizations.of(context)!.price,
                 style: AppTypography.font16black.copyWith(fontSize: 18),
               ),
               UnderLineTextField(

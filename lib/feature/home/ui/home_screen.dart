@@ -72,8 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   asset: 'Assets/icons/email.svg',
                   isSelected: _selectedTab == 1,
                 ),
-                tooltip: 'Messages',
-                label: 'Messages',
+                tooltip: localizations.messages,
+                label: localizations.messages,
               ),
               BottomNavigationBarItem(
                 icon: NavigatorBarItem(

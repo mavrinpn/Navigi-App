@@ -47,7 +47,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get enterTheEmailAddressAssociatedWithYourAccount => 'Entrez l’adresse e-mail associée à votre compte';
 
   @override
-  String get viewAll => 'View all';
+  String get viewAll => 'Regarder tout';
 
   @override
   String get categories => 'Catégories';
@@ -314,7 +314,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get fAQ => 'FAQ';
 
   @override
-  String get privacyPolicy => 'Privacy Policy';
+  String get privacyPolicy => 'Politique de confidentialité';
 
   @override
   String get termsOfUse => 'Conditions d\'utilisation';

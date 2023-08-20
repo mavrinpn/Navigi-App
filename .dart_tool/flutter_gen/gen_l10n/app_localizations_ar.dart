@@ -311,13 +311,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get myComments => 'تعليقاتي';
 
   @override
-  String get fAQ => 'None';
+  String get fAQ => 'FAQ';
 
   @override
-  String get privacyPolicy => 'Privacy Policy';
+  String get privacyPolicy => 'سياسة الخصوصية';
 
   @override
-  String get termsOfUse => 'None';
+  String get termsOfUse => 'شروط الاستخدام';
 
   @override
   String get logOut => 'تسجيل الخروج';
