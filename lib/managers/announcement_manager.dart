@@ -64,15 +64,17 @@ class AnnouncementManager {
     }
   }
 
-  Future<void> loadSearchAnnouncement(String? searchText, bool isNew) async {
+  Future<void> loadSearchAnnouncement(
+      {String? searchText, required bool isNew, String? sortBy}) async {
     try {
       if (isNew) {
         searchAnnouncements = <Announcement>[];
         _searchLastId = '';
       }
 
-      searchAnnouncements.addAll(
-          await dbManager.searchLimitAnnouncements(_searchLastId, searchText));
+      searchAnnouncements.addAll(await dbManager.searchLimitAnnouncements(
+          _searchLastId, searchText, sortBy));
+
       _searchLastId = searchAnnouncements.last.announcementId;
     } catch (e) {
       if (e.toString() != 'Bad state: No element') {

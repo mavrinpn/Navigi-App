@@ -139,16 +139,23 @@ class DatabaseManger {
   }
 
   Future<List<Announcement>> searchLimitAnnouncements(
-      String? lastId, String? searchText) async {
+      String? lastId, String? searchText, String? sortBy) async {
 
-    print(jsonEncode({'lastID': lastId, 'searchText': searchText}));
+    //print(jsonEncode({'lastID': lastId, 'searchText': searchText}));
+
+    final requestData = {
+      if (lastId != null) 'lastID': lastId,
+      if (searchText != null) 'searchText': searchText,
+      if (sortBy != null) 'sortBy': sortBy,
+    };
 
     final res = await _functions.createExecution(
         functionId: getAnnouncementFunctionID,
-        data: jsonEncode({'lastID': lastId, 'searchText': searchText}));
+        data: jsonEncode(requestData));
 
     final response = jsonDecode(res.response);
-    print(res.response);
+
+    log(res.response.toString());
 
     List<Announcement> newAnnounces = [];
     for (var doc in response[responseResult][responseDocuments]) {

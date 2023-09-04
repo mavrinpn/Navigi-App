@@ -76,7 +76,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     InkWell(
                       onTap: () {
                         setState(() {});
-                        Navigator.pushNamed(context, '/home_screen');
+                        Navigator.pop(context); // TODO заменить на pop скорее всего
                       },
                       child: const Icon(
                         Icons.arrow_back_ios,
