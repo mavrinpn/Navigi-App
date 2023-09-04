@@ -126,7 +126,7 @@ class MyRepositoryProviders extends StatelessWidget {
   MyRepositoryProviders({Key? key}) : super(key: key);
 
   final client = a.Client()
-      .setEndpoint('http://89.253.237.166/v1')
+      .setEndpoint('http://admin.navigidz.online/v1')
       .setProject('64987d0f7f186b7e2b45');
 
   @override
