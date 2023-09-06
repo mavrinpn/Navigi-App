@@ -10,6 +10,7 @@ class AppTypography {
   static const _lightGray = AppColors.lightGray;
   static const _white = Colors.white;
   static const _red = AppColors.red;
+  static const _grey = AppColors.dark;
   static const _font = TextStyle(fontFamily: 'SF Pro Display',);
 
   static final font14black = _font.copyWith(
@@ -107,5 +108,10 @@ class AppTypography {
     color: _colorBlack,
     fontSize: 18,
     fontWeight: FontWeight.w500
+  );
+  static final font18gray = _font.copyWith(
+      color: _grey,
+      fontSize: 18,
+      fontWeight: FontWeight.w600
   );
 }
