@@ -68,9 +68,10 @@ class _SearchScreenState extends State<SearchScreen> {
           child: Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.mainBackground,
+              automaticallyImplyLeading: false,
               elevation: 0,
               flexibleSpace: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                 child: Row(
                   children: [
                     InkWell(
