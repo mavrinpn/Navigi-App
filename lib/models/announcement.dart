@@ -12,7 +12,7 @@ class Announcement {
   final String description;
   final int totalViews;
   final double price;
-  final List images;
+  List images;
   final String announcementId;
   final StaticParameters staticParameters;
   final PlaceData placeData;
@@ -48,6 +48,12 @@ class Announcement {
         _createdAt = json['\$createdAt'],
         announcementId = json['\$id'],
         placeData = PlaceData.fromJson(json['place']) {
+    var l  = [];
+    for (String i in images) {
+      i.replaceAll('89.253.237.166', 'admin.navigidz.online');
+      l.add(i);
+    }
+    images = l;
     loadBytes();
   }
 
