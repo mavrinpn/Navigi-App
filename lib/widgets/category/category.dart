@@ -16,7 +16,7 @@ class CategoryWidget extends StatefulWidget {
       required this.width})
       : name = category.name ?? '',
         id = category.id ?? '',
-        url = category.imageUrl!;
+        url = category.imageUrl!.replaceAll('89.253.237.166', 'admin.navigidz.online');
 
   final bool isActive;
   final String name;

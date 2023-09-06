@@ -120,7 +120,7 @@ class DatabaseManger {
   Future<List<Announcement>> loadLimitAnnouncements(String? lastId) async {
     final res = await _functions.createExecution(
         functionId: getAnnouncementFunctionID,
-        data: jsonEncode({'lastID': lastId, 'searchText': ''}));
+        data: jsonEncode({'lastID': lastId}));
 
     final response = jsonDecode(res.response);
 
