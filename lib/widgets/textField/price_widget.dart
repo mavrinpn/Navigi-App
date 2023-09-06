@@ -28,34 +28,44 @@ class PriceWidget extends StatelessWidget {
         const SizedBox(
           height: 14,
         ),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          SizedBox(
-              height: 24,
-              child: UnderLineTextField(
-                width: double.infinity,
-                hintText: '',
-                keyBoardType: TextInputType.number,
-                suffixIcon: 'DZD',
-                controller: priseController,
-                onChange: (String value) {},
-              )),
-          SizedBox(
+        Row( children: [
+          Expanded(
+            flex: 3,
+            child: SizedBox(
+                height: 24,
+                child: UnderLineTextField(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  hintText: '',
+                  keyBoardType: TextInputType.number,
+                  suffixIcon: 'DZD',
+                  controller: priseController,
+                  onChange: (String value) {},
+                )),
+          ),
+          Expanded(
+            flex: 1,
+            child: SizedBox(
               width: 17,
-              child: Text('—',
-                  textAlign: TextAlign.center,
-                  style: AppTypography.font18gray
-                      .copyWith(fontSize: 16, fontWeight: FontWeight.w400))),
+                child: Text('—',
+                    textAlign: TextAlign.center,
+                    style: AppTypography.font18gray
+                        .copyWith(fontSize: 16, fontWeight: FontWeight.w400))),
+          ),
+          Expanded(
+            flex: 3,
+            child: SizedBox(
+                height: 24,
+                child: UnderLineTextField(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  hintText: '',
+                  keyBoardType: TextInputType.number,
+                  suffixIcon: 'DZD',
+                  controller: priseController,
+                  onChange: (String value) {},
+                )),
+          )
         ]),
-        SizedBox(
-            height: 24,
-            child: UnderLineTextField(
-              width: double.infinity,
-              hintText: '',
-              keyBoardType: TextInputType.number,
-              suffixIcon: 'DZD',
-              controller: priseController,
-              onChange: (String value) {},
-            ))
+
       ]),
     );
   }
