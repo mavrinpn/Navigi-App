@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:smart/models/item/item.dart';
+import 'package:smart/models/sorte_types.dart';
 import 'package:smart/widgets/button/custom_icon_button.dart';
 import 'package:smart/widgets/button/icon_button.dart';
+import 'package:smart/widgets/dropDownSingleCheckBox/custom_dropdown_single_checkbox.dart';
 import 'package:smart/widgets/textField/price_widget.dart';
 import 'package:smart/widgets/textField/under_line_text_field.dart';
 
@@ -59,6 +62,9 @@ class _SearchScreenState extends State<SearchScreen> {
     final announcementRepository =
         RepositoryProvider.of<AnnouncementManager>(context);
 
+    SortTypes.toList();
+
+
     searchController.selection = TextSelection(
         baseOffset: searchController.text.length,
         extentOffset: searchController.text.length);
@@ -67,22 +73,25 @@ class _SearchScreenState extends State<SearchScreen> {
       return Container(
         height: MediaQuery.sizeOf(context).height * 0.8,
         color: Colors.white,
-        child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             children: <Widget>[
               SizedBox(
                 height: 16,
               ),
-              Container(
-                width: 120,
-                height: 4,
-                decoration: ShapeDecoration(
-                    color: Color(0xFFDDE1E7),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(1))),
+              Center(
+                child: Container(
+                  width: 120,
+                  height: 4,
+                  decoration: ShapeDecoration(
+                      color: Color(0xFFDDE1E7),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(1))),
+                ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -92,7 +101,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
               SizedBox(height: 12,),
-              PriceWidget()
+              PriceWidget(),
+              CustomDropDownSingleCheckBox(parameters: Parameter(variants: SortTypes.toList(),key: 'Triage'), onChange: (a) {}, currentVariable: SortTypes.dateDESC),
+
             ],
           ),
         ),

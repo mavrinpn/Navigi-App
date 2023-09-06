@@ -62,6 +62,7 @@ class _CustomDropDownSingleCheckBoxState
             if (isOpen) ...[
               SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: widget.parameters.variants
                       .map((e) => Row(
                             children: [
