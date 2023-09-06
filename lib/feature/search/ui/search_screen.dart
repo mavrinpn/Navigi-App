@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:smart/widgets/button/custom_icon_button.dart';
+import 'package:smart/widgets/button/icon_button.dart';
+import 'package:smart/widgets/textField/price_widget.dart';
+import 'package:smart/widgets/textField/under_line_text_field.dart';
 
 import '../../../managers/announcement_manager.dart';
 import '../../../managers/search_manager.dart';
@@ -59,6 +63,42 @@ class _SearchScreenState extends State<SearchScreen> {
         baseOffset: searchController.text.length,
         extentOffset: searchController.text.length);
 
+    Widget getFilterShowModalBottomSheet(){
+      return Container(
+        height: MediaQuery.sizeOf(context).height * 0.8,
+        color: Colors.white,
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 16,
+              ),
+              Container(
+                width: 120,
+                height: 4,
+                decoration: ShapeDecoration(
+                    color: Color(0xFFDDE1E7),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(1))),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Filtres', style: AppTypography.font20black,),
+                    Text('Réinitialiser tout', style: AppTypography.font12black,),
+                  ],
+                ),
+              ),
+              SizedBox(height: 12,),
+              PriceWidget()
+            ],
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -73,52 +113,70 @@ class _SearchScreenState extends State<SearchScreen> {
               flexibleSpace: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {});
-                        Navigator.pop(context);
-                      },
-                      child: const Icon(
-                        Icons.arrow_back_ios,
-                        color: AppColors.black,
-                      ),
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            setState(() {});
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(
+                            Icons.arrow_back_ios,
+                            color: AppColors.black,
+                          ),
+                        ),
+                        ElevatedTextField(
+                          action: TextInputAction.search,
+                          onSubmitted: (String? a) {
+                            searchManager.setSearch(false);
+                            searchManager.saveInHistory(a!);
+                            setState(() {});
+                            BlocProvider.of<SearchAnnouncementCubit>(context)
+                                .searchAnnounces(a, true);
+                          },
+                          onChange: (String a) {
+                            searchManager.setSearch(true);
+                            setState(() {});
+                            BlocProvider.of<SearchItemsCubit>(context).search(a);
+                            BlocProvider.of<PopularQueriesCubit>(context)
+                                .loadPopularQueries();
+                          },
+                          width: MediaQuery.of(context).size.width - 115,
+                          height: 44,
+                          hintText: 'Recherche a Alger',
+                          controller: searchController,
+                          icon: "Assets/icons/only_search.svg",
+                          onTap: () {},
+                        ),
+                      ],
                     ),
-                    ElevatedTextField(
-                      action: TextInputAction.search,
-                      onSubmitted: (String? a) {
-                        searchManager.setSearch(false);
-                        searchManager.saveInHistory(a!);
-                        setState(() {});
-                        BlocProvider.of<SearchAnnouncementCubit>(context)
-                            .searchAnnounces(a, true);
-                      },
-                      onChange: (String a) {
-                        searchManager.setSearch(true);
-                        setState(() {});
-                        BlocProvider.of<SearchItemsCubit>(context).search(a);
-                        BlocProvider.of<PopularQueriesCubit>(context)
-                            .loadPopularQueries();
-                      },
-                      width: searchManager.isSearch
-                          ? MediaQuery.of(context).size.width - 160
-                          : MediaQuery.of(context).size.width - 70,
-                      height: 44,
-                      hintText: 'Recherche a Alger',
-                      controller: searchController,
-                      icon: "Assets/icons/only_search.svg",
-                      onTap: () {},
-                    ),
-                    searchManager.isSearch
-                        ? TextButton(
-                            onPressed: () {
-                              FocusScope.of(context).requestFocus(FocusNode());
-                              searchManager.setSearch(false);
-                              setState(() {});
-                            },
-                            child: const Text('Annulation'),
-                          )
-                        : Container(),
+                    // searchManager.isSearch
+                    //     ? TextButton(
+                    //         onPressed: () {
+                    //           FocusScope.of(context).requestFocus(FocusNode());
+                    //           searchManager.setSearch(false);
+                    //           setState(() {});
+                    //         },
+                    //         child: const Text('Annulation'),
+                    //       )
+                    //     : Container(),
+                    CustomIconButtonSearch(assetName: 'Assets/icons/sliders.svg', callback: () {
+                      showModalBottomSheet(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return getFilterShowModalBottomSheet();
+                        },
+                      );
+                    }, height: 44, width: 44)
                   ],
                 ),
               ),
