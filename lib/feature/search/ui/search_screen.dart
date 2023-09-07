@@ -64,12 +64,13 @@ class _SearchScreenState extends State<SearchScreen> {
 
     SortTypes.toList();
 
-
     searchController.selection = TextSelection(
         baseOffset: searchController.text.length,
         extentOffset: searchController.text.length);
 
-    Widget getFilterShowModalBottomSheet(){
+    final bloc = BlocProvider.of<SearchAnnouncementCubit>(context);
+
+    Widget getFilterShowModalBottomSheet() {
       return Container(
         height: MediaQuery.sizeOf(context).height * 0.8,
         color: Colors.white,
@@ -77,7 +78,7 @@ class _SearchScreenState extends State<SearchScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             children: <Widget>[
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               Center(
@@ -85,7 +86,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   width: 120,
                   height: 4,
                   decoration: ShapeDecoration(
-                      color: Color(0xFFDDE1E7),
+                      color: const Color(0xFFDDE1E7),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(1))),
                 ),
@@ -95,15 +96,36 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Filtres', style: AppTypography.font20black,),
-                    Text('Réinitialiser tout', style: AppTypography.font12black,),
+                    Text(
+                      'Filtres',
+                      style: AppTypography.font20black,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        bloc.clearSortType();
+                        setState(() {});
+                      },
+                      child: Text(
+                        'Réinitialiser tout',
+                        style: AppTypography.font12black,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              SizedBox(height: 12,),
+              const SizedBox(
+                height: 12,
+              ),
               PriceWidget(),
-              CustomDropDownSingleCheckBox(parameters: Parameter(variants: SortTypes.toList(),key: 'Triage'), onChange: (a) {}, currentVariable: SortTypes.dateDESC),
-
+              CustomDropDownSingleCheckBox(
+                  parameters: Parameter(
+                      variants: SortTypes.toList(),
+                      key: 'Triage',
+                      current: bloc.sortBy),
+                  onChange: (a) {
+                    bloc.setSortType(a);
+                  },
+                  currentVariable: SortTypes.dateDESC),
             ],
           ),
         ),
@@ -122,7 +144,8 @@ class _SearchScreenState extends State<SearchScreen> {
               automaticallyImplyLeading: false,
               elevation: 0,
               flexibleSpace: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -150,7 +173,8 @@ class _SearchScreenState extends State<SearchScreen> {
                           onChange: (String a) {
                             searchManager.setSearch(true);
                             setState(() {});
-                            BlocProvider.of<SearchItemsCubit>(context).search(a);
+                            BlocProvider.of<SearchItemsCubit>(context)
+                                .search(a);
                             BlocProvider.of<PopularQueriesCubit>(context)
                                 .loadPopularQueries();
                           },
@@ -173,21 +197,25 @@ class _SearchScreenState extends State<SearchScreen> {
                     //         child: const Text('Annulation'),
                     //       )
                     //     : Container(),
-                    CustomIconButtonSearch(assetName: 'Assets/icons/sliders.svg', callback: () {
-                      showModalBottomSheet(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          ),
-                        ),
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return getFilterShowModalBottomSheet();
+                    CustomIconButtonSearch(
+                        assetName: 'Assets/icons/sliders.svg',
+                        callback: () {
+                          showModalBottomSheet(
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                            ),
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return getFilterShowModalBottomSheet();
+                            },
+                          );
                         },
-                      );
-                    }, height: 44, width: 44)
+                        height: 44,
+                        width: 44)
                   ],
                 ),
               ),
@@ -313,7 +341,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                 .toList()
                                                 .map((e) => Padding(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           horizontal: 6),
                                                       child: InkWell(
                                                         onTap: () {
@@ -334,7 +362,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                 .center,
                                                             padding:
                                                                 const EdgeInsets
-                                                                        .symmetric(
+                                                                    .symmetric(
                                                                     horizontal:
                                                                         14,
                                                                     vertical:
@@ -452,9 +480,10 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                     setState(
                                                                         () {});
                                                                   },
-                                                                  child: SvgPicture
-                                                                      .asset(
-                                                                          'Assets/icons/dagger.svg',
+                                                                  child:
+                                                                      SvgPicture
+                                                                          .asset(
+                                                                    'Assets/icons/dagger.svg',
                                                                     width: 25,
                                                                     height: 25,
                                                                   ),

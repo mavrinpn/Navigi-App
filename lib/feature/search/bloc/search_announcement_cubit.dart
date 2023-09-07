@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:smart/models/sorte_types.dart';
 
 import '../../../managers/announcement_manager.dart';
 
@@ -9,6 +10,8 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
   final AnnouncementManager _announcementManager;
 
   String? _sortBy;
+
+  String get sortBy => _sortBy ?? SortTypes.dateDESC;
 
   void setSortType(String? searchType) => _sortBy = searchType;
 

@@ -5,7 +5,8 @@ class Parameter {
   List variants;
   String currentValue;
 
-  Parameter({required this.key, required this.variants}) : currentValue = variants[0].toString();
+  Parameter({required this.key, required this.variants, String? current})
+      : currentValue = current ?? variants[0].toString();
 
   @override
   String toString() => '"$key": "$currentValue"';

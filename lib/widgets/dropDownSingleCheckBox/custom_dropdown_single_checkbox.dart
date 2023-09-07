@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart/models/sorte_types.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/checkBox/custom_check_box.dart';
 
