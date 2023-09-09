@@ -71,65 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
     final bloc = BlocProvider.of<SearchAnnouncementCubit>(context);
 
     Widget getFilterShowModalBottomSheet() {
-      return Container(
-        height: MediaQuery.sizeOf(context).height * 0.8,
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            children: <Widget>[
-              const SizedBox(
-                height: 16,
-              ),
-              Center(
-                child: Container(
-                  width: 120,
-                  height: 4,
-                  decoration: ShapeDecoration(
-                      color: const Color(0xFFDDE1E7),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(1))),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Filtres',
-                      style: AppTypography.font20black,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        bloc.clearSortType();
-                        setState(() {});
-                      },
-                      child: Text(
-                        'Réinitialiser tout',
-                        style: AppTypography.font12black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              PriceWidget(),
-              CustomDropDownSingleCheckBox(
-                  parameters: Parameter(
-                      variants: SortTypes.toList(),
-                      key: 'Triage',
-                      current: bloc.sortBy),
-                  onChange: (a) {
-                    bloc.setSortType(a);
-                  },
-                  currentVariable: SortTypes.dateDESC),
-            ],
-          ),
-        ),
-      );
+      return const FiltersBottomSheet();
     }
 
     return Scaffold(
@@ -514,6 +456,81 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ]),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class FiltersBottomSheet extends StatefulWidget {
+  const FiltersBottomSheet({super.key});
+
+  @override
+  State<FiltersBottomSheet> createState() => _FiltersBottomSheetState();
+}
+
+class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
+  @override
+  Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<SearchAnnouncementCubit>(context);
+
+    return Container(
+      height: MediaQuery.sizeOf(context).height * 0.8,
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Column(
+          children: <Widget>[
+            const SizedBox(
+              height: 16,
+            ),
+            Center(
+              child: Container(
+                width: 120,
+                height: 4,
+                decoration: ShapeDecoration(
+                    color: const Color(0xFFDDE1E7),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(1))),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Filtres',
+                    style: AppTypography.font20black,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      bloc.clearSortType();
+                      setState(() {});
+                    },
+                    child: Text(
+                      'Réinitialiser tout',
+                      style: AppTypography.font12black,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            PriceWidget(),
+            CustomDropDownSingleCheckBox(
+                parameters: Parameter(
+                    variants: SortTypes.toList(),
+                    key: 'Triage',
+                    current: bloc.sortBy),
+                onChange: (a) {
+                  bloc.setSortType(a);
+                  setState(() {});
+                },
+                currentVariable: SortTypes.dateDESC),
+          ],
         ),
       ),
     );
