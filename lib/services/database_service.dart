@@ -10,14 +10,14 @@ import '../models/announcement_creating_data.dart';
 import '../models/models.dart';
 import '../utils/constants.dart';
 
-const String categoryId = 'categorie_id';
-const String subcategoryId = 'sub_category';
+const String categoryId = 'categoryId';
+const String subcategoryId = 'subcategory';
 const String createdAt = '\$createdAt';
 const String totalViews = 'total_views';
 
 const String userName = 'name';
 const String userPhone = 'phone';
-const String userImageUrl = 'image';
+const String userImageUrl = 'image_url';
 
 const String apiKey =
     '20f13c781d9882edfdf4eeb06436b7e63aa80ada4da94f6979c13fdde348874bb5b162ce0a34a54911ed93bf04068d556f988eb1868844cbbe1e908c49fadc70f773ab5fc8a5968ad658ad8e4acd5bf3193820bf73fb28ab8d61c74f0373114816c7ba44d7951cbeee3b62040de8b32980b5b6296adc0ab32fb40b83d4aadf5f';
@@ -66,11 +66,12 @@ class DatabaseManger {
     return subcategories;
   }
 
-  Future<List<SubCategoryItem>> loadItemsBySubcategory(String subcategory) async {
+  Future<List<SubCategoryItem>> loadItemsBySubcategory(
+      String subcategory) async {
     final res = await _databases.listDocuments(
         databaseId: postDatabase,
         collectionId: itemsCollection,
-        queries: [Query.search(subcategoryId, subcategory)]);
+        queries: [Query.equal(subcategoryId, subcategory)]);
     List<SubCategoryItem> items = [];
     for (var doc in res.documents) {
       items.add(SubCategoryItem.fromJson(doc.data)..initialParameters());
@@ -118,15 +119,26 @@ class DatabaseManger {
   }
 
   Future<List<Announcement>> loadLimitAnnouncements(String? lastId) async {
+    Map<String, dynamic> query = {};
+
+    if ((lastId??'').isEmpty) lastId = null;
+
+    if (lastId != null) query['lastID'] = lastId;
+
+    print(query);
+
     final res = await _functions.createExecution(
-        functionId: getAnnouncementFunctionID,
-        data: jsonEncode({'lastID': lastId}));
+        functionId: getAnnouncementFunctionID, data: jsonEncode(query));
+
+    print(res.response);
 
     final response = jsonDecode(res.response);
 
     List<Announcement> newAnnounces = [];
-    for (var doc in response[responseResult][responseDocuments]) {
+    for (var doc in response[responseDocuments]) {
       final id = _getIdFromUrl(doc['images'][0]);
+
+      print(doc);
 
       final futureBytes =
           _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
@@ -140,26 +152,32 @@ class DatabaseManger {
 
   Future<List<Announcement>> searchLimitAnnouncements(
       String? lastId, String? searchText, String? sortBy) async {
-
     //print(jsonEncode({'lastID': lastId, 'searchText': searchText}));
 
-    final requestData = {
-      if (lastId != null) 'lastID': lastId,
-      if (searchText != null) 'searchText': searchText,
-      if (sortBy != null) 'sortBy': sortBy,
-    };
+    Map<String, dynamic> requestData = {};
+
+    if ((lastId??"").isEmpty) lastId = null;
+
+    if (lastId != null) requestData['lastID'] = lastId;
+    if (searchText != null) requestData['searchText'] = searchText;
+    if (sortBy != null) requestData['sortBy'] = sortBy;
+
+    print(requestData);
 
     final res = await _functions.createExecution(
-        functionId: getAnnouncementFunctionID,
-        data: jsonEncode(requestData));
+        functionId: getAnnouncementFunctionID, data: jsonEncode(requestData));
+
+    print(res.response);
 
     final response = jsonDecode(res.response);
 
     log(res.response.toString());
 
     List<Announcement> newAnnounces = [];
-    for (var doc in response[responseResult][responseDocuments]) {
+    for (var doc in response[responseDocuments]) {
       final id = _getIdFromUrl(doc['images'][0]);
+
+      print(doc);
 
       final futureBytes =
           _storage.getFileView(bucketId: announcementsBucketId, fileId: id);

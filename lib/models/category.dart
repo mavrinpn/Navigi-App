@@ -9,7 +9,7 @@ class Category {
   Category({this.imageUrl, required this.name, required this.id, required this.bytes});
 
   Category.fromJson(Map<String, dynamic> json) :
-        imageUrl = json['image_url'],
+        imageUrl = json['image'],
         name = json['name'],
         id = json['\$id'];
 }

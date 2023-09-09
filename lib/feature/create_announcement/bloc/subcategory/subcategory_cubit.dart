@@ -19,6 +19,7 @@ class SubcategoryCubit extends Cubit<SubcategoryState> {
       emit(SubcategorySuccessState(subcategories: categoriesManager.subcategories));
     } catch (e) {
       emit(SubcategoryFailState());
+      rethrow;
     }
   }
 

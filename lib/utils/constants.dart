@@ -1,6 +1,9 @@
 const String postDatabase = 'annonces';
-const String placeDatabase = 'places';
-const String usersDatabase = 'users';
+// const String placeDatabase = 'places';
+// const String usersDatabase = 'users';
+
+const String placeDatabase = postDatabase;
+const String usersDatabase = postDatabase;
 
 const String postCollection = 'anounces';
 const String itemsCollection = 'items';
@@ -14,7 +17,8 @@ const String responseDocuments = 'documents';
 
 const String placeCollection = 'places';
 
-const String usersCollection = 'users';
+// const String usersCollection = 'users';
+const String usersCollection = 'name';
 
 const String categoriesBucketId = '64a2d173cd2eac1c8c18';
 const String announcementsBucketId = '64a2d46f3f4ed91f837a';

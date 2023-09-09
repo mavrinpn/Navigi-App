@@ -10,8 +10,8 @@ class PlaceData {
 
   PlaceData.fromJson(Map<String, dynamic> json):
       id = json['\$id'],
-      x = json['x_point'],
-      y = json['y_point'],
+      x = json['x'],
+      y = json['y'],
       name = json['name'];
 
   PlaceData.fish()

@@ -86,7 +86,7 @@ class _MyAppState extends State<MyApp> {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: _locale,
-      title: 'Smart',
+      title: 'Navigi',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: AppColors.mainBackground,
@@ -127,7 +127,7 @@ class MyRepositoryProviders extends StatelessWidget {
 
   final client = a.Client()
       .setEndpoint('http://admin.navigidz.online/v1')
-      .setProject('64987d0f7f186b7e2b45');
+      .setProject('64fb37419dc681fa6860');
 
   @override
   Widget build(BuildContext context) {

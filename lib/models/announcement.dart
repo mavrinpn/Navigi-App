@@ -44,7 +44,7 @@ class Announcement {
         price = double.parse(json['price'].toString()),
         images = json['images'],
         staticParameters = StaticParameters(parameters: json['parametrs']),
-        totalViews = json['total_views'],
+        totalViews = json['total_views'] ?? 0,
         _createdAt = json['\$createdAt'],
         announcementId = json['\$id'],
         placeData = PlaceData.fromJson(json['place']) {
