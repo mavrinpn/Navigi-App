@@ -6,16 +6,21 @@ import 'package:smart/widgets/checkBox/custom_check_box.dart';
 import '../../models/item/item.dart';
 import '../../utils/colors.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class CustomDropDownSingleCheckBox extends StatefulWidget {
   const CustomDropDownSingleCheckBox(
       {super.key,
       required this.parameters,
       required this.onChange,
-      required this.currentVariable});
+      required this.currentVariable,
+      this.useLocalizationKeys = false});
 
   final Function(String?) onChange;
   final Parameter parameters;
   final String currentVariable;
+
+  final bool useLocalizationKeys;
 
   @override
   State<CustomDropDownSingleCheckBox> createState() =>

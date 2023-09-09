@@ -1,15 +1,17 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart/enum/enum.dart';
 
 import '../../models/announcement.dart';
 import '../services/database_service.dart';
 
 class AnnouncementManager {
-  final DatabaseManger dbManager;
+  final DatabaseService dbManager;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   AnnouncementManager({required Client client})
-      : dbManager = DatabaseManger(client: client);
+      : dbManager = DatabaseService(client: client);
 
   String? _lastId;
   String? _searchLastId;
@@ -21,7 +23,10 @@ class AnnouncementManager {
   List<Announcement> searchAnnouncements = [];
   Announcement? lastAnnouncement;
 
+  BehaviorSubject<LoadingStateEnum> announcementsLoadingState = BehaviorSubject.seeded(LoadingStateEnum.loading);
+
   Future<void> addLimitAnnouncements(bool isNew) async {
+    announcementsLoadingState.add(LoadingStateEnum.loading);
     if (_canGetMoreAnnouncement) {
       try {
         if (isNew) {
@@ -39,6 +44,7 @@ class AnnouncementManager {
         }
       }
     }
+    announcementsLoadingState.add(LoadingStateEnum.success);
   }
 
   Future<Announcement?> getAnnouncementById(String id) async {
@@ -77,7 +83,8 @@ class AnnouncementManager {
       }
 
       searchAnnouncements.addAll(await dbManager.searchLimitAnnouncements(
-          _searchLastId, searchText, sortBy));
+          _searchLastId, searchText, sortBy,
+          minPrice: minPrice, maxPrice: maxPrice));
 
       _searchLastId = searchAnnouncements.last.announcementId;
     } catch (e) {

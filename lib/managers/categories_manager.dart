@@ -2,7 +2,7 @@ import '../../models/models.dart';
 import '../services/database_service.dart';
 
 class CategoriesManager {
-  final DatabaseManger databaseManger;
+  final DatabaseService databaseManger;
 
   CategoriesManager({required this.databaseManger});
 

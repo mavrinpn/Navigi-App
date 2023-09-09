@@ -3,7 +3,7 @@ import 'package:smart/models/announcement.dart';
 import '../services/database_service.dart';
 
 class PlacesManager {
-  final DatabaseManger databaseManager;
+  final DatabaseService databaseManager;
 
   PlacesManager({required this.databaseManager});
 

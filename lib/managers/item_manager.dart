@@ -2,7 +2,7 @@ import '../../models/item/item.dart';
 import '../../../services/database_service.dart';
 
 class ItemManager {
-  final DatabaseManger databaseManager;
+  final DatabaseService databaseManager;
 
   ItemManager({required this.databaseManager});
 

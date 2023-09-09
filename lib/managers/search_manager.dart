@@ -9,11 +9,11 @@ import '../services/database_service.dart';
 const String _historyKey = 'history';
 
 class SearchManager {
-  final DatabaseManger dbManager;
+  final DatabaseService dbManager;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   SearchManager({required Client client})
-      : dbManager = DatabaseManger(client: client);
+      : dbManager = DatabaseService(client: client);
 
   var popularQueries = <String>[];
 

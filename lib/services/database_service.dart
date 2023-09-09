@@ -22,14 +22,14 @@ const String userImageUrl = 'image_url';
 const String apiKey =
     '20f13c781d9882edfdf4eeb06436b7e63aa80ada4da94f6979c13fdde348874bb5b162ce0a34a54911ed93bf04068d556f988eb1868844cbbe1e908c49fadc70f773ab5fc8a5968ad658ad8e4acd5bf3193820bf73fb28ab8d61c74f0373114816c7ba44d7951cbeee3b62040de8b32980b5b6296adc0ab32fb40b83d4aadf5f';
 
-class DatabaseManger {
+class DatabaseService {
   final Databases _databases;
   final Functions _functions;
   final Storage _storage;
   final Client _client;
   final Dio _dio;
 
-  DatabaseManger({required Client client})
+  DatabaseService({required Client client})
       : _client = client,
         _databases = Databases(client),
         _functions = Functions(client),
@@ -121,7 +121,7 @@ class DatabaseManger {
   Future<List<Announcement>> loadLimitAnnouncements(String? lastId) async {
     Map<String, dynamic> query = {};
 
-    if ((lastId??'').isEmpty) lastId = null;
+    if ((lastId ?? '').isEmpty) lastId = null;
 
     if (lastId != null) query['lastID'] = lastId;
 
@@ -151,15 +151,17 @@ class DatabaseManger {
   }
 
   Future<List<Announcement>> searchLimitAnnouncements(
-      String? lastId, String? searchText, String? sortBy, {double? minPrice, double? maxPrice}) async {
+      String? lastId, String? searchText, String? sortBy,
+      {double? minPrice, double? maxPrice}) async {
     //print(jsonEncode({'lastID': lastId, 'searchText': searchText}));
 
     Map<String, dynamic> requestData = {};
 
-    if ((lastId??"").isEmpty) lastId = null;
+    if ((lastId ?? "").isEmpty) lastId = null;
 
     if (lastId != null) requestData['lastID'] = lastId;
-    if (searchText != null) requestData['searchText'] = searchText;
+    if (searchText != null && searchText.isNotEmpty)
+      requestData['searchText'] = searchText;
     if (sortBy != null) requestData['sortBy'] = sortBy;
     if (minPrice != null) requestData['minPrice'] = minPrice;
     if (maxPrice != null) requestData['maxPrice'] = maxPrice;
@@ -244,5 +246,28 @@ class DatabaseManger {
           if (phone != null) userPhone: phone,
           if (imageUrl != null) userImageUrl: imageUrl
         });
+  }
+
+  Future<void> likePost(
+      {required String postId, required String userId}) async {
+    await _databases.createDocument(
+        databaseId: postDatabase,
+        collectionId: likesCollection,
+        documentId: postId,
+        permissions: [
+          Permission.delete(Role.user(userId)),
+          Permission.read(Role.user(userId))
+        ],
+        data: {
+          "user_id": userId,
+          // "anounces_id": postId
+        });
+  }
+
+  Future<void> unlikePost({required String postId}) async {
+    await _databases.deleteDocument(
+        databaseId: postDatabase,
+        collectionId: likesCollection,
+        documentId: postId);
   }
 }

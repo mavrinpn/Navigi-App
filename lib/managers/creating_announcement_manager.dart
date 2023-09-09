@@ -13,13 +13,13 @@ import '../services/storage_service.dart';
 
 class CreatingAnnouncementManager {
   final Client client;
-  final DatabaseManger dbManager;
+  final DatabaseService dbManager;
   final FileStorageManager storageManager;
   final Account account;
   final _picker = ImagePicker();
 
   CreatingAnnouncementManager({required this.client})
-      : dbManager = DatabaseManger(client: client),
+      : dbManager = DatabaseService(client: client),
         account = Account(client),
         storageManager = FileStorageManager(client: client);
 

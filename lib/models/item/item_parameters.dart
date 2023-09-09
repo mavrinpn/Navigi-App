@@ -7,7 +7,15 @@ class ItemParameters {
   ItemParameters({required this.staticParameters, required this.variableParametersList});
 
   String buildJsonFormatParameters() {
-    return '{${staticParameters.join(', ')}, ${variableParametersList.join(', ')}}';
+    String p;
+    if (staticParameters.isNotEmpty) {
+      p = staticParameters.join(', ');
+    } else {
+      p = '';
+    }
+    // print(staticParameters);
+    // print(p);
+    return '{$p${variableParametersList.join(', ')}}';
   }
 
   String getParametersValues () {

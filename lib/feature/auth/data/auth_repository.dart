@@ -13,7 +13,7 @@ import '../../../enum/enum.dart';
 class AuthRepository {
   final Client client;
   final Account _account;
-  final DatabaseManger _databaseManger;
+  final DatabaseService _databaseManger;
   final FileStorageManager _fileStorageManager;
 
   late User _user;
@@ -23,9 +23,11 @@ class AuthRepository {
 
   static const sessionIdKey = 'sessionID';
 
+  String get userId => _user.$id;
+
   AuthRepository(
       {required this.client,
-      required DatabaseManger databaseManger,
+      required DatabaseService databaseManger,
       required FileStorageManager fileStorageManager})
       : _account = Account(client),
         _fileStorageManager = fileStorageManager,

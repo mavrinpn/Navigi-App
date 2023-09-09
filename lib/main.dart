@@ -2,29 +2,29 @@ import 'package:appwrite/appwrite.dart' as a;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
+import 'package:smart/feature/auth/ui/register_screen.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/ui/creating_screens.dart';
 import 'package:smart/feature/main/bloc/announcements/announcement_cubit.dart';
 import 'package:smart/feature/main/bloc/popularQueries/popular_queries_cubit.dart';
 import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
-import 'package:smart/feature/auth/ui/register_screen.dart';
+import 'package:smart/managers/favourits_manager.dart';
 import 'package:smart/services/services.dart';
 import 'package:smart/utils/colors.dart';
-import 'package:smart/utils/constants.dart';
 import 'package:smart/widgets/splash.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc/app/app_cubit.dart';
 import 'feature/announcement/bloc/announcement_cubit.dart';
 import 'feature/announcement/ui/announcement_screen.dart';
 import 'feature/auth/data/auth_repository.dart';
+import 'feature/auth/ui/login_first_screen.dart';
 import 'feature/auth/ui/login_second_screen.dart';
 import 'feature/create_announcement/bloc/creating_blocs.dart';
 import 'feature/home/ui/home_screen.dart';
-import 'feature/auth/ui/login_first_screen.dart';
 import 'feature/main/ui/main_screen.dart';
 import 'feature/profile/ui/edit_profile_screen.dart';
 import 'feature/search/bloc/search_announcement_cubit.dart';
@@ -131,7 +131,7 @@ class MyRepositoryProviders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DatabaseManger dbManager = DatabaseManger(client: client);
+    DatabaseService dbManager = DatabaseService(client: client);
     FileStorageManager storageManager = FileStorageManager(client: client);
 
     return MultiRepositoryProvider(providers: [
@@ -159,6 +159,7 @@ class MyRepositoryProviders extends StatelessWidget {
       RepositoryProvider(
         create: (_) => SearchManager(client: client),
       ),
+      RepositoryProvider(create: (_) => FavouritesManager(dbManager: dbManager))
     ], child: const MyBlocProviders());
   }
 }
@@ -176,7 +177,11 @@ class MyBlocProviders extends StatelessWidget {
       ),
       BlocProvider(
         create: (_) => AppCubit(
-            appRepository: RepositoryProvider.of<AuthRepository>(context)),
+            appRepository: RepositoryProvider.of<AuthRepository>(context),
+            announcementManager:
+                RepositoryProvider.of<AnnouncementManager>(context),
+            favouritesManager:
+                RepositoryProvider.of<FavouritesManager>(context)),
         lazy: false,
       ),
       BlocProvider(

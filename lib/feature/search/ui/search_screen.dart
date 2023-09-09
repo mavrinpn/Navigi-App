@@ -1,28 +1,23 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/models/sorte_types.dart';
-import 'package:smart/widgets/button/custom_icon_button.dart';
-import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:smart/widgets/button/icon_button.dart';
 import 'package:smart/widgets/dropDownSingleCheckBox/custom_dropdown_single_checkbox.dart';
 import 'package:smart/widgets/textField/price_widget.dart';
-import 'package:smart/widgets/textField/under_line_text_field.dart';
 
 import '../../../managers/announcement_manager.dart';
 import '../../../managers/search_manager.dart';
 import '../../../utils/animations.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
+import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/conatainers/announcement.dart';
 import '../../../widgets/textField/elevated_text_field.dart';
 import '../../main/bloc/popularQueries/popular_queries_cubit.dart';
 import '../../main/bloc/search/search_announcements_cubit.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../bloc/search_announcement_cubit.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -70,8 +65,6 @@ class _SearchScreenState extends State<SearchScreen> {
     searchController.selection = TextSelection(
         baseOffset: searchController.text.length,
         extentOffset: searchController.text.length);
-
-    final bloc = BlocProvider.of<SearchAnnouncementCubit>(context);
 
     Widget getFilterShowModalBottomSheet() {
       return const FiltersBottomSheet();
@@ -286,7 +279,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                 .toList()
                                                 .map((e) => Padding(
                                                       padding: const EdgeInsets
-                                                          .symmetric(
+                                                              .symmetric(
                                                           horizontal: 6),
                                                       child: InkWell(
                                                         onTap: () {
@@ -307,7 +300,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                 .center,
                                                             padding:
                                                                 const EdgeInsets
-                                                                    .symmetric(
+                                                                        .symmetric(
                                                                     horizontal:
                                                                         14,
                                                                     vertical:
@@ -477,8 +470,8 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<SearchAnnouncementCubit>(context);
 
-    final TextEditingController minPriceController = TextEditingController();
-    final TextEditingController maxPriceController = TextEditingController();
+    final TextEditingController minPriceController = TextEditingController(text: bloc.minPrice.toString());
+    final TextEditingController maxPriceController = TextEditingController(text: bloc.maxPrice.toString());
 
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.8,
@@ -511,7 +504,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                   ),
                   InkWell(
                     onTap: () {
-                      bloc.clearSortType();
+                      bloc.clearFilters();
                       setState(() {});
                     },
                     child: Text(
@@ -531,16 +524,22 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
             ),
             CustomDropDownSingleCheckBox(
                 parameters: Parameter(
-                    variants: SortTypes.toList(),
+                    variants: SortTypes.toFrList(),
                     key: 'Triage',
-                    current: bloc.sortBy),
+                    current: SortTypes.frTranslates[bloc.sortBy]!),
                 onChange: (a) {
-                  bloc.setSortType(a);
+                  bloc.sortType = SortTypes.codeFromFr(a ?? '');
                   setState(() {});
                 },
-                currentVariable: bloc.sortBy),
-
-            //CustomTextButton.orangeContinue(callback: () {bloc.s}, text: 'appliquer')
+                currentVariable: SortTypes.frTranslates[bloc.sortBy]!),
+            CustomTextButton.orangeContinue(
+                callback: () {
+                  bloc.minPrice = double.parse(minPriceController.text);
+                  bloc.maxPrice = double.parse(maxPriceController.text);
+                  bloc.setFilters();
+                },
+                text: 'Appliquer',
+                isTouch: true)
           ],
         ),
       ),
