@@ -65,7 +65,11 @@ class AnnouncementManager {
   }
 
   Future<void> loadSearchAnnouncement(
-      {String? searchText, required bool isNew, String? sortBy}) async {
+      {String? searchText,
+      required bool isNew,
+      String? sortBy,
+      double? minPrice,
+      double? maxPrice}) async {
     try {
       if (isNew) {
         searchAnnouncements = <Announcement>[];

@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/models/sorte_types.dart';
 import 'package:smart/widgets/button/custom_icon_button.dart';
+import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:smart/widgets/button/icon_button.dart';
 import 'package:smart/widgets/dropDownSingleCheckBox/custom_dropdown_single_checkbox.dart';
 import 'package:smart/widgets/textField/price_widget.dart';
@@ -474,6 +477,9 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<SearchAnnouncementCubit>(context);
 
+    final TextEditingController minPriceController = TextEditingController();
+    final TextEditingController maxPriceController = TextEditingController();
+
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.8,
       color: Colors.white,
@@ -519,7 +525,10 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
             const SizedBox(
               height: 12,
             ),
-            PriceWidget(),
+            PriceWidget(
+              minPriseController: minPriceController,
+              maxPriseController: maxPriceController,
+            ),
             CustomDropDownSingleCheckBox(
                 parameters: Parameter(
                     variants: SortTypes.toList(),
@@ -529,7 +538,9 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                   bloc.setSortType(a);
                   setState(() {});
                 },
-                currentVariable: SortTypes.dateDESC),
+                currentVariable: bloc.sortBy),
+
+            //CustomTextButton.orangeContinue(callback: () {bloc.s}, text: 'appliquer')
           ],
         ),
       ),

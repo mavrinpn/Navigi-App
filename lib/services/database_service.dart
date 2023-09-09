@@ -151,7 +151,7 @@ class DatabaseManger {
   }
 
   Future<List<Announcement>> searchLimitAnnouncements(
-      String? lastId, String? searchText, String? sortBy) async {
+      String? lastId, String? searchText, String? sortBy, {double? minPrice, double? maxPrice}) async {
     //print(jsonEncode({'lastID': lastId, 'searchText': searchText}));
 
     Map<String, dynamic> requestData = {};
@@ -161,6 +161,8 @@ class DatabaseManger {
     if (lastId != null) requestData['lastID'] = lastId;
     if (searchText != null) requestData['searchText'] = searchText;
     if (sortBy != null) requestData['sortBy'] = sortBy;
+    if (minPrice != null) requestData['minPrice'] = minPrice;
+    if (maxPrice != null) requestData['maxPrice'] = maxPrice;
 
     print(requestData);
 

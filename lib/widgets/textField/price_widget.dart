@@ -5,13 +5,17 @@ import 'package:smart/widgets/textField/under_line_text_field.dart';
 import '../../utils/colors.dart';
 
 class PriceWidget extends StatelessWidget {
-   PriceWidget({super.key});
+  const PriceWidget(
+      {super.key,
+      required this.maxPriseController,
+      required this.minPriseController});
 
-  final priseController = TextEditingController();
+  final TextEditingController minPriseController;
+  final TextEditingController maxPriseController;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: 70,
       child: Column(children: [
@@ -28,7 +32,7 @@ class PriceWidget extends StatelessWidget {
         const SizedBox(
           height: 14,
         ),
-        Row( children: [
+        Row(children: [
           Expanded(
             flex: 3,
             child: SizedBox(
@@ -38,14 +42,14 @@ class PriceWidget extends StatelessWidget {
                   hintText: '',
                   keyBoardType: TextInputType.number,
                   suffixIcon: 'DZD',
-                  controller: priseController,
+                  controller: minPriseController,
                   onChange: (String value) {},
                 )),
           ),
           Expanded(
             flex: 1,
             child: SizedBox(
-              width: 17,
+                width: 17,
                 child: Text('—',
                     textAlign: TextAlign.center,
                     style: AppTypography.font18gray
@@ -60,12 +64,11 @@ class PriceWidget extends StatelessWidget {
                   hintText: '',
                   keyBoardType: TextInputType.number,
                   suffixIcon: 'DZD',
-                  controller: priseController,
+                  controller: maxPriseController,
                   onChange: (String value) {},
                 )),
           )
         ]),
-
       ]),
     );
   }
