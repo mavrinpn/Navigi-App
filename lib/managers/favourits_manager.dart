@@ -10,6 +10,13 @@ class FavouritesManager {
   String? userId;
   List<Announcement> announcements = [];
 
+  bool contains(String id) {
+    for (var i in announcements) {
+      if (i.announcementId == id) return true;
+    }
+    return false;
+  }
+
   FavouritesManager({required this.dbManager});
 
   BehaviorSubject<LoadingStateEnum> loadingState =

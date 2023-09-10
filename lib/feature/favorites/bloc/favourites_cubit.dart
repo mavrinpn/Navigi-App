@@ -22,11 +22,12 @@ class FavouritesCubit extends Cubit<FavouritesState> {
     emit(LikeProcessState());
     try {
       await favouritesManager.like(postId);
+      await favouritesManager.getFavourites();
       emit(LikeSuccessState());
       return true;
     } catch (e) {
       emit(LikeFailState());
-      return false;
+      rethrow;
     }
   }
 
@@ -34,11 +35,12 @@ class FavouritesCubit extends Cubit<FavouritesState> {
     emit(LikeProcessState());
     try {
       await favouritesManager.unlike(postId);
+      await favouritesManager.getFavourites();
       emit(LikeSuccessState());
       return true;
     } catch (e) {
       emit(LikeFailState());
-      return false;
+      rethrow;
     }
   }
 }

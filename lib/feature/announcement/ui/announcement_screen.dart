@@ -11,10 +11,12 @@ import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../managers/announcement_manager.dart';
+import '../../../managers/favourits_manager.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/accuont/account_small_info.dart';
 import '../../../widgets/button/custom_icon_button.dart';
 import '../../../widgets/images/network_image.dart';
+import '../../favorites/bloc/favourites_cubit.dart';
 import '../bloc/announcement_cubit.dart';
 import 'map.dart';
 
@@ -28,8 +30,6 @@ class AnnouncementScreen extends StatefulWidget {
 }
 
 class _AnnouncementScreenState extends State<AnnouncementScreen> {
-  bool isLiked = false;
-
   @override
   Widget build(BuildContext context) {
     PageController pageController =
@@ -66,25 +66,44 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                   ),
                   Row(
                     children: [
-                      InkWell(
-                        focusColor: AppColors.empty,
-                        hoverColor: AppColors.empty,
-                        highlightColor: AppColors.empty,
-                        splashColor: AppColors.empty,
-                        onTap: () {
-                          setState(() {
-                            isLiked = !isLiked;
-                          });
+                      BlocBuilder<FavouritesCubit, FavouritesState>(
+                        builder: (context, state1) {
+                          bool liked =
+                              RepositoryProvider.of<FavouritesManager>(context)
+                                  .contains(state.data.announcementId);
+                          return InkWell(
+                            focusColor: AppColors.empty,
+                            hoverColor: AppColors.empty,
+                            highlightColor: AppColors.empty,
+                            splashColor: AppColors.empty,
+                            onTap: () async {
+                              if (!liked) {
+                                await BlocProvider.of<FavouritesCubit>(context)
+                                    .like(state.data.announcementId);
+                              } else {
+                                await BlocProvider.of<FavouritesCubit>(context)
+                                    .unlike(state.data.announcementId);
+                              }
+                            },
+                            child: SizedBox(
+                              width: 40,
+                              height: 40,
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  'Assets/icons/follow.svg',
+                                  width: 24,
+                                  height: 24,
+                                  color: liked
+                                      ? AppColors.red
+                                      : AppColors.whiteGray,
+                                ),
+                              ),
+                            ),
+                          );
                         },
-                        child: SvgPicture.asset(
-                          'Assets/icons/follow.svg',
-                          width: 24,
-                          height: 24,
-                          color: isLiked ? AppColors.red : AppColors.whiteGray,
-                        ),
                       ),
                       const SizedBox(
-                        width: 18,
+                        width: 4,
                       ),
                       InkWell(
                         focusColor: AppColors.empty,

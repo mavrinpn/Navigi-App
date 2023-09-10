@@ -21,6 +21,7 @@ class Announcement {
   final String _createdAt;
   late final Uint8List bytes;
   final Future<Uint8List> futureBytes;
+  bool liked;
 
   Announcement(this.bytes, this.futureBytes,
       {required this.title,
@@ -33,11 +34,11 @@ class Announcement {
       required this.announcementId,
       required this.staticParameters,
       required this.creatorData,
-      required this.placeData})
+      required this.placeData, required this.liked})
       : _createdAt = created;
 
   Announcement.fromJson(
-      {required Map<String, dynamic> json, required this.futureBytes})
+      {required Map<String, dynamic> json, required this.futureBytes, this.liked = false})
       : title = json['name'],
         description = json['description'],
         creatorData = CreatorData.fromJson(data: json['creator']),
@@ -58,7 +59,7 @@ class Announcement {
   }
 
   Announcement.fromJson2(
-      {required Map<String, dynamic> json, required this.futureBytes})
+      {required Map<String, dynamic> json, required this.futureBytes, this.liked = false})
       : title = json['name'],
         description = json['description'],
         creatorData = CreatorData(),

@@ -23,7 +23,7 @@ class _FavoritesScreen extends State<FavoritesScreen> {
 
     final favouritesManager = RepositoryProvider.of<FavouritesManager>(context);
 
-    List<Announcement> screenSelection = [];
+    final controller = ScrollController();
 
     return RefreshIndicator(
       onRefresh: () async {
@@ -42,61 +42,62 @@ class _FavoritesScreen extends State<FavoritesScreen> {
                 ],
               ),
             ),
-            body: BlocBuilder<FavouritesCubit, FavouritesState>(
-              builder: (context, state) {
-                if (state is FavouritesLoadingState) {
-                  return Center(
-                    child: AppAnimations.bouncingLine,
-                  );
-                }
-                return favouritesManager.announcements.isNotEmpty
-                    ? CustomScrollView(
-                  slivers: [
-                    SliverGrid(
-                        delegate: SliverChildBuilderDelegate(
-                              (context, index) =>
-                              Container(
-                                color: AppColors.mainBackground,
-                                child: Center(
-                                  child: AnnouncementContainer(
-                                      announcement:
-                                      favouritesManager.announcements[index]),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: BlocBuilder<FavouritesCubit, FavouritesState>(
+                builder: (context, state) {
+                  if (state is FavouritesLoadingState) {
+                    return Center(
+                      child: AppAnimations.bouncingLine,
+                    );
+                  }
+                  return favouritesManager.announcements.isNotEmpty
+                      ? CustomScrollView(
+                          controller: controller,
+                          physics: const BouncingScrollPhysics(),
+                          slivers: [
+                            SliverGrid(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) => Container(
+                                    color: AppColors.mainBackground,
+                                    child: Center(
+                                      child: AnnouncementContainer(
+                                          announcement: favouritesManager
+                                              .announcements[index]),
+                                    ),
+                                  ),
+                                  childCount:
+                                      favouritesManager.announcements.length,
                                 ),
-                              ),
-                          childCount: screenSelection.length,
-                        ),
-                        gridDelegate:
-                        SliverGridDelegateWithMaxCrossAxisExtent(
-                            crossAxisSpacing: 18,
-                            mainAxisSpacing: 16,
-                            maxCrossAxisExtent:
-                            MediaQuery
-                                .of(context)
-                                .size
-                                .width / 2,
-                            childAspectRatio: 160 / 272)),
-                  ],
-                )
-                    : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
-                            'Vous n\'aver pas de produits sélectionnés'),
-                        const SizedBox(height: 14),
-                        CustomTextButton.orangeContinue(
-                            callback: () {},
-                            text: 'aller au répertoire',
-                            isTouch: true)
-                      ],
-                    ),
-                  ),
-                );
-              },
-            )
-        ),
+                                gridDelegate:
+                                    SliverGridDelegateWithMaxCrossAxisExtent(
+                                        crossAxisSpacing: 18,
+                                        mainAxisSpacing: 16,
+                                        maxCrossAxisExtent:
+                                            MediaQuery.of(context).size.width / 2,
+                                        childAspectRatio: 160 / 272)),
+                          ],
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text(
+                                    'Vous n\'aver pas de produits sélectionnés'),
+                                const SizedBox(height: 14),
+                                CustomTextButton.orangeContinue(
+                                    callback: () {},
+                                    text: 'aller au répertoire',
+                                    isTouch: true)
+                              ],
+                            ),
+                          ),
+                        );
+                },
+              ),
+            )),
       ),
     );
   }

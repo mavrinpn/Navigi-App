@@ -166,31 +166,12 @@ class DatabaseService {
     if (minPrice != null) requestData['minPrice'] = minPrice;
     if (maxPrice != null) requestData['maxPrice'] = maxPrice;
 
-    print(requestData);
+    //print(requestData);
 
     final res = await _functions.createExecution(
         functionId: getAnnouncementFunctionID, data: jsonEncode(requestData));
 
-    print(res.response);
-
-    final response = jsonDecode(res.response);
-
-    log(res.response.toString());
-
-    List<Announcement> newAnnounces = [];
-    for (var doc in response[responseDocuments]) {
-      final id = _getIdFromUrl(doc['images'][0]);
-
-      print(doc);
-
-      final futureBytes =
-          _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
-
-      newAnnounces
-          .add(Announcement.fromJson(json: doc, futureBytes: futureBytes));
-    }
-
-    return newAnnounces;
+    return _announcementsFromRes(res.response);
   }
 
   Future<void> incTotalViewsById(String id) async {
@@ -250,6 +231,17 @@ class DatabaseService {
 
   Future<void> likePost(
       {required String postId, required String userId}) async {
+    final docs = await _databases.listDocuments(
+        databaseId: postDatabase,
+        collectionId: likesCollection,
+        queries: [
+          Query.equal('user_id', userId),
+          Query.equal('anounce_id', postId)
+        ]);
+
+    if (docs.documents.isNotEmpty) return;
+
+
     await _databases.createDocument(
         databaseId: postDatabase,
         collectionId: likesCollection,
@@ -267,13 +259,9 @@ class DatabaseService {
   List<Announcement> _announcementsFromRes(String response) {
     final res = jsonDecode(response);
 
-    log(response.toString());
-
     List<Announcement> newAnnounces = [];
     for (var doc in res[responseDocuments]) {
       final id = _getIdFromUrl(doc['images'][0]);
-
-      print(doc);
 
       final futureBytes =
           _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
@@ -289,7 +277,7 @@ class DatabaseService {
       {required String postId, required String userId}) async {
     final docs = await _databases.listDocuments(
         databaseId: postDatabase,
-        collectionId: postCollection,
+        collectionId: likesCollection,
         queries: [
           Query.equal('user_id', userId),
           Query.equal('anounce_id', postId)
@@ -305,10 +293,18 @@ class DatabaseService {
 
   Future getFavouritesAnnouncements(
       {String? lastId, required String userId}) async {
-    final res = await _functions.createExecution(
-        functionId: '64fc602a06b438e9870a',
-        data: jsonEncode({'user_id': userId}));
+    final account = Account(_client);
+    final jwt = await account.createJWT();
 
-    return _announcementsFromRes(res.response);
+    final res = await _functions.createExecution(
+        functionId: '64fc602a06b438e9870a', data: jsonEncode({'jwt': jwt.jwt}));
+
+    List<Announcement> announcements = _announcementsFromRes(res.response);
+
+    for (int i = 0; i < announcements.length; i++) {
+      announcements[i].liked = true;
+    }
+
+    return announcements;
   }
 }
