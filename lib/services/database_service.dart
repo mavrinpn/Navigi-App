@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:smart/models/user.dart';
 
 import '../models/announcement.dart';
@@ -19,8 +20,7 @@ const String userName = 'name';
 const String userPhone = 'phone';
 const String userImageUrl = 'image_url';
 
-const String apiKey =
-    '20f13c781d9882edfdf4eeb06436b7e63aa80ada4da94f6979c13fdde348874bb5b162ce0a34a54911ed93bf04068d556f988eb1868844cbbe1e908c49fadc70f773ab5fc8a5968ad658ad8e4acd5bf3193820bf73fb28ab8d61c74f0373114816c7ba44d7951cbeee3b62040de8b32980b5b6296adc0ab32fb40b83d4aadf5f';
+final String apiKey = dotenv.get('apiKey');
 
 class DatabaseService {
   final Databases _databases;

@@ -2,6 +2,7 @@ import 'package:appwrite/appwrite.dart' as a;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
@@ -41,6 +42,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   PaintingBinding.instance.imageCache.maximumSizeBytes = 1024 * 1024 * 50;
   Bloc.observer = CustomBlocObserver();
+  await dotenv.load();
   runApp(MyRepositoryProviders());
 }
 
