@@ -264,6 +264,27 @@ class DatabaseService {
         });
   }
 
+  List<Announcement> _announcementsFromRes(String response) {
+    final res = jsonDecode(response);
+
+    log(response.toString());
+
+    List<Announcement> newAnnounces = [];
+    for (var doc in res[responseDocuments]) {
+      final id = _getIdFromUrl(doc['images'][0]);
+
+      print(doc);
+
+      final futureBytes =
+          _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+
+      newAnnounces
+          .add(Announcement.fromJson(json: doc, futureBytes: futureBytes));
+    }
+
+    return newAnnounces;
+  }
+
   Future<void> unlikePost(
       {required String postId, required String userId}) async {
     final docs = await _databases.listDocuments(
@@ -280,5 +301,14 @@ class DatabaseService {
         databaseId: postDatabase,
         collectionId: likesCollection,
         documentId: doc.$id);
+  }
+
+  Future getFavouritesAnnouncements(
+      {String? lastId, required String userId}) async {
+    final res = await _functions.createExecution(
+        functionId: '64fc602a06b438e9870a',
+        data: jsonEncode({'user_id': userId}));
+
+    return _announcementsFromRes(res.response);
   }
 }

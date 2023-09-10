@@ -7,6 +7,7 @@ import 'package:smart/models/announcement.dart';
 import 'package:smart/widgets/conatainers/announcement.dart';
 
 import '../../utils/utils.dart';
+import '../../widgets/button/custom_text_button.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
@@ -24,54 +25,77 @@ class _FavoritesScreen extends State<FavoritesScreen> {
 
     List<Announcement> screenSelection = [];
 
-    return SafeArea(
-      child: RefreshIndicator(
-        onRefresh: () async {favouritesManager.getFavourites();},
+    return RefreshIndicator(
+      onRefresh: () async {
+        favouritesManager.getFavourites();
+      },
+      child: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: AppColors.mainBackground,
-            elevation: 0,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Favoris', style: AppTypography.font20black),
-              ],
-            ),
-          ),
-          body: CustomScrollView(
-            slivers: [
-              BlocBuilder<FavouritesCubit, FavouritesState>(
-                builder: (context, state) {
-                  if (state is FavouritesLoadingState) {
-                    return SliverToBoxAdapter(
-                      child: Center(
-                        child: AppAnimations.bouncingLine,
-                      ),
-                    );
-                  }
-                  return SliverGrid(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) => Container(
-                          color: AppColors.mainBackground,
-                          child: Center(
-                            child: AnnouncementContainer(
-                                announcement:
-                                    favouritesManager.announcements[index]),
-                          ),
-                        ),
-                        childCount: screenSelection.length,
-                      ),
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          crossAxisSpacing: 18,
-                          mainAxisSpacing: 16,
-                          maxCrossAxisExtent:
-                              MediaQuery.of(context).size.width / 2,
-                          childAspectRatio: 160 / 272));
-                },
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: AppColors.mainBackground,
+              elevation: 0,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Favoris', style: AppTypography.font20black),
+                ],
               ),
-            ],
-          ),
+            ),
+            body: BlocBuilder<FavouritesCubit, FavouritesState>(
+              builder: (context, state) {
+                if (state is FavouritesLoadingState) {
+                  return Center(
+                    child: AppAnimations.bouncingLine,
+                  );
+                }
+                return favouritesManager.announcements.isNotEmpty
+                    ? CustomScrollView(
+                  slivers: [
+                    SliverGrid(
+                        delegate: SliverChildBuilderDelegate(
+                              (context, index) =>
+                              Container(
+                                color: AppColors.mainBackground,
+                                child: Center(
+                                  child: AnnouncementContainer(
+                                      announcement:
+                                      favouritesManager.announcements[index]),
+                                ),
+                              ),
+                          childCount: screenSelection.length,
+                        ),
+                        gridDelegate:
+                        SliverGridDelegateWithMaxCrossAxisExtent(
+                            crossAxisSpacing: 18,
+                            mainAxisSpacing: 16,
+                            maxCrossAxisExtent:
+                            MediaQuery
+                                .of(context)
+                                .size
+                                .width / 2,
+                            childAspectRatio: 160 / 272)),
+                  ],
+                )
+                    : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                            'Vous n\'aver pas de produits sélectionnés'),
+                        const SizedBox(height: 14),
+                        CustomTextButton.orangeContinue(
+                            callback: () {},
+                            text: 'aller au répertoire',
+                            isTouch: true)
+                      ],
+                    ),
+                  ),
+                );
+              },
+            )
         ),
       ),
     );

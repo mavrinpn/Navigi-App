@@ -24,10 +24,13 @@ class FavouritesManager {
   Future<void> getFavourites() async {
     loadingState.add(LoadingStateEnum.loading);
     try {
-      await Future.delayed(Duration(seconds: 1));
+      announcements =
+          await dbManager.getFavouritesAnnouncements(userId: userId!);
+      print(announcements);
       loadingState.add(LoadingStateEnum.success);
     } catch (e) {
       loadingState.add(LoadingStateEnum.fail);
+      rethrow;
     }
   }
 }

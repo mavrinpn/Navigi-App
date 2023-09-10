@@ -9,6 +9,7 @@ import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/feature/auth/ui/register_screen.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/ui/creating_screens.dart';
+import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
 import 'package:smart/feature/main/bloc/announcements/announcement_cubit.dart';
 import 'package:smart/feature/main/bloc/popularQueries/popular_queries_cubit.dart';
 import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
@@ -259,6 +260,13 @@ class MyBlocProviders extends StatelessWidget {
         create: (_) => SearchAnnouncementCubit(
           announcementManager:
               RepositoryProvider.of<AnnouncementManager>(context),
+        ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => FavouritesCubit(
+          favouritesManager:
+              RepositoryProvider.of<FavouritesManager>(context),
         ),
         lazy: false,
       ),

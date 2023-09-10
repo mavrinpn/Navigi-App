@@ -1,27 +1,26 @@
 // ignore_for_file: deprecated_member_use
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 import '../../feature/announcement/bloc/announcement_cubit.dart';
 import '../../utils/colors.dart';
 
 class AnnouncementContainer extends StatefulWidget {
-  const AnnouncementContainer({super.key, required this.announcement});
+  AnnouncementContainer(
+      {super.key, required this.announcement, this.liked = false});
 
   final Announcement announcement;
+  bool liked;
 
   @override
   State<AnnouncementContainer> createState() => _AnnouncementContainerState();
 }
 
 class _AnnouncementContainerState extends State<AnnouncementContainer> {
-  bool isLiked = false;
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -142,23 +141,37 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(widget.announcement.stringPrice,
-                  style: AppTypography.font16boldRed,
-              textDirection: TextDirection.ltr,),
+              Text(
+                widget.announcement.stringPrice,
+                style: AppTypography.font16boldRed,
+                textDirection: TextDirection.ltr,
+              ),
               InkWell(
                   focusColor: AppColors.empty,
                   hoverColor: AppColors.empty,
                   highlightColor: AppColors.empty,
                   splashColor: AppColors.empty,
-                  onTap: () {
-                    setState(() {
-                      isLiked = !isLiked;
-                    });
+                  onTap: () async {
+                    bool res;
+                    if (!widget.liked) {
+                      res = await BlocProvider.of<FavouritesCubit>(context)
+                          .like(widget.announcement.announcementId);
+                    } else {
+                      res = await BlocProvider.of<FavouritesCubit>(context)
+                          .unlike(widget.announcement.announcementId);
+                    }
+
+                    if (res) {
+                      setState(() {
+                        widget.liked = !widget.liked;
+                      });
+                    }
                   },
                   child: SvgPicture.asset('Assets/icons/follow.svg',
                       width: 24,
                       height: 24,
-                      color: isLiked ? AppColors.red : AppColors.whiteGray))
+                      color:
+                          widget.liked ? AppColors.red : AppColors.whiteGray))
             ],
           )
         ],
