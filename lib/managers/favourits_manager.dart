@@ -8,7 +8,7 @@ class FavouritesManager {
   final DatabaseService dbManager;
 
   String? userId;
-  List<Announcement>? announcements;
+  List<Announcement> announcements = [];
 
   FavouritesManager({required this.dbManager});
 
@@ -19,7 +19,7 @@ class FavouritesManager {
       await dbManager.likePost(postId: postId, userId: userId!);
 
   Future<void> unlike(String postId) async =>
-      await dbManager.unlikePost(postId: postId);
+      await dbManager.unlikePost(postId: postId, userId: userId!);
 
   Future<void> getFavourites() async {
     loadingState.add(LoadingStateEnum.loading);

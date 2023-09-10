@@ -253,21 +253,32 @@ class DatabaseService {
     await _databases.createDocument(
         databaseId: postDatabase,
         collectionId: likesCollection,
-        documentId: postId,
+        documentId: ID.unique(),
         permissions: [
           Permission.delete(Role.user(userId)),
           Permission.read(Role.user(userId))
         ],
         data: {
           "user_id": userId,
-          // "anounces_id": postId
+          "anounce_id": postId
         });
   }
 
-  Future<void> unlikePost({required String postId}) async {
+  Future<void> unlikePost(
+      {required String postId, required String userId}) async {
+    final docs = await _databases.listDocuments(
+        databaseId: postDatabase,
+        collectionId: postCollection,
+        queries: [
+          Query.equal('user_id', userId),
+          Query.equal('anounce_id', postId)
+        ]);
+
+    final doc = docs.documents[0];
+
     await _databases.deleteDocument(
         databaseId: postDatabase,
         collectionId: likesCollection,
-        documentId: postId);
+        documentId: doc.$id);
   }
 }
