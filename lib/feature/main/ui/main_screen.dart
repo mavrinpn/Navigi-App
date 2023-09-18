@@ -10,7 +10,9 @@ import 'package:smart/utils/fonts.dart';
 import '../../../managers/announcement_manager.dart';
 import '../../../managers/search_manager.dart';
 import '../../../utils/animations.dart';
+import '../../../widgets/button/icon_button.dart';
 import '../../../widgets/category/category.dart';
+import '../../../widgets/conatainers/advertisement_containers.dart';
 import '../../../widgets/conatainers/announcement.dart';
 import '../../../widgets/textField/elevated_text_field.dart';
 import '../../create_announcement/bloc/category/category_cubit.dart';
@@ -19,6 +21,7 @@ import '../bloc/announcements/announcement_cubit.dart';
 import '../bloc/popularQueries/popular_queries_cubit.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:smart/feature/search/ui/search_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -72,7 +75,7 @@ class _MainScreenState extends State<MainScreen> {
             elevation: 0,
             flexibleSpace: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
+              child: Row( crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ElevatedTextField(
                     readOnly: true,
@@ -85,12 +88,32 @@ class _MainScreenState extends State<MainScreen> {
                     },
                     width: isSearch
                         ? MediaQuery.of(context).size.width - 120
-                        : MediaQuery.of(context).size.width - 30,
+                        : MediaQuery.of(context).size.width - 91,
                     height: 44,
                     hintText: 'Recherche a Alger',
                     controller: TextEditingController(),
                     icon: "Assets/icons/only_search.svg",
                   ),
+                  const SizedBox(width: 17),
+                  CustomIconButtonSearch(
+                      assetName: 'Assets/icons/sliders.svg',
+                      callback: () {
+                        showModalBottomSheet(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
+                          ),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const FiltersBottomSheet();
+                          },
+                        );
+                      },
+                      height: 44,
+                      width: 44),
                   isSearch
                       ? TextButton(
                           onPressed: () {
@@ -101,6 +124,7 @@ class _MainScreenState extends State<MainScreen> {
                           child: const Text('Annulation'),
                         )
                       : Container(),
+
                 ],
               ),
             ),
@@ -174,6 +198,7 @@ class _MainScreenState extends State<MainScreen> {
                         ],
                       ),
                     ),
+                    SliverToBoxAdapter(child:AdvertisementContainer(onTap: (){},imageUrl: 'https://avatars.mds.yandex.net/i?id=6deffd61630391bd9df44801831eb1ef_sr-5241446-images-thumbs&n=13',),),
                     SliverToBoxAdapter(
                       child: Column(
                         children: [
