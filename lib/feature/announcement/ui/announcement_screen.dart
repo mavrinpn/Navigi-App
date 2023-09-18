@@ -376,7 +376,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       height: 26,
                     ),
                     AccountSmallInfo(
-                      creatorData: state.data.creatorData,
+                      creatorData: state.data.creatorData, isclick: true,
                     ),
                     const SizedBox(
                       height: 100,

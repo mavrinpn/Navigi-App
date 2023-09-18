@@ -14,6 +14,7 @@ import 'package:smart/feature/main/bloc/announcements/announcement_cubit.dart';
 import 'package:smart/feature/main/bloc/popularQueries/popular_queries_cubit.dart';
 import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
+import 'package:smart/feature/profile/ui/user_profile.dart';
 import 'package:smart/managers/favourits_manager.dart';
 import 'package:smart/services/services.dart';
 import 'package:smart/utils/colors.dart';
@@ -119,6 +120,7 @@ class _MyAppState extends State<MyApp> {
         '/edit_profile_screen': (context) => const EditProfileScreen(),
         '/settings_screen': (context) => const SettingsScreen(),
         '/search_screen': (context) => const SearchScreen(),
+        '/user_profile': (context) => const UserProfileScreen()
       },
       color: const Color(0xff292B57),
     );
