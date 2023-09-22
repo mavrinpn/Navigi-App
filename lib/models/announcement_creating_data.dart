@@ -26,7 +26,9 @@ class AnnouncementCreatingData {
         'parametrs': parameters != '{, }' ? parameters : '{}',
         'creator_id': creatorId,
         'place_id': placeId,
-        'images': urls
+        'images': urls,
+        'creator': creatorId,
+        'place': placeId
       };
 
   void clear () {
