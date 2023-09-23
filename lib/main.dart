@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/feature/auth/ui/register_screen.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
@@ -22,6 +23,7 @@ import 'package:smart/widgets/splash.dart';
 
 import 'bloc/app/app_cubit.dart';
 import 'feature/announcement/bloc/announcement_cubit.dart';
+import 'feature/announcement/data/creator_repository.dart';
 import 'feature/announcement/ui/announcement_screen.dart';
 import 'feature/auth/data/auth_repository.dart';
 import 'feature/auth/ui/login_first_screen.dart';
@@ -120,7 +122,7 @@ class _MyAppState extends State<MyApp> {
         '/edit_profile_screen': (context) => const EditProfileScreen(),
         '/settings_screen': (context) => const SettingsScreen(),
         '/search_screen': (context) => const SearchScreen(),
-        '/user_profile': (context) => const CreatorProfileScreen()
+        '/creator_screen': (context) => const CreatorProfileScreen()
       },
       color: const Color(0xff292B57),
     );
@@ -164,6 +166,7 @@ class MyRepositoryProviders extends StatelessWidget {
       RepositoryProvider(
         create: (_) => SearchManager(client: client),
       ),
+      RepositoryProvider(create: (_) => CreatorRepository(databaseService: dbManager)),
       RepositoryProvider(create: (_) => FavouritesManager(dbManager: dbManager))
     ], child: const MyBlocProviders());
   }
@@ -267,8 +270,13 @@ class MyBlocProviders extends StatelessWidget {
       ),
       BlocProvider(
         create: (_) => FavouritesCubit(
-          favouritesManager:
-              RepositoryProvider.of<FavouritesManager>(context),
+          favouritesManager: RepositoryProvider.of<FavouritesManager>(context),
+        ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => CreatorCubit(
+          creatorRepository: RepositoryProvider.of<CreatorRepository>(context),
         ),
         lazy: false,
       ),

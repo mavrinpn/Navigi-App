@@ -194,7 +194,6 @@ class DatabaseService {
         data: creatingData.toJson(uid, urls));
   }
 
-
   Future<void> createUser(
       {required String name,
       required String uid,
@@ -241,7 +240,6 @@ class DatabaseService {
         ]);
 
     if (docs.documents.isNotEmpty) return;
-
 
     await _databases.createDocument(
         databaseId: postDatabase,
@@ -307,5 +305,27 @@ class DatabaseService {
     }
 
     return announcements;
+  }
+
+  Future getUserAnnouncements({required String userId}) async{
+    final res = await _databases.listDocuments(
+        databaseId: postDatabase,
+        collectionId: postCollection,
+        queries: [Query.equal("creator_id", userId)]);
+
+    List<Announcement> announcements = [];
+    for (var doc in res.documents) {
+      final id = _getIdFromUrl(doc.data['images'][0]);
+
+      final futureBytes =
+      _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+
+      announcements.add(Announcement.fromJson(json: doc.data, futureBytes: futureBytes));
+    }
+
+
+
+    return announcements;
+
   }
 }

@@ -12,6 +12,7 @@ class Announcement {
   final String description;
   final int totalViews;
   final double price;
+  final bool active;
   List images;
   final String announcementId;
   final StaticParameters staticParameters;
@@ -23,22 +24,25 @@ class Announcement {
   final Future<Uint8List> futureBytes;
   bool liked;
 
-  Announcement(this.bytes, this.futureBytes,
+  Announcement(this.bytes, this.futureBytes, this.active,
       {required this.title,
-      required String created,
-      required this.description,
-      required this.totalViews,
-      required this.price,
-      required this.images,
-      required this.previewImage,
-      required this.announcementId,
-      required this.staticParameters,
-      required this.creatorData,
-      required this.placeData, required this.liked})
+        required String created,
+        required this.description,
+        required this.totalViews,
+        required this.price,
+        required this.images,
+        required this.previewImage,
+        required this.announcementId,
+        required this.staticParameters,
+        required this.creatorData,
+        required this.placeData,
+        required this.liked})
       : _createdAt = created;
 
   Announcement.fromJson(
-      {required Map<String, dynamic> json, required this.futureBytes, this.liked = false})
+      {required Map<String, dynamic> json,
+        required this.futureBytes,
+        this.liked = false})
       : title = json['name'],
         description = json['description'],
         creatorData = CreatorData.fromJson(data: json['creator']),
@@ -48,8 +52,9 @@ class Announcement {
         totalViews = json['total_views'] ?? 0,
         _createdAt = json['\$createdAt'],
         announcementId = json['\$id'],
+        active = json['active'],
         placeData = PlaceData.fromJson(json['place']) {
-    var l  = [];
+    var l = [];
     for (String i in images) {
       i.replaceAll('89.253.237.166', 'admin.navigidz.online');
       l.add(i);
@@ -58,8 +63,10 @@ class Announcement {
     loadBytes();
   }
 
-  Announcement.fromJson2(
-      {required Map<String, dynamic> json, required this.futureBytes, this.liked = false})
+  Announcement.fromJson2(this.active, this.previewImage, this.bytes,
+      {required Map<String, dynamic> json,
+        required this.futureBytes,
+        this.liked = false})
       : title = json['name'],
         description = json['description'],
         creatorData = CreatorData(),

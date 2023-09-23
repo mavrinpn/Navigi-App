@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/utils/animations.dart';
 
@@ -46,10 +47,13 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
       appBar: AppBar(
         automaticallyImplyLeading: true,
         leading: InkWell(
-          onTap: (){
+          onTap: () {
             Navigator.pop(context);
           },
-          child: const Icon(Icons.arrow_back_sharp,color: Colors.black,),
+          child: const Icon(
+            Icons.arrow_back_sharp,
+            color: Colors.black,
+          ),
         ),
         backgroundColor: AppColors.mainBackground,
         elevation: 0,
@@ -71,65 +75,63 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
           ],
         ),
       ),
-      body: BlocBuilder<UserCubit, UserState>(
-        builder: (context, state) {
-          if (state is ProfileSuccessState ||
-              state is EditSuccessState ||
-              state is EditFailState) {
-            return Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: AccountMediumInfo(
-                      user: RepositoryProvider.of<AuthRepository>(context)
-                          .userData,
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: BlocBuilder<CreatorCubit, CreatorState>(
+          builder: (context, state) {
+            return CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: AccountMediumInfo(
+                    user: RepositoryProvider
+                        .of<AuthRepository>(context)
+                        .userData,
+                  ),
+                ),
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 26,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: CustomTextButton.withIcon(
+                    callback: () {},
+                    text: 'Écrire',
+                    styleText: AppTypography.font14white,
+                    isTouch: true,
+                    icon: const Icon(
+                      Icons.mail_outline,
+                      color: Colors.white,
+                      size: 24,
                     ),
                   ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 26,
+                ),
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 10,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: CustomTextButton.withIcon(
+                    callback: () {},
+                    text: 'Appeler',
+                    styleText: AppTypography.font14white,
+                    isTouch: true,
+                    activeColor: AppColors.dark,
+                    icon: const Icon(
+                      Icons.phone,
+                      color: Colors.white,
+                      size: 24,
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: CustomTextButton.withIcon(
-                      callback: () {},
-                      text: 'Écrire',
-                      styleText: AppTypography.font14white,
-                      isTouch: true,
-                      icon: const Icon(
-                        Icons.mail_outline,
-                        color: Colors.white,
-                        size: 24,
-                      ),
-                    ),
+                ),
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 25,
                   ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 10,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: CustomTextButton.withIcon(
-                      callback: () {},
-                      text: 'Appeler',
-                      styleText: AppTypography.font14white,
-                      isTouch: true,
-                      activeColor: AppColors.dark,
-                      icon: const Icon(
-                        Icons.phone,
-                        color: Colors.white,
-                        size: 24,
-                      ),
-                    ),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 25,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
                       width: 190,
                       color: Colors.white,
                       alignment: Alignment.center,
@@ -139,9 +141,10 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                         indicatorWeight: 2,
                         unselectedLabelColor: AppColors.lightGray,
                         indicator: const UnderlineTabIndicator(
-                            borderSide:
-                                BorderSide(color: AppColors.red, width: 2),
-                            insets: EdgeInsets.symmetric(horizontal: 20)),
+                            borderSide: BorderSide(
+                                color: AppColors.red, width: 2),
+                            insets:
+                            EdgeInsets.symmetric(horizontal: 20)),
                         onTap: (int val) {
                           setState(() {});
                         },
@@ -149,38 +152,42 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                         tabs: [
                           Tab(
                             child: Text('Actif (3)',
-                                style: AppTypography.font24black.copyWith(
+                                style: AppTypography.font24black
+                                    .copyWith(
                                     fontSize: 14,
-                                    color: _tabController.index == 0
+                                    color:
+                                    _tabController.index == 0
                                         ? Colors.black
                                         : Colors.grey)),
                           ),
                           Tab(
                             child: Text('Vendu (2)',
-                                style: AppTypography.font24black.copyWith(
+                                style: AppTypography.font24black
+                                    .copyWith(
                                     fontSize: 14,
-                                    color: _tabController.index == 1
+                                    color:
+                                    _tabController.index == 1
                                         ? Colors.black
                                         : Colors.grey)),
                           ),
                         ],
-                      ),
-                    ),
+                      )
                   ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 15,
-                    ),
+                ),
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 15,
                   ),
+                ),
+                if (state is CreatorSuccessState)... [
                   SliverGrid(
                       delegate: SliverChildBuilderDelegate(
-
-                        (context, index) => Container(
+                            (context, index) => Container(
                           color: AppColors.mainBackground,
                           child: Center(
                             child: AnnouncementContainer(
                                 announcement:
-                                    favouritesManager.announcements[index]),
+                                favouritesManager.announcements[index]),
                           ),
                         ),
                         childCount: favouritesManager.announcements.length,
@@ -189,26 +196,31 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                           crossAxisSpacing: 18,
                           mainAxisSpacing: 16,
                           maxCrossAxisExtent:
-                              MediaQuery.of(context).size.width / 2,
+                          MediaQuery.of(context).size.width / 2,
                           childAspectRatio: 160 / 272)),
-                ],
-              ),
+
+                ]
+                else... [SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: AppAnimations.circleFadingAnimation,
+                  ),
+                ),]
+              ],
             );
-          } else {
-            return Center(child: AppAnimations.circleFadingAnimation);
-          }
-        },
+          },
+        ),
       ),
     );
   }
 }
 
 class RowButton extends StatelessWidget {
-  const RowButton(
-      {super.key,
-      required this.title,
-      required this.icon,
-      required this.onTap});
+  const RowButton({super.key,
+    required this.title,
+    required this.icon,
+    required this.onTap});
 
   final String icon;
   final String title;

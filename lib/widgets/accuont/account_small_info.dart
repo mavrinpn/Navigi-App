@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/generated/assets.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
@@ -29,8 +31,9 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
     final localizations = AppLocalizations.of(context)!;
 
     void onClick(){
-      Navigator.pushNamed(context, '/user_profile');
-    };
+      BlocProvider.of<CreatorCubit>(context).setUser(widget.creatorData);
+      Navigator.pushNamed(context, '/creator_screen');
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
