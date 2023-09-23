@@ -18,8 +18,6 @@ import '../../announcement/data/creator_repository.dart';
 import '../../auth/bloc/auth_cubit.dart';
 import '../../auth/data/auth_repository.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -45,6 +43,19 @@ class _ProfileScreenState extends State<ProfileScreen>
     final localizations = AppLocalizations.of(context)!;
 
     final creatorManager = RepositoryProvider.of<CreatorRepository>(context);
+    double getGridHeight() {
+      int h;
+      if (_tabController.index == 0) {
+        h = min(creatorManager.availableAnnouncements!.length, 4);
+      } else {
+        h = min(creatorManager.soldAnnouncements!.length, 4);
+      }
+      return h >= 3
+          ? 600
+          : h >= 1
+              ? 300
+              : 100;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -75,162 +86,196 @@ class _ProfileScreenState extends State<ProfileScreen>
           if (state is ProfileSuccessState ||
               state is EditSuccessState ||
               state is EditFailState) {
-            return Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    AccountMediumInfo(
-                      user: RepositoryProvider.of<AuthRepository>(context)
-                          .userData,
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    CustomTextButton.withIcon(
-                      callback: () {
-                        Navigator.pushNamed(context, '/create_category_screen');
-                      },
-                      text: AppLocalizations.of(context)!.addAnnouncement,
-                      styleText: AppTypography.font14white,
-                      isTouch: true,
-                      icon: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 24,
-                      ),
-                    ),
-                    BlocBuilder<CreatorCubit, CreatorState>(
-                      builder: (context, state) {
-                        return Column(
-                          children: [
-                            Container(
-                                width: 190,
-                                color: Colors.white,
-                                alignment: Alignment.center,
-                                child: TabBar(
-                                  labelColor: Colors.black,
-                                  indicatorColor: Colors.black,
-                                  indicatorWeight: 2,
-                                  unselectedLabelColor: AppColors.lightGray,
-                                  indicator: const UnderlineTabIndicator(
-                                      borderSide: BorderSide(
-                                          color: AppColors.red, width: 2),
-                                      insets:
-                                          EdgeInsets.symmetric(horizontal: 20)),
-                                  onTap: (int val) {
-                                    setState(() {});
-                                  },
-                                  controller: _tabController,
-                                  tabs: [
-                                    Tab(
-                                      child: Text(
-                                          'Actif (${state is CreatorSuccessState ? creatorManager.availableAnnouncements!.length : 0})',
-                                          style: AppTypography.font24black
-                                              .copyWith(
-                                                  fontSize: 14,
-                                                  color:
-                                                      _tabController.index == 0
-                                                          ? Colors.black
-                                                          : Colors.grey)),
-                                    ),
-                                    Tab(
-                                      child: Text(
-                                          'Vendu (${state is CreatorSuccessState ? creatorManager.soldAnnouncements!.length : 0})',
-                                          style: AppTypography.font24black
-                                              .copyWith(
-                                                  fontSize: 14,
-                                                  color:
-                                                      _tabController.index == 1
-                                                          ? Colors.black
-                                                          : Colors.grey)),
-                                    ),
-                                  ],
-                                )),
-                            const SizedBox(
-                              height: 15,
+            return BlocBuilder<CreatorCubit, CreatorState>(
+              builder: (context, creatorState) {
+                return Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: AccountMediumInfo(
+                            user: RepositoryProvider.of<AuthRepository>(context)
+                                .userData,
+                          ),
+                        ),
+                        const SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: 40,
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: CustomTextButton.withIcon(
+                            callback: () {
+                              Navigator.pushNamed(
+                                  context, '/create_category_screen');
+                            },
+                            text: AppLocalizations.of(context)!.addAnnouncement,
+                            styleText: AppTypography.font14white,
+                            isTouch: true,
+                            icon: const Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 24,
                             ),
-                            if (state is CreatorSuccessState) ...[
-                              Container(
-                                  constraints: const BoxConstraints(
-                                      minHeight: 100, maxHeight: 280),
-                                  child: GridView.builder(
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Container(
+                              width: 190,
+                              color: Colors.white,
+                              alignment: Alignment.center,
+                              child: TabBar(
+                                labelColor: Colors.black,
+                                indicatorColor: Colors.black,
+                                indicatorWeight: 2,
+                                unselectedLabelColor: AppColors.lightGray,
+                                indicator: const UnderlineTabIndicator(
+                                    borderSide: BorderSide(
+                                        color: AppColors.red, width: 2),
+                                    insets:
+                                        EdgeInsets.symmetric(horizontal: 20)),
+                                onTap: (int val) {
+                                  setState(() {});
+                                },
+                                controller: _tabController,
+                                tabs: [
+                                  Tab(
+                                    child: Text(
+                                        'Actif (${creatorState is CreatorSuccessState ? creatorManager.availableAnnouncements!.length : 0})',
+                                        style: AppTypography.font24black
+                                            .copyWith(
+                                                fontSize: 14,
+                                                color: _tabController.index == 0
+                                                    ? Colors.black
+                                                    : Colors.grey)),
+                                  ),
+                                  Tab(
+                                    child: Text(
+                                        'Vendu (${creatorState is CreatorSuccessState ? creatorManager.soldAnnouncements!.length : 0})',
+                                        style: AppTypography.font24black
+                                            .copyWith(
+                                                fontSize: 14,
+                                                color: _tabController.index == 1
+                                                    ? Colors.black
+                                                    : Colors.grey)),
+                                  ),
+                                ],
+                              )),
+                        ),
+                        const SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: 15,
+                          ),
+                        ),
+                        if (creatorState is CreatorSuccessState) ...[
+                          getGridHeight() == 100
+                              ? const SliverPadding(
+                            padding: EdgeInsets.symmetric(vertical: 40),
+                                  sliver: SliverToBoxAdapter(
+                                    child: Center(
+                                      child: Text(
+                                        'Vous n\'avez pas d\'annonces',
+                                        style: TextStyle(
+                                          color: Color(0xFF9B9FAA),
+                                          fontSize: 14,
+                                          fontFamily: 'SF Pro Display',
+                                          fontWeight: FontWeight.w400,
+                                          height: 0.09,
+                                        ),
                                       ),
-                                      itemCount: _tabController.index == 0
-                                          ? creatorManager
-                                              .availableAnnouncements!.length
-                                          : creatorManager
-                                              .soldAnnouncements!.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return AnnouncementContainer(
-                                            announcement: _tabController
-                                                        .index ==
-                                                    0
-                                                ? creatorManager
-                                                        .availableAnnouncements![
-                                                    index]
-                                                : creatorManager
-                                                    .soldAnnouncements![index]);
-                                      }))
-                            ] else ...[
-                              SizedBox(
-                                height: 50,
-                                width: 50,
-                                child: AppAnimations.circleFadingAnimation,
-                              ),
-                            ],
-                          ],
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    RowButton(
-                      title: localizations.myInformations,
-                      icon: 'Assets/icons/profile_settings.svg',
-                      onTap: () {
-                        Navigator.pushNamed(context, '/edit_profile_screen');
-                      },
-                    ),
-                    RowButton(
-                      title: localizations.myComments,
-                      icon: 'Assets/icons/messages.svg',
-                      onTap: () {},
-                    ),
-                    RowButton(
-                      title: localizations.fAQ,
-                      icon: 'Assets/icons/faq.svg',
-                      onTap: () {},
-                    ),
-                    RowButton(
-                      title: localizations.privacyPolicy,
-                      icon: 'Assets/icons/security.svg',
-                      onTap: () {},
-                    ),
-                    RowButton(
-                      title: 'Conditions dutilisation',
-                      icon: 'Assets/icons/terms_of_use.svg',
-                      onTap: () {},
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomElevatedButton(
-                        icon: "Assets/icons/exit.svg",
-                        title: "Se déconnecter du compte",
-                        onPress: () {
-                          BlocProvider.of<AuthCubit>(context).logout();
-                        },
-                        height: 52,
-                        width: double.infinity)
-                  ],
-                ),
-              ),
+                                    ),
+                                  ),
+                                )
+                              : SliverGrid.builder(
+                                  gridDelegate:
+                                      SliverGridDelegateWithMaxCrossAxisExtent(
+                                          crossAxisSpacing: 10,
+                                          mainAxisSpacing: 15,
+                                          maxCrossAxisExtent:
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  2,
+                                          childAspectRatio: 160 / 272),
+                                  itemCount: _tabController.index == 0
+                                      ? creatorManager
+                                          .availableAnnouncements!.length
+                                      : creatorManager
+                                          .soldAnnouncements!.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return AnnouncementContainer(
+                                        announcement: _tabController.index == 0
+                                            ? creatorManager
+                                                .availableAnnouncements![index]
+                                            : creatorManager
+                                                .soldAnnouncements![index]);
+                                  })
+                        ] else ...[
+                          SliverToBoxAdapter(
+                            child: SizedBox(
+                              height: 50,
+                              width: 50,
+                              child: AppAnimations.circleFadingAnimation,
+                            ),
+                          )
+                        ],
+                        SliverToBoxAdapter(
+                          child: RowButton(
+                            title: localizations.myInformations,
+                            icon: 'Assets/icons/profile_settings.svg',
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, '/edit_profile_screen');
+                            },
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: RowButton(
+                            title: localizations.myComments,
+                            icon: 'Assets/icons/messages.svg',
+                            onTap: () {},
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: RowButton(
+                            title: localizations.fAQ,
+                            icon: 'Assets/icons/faq.svg',
+                            onTap: () {},
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: RowButton(
+                            title: localizations.privacyPolicy,
+                            icon: 'Assets/icons/security.svg',
+                            onTap: () {},
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: RowButton(
+                            title: 'Conditions dutilisation',
+                            icon: 'Assets/icons/terms_of_use.svg',
+                            onTap: () {},
+                          ),
+                        ),
+                        const SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: 20,
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: CustomElevatedButton(
+                              icon: "Assets/icons/exit.svg",
+                              title: "Se déconnecter du compte",
+                              onPress: () {
+                                BlocProvider.of<AuthCubit>(context).logout();
+                              },
+                              height: 52,
+                              width: double.infinity),
+                        )
+                      ],
+                    ));
+              },
             );
           } else {
             return Center(child: AppAnimations.circleFadingAnimation);

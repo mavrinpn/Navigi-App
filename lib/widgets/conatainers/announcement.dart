@@ -11,8 +11,10 @@ import '../../feature/announcement/bloc/announcement_cubit.dart';
 import '../../utils/colors.dart';
 
 class AnnouncementContainer extends StatefulWidget {
-  AnnouncementContainer({super.key, required this.announcement});
+  AnnouncementContainer(
+      {super.key, required this.announcement, this.width, this.height});
 
+  final double? width, height;
   final Announcement announcement;
 
   @override
@@ -25,8 +27,8 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final double imageWidth = width / 2 - 25;
-    final double imageHeight = (width / 2 - 25) * 1.032;
+    final double imageWidth = widget.width ?? width / 2 - 25;
+    final double imageHeight = widget.height ?? (width / 2 - 25) * 1.032;
 
     return InkWell(
         focusColor: AppColors.empty,
@@ -41,38 +43,42 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FutureBuilder(
-                future: widget.announcement.futureBytes,
-                builder: (context, snapshot) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(14),
-                    child: snapshot.hasData
-                        ? Image.memory(
-                            width: imageWidth,
-                            widget.announcement.bytes,
-                            fit: BoxFit.cover,
-                            height: imageHeight,
-                            frameBuilder: ((context, child, frame,
-                                wasSynchronouslyLoaded) {
-                              return AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 300),
-                                child: frame != null
-                                    ? child
-                                    : Container(
-                                        height: imageHeight,
-                                        width: imageWidth,
-                                        color: Colors.grey[300],
-                                      ),
-                              );
-                            }),
-                          )
-                        : Container(
-                            height: imageHeight,
-                            width: imageWidth,
-                            color: Colors.grey[300],
-                          ),
-                  );
-                }),
+            SizedBox(
+              width: imageWidth,
+              height: imageHeight,
+              child: FutureBuilder(
+                  future: widget.announcement.futureBytes,
+                  builder: (context, snapshot) {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(14),
+                      child: snapshot.hasData
+                          ? Image.memory(
+                              widget.announcement.bytes,
+                              fit: BoxFit.cover,
+                              width: imageWidth,
+                              height: imageHeight,
+                              frameBuilder: ((context, child, frame,
+                                  wasSynchronouslyLoaded) {
+                                return AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 300),
+                                  child: frame != null
+                                      ? child
+                                      : Container(
+                                          height: imageHeight,
+                                          width: imageWidth,
+                                          color: Colors.grey[300],
+                                        ),
+                                );
+                              }),
+                            )
+                          : Container(
+                              height: imageHeight,
+                              width: imageWidth,
+                              color: Colors.grey[300],
+                            ),
+                    );
+                  }),
+            ),
             const SizedBox(
               height: 10,
             ),
