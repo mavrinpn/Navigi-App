@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -10,6 +12,9 @@ import '../../../utils/fonts.dart';
 import '../../../widgets/accuont/account_medium_info.dart';
 import '../../../widgets/button/custom_elevated_button.dart';
 import '../../../widgets/button/custom_text_button.dart';
+import '../../../widgets/conatainers/announcement.dart';
+import '../../announcement/bloc/creator_cubit/creator_cubit.dart';
+import '../../announcement/data/creator_repository.dart';
 import '../../auth/bloc/auth_cubit.dart';
 import '../../auth/data/auth_repository.dart';
 
@@ -22,10 +27,24 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  final controller = ScrollController();
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+
+    final creatorManager = RepositoryProvider.of<CreatorRepository>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -80,6 +99,93 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         color: Colors.white,
                         size: 24,
                       ),
+                    ),
+                    BlocBuilder<CreatorCubit, CreatorState>(
+                      builder: (context, state) {
+                        return Column(
+                          children: [
+                            Container(
+                                width: 190,
+                                color: Colors.white,
+                                alignment: Alignment.center,
+                                child: TabBar(
+                                  labelColor: Colors.black,
+                                  indicatorColor: Colors.black,
+                                  indicatorWeight: 2,
+                                  unselectedLabelColor: AppColors.lightGray,
+                                  indicator: const UnderlineTabIndicator(
+                                      borderSide: BorderSide(
+                                          color: AppColors.red, width: 2),
+                                      insets:
+                                          EdgeInsets.symmetric(horizontal: 20)),
+                                  onTap: (int val) {
+                                    setState(() {});
+                                  },
+                                  controller: _tabController,
+                                  tabs: [
+                                    Tab(
+                                      child: Text(
+                                          'Actif (${state is CreatorSuccessState ? creatorManager.availableAnnouncements!.length : 0})',
+                                          style: AppTypography.font24black
+                                              .copyWith(
+                                                  fontSize: 14,
+                                                  color:
+                                                      _tabController.index == 0
+                                                          ? Colors.black
+                                                          : Colors.grey)),
+                                    ),
+                                    Tab(
+                                      child: Text(
+                                          'Vendu (${state is CreatorSuccessState ? creatorManager.soldAnnouncements!.length : 0})',
+                                          style: AppTypography.font24black
+                                              .copyWith(
+                                                  fontSize: 14,
+                                                  color:
+                                                      _tabController.index == 1
+                                                          ? Colors.black
+                                                          : Colors.grey)),
+                                    ),
+                                  ],
+                                )),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            if (state is CreatorSuccessState) ...[
+                              Container(
+                                  constraints: const BoxConstraints(
+                                      minHeight: 100, maxHeight: 280),
+                                  child: GridView.builder(
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                      ),
+                                      itemCount: _tabController.index == 0
+                                          ? creatorManager
+                                              .availableAnnouncements!.length
+                                          : creatorManager
+                                              .soldAnnouncements!.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return AnnouncementContainer(
+                                            announcement: _tabController
+                                                        .index ==
+                                                    0
+                                                ? creatorManager
+                                                        .availableAnnouncements![
+                                                    index]
+                                                : creatorManager
+                                                    .soldAnnouncements![index]);
+                                      }))
+                            ] else ...[
+                              SizedBox(
+                                height: 50,
+                                width: 50,
+                                child: AppAnimations.circleFadingAnimation,
+                              ),
+                            ],
+                          ],
+                        );
+                      },
                     ),
                     const SizedBox(
                       height: 40,

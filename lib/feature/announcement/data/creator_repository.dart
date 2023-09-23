@@ -6,18 +6,18 @@ class CreatorRepository {
 
   CreatorRepository({required this.databaseService});
 
-  CreatorData? currentCreatorData;
+  String? currentCreatorId;
   List<Announcement>? availableAnnouncements;
   List<Announcement>? soldAnnouncements;
 
-  Future setCreator(CreatorData newCreator) async {
-    currentCreatorData = newCreator;
+  Future setCreator(String newCreator) async {
+    currentCreatorId = newCreator;
     await _getAnnouncements();
   }
 
   Future _getAnnouncements() async {
     final announcements = await databaseService.getUserAnnouncements(
-        userId: currentCreatorData!.uid);
+        userId: currentCreatorId!);
 
     availableAnnouncements = [];
     soldAnnouncements = [];

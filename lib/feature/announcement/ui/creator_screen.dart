@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
+import 'package:smart/feature/announcement/data/creator_repository.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/utils/animations.dart';
 
@@ -41,7 +44,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    final favouritesManager = RepositoryProvider.of<FavouritesManager>(context);
+    final creatorManager = RepositoryProvider.of<CreatorRepository>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -83,9 +86,8 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
               slivers: [
                 SliverToBoxAdapter(
                   child: AccountMediumInfo(
-                    user: RepositoryProvider
-                        .of<AuthRepository>(context)
-                        .userData,
+                    user:
+                        RepositoryProvider.of<AuthRepository>(context).userData,
                   ),
                 ),
                 const SliverToBoxAdapter(
@@ -141,72 +143,71 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                         indicatorWeight: 2,
                         unselectedLabelColor: AppColors.lightGray,
                         indicator: const UnderlineTabIndicator(
-                            borderSide: BorderSide(
-                                color: AppColors.red, width: 2),
-                            insets:
-                            EdgeInsets.symmetric(horizontal: 20)),
+                            borderSide:
+                                BorderSide(color: AppColors.red, width: 2),
+                            insets: EdgeInsets.symmetric(horizontal: 20)),
                         onTap: (int val) {
                           setState(() {});
                         },
                         controller: _tabController,
                         tabs: [
                           Tab(
-                            child: Text('Actif (3)',
-                                style: AppTypography.font24black
-                                    .copyWith(
+                            child: Text(
+                                'Actif (${state is CreatorSuccessState ? creatorManager.availableAnnouncements!.length : 0})',
+                                style: AppTypography.font24black.copyWith(
                                     fontSize: 14,
-                                    color:
-                                    _tabController.index == 0
+                                    color: _tabController.index == 0
                                         ? Colors.black
                                         : Colors.grey)),
                           ),
                           Tab(
-                            child: Text('Vendu (2)',
-                                style: AppTypography.font24black
-                                    .copyWith(
+                            child: Text(
+                                'Vendu (${state is CreatorSuccessState ? creatorManager.soldAnnouncements!.length : 0})',
+                                style: AppTypography.font24black.copyWith(
                                     fontSize: 14,
-                                    color:
-                                    _tabController.index == 1
+                                    color: _tabController.index == 1
                                         ? Colors.black
                                         : Colors.grey)),
                           ),
                         ],
-                      )
-                  ),
+                      )),
                 ),
                 const SliverToBoxAdapter(
                   child: SizedBox(
                     height: 15,
                   ),
                 ),
-                if (state is CreatorSuccessState)... [
+                if (state is CreatorSuccessState) ...[
                   SliverGrid(
                       delegate: SliverChildBuilderDelegate(
-                            (context, index) => Container(
+                        (context, index) => Container(
                           color: AppColors.mainBackground,
                           child: Center(
                             child: AnnouncementContainer(
-                                announcement:
-                                favouritesManager.announcements[index]),
+                                announcement: _tabController.index == 0
+                                    ? creatorManager.availableAnnouncements![index]
+                                    : creatorManager.soldAnnouncements![index]),
                           ),
                         ),
-                        childCount: favouritesManager.announcements.length,
+                        childCount: (_tabController.index == 0
+                            ? creatorManager.availableAnnouncements!.length
+                            : creatorManager.soldAnnouncements!.length),
                       ),
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           crossAxisSpacing: 18,
                           mainAxisSpacing: 16,
                           maxCrossAxisExtent:
-                          MediaQuery.of(context).size.width / 2,
+                              MediaQuery.of(context).size.width / 2,
                           childAspectRatio: 160 / 272)),
-
-                ]
-                else... [SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: AppAnimations.circleFadingAnimation,
+                ] else ...[
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: AppAnimations.circleFadingAnimation,
+                    ),
                   ),
-                ),]
+                ]
               ],
             );
           },
@@ -217,10 +218,11 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
 }
 
 class RowButton extends StatelessWidget {
-  const RowButton({super.key,
-    required this.title,
-    required this.icon,
-    required this.onTap});
+  const RowButton(
+      {super.key,
+      required this.title,
+      required this.icon,
+      required this.onTap});
 
   final String icon;
   final String title;

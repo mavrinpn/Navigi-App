@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
+import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/favorites/favorites_screen.dart';
 import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/utils/fonts.dart';
@@ -43,6 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
     void onSelectTab(int index) {
       if (_selectedTab == index) return;
+      if (index == 3) {
+        BlocProvider.of<CreatorCubit>(context)
+            .setUser(RepositoryProvider.of<AuthRepository>(context).userId);
+      }
       setState(() {
         _selectedTab = index;
       });

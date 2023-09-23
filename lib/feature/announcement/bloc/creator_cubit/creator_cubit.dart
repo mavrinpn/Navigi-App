@@ -11,14 +11,15 @@ class CreatorCubit extends Cubit<CreatorState> {
 
   CreatorCubit({required this.creatorRepository}) : super(CreatorInitial());
 
-  void setUser(CreatorData creatorData) async {
+  void setUser(String creatorId) async {
     emit(CreatorLoadingState());
     try {
-      await creatorRepository.setCreator(creatorData);
+      await creatorRepository.setCreator(creatorId);
 
       emit(CreatorSuccessState());
     } catch (e) {
       emit(CreatorFailState());
+      rethrow;
     }
   }
 }

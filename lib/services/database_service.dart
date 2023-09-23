@@ -319,8 +319,11 @@ class DatabaseService {
 
       final futureBytes =
       _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+      print(doc.data);
+      print(doc);
 
       announcements.add(Announcement.fromJson(json: doc.data, futureBytes: futureBytes));
+
     }
 
 
