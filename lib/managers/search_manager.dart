@@ -21,7 +21,6 @@ class SearchManager {
 
   bool isSearch = true;
 
-
   BehaviorSubject<String> searchTextStream = BehaviorSubject<String>.seeded('');
 
   Future<List<SubCategoryItem>> searchItemsByName(String query) async =>
@@ -49,6 +48,8 @@ class SearchManager {
 
     List<String> history = prefs.getStringList(_historyKey) ?? [];
 
+    if (query.isEmpty) return history;
+
     if (history.length >= 10) {
       history.removeAt(0);
     }
@@ -59,7 +60,7 @@ class SearchManager {
     return history;
   }
 
-  Future<void> deleteQueryByName(String name) async{
+  Future<void> deleteQueryByName(String name) async {
     final prefs = await _prefs;
 
     List<String> history = prefs.getStringList(_historyKey) ?? [];

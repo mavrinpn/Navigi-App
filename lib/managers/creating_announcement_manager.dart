@@ -106,6 +106,8 @@ class CreatingAnnouncementManager {
 
       images.clear();
       creatingData.clear;
+      imagesAsBytes.clear();
+
       creatingState.add(LoadingStateEnum.success);
     } catch (e) {
       creatingState.add(LoadingStateEnum.fail);
