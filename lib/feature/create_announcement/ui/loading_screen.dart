@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
+import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
 
@@ -22,6 +25,9 @@ class LoadingScreen extends StatelessWidget {
           if (state is CreatingSuccessState) {
             BlocProvider.of<CreatorCubit>(context)
                 .setUser(RepositoryProvider.of<AuthRepository>(context).userId);
+            log('абоаба');
+            RepositoryProvider.of<AnnouncementManager>(context)
+                .addLimitAnnouncements(true);
             Navigator.of(context).popUntil(ModalRoute.withName('/'));
           }
           if (state is CreatingFailState) {

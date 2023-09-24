@@ -25,8 +25,14 @@ class CreatorData {
         name = data != null ? data['name'] : 'John E.',
         score = 4.1,
         verified = data != null ? data['verified'] : true,
-        imageUrl = data != null ? data['image'] ?? '' : '',
+        imageUrl = data != null ? data['image_url'] ?? '' : '',
         uid = data != null ? data['\$id'] : 'aboba';
 
   String get distance => '$_distance km de vous';
+
+  UserData toUserData() => UserData(
+        name: name,
+        verified: verified,
+        imageUrl: imageUrl,
+      );
 }

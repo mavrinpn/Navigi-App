@@ -133,6 +133,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                                       children: [Padding(padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16), child: InkWell(
                                         onTap: () async {
                                           await RepositoryProvider.of<AnnouncementManager>(context).changeActivity(state.data.announcementId);
+                                          Navigator.pop(context);
                                           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('success')));
                                           BlocProvider.of<CreatorCubit>(context).setUser(state.data.creatorData.uid);
                                         },

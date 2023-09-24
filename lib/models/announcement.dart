@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:smart/models/item/static_parameters.dart';
+import 'package:smart/models/user.dart';
 
 part 'creator_data.dart';
 
