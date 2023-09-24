@@ -108,6 +108,7 @@ class CreatingAnnouncementManager {
       creatingData.clear;
       imagesAsBytes.clear();
       compressingImages = null;
+      currentItem = null;
 
       creatingState.add(LoadingStateEnum.success);
     } catch (e) {

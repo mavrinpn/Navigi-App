@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
+import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
 
@@ -12,16 +14,19 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final localizations = AppLocalizations.of(context)!;
 
     return WillPopScope(
       child: BlocListener<CreatingAnnouncementCubit, CreatingAnnouncementState>(
         listener: (context, state) {
-          if (state is CreatingSuccessState) Navigator.of(context).popUntil(ModalRoute.withName('/'));
+          if (state is CreatingSuccessState) {
+            BlocProvider.of<CreatorCubit>(context)
+                .setUser(RepositoryProvider.of<AuthRepository>(context).userId);
+            Navigator.of(context).popUntil(ModalRoute.withName('/'));
+          }
           if (state is CreatingFailState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('ошибка')));
+            ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(content: Text('ошибка')));
             Navigator.of(context).popUntil(ModalRoute.withName('/'));
           }
         },
@@ -36,7 +41,7 @@ class LoadingScreen extends StatelessWidget {
                 const SizedBox(
                   height: 44,
                 ),
-                 Text(
+                Text(
                   'La modération de l\'annonce est en cours',
                   textAlign: TextAlign.center,
                   style: AppTypography.font24dark,
@@ -44,12 +49,13 @@ class LoadingScreen extends StatelessWidget {
                 const SizedBox(
                   height: 16,
                 ),
-                 Text(
+                Text(
                     'Ne bloquez pas l\'application pendant le traitement de votre annonce',
                     textAlign: TextAlign.center,
-                    style: AppTypography.font14light
-                ),
-                const SizedBox(height: 80,)
+                    style: AppTypography.font14light),
+                const SizedBox(
+                  height: 80,
+                )
               ],
             ),
           ),
