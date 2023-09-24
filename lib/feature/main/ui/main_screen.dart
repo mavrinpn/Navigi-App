@@ -108,7 +108,7 @@ class _MainScreenState extends State<MainScreen> {
                           isScrollControlled: true,
                           context: context,
                           builder: (BuildContext context) {
-                            return const FiltersBottomSheet();
+                            return const FiltersBottomSheet(needOpenNewScreen: true,);
                           },
                         );
                       },

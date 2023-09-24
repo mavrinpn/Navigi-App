@@ -95,4 +95,11 @@ class AnnouncementManager {
       }
     }
   }
+
+
+  Future<void> changeActivity(String announcementId) async {
+    await dbManager.changeActivityAnnouncements(announcementId);
+
+
+  }
 }

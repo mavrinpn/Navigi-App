@@ -427,7 +427,9 @@ class _SearchScreenState extends State<SearchScreen> {
 }
 
 class FiltersBottomSheet extends StatefulWidget {
-  const FiltersBottomSheet({super.key});
+  const FiltersBottomSheet({super.key, this.needOpenNewScreen = false});
+
+  final bool needOpenNewScreen;
 
   @override
   State<FiltersBottomSheet> createState() => _FiltersBottomSheetState();
@@ -504,9 +506,16 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                 currentVariable: SortTypes.frTranslates[bloc.sortBy]!),
             CustomTextButton.orangeContinue(
                 callback: () {
+                  RepositoryProvider.of<SearchManager>(context)
+                      .setSearch(false);
                   bloc.minPrice = double.parse(minPriceController.text);
                   bloc.maxPrice = double.parse(maxPriceController.text);
                   bloc.setFilters();
+                  Navigator.pop(context);
+                  if (widget.needOpenNewScreen) {
+                    Navigator.pushNamed(context, '/search_screen');
+                  }
+
                   setState(() {});
                 },
                 text: 'Appliquer',

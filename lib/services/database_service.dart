@@ -125,12 +125,8 @@ class DatabaseService {
 
     if (lastId != null) query['lastID'] = lastId;
 
-    print(query);
-
     final res = await _functions.createExecution(
         functionId: getAnnouncementFunctionID, data: jsonEncode(query));
-
-    print(res.response);
 
     final response = jsonDecode(res.response);
 
@@ -160,8 +156,9 @@ class DatabaseService {
     if ((lastId ?? "").isEmpty) lastId = null;
 
     if (lastId != null) requestData['lastID'] = lastId;
-    if (searchText != null && searchText.isNotEmpty)
+    if (searchText != null && searchText.isNotEmpty) {
       requestData['searchText'] = searchText;
+    }
     if (sortBy != null) requestData['sortBy'] = sortBy;
     if (minPrice != null) requestData['minPrice'] = minPrice;
     if (maxPrice != null) requestData['maxPrice'] = maxPrice;
@@ -307,7 +304,7 @@ class DatabaseService {
     return announcements;
   }
 
-  Future getUserAnnouncements({required String userId}) async{
+  Future getUserAnnouncements({required String userId}) async {
     final res = await _databases.listDocuments(
         databaseId: postDatabase,
         collectionId: postCollection,
@@ -318,17 +315,28 @@ class DatabaseService {
       final id = _getIdFromUrl(doc.data['images'][0]);
 
       final futureBytes =
-      _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+          _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
       print(doc.data);
       print(doc);
 
-      announcements.add(Announcement.fromJson(json: doc.data, futureBytes: futureBytes));
-
+      announcements
+          .add(Announcement.fromJson(json: doc.data, futureBytes: futureBytes));
     }
 
-
-
     return announcements;
+  }
 
+  Future changeActivityAnnouncements(String announcementsId) async {
+    final res = await _databases.getDocument(
+        databaseId: postDatabase,
+        collectionId: postCollection,
+        documentId: announcementsId);
+    final bool currentValue = res.data['active'];
+
+    await _databases.updateDocument(
+        databaseId: postDatabase,
+        collectionId: postCollection,
+        documentId: announcementsId,
+        data: {'active': !currentValue});
   }
 }

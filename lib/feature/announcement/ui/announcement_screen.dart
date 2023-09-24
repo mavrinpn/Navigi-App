@@ -5,6 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
+import 'package:smart/feature/auth/data/auth_repository.dart';
+import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
@@ -33,9 +36,12 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
   @override
   Widget build(BuildContext context) {
     PageController pageController =
-        PageController(viewportFraction: 0.9, initialPage: activePage);
+    PageController(viewportFraction: 0.9, initialPage: activePage);
 
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
     return BlocBuilder<AnnouncementCubit, AnnouncementState>(
       builder: (context, state) {
         if (state is AnnouncementSuccessState) {
@@ -69,8 +75,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       BlocBuilder<FavouritesCubit, FavouritesState>(
                         builder: (context, state1) {
                           bool liked =
-                              RepositoryProvider.of<FavouritesManager>(context)
-                                  .contains(state.data.announcementId);
+                          RepositoryProvider.of<FavouritesManager>(context)
+                              .contains(state.data.announcementId);
                           return InkWell(
                             focusColor: AppColors.empty,
                             hoverColor: AppColors.empty,
@@ -110,7 +116,39 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         hoverColor: AppColors.empty,
                         highlightColor: AppColors.empty,
                         splashColor: AppColors.empty,
-                        onTap: () {},
+                        onTap: () {
+                          if (state.data.creatorData.uid == RepositoryProvider
+                              .of<AuthRepository>(context)
+                              .userId) {
+                            showModalBottomSheet(context: context,
+                                isScrollControlled: true,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                showDragHandle: true,
+                                builder: (ctx) {
+                                  return SizedBox(
+                                    height: 300,
+                                    child: Column(
+                                      children: [Padding(padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16), child: InkWell(
+                                        onTap: () async {
+                                          await RepositoryProvider.of<AnnouncementManager>(context).changeActivity(state.data.announcementId);
+                                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('success')));
+                                          BlocProvider.of<CreatorCubit>(context).setUser(state.data.creatorData.uid);
+                                        },
+                                        child: Row(
+                                          children: [
+                                            const Icon(Icons.edit, color: Colors.black, size: 24,),
+                                            const SizedBox(width: 12,),
+                                            Text('Change activity', style: AppTypography.font18black,)
+                                          ],
+                                        ),
+                                      ),)],
+                                    ),
+                                  );
+                                });
+                          }
+                        },
                         child: SvgPicture.asset(
                           'Assets/icons/three_dots.svg',
                           width: 24,
@@ -171,7 +209,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children:
-                          indicators(state.data.images.length, activePage),
+                      indicators(state.data.images.length, activePage),
                     ),
                     const SizedBox(
                       height: 12,
@@ -236,7 +274,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => Aboba(
+                                  builder: (_) =>
+                                      Aboba(
                                         placeData: state.data.placeData,
                                       )));
                         },
@@ -246,13 +285,14 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             SvgPicture.asset('Assets/icons/point.svg'),
                             RichText(
                                 text: TextSpan(children: [
-                              TextSpan(
-                                  text: ' ${state.data.placeData.name}',
-                                  style: AppTypography.font14black),
-                              TextSpan(
-                                  text: '  ${state.data.creatorData.distance}',
-                                  style: AppTypography.font14lightGray),
-                            ]))
+                                  TextSpan(
+                                      text: ' ${state.data.placeData.name}',
+                                      style: AppTypography.font14black),
+                                  TextSpan(
+                                      text: '  ${state.data.creatorData
+                                          .distance}',
+                                      style: AppTypography.font14lightGray),
+                                ]))
                           ],
                         ),
                       ),
@@ -276,7 +316,10 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         CustomTextButton.withIcon(
                           padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                           disableColor: AppColors.red,
-                          width: MediaQuery.of(context).size.width - 62,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width - 62,
                           callback: () {},
                           text: AppLocalizations.of(context)!.write,
                           styleText: AppTypography.font14white,
@@ -327,26 +370,27 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           decelerationRate: ScrollDecelerationRate.fast),
                       child: Column(
                         children: state.data.staticParameters.parameters
-                            .map((e) => Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 5),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        e.key,
-                                        style: AppTypography.font14lightGray,
-                                      ),
-                                      Text(
-                                        e.currentValue,
-                                        style: AppTypography.font14black
-                                            .copyWith(
-                                                fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
+                            .map((e) =>
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 5),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    e.key,
+                                    style: AppTypography.font14lightGray,
                                   ),
-                                ))
+                                  Text(
+                                    e.currentValue,
+                                    style: AppTypography.font14black
+                                        .copyWith(
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                            ))
                             .toList(),
                       ),
                     ),
@@ -365,7 +409,10 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       ),
                     ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width - 30,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width - 30,
                       child: Text(
                         state.data.description,
                         style: AppTypography.font14black.copyWith(height: 2),
@@ -424,7 +471,9 @@ class _PhotoViewsState extends State<PhotoViews> {
     PageController pageController = PageController(initialPage: activePage);
 
     final currentAnnouncement =
-        RepositoryProvider.of<AnnouncementManager>(context).lastAnnouncement;
+        RepositoryProvider
+            .of<AnnouncementManager>(context)
+            .lastAnnouncement;
 
     return WillPopScope(
       onWillPop: () async {
@@ -459,7 +508,7 @@ class _PhotoViewsState extends State<PhotoViews> {
                 builder: (BuildContext context, int index) {
                   return PhotoViewGalleryPageOptions(
                     imageProvider:
-                        NetworkImage(currentAnnouncement.images[index]),
+                    NetworkImage(currentAnnouncement.images[index]),
                     initialScale: PhotoViewComputedScale.contained,
                   );
                 },
@@ -469,13 +518,14 @@ class _PhotoViewsState extends State<PhotoViews> {
                   });
                 },
                 itemCount: currentAnnouncement!.images.length,
-                loadingBuilder: (context, event) => Center(
-                  child: SizedBox(
-                    width: 20.0,
-                    height: 20.0,
-                    child: AppAnimations.circleFadingAnimation,
-                  ),
-                ),
+                loadingBuilder: (context, event) =>
+                    Center(
+                      child: SizedBox(
+                        width: 20.0,
+                        height: 20.0,
+                        child: AppAnimations.circleFadingAnimation,
+                      ),
+                    ),
                 pageController: pageController,
               ),
             ),
