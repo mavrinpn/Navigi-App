@@ -31,7 +31,8 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
     final localizations = AppLocalizations.of(context)!;
 
     void onClick(){
-      BlocProvider.of<CreatorCubit>(context).setUser(widget.creatorData.uid);
+      BlocProvider.of<CreatorCubit>(context).setUserId(widget.creatorData.uid);
+      BlocProvider.of<CreatorCubit>(context).setUserData(widget.creatorData.toUserData());
       Navigator.pushNamed(context, '/creator_screen');
     }
 

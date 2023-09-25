@@ -23,7 +23,8 @@ class AnnouncementManager {
   List<Announcement> searchAnnouncements = [];
   Announcement? lastAnnouncement;
 
-  BehaviorSubject<LoadingStateEnum> announcementsLoadingState = BehaviorSubject.seeded(LoadingStateEnum.loading);
+  BehaviorSubject<LoadingStateEnum> announcementsLoadingState =
+      BehaviorSubject.seeded(LoadingStateEnum.loading);
 
   Future<void> addLimitAnnouncements(bool isNew) async {
     announcementsLoadingState.add(LoadingStateEnum.loading);
@@ -60,7 +61,9 @@ class AnnouncementManager {
         return a;
       }
     }
-    return null;
+
+    final announcement = await dbManager.getAnnouncementById(id);
+    return announcement;
   }
 
   void incTotalViews(String id) async {
@@ -96,10 +99,7 @@ class AnnouncementManager {
     }
   }
 
-
   Future<void> changeActivity(String announcementId) async {
     await dbManager.changeActivityAnnouncements(announcementId);
-
-
   }
 }

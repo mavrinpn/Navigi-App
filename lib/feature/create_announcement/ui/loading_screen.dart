@@ -24,7 +24,7 @@ class LoadingScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is CreatingSuccessState) {
             BlocProvider.of<CreatorCubit>(context)
-                .setUser(RepositoryProvider.of<AuthRepository>(context).userId);
+                .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
             log('абоаба');
             RepositoryProvider.of<AnnouncementManager>(context)
                 .addLimitAnnouncements(true);

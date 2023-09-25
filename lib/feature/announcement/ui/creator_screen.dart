@@ -87,7 +87,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                 SliverToBoxAdapter(
                   child: AccountMediumInfo(
                     user:
-                        RepositoryProvider.of<AuthRepository>(context).userData, // TODO косяк не оттуда инфа берется
+                        RepositoryProvider.of<CreatorRepository>(context).userData!
                   ),
                 ),
                 const SliverToBoxAdapter(

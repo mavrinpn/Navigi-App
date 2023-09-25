@@ -135,7 +135,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                                           await RepositoryProvider.of<AnnouncementManager>(context).changeActivity(state.data.announcementId);
                                           Navigator.pop(context);
                                           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('success')));
-                                          BlocProvider.of<CreatorCubit>(context).setUser(state.data.creatorData.uid);
+                                          BlocProvider.of<CreatorCubit>(context).setUserId(state.data.creatorData.uid);
                                         },
                                         child: Row(
                                           children: [

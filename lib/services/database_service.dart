@@ -308,7 +308,7 @@ class DatabaseService {
     final res = await _databases.listDocuments(
         databaseId: postDatabase,
         collectionId: postCollection,
-        queries: [Query.equal("creator_id", userId)]);
+        queries: [Query.equal("creator_id", userId), Query.orderDesc('\$createdAt')]);
 
     List<Announcement> announcements = [];
     for (var doc in res.documents) {
@@ -316,8 +316,6 @@ class DatabaseService {
 
       final futureBytes =
           _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
-      print(doc.data);
-      print(doc);
 
       announcements
           .add(Announcement.fromJson(json: doc.data, futureBytes: futureBytes));
@@ -338,5 +336,19 @@ class DatabaseService {
         collectionId: postCollection,
         documentId: announcementsId,
         data: {'active': !currentValue});
+  }
+
+  Future<Announcement> getAnnouncementById(String announcementId) async {
+    final res = await _databases.getDocument(
+        databaseId: postDatabase,
+        collectionId: postCollection,
+        documentId: announcementId);
+
+    final id = _getIdFromUrl(res.data['images'][0]);
+
+    final futureBytes =
+        _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+
+    return Announcement.fromJson(json: res.data, futureBytes: futureBytes);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:smart/models/announcement.dart';
+import 'package:smart/models/user.dart';
 import 'package:smart/services/database_service.dart';
 
 class CreatorRepository {
@@ -7,8 +8,13 @@ class CreatorRepository {
   CreatorRepository({required this.databaseService});
 
   String? currentCreatorId;
+  UserData? userData;
   List<Announcement>? availableAnnouncements;
   List<Announcement>? soldAnnouncements;
+
+  Future setUserData(UserData user) async {
+    userData = user;
+  }
 
   Future setCreator(String newCreator) async {
     currentCreatorId = newCreator;

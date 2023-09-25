@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (_selectedTab == index) return;
       if (index == 3) {
         BlocProvider.of<CreatorCubit>(context)
-            .setUser(RepositoryProvider.of<AuthRepository>(context).userId);
+            .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
       }
       setState(() {
         _selectedTab = index;
