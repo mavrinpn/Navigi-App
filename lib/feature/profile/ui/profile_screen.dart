@@ -142,7 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 tabs: [
                                   Tab(
                                     child: Text(
-                                        'Actif (${creatorState is CreatorSuccessState ? creatorManager.availableAnnouncements!.length : 0})',
+                                        'Actif (${creatorState is CreatorSuccessState ? creatorState.available.length : 0})',
                                         style: AppTypography.font24black
                                             .copyWith(
                                                 fontSize: 14,
@@ -152,7 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   ),
                                   Tab(
                                     child: Text(
-                                        'Vendu (${creatorState is CreatorSuccessState ? creatorManager.soldAnnouncements!.length : 0})',
+                                        'Vendu (${creatorState is CreatorSuccessState ? creatorState.sold.length : 0})',
                                         style: AppTypography.font24black
                                             .copyWith(
                                                 fontSize: 14,
@@ -190,18 +190,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                               : SliverList.builder(
 
                                   itemCount: _tabController.index == 0
-                                      ? creatorManager
-                                          .availableAnnouncements!.length
-                                      : creatorManager
-                                          .soldAnnouncements!.length,
+                                      ? min(creatorState.available.length, 4)
+                                      : min(creatorState.sold.length, 4),
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return AnnouncementContainerHorizontal(
                                         announcement: _tabController.index == 0
-                                            ? creatorManager
-                                                .availableAnnouncements![index]
-                                            : creatorManager
-                                                .soldAnnouncements![index], viewCount: '13', likeCount: '13', userCount: '13',);
+                                            ? creatorState.available[index]
+                                            : creatorState.sold[index], viewCount: '13', likeCount: '13', userCount: '13',);
                                   })
                         ] else ...[
                           SliverToBoxAdapter(
