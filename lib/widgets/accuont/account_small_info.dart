@@ -14,11 +14,10 @@ import '../../models/announcement.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AccountSmallInfo extends StatefulWidget {
-  AccountSmallInfo({super.key, required this.creatorData, required this.isclick});
+  AccountSmallInfo({super.key, required this.creatorData, required this.clickable});
 
   final CreatorData creatorData;
-  final bool isclick;
-  final notclick = null;
+  final bool clickable;
 
   @override
   State<AccountSmallInfo> createState() => _AccountSmallInfoState();
@@ -39,7 +38,7 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: InkWell(
-        onTap: widget.isclick? onClick : widget.notclick,
+        onTap: widget.clickable? onClick : null,
         child: Container(
           width: double.infinity,
           padding: const EdgeInsets.all(14),

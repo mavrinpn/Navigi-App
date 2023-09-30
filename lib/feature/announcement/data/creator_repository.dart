@@ -35,7 +35,6 @@ class CreatorRepository {
       else{
         soldAnnouncements!.add(x);
       }
-
     }
   }
 }

@@ -16,19 +16,23 @@ class CreatorCubit extends Cubit<CreatorState> {
     emit(CreatorLoadingState());
     try {
       await creatorRepository.setCreator(creatorId);
-
-      emit(CreatorSuccessState());
+      print(creatorRepository.availableAnnouncements);
+      emit(CreatorSuccessState(
+          available: creatorRepository.availableAnnouncements ?? [],
+          sold: creatorRepository.soldAnnouncements ?? []));
     } catch (e) {
       emit(CreatorFailState());
       rethrow;
     }
   }
+
   void setUserData(UserData userData) async {
     emit(CreatorLoadingState());
     try {
       await creatorRepository.setUserData(userData);
-
-      emit(CreatorSuccessState());
+      emit((CreatorSuccessState(
+          available: creatorRepository.availableAnnouncements ?? [],
+          sold: creatorRepository.soldAnnouncements ?? [])));
     } catch (e) {
       emit(CreatorFailState());
       rethrow;

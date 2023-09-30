@@ -9,6 +9,7 @@ import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -83,13 +84,24 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             highlightColor: AppColors.empty,
                             splashColor: AppColors.empty,
                             onTap: () async {
-                              if (!liked) {
-                                await BlocProvider.of<FavouritesCubit>(context)
-                                    .like(state.data.announcementId);
-                              } else {
-                                await BlocProvider.of<FavouritesCubit>(context)
-                                    .unlike(state.data.announcementId);
+                              Dialogs.showModal(
+                                  context,
+                                  Center(
+                                    child: AppAnimations.circleFadingAnimation,
+                                  ));
+                              try {
+                                if (!liked) {
+                                  await BlocProvider.of<FavouritesCubit>(context)
+                                      .like(state.data.announcementId);
+                                } else {
+                                  await BlocProvider.of<FavouritesCubit>(context)
+                                      .unlike(state.data.announcementId);
+                                }
+                              } catch (e) {
+                                Dialogs.hide(context);
+                                rethrow;
                               }
+                              Dialogs.hide(context);
                             },
                             child: SizedBox(
                               width: 40,
@@ -424,7 +436,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       height: 26,
                     ),
                     AccountSmallInfo(
-                      creatorData: state.data.creatorData, isclick: true,
+                      creatorData: state.data.creatorData, clickable: true,
                     ),
                     const SizedBox(
                       height: 100,

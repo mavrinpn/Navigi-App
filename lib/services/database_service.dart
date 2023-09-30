@@ -257,6 +257,8 @@ class DatabaseService {
 
     List<Announcement> newAnnounces = [];
     for (var doc in res[responseDocuments]) {
+      print(doc);
+
       final id = _getIdFromUrl(doc['images'][0]);
 
       final futureBytes =
@@ -278,6 +280,7 @@ class DatabaseService {
           Query.equal('user_id', userId),
           Query.equal('anounce_id', postId)
         ]);
+
 
     final doc = docs.documents[0];
 
@@ -312,6 +315,8 @@ class DatabaseService {
 
     List<Announcement> announcements = [];
     for (var doc in res.documents) {
+      print(doc.data);
+
       final id = _getIdFromUrl(doc.data['images'][0]);
 
       final futureBytes =

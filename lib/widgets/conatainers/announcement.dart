@@ -5,6 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
 import 'package:smart/managers/favourits_manager.dart';
 import 'package:smart/models/announcement.dart';
+import 'package:smart/utils/animations.dart';
+import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../../feature/announcement/bloc/announcement_cubit.dart';
@@ -23,6 +25,12 @@ class AnnouncementContainer extends StatefulWidget {
 
 class _AnnouncementContainerState extends State<AnnouncementContainer> {
   bool liked = false;
+
+  @override
+  void initState() {
+    print(widget.announcement.announcementId);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,12 +171,23 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                           highlightColor: AppColors.empty,
                           splashColor: AppColors.empty,
                           onTap: () async {
-                            if (!liked) {
-                              await BlocProvider.of<FavouritesCubit>(context)
-                                  .like(widget.announcement.announcementId);
-                            } else {
-                              await BlocProvider.of<FavouritesCubit>(context)
-                                  .unlike(widget.announcement.announcementId);
+                            Dialogs.showModal(
+                                context,
+                                Center(
+                                  child: AppAnimations.circleFadingAnimation,
+                                ));
+                            try {
+                              print(widget.announcement.announcementId);
+                              if (!liked) {
+                                await BlocProvider.of<FavouritesCubit>(context)
+                                    .like(widget.announcement.announcementId).then((value) => Dialogs.hide(context));
+                              } else {
+                                await BlocProvider.of<FavouritesCubit>(context)
+                                    .unlike(widget.announcement.announcementId).then((value) => Dialogs.hide(context));
+                              }
+                            } catch (e) {
+                              Dialogs.hide(context);
+                              rethrow;
                             }
                           },
                           child: SvgPicture.asset('Assets/icons/follow.svg',

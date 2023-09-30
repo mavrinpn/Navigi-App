@@ -1,26 +1,15 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/announcement/data/creator_repository.dart';
-import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/utils/animations.dart';
 
-import '../../../managers/favourits_manager.dart';
-import '../../../models/announcement.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/accuont/account_medium_info.dart';
-import '../../../widgets/button/custom_elevated_button.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/conatainers/announcement.dart';
-import '../../auth/bloc/auth_cubit.dart';
-import '../../auth/data/auth_repository.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreatorProfileScreen extends StatefulWidget {
   const CreatorProfileScreen({super.key});
@@ -86,9 +75,8 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
               slivers: [
                 SliverToBoxAdapter(
                   child: AccountMediumInfo(
-                    user:
-                        RepositoryProvider.of<CreatorRepository>(context).userData!
-                  ),
+                      user: RepositoryProvider.of<CreatorRepository>(context)
+                          .userData!),
                 ),
                 const SliverToBoxAdapter(
                   child: SizedBox(
@@ -153,7 +141,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                         tabs: [
                           Tab(
                             child: Text(
-                                'Actif (${state is CreatorSuccessState ? creatorManager.availableAnnouncements!.length : 0})',
+                                'Actif (${state is CreatorSuccessState ? state.available.length : 0})',
                                 style: AppTypography.font24black.copyWith(
                                     fontSize: 14,
                                     color: _tabController.index == 0
@@ -162,7 +150,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                           ),
                           Tab(
                             child: Text(
-                                'Vendu (${state is CreatorSuccessState ? creatorManager.soldAnnouncements!.length : 0})',
+                                'Vendu (${state is CreatorSuccessState ? state.sold.length : 0})',
                                 style: AppTypography.font24black.copyWith(
                                     fontSize: 14,
                                     color: _tabController.index == 1
@@ -185,13 +173,13 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                           child: Center(
                             child: AnnouncementContainer(
                                 announcement: _tabController.index == 0
-                                    ? creatorManager.availableAnnouncements![index]
-                                    : creatorManager.soldAnnouncements![index]),
+                                    ? state.available[index]
+                                    : state.sold[index]),
                           ),
                         ),
                         childCount: (_tabController.index == 0
-                            ? creatorManager.availableAnnouncements!.length
-                            : creatorManager.soldAnnouncements!.length),
+                            ? state.available.length
+                            : state.sold.length),
                       ),
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           crossAxisSpacing: 18,
