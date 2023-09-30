@@ -15,3 +15,5 @@ class CreatorSuccessState extends CreatorState {
 }
 
 class CreatorFailState extends CreatorState {}
+
+class CreatorUser extends CreatorState {}

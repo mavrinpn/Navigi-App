@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:smart/widgets/conatainers/announcementHorizontal.dart';
 
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
@@ -186,17 +187,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     ),
                                   ),
                                 )
-                              : SliverGrid.builder(
-                                  gridDelegate:
-                                      SliverGridDelegateWithMaxCrossAxisExtent(
-                                          crossAxisSpacing: 10,
-                                          mainAxisSpacing: 15,
-                                          maxCrossAxisExtent:
-                                              MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  2,
-                                          childAspectRatio: 160 / 272),
+                              : SliverList.builder(
+
                                   itemCount: _tabController.index == 0
                                       ? creatorManager
                                           .availableAnnouncements!.length
@@ -204,12 +196,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                                           .soldAnnouncements!.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    return AnnouncementContainer(
+                                    return AnnouncementContainerHorizontal(
                                         announcement: _tabController.index == 0
                                             ? creatorManager
                                                 .availableAnnouncements![index]
                                             : creatorManager
-                                                .soldAnnouncements![index]);
+                                                .soldAnnouncements![index], viewCount: '13', likeCount: '13', userCount: '13',);
                                   })
                         ] else ...[
                           SliverToBoxAdapter(

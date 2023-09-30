@@ -141,4 +141,8 @@ class AuthRepository {
       rethrow;
     }
   }
+
+  void creatorUserData() async{
+
+  }
 }
