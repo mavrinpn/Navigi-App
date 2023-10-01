@@ -233,7 +233,7 @@ class DatabaseService {
         collectionId: likesCollection,
         queries: [
           Query.equal('user_id', userId),
-          Query.equal('anounce_id', postId)
+          Query.equal('postCollection', postId)
         ]);
 
     if (docs.documents.isNotEmpty) return;
@@ -248,7 +248,7 @@ class DatabaseService {
         ],
         data: {
           "user_id": userId,
-          "anounce_id": postId
+          "postCollection": postId
         });
   }
 
@@ -278,7 +278,7 @@ class DatabaseService {
         collectionId: likesCollection,
         queries: [
           Query.equal('user_id', userId),
-          Query.equal('anounce_id', postId)
+          Query.equal('postCollection', postId)
         ]);
 
 
@@ -290,20 +290,42 @@ class DatabaseService {
         documentId: doc.$id);
   }
 
+  // Future getFavouritesAnnouncements(
+  //     {String? lastId, required String userId}) async {
+  //   final account = Account(_client);
+  //   final jwt = await account.createJWT();
+  //
+  //   final res = await _functions.createExecution(
+  //       functionId: '64fc602a06b438e9870a', data: jsonEncode({'jwt': jwt.jwt}));
+  //
+  //   List<Announcement> announcements = _announcementsFromRes(res.response);
+  //
+  //   for (int i = 0; i < announcements.length; i++) {
+  //     announcements[i].liked = true;
+  //   }
+  //
+  //   return announcements;
+  // }
+
   Future getFavouritesAnnouncements(
       {String? lastId, required String userId}) async {
-    final account = Account(_client);
-    final jwt = await account.createJWT();
 
-    final res = await _functions.createExecution(
-        functionId: '64fc602a06b438e9870a', data: jsonEncode({'jwt': jwt.jwt}));
+    final documents = await _databases.listDocuments(databaseId: postDatabase, collectionId: likesCollection, queries: [Query.equal('user_id', userId)]);
 
-    List<Announcement> announcements = _announcementsFromRes(res.response);
+    List<Announcement> announcements = [];
 
+    for (var doc in documents.documents) {
+      final id = _getIdFromUrl(doc.data['postCollection']['images'][0]);
+
+      final futureBytes =
+      _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+
+      announcements
+          .add(Announcement.fromJson(json: doc.data['postCollection'], futureBytes: futureBytes));
+    }
     for (int i = 0; i < announcements.length; i++) {
       announcements[i].liked = true;
     }
-
     return announcements;
   }
 

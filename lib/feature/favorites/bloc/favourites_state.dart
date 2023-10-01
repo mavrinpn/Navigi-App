@@ -13,6 +13,11 @@ class FavouritesFailState extends FavouritesState {}
 
 class LikeProcessState extends FavouritesState {}
 
-class LikeSuccessState extends FavouritesState {}
+class LikeSuccessState extends FavouritesState {
+  final String changedPostId;
+  final bool value;
+
+  LikeSuccessState({required this.value, required this.changedPostId});
+}
 
 class LikeFailState extends FavouritesState {}

@@ -22,8 +22,8 @@ class FavouritesCubit extends Cubit<FavouritesState> {
     emit(LikeProcessState());
     try {
       await favouritesManager.like(postId);
+      emit(LikeSuccessState(changedPostId: postId, value: true));
       await favouritesManager.getFavourites();
-      emit(LikeSuccessState());
       return true;
     } catch (e) {
       emit(LikeFailState());
@@ -35,9 +35,9 @@ class FavouritesCubit extends Cubit<FavouritesState> {
     emit(LikeProcessState());
     try {
       await favouritesManager.unlike(postId);
+      emit(LikeSuccessState(changedPostId: postId, value: false));
       await favouritesManager.getFavourites();
-      emit(LikeSuccessState());
-      return true;
+      return false;
     } catch (e) {
       emit(LikeFailState());
       rethrow;

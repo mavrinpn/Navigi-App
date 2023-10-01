@@ -28,8 +28,22 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
 
   @override
   void initState() {
-    print(widget.announcement.announcementId);
+    liked = RepositoryProvider.of<FavouritesManager>(context)
+        .contains(widget.announcement.announcementId);
     super.initState();
+  }
+
+  void likeOrUnlike() {
+    if (!liked) {
+      BlocProvider.of<FavouritesCubit>(context)
+          .like(widget.announcement.announcementId);
+    } else {
+      BlocProvider.of<FavouritesCubit>(context)
+          .unlike(widget.announcement.announcementId);
+    }
+    setState(() {
+      liked = !liked;
+    });
   }
 
   @override
@@ -37,6 +51,42 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
     final width = MediaQuery.of(context).size.width;
     final double imageWidth = widget.width ?? width / 2 - 25;
     final double imageHeight = widget.height ?? (width / 2 - 25) * 1.032;
+    final image = SizedBox(
+      width: imageWidth,
+      height: imageHeight,
+      child: FutureBuilder(
+          future: widget.announcement.futureBytes,
+          builder: (context, snapshot) {
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(14),
+              child: snapshot.hasData
+                  ? Image.memory(
+                widget.announcement.bytes,
+                fit: BoxFit.cover,
+                width: imageWidth,
+                height: imageHeight,
+                frameBuilder: ((context, child, frame,
+                    wasSynchronouslyLoaded) {
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: frame != null
+                        ? child
+                        : Container(
+                      height: imageHeight,
+                      width: imageWidth,
+                      color: Colors.grey[300],
+                    ),
+                  );
+                }),
+              )
+                  : Container(
+                height: imageHeight,
+                width: imageWidth,
+                color: Colors.grey[300],
+              ),
+            );
+          }),
+    );
 
     return InkWell(
         focusColor: AppColors.empty,
@@ -51,42 +101,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: imageWidth,
-              height: imageHeight,
-              child: FutureBuilder(
-                  future: widget.announcement.futureBytes,
-                  builder: (context, snapshot) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(14),
-                      child: snapshot.hasData
-                          ? Image.memory(
-                              widget.announcement.bytes,
-                              fit: BoxFit.cover,
-                              width: imageWidth,
-                              height: imageHeight,
-                              frameBuilder: ((context, child, frame,
-                                  wasSynchronouslyLoaded) {
-                                return AnimatedSwitcher(
-                                  duration: const Duration(milliseconds: 300),
-                                  child: frame != null
-                                      ? child
-                                      : Container(
-                                          height: imageHeight,
-                                          width: imageWidth,
-                                          color: Colors.grey[300],
-                                        ),
-                                );
-                              }),
-                            )
-                          : Container(
-                              height: imageHeight,
-                              width: imageWidth,
-                              color: Colors.grey[300],
-                            ),
-                    );
-                  }),
-            ),
+            image,
             const SizedBox(
               height: 10,
             ),
@@ -143,9 +158,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                         TextSpan(
                             text: ' ${widget.announcement.placeData.name}',
                             style: AppTypography.font14black),
-                        // TextSpan(
-                        //     text: '  ${widget.announcement.creatorData.distance}',
-                        //     style: AppTypography.font14lightGray),
+
                       ])),
                 )
               ],
@@ -155,8 +168,9 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
             ),
             BlocBuilder<FavouritesCubit, FavouritesState>(
               builder: (context, state) {
-                liked = RepositoryProvider.of<FavouritesManager>(context)
-                    .contains(widget.announcement.announcementId);
+                if (state is LikeSuccessState && state.changedPostId == widget.announcement.announcementId) {
+                  liked = state.value;
+                }
                 return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -170,26 +184,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                           hoverColor: AppColors.empty,
                           highlightColor: AppColors.empty,
                           splashColor: AppColors.empty,
-                          onTap: () async {
-                            Dialogs.showModal(
-                                context,
-                                Center(
-                                  child: AppAnimations.circleFadingAnimation,
-                                ));
-                            try {
-                              print(widget.announcement.announcementId);
-                              if (!liked) {
-                                await BlocProvider.of<FavouritesCubit>(context)
-                                    .like(widget.announcement.announcementId).then((value) => Dialogs.hide(context));
-                              } else {
-                                await BlocProvider.of<FavouritesCubit>(context)
-                                    .unlike(widget.announcement.announcementId).then((value) => Dialogs.hide(context));
-                              }
-                            } catch (e) {
-                              Dialogs.hide(context);
-                              rethrow;
-                            }
-                          },
+                          onTap: likeOrUnlike,
                           child: SvgPicture.asset('Assets/icons/follow.svg',
                               width: 24,
                               height: 24,
