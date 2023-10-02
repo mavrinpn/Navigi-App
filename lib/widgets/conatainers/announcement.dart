@@ -1,4 +1,6 @@
 // ignore_for_file: deprecated_member_use
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -61,29 +63,29 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
               borderRadius: BorderRadius.circular(14),
               child: snapshot.hasData
                   ? Image.memory(
-                widget.announcement.bytes,
-                fit: BoxFit.cover,
-                width: imageWidth,
-                height: imageHeight,
-                frameBuilder: ((context, child, frame,
-                    wasSynchronouslyLoaded) {
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: frame != null
-                        ? child
-                        : Container(
+                      snapshot.data!,
+                      fit: BoxFit.cover,
+                      width: imageWidth,
+                      height: imageHeight,
+                      frameBuilder:
+                          ((context, child, frame, wasSynchronouslyLoaded) {
+                        return AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          child: frame != null
+                              ? child
+                              : Container(
+                                  height: imageHeight,
+                                  width: imageWidth,
+                                  color: Colors.grey[300],
+                                ),
+                        );
+                      }),
+                    )
+                  : Container(
                       height: imageHeight,
                       width: imageWidth,
                       color: Colors.grey[300],
                     ),
-                  );
-                }),
-              )
-                  : Container(
-                height: imageHeight,
-                width: imageWidth,
-                color: Colors.grey[300],
-              ),
             );
           }),
     );
@@ -158,7 +160,6 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                         TextSpan(
                             text: ' ${widget.announcement.placeData.name}',
                             style: AppTypography.font14black),
-
                       ])),
                 )
               ],
@@ -166,32 +167,42 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
             const SizedBox(
               height: 5,
             ),
-            BlocBuilder<FavouritesCubit, FavouritesState>(
-              builder: (context, state) {
-                if (state is LikeSuccessState && state.changedPostId == widget.announcement.announcementId) {
-                  liked = state.value;
+            BlocListener<FavouritesCubit, FavouritesState>(
+              listener: (context, state) {
+                log('');
+                log('');
+                log(state.toString());
+                log(widget.announcement.announcementId);
+                log((state is LikeSuccessState).toString());
+                log('');
+                log('');
+
+                if (state is LikeSuccessState &&
+                    state.changedPostId == widget.announcement.announcementId) {
+                  setState(() {
+                    liked = state.value;
+                  });
                 }
-                return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        widget.announcement.stringPrice,
-                        style: AppTypography.font16boldRed,
-                        textDirection: TextDirection.ltr,
-                      ),
-                      InkWell(
-                          focusColor: AppColors.empty,
-                          hoverColor: AppColors.empty,
-                          highlightColor: AppColors.empty,
-                          splashColor: AppColors.empty,
-                          onTap: likeOrUnlike,
-                          child: SvgPicture.asset('Assets/icons/follow.svg',
-                              width: 24,
-                              height: 24,
-                              color:
-                                  liked ? AppColors.red : AppColors.whiteGray))
-                    ]);
               },
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      widget.announcement.stringPrice,
+                      style: AppTypography.font16boldRed,
+                      textDirection: TextDirection.ltr,
+                    ),
+                    InkWell(
+                        focusColor: AppColors.empty,
+                        hoverColor: AppColors.empty,
+                        highlightColor: AppColors.empty,
+                        splashColor: AppColors.empty,
+                        onTap: likeOrUnlike,
+                        child: SvgPicture.asset('Assets/icons/follow.svg',
+                            width: 24,
+                            height: 24,
+                            color: liked ? AppColors.red : AppColors.whiteGray))
+                  ]),
             )
           ],
         ));

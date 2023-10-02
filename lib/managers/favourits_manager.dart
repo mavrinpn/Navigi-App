@@ -29,11 +29,11 @@ class FavouritesManager {
       await dbManager.unlikePost(postId: postId, userId: userId!);
 
   Future<void> getFavourites() async {
-    // loadingState.add(LoadingStateEnum.loading);
+    loadingState.add(LoadingStateEnum.loading);
     try {
       announcements =
           await dbManager.getFavouritesAnnouncements(userId: userId!);
-      print(announcements);
+      // print(announcements);
       loadingState.add(LoadingStateEnum.success);
     } catch (e) {
       loadingState.add(LoadingStateEnum.fail);
