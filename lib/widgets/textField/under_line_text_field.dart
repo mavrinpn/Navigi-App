@@ -6,6 +6,7 @@ import '../../utils/fonts.dart';
 class UnderLineTextField extends StatelessWidget {
   final double width;
   final double height;
+  final int? maxLength;
   final String hintText;
   final TextEditingController controller;
   final TextInputType keyBoardType;
@@ -20,6 +21,7 @@ class UnderLineTextField extends StatelessWidget {
       {Key? key,
       required this.hintText,
       required this.controller,
+      this.maxLength,
       this.width = 290,
       this.height = 50,
       this.obscureText = false,
@@ -27,7 +29,7 @@ class UnderLineTextField extends StatelessWidget {
       required this.onChange,
       this.onEditingComplete,
       this.onTapOutside,
-        this.validator,
+      this.validator,
       required this.suffixIcon})
       : super(key: key);
 
@@ -38,8 +40,10 @@ class UnderLineTextField extends StatelessWidget {
       height: height,
       alignment: Alignment.bottomCenter,
       child: TextFormField(
+        maxLength: maxLength,
         validator: validator,
-        onTap: () => controller.selection = TextSelection(baseOffset: 0, extentOffset: controller.value.text.length),
+        onTap: () => controller.selection = TextSelection(
+            baseOffset: 0, extentOffset: controller.value.text.length),
         onTapOutside: onTapOutside,
         keyboardType: keyBoardType,
         textAlign: TextAlign.start,
