@@ -35,7 +35,7 @@ class AnnouncementManager {
           _lastId = '';
         }
 
-        announcements.addAll(await dbManager.loadLimitAnnouncements(_lastId));
+        announcements.addAll(await dbManager.getAnnouncements(_lastId));
         _lastId = announcements.last.announcementId;
       } catch (e) {
         if (e.toString() != 'Bad state: No element') {
@@ -100,6 +100,6 @@ class AnnouncementManager {
   }
 
   Future<void> changeActivity(String announcementId) async {
-    await dbManager.changeActivityAnnouncements(announcementId);
+    await dbManager.changeAnnouncementActivity(announcementId);
   }
 }

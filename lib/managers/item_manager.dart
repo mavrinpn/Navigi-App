@@ -11,7 +11,7 @@ class ItemManager {
   String searchController = '';
 
   Future initialLoadItems(String query, subcategoryId) async =>
-      items = await databaseManager.loadItemsBySubcategory(subcategoryId);
+      items = await databaseManager.getItemsFromSubcategory(subcategoryId);
 
   void searchItemsByName(String query) {
     List<SubCategoryItem> resList = [];

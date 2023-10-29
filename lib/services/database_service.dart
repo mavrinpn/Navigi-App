@@ -2,8 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:smart/main.dart';
+import 'package:smart/models/sorte_types.dart';
 import 'package:smart/models/user.dart';
 
 import '../models/announcement.dart';
@@ -20,29 +23,21 @@ const String userName = 'name';
 const String userPhone = 'phone';
 const String userImageUrl = 'image_url';
 
-final String apiKey = dotenv.get('apiKey');
-
 class DatabaseService {
   final Databases _databases;
   final Functions _functions;
   final Storage _storage;
-  final Client _client;
-  final Dio _dio;
+  final Realtime _realtime;
 
   DatabaseService({required Client client})
-      : _client = client,
-        _databases = Databases(client),
+      : _databases = Databases(client),
         _functions = Functions(client),
-        _storage = Storage(client),
-        _dio = Dio(BaseOptions(baseUrl: 'http://89.253.237.166/v1', headers: {
-          'X-Appwrite-Project': '64987d0f7f186b7e2b45',
-          'Content-Type': 'application/json',
-          'X-Appwrite-Key': apiKey
-        }));
+        _realtime = Realtime(client),
+        _storage = Storage(client);
 
   Future<List<Category>> getAllCategories() async {
     final res = await _databases.listDocuments(
-        databaseId: postDatabase, collectionId: categoriesCollection);
+        databaseId: mainDatabase, collectionId: categoriesCollection);
 
     List<Category> categories = [];
     for (var doc in res.documents) {
@@ -52,11 +47,11 @@ class DatabaseService {
     return categories;
   }
 
-  Future<List<Subcategory>> getAllSubCategoriesByCategoryId(
+  Future<List<Subcategory>> getAllSubcategoriesFromCategoryId(
       String categoryID) async {
     List<Subcategory> subcategories = <Subcategory>[];
     final res = await _databases.listDocuments(
-        databaseId: postDatabase,
+        databaseId: mainDatabase,
         collectionId: subcategoriesCollection,
         queries: [Query.equal(categoryId, categoryID)]);
 
@@ -66,10 +61,10 @@ class DatabaseService {
     return subcategories;
   }
 
-  Future<List<SubCategoryItem>> loadItemsBySubcategory(
+  Future<List<SubCategoryItem>> getItemsFromSubcategory(
       String subcategory) async {
     final res = await _databases.listDocuments(
-        databaseId: postDatabase,
+        databaseId: mainDatabase,
         collectionId: itemsCollection,
         queries: [Query.equal(subcategoryId, subcategory)]);
     List<SubCategoryItem> items = [];
@@ -81,7 +76,7 @@ class DatabaseService {
 
   Future<List<PlaceData>> getAllPlaces() async {
     final res = await _databases.listDocuments(
-        databaseId: placeDatabase, collectionId: placeCollection);
+        databaseId: mainDatabase, collectionId: placeCollection);
 
     List<PlaceData> places = [];
     for (var doc in res.documents) {
@@ -95,13 +90,13 @@ class DatabaseService {
     return split[split.length - 2];
   }
 
-  Future searchItemByQuery(String query) async {
+  Future searchItemsByQuery(String query) async {
     final List<String> queries = [
       Query.search('name', query),
       Query.limit(40),
     ];
     final res = await _databases.listDocuments(
-        databaseId: postDatabase,
+        databaseId: mainDatabase,
         collectionId: itemsCollection,
         queries: queries);
     List<SubCategoryItem> items = [];
@@ -111,36 +106,40 @@ class DatabaseService {
     return items;
   }
 
-  Future<List<String>> popularQueries() async {
+  Future<List<String>> getPopularQueries() async {
     final res = await _databases.listDocuments(
-        databaseId: postDatabase, collectionId: 'queries');
+        databaseId: mainDatabase, collectionId: 'queries');
 
     return res.documents.map((e) => e.data['name'].toString()).toList();
   }
 
-  Future<List<Announcement>> loadLimitAnnouncements(String? lastId) async {
-    Map<String, dynamic> query = {};
-
+  Future<List<Announcement>> getAnnouncements(String? lastId) async {
+    List<String> queries = [Query.orderDesc('\$createdAt'), Query.limit(24)];
     if ((lastId ?? '').isEmpty) lastId = null;
 
-    if (lastId != null) query['lastID'] = lastId;
+    if (lastId != null) queries.add(Query.cursorAfter(lastId));
 
-    final res = await _functions.createExecution(
-        functionId: getAnnouncementFunctionID, data: jsonEncode(query));
+    final res = await _databases.listDocuments(
+        databaseId: mainDatabase,
+        collectionId: postCollection,
+        queries: queries);
 
-    final response = jsonDecode(res.response);
+    List<Announcement> newAnnounces =
+        _announcementsFromDocuments(res.documents);
 
+    return newAnnounces;
+  }
+
+  List<Announcement> _announcementsFromDocuments(List<Document> documents) {
     List<Announcement> newAnnounces = [];
-    for (var doc in response[responseDocuments]) {
-      final id = _getIdFromUrl(doc['images'][0]);
-
-      print(doc);
+    for (var doc in documents) {
+      final id = _getIdFromUrl(doc.data['images'][0]);
 
       final futureBytes =
           _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
 
       newAnnounces
-          .add(Announcement.fromJson(json: doc, futureBytes: futureBytes));
+          .add(Announcement.fromJson(json: doc.data, futureBytes: futureBytes));
     }
 
     return newAnnounces;
@@ -149,34 +148,37 @@ class DatabaseService {
   Future<List<Announcement>> searchLimitAnnouncements(
       String? lastId, String? searchText, String? sortBy,
       {double? minPrice, double? maxPrice}) async {
-    //print(jsonEncode({'lastID': lastId, 'searchText': searchText}));
-
-    Map<String, dynamic> requestData = {};
+    List<String> queries = [];
 
     if ((lastId ?? "").isEmpty) lastId = null;
 
-    if (lastId != null) requestData['lastID'] = lastId;
+    if (lastId != null) queries.add(Query.cursorAfter(lastId));
     if (searchText != null && searchText.isNotEmpty) {
-      requestData['searchText'] = searchText;
+      queries.add(Query.search('name', searchText));
     }
-    if (sortBy != null) requestData['sortBy'] = sortBy;
-    if (minPrice != null) requestData['minPrice'] = minPrice;
-    if (maxPrice != null) requestData['maxPrice'] = maxPrice;
+    if (sortBy != null) queries.add(SortTypes.toQuery(sortBy)!);
+    if (minPrice != null) {
+      queries.add(Query.greaterThanEqual('price', minPrice));
+    }
+    if (maxPrice != null) queries.add(Query.lessThanEqual('price', maxPrice));
 
-    //print(requestData);
+    final res = await _databases.listDocuments(
+        databaseId: mainDatabase,
+        collectionId: postCollection,
+        queries: queries);
 
-    final res = await _functions.createExecution(
-        functionId: getAnnouncementFunctionID, data: jsonEncode(requestData));
+    List<Announcement> newAnnounces =
+        _announcementsFromDocuments(res.documents);
 
-    return _announcementsFromRes(res.response);
+    return newAnnounces;
   }
 
   Future<void> incTotalViewsById(String id) async {
     final res = await _databases.getDocument(
-        databaseId: postDatabase, collectionId: postCollection, documentId: id);
+        databaseId: mainDatabase, collectionId: postCollection, documentId: id);
 
     await _databases.updateDocument(
-        databaseId: postDatabase,
+        databaseId: mainDatabase,
         collectionId: postCollection,
         documentId: id,
         data: {totalViews: res.data[totalViews] + 1});
@@ -185,7 +187,7 @@ class DatabaseService {
   Future<void> createAnnouncement(String uid, List<String> urls,
       AnnouncementCreatingData creatingData) async {
     await _databases.createDocument(
-        databaseId: postDatabase,
+        databaseId: mainDatabase,
         collectionId: postCollection,
         documentId: ID.unique(),
         data: creatingData.toJson(uid, urls));
@@ -196,7 +198,7 @@ class DatabaseService {
       required String uid,
       required String phone}) async {
     await _databases.createDocument(
-        databaseId: usersDatabase,
+        databaseId: mainDatabase,
         collectionId: usersCollection,
         documentId: uid,
         data: {userName: name, userPhone: phone});
@@ -204,7 +206,7 @@ class DatabaseService {
 
   Future<UserData> getUserData({required String uid}) async {
     final res = await _databases.getDocument(
-        databaseId: usersDatabase,
+        databaseId: mainDatabase,
         collectionId: usersCollection,
         documentId: uid);
     return UserData.fromJson(res.data);
@@ -216,7 +218,7 @@ class DatabaseService {
       String? phone,
       String? imageUrl}) async {
     await _databases.updateDocument(
-        databaseId: usersDatabase,
+        databaseId: mainDatabase,
         collectionId: usersCollection,
         documentId: uid,
         data: {
@@ -229,7 +231,7 @@ class DatabaseService {
   Future<void> likePost(
       {required String postId, required String userId}) async {
     final docs = await _databases.listDocuments(
-        databaseId: postDatabase,
+        databaseId: mainDatabase,
         collectionId: likesCollection,
         queries: [
           Query.equal('user_id', userId),
@@ -239,7 +241,7 @@ class DatabaseService {
     if (docs.documents.isNotEmpty) return;
 
     await _databases.createDocument(
-        databaseId: postDatabase,
+        databaseId: mainDatabase,
         collectionId: likesCollection,
         documentId: ID.unique(),
         permissions: [
@@ -252,114 +254,55 @@ class DatabaseService {
         });
   }
 
-  List<Announcement> _announcementsFromRes(String response) {
-    final res = jsonDecode(response);
-
-    List<Announcement> newAnnounces = [];
-    for (var doc in res[responseDocuments]) {
-      print(doc);
-
-      final id = _getIdFromUrl(doc['images'][0]);
-
-      final futureBytes =
-          _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
-
-      newAnnounces
-          .add(Announcement.fromJson(json: doc, futureBytes: futureBytes));
-    }
-
-    return newAnnounces;
-  }
-
   Future<void> unlikePost(
       {required String postId, required String userId}) async {
     final docs = await _databases.listDocuments(
-        databaseId: postDatabase,
+        databaseId: mainDatabase,
         collectionId: likesCollection,
         queries: [
           Query.equal('user_id', userId),
           Query.equal('postCollection', postId)
         ]);
 
-
     final doc = docs.documents[0];
 
     await _databases.deleteDocument(
-        databaseId: postDatabase,
+        databaseId: mainDatabase,
         collectionId: likesCollection,
         documentId: doc.$id);
   }
 
-  // Future getFavouritesAnnouncements(
-  //     {String? lastId, required String userId}) async {
-  //   final account = Account(_client);
-  //   final jwt = await account.createJWT();
-  //
-  //   final res = await _functions.createExecution(
-  //       functionId: '64fc602a06b438e9870a', data: jsonEncode({'jwt': jwt.jwt}));
-  //
-  //   List<Announcement> announcements = _announcementsFromRes(res.response);
-  //
-  //   for (int i = 0; i < announcements.length; i++) {
-  //     announcements[i].liked = true;
-  //   }
-  //
-  //   return announcements;
-  // }
-
   Future getFavouritesAnnouncements(
       {String? lastId, required String userId}) async {
+    final documents = await _databases.listDocuments(
+        databaseId: mainDatabase,
+        collectionId: likesCollection,
+        queries: [Query.equal('user_id', userId)]);
 
-    final documents = await _databases.listDocuments(databaseId: postDatabase, collectionId: likesCollection, queries: [Query.equal('user_id', userId)]);
-
-    List<Announcement> announcements = [];
-
-    for (var doc in documents.documents) {
-      final id = _getIdFromUrl(doc.data['postCollection']['images'][0]);
-
-      final futureBytes =
-      _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
-
-      announcements
-          .add(Announcement.fromJson(json: doc.data['postCollection'], futureBytes: futureBytes));
-    }
-    for (int i = 0; i < announcements.length; i++) {
-      announcements[i].liked = true;
-    }
-    return announcements;
+    return _announcementsFromDocuments(documents.documents);
   }
 
   Future getUserAnnouncements({required String userId}) async {
     final res = await _databases.listDocuments(
-        databaseId: postDatabase,
+        databaseId: mainDatabase,
         collectionId: postCollection,
-        queries: [Query.equal("creator_id", userId), Query.orderDesc('\$createdAt')]);
+        queries: [
+          Query.equal("creator_id", userId),
+          Query.orderDesc('\$createdAt')
+        ]);
 
-    List<Announcement> announcements = [];
-    for (var doc in res.documents) {
-      print(doc.data);
-
-      final id = _getIdFromUrl(doc.data['images'][0]);
-
-      final futureBytes =
-          _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
-
-      announcements
-          .add(Announcement.fromJson(json: doc.data, futureBytes: futureBytes));
-    }
-
-    return announcements;
+    return _announcementsFromDocuments(res.documents);
   }
 
-  Future changeActivityAnnouncements(String announcementsId) async {
+  Future changeAnnouncementActivity(String announcementsId) async {
     final res = await _databases.getDocument(
-        databaseId: postDatabase,
+        databaseId: mainDatabase,
         collectionId: postCollection,
         documentId: announcementsId);
     final bool currentValue = res.data['active'];
 
     await _databases.updateDocument(
-        databaseId: postDatabase,
+        databaseId: mainDatabase,
         collectionId: postCollection,
         documentId: announcementsId,
         data: {'active': !currentValue});
@@ -367,7 +310,7 @@ class DatabaseService {
 
   Future<Announcement> getAnnouncementById(String announcementId) async {
     final res = await _databases.getDocument(
-        databaseId: postDatabase,
+        databaseId: mainDatabase,
         collectionId: postCollection,
         documentId: announcementId);
 
@@ -378,4 +321,7 @@ class DatabaseService {
 
     return Announcement.fromJson(json: res.data, futureBytes: futureBytes);
   }
+
+  RealtimeSubscription getMessagesSubscription() => _realtime.subscribe(
+      ['databases.$mainDatabase.collections.$messagesCollection.documents']);
 }

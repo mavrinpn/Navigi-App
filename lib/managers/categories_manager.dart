@@ -13,5 +13,5 @@ class CategoriesManager {
       categories = await databaseManger.getAllCategories();
 
   Future loadSubcategory(String categoryID) async => subcategories =
-      await databaseManger.getAllSubCategoriesByCategoryId(categoryID);
+      await databaseManger.getAllSubcategoriesFromCategoryId(categoryID);
 }

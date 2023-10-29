@@ -118,5 +118,5 @@ class CreatingAnnouncementManager {
   }
 
   Future<List<String>> uploadImages(List<Uint8List> bytesList) async =>
-      await storageManager.uploadImages(bytesList);
+      await storageManager.uploadAnnouncementImages(bytesList);
 }
