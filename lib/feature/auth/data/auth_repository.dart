@@ -65,7 +65,7 @@ class AuthRepository {
       getUserData();
       appState.add(AuthStateEnum.auth);
     } catch (e) {
-        authState.add(EntranceStateEnum.fail);
+      authState.add(EntranceStateEnum.fail);
       rethrow;
     }
   }
@@ -142,7 +142,5 @@ class AuthRepository {
     }
   }
 
-  void creatorUserData() async{
-
-  }
+  void creatorUserData() async {}
 }

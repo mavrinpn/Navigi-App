@@ -3,16 +3,16 @@ import 'package:smart/models/announcement.dart';
 import '../services/database_service.dart';
 
 class PlacesManager {
-  final DatabaseService databaseManager;
+  final DatabaseService databaseService;
 
-  PlacesManager({required this.databaseManager});
+  PlacesManager({required this.databaseService});
 
   List<PlaceData> _places = [];
   List<PlaceData> searchedPlaces = [];
   String searchController = '';
 
   Future initialLoadItems() async =>
-      _places = await databaseManager.getAllPlaces();
+      _places = await databaseService.getAllPlaces();
 
   void searchPlacesByName(String query) {
     List<PlaceData> resList = [];

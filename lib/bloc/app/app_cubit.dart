@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:smart/feature/messenger/data/messenger_repository.dart';
 
 import '../../enum/enum.dart';
 import '../../feature/auth/data/auth_repository.dart';
@@ -12,10 +13,12 @@ class AppCubit extends Cubit<AppState> {
   AuthRepository appRepository;
   AnnouncementManager announcementManager;
   FavouritesManager favouritesManager;
+  MessengerRepository messengerRepository;
 
   AppCubit(
       {required this.appRepository,
       required this.announcementManager,
+      required this.messengerRepository,
       required this.favouritesManager})
       : super(AppInitial()) {
     appRepository.appState.stream.listen((event) {
@@ -23,6 +26,8 @@ class AppCubit extends Cubit<AppState> {
         announcementManager.addLimitAnnouncements(true);
         favouritesManager.userId = appRepository.userId;
         favouritesManager.getFavourites();
+        messengerRepository.userId = appRepository.userId;
+        messengerRepository.preloadChats();
         emit(AppAuthState());
       }
       if (event == AuthStateEnum.unAuth) {

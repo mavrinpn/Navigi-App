@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/favorites/favorites_screen.dart';
+import 'package:smart/feature/messenger/data/messenger_repository.dart';
+import 'package:smart/feature/messenger/ui/all_chats_screen.dart';
 import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/utils/fonts.dart';
 
@@ -30,15 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final List<Widget> widgetOptions = <Widget>[
       const MainScreen(),
-      Center(
-        child: InkWell(
-          onTap: () async {
-            var a = await RepositoryProvider.of<AnnouncementManager>(context)
-                .addLimitAnnouncements(false);
-          },
-          child: Text('asdf'),
-        ),
-      ),
+      MessengerMainScreen(),
       const FavoritesScreen(),
       const ProfileScreen(),
     ];

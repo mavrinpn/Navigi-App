@@ -14,6 +14,7 @@ import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
 import 'package:smart/feature/main/bloc/announcements/announcement_cubit.dart';
 import 'package:smart/feature/main/bloc/popularQueries/popular_queries_cubit.dart';
 import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
+import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/announcement/ui/creator_screen.dart';
 import 'package:smart/managers/favourits_manager.dart';
@@ -152,22 +153,25 @@ class MyRepositoryProviders extends StatelessWidget {
         create: (_) => CreatingAnnouncementManager(client: client),
       ),
       RepositoryProvider(
-        create: (_) => ItemManager(databaseManager: dbManager),
+        create: (_) => ItemManager(databaseService: dbManager),
       ),
       RepositoryProvider(
-        create: (_) => CategoriesManager(databaseManger: dbManager),
+        create: (_) => CategoriesManager(databaseService: dbManager),
       ),
       RepositoryProvider(
         create: (_) => AnnouncementManager(client: client),
       ),
       RepositoryProvider(
-        create: (_) => PlacesManager(databaseManager: dbManager),
+        create: (_) => PlacesManager(databaseService: dbManager),
+      ),
+      RepositoryProvider(
+        create: (_) => MessengerRepository(databaseService: dbManager),
       ),
       RepositoryProvider(
         create: (_) => SearchManager(client: client),
       ),
       RepositoryProvider(create: (_) => CreatorRepository(databaseService: dbManager)),
-      RepositoryProvider(create: (_) => FavouritesManager(dbManager: dbManager))
+      RepositoryProvider(create: (_) => FavouritesManager(databaseService: dbManager))
     ], child: const MyBlocProviders());
   }
 }
@@ -186,6 +190,7 @@ class MyBlocProviders extends StatelessWidget {
       BlocProvider(
         create: (_) => AppCubit(
             appRepository: RepositoryProvider.of<AuthRepository>(context),
+            messengerRepository: RepositoryProvider.of<MessengerRepository>(context),
             announcementManager:
                 RepositoryProvider.of<AnnouncementManager>(context),
             favouritesManager:

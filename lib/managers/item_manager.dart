@@ -2,16 +2,16 @@ import '../../models/item/item.dart';
 import '../../../services/database_service.dart';
 
 class ItemManager {
-  final DatabaseService databaseManager;
+  final DatabaseService databaseService;
 
-  ItemManager({required this.databaseManager});
+  ItemManager({required this.databaseService});
 
   List<SubCategoryItem> items = [];
   List<SubCategoryItem> searchedItems = [];
   String searchController = '';
 
   Future initialLoadItems(String query, subcategoryId) async =>
-      items = await databaseManager.getItemsFromSubcategory(subcategoryId);
+      items = await databaseService.getItemsFromSubcategory(subcategoryId);
 
   void searchItemsByName(String query) {
     List<SubCategoryItem> resList = [];

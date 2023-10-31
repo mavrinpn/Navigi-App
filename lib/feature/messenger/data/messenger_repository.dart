@@ -8,15 +8,25 @@ import 'package:smart/services/database_service.dart';
 
 class MessengerRepository {
   final DatabaseService databaseService;
-  RealtimeSubscription? _listenCurrentChat;
+  RealtimeSubscription? _messageListener;
+
+  String? userId;
 
   MessengerRepository({required this.databaseService}) :
-      _listenCurrentChat = databaseService.getMessagesSubscription();
+        _messageListener = databaseService.getMessagesSubscription();
 
-  List<BehaviorSubject<ChatPreview>> chats = [];
+  List<ChatPreview> _chats = [];
+  BehaviorSubject<List<ChatPreview>> chats = BehaviorSubject.seeded([]);
   BehaviorSubject<List<Message>> currentChatMessages = BehaviorSubject.seeded([]);
 
   void preloadChats() async {
+    _chats = await databaseService.getUserChats(userId!);
+    chats.add(_chats);
+  }
 
+  void loadChatsMessages() async {
+    for (var chat in _chats) {
+
+    }
   }
 }

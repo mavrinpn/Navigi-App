@@ -26,9 +26,9 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  bool isTouch = false;
+  bool buttonActive = false;
 
-  bool isErrorPassword = false;
+  bool passwordError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -110,18 +110,18 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                             prefIcon: 'Assets/icons/key.svg',
                             obscureText: true,
                             validator: (value) {
-                              if (value!.length < 8 || isErrorPassword) {
+                              if (value!.length < 8 || passwordError) {
                                 return 'Erreur! Réessayez ou entrez dautres informations.';
                               }
                               return null;
                             },
                             onChanged: (value) {
                               if (value!.length > 7) {
-                                isTouch = true;
+                                buttonActive = true;
                                 setState(() {});
                                 return;
                               }
-                              isTouch = false;
+                              buttonActive = false;
                               setState(() {});
                             },
                           ),
@@ -136,14 +136,14 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                                 return;
                               }
 
-                              if (isTouch) {
+                              if (buttonActive) {
                                 bloc.loginWithEmail(
                                     email: AuthRepository.convertPhoneToEmail(
                                         bloc.getPhone()),
                                     password: passwordController.text.trim());
                               }
                             },
-                            isTouch: isTouch,
+                            isTouch: buttonActive,
                             text: 'Entrer',
                             styleText: AppTypography.font14white,
                             height: 52,

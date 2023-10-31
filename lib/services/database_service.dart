@@ -1,22 +1,23 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:smart/main.dart';
+import 'package:smart/models/messenger/message.dart';
 import 'package:smart/models/sorte_types.dart';
 import 'package:smart/models/user.dart';
 
 import '../models/announcement.dart';
 import '../models/announcement_creating_data.dart';
+import '../models/messenger/chat_preview.dart';
 import '../models/models.dart';
 import '../utils/constants.dart';
 
+class DefaultDocumentParameters {
+  static const String createdAt = '\$createdAt';
+  static const String id = '\$id';
+}
+
 const String categoryId = 'categoryId';
 const String subcategoryId = 'subcategory';
-const String createdAt = '\$createdAt';
+
 const String totalViews = 'total_views';
 
 const String userName = 'name';
@@ -25,15 +26,18 @@ const String userImageUrl = 'image_url';
 
 class DatabaseService {
   final Databases _databases;
-  final Functions _functions;
+
+  // final Functions _functions;
   final Storage _storage;
   final Realtime _realtime;
+  final Teams _teams;
 
   DatabaseService({required Client client})
       : _databases = Databases(client),
-        _functions = Functions(client),
+        // _functions = Functions(client),
         _realtime = Realtime(client),
-        _storage = Storage(client);
+        _storage = Storage(client),
+        _teams = Teams(client);
 
   Future<List<Category>> getAllCategories() async {
     final res = await _databases.listDocuments(
@@ -114,7 +118,10 @@ class DatabaseService {
   }
 
   Future<List<Announcement>> getAnnouncements(String? lastId) async {
-    List<String> queries = [Query.orderDesc('\$createdAt'), Query.limit(24)];
+    List<String> queries = [
+      Query.orderDesc(DefaultDocumentParameters.createdAt),
+      Query.limit(24)
+    ];
     if ((lastId ?? '').isEmpty) lastId = null;
 
     if (lastId != null) queries.add(Query.cursorAfter(lastId));
@@ -279,7 +286,21 @@ class DatabaseService {
         collectionId: likesCollection,
         queries: [Query.equal('user_id', userId)]);
 
-    return _announcementsFromDocuments(documents.documents);
+    List<Announcement> announcements = [];
+
+    for (var doc in documents.documents) {
+      final id = _getIdFromUrl(doc.data['postCollection']['images'][0]);
+
+      final futureBytes =
+          _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+
+      announcements.add(Announcement.fromJson(
+          json: doc.data['postCollection'], futureBytes: futureBytes));
+    }
+    for (int i = 0; i < announcements.length; i++) {
+      announcements[i].liked = true;
+    }
+    return announcements;
   }
 
   Future getUserAnnouncements({required String userId}) async {
@@ -288,7 +309,7 @@ class DatabaseService {
         collectionId: postCollection,
         queries: [
           Query.equal("creator_id", userId),
-          Query.orderDesc('\$createdAt')
+          Query.orderDesc(DefaultDocumentParameters.createdAt)
         ]);
 
     return _announcementsFromDocuments(res.documents);
@@ -324,4 +345,110 @@ class DatabaseService {
 
   RealtimeSubscription getMessagesSubscription() => _realtime.subscribe(
       ['databases.$mainDatabase.collections.$messagesCollection.documents']);
+
+  Map<String, String> getOtherUserNameAndImage(
+      Map<String, dynamic> documentData, String userId) {
+    final user1 = documentData['user1'];
+    if (user1[DefaultDocumentParameters.id] != userId) {
+      return {
+        'name': user1['name'],
+        'image': user1['image_url'],
+        'id': user1['\$id'],
+      };
+    } else {
+      return {
+        'name': documentData['user2']['name'],
+        'image': documentData['user2']['image_url'],
+        'id': documentData['user2']['\$id'],
+      };
+    }
+  }
+
+  Future<List<ChatPreview>> getUserChats(String userId) async {
+    final res = await _databases.listDocuments(
+        databaseId: mainDatabase,
+        collectionId: roomsCollection,
+        queries: [
+          Query.search('members', userId),
+        ]);
+    List<ChatPreview> chats = [];
+    for (var doc in res.documents) {
+      final data = doc.data;
+      final otherUser = getOtherUserNameAndImage(data, userId);
+      final String announcementName = data['announcement']['name'];
+      print('${otherUser['name']} $announcementName');
+      chats.add(ChatPreview(
+          chatName: '${otherUser['name']} $announcementName',
+          otherUserId: otherUser['id']!,
+          otherUserAvatarUrl: otherUser['image']!,
+          id: doc.$id));
+    }
+    return chats;
+  }
+
+  Future<List<Message>> getChatMessages(String chatId) async {
+    final res = await _databases.listDocuments(
+        databaseId: mainDatabase,
+        collectionId: messagesCollection,
+        queries: [Query.equal('roomId', chatId)]);
+
+    List<Message> messages = [];
+    for (var doc in res.documents) {
+      final message = Message(
+          id: doc.$id,
+          content: doc.data['content'],
+          senderId: doc.data['creatorId'],
+          images: doc.data['images'],
+          createdAt: doc.$createdAt);
+
+      messages.add(message);
+    }
+
+    return messages;
+  }
+
+  Future<void> createRoom(List<String> userIds, String announcementId) async {
+    final team = await _teams.create(teamId: ID.unique(), name: 'chat');
+    await _teams.createMembership(
+        teamId: team.$id, roles: [], userId: userIds[1]);
+    await _teams.createMembership(
+        teamId: team.$id, roles: [], userId: userIds[0]);
+
+    _databases.createDocument(
+        databaseId: mainDatabase,
+        collectionId: roomsCollection,
+        documentId: ID.unique(),
+        data: {
+          'user1': userIds[0],
+          'user2': userIds[1],
+          'members': userIds,
+          'announcement': announcementId,
+        },
+        permissions: [
+          Permission.write(Role.user(userIds[0])),
+          Permission.read(Role.user(userIds[0])),
+          Permission.write(Role.member(userIds[1])),
+          Permission.read(Role.member(userIds[1])),
+          // Permission.write(Role.user(userIds[1])),
+        ]);
+  }
+
+  Future<void> createMessage(ChatPreview room, Message message) async {
+    await _databases.createDocument(
+        databaseId: mainDatabase,
+        collectionId: messagesCollection,
+        documentId: ID.unique(),
+        data: {
+          'room': room.id,
+          'roomId': room.id,
+          'creatorId': message.senderId,
+          'content': message.content,
+          'images': message.images ?? []
+        },
+        permissions: [
+          Permission.write(Role.user(message.senderId)),
+          Permission.read(Role.user(message.senderId)),
+          Permission.read(Role.user(room.otherUserId)),
+        ]);
+  }
 }

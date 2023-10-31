@@ -5,7 +5,7 @@ import '../models/announcement.dart';
 import '../services/database_service.dart';
 
 class FavouritesManager {
-  final DatabaseService dbManager;
+  final DatabaseService databaseService;
 
   String? userId;
   List<Announcement> announcements = [];
@@ -17,22 +17,22 @@ class FavouritesManager {
     return false;
   }
 
-  FavouritesManager({required this.dbManager});
+  FavouritesManager({required this.databaseService});
 
   BehaviorSubject<LoadingStateEnum> loadingState =
       BehaviorSubject.seeded(LoadingStateEnum.loading);
 
   Future<void> like(String postId) async =>
-      await dbManager.likePost(postId: postId, userId: userId!);
+      await databaseService.likePost(postId: postId, userId: userId!);
 
   Future<void> unlike(String postId) async =>
-      await dbManager.unlikePost(postId: postId, userId: userId!);
+      await databaseService.unlikePost(postId: postId, userId: userId!);
 
   Future<void> getFavourites() async {
     loadingState.add(LoadingStateEnum.loading);
     try {
       announcements =
-          await dbManager.getFavouritesAnnouncements(userId: userId!);
+          await databaseService.getFavouritesAnnouncements(userId: userId!);
       // print(announcements);
       loadingState.add(LoadingStateEnum.success);
     } catch (e) {
