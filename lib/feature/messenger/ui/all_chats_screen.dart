@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/models/messenger/message.dart';
 import 'package:smart/utils/utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smart/widgets/conatainers/chat_container.dart';
-import 'package:smart/widgets/textField/elevated_text_field.dart';
 
 class MessengerMainScreen extends StatefulWidget {
   const MessengerMainScreen({super.key});
@@ -46,8 +45,8 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
                           width: 22),
                     ),
                     prefixIconConstraints:
-                        BoxConstraints(maxWidth: 50, maxHeight: 22),
-                    contentPadding: EdgeInsets.all(0),
+                        const BoxConstraints(maxWidth: 50, maxHeight: 22),
+                    contentPadding: EdgeInsets.zero,
                     filled: true,
                     fillColor: const Color(0xffF4F5F6),
                     border: OutlineInputBorder(
@@ -63,10 +62,15 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
             ),
           )
         ]..addAll([
-            const SliverPadding(
-                padding: EdgeInsets.fromLTRB(15, 12, 15, 0),
+            SliverPadding(
+                padding: const EdgeInsets.fromLTRB(15, 12, 15, 0),
                 sliver: SliverToBoxAdapter(
-                  child: ChatContainer(),
+                  child: ChatContainer(
+                    chatImageUrl: 'https://static.life.ru/publications/2021/2/10/1332649499201.808.jpg',
+                    otherUser: 'John E.',
+                    announcementName: 'Apple iPad Pro 12.9" (2020) 256GB Wi-Fi',
+                    message: Message.fish(),
+                  ),
                 ))
           ]),
       ),

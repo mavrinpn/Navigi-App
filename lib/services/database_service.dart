@@ -386,7 +386,7 @@ class DatabaseService {
     return chats;
   }
 
-  Future<List<Message>> getChatMessages(String chatId) async {
+  Future<List<Message>> getChatMessages(String chatId, String userId) async {
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: messagesCollection,
@@ -399,6 +399,7 @@ class DatabaseService {
           content: doc.data['content'],
           senderId: doc.data['creatorId'],
           images: doc.data['images'],
+          owned: userId == doc.data['creatorId'],
           createdAt: doc.$createdAt);
 
       messages.add(message);
