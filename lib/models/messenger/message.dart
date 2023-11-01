@@ -18,11 +18,12 @@ class Message {
       this.wasRead,
       this.images});
 
-  Message.fish()
+  Message.fish({bool owned_ = false, DateTime? read})
       : id = '',
         content =
             'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s',
         senderId = '',
         createdAt = dateTimeToString(DateTime.now()),
-        owned = false;
+        wasRead = read,
+        owned = owned_;
 }

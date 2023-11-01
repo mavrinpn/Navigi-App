@@ -66,12 +66,24 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
                 padding: const EdgeInsets.fromLTRB(15, 12, 15, 0),
                 sliver: SliverToBoxAdapter(
                   child: ChatContainer(
+                    userOnline: true,
                     chatImageUrl: 'https://static.life.ru/publications/2021/2/10/1332649499201.808.jpg',
                     otherUser: 'John E.',
                     announcementName: 'Apple iPad Pro 12.9" (2020) 256GB Wi-Fi',
-                    message: Message.fish(),
+                    message: Message.fish(owned_: true, read: DateTime.now()),
                   ),
-                ))
+                )),
+            SliverPadding(
+                padding: const EdgeInsets.fromLTRB(15, 12, 15, 0),
+                sliver: SliverToBoxAdapter(
+                  child: ChatContainer(
+                    userOnline: false,
+                    chatImageUrl: 'https://static.life.ru/publications/2021/2/10/1332649499201.808.jpg',
+                    otherUser: 'John E.',
+                    announcementName: 'Apple iPad Pro 12.9" (2020) 256GB Wi-Fi',
+                    message: Message.fish(owned_: false),
+                  ),
+                )),
           ]),
       ),
     );

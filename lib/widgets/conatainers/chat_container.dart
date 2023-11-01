@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/models/messenger/message.dart';
 import 'package:smart/utils/fonts.dart';
 
@@ -8,12 +9,14 @@ class ChatContainer extends StatefulWidget {
       required this.message,
       required this.chatImageUrl,
       required this.otherUser,
-      required this.announcementName});
+      required this.announcementName,
+      required this.userOnline});
 
   final Message message;
   final String chatImageUrl;
   final String otherUser;
   final String announcementName;
+  final bool userOnline;
 
   @override
   State<ChatContainer> createState() => _ChatContainerState();
@@ -60,12 +63,33 @@ class _ChatContainerState extends State<ChatContainer> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           widget.otherUser,
                           style: AppTypography.font12lightGray,
                         ),
+                        if (widget.userOnline) ...[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 2, bottom: 5),
+                            child: SvgPicture.asset(
+                              'Assets/icons/online_circle.svg',
+                              width: 5,
+                              height: 5,
+                            ),
+                          )
+                        ],
+                        Spacer(),
+                        if (widget.message.owned &&
+                            widget.message.wasRead != null) ...[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 2),
+                            child: SvgPicture.asset(
+                              'Assets/icons/read_indicator.svg',
+                              width: 18,
+                              height: 18,
+                            ),
+                          )
+                        ],
                         Text(
                           widget.message.createdAt,
                           style: AppTypography.font12lightGray,
@@ -84,15 +108,30 @@ class _ChatContainerState extends State<ChatContainer> {
           ),
           SizedBox(
             width: MediaQuery.sizeOf(context).width - 100,
-            child: Column(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  widget.message.content,
-                  style: AppTypography.font12lightGray,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                )
+                if (!widget.message.owned &&
+                    widget.message.wasRead == null) ...[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 3, top: 3),
+                    child: SvgPicture.asset(
+                      'Assets/icons/new_circle.svg',
+                      width: 8,
+                      height: 8,
+                    ),
+                  )
+                ],
+                SizedBox(
+                  width: MediaQuery.sizeOf(context).width - 115,
+                  child: Text(
+                    widget.message.content,
+                    style: AppTypography.font12lightGray,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
           )
