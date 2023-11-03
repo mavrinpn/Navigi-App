@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/models/messenger/message.dart';
 import 'package:smart/utils/utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:smart/widgets/conatainers/chat_container.dart';
+import 'package:smart/widgets/messenger/chat_container.dart';
 
 class MessengerMainScreen extends StatefulWidget {
   const MessengerMainScreen({super.key});
