@@ -12,21 +12,54 @@ class MessengerRepository {
 
   String? userId;
 
-  MessengerRepository({required this.databaseService}) :
-        _messageListener = databaseService.getMessagesSubscription();
+  MessengerRepository({required this.databaseService})
+      : _messageListener = databaseService.getMessagesSubscription();
 
-  List<ChatPreview> _chats = [];
-  BehaviorSubject<List<ChatPreview>> chats = BehaviorSubject.seeded([]);
-  BehaviorSubject<List<Message>> currentChatMessages = BehaviorSubject.seeded([]);
+  List<Room> _chats = [];
+  BehaviorSubject<List<Room>> chats = BehaviorSubject.seeded([]);
+  BehaviorSubject<List<Message>> currentChatMessages =
+      BehaviorSubject.seeded([]);
+
+  void selectChat(String id, Message lastMessage) async {
+    currentChatId = id;
+    currentChatMessages.add([lastMessage]);
+  }
+
+  String? currentChatId;
 
   void preloadChats() async {
     _chats = await databaseService.getUserChats(userId!);
     chats.add(_chats);
+
+    _messageListener?.stream.listen((event) {
+      print(event.payload);
+    });
   }
 
   void loadChatsMessages() async {
-    for (var chat in _chats) {
+    for (int i = 0; i < _chats.length; i++) {
+      final chat = _chats[i];
+      final messages = await databaseService.getChatMessages(chat.id, userId!);
+      if (messages.isNotEmpty) {
+        _chats[i].lastMessage = messages.first;
+      }
+    }
+    chats.add(_chats);
+  }
 
+  int? findChatById(String id) {
+    for (int i = 0; i < _chats.length; i++) {
+      if (_chats[i].id == id) {
+        return i;
+      }
+    }
+    return null;
+  }
+
+  void loadChatMessages(String id) async {
+    final messages = await databaseService.getChatMessages(id, userId!);
+    if (messages.isNotEmpty) {
+      currentChatMessages.add(messages);
     }
   }
 }

@@ -1,17 +1,19 @@
 import 'package:appwrite/models.dart';
 import 'package:smart/models/messenger/message.dart';
 
-class ChatPreview {
+class Room {
   String id;
+  String teamId;
   String chatName;
-  String otherUserAvatarUrl;
+  String? otherUserAvatarUrl;
   String otherUserId;
   Message? lastMessage;
 
-  ChatPreview(
+  Room(
       {required this.id,
       required this.chatName,
       required this.otherUserId,
+      required this.teamId,
       required this.otherUserAvatarUrl,
       this.lastMessage});
 }

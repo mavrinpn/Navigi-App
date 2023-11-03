@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:smart/models/messenger/message.dart';
@@ -24,17 +26,19 @@ const String userName = 'name';
 const String userPhone = 'phone';
 const String userImageUrl = 'image_url';
 
+const String _createTeamFunction = '654420cd83b03318d121';
+
 class DatabaseService {
   final Databases _databases;
 
-  // final Functions _functions;
+  final Functions _functions;
   final Storage _storage;
   final Realtime _realtime;
   final Teams _teams;
 
   DatabaseService({required Client client})
       : _databases = Databases(client),
-        // _functions = Functions(client),
+        _functions = Functions(client),
         _realtime = Realtime(client),
         _storage = Storage(client),
         _teams = Teams(client);
@@ -346,7 +350,7 @@ class DatabaseService {
   RealtimeSubscription getMessagesSubscription() => _realtime.subscribe(
       ['databases.$mainDatabase.collections.$messagesCollection.documents']);
 
-  Map<String, String> getOtherUserNameAndImage(
+  Map<String, String?> getOtherUserNameAndImage(
       Map<String, dynamic> documentData, String userId) {
     final user1 = documentData['user1'];
     if (user1[DefaultDocumentParameters.id] != userId) {
@@ -364,23 +368,22 @@ class DatabaseService {
     }
   }
 
-  Future<List<ChatPreview>> getUserChats(String userId) async {
+  Future<List<Room>> getUserChats(String userId) async {
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: roomsCollection,
-        queries: [
-          Query.search('members', userId),
-        ]);
-    List<ChatPreview> chats = [];
+      databaseId: mainDatabase,
+      collectionId: roomsCollection,
+    );
+    List<Room> chats = [];
     for (var doc in res.documents) {
       final data = doc.data;
       final otherUser = getOtherUserNameAndImage(data, userId);
       final String announcementName = data['announcement']['name'];
       print('${otherUser['name']} $announcementName');
-      chats.add(ChatPreview(
+      chats.add(Room(
+          teamId: data['team'],
           chatName: '${otherUser['name']} $announcementName',
           otherUserId: otherUser['id']!,
-          otherUserAvatarUrl: otherUser['image']!,
+          otherUserAvatarUrl: otherUser['image'],
           id: doc.$id));
     }
     return chats;
@@ -390,7 +393,7 @@ class DatabaseService {
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: messagesCollection,
-        queries: [Query.equal('roomId', chatId)]);
+        queries: [Query.equal('roomId', chatId), Query.limit(50)], );
 
     List<Message> messages = [];
     for (var doc in res.documents) {
@@ -409,32 +412,35 @@ class DatabaseService {
   }
 
   Future<void> createRoom(List<String> userIds, String announcementId) async {
-    final team = await _teams.create(teamId: ID.unique(), name: 'chat');
-    await _teams.createMembership(
-        teamId: team.$id, roles: [], userId: userIds[1]);
-    await _teams.createMembership(
-        teamId: team.$id, roles: [], userId: userIds[0]);
+    final res = await _functions.createExecution(
+        functionId: _createTeamFunction,
+        body: jsonEncode({
+          'user1': userIds[0],
+          'user2': userIds[1],
+        }));
+
+    final teamId = res.responseBody.replaceAll('"', '');
+
+    final List<String> permissions = [
+      Permission.read(Role.team(teamId)),
+      Permission.write(Role.team(teamId)),
+    ];
 
     _databases.createDocument(
         databaseId: mainDatabase,
         collectionId: roomsCollection,
         documentId: ID.unique(),
         data: {
+          'team': teamId,
           'user1': userIds[0],
           'user2': userIds[1],
           'members': userIds,
           'announcement': announcementId,
         },
-        permissions: [
-          Permission.write(Role.user(userIds[0])),
-          Permission.read(Role.user(userIds[0])),
-          Permission.write(Role.member(userIds[1])),
-          Permission.read(Role.member(userIds[1])),
-          // Permission.write(Role.user(userIds[1])),
-        ]);
+        permissions: permissions);
   }
 
-  Future<void> createMessage(ChatPreview room, Message message) async {
+  Future<void> createMessage(Room room, Message message) async {
     await _databases.createDocument(
         databaseId: mainDatabase,
         collectionId: messagesCollection,
@@ -447,9 +453,8 @@ class DatabaseService {
           'images': message.images ?? []
         },
         permissions: [
-          Permission.write(Role.user(message.senderId)),
-          Permission.read(Role.user(message.senderId)),
-          Permission.read(Role.user(room.otherUserId)),
+          Permission.write(Role.team(room.teamId)),
+          Permission.read(Role.team(room.teamId)),
         ]);
   }
 }
