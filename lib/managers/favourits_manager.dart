@@ -12,7 +12,7 @@ class FavouritesManager {
 
   bool contains(String id) {
     for (var i in announcements) {
-      if (i.announcementId == id) return true;
+      if (i.id == id) return true;
     }
     return false;
   }

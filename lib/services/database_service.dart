@@ -368,6 +368,27 @@ class DatabaseService {
     }
   }
 
+  Room _roomFromDoc(Document doc, String userId) {
+    final data = doc.data;
+    final otherUser = getOtherUserNameAndImage(data, userId);
+    final String announcementName = data['announcement']['name'];
+
+    final id = _getIdFromUrl(data['announcement']['images'][0]);
+
+    final futureBytes =
+        _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+
+    print('${otherUser['name']} $announcementName');
+    return Room(
+        announcement: Announcement.fromJson(
+            json: data['announcement'], futureBytes: futureBytes),
+        teamId: data['team'],
+        chatName: '${otherUser['name']} $announcementName',
+        otherUserId: otherUser['id']!,
+        otherUserAvatarUrl: otherUser['image'],
+        id: doc.$id);
+  }
+
   Future<List<Room>> getUserChats(String userId) async {
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
@@ -375,25 +396,26 @@ class DatabaseService {
     );
     List<Room> chats = [];
     for (var doc in res.documents) {
-      final data = doc.data;
-      final otherUser = getOtherUserNameAndImage(data, userId);
-      final String announcementName = data['announcement']['name'];
-      print('${otherUser['name']} $announcementName');
-      chats.add(Room(
-          teamId: data['team'],
-          chatName: '${otherUser['name']} $announcementName',
-          otherUserId: otherUser['id']!,
-          otherUserAvatarUrl: otherUser['image'],
-          id: doc.$id));
+      chats.add(_roomFromDoc(doc, userId));
     }
     return chats;
   }
 
+  Future<Room> getRoom(String id, String userId) async {
+    final doc = await _databases.getDocument(
+        databaseId: mainDatabase,
+        collectionId: roomsCollection,
+        documentId: id);
+
+    return _roomFromDoc(doc, userId);
+  }
+
   Future<List<Message>> getChatMessages(String chatId, String userId) async {
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: messagesCollection,
-        queries: [Query.equal('roomId', chatId), Query.limit(50)], );
+      databaseId: mainDatabase,
+      collectionId: messagesCollection,
+      queries: [Query.equal('roomId', chatId), Query.limit(50)],
+    );
 
     List<Message> messages = [];
     for (var doc in res.documents) {
@@ -411,7 +433,8 @@ class DatabaseService {
     return messages;
   }
 
-  Future<void> createRoom(List<String> userIds, String announcementId) async {
+  Future<Map<String, dynamic>> createRoom(
+      List<String> userIds, String announcementId) async {
     final res = await _functions.createExecution(
         functionId: _createTeamFunction,
         body: jsonEncode({
@@ -426,7 +449,7 @@ class DatabaseService {
       Permission.write(Role.team(teamId)),
     ];
 
-    _databases.createDocument(
+    final room = await _databases.createDocument(
         databaseId: mainDatabase,
         collectionId: roomsCollection,
         documentId: ID.unique(),
@@ -438,23 +461,30 @@ class DatabaseService {
           'announcement': announcementId,
         },
         permissions: permissions);
+
+    return {'room': room.$id, 'team': teamId};
   }
 
-  Future<void> createMessage(Room room, Message message) async {
+  Future<void> sendMessage(
+      {required String roomId,
+      required String teamId,
+      required String content,
+      required String senderId,
+      List<String>? images}) async {
     await _databases.createDocument(
         databaseId: mainDatabase,
         collectionId: messagesCollection,
         documentId: ID.unique(),
         data: {
-          'room': room.id,
-          'roomId': room.id,
-          'creatorId': message.senderId,
-          'content': message.content,
-          'images': message.images ?? []
+          'room': roomId,
+          'roomId': roomId,
+          'creatorId': senderId,
+          'content': content,
+          'images': images ?? []
         },
         permissions: [
-          Permission.write(Role.team(room.teamId)),
-          Permission.read(Role.team(room.teamId)),
+          Permission.write(Role.team(teamId)),
+          Permission.read(Role.team(teamId)),
         ]);
   }
 }

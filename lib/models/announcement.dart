@@ -15,7 +15,7 @@ class Announcement {
   final double price;
   final bool active;
   List images;
-  final String announcementId;
+  final String id;
   final StaticParameters staticParameters;
   final PlaceData placeData;
   final CreatorData creatorData;
@@ -33,7 +33,7 @@ class Announcement {
         required this.price,
         required this.images,
         required this.previewImage,
-        required this.announcementId,
+        required this.id,
         required this.staticParameters,
         required this.creatorData,
         required this.placeData,
@@ -52,7 +52,7 @@ class Announcement {
         staticParameters = StaticParameters(parameters: json['parametrs']),
         totalViews = json['total_views'] ?? 0,
         _createdAt = json['\$createdAt'],
-        announcementId = json['\$id'],
+        id = json['\$id'],
         active = json['active'],
         placeData = PlaceData.fromJson(json['place']) {
     var l = [];
@@ -76,7 +76,7 @@ class Announcement {
         staticParameters = StaticParameters(parameters: json['parametrs']),
         totalViews = json['total_views'],
         _createdAt = json['\$createdAt'],
-        announcementId = json['\$id'],
+        id = json['\$id'],
         placeData = PlaceData.fish() {
     loadBytes();
   }

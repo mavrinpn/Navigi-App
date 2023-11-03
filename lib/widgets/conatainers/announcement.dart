@@ -31,17 +31,17 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
   @override
   void initState() {
     liked = RepositoryProvider.of<FavouritesManager>(context)
-        .contains(widget.announcement.announcementId);
+        .contains(widget.announcement.id);
     super.initState();
   }
 
   void likeOrUnlike() {
     if (!liked) {
       BlocProvider.of<FavouritesCubit>(context)
-          .like(widget.announcement.announcementId);
+          .like(widget.announcement.id);
     } else {
       BlocProvider.of<FavouritesCubit>(context)
-          .unlike(widget.announcement.announcementId);
+          .unlike(widget.announcement.id);
     }
     setState(() {
       liked = !liked;
@@ -97,7 +97,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
         splashColor: AppColors.empty,
         onTap: () async {
           BlocProvider.of<AnnouncementCubit>(context)
-              .loadAnnouncementById(widget.announcement.announcementId);
+              .loadAnnouncementById(widget.announcement.id);
           Navigator.pushNamed(context, '/announcement_screen');
         },
         child: Column(
@@ -172,13 +172,13 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                 log('');
                 log('');
                 log(state.toString());
-                log(widget.announcement.announcementId);
+                log(widget.announcement.id);
                 log((state is LikeSuccessState).toString());
                 log('');
                 log('');
 
                 if (state is LikeSuccessState &&
-                    state.changedPostId == widget.announcement.announcementId) {
+                    state.changedPostId == widget.announcement.id) {
                   setState(() {
                     liked = state.value;
                   });

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/feature/messenger/data/messenger_repository.dart';
+import 'package:smart/models/messenger/chat_preview.dart';
 import 'package:smart/models/messenger/message.dart';
 import 'package:smart/utils/utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -67,7 +70,8 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
                 sliver: SliverToBoxAdapter(
                   child: ChatContainer(
                     userOnline: true,
-                    chatImageUrl: 'https://static.life.ru/publications/2021/2/10/1332649499201.808.jpg',
+                    chatImageUrl:
+                        'https://static.life.ru/publications/2021/2/10/1332649499201.808.jpg',
                     otherUser: 'John E.',
                     announcementName: 'Apple iPad Pro 12.9" (2020) 256GB Wi-Fi',
                     message: Message.fish(owned_: true, read: DateTime.now()),
@@ -78,12 +82,21 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
                 sliver: SliverToBoxAdapter(
                   child: ChatContainer(
                     userOnline: false,
-                    chatImageUrl: 'https://static.life.ru/publications/2021/2/10/1332649499201.808.jpg',
+                    chatImageUrl:
+                        'https://static.life.ru/publications/2021/2/10/1332649499201.808.jpg',
                     otherUser: 'John E.',
                     announcementName: 'Apple iPad Pro 12.9" (2020) 256GB Wi-Fi',
                     message: Message.fish(owned_: false),
                   ),
                 )),
+            SliverToBoxAdapter(
+              child: TextButton(
+                onPressed: () {
+
+                },
+                child: Text('test'),
+              ),
+            )
           ]),
       ),
     );

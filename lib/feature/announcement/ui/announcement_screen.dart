@@ -77,7 +77,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         builder: (context, state1) {
                           bool liked =
                           RepositoryProvider.of<FavouritesManager>(context)
-                              .contains(state.data.announcementId);
+                              .contains(state.data.id);
                           return InkWell(
                             focusColor: AppColors.empty,
                             hoverColor: AppColors.empty,
@@ -92,10 +92,10 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                               try {
                                 if (!liked) {
                                   await BlocProvider.of<FavouritesCubit>(context)
-                                      .like(state.data.announcementId);
+                                      .like(state.data.id);
                                 } else {
                                   await BlocProvider.of<FavouritesCubit>(context)
-                                      .unlike(state.data.announcementId);
+                                      .unlike(state.data.id);
                                 }
                               } catch (e) {
                                 Dialogs.hide(context);
@@ -144,7 +144,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                                     child: Column(
                                       children: [Padding(padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16), child: InkWell(
                                         onTap: () async {
-                                          await RepositoryProvider.of<AnnouncementManager>(context).changeActivity(state.data.announcementId);
+                                          await RepositoryProvider.of<AnnouncementManager>(context).changeActivity(state.data.id);
                                           Navigator.pop(context);
                                           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('success')));
                                           BlocProvider.of<CreatorCubit>(context).setUserId(state.data.creatorData.uid);
