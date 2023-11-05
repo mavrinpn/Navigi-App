@@ -414,18 +414,21 @@ class DatabaseService {
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
       collectionId: messagesCollection,
-      queries: [Query.equal('roomId', chatId), Query.limit(50)],
+      queries: [Query.equal('roomId', chatId)],
     );
 
     List<Message> messages = [];
     for (var doc in res.documents) {
       final message = Message(
-          id: doc.$id,
-          content: doc.data['content'],
-          senderId: doc.data['creatorId'],
-          images: doc.data['images'],
-          owned: userId == doc.data['creatorId'],
-          createdAt: doc.$createdAt);
+        id: doc.$id,
+        content: doc.data['content'],
+        senderId: doc.data['creatorId'],
+        images: doc.data['images'],
+        owned: userId == doc.data['creatorId'],
+        createdAt: doc.$createdAt,
+        createdAtDt:
+            DateTime.parse(doc.$createdAt).add(DateTime.now().timeZoneOffset),
+      );
 
       messages.add(message);
     }

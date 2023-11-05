@@ -91,9 +91,7 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
                 )),
             SliverToBoxAdapter(
               child: TextButton(
-                onPressed: () {
-
-                },
+                onPressed: () async {},
                 child: Text('test'),
               ),
             )
