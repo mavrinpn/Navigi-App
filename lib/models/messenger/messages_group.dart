@@ -16,4 +16,8 @@ class MessagesGroup implements ChatItem {
   bool get wasRead => messages.last.wasRead != null;
 
   bool get owned => messages.last.owned;
+
+  bool diffDate(DateTime dt) {
+    return (dt.year != sentAt.year || dt.month != sentAt.month || dt.day != sentAt.day);
+  }
 }

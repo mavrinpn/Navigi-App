@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
+import 'package:smart/main.dart';
 import 'package:smart/models/messenger/message.dart';
 import 'package:smart/models/sorte_types.dart';
 import 'package:smart/models/user.dart';
@@ -386,6 +387,7 @@ class DatabaseService {
         chatName: '${otherUser['name']} $announcementName',
         otherUserId: otherUser['id']!,
         otherUserAvatarUrl: otherUser['image'],
+        otherUserName: otherUser['name']!,
         id: doc.$id);
   }
 
@@ -429,11 +431,35 @@ class DatabaseService {
         createdAtDt:
             DateTime.parse(doc.$createdAt).add(DateTime.now().timeZoneOffset),
       );
+      if (doc.data['wasRead'] != null) {
+        message.wasRead =
+            DateTime.fromMillisecondsSinceEpoch(doc.data['wasRead']);
+      }
 
       messages.add(message);
     }
 
     return messages;
+  }
+
+  Future<void> markMessagesAsRead(String chatId, String userId) async {
+    final docs = await _databases.listDocuments(
+        databaseId: mainDatabase,
+        collectionId: messagesCollection,
+        queries: [
+          Query.equal('roomId', chatId),
+          Query.notEqual('creatorId', userId),
+          Query.isNotNull('wasRead')
+        ]);
+
+    for (var doc in docs.documents) {
+      print(doc.$id);
+      _databases.updateDocument(
+          databaseId: mainDatabase,
+          collectionId: messagesCollection,
+          documentId: doc.$id,
+          data: {'wasRead': DateTime.now().millisecondsSinceEpoch});
+    }
   }
 
   Future<Map<String, dynamic>> createRoom(

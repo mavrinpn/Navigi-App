@@ -5,6 +5,7 @@ import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/models/messenger/message.dart';
 import 'package:smart/models/messenger/room.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/functions.dart';
 
 class ChatContainer extends StatefulWidget {
   const ChatContainer({super.key,
@@ -17,7 +18,7 @@ class ChatContainer extends StatefulWidget {
   ChatContainer.fromRoom(Room room)
       : message = room.lastMessage,
         chatImageUrl = room.announcement.images[0],
-        otherUser = room.announcement.creatorData.name,
+        otherUser = room.otherUserName,
         announcementName = room.announcement.title,
         roomId = room.id,
         userOnline = false;
@@ -58,7 +59,7 @@ class _ChatContainerState extends State<ChatContainer> {
                 ),
                 width: double.infinity,
                 height: 102,
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,7 +71,8 @@ class _ChatContainerState extends State<ChatContainer> {
                           width: 40,
                           height: 40,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(18),
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.grey[300],
                               image: DecorationImage(
                                   image: NetworkImage(widget.chatImageUrl),
                                   fit: BoxFit.cover)),
@@ -119,7 +121,7 @@ class _ChatContainerState extends State<ChatContainer> {
                                       )
                                     ],
                                     Text(
-                                      widget.message!.createdAt,
+                                      dateTimeToString(widget.message!.createdAtDt),
                                       style: AppTypography.font12lightGray,
                                     ),
                                   ]

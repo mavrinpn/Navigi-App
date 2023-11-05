@@ -12,20 +12,28 @@ class MessageGroupWidget extends StatelessWidget {
   final String avatarUrl;
   final MessagesGroup data;
 
-  List<Widget> groupBable() {
+  List<Widget> generateMessages() {
     List<Widget> items = [];
     for (var message in data.messages) {
+      print(message.owned);
       items.add(MessageContainer(
           text: message.content, isCurrentUser: message.owned));
     }
+    MainAxisAlignment alignment;
+    if (!data.owned) {
+      alignment = MainAxisAlignment.start;
+    } else {
+      if (data.wasRead) {
+        alignment = MainAxisAlignment.spaceBetween;
+      } else {
+        alignment = MainAxisAlignment.end;
+      }
+    }
+
     items.add(Row(
-      mainAxisAlignment: data.owned
-          ? data.wasRead
-              ? MainAxisAlignment.spaceBetween
-              : MainAxisAlignment.end
-          : MainAxisAlignment.start,
+      mainAxisAlignment: alignment,
       children: [
-        if (!data.owned && data.wasRead) ...[
+        if (data.owned && data.wasRead) ...[
           SvgPicture.asset(
             'Assets/icons/read_indicator.svg',
             width: 18,
@@ -43,23 +51,26 @@ class MessageGroupWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        if (!data.owned) ...[
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20, right: 8),
-            child: CircleAvatar(
-              radius: 20,
-              backgroundImage: NetworkImage(avatarUrl),
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          if (!data.owned) ...[
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20, right: 8),
+              child: CircleAvatar(
+                radius: 20,
+                backgroundImage: NetworkImage(avatarUrl),
+              ),
             ),
-          ),
+          ],
+          Column(
+            crossAxisAlignment: data.owned ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            children: generateMessages()..add(SizedBox(width: MediaQuery.sizeOf(context).width - (data.owned ? 30 : 78),)),
+          )
         ],
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: groupBable(),
-        )
-      ],
+      ),
     );
   }
 }

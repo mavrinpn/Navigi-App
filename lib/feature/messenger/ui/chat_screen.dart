@@ -15,7 +15,10 @@ import '../../../models/messenger/room.dart';
 import '../data/messenger_repository.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key,});
+  const ChatScreen({
+    super.key,
+  });
+
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
@@ -53,16 +56,16 @@ class _ChatScreenState extends State<ChatScreen> {
             const SizedBox(
               width: 18,
             ),
-            const CircleAvatar(
+            CircleAvatar(
               radius: 20,
               backgroundImage: NetworkImage(
-                  'https://cs14.pikabu.ru/post_img/big/2023/02/13/8/1676296367166243426.png'),
+                  repository.currentRoom!.otherUserAvatarUrl ?? ''),
             ),
             const SizedBox(
               width: 10,
             ),
             Text(
-              'John E.',
+              repository.currentRoom!.otherUserName,
               style: AppTypography.font12lightGray,
             ),
             Container(
@@ -77,9 +80,9 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(15),
-              child: AnnouncementShortInfo(announcement: repository.currentRoom!.announcement)
-            ),
+                padding: const EdgeInsets.all(15),
+                child: AnnouncementShortInfo(
+                    announcement: repository.currentRoom!.announcement)),
             Expanded(
               child: Padding(
                 padding:
@@ -91,7 +94,14 @@ class _ChatScreenState extends State<ChatScreen> {
                       return ListView.builder(
                           itemBuilder: (ctx, i) {
                             final item = snapshot.data![i];
-                            return item is MessagesGroup?MessageGroupWidget(data: item, avatarUrl: repository.currentRoom!.otherUserAvatarUrl??''):DateSplitterWidget(data: item as DateSplitter);
+                            return item is MessagesGroup
+                                ? MessageGroupWidget(
+                                    data: item,
+                                    avatarUrl: repository
+                                            .currentRoom!.otherUserAvatarUrl ??
+                                        '')
+                                : DateSplitterWidget(
+                                    data: item as DateSplitter);
                           },
                           itemCount: snapshot.data!.length,
                           reverse: true);
@@ -125,6 +135,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       cursorColor: AppColors.red,
                       cursorWidth: 1,
                       decoration: InputDecoration(
+                        hintText: 'Message',
+                          hintStyle: AppTypography.font14lightGray,
                           contentPadding:
                               const EdgeInsets.fromLTRB(12, 4, 12, 4),
                           focusedBorder: OutlineInputBorder(
@@ -149,7 +161,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      if(messageController.text.isNotEmpty) {
+                      if (messageController.text.isNotEmpty) {
                         repository.sendMessage(messageController.text);
                         setState(() {
                           messageController.text = '';

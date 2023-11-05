@@ -8,6 +8,7 @@ class Room {
   String chatName;
   String? otherUserAvatarUrl;
   String otherUserId;
+  String otherUserName;
   Message? lastMessage;
   Announcement announcement;
 
@@ -15,6 +16,7 @@ class Room {
       {required this.id,
       required this.chatName,
       required this.otherUserId,
+      required this.otherUserName,
       required this.teamId,
       required this.otherUserAvatarUrl,
       required this.announcement,

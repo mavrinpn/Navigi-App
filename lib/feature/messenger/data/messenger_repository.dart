@@ -48,6 +48,7 @@ class MessengerRepository {
     assert(id != null || announcement != null, 'Что-то одно должно быть');
     if (id != null) {
       _selectRoomById(id);
+      _markAllMessagesAsRead();
     } else {
       _selectRoomByAnnouncement(announcement!);
     }
@@ -104,6 +105,7 @@ class MessengerRepository {
         id: _needCreateRoomId,
         chatName: '',
         otherUserId: announcement.creatorData.uid,
+        otherUserName: announcement.creatorData.name,
         teamId: _needCreateRoomId,
         otherUserAvatarUrl: null,
         announcement: announcement);
@@ -118,7 +120,7 @@ class MessengerRepository {
       final messages =
           await _databaseService.getChatMessages(chat.id, _userId!);
       if (messages.isNotEmpty) {
-        _chats[i].lastMessage = messages.first;
+        _chats[i].lastMessage = messages.last;
       }
     }
     chatsStream.add(_chats);
@@ -141,8 +143,9 @@ class MessengerRepository {
     }
   }
 
-  void _listenMessages(RealtimeMessage event) {
+  void _listenMessages(RealtimeMessage event) async {
     print(event.payload);
+    print(event.events.last);
     final data = event.payload;
     final message = Message(
         id: data['\$id'],
@@ -158,8 +161,20 @@ class MessengerRepository {
       _currentChatMessages.add(message);
       currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
     }
-    _chats[_findChatById(data['roomId'])!].lastMessage = message;
-    chatsStream.add(_chats);
+
+    final index = _findChatById(data['roomId']);
+
+    if (index != null) {
+      _chats[index].lastMessage = message;
+      chatsStream.add(_chats);
+    } else {
+      final room = await _databaseService.getRoom(data['roomId'], _userId!);
+      final messages =
+          await _databaseService.getChatMessages(room.id, _userId!);
+      room.lastMessage = messages[0];
+      _chats.add(room);
+      chatsStream.add(_chats);
+    }
   }
 
   List<ChatItem> _sortMessagesByDate(List<Message> messages) {
@@ -176,7 +191,7 @@ class MessengerRepository {
             (lastGroup.sentAt.difference(message.createdAtDt).inSeconds).abs() >
                 30;
         if (lastGroup.owned != message.owned || timeCondition) {
-          if (timeCondition) {
+          if (lastGroup.diffDate(message.createdAtDt)) {
             items.add(DateSplitter(dateTime: message.createdAtDt));
           }
 
@@ -187,6 +202,11 @@ class MessengerRepository {
       }
     }
 
-    return items;
+    return items.reversed.toList();
+  }
+
+  void _markAllMessagesAsRead() async {
+    print('хуй');
+    _databaseService.markMessagesAsRead(currentRoom!.id, _userId!);
   }
 }
