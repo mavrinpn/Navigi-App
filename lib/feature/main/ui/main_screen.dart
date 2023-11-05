@@ -129,13 +129,14 @@ class _MainScreenState extends State<MainScreen> {
           body: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
             builder: (context, state) {
               return RefreshIndicator(
+                color: AppColors.red,
                 onRefresh: () async {
                   BlocProvider.of<AnnouncementsCubit>(context)
                       .loadAnnounces(true);
                 },
                 child: CustomScrollView(
                   controller: _controller,
-                  physics: const BouncingScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   slivers: [
                     SliverToBoxAdapter(
                       child: Column(
