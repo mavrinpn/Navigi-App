@@ -47,7 +47,7 @@ class _AnnouncementContainerHorizontalState
         splashColor: AppColors.empty,
         onTap: () async {
           BlocProvider.of<AnnouncementCubit>(context)
-              .loadAnnouncementById(widget.announcement.announcementId);
+              .loadAnnouncementById(widget.announcement.id);
           Navigator.pushNamed(context, '/announcement_screen');
         },
         child: Container(

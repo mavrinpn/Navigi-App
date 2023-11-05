@@ -1,4 +1,5 @@
 import 'package:appwrite/models.dart';
+import 'package:smart/models/announcement.dart';
 import 'package:smart/models/messenger/message.dart';
 
 class Room {
@@ -8,6 +9,7 @@ class Room {
   String? otherUserAvatarUrl;
   String otherUserId;
   Message? lastMessage;
+  Announcement announcement;
 
   Room(
       {required this.id,
@@ -15,5 +17,6 @@ class Room {
       required this.otherUserId,
       required this.teamId,
       required this.otherUserAvatarUrl,
+      required this.announcement,
       this.lastMessage});
 }

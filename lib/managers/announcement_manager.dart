@@ -36,7 +36,7 @@ class AnnouncementManager {
         }
 
         announcements.addAll(await dbManager.getAnnouncements(_lastId));
-        _lastId = announcements.last.announcementId;
+        _lastId = announcements.last.id;
       } catch (e) {
         if (e.toString() != 'Bad state: No element') {
           rethrow;
@@ -50,13 +50,13 @@ class AnnouncementManager {
 
   Future<Announcement?> getAnnouncementById(String id) async {
     for (var a in announcements) {
-      if (a.announcementId == id) {
+      if (a.id == id) {
         lastAnnouncement = a;
         return a;
       }
     }
     for (var a in searchAnnouncements) {
-      if (a.announcementId == id) {
+      if (a.id == id) {
         lastAnnouncement = a;
         return a;
       }
@@ -89,7 +89,7 @@ class AnnouncementManager {
           _searchLastId, searchText, sortBy,
           minPrice: minPrice, maxPrice: maxPrice));
 
-      _searchLastId = searchAnnouncements.last.announcementId;
+      _searchLastId = searchAnnouncements.last.id;
     } catch (e) {
       if (e.toString() != 'Bad state: No element') {
         rethrow;

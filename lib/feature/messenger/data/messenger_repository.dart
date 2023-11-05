@@ -1,53 +1,130 @@
-import 'dart:async';
-
 import 'package:appwrite/appwrite.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smart/models/announcement.dart';
+import 'package:smart/models/messenger/chat_item.dart';
 import 'package:smart/models/messenger/chat_preview.dart';
+import 'package:smart/models/messenger/date_indicator.dart';
 import 'package:smart/models/messenger/message.dart';
+import 'package:smart/models/messenger/messages_group.dart';
 import 'package:smart/services/database_service.dart';
 
 class MessengerRepository {
-  final DatabaseService databaseService;
-  RealtimeSubscription? _messageListener;
+  static const String _needCreateRoomId = 'NEED_CREATE_ROOM';
 
-  String? userId;
+  final DatabaseService _databaseService;
+  final RealtimeSubscription? _messageListener;
 
-  MessengerRepository({required this.databaseService})
-      : _messageListener = databaseService.getMessagesSubscription();
+  MessengerRepository({required DatabaseService databaseService})
+      : _databaseService = databaseService,
+        _messageListener = databaseService.getMessagesSubscription();
 
+  String? _userId;
   List<Room> _chats = [];
-  BehaviorSubject<List<Room>> chats = BehaviorSubject.seeded([]);
-  BehaviorSubject<List<Message>> currentChatMessages =
+  List<Message> _currentChatMessages = [];
+
+  set userId(String newUserId) => _userId = newUserId;
+
+  /// Эта штука нужна чтобы рисовать все чаты на экране all_chats,
+  /// просто ставишь билдер через эту штука и берешиь из него список чатов
+  BehaviorSubject<List<Room>> chatsStream = BehaviorSubject.seeded([]);
+
+  /// Эта штука нужна чтобы рисовать все сообщения на экране чата, чуть позже
+  /// переделаю на chat item со всеми разделителями
+  BehaviorSubject<List<ChatItem>> currentChatItemsStream =
       BehaviorSubject.seeded([]);
 
-  void selectChat(String id, Message lastMessage) async {
-    currentChatId = id;
-    currentChatMessages.add([lastMessage]);
+  Room? currentRoom;
+
+  void clear() {
+    _userId = null;
+    _currentChatMessages.clear();
+    _chats.clear();
+
+    chatsStream.add(_chats);
+    currentChatItemsStream.add([]);
   }
 
-  String? currentChatId;
+  void selectChat({String? id, Announcement? announcement}) async {
+    assert(id != null || announcement != null, 'Что-то одно должно быть');
+    if (id != null) {
+      _selectRoomById(id);
+    } else {
+      _selectRoomByAnnouncement(announcement!);
+    }
+  }
 
   void preloadChats() async {
-    _chats = await databaseService.getUserChats(userId!);
-    chats.add(_chats);
-
-    _messageListener?.stream.listen((event) {
-      print(event.payload);
-    });
+    _chats = await _databaseService.getUserChats(_userId!);
+    chatsStream.add(_chats);
+    _loadChatsMessages();
+    _messageListener?.stream.listen(_listenMessages);
   }
 
-  void loadChatsMessages() async {
+  void sendMessage(String content) async {
+    if (currentRoom?.id == _needCreateRoomId) await _createRoom();
+
+    _databaseService.sendMessage(
+      roomId: currentRoom!.id,
+      teamId: currentRoom!.teamId,
+      content: content,
+      senderId: _userId!,
+    );
+  }
+
+  Future<void> _createRoom() async {
+    final roomData = await _databaseService.createRoom(
+        [_userId!, currentRoom!.announcement.creatorData.uid],
+        currentRoom!.announcement.id);
+
+    currentRoom = await _databaseService.getRoom(roomData['room'], _userId!);
+    _chats.add(currentRoom!);
+    chatsStream.add(_chats);
+  }
+
+  void _selectRoomById(String id) {
+    final Message? lastMessage = _chats[_findChatById(id)!].lastMessage;
+    currentRoom = _chats[_findChatById(id)!];
+    _currentChatMessages = lastMessage != null ? [lastMessage] : [];
+    currentChatItemsStream.add(lastMessage != null
+        ? [
+            MessagesGroup(messages: [lastMessage])
+          ]
+        : []);
+    _loadChatMessages(id);
+  }
+
+  void _selectRoomByAnnouncement(Announcement announcement) {
+    for (var i in _chats) {
+      if (i.announcement.id == announcement.id) {
+        return _selectRoomById(i.id);
+      }
+    }
+
+    currentRoom = Room(
+        id: _needCreateRoomId,
+        chatName: '',
+        otherUserId: announcement.creatorData.uid,
+        teamId: _needCreateRoomId,
+        otherUserAvatarUrl: null,
+        announcement: announcement);
+
+    _currentChatMessages.clear();
+    currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
+  }
+
+  void _loadChatsMessages() async {
     for (int i = 0; i < _chats.length; i++) {
       final chat = _chats[i];
-      final messages = await databaseService.getChatMessages(chat.id, userId!);
+      final messages =
+          await _databaseService.getChatMessages(chat.id, _userId!);
       if (messages.isNotEmpty) {
         _chats[i].lastMessage = messages.first;
       }
     }
-    chats.add(_chats);
+    chatsStream.add(_chats);
   }
 
-  int? findChatById(String id) {
+  int? _findChatById(String id) {
     for (int i = 0; i < _chats.length; i++) {
       if (_chats[i].id == id) {
         return i;
@@ -56,10 +133,60 @@ class MessengerRepository {
     return null;
   }
 
-  void loadChatMessages(String id) async {
-    final messages = await databaseService.getChatMessages(id, userId!);
+  void _loadChatMessages(String id) async {
+    final messages = await _databaseService.getChatMessages(id, _userId!);
     if (messages.isNotEmpty) {
-      currentChatMessages.add(messages);
+      _currentChatMessages = messages;
+      currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
     }
+  }
+
+  void _listenMessages(RealtimeMessage event) {
+    print(event.payload);
+    final data = event.payload;
+    final message = Message(
+        id: data['\$id'],
+        content: data['content'],
+        senderId: data['creatorId'],
+        images: data['images'],
+        owned: _userId == data['creatorId'],
+        createdAt: data['\$createdAt'],
+        createdAtDt: DateTime.parse(data['\$createdAt'])
+            .add(DateTime.now().timeZoneOffset));
+
+    if (data['roomId'] == currentRoom?.id) {
+      _currentChatMessages.add(message);
+      currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
+    }
+    _chats[_findChatById(data['roomId'])!].lastMessage = message;
+    chatsStream.add(_chats);
+  }
+
+  List<ChatItem> _sortMessagesByDate(List<Message> messages) {
+    final List<ChatItem> items = [];
+    for (Message message in messages) {
+      if (items.isEmpty) {
+        items.add(DateSplitter(dateTime: message.createdAtDt));
+      }
+      if (items.last is DateSplitter) {
+        items.add(MessagesGroup(messages: [message]));
+      } else {
+        final lastGroup = items.last as MessagesGroup;
+        bool timeCondition =
+            (lastGroup.sentAt.difference(message.createdAtDt).inSeconds).abs() >
+                30;
+        if (lastGroup.owned != message.owned || timeCondition) {
+          if (timeCondition) {
+            items.add(DateSplitter(dateTime: message.createdAtDt));
+          }
+
+          items.add(MessagesGroup(messages: [message]));
+        } else {
+          (items.last as MessagesGroup).addMessage(message);
+        }
+      }
+    }
+
+    return items;
   }
 }
