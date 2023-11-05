@@ -8,7 +8,7 @@ import 'package:smart/models/user.dart';
 
 import '../models/announcement.dart';
 import '../models/announcement_creating_data.dart';
-import '../models/messenger/chat_preview.dart';
+import '../models/messenger/room.dart';
 import '../models/models.dart';
 import '../utils/constants.dart';
 
