@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/models/messenger/chat_item.dart';
 import 'package:smart/models/messenger/date_splitter.dart';
 import 'package:smart/models/messenger/messages_group.dart';
+import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/messenger/announcement_short_info.dart';
@@ -24,6 +25,8 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController messageController = TextEditingController();
+
+  bool preparing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +116,15 @@ class _ChatScreenState extends State<ChatScreen> {
                       }),
                 ),
               ),
+              if (preparing)...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    AppAnimations.bouncingLine,
+                    SizedBox(width: 15,),
+                  ],
+                )
+              ],
               Container(
                 height: 64,
                 width: MediaQuery.sizeOf(context).width,
@@ -165,11 +177,16 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {
+                      onTap: () async {
                         if (messageController.text.isNotEmpty) {
-                          repository.sendMessage(messageController.text);
+                          setState(() {
+                            preparing = true;
+                          });
+
+                          await repository.sendMessage(messageController.text);
                           setState(() {
                             messageController.text = '';
+                            preparing = false;
                           });
                         }
                       },

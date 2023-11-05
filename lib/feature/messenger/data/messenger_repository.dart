@@ -67,10 +67,10 @@ class MessengerRepository {
     _listener = _messageListener?.stream.listen(_listenMessages);
   }
 
-  void sendMessage(String content) async {
+  Future<void> sendMessage(String content) async {
     if (currentRoom?.id == _needCreateRoomId) await _createRoom();
 
-    _databaseService.sendMessage(
+    await _databaseService.sendMessage(
       roomId: currentRoom!.id,
       teamId: currentRoom!.teamId,
       content: content,

@@ -391,9 +391,9 @@ class DatabaseService {
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
       collectionId: roomsCollection,
-      queries: [
-        Query.search('members', userId)
-      ]
+      // queries: [
+      //   Query.search('members', userId)
+      // ]
     );
     List<Room> chats = [];
     for (var doc in res.documents) {
@@ -450,9 +450,11 @@ class DatabaseService {
           Query.notEqual('creatorId', userId),
           Query.isNull('wasRead')
         ]);
-
+    print(docs.documents);
     for (var doc in docs.documents) {
+      print(doc.$id);
       if (doc.data['wasRead'] == null) {
+        print('хуй');
         _databases.updateDocument(
             databaseId: mainDatabase,
             collectionId: messagesCollection,
