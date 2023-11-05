@@ -193,9 +193,10 @@ class MessengerRepository {
     final data = event.payload;
 
     if (data['roomId'] == currentRoom?.id) {
-      for (Message message in _currentChatMessages) {
+      for (int i  = 0; i < _currentChatMessages.length; i++) {
+        final message = _currentChatMessages[i];
         if (message.id == data['\$id']) {
-          message = _messageFromData(data);
+          _currentChatMessages[i] = _messageFromData(data);
           currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
         }
       }
