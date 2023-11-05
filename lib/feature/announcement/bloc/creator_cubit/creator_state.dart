@@ -1,6 +1,5 @@
 part of 'creator_cubit.dart';
 
-@immutable
 abstract class CreatorState {}
 
 class CreatorInitial extends CreatorState {}

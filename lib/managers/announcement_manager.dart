@@ -16,7 +16,6 @@ class AnnouncementManager {
   String? _lastId;
   String? _searchLastId;
   bool _canGetMoreAnnouncement = true;
-  bool _canGetMoreSearchAnnouncement = true;
 
   List<String> viewsAnnouncements = [];
   List<Announcement> announcements = [];
@@ -93,8 +92,6 @@ class AnnouncementManager {
     } catch (e) {
       if (e.toString() != 'Bad state: No element') {
         rethrow;
-      } else {
-        _canGetMoreSearchAnnouncement = false;
       }
     }
   }

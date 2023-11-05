@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
-import 'package:smart/managers/favourits_manager.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
 
@@ -10,7 +8,7 @@ import '../../feature/announcement/bloc/announcement_cubit.dart';
 import '../../utils/colors.dart';
 
 class AnnouncementContainerHorizontal extends StatefulWidget {
-  AnnouncementContainerHorizontal(
+  const AnnouncementContainerHorizontal(
       {super.key,
       required this.announcement,
       this.width,

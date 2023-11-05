@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/colors.dart';
 
 class CustomIconButtonSearch extends StatelessWidget {

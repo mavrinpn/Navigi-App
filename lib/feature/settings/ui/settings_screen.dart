@@ -6,9 +6,9 @@ import '../../../models/custom_locate.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/singleCheckBox/CustomSinglCheckBox.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/textField/under_line_text_field.dart';
-import '../../utils/colors.dart';
+
 
 class PriceWidget extends StatelessWidget {
   const PriceWidget(

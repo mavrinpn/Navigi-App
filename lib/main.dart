@@ -18,7 +18,7 @@ import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/feature/messenger/ui/chat_screen.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/announcement/ui/creator_screen.dart';
-import 'package:smart/managers/favourits_manager.dart';
+import 'package:smart/managers/favourites_manager.dart';
 import 'package:smart/services/services.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/widgets/splash.dart';

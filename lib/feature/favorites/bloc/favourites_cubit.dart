@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:smart/enum/enum.dart';
 
-import '../../../managers/favourits_manager.dart';
+import '../../../managers/favourites_manager.dart';
 
 part 'favourites_state.dart';
 

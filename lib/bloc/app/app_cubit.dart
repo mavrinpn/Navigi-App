@@ -5,7 +5,7 @@ import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import '../../enum/enum.dart';
 import '../../feature/auth/data/auth_repository.dart';
 import '../../managers/announcement_manager.dart';
-import '../../managers/favourits_manager.dart';
+import '../../managers/favourites_manager.dart';
 
 part 'app_state.dart';
 
@@ -33,6 +33,7 @@ class AppCubit extends Cubit<AppState> {
       if (event == AuthStateEnum.unAuth) {
         favouritesManager.userId = null;
         favouritesManager.announcements = [];
+        messengerRepository.clear();
         emit(AppUnAuthState());
       }
     });

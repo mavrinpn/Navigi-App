@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart/models/item/item.dart';
-import 'package:smart/models/sorte_types.dart';
+import 'package:smart/models/sort_types.dart';
 import 'package:smart/widgets/button/icon_button.dart';
 import 'package:smart/widgets/dropDownSingleCheckBox/custom_dropdown_single_checkbox.dart';
 import 'package:smart/widgets/textField/price_widget.dart';

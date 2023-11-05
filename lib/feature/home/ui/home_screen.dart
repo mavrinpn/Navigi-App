@@ -6,10 +6,8 @@ import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/favorites/favorites_screen.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/feature/messenger/ui/all_chats_screen.dart';
-import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/utils/fonts.dart';
 
-import '../../../managers/categories_manager.dart';
 import '../../../utils/colors.dart';
 import '../../main/ui/main_screen.dart';
 import '../../profile/ui/profile_screen.dart';
@@ -32,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final List<Widget> widgetOptions = <Widget>[
       const MainScreen(),
-      MessengerMainScreen(),
+      const MessengerMainScreen(),
       const FavoritesScreen(),
       const ProfileScreen(),
     ];
@@ -69,8 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   tooltip: 'Page daccueil',
                   label: 'Page daccueil'),
               BottomNavigationBarItem(
-                icon: NavigatorBarItem(
-                  asset: 'Assets/icons/email.svg',
+                icon: MessengerIcon(
                   isSelected: _selectedTab == 1,
                 ),
                 tooltip: localizations.messages,
@@ -123,5 +120,60 @@ class NavigatorBarItem extends StatelessWidget {
       // ignore: deprecated_member_use
       color: isSelected ? AppColors.red : AppColors.lightGray,
     );
+  }
+}
+
+class MessengerIcon extends StatelessWidget {
+  const MessengerIcon({super.key, required this.isSelected});
+
+  final bool isSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final repository = RepositoryProvider.of<MessengerRepository>(context);
+
+    return StreamBuilder(
+        stream: repository.chatsStream.stream,
+        builder: (context, snapshot) {
+          int count =  repository.notificationsAmount();
+          double size = 24;
+
+          return SizedBox(
+            width: size + 3,
+            height: size,
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: SvgPicture.asset(
+                    'Assets/icons/email.svg',
+                    height: 24,
+                    width: 24,
+                    // ignore: deprecated_member_use
+                    color: isSelected ? AppColors.red : AppColors.lightGray,
+                  ),
+                ),
+                if (count > 0) ...[
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: CircleAvatar(
+                      backgroundColor: const Color(0xFFFFAF39),
+                      radius: 6,
+                      child: Text(
+                        count.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 8,
+                          fontFamily: 'SF Pro Display',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  )
+                ]
+              ],
+            ),
+          );
+        });
   }
 }

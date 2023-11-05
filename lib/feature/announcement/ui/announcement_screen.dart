@@ -8,7 +8,6 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
-import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/fonts.dart';
@@ -16,7 +15,7 @@ import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../managers/announcement_manager.dart';
-import '../../../managers/favourits_manager.dart';
+import '../../../managers/favourites_manager.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/accuont/account_small_info.dart';
 import '../../../widgets/button/custom_icon_button.dart';

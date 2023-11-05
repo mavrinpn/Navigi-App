@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:smart/models/sorte_types.dart';
+import 'package:smart/models/sort_types.dart';
 
 import '../../../managers/announcement_manager.dart';
 

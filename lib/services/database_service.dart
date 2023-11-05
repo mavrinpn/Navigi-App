@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:smart/main.dart';
 import 'package:smart/models/messenger/message.dart';
-import 'package:smart/models/sorte_types.dart';
+import 'package:smart/models/sort_types.dart';
 import 'package:smart/models/user.dart';
 
 import '../models/announcement.dart';
@@ -35,14 +34,12 @@ class DatabaseService {
   final Functions _functions;
   final Storage _storage;
   final Realtime _realtime;
-  final Teams _teams;
 
   DatabaseService({required Client client})
       : _databases = Databases(client),
         _functions = Functions(client),
         _realtime = Realtime(client),
-        _storage = Storage(client),
-        _teams = Teams(client);
+        _storage = Storage(client);
 
   Future<List<Category>> getAllCategories() async {
     final res = await _databases.listDocuments(
@@ -379,7 +376,6 @@ class DatabaseService {
     final futureBytes =
         _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
 
-    print('${otherUser['name']} $announcementName');
     return Room(
         announcement: Announcement.fromJson(
             json: data['announcement'], futureBytes: futureBytes),

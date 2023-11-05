@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/models/messenger/room.dart';
-import 'package:smart/models/messenger/message.dart';
 import 'package:smart/utils/utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smart/widgets/messenger/chat_container.dart';
@@ -45,6 +44,9 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
                     width: double.infinity,
                     child: TextField(
                       controller: searchController,
+                      onChanged: (v) {
+                        repository.searchChat(searchController.text);
+                      },
                       decoration: InputDecoration(
                           prefixIcon: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8),

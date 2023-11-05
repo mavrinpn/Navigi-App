@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smart/models/announcement.dart';
@@ -21,6 +23,7 @@ class MessengerRepository {
   String? _userId;
   List<Room> _chats = [];
   List<Message> _currentChatMessages = [];
+  StreamSubscription? _listener;
 
   set userId(String newUserId) => _userId = newUserId;
 
@@ -43,6 +46,8 @@ class MessengerRepository {
 
     chatsStream.add(_chats);
     currentChatItemsStream.add([]);
+
+    _listener?.cancel();
   }
 
   void selectChat({String? id, Announcement? announcement}) async {
@@ -59,7 +64,7 @@ class MessengerRepository {
     _chats = await _databaseService.getUserChats(_userId!);
     chatsStream.add(_chats);
     _loadChatsMessages();
-    _messageListener?.stream.listen(_listenMessages);
+    _listener = _messageListener?.stream.listen(_listenMessages);
   }
 
   void sendMessage(String content) async {
@@ -71,6 +76,28 @@ class MessengerRepository {
       content: content,
       senderId: _userId!,
     );
+  }
+
+  void searchChat(String query) {
+    final list = <Room>[];
+
+    for (Room i in _chats) {
+      if (i.chatName.contains(query)) {
+        list.add(i);
+      }
+    }
+
+    chatsStream.add(list);
+  }
+
+  int notificationsAmount() {
+    int c = 0;
+    for (var i in _chats) {
+      if (i.lastMessage == null) continue;
+      if (i.lastMessage?.wasRead == null && !i.lastMessage!.owned) c++;
+    }
+
+    return c;
   }
 
   // -------------------------------------------------------------
@@ -186,6 +213,9 @@ class MessengerRepository {
 
   void _handleCreating(RealtimeMessage event) async {
     final data = event.payload;
+
+    if (!(data['room']['members'] as List).contains(_userId)) return;
+
     final message = Message.fromJson(data, _userId!);
 
     if (data['roomId'] == currentRoom?.id) {
@@ -227,7 +257,10 @@ class MessengerRepository {
   }
 
   void _changeLastMessage(int index, Message message) {
-    _chats[index].lastMessage = message;
+    final chat = _chats.removeAt(index);
+    chat.lastMessage = message;
+
+    _chats.add(chat);
     chatsStream.add(_chats);
   }
 

@@ -33,8 +33,6 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    final creatorManager = RepositoryProvider.of<CreatorRepository>(context);
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,

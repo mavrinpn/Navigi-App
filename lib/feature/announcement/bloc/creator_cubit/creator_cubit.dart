@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:smart/models/announcement.dart';
 
 import '../../../../models/user.dart';
@@ -16,7 +15,6 @@ class CreatorCubit extends Cubit<CreatorState> {
     emit(CreatorLoadingState());
     try {
       await creatorRepository.setCreator(creatorId);
-      print(creatorRepository.availableAnnouncements);
       emit(CreatorSuccessState(
           available: creatorRepository.availableAnnouncements ?? [],
           sold: creatorRepository.soldAnnouncements ?? []));

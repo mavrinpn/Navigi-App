@@ -2,13 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../../../managers/announcement_manager.dart';
-import '../../../managers/search_manager.dart';
 import '../../../utils/animations.dart';
 import '../../../widgets/button/icon_button.dart';
 import '../../../widgets/category/category.dart';

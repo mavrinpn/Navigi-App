@@ -14,7 +14,7 @@ import '../../models/announcement.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AccountSmallInfo extends StatefulWidget {
-  AccountSmallInfo({super.key, required this.creatorData, required this.clickable});
+  const AccountSmallInfo({super.key, required this.creatorData, required this.clickable});
 
   final CreatorData creatorData;
   final bool clickable;
