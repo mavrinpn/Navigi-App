@@ -20,6 +20,19 @@ class Message {
       this.wasRead,
       this.images});
 
+  Message.fromJson(Map<String, dynamic> json, String userId)
+      : id = json['\$id'],
+        content = json['content'],
+        senderId = json['creatorId'],
+        images = json['images'],
+        wasRead = json['wasRead'] != null
+            ? DateTime.fromMillisecondsSinceEpoch(json['wasRead'])
+            : null,
+        owned = userId == json['creatorId'],
+        createdAt = json['\$createdAt'],
+        createdAtDt = DateTime.parse(json['\$createdAt'])
+            .add(DateTime.now().timeZoneOffset);
+
   Message.fish({bool owned_ = false, DateTime? read})
       : id = '',
         content =

@@ -1,5 +1,4 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/models/messenger/chat_item.dart';
@@ -25,12 +24,7 @@ class MessengerRepository {
 
   set userId(String newUserId) => _userId = newUserId;
 
-  /// Эта штука нужна чтобы рисовать все чаты на экране all_chats,
-  /// просто ставишь билдер через эту штука и берешиь из него список чатов
   BehaviorSubject<List<Room>> chatsStream = BehaviorSubject.seeded([]);
-
-  /// Эта штука нужна чтобы рисовать все сообщения на экране чата, чуть позже
-  /// переделаю на chat item со всеми разделителями
   BehaviorSubject<List<ChatItem>> currentChatItemsStream =
       BehaviorSubject.seeded([]);
 
@@ -79,6 +73,8 @@ class MessengerRepository {
     );
   }
 
+  // -------------------------------------------------------------
+
   Future<void> _createRoom() async {
     final roomData = await _databaseService.createRoom(
         [_userId!, currentRoom!.announcement.creatorData.uid],
@@ -102,9 +98,9 @@ class MessengerRepository {
   }
 
   void _selectRoomByAnnouncement(Announcement announcement) {
-    for (var i in _chats) {
-      if (i.announcement.id == announcement.id) {
-        return _selectRoomById(i.id);
+    for (Room room in _chats) {
+      if (room.announcement.id == announcement.id) {
+        return _selectRoomById(room.id);
       }
     }
 
@@ -150,95 +146,21 @@ class MessengerRepository {
     }
   }
 
-  Message _messageFromData(Map data) => Message(
-      id: data['\$id'],
-      content: data['content'],
-      senderId: data['creatorId'],
-      images: data['images'],
-      wasRead: data['wasRead'] != null ? DateTime.fromMillisecondsSinceEpoch(data['wasRead']) : null,
-      owned: _userId == data['creatorId'],
-      createdAt: data['\$createdAt'],
-      createdAtDt: DateTime.parse(data['\$createdAt'])
-          .add(DateTime.now().timeZoneOffset));
-
-  void _handleCreating(RealtimeMessage event) async {
-    print(event.payload);
-    print(event.events);
-    final data = event.payload;
-    final message = _messageFromData(data);
-
-    if (data['roomId'] == currentRoom?.id) {
-      _currentChatMessages.add(message);
-      currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
-      _databaseService.marMessageAsRead(data['\$id']);
-    }
-
-    final index = _findChatById(data['roomId']);
-
-    if (index != null) {
-      _chats[index].lastMessage = message;
-      chatsStream.add(_chats);
-    } else {
-      final room = await _databaseService.getRoom(data['roomId'], _userId!);
-      final messages =
-          await _databaseService.getChatMessages(room.id, _userId!);
-      room.lastMessage = messages[0];
-      _chats.add(room);
-      chatsStream.add(_chats);
-    }
-  }
-
-  void _handleUpdates(RealtimeMessage event) async {
-    print(event.payload);
-    final data = event.payload;
-
-    if (data['roomId'] == currentRoom?.id) {
-      for (int i  = 0; i < _currentChatMessages.length; i++) {
-        final message = _currentChatMessages[i];
-        if (message.id == data['\$id']) {
-          _currentChatMessages[i] = _messageFromData(data);
-          currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
-        }
-      }
-    }
-
-    for (int i = 0; i < _chats.length; i++) {
-      Room chat = _chats[i];
-
-      if (chat.lastMessage?.id == data['\$id']) {
-        print('update');
-
-        _chats[i].lastMessage = _messageFromData(data);
-        chatsStream.add(_chats);
-      }
-    }
-  }
-
-  void _listenMessages(RealtimeMessage event) async {
-    print(event.events);
-
-    if (event.events.contains('databases.*.collections.*.documents.*.create')) {
-      _handleCreating(event);
-    }
-    if (event.events.contains('databases.*.collections.*.documents.*.update')) {
-      _handleUpdates(event);
-    }
-  }
-
   List<ChatItem> _sortMessagesByDate(List<Message> messages) {
+    assert(messages.isNotEmpty, 'list of messages should not be empty');
+
     final List<ChatItem> items = [];
+    items.add(DateSplitter(dateTime: messages.first.createdAtDt));
+
     for (Message message in messages) {
-      if (items.isEmpty) {
-        items.add(DateSplitter(dateTime: message.createdAtDt));
-      }
       if (items.last is DateSplitter) {
         items.add(MessagesGroup(messages: [message]));
       } else {
         final lastGroup = items.last as MessagesGroup;
-        bool timeCondition =
+        bool timeConditionToSplitGroups =
             (lastGroup.sentAt.difference(message.createdAtDt).inSeconds).abs() >
                 30;
-        if (lastGroup.owned != message.owned || timeCondition) {
+        if (lastGroup.owned != message.owned || timeConditionToSplitGroups) {
           if (lastGroup.diffDate(message.createdAtDt)) {
             items.add(DateSplitter(dateTime: message.createdAtDt));
           }
@@ -253,8 +175,76 @@ class MessengerRepository {
     return items.reversed.toList();
   }
 
-  void _markAllMessagesAsRead() async {
-    print('хуй');
+  void _listenMessages(RealtimeMessage event) async {
+    if (event.events.contains('databases.*.collections.*.documents.*.create')) {
+      _handleCreating(event);
+    }
+    if (event.events.contains('databases.*.collections.*.documents.*.update')) {
+      _handleUpdates(event);
+    }
+  }
+
+  void _handleCreating(RealtimeMessage event) async {
+    final data = event.payload;
+    final message = Message.fromJson(data, _userId!);
+
+    if (data['roomId'] == currentRoom?.id) {
+      _addMessageToCurrentRoom(data, message);
+    }
+
+    final index = _findChatById(data['roomId']);
+
+    index != null ? _changeLastMessage(index, message) : _getNewRoom(data);
+  }
+
+  void _handleUpdates(RealtimeMessage event) async {
+    final data = event.payload;
+
+    if (data['roomId'] == currentRoom?.id) {
+      _updateMessageInCurrentRoom(data);
+    }
+
+    _updateRoomsPreviewMessages(data);
+  }
+
+  void _markAllMessagesAsRead() =>
     _databaseService.markMessagesAsRead(currentRoom!.id, _userId!);
+
+  void _addMessageToCurrentRoom(data, Message message) {
+    _currentChatMessages.add(message);
+    currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
+    if (message.senderId != _userId) {
+      _databaseService.marMessageAsRead(data['\$id']);
+    }
+  }
+
+  void _getNewRoom(data) async {
+    final room = await _databaseService.getRoom(data['roomId'], _userId!);
+    final messages = await _databaseService.getChatMessages(room.id, _userId!);
+    room.lastMessage = messages[0];
+    _chats.add(room);
+    chatsStream.add(_chats);
+  }
+
+  void _changeLastMessage(int index, Message message) {
+    _chats[index].lastMessage = message;
+    chatsStream.add(_chats);
+  }
+
+  _updateMessageInCurrentRoom(Map<String, dynamic> messageData) {
+    for (int i = 0; i < _currentChatMessages.length; i++) {
+      if (_currentChatMessages[i].id == messageData['\$id']) {
+        _currentChatMessages[i] = Message.fromJson(messageData, _userId!);
+        currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
+      }
+    }
+  }
+
+  _updateRoomsPreviewMessages(Map<String, dynamic> data) {
+    for (int i = 0; i < _chats.length; i++) {
+      if (_chats[i].lastMessage?.id == data['\$id']) {
+        _changeLastMessage(i, Message.fromJson(data, _userId!));
+      }
+    }
   }
 }

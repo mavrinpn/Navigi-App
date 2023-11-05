@@ -15,7 +15,7 @@ class ChatContainer extends StatefulWidget {
     required this.announcementName,
     required this.userOnline, required this.roomId});
 
-  ChatContainer.fromRoom(Room room)
+  ChatContainer.fromRoom(Room room, {super.key})
       : message = room.lastMessage,
         chatImageUrl = room.announcement.images[0],
         otherUser = room.otherUserName,
@@ -107,7 +107,7 @@ class _ChatContainerState extends State<ChatContainer> {
                                     )
                                   ],
                                   if (widget.message != null) ...[
-                                    Spacer(),
+                                    const Spacer(),
                                     if (widget.message!.owned &&
                                         widget.message!.wasRead != null) ...[
                                       Padding(

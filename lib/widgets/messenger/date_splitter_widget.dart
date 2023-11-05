@@ -13,8 +13,14 @@ class DateSplitterWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Padding(padding: const EdgeInsets.symmetric(vertical: 16),
-        child: Text(data.date, style: AppTypography.font14black.copyWith(fontWeight: FontWeight.w600),),)
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Text(
+            data.date,
+            style:
+                AppTypography.font14black.copyWith(fontWeight: FontWeight.w600),
+          ),
+        )
       ],
     );
   }

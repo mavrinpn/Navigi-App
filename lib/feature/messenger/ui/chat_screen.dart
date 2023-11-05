@@ -9,7 +9,7 @@ import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/messenger/announcement_short_info.dart';
 import 'package:smart/widgets/messenger/date_splitter_widget.dart';
 import 'package:smart/widgets/messenger/message_widget.dart';
-import 'package:smart/widgets/messenger/message_widget_group.dart';
+import 'package:smart/widgets/messenger/message_group_widget.dart';
 
 import '../../../models/messenger/room.dart';
 import '../data/messenger_repository.dart';

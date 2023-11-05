@@ -395,6 +395,9 @@ class DatabaseService {
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
       collectionId: roomsCollection,
+      queries: [
+        Query.search('members', userId)
+      ]
     );
     List<Room> chats = [];
     for (var doc in res.documents) {
@@ -443,7 +446,6 @@ class DatabaseService {
   }
 
   Future<void> markMessagesAsRead(String chatId, String userId) async {
-    print('хуй 2');
     final docs = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: messagesCollection,
@@ -454,9 +456,7 @@ class DatabaseService {
         ]);
 
     for (var doc in docs.documents) {
-      print(doc.$id);
       if (doc.data['wasRead'] == null) {
-        print('хуетень');
         _databases.updateDocument(
             databaseId: mainDatabase,
             collectionId: messagesCollection,

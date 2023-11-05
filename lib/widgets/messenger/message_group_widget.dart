@@ -15,7 +15,6 @@ class MessageGroupWidget extends StatelessWidget {
   List<Widget> generateMessages() {
     List<Widget> items = [];
     for (var message in data.messages) {
-      print(message.owned);
       items.add(MessageContainer(
           text: message.content, isCurrentUser: message.owned));
     }
@@ -66,8 +65,13 @@ class MessageGroupWidget extends StatelessWidget {
             ),
           ],
           Column(
-            crossAxisAlignment: data.owned ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-            children: generateMessages()..add(SizedBox(width: MediaQuery.sizeOf(context).width - (data.owned ? 30 : 78),)),
+            crossAxisAlignment:
+                data.owned ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            children: generateMessages()
+              ..add(SizedBox(
+                width:
+                    MediaQuery.sizeOf(context).width - (data.owned ? 30 : 78),
+              )),
           )
         ],
       ),
