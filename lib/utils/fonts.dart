@@ -120,4 +120,11 @@ class AppTypography {
     fontSize: 12,
     fontWeight: FontWeight.w400,
   );
+
+  static final font12w500 = _font.copyWith(
+    color: Colors.white,
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    height: 0.12,
+  );
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/widgets/messenger/message_widget.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -67,17 +68,22 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.all(15),
-              child: Container(width: double.infinity, height: 75, color: Colors.red, ),
+              child: Container(
+                width: double.infinity,
+                height: 75,
+                color: Colors.red,
+              ),
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                 child: ListView.builder(
-                      itemBuilder: (ctx, i) {
-                        return Text('data');
-                      },
-                      itemCount: 100,
-                      reverse: true),
+                    itemBuilder: (ctx, i) {
+                      return MessengerContainer(text: 'asdasssdfjhkasdjhkfhjkfjsaidhkdasd', isCurrentUser: false,);
+                    },
+                    itemCount: 3,
+                    reverse: true),
               ),
             ),
             Container(
@@ -107,8 +113,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       cursorColor: AppColors.red,
                       cursorWidth: 1,
                       decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
-
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(12, 4, 12, 4),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(18),
                               borderSide:
