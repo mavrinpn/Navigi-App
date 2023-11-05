@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/models/messenger/chat_item.dart';
@@ -143,21 +144,24 @@ class MessengerRepository {
     }
   }
 
-  void _listenMessages(RealtimeMessage event) async {
+  Message _messageFromData(Map data) =>Message(
+      id: data['\$id'],
+      content: data['content'],
+      senderId: data['creatorId'],
+      images: data['images'],
+      owned: _userId == data['creatorId'],
+      createdAt: data['\$createdAt'],
+      createdAtDt: DateTime.parse(data['\$createdAt'])
+          .add(DateTime.now().timeZoneOffset));
+
+  void _handleCreating(RealtimeMessage event) async {
     print(event.payload);
-    print(event.events.last);
+    print(event.events);
     final data = event.payload;
-    final message = Message(
-        id: data['\$id'],
-        content: data['content'],
-        senderId: data['creatorId'],
-        images: data['images'],
-        owned: _userId == data['creatorId'],
-        createdAt: data['\$createdAt'],
-        createdAtDt: DateTime.parse(data['\$createdAt'])
-            .add(DateTime.now().timeZoneOffset));
+    final message = _messageFromData(data);
 
     if (data['roomId'] == currentRoom?.id) {
+      _databaseService.marMessageAsRead(data['\$id']);
       _currentChatMessages.add(message);
       currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
     }
@@ -175,6 +179,31 @@ class MessengerRepository {
       _chats.add(room);
       chatsStream.add(_chats);
     }
+  }
+
+  void _handleUpdates(RealtimeMessage event) async {
+    print(event.payload);
+    final data = event.payload;
+
+    if (data['roomId'] == currentRoom?.id) {
+      for (Message message in _currentChatMessages) {
+        if (message.id == data['\$id']) {
+          message = _messageFromData(data);
+        }
+      }
+    }
+
+    for (Room chat in _chats) {
+      if (chat.lastMessage?.id == data['\$id']) {
+        chat.lastMessage = _messageFromData(data);
+        chatsStream.add(_chats);
+      }
+    }
+  }
+
+  void _listenMessages(RealtimeMessage event) async {
+    if (event.events.contains('buckets.*.files.*.create')) _handleCreating(event);
+   if (event.events.contains('buckets.*.files.*.update')) _handleUpdates(event);
   }
 
   List<ChatItem> _sortMessagesByDate(List<Message> messages) {

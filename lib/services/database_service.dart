@@ -443,23 +443,35 @@ class DatabaseService {
   }
 
   Future<void> markMessagesAsRead(String chatId, String userId) async {
+    print('хуй 2');
     final docs = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: messagesCollection,
         queries: [
           Query.equal('roomId', chatId),
           Query.notEqual('creatorId', userId),
-          Query.isNotNull('wasRead')
+          //Query.isNotNull('wasRead')
         ]);
 
     for (var doc in docs.documents) {
       print(doc.$id);
-      _databases.updateDocument(
-          databaseId: mainDatabase,
-          collectionId: messagesCollection,
-          documentId: doc.$id,
-          data: {'wasRead': DateTime.now().millisecondsSinceEpoch});
+      if (doc.data['wasRead'] != null) {
+        _databases.updateDocument(
+            databaseId: mainDatabase,
+            collectionId: messagesCollection,
+            documentId: doc.$id,
+            data: {'wasRead': DateTime.now().millisecondsSinceEpoch});
+      }
+
     }
+  }
+
+  Future<void> marMessageAsRead(String messageId) async {
+    _databases.updateDocument(
+        databaseId: mainDatabase,
+        collectionId: messagesCollection,
+        documentId: messageId,
+        data: {'wasRead': DateTime.now().millisecondsSinceEpoch});
   }
 
   Future<Map<String, dynamic>> createRoom(
