@@ -450,7 +450,7 @@ class DatabaseService {
         queries: [
           Query.equal('roomId', chatId),
           Query.notEqual('creatorId', userId),
-          //Query.isNotNull('wasRead')
+          Query.isNull('wasRead')
         ]);
 
     for (var doc in docs.documents) {
