@@ -36,6 +36,12 @@ class MessengerRepository {
 
   Room? currentRoom;
 
+  void closeChat() {
+    currentRoom = null;
+    _currentChatMessages = [];
+    currentChatItemsStream.add([]);
+  }
+
   void clear() {
     _userId = null;
     _currentChatMessages.clear();
@@ -144,11 +150,12 @@ class MessengerRepository {
     }
   }
 
-  Message _messageFromData(Map data) =>Message(
+  Message _messageFromData(Map data) => Message(
       id: data['\$id'],
       content: data['content'],
       senderId: data['creatorId'],
       images: data['images'],
+      wasRead: data['wasRead'] != null ? DateTime.fromMillisecondsSinceEpoch(data['wasRead']) : null,
       owned: _userId == data['creatorId'],
       createdAt: data['\$createdAt'],
       createdAtDt: DateTime.parse(data['\$createdAt'])
@@ -161,9 +168,9 @@ class MessengerRepository {
     final message = _messageFromData(data);
 
     if (data['roomId'] == currentRoom?.id) {
-      _databaseService.marMessageAsRead(data['\$id']);
       _currentChatMessages.add(message);
       currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
+      _databaseService.marMessageAsRead(data['\$id']);
     }
 
     final index = _findChatById(data['roomId']);
@@ -189,21 +196,32 @@ class MessengerRepository {
       for (Message message in _currentChatMessages) {
         if (message.id == data['\$id']) {
           message = _messageFromData(data);
+          currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
         }
       }
     }
 
-    for (Room chat in _chats) {
+    for (int i = 0; i < _chats.length; i++) {
+      Room chat = _chats[i];
+
       if (chat.lastMessage?.id == data['\$id']) {
-        chat.lastMessage = _messageFromData(data);
+        print('update');
+
+        _chats[i].lastMessage = _messageFromData(data);
         chatsStream.add(_chats);
       }
     }
   }
 
   void _listenMessages(RealtimeMessage event) async {
-    if (event.events.contains('buckets.*.files.*.create')) _handleCreating(event);
-   if (event.events.contains('buckets.*.files.*.update')) _handleUpdates(event);
+    print(event.events);
+
+    if (event.events.contains('databases.*.collections.*.documents.*.create')) {
+      _handleCreating(event);
+    }
+    if (event.events.contains('databases.*.collections.*.documents.*.update')) {
+      _handleUpdates(event);
+    }
   }
 
   List<ChatItem> _sortMessagesByDate(List<Message> messages) {

@@ -39,7 +39,7 @@ class FileStorageManager {
         bucketId: bucketId,
         fileId: ID.unique(),
         file: InputFile.fromBytes(bytes: bytes, filename: 'image.jpg'));
-    return createViewUrl(res.$id, avatarsBucketId);
+    return createViewUrl(res.$id, bucketId);
   }
 
   String createViewUrl(String fileID, String bucketID) =>

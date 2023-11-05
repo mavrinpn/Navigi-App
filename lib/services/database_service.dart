@@ -455,7 +455,8 @@ class DatabaseService {
 
     for (var doc in docs.documents) {
       print(doc.$id);
-      if (doc.data['wasRead'] != null) {
+      if (doc.data['wasRead'] == null) {
+        print('хуетень');
         _databases.updateDocument(
             databaseId: mainDatabase,
             collectionId: messagesCollection,
