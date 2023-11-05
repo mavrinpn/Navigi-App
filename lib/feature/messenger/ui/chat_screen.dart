@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/models/messenger/chat_item.dart';
+import 'package:smart/models/messenger/date_splitter.dart';
+import 'package:smart/models/messenger/messages_group.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/widgets/messenger/announcement_short_info.dart';
+import 'package:smart/widgets/messenger/date_splitter_widget.dart';
 import 'package:smart/widgets/messenger/message_widget.dart';
+import 'package:smart/widgets/messenger/message_widget_group.dart';
+
+import '../../../models/messenger/room.dart';
+import '../data/messenger_repository.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
-
+  const ChatScreen({super.key,});
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
@@ -16,6 +25,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final repository = RepositoryProvider.of<MessengerRepository>(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -43,7 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
             const SizedBox(
               width: 18,
             ),
-            CircleAvatar(
+            const CircleAvatar(
               radius: 20,
               backgroundImage: NetworkImage(
                   'https://cs14.pikabu.ru/post_img/big/2023/02/13/8/1676296367166243426.png'),
@@ -68,22 +78,24 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.all(15),
-              child: Container(
-                width: double.infinity,
-                height: 75,
-                color: Colors.red,
-              ),
+              child: AnnouncementShortInfo(announcement: repository.currentRoom!.announcement)
             ),
             Expanded(
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                child: ListView.builder(
-                    itemBuilder: (ctx, i) {
-                      return MessengerContainer(text: 'asdasssdfjhkasdjhkfhjkfjsaidhkdasd', isCurrentUser: false,);
-                    },
-                    itemCount: 3,
-                    reverse: true),
+                child: StreamBuilder<List<ChatItem>>(
+                    stream: repository.currentChatItemsStream,
+                    initialData: const [],
+                    builder: (context, snapshot) {
+                      return ListView.builder(
+                          itemBuilder: (ctx, i) {
+                            final item = snapshot.data![i];
+                            return item is MessagesGroup?MessageGroupWidget(data: item, avatarUrl: repository.currentRoom!.otherUserAvatarUrl??''):DateSplitterWidget(data: item as DateSplitter);
+                          },
+                          itemCount: snapshot.data!.length,
+                          reverse: true);
+                    }),
               ),
             ),
             Container(
@@ -136,7 +148,14 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      if(messageController.text.isNotEmpty) {
+                        repository.sendMessage(messageController.text);
+                        setState(() {
+                          messageController.text = '';
+                        });
+                      }
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                           color: messageController.text.isNotEmpty

@@ -63,7 +63,8 @@ class AnnouncementShortInfo extends StatelessWidget {
             width: 10,
           ),
           Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 announcement.title,

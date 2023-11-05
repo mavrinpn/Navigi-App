@@ -7,6 +7,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
+import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/dialogs.dart';
@@ -333,7 +334,10 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                               .of(context)
                               .size
                               .width - 62,
-                          callback: () {},
+                          callback: () {
+                            RepositoryProvider.of<MessengerRepository>(context).selectChat(announcement: state.data);
+                            Navigator.pushNamed(context, '/chat_screen');
+                          },
                           text: AppLocalizations.of(context)!.write,
                           styleText: AppTypography.font14white,
                           icon: SvgPicture.asset(

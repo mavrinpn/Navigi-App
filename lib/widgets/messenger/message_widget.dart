@@ -8,8 +8,8 @@ import '../../utils/colors.dart';
 
 
 
-class MessengerContainer extends StatelessWidget {
-  const MessengerContainer({super.key,
+class MessageContainer extends StatelessWidget {
+  const MessageContainer({super.key,
     required this.text,
     required this.isCurrentUser,
   });
