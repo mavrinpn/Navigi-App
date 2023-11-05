@@ -13,5 +13,7 @@ class MessagesGroup implements ChatItem {
 
   String get sentAtFormatted => dateTimeToString(messages.last.createdAtDt);
 
+  bool get wasRead => messages.last.wasRead != null;
+
   bool get owned => messages.last.owned;
 }
