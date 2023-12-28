@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "227932496847",
+    "project_id": "navigi-b23aa",
+    "storage_bucket": "navigi-b23aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227932496847:android:15a78f2c9609993eb268ba",
+        "android_client_info": {
+          "package_name": "com.example.smart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1bDxmUkOgjAfZIidK7tKgh14Z5eTju3c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

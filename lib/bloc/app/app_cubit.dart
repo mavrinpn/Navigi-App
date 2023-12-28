@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
@@ -28,6 +30,7 @@ class AppCubit extends Cubit<AppState> {
         favouritesManager.getFavourites();
         messengerRepository.userId = appRepository.userId;
         messengerRepository.preloadChats();
+        messengerRepository.refreshSubscription();
         emit(AppAuthState());
       }
       if (event == AuthStateEnum.unAuth) {
@@ -36,6 +39,10 @@ class AppCubit extends Cubit<AppState> {
         messengerRepository.clear();
         emit(AppUnAuthState());
       }
+    });
+    appRepository.refresherStream.stream.listen((event) {
+      log('account get event');
+      messengerRepository.refreshSubscription();
     });
   }
 }

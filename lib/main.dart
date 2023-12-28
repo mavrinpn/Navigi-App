@@ -1,4 +1,6 @@
 import 'package:appwrite/appwrite.dart' as a;
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +20,9 @@ import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/feature/messenger/ui/chat_screen.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/announcement/ui/creator_screen.dart';
+import 'package:smart/firebase_options.dart';
 import 'package:smart/managers/favourites_manager.dart';
+import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/services.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/widgets/splash.dart';
@@ -48,7 +52,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   PaintingBinding.instance.imageCache.maximumSizeBytes = 1024 * 1024 * 50;
   Bloc.observer = CustomBlocObserver();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load();
+  FirebaseMessaging.onBackgroundMessage(MessagingService.onBackgroundMessage);
   runApp(MyRepositoryProviders());
 }
 
@@ -141,39 +147,45 @@ class MyRepositoryProviders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DatabaseService dbManager = DatabaseService(client: client);
+    DatabaseService databaseService = DatabaseService(client: client);
     FileStorageManager storageManager = FileStorageManager(client: client);
+
+    MessagingService messagingService =
+        MessagingService(databaseService: databaseService);
 
     return MultiRepositoryProvider(providers: [
       RepositoryProvider(
         create: (_) => AuthRepository(
             client: client,
-            databaseManger: dbManager,
+            databaseManger: databaseService,
+            messagingService: messagingService,
             fileStorageManager: storageManager),
       ),
       RepositoryProvider(
         create: (_) => CreatingAnnouncementManager(client: client),
       ),
       RepositoryProvider(
-        create: (_) => ItemManager(databaseService: dbManager),
+        create: (_) => ItemManager(databaseService: databaseService),
       ),
       RepositoryProvider(
-        create: (_) => CategoriesManager(databaseService: dbManager),
+        create: (_) => CategoriesManager(databaseService: databaseService),
       ),
       RepositoryProvider(
         create: (_) => AnnouncementManager(client: client),
       ),
       RepositoryProvider(
-        create: (_) => PlacesManager(databaseService: dbManager),
+        create: (_) => PlacesManager(databaseService: databaseService),
       ),
       RepositoryProvider(
-        create: (_) => MessengerRepository(databaseService: dbManager),
+        create: (_) => MessengerRepository(databaseService: databaseService),
       ),
       RepositoryProvider(
         create: (_) => SearchManager(client: client),
       ),
-      RepositoryProvider(create: (_) => CreatorRepository(databaseService: dbManager)),
-      RepositoryProvider(create: (_) => FavouritesManager(databaseService: dbManager))
+      RepositoryProvider(
+          create: (_) => CreatorRepository(databaseService: databaseService)),
+      RepositoryProvider(
+          create: (_) => FavouritesManager(databaseService: databaseService))
     ], child: const MyBlocProviders());
   }
 }
@@ -192,7 +204,8 @@ class MyBlocProviders extends StatelessWidget {
       BlocProvider(
         create: (_) => AppCubit(
             appRepository: RepositoryProvider.of<AuthRepository>(context),
-            messengerRepository: RepositoryProvider.of<MessengerRepository>(context),
+            messengerRepository:
+                RepositoryProvider.of<MessengerRepository>(context),
             announcementManager:
                 RepositoryProvider.of<AnnouncementManager>(context),
             favouritesManager:

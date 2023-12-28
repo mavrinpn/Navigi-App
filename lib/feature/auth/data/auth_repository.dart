@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
@@ -6,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/models/user.dart';
 import 'package:smart/services/database_service.dart';
+import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/storage_service.dart';
 
 import '../../../enum/enum.dart';
@@ -14,13 +16,12 @@ class AuthRepository {
   final Client client;
   final Account _account;
   final DatabaseService _databaseManger;
+  final MessagingService _messagingService;
   final FileStorageManager _fileStorageManager;
 
   late User _user;
   late UserData userData;
-
   String? sessionID;
-
   static const sessionIdKey = 'sessionID';
 
   String get userId => _user.$id;
@@ -28,12 +29,16 @@ class AuthRepository {
   AuthRepository(
       {required this.client,
       required DatabaseService databaseManger,
+      required MessagingService messagingService,
       required FileStorageManager fileStorageManager})
       : _account = Account(client),
         _fileStorageManager = fileStorageManager,
+        _messagingService = messagingService,
         _databaseManger = databaseManger {
     checkLogin();
   }
+
+  BehaviorSubject<bool> refresherStream = BehaviorSubject();
 
   BehaviorSubject<EntranceStateEnum> authState =
       BehaviorSubject<EntranceStateEnum>.seeded(EntranceStateEnum.wait);
@@ -46,6 +51,12 @@ class AuthRepository {
 
   static String convertPhoneToEmail(String phone) {
     return '$phone@gmail.com';
+  }
+
+  Future<void> _initMessaging() async {
+    _messagingService.userId = _user.$id;
+    _messagingService.initNotification();
+    _messagingService.handleTokenRefreshing();
   }
 
   Future<void> _auth(Future<Session> method, {Future? requiredMethod}) async {
@@ -63,6 +74,7 @@ class AuthRepository {
       }
       authState.add(EntranceStateEnum.success);
       getUserData();
+      _initMessaging();
       appState.add(AuthStateEnum.auth);
     } catch (e) {
       authState.add(EntranceStateEnum.fail);
@@ -75,6 +87,7 @@ class AuthRepository {
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
     authState.add(EntranceStateEnum.wait);
+    _messagingService.userId = null;
     appState.add(AuthStateEnum.unAuth);
   }
 
@@ -107,6 +120,7 @@ class AuthRepository {
       if (sessionID != null) {
         _user = await _account.get();
         getUserData();
+        _initMessaging();
         appState.add(AuthStateEnum.auth);
       } else {
         appState.add(AuthStateEnum.unAuth);

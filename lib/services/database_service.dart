@@ -348,6 +348,9 @@ class DatabaseService {
   RealtimeSubscription getMessagesSubscription() => _realtime.subscribe(
       ['databases.$mainDatabase.collections.$messagesCollection.documents']);
 
+  RealtimeSubscription getRoomsSubscription() => _realtime.subscribe(
+      ['databases.$mainDatabase.collections.$roomsCollection.documents']);
+
   Map<String, String?> getOtherUserNameAndImage(
       Map<String, dynamic> documentData, String userId) {
     final user1 = documentData['user1'];
@@ -379,7 +382,6 @@ class DatabaseService {
     return Room(
         announcement: Announcement.fromJson(
             json: data['announcement'], futureBytes: futureBytes),
-        teamId: data['team'],
         chatName: '${otherUser['name']} $announcementName',
         otherUserId: otherUser['id']!,
         otherUserAvatarUrl: otherUser['image'],
@@ -389,12 +391,9 @@ class DatabaseService {
 
   Future<List<Room>> getUserChats(String userId) async {
     final res = await _databases.listDocuments(
-      databaseId: mainDatabase,
-      collectionId: roomsCollection,
-      // queries: [
-      //   Query.search('members', userId)
-      // ]
-    );
+        databaseId: mainDatabase,
+        collectionId: roomsCollection,
+        queries: [Query.search('members', userId)]);
     List<Room> chats = [];
     for (var doc in res.documents) {
       chats.add(_roomFromDoc(doc, userId));
@@ -461,11 +460,10 @@ class DatabaseService {
             documentId: doc.$id,
             data: {'wasRead': DateTime.now().millisecondsSinceEpoch});
       }
-
     }
   }
 
-  Future<void> marMessageAsRead(String messageId) async {
+  Future<void> markMessageAsRead(String messageId) async {
     _databases.updateDocument(
         databaseId: mainDatabase,
         collectionId: messagesCollection,
@@ -475,56 +473,51 @@ class DatabaseService {
 
   Future<Map<String, dynamic>> createRoom(
       List<String> userIds, String announcementId) async {
-    final res = await _functions.createExecution(
-        functionId: _createTeamFunction,
-        body: jsonEncode({
-          'user1': userIds[0],
-          'user2': userIds[1],
-        }));
-
-    final teamId = res.responseBody.replaceAll('"', '');
-
-    final List<String> permissions = [
-      Permission.read(Role.team(teamId)),
-      Permission.write(Role.team(teamId)),
-    ];
-
     final room = await _databases.createDocument(
-        databaseId: mainDatabase,
-        collectionId: roomsCollection,
-        documentId: ID.unique(),
-        data: {
-          'team': teamId,
-          'user1': userIds[0],
-          'user2': userIds[1],
-          'members': userIds,
-          'announcement': announcementId,
-        },
-        permissions: permissions);
+      databaseId: mainDatabase,
+      collectionId: roomsCollection,
+      documentId: ID.unique(),
+      data: {
+        'user1': userIds[0],
+        'user2': userIds[1],
+        'members': userIds,
+        'announcement': announcementId,
+      },
+    );
 
-    return {'room': room.$id, 'team': teamId};
+    return {'room': room.$id};
   }
 
   Future<void> sendMessage(
       {required String roomId,
-      required String teamId,
       required String content,
       required String senderId,
       List<String>? images}) async {
-    await _databases.createDocument(
-        databaseId: mainDatabase,
-        collectionId: messagesCollection,
-        documentId: ID.unique(),
-        data: {
-          'room': roomId,
-          'roomId': roomId,
-          'creatorId': senderId,
-          'content': content,
-          'images': images ?? []
-        },
-        permissions: [
-          Permission.write(Role.team(teamId)),
-          Permission.read(Role.team(teamId)),
-        ]);
+    final encodedBody = jsonEncode(
+        {'roomId': roomId, 'senderId': senderId, 'message': content});
+    print(encodedBody);
+    print(encodedBody);
+    print(encodedBody);
+    print(encodedBody);
+    print(encodedBody);
+    final res = await _functions.createExecution(
+        functionId: '657f16bf26ccb6ca8093',
+        body: encodedBody);
+    print('');
+    print('Sending message response: ${res.responseBody}');
+    print('Sending message response: ${res.status}');
+    print('Sending message response: ${res.responseStatusCode}');
+    print('Sending message response: ${res.requestHeaders}');
+    print('');
   }
+
+  Future<void> refreshNotificationToken(String userId, String token) =>
+      _databases.createDocument(
+          databaseId: mainDatabase,
+          collectionId: 'pushTokens',
+          documentId: userId,
+          data: {
+            'user': userId,
+            'token': token,
+          });
 }

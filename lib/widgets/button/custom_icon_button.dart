@@ -19,20 +19,19 @@ class CustomIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 52,
-      height: 52,
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(14))),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            elevation: 0,
-            backgroundColor: color,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(14)))),
-        onPressed: callback,
-        child: SvgPicture.asset(icon, width: 24, height: 24, color: Colors.white,),
-      ),
-    );
+    return InkWell(
+        onTap: callback,
+        child: Ink(
+          width: 52,
+          height: 52,
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(14)),
+              color: color),
+          child: SvgPicture.asset(
+            icon,
+            color: Colors.white,
+          ),
+        ));
   }
 }
