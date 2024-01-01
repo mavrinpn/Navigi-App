@@ -4,22 +4,22 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smart/services/database/database_service.dart';
 
 import '../../models/announcement_creating_data.dart';
 import '../../models/models.dart';
 import '../enum/enum.dart';
-import '../services/database_service.dart';
 import '../services/storage_service.dart';
 
 class CreatingAnnouncementManager {
   final Client client;
-  final DatabaseService dbManager;
+  final DatabaseService dbService;
   final FileStorageManager storageManager;
   final Account account;
   final _picker = ImagePicker();
 
   CreatingAnnouncementManager({required this.client})
-      : dbManager = DatabaseService(client: client),
+      : dbService = DatabaseService(client: client),
         account = Account(client),
         storageManager = FileStorageManager(client: client);
 
@@ -102,7 +102,7 @@ class CreatingAnnouncementManager {
       await compressingImages;
       final List<String> urls = await uploadImages(imagesAsBytes);
 
-      await dbManager.createAnnouncement(uid, urls, creatingData);
+      await dbService.announcements.createAnnouncement(uid, urls, creatingData);
 
       images.clear();
       creatingData.clear;

@@ -61,7 +61,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
               ),
               !repository.images.isNotEmpty
                   ? CustomTextButton.withIcon(
-                      isTouch: true,
+                active: true,
                       activeColor: AppColors.dark,
                       callback: () {
                         addImages();
@@ -111,7 +111,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
         ),
         floatingActionButton: repository.images.isNotEmpty
             ? CustomTextButton.orangeContinue(
-                isTouch: true,
+            active: true,
                 width: MediaQuery.of(context).size.width - 30,
                 text: 'Continuer',
                 callback: () {

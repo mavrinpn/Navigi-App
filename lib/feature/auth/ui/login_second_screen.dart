@@ -143,7 +143,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                                     password: passwordController.text.trim());
                               }
                             },
-                            isTouch: buttonActive,
+                            active: buttonActive,
                             text: 'Entrer',
                             styleText: AppTypography.font14white,
                             height: 52,

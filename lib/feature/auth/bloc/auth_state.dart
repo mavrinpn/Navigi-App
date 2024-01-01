@@ -12,3 +12,5 @@ class AuthSuccessState extends AuthState {}
 class AuthFailState extends AuthState  {}
 
 class AlreadyExistState extends AuthState  {}
+
+class CodeSentState extends AuthState {}

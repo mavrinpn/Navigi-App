@@ -1,5 +1,6 @@
+import 'package:smart/services/database/database_service.dart';
+
 import '../../models/models.dart';
-import '../services/database_service.dart';
 
 class CategoriesManager {
   final DatabaseService databaseService;
@@ -10,8 +11,8 @@ class CategoriesManager {
   List<Subcategory> subcategories = [];
 
   Future loadCategories() async =>
-      categories = await databaseService.getAllCategories();
+      categories = await databaseService.categories.getAllCategories();
 
   Future loadSubcategory(String categoryID) async => subcategories =
-      await databaseService.getAllSubcategoriesFromCategoryId(categoryID);
+      await databaseService.categories.getAllSubcategoriesFromCategoryId(categoryID);
 }

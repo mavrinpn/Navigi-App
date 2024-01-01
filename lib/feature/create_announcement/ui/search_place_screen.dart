@@ -135,7 +135,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
             Navigator.pushNamed(context, '/create_description');
           }
         },
-        isTouch: isTouch,
+        active: isTouch,
       ),
     );
   }

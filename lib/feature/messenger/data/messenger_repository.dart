@@ -3,13 +3,14 @@ import 'dart:developer';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smart/feature/messenger/data/messages_list.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/models/messenger/chat_item.dart';
 import 'package:smart/models/messenger/room.dart';
 import 'package:smart/models/messenger/date_splitter.dart';
 import 'package:smart/models/messenger/message.dart';
 import 'package:smart/models/messenger/messages_group.dart';
-import 'package:smart/services/database_service.dart';
+import 'package:smart/services/database/database_service.dart';
 
 class MessengerRepository {
   static const String _needCreateRoomId = 'NEED_CREATE_ROOM';
@@ -22,7 +23,7 @@ class MessengerRepository {
 
   String? _userId;
   List<Room> _chats = [];
-  List<Message> _currentChatMessages = [];
+  MessagesList? _currentChatMessages;
   StreamSubscription? _listener;
 
   set userId(String newUserId) => _userId = newUserId;
@@ -35,13 +36,13 @@ class MessengerRepository {
 
   void closeChat() {
     currentRoom = null;
-    _currentChatMessages = [];
+    _currentChatMessages = null;
     currentChatItemsStream.add([]);
   }
 
   void clear() {
     _userId = null;
-    _currentChatMessages.clear();
+    _currentChatMessages = null;
     _chats.clear();
 
     chatsStream.add(_chats);
@@ -61,29 +62,27 @@ class MessengerRepository {
   }
 
   void preloadChats() async {
-    _chats = await _databaseService.getUserChats(_userId!);
+    _chats = await _databaseService.messages.getUserChats(_userId!);
     chatsStream.add(_chats);
-    _loadChatsMessages();
-    // refreshSubscription();
+    _loadChatsPreviewMessages();
   }
 
   Future<void> sendMessage(String content) async {
     if (currentRoom?.id == _needCreateRoomId) await _createRoom();
 
-    await _databaseService.sendMessage(
+    await _databaseService.messages.sendMessage(
       roomId: currentRoom!.id,
       content: content,
       senderId: _userId!,
     );
-    print('message sended');
-
+    print('message sent');
   }
 
   void searchChat(String query) {
     final list = <Room>[];
 
     for (Room i in _chats) {
-      if (i.chatName.contains(query)) {
+      if (i.announcement.title.contains(query)) {
         list.add(i);
       }
     }
@@ -104,7 +103,7 @@ class MessengerRepository {
   void refreshSubscription() async {
     _listener?.cancel();
     _messageListener?.close();
-    _messageListener = _databaseService.getMessagesSubscription();
+    _messageListener = _databaseService.messages.getMessagesSubscription();
     _listener = _messageListener?.stream.listen(_listenMessages);
     log('subscription refreshed');
   }
@@ -112,11 +111,12 @@ class MessengerRepository {
   // -------------------------------------------------------------
 
   Future<void> _createRoom() async {
-    final roomData = await _databaseService.createRoom(
+    final roomData = await _databaseService.messages.createRoom(
         [_userId!, currentRoom!.announcement.creatorData.uid],
         currentRoom!.announcement.id);
 
-    currentRoom = await _databaseService.getRoom(roomData['room'], _userId!);
+    currentRoom =
+        await _databaseService.messages.getRoom(roomData['room'], _userId!);
     _chats.add(currentRoom!);
     chatsStream.add(_chats);
     // refreshSubscription();
@@ -125,7 +125,7 @@ class MessengerRepository {
   void _selectRoomById(String id) {
     final Message? lastMessage = _chats[_findChatById(id)!].lastMessage;
     currentRoom = _chats[_findChatById(id)!];
-    _currentChatMessages = lastMessage != null ? [lastMessage] : [];
+    _currentChatMessages = MessagesList( lastMessage != null ? [lastMessage] : []);
     currentChatItemsStream.add(lastMessage != null
         ? [
             MessagesGroup(messages: [lastMessage])
@@ -141,6 +141,10 @@ class MessengerRepository {
       }
     }
 
+    createEmptyRoom(announcement);
+  }
+
+  void createEmptyRoom(Announcement announcement) {
     currentRoom = Room(
         id: _needCreateRoomId,
         chatName: '',
@@ -149,8 +153,8 @@ class MessengerRepository {
         otherUserAvatarUrl: announcement.creatorData.imageUrl,
         announcement: announcement);
 
-    _currentChatMessages.clear();
-    currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
+    _currentChatMessages = null;
+    currentChatItemsStream.add([]);
   }
 
   _upChannelFrom(int index) {
@@ -158,19 +162,23 @@ class MessengerRepository {
     _chats.insert(0, chat);
   }
 
-  void _loadChatsMessages() async {
+  Future<List<Message>> _getChatMessages(chatId, {int? limit}) =>
+      _databaseService.messages.getChatMessages(chatId, _userId!, limit: limit);
+
+  void _loadChatsPreviewMessages() async {
     for (int i = 0; i < _chats.length; i++) {
       final chat = _chats[i];
-      final messages =
-          await _databaseService.getChatMessages(chat.id, _userId!);
+      final messages = await _getChatMessages(chat.id, limit: 1);
       if (messages.isNotEmpty) {
         _chats[i].lastMessage = messages.last;
-        if (messages.last.wasRead == null && !messages.last.owned) {
-          _upChannelFrom(i);
-        }
       }
     }
+    _sortChats();
     chatsStream.add(_chats);
+  }
+
+  void _sortChats() {
+    _chats.sort((a, b) => a.compareTo(b));
   }
 
   int? _findChatById(String id) {
@@ -183,45 +191,14 @@ class MessengerRepository {
   }
 
   void _loadChatMessages(String id) async {
-    final messages = await _databaseService.getChatMessages(id, _userId!);
+    final messages = await _getChatMessages(id);
     if (messages.isNotEmpty) {
-      _currentChatMessages = messages;
-      currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
+      _currentChatMessages = MessagesList(messages);
+      currentChatItemsStream.add(_currentChatMessages!.toSortedChatItems);
     }
-  }
-
-  List<ChatItem> _sortMessagesByDate(List<Message> messages) {
-    if (messages.isEmpty) return [];
-
-    final List<ChatItem> items = [];
-    items.add(DateSplitter(dateTime: messages.first.createdAtDt));
-
-    for (Message message in messages) {
-      if (items.last is DateSplitter) {
-        items.add(MessagesGroup(messages: [message]));
-      } else {
-        final lastGroup = items.last as MessagesGroup;
-        bool timeConditionToSplitGroups =
-            (lastGroup.sentAt.difference(message.createdAtDt).inSeconds).abs() >
-                30;
-        if (lastGroup.owned != message.owned || timeConditionToSplitGroups) {
-          if (lastGroup.diffDate(message.createdAtDt)) {
-            items.add(DateSplitter(dateTime: message.createdAtDt));
-          }
-
-          items.add(MessagesGroup(messages: [message]));
-        } else {
-          (items.last as MessagesGroup).addMessage(message);
-        }
-      }
-    }
-
-    return items.reversed.toList();
   }
 
   void _listenMessages(RealtimeMessage event) async {
-    log(event.payload.toString());
-
     if (event.events.contains('databases.*.collections.*.documents.*.create')) {
       _handleCreating(event);
     }
@@ -231,12 +208,6 @@ class MessengerRepository {
   }
 
   void _handleCreating(RealtimeMessage event) async {
-    log(event.payload.toString());
-
-    event.events.forEach((element) {
-      print(element);
-    });
-
     final data = event.payload;
 
     final message = Message.fromJson(data, _userId!);
@@ -261,19 +232,20 @@ class MessengerRepository {
   }
 
   void _markAllMessagesAsRead() =>
-      _databaseService.markMessagesAsRead(currentRoom!.id, _userId!);
+      _databaseService.messages.markMessagesAsRead(currentRoom!.id, _userId!);
 
   void _addMessageToCurrentRoom(data, Message message) {
-    _currentChatMessages.add(message);
-    currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
+    _currentChatMessages!.addMessage(message);
+    currentChatItemsStream.add(_currentChatMessages!.toSortedChatItems);
     if (message.senderId != _userId) {
-      _databaseService.markMessageAsRead(data['\$id']);
+      _databaseService.messages.markMessageAsRead(data['\$id']);
     }
   }
 
   void _getNewRoom(data) async {
-    final room = await _databaseService.getRoom(data['roomId'], _userId!);
-    final messages = await _databaseService.getChatMessages(room.id, _userId!);
+    final room =
+        await _databaseService.messages.getRoom(data['roomId'], _userId!);
+    final messages = await _getChatMessages(room.id);
     room.lastMessage = messages[0];
     _chats.add(room);
     chatsStream.add(_chats);
@@ -287,12 +259,8 @@ class MessengerRepository {
   }
 
   _updateMessageInCurrentRoom(Map<String, dynamic> messageData) {
-    for (int i = 0; i < _currentChatMessages.length; i++) {
-      if (_currentChatMessages[i].id == messageData['\$id']) {
-        _currentChatMessages[i] = Message.fromJson(messageData, _userId!);
-        currentChatItemsStream.add(_sortMessagesByDate(_currentChatMessages));
-      }
-    }
+    _currentChatMessages!.updateMessage(messageData, _userId!);
+    currentChatItemsStream.add(_currentChatMessages!.toSortedChatItems);
   }
 
   _updateRoomsPreviewMessages(Map<String, dynamic> data) {

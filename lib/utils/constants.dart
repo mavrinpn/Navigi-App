@@ -7,7 +7,7 @@ const String subcategoriesCollection = 'sub_categories';
 const String queriesCollection = 'queries';
 const String likesCollection = 'likes';
 
-/// [messages] - сами сообщения
+/// [_messages] - сами сообщения
 const String messagesCollection = 'messages';
 
 /// [rooms] - именно чаты

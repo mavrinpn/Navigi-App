@@ -254,7 +254,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         text: 'Se faire enregistrer',
                         styleText: AppTypography.font14white,
                         height: 52,
-                        isTouch: isTouch,
+                        active: isTouch,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 0),
                         activeColor: AppColors.dark,

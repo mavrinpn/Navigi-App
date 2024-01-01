@@ -10,7 +10,7 @@ class CustomTextButton extends StatelessWidget {
   final double height;
   final TextStyle styleText;
   final EdgeInsets padding;
-  final bool isTouch;
+  final bool active;
   final Color activeColor;
   final Color disableColor;
   final Widget? child;
@@ -23,7 +23,7 @@ class CustomTextButton extends StatelessWidget {
     this.width = double.infinity,
     this.height = 50,
     this.padding = const EdgeInsets.all(0),
-    this.isTouch = false,
+    this.active = false,
     this.child,
     this.activeColor = AppColors.red,
     this.disableColor = AppColors.disable,
@@ -37,7 +37,7 @@ class CustomTextButton extends StatelessWidget {
     this.width = 1000,
     this.height = 52,
     this.padding = EdgeInsets.zero,
-    this.isTouch = false,
+    this.active = false,
     this.activeColor = AppColors.red,
     this.disableColor = AppColors.disable,
     required Widget icon,
@@ -63,7 +63,7 @@ class CustomTextButton extends StatelessWidget {
     this.width = double.infinity,
     this.height = 52,
     this.padding = const EdgeInsets.all(0),
-    this.isTouch = false,
+    this.active = false,
     this.child,
     this.activeColor = AppColors.red,
     this.disableColor = AppColors.disable,
@@ -80,7 +80,7 @@ class CustomTextButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             elevation: 0,
-            backgroundColor: isTouch ? activeColor : disableColor,
+            backgroundColor: active ? activeColor : disableColor,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(14)))),
         onPressed: callback,

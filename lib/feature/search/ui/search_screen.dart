@@ -519,7 +519,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                   setState(() {});
                 },
                 text: 'Appliquer',
-                isTouch: true)
+                active: true)
           ],
         ),
       ),

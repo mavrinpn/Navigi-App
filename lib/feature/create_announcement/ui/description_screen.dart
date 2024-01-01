@@ -116,7 +116,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
           ),
         ),
         floatingActionButton: CustomTextButton.orangeContinue(
-            isTouch: descriptionController.text.isNotEmpty && titleController.text.isNotEmpty,
+            active: descriptionController.text.isNotEmpty && titleController.text.isNotEmpty,
             width: MediaQuery.of(context).size.width - 30,
             text: 'Continuer',
             callback: () {

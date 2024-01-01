@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:smart/services/database_service.dart';
+import 'package:smart/services/database/database_service.dart';
 
 class MessagingService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -48,7 +48,7 @@ class MessagingService {
 
   Future<void> saveTokenToDatabase(String? token) async {
     if (userId != null && token != null) {
-      _databaseService.refreshNotificationToken(userId!, token);
+      _databaseService.notifications.refreshNotificationToken(userId!, token);
     }
   }
 

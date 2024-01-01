@@ -123,7 +123,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
             BlocProvider.of<PlacesCubit>(context).initialLoad();
             Navigator.pushNamed(context, '/create_search_places_screen');
           },
-          isTouch: isTouch,
+          active: isTouch,
         ),
       ),
     );

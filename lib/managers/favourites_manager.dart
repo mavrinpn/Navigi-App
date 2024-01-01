@@ -1,8 +1,8 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:smart/enum/enum.dart';
+import 'package:smart/services/database/database_service.dart';
 
 import '../models/announcement.dart';
-import '../services/database_service.dart';
 
 class FavouritesManager {
   final DatabaseService databaseService;
@@ -23,16 +23,16 @@ class FavouritesManager {
       BehaviorSubject.seeded(LoadingStateEnum.loading);
 
   Future<void> like(String postId) async =>
-      await databaseService.likePost(postId: postId, userId: userId!);
+      await databaseService.favourites.likePost(postId: postId, userId: userId!);
 
   Future<void> unlike(String postId) async =>
-      await databaseService.unlikePost(postId: postId, userId: userId!);
+      await databaseService.favourites.unlikePost(postId: postId, userId: userId!);
 
   Future<void> getFavourites() async {
     loadingState.add(LoadingStateEnum.loading);
     try {
       announcements =
-          await databaseService.getFavouritesAnnouncements(userId: userId!);
+          await databaseService.favourites.getFavouritesAnnouncements(userId: userId!);
       // print(announcements);
       loadingState.add(LoadingStateEnum.success);
     } catch (e) {

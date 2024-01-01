@@ -110,10 +110,14 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                               return;
                             }
                             if (isTouch) {
-                              BlocProvider.of<AuthCubit>(context).setPhone(
+                              final bloc = BlocProvider.of<AuthCubit>(context);
+                              bloc.setPhone(
                                   maskPhoneFormatter.getUnmaskedText());
+                              bloc.sendSms();
                               Navigator.pushNamed(
-                                  context, '/login_second_screen');
+                                  context, '/login_code_screen');
+                              // Navigator.pushNamed(
+                              //     context, '/login_second_screen');
                             }
                           },
                           text: AppLocalizations.of(context)!.next,
@@ -121,7 +125,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                           height: 52,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 0),
-                          isTouch: isTouch,
+                          active: isTouch,
                         ),
                       ],
                     )),
@@ -139,8 +143,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                           text: localizations.createNewAccount,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.pushNamed(
-                                  context, '/register_screen');
+                              Navigator.pushNamed(context, '/register_screen');
                             },
                           style: AppTypography.font16UnderLinePink)
                     ],
@@ -154,8 +157,8 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                       RawMaterialButton(
                           onPressed: () {},
                           shape: const CircleBorder(),
-                          constraints: const BoxConstraints(
-                              maxWidth: 40, maxHeight: 40),
+                          constraints:
+                              const BoxConstraints(maxWidth: 40, maxHeight: 40),
                           child: SvgPicture.asset(
                             'Assets/icons/facebook.svg',
                             width: 40,
@@ -164,8 +167,8 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                         width: 5,
                       ),
                       RawMaterialButton(
-                          constraints: const BoxConstraints(
-                              maxWidth: 40, maxHeight: 40),
+                          constraints:
+                              const BoxConstraints(maxWidth: 40, maxHeight: 40),
                           onPressed: () {},
                           shape: const CircleBorder(),
                           child: SvgPicture.asset(

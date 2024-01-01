@@ -207,7 +207,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           text: 'Enregistrer',
                           styleText: AppTypography.font14white
                               .copyWith(fontWeight: FontWeight.w600),
-                          isTouch: true,
+                          active: true,
                           activeColor: AppColors.black,
                         ),
                         const SizedBox(

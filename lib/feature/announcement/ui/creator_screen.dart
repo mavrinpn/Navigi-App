@@ -86,7 +86,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                     callback: () {},
                     text: 'Écrire',
                     styleText: AppTypography.font14white,
-                    isTouch: true,
+                    active: true,
                     icon: const Icon(
                       Icons.mail_outline,
                       color: Colors.white,
@@ -104,7 +104,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                     callback: () {},
                     text: 'Appeler',
                     styleText: AppTypography.font14white,
-                    isTouch: true,
+                    active: true,
                     activeColor: AppColors.dark,
                     icon: const Icon(
                       Icons.phone,

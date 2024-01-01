@@ -1,5 +1,6 @@
+import 'package:smart/services/database/database_service.dart';
+
 import '../../models/item/item.dart';
-import '../../../services/database_service.dart';
 
 class ItemManager {
   final DatabaseService databaseService;
@@ -11,7 +12,7 @@ class ItemManager {
   String searchController = '';
 
   Future initialLoadItems(String query, subcategoryId) async =>
-      items = await databaseService.getItemsFromSubcategory(subcategoryId);
+      items = await databaseService.categories.getItemsFromSubcategory(subcategoryId);
 
   void searchItemsByName(String query) {
     List<SubCategoryItem> resList = [];

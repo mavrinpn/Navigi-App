@@ -18,4 +18,15 @@ class Room {
       required this.otherUserAvatarUrl,
       required this.announcement,
       this.lastMessage});
+
+  int compareTo(Room other) {
+    if (lastMessage == null || other.lastMessage == null) {
+      if (other.lastMessage == null) return 0;
+      return -1;
+    }
+    final dt = DateTime.parse(lastMessage!.createdAt);
+    final otherDt = DateTime.parse(other.lastMessage!.createdAt);
+
+    return otherDt.difference(dt).inSeconds;
+  }
 }

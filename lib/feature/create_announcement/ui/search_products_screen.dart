@@ -127,7 +127,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
             Navigator.pushNamed(context, '/create_pick_photos_screen');
           }
         },
-        isTouch: isTouch,
+        active: isTouch,
       ),
     );
   }

@@ -40,9 +40,5 @@ class AppCubit extends Cubit<AppState> {
         emit(AppUnAuthState());
       }
     });
-    appRepository.refresherStream.stream.listen((event) {
-      log('account get event');
-      messengerRepository.refreshSubscription();
-    });
   }
 }

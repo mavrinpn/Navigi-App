@@ -111,7 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             },
                             text: AppLocalizations.of(context)!.addAnnouncement,
                             styleText: AppTypography.font14white,
-                            isTouch: true,
+                            active: true,
                             icon: const Icon(
                               Icons.add,
                               color: Colors.white,

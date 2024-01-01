@@ -15,4 +15,5 @@ class AppColors {
   static const backgroundIcon = Color(0x19ED5434);
   static const grey  = Color(0x33DDE1E7);
   static const darkGrey  = Color(0xff9B9FAA);
+  static const darkGrayUnderline = Color(0xff9B9FAA);
 }

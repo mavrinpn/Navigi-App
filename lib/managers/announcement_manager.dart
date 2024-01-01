@@ -4,14 +4,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/enum/enum.dart';
 
 import '../../models/announcement.dart';
-import '../services/database_service.dart';
+import '../services/database/database_service.dart';
 
 class AnnouncementManager {
-  final DatabaseService dbManager;
+  final DatabaseService dbService;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   AnnouncementManager({required Client client})
-      : dbManager = DatabaseService(client: client);
+      : dbService = DatabaseService(client: client);
 
   String? _lastId;
   String? _searchLastId;
@@ -34,7 +34,7 @@ class AnnouncementManager {
           _lastId = '';
         }
 
-        announcements.addAll(await dbManager.getAnnouncements(_lastId));
+        announcements.addAll(await dbService.announcements.getAnnouncements(_lastId));
         _lastId = announcements.last.id;
       } catch (e) {
         if (e.toString() != 'Bad state: No element') {
@@ -61,13 +61,13 @@ class AnnouncementManager {
       }
     }
 
-    final announcement = await dbManager.getAnnouncementById(id);
+    final announcement = await dbService.announcements.getAnnouncementById(id);
     return announcement;
   }
 
   void incTotalViews(String id) async {
     if (!viewsAnnouncements.contains(id)) {
-      dbManager.incTotalViewsById(id);
+      dbService.announcements.incTotalViewsById(id);
       viewsAnnouncements.add(id);
     }
   }
@@ -84,7 +84,7 @@ class AnnouncementManager {
         _searchLastId = '';
       }
 
-      searchAnnouncements.addAll(await dbManager.searchLimitAnnouncements(
+      searchAnnouncements.addAll(await dbService.announcements.searchLimitAnnouncements(
           _searchLastId, searchText, sortBy,
           minPrice: minPrice, maxPrice: maxPrice));
 
@@ -97,6 +97,6 @@ class AnnouncementManager {
   }
 
   Future<void> changeActivity(String announcementId) async {
-    await dbManager.changeAnnouncementActivity(announcementId);
+    await dbService.announcements.changeAnnouncementActivity(announcementId);
   }
 }

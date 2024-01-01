@@ -1,6 +1,6 @@
 import 'package:smart/models/announcement.dart';
 import 'package:smart/models/user.dart';
-import 'package:smart/services/database_service.dart';
+import 'package:smart/services/database/database_service.dart';
 
 class CreatorRepository {
   final DatabaseService databaseService;
@@ -22,7 +22,7 @@ class CreatorRepository {
   }
 
   Future _getAnnouncements() async {
-    final announcements = await databaseService.getUserAnnouncements(
+    final announcements = await databaseService.announcements.getUserAnnouncements(
         userId: currentCreatorId!);
 
     availableAnnouncements = [];

@@ -89,7 +89,7 @@ class _FavoritesScreen extends State<FavoritesScreen> {
                                 CustomTextButton.orangeContinue(
                                     callback: () {},
                                     text: 'aller au répertoire',
-                                    isTouch: true)
+                                    active: true)
                               ],
                             ),
                           ),
