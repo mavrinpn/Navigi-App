@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/models/category.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/images/network_image.dart';
 
 import '../../feature/create_announcement/bloc/subcategory/subcategory_cubit.dart';
@@ -41,7 +42,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
         if (widget.isActive) {
           BlocProvider.of<SubcategoryCubit>(context)
               .loadSubCategories(widget.id);
-          Navigator.pushNamed(context, '/create_sub_category_screen');
+          Navigator.pushNamed(context, AppRoutesNames.announcementCreatingSubcategory);
         }
       },
       child: SizedBox(

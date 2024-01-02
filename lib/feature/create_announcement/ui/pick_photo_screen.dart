@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:smart/utils/routes/route_names.dart';
 
 import '../../../managers/creating_announcement_manager.dart';
 import '../../../utils/colors.dart';
@@ -117,7 +118,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                 callback: () {
                   setState(() {
                     repository.setImages(repository.images);
-                    Navigator.pushNamed(context, '/create_by_not_by_screen');
+                    Navigator.pushNamed(context, AppRoutesNames.announcementCreatingType);
                   });
                 })
             : Container());

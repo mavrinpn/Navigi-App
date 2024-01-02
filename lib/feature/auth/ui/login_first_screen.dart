@@ -6,6 +6,7 @@ import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:smart/utils/routes/route_names.dart';
 
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/mask_text_field.dart';
@@ -115,7 +116,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                                   maskPhoneFormatter.getUnmaskedText());
                               bloc.sendSms();
                               Navigator.pushNamed(
-                                  context, '/login_code_screen');
+                                  context, AppRoutesNames.authCode);
                               // Navigator.pushNamed(
                               //     context, '/login_second_screen');
                             }

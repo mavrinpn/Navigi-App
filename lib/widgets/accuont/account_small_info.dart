@@ -6,6 +6,7 @@ import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart
 import 'package:smart/generated/assets.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/images/network_image.dart';
 
 import '../../models/announcement.dart';
@@ -32,7 +33,7 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
     void onClick(){
       BlocProvider.of<CreatorCubit>(context).setUserId(widget.creatorData.uid);
       BlocProvider.of<CreatorCubit>(context).setUserData(widget.creatorData.toUserData());
-      Navigator.pushNamed(context, '/creator_screen');
+      Navigator.pushNamed(context, AppRoutesNames.announcementCreator);
     }
 
     return Padding(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/routes/route_names.dart';
 
 import '../../feature/create_announcement/bloc/item_search/item_search_cubit.dart';
 
@@ -16,7 +17,7 @@ class SubCategoryWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         BlocProvider.of<ItemSearchCubit>(context).setSubcategory(id);
-        Navigator.pushNamed(context, '/create_search_products_screen');
+        Navigator.pushNamed(context, AppRoutesNames.announcementCreatingItem);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),

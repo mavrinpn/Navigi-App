@@ -6,6 +6,7 @@ import 'package:smart/models/messenger/message.dart';
 import 'package:smart/models/messenger/room.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/functions.dart';
+import 'package:smart/utils/routes/route_names.dart';
 
 class ChatContainer extends StatefulWidget {
   const ChatContainer({super.key,
@@ -44,7 +45,7 @@ class _ChatContainerState extends State<ChatContainer> {
               onTap: () {
                 RepositoryProvider.of<MessengerRepository>(context).selectChat(
                     id: widget.roomId);
-                Navigator.pushNamed(context, '/chat_screen');
+                Navigator.pushNamed(context, AppRoutesNames.chat);
               },
               child: Container(
                 decoration: BoxDecoration(

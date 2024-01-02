@@ -7,6 +7,7 @@ import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/routes/route_names.dart';
 
 import '../bloc/creating/creating_announcement_cubit.dart';
 
@@ -28,12 +29,12 @@ class LoadingScreen extends StatelessWidget {
             log('абоаба');
             RepositoryProvider.of<AnnouncementManager>(context)
                 .addLimitAnnouncements(true);
-            Navigator.of(context).popUntil(ModalRoute.withName('/'));
+            Navigator.of(context).popUntil(ModalRoute.withName(AppRoutesNames.root));
           }
           if (state is CreatingFailState) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(const SnackBar(content: Text('ошибка')));
-            Navigator.of(context).popUntil(ModalRoute.withName('/'));
+            Navigator.of(context).popUntil(ModalRoute.withName(AppRoutesNames.root));
           }
         },
         child: Scaffold(

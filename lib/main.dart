@@ -6,27 +6,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smart/feature/auth/ui/code_screen.dart';
-import 'package:smart/feature/auth/ui/register_screen.dart';
-import 'package:smart/feature/create_announcement/ui/creating_screens.dart';
-import 'package:smart/feature/messenger/ui/chat_screen.dart';
-import 'package:smart/feature/announcement/ui/creator_screen.dart';
 import 'package:smart/firebase_options.dart';
 import 'package:smart/providers.dart';
 import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/services.dart';
 import 'package:smart/utils/colors.dart';
+import 'package:smart/utils/routes/routes.dart';
 import 'package:smart/widgets/splash.dart';
 
 import 'bloc/app/app_cubit.dart';
-import 'feature/announcement/ui/announcement_screen.dart';
 import 'feature/auth/ui/login_first_screen.dart';
-import 'feature/auth/ui/login_second_screen.dart';
 import 'feature/home/ui/home_screen.dart';
-import 'feature/main/ui/main_screen.dart';
-import 'feature/profile/ui/edit_profile_screen.dart';
-import 'feature/search/ui/search_screen.dart';
-import 'feature/settings/ui/settings_screen.dart';
 
 
 Future<void> main() async {
@@ -90,32 +80,7 @@ class _MyAppState extends State<MyApp> {
             backgroundColor: AppColors.mainBackground, elevation: 0),
         fontFamily: GoogleFonts.nunito().fontFamily,
       ),
-      routes: {
-        '/': (context) => const HomePage(),
-        // '/': (context) => const CodeScreen(),
-        '/login_first_screen': (context) => const LoginFirstScreen(),
-        '/login_code_screen': (context) => const CodeScreen(),
-        '/login_second_screen': (context) => const LoginSecondScreen(),
-        '/register_screen': (context) => const RegisterScreen(),
-        '/home_screen': (context) => const HomeScreen(),
-        '/create_category_screen': (context) => const CategoryScreen(),
-        '/create_sub_category_screen': (context) => const SubCategoryScreen(),
-        '/create_search_products_screen': (context) =>
-            const SearchProductsScreen(),
-        '/create_pick_photos_screen': (context) => const PickPhotosScreen(),
-        '/create_by_not_by_screen': (context) => const ByNotByScreen(),
-        '/create_description': (context) => const DescriptionScreen(),
-        '/create_search_places_screen': (context) => const SearchPlaceScreen(),
-        '/loading_screen': (context) => const LoadingScreen(),
-        '/create_options_screen': (context) => const OptionsScreen(),
-        '/main_screen': (context) => const MainScreen(),
-        '/announcement_screen': (context) => const AnnouncementScreen(),
-        '/edit_profile_screen': (context) => const EditProfileScreen(),
-        '/settings_screen': (context) => const SettingsScreen(),
-        '/search_screen': (context) => const SearchScreen(),
-        '/creator_screen': (context) => const CreatorProfileScreen(),
-        '/chat_screen': (context) => const ChatScreen(),
-      },
+      routes: appRoutes,
       color: const Color(0xff292B57),
     );
   }
@@ -148,3 +113,31 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+
+// {
+// '/': (context) => const HomePage(),
+// // '/': (context) => const CodeScreen(),
+// '/login_first_screen': (context) => const LoginFirstScreen(),
+// '/login_code_screen': (context) => const CodeScreen(),
+// '/login_second_screen': (context) => const LoginSecondScreen(),
+// '/register_screen': (context) => const RegisterScreen(),
+// '/home_screen': (context) => const HomeScreen(),
+// '/create_category_screen': (context) => const CategoryScreen(),
+// '/create_sub_category_screen': (context) => const SubCategoryScreen(),
+// '/create_search_products_screen': (context) =>
+// const SearchProductsScreen(),
+// '/create_pick_photos_screen': (context) => const PickPhotosScreen(),
+// '/create_by_not_by_screen': (context) => const ByNotByScreen(),
+// '/create_description': (context) => const DescriptionScreen(),
+// '/create_search_places_screen': (context) => const SearchPlaceScreen(),
+// '/loading_screen': (context) => const LoadingScreen(),
+// '/create_options_screen': (context) => const OptionsScreen(),
+// '/main_screen': (context) => const MainScreen(),
+// '/announcement_screen': (context) => const AnnouncementScreen(),
+// '/edit_profile_screen': (context) => const EditProfileScreen(),
+// '/settings_screen': (context) => const SettingsScreen(),
+// '/search_screen': (context) => const SearchScreen(),
+// '/creator_screen': (context) => const CreatorProfileScreen(),
+// '/chat_screen': (context) => const ChatScreen(),
+// }

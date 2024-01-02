@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/conatainers/announcementHorizontal.dart';
 
 import '../../../utils/colors.dart';
@@ -68,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             Text(localizations.myProfile, style: AppTypography.font20black),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, '/settings_screen');
+                Navigator.pushNamed(context, AppRoutesNames.settings);
               },
               child: SvgPicture.asset(
                 'Assets/icons/setting.svg',
@@ -107,7 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           child: CustomTextButton.withIcon(
                             callback: () {
                               Navigator.pushNamed(
-                                  context, '/create_category_screen');
+                                  context, AppRoutesNames.announcementCreatingCategory);
                             },
                             text: AppLocalizations.of(context)!.addAnnouncement,
                             styleText: AppTypography.font14white,
@@ -213,7 +214,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             icon: 'Assets/icons/profile_settings.svg',
                             onTap: () {
                               Navigator.pushNamed(
-                                  context, '/edit_profile_screen');
+                                  context, AppRoutesNames.editProfile);
                             },
                           ),
                         ),

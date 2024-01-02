@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/announcement/data/creator_repository.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:smart/utils/routes/route_names.dart';
 
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
@@ -52,7 +53,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
           children: [
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, '/settings_screen');
+                Navigator.pushNamed(context, AppRoutesNames.settings);
               },
               child: SvgPicture.asset(
                 'Assets/icons/menu_dots_vertical.svg',

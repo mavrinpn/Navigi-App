@@ -8,6 +8,7 @@ import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
 import 'package:smart/managers/favourites_manager.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/routes/route_names.dart';
 
 import '../../feature/announcement/bloc/announcement_cubit.dart';
 import '../../utils/colors.dart';
@@ -96,7 +97,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
         onTap: () async {
           BlocProvider.of<AnnouncementCubit>(context)
               .loadAnnouncementById(widget.announcement.id);
-          Navigator.pushNamed(context, '/announcement_screen');
+          Navigator.pushNamed(context, AppRoutesNames.announcement);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

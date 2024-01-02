@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/routes/route_names.dart';
 
 import '../../feature/announcement/bloc/announcement_cubit.dart';
 import '../../utils/colors.dart';
@@ -46,7 +47,7 @@ class _AnnouncementContainerHorizontalState
         onTap: () async {
           BlocProvider.of<AnnouncementCubit>(context)
               .loadAnnouncementById(widget.announcement.id);
-          Navigator.pushNamed(context, '/announcement_screen');
+          Navigator.pushNamed(context, AppRoutesNames.announcement);
         },
         child: Container(
           height: 118,

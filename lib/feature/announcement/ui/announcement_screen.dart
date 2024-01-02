@@ -11,6 +11,7 @@ import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -335,7 +336,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                               .width - 62,
                           callback: () {
                             RepositoryProvider.of<MessengerRepository>(context).selectChat(announcement: state.data);
-                            Navigator.pushNamed(context, '/chat_screen');
+                            Navigator.pushNamed(context, AppRoutesNames.chat);
                           },
                           text: AppLocalizations.of(context)!.write,
                           styleText: AppTypography.font14white,

@@ -7,6 +7,7 @@ import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 import '../../../utils/dialogs.dart';
@@ -42,7 +43,7 @@ class _CodeScreenState extends State<CodeScreen> {
           Dialogs.hide(context);
         }
         if (state is AuthSuccessState) {
-          Navigator.popUntil(context, ModalRoute.withName('/'));
+          Navigator.popUntil(context, ModalRoute.withName(AppRoutesNames.root));
         } else if (state is AuthFailState) {
           CustomSnackBar.showSnackBar(context,
               AppLocalizations.of(context)!.passwordOrEmailEnteredIncorrectly);

@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/feature/search/ui/widgets/filters_bottom_sheet.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/routes/route_names.dart';
 
 import '../../../managers/announcement_manager.dart';
 import '../../../utils/animations.dart';
@@ -81,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
                           .loadPopularQueries();
                       BlocProvider.of<SearchAnnouncementCubit>(context)
                           .searchAnnounces('', true);
-                      Navigator.pushNamed(context, '/search_screen');
+                      Navigator.pushNamed(context, AppRoutesNames.search);
                     },
                     width: isSearch
                         ? MediaQuery.of(context).size.width - 120

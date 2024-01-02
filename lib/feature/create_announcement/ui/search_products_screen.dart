@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import '../../../managers/creating_announcement_manager.dart';
 import '../../../managers/item_manager.dart';
 import '../../../utils/colors.dart';
@@ -124,7 +125,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
         callback: () {
           if (isTouch) {
             creatingAnnouncementManager.setItem(itemManager.hasItemInSearchedItems(), name: productsController.text);
-            Navigator.pushNamed(context, '/create_pick_photos_screen');
+            Navigator.pushNamed(context, AppRoutesNames.announcementCreatingPhoto);
           }
         },
         active: isTouch,

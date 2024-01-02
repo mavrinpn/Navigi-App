@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:smart/models/item/item.dart';
-import 'package:smart/models/sort_types.dart';
-import 'package:smart/widgets/button/icon_button.dart';
-import 'package:smart/widgets/dropDownSingleCheckBox/custom_dropdown_single_checkbox.dart';
-import 'package:smart/widgets/textField/price_widget.dart';
+import 'package:smart/feature/search/ui/sections/history.dart';
+import 'package:smart/feature/search/ui/sections/popular_queries.dart';
+import 'package:smart/feature/search/ui/sections/search_items.dart';
+import 'package:smart/feature/search/ui/widgets/search_appbar.dart';
 
 import '../../../managers/announcement_manager.dart';
 import '../../../managers/search_manager.dart';
 import '../../../utils/animations.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
-import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/conatainers/announcement.dart';
-import '../../../widgets/textField/elevated_text_field.dart';
 import '../../main/bloc/popularQueries/popular_queries_cubit.dart';
 import '../../main/bloc/search/search_announcements_cubit.dart';
 import '../bloc/search_announcement_cubit.dart';
@@ -60,468 +56,175 @@ class _SearchScreenState extends State<SearchScreen> {
     final announcementRepository =
         RepositoryProvider.of<AnnouncementManager>(context);
 
-    SortTypes.toList();
-
     searchController.selection = TextSelection(
         baseOffset: searchController.text.length,
         extentOffset: searchController.text.length);
 
-    Widget getFilterShowModalBottomSheet() {
-      return const FiltersBottomSheet();
+    void setSearch(String query) {
+      BlocProvider.of<SearchAnnouncementCubit>(context)
+          .searchAnnounces(query, true);
+      searchManager.setSearch(false);
+      setSearchText(query);
+      setState(() {});
     }
 
-    List<Widget> buildSearchItems(SearchItemsSuccess state) {
-      return state.result
-          .map((e) => Padding(
-                padding: const EdgeInsets.all(15),
-                child: InkWell(
-                  onTap: () {
-                    BlocProvider.of<SearchAnnouncementCubit>(context)
-                        .searchAnnounces(e.name, true);
-                    searchManager.setSearch(false);
-                    setSearchText(e.name);
-                    setState(() {});
-                  },
-                  child: Text(
-                    e.name,
-                    style: AppTypography.font14black,
-                  ),
-                ),
-              ))
-          .toList();
+    Widget announcementGridBuilder(BuildContext context, int index) {
+      return AnnouncementContainer(
+          announcement: announcementRepository.searchAnnouncements[index]);
     }
 
-    Widget buildHistory() => FutureBuilder(
-        future: searchManager.getHistory(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              children: snapshot.data!
-                  .map((e) => Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 9),
-                        child: InkWell(
-                          onTap: () {
-                            BlocProvider.of<SearchAnnouncementCubit>(context)
-                                .searchAnnounces(e.toString(), true);
-                            searchManager.setSearch(false);
+    SliverChildBuilderDelegate sliverChildBuilderDelegate =
+        SliverChildBuilderDelegate(announcementGridBuilder,
+            childCount: announcementRepository.searchAnnouncements.length);
 
-                            setSearchText(e.toString());
-                            setState(() {});
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: AppColors.backgroundIcon,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                width: 30,
-                                height: 30,
-                                child: Center(
-                                  child: SvgPicture.asset(
-                                    'Assets/icons/time.svg',
-                                    width: 20,
-                                    height: 20,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(e.toString()),
-                                    InkWell(
-                                      onTap: () {
-                                        searchManager.deleteQueryByName(e);
-                                        setState(() {});
-                                      },
-                                      child: SvgPicture.asset(
-                                        'Assets/icons/dagger.svg',
-                                        width: 25,
-                                        height: 25,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ))
-                  .toList(),
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        });
+    SliverGridDelegateWithMaxCrossAxisExtent gridDelegate =
+        SliverGridDelegateWithMaxCrossAxisExtent(
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 15,
+            maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+            childAspectRatio: 160 / 272);
 
-    Widget buildPopularQueries(PopularQueriesSuccess state) {
-      return ListView(
-        scrollDirection: Axis.horizontal,
-        children: searchManager.popularQueries.reversed
-            .toList()
-            .map((e) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: InkWell(
-                    onTap: () {
-                      BlocProvider.of<SearchAnnouncementCubit>(context)
-                          .searchAnnounces(e, true);
-                      searchManager.setSearch(false);
-                      setSearchText(e);
-                      searchManager.saveInHistory(e);
-                      setState(() {});
-                    },
-                    child: Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: AppColors.backgroundLightGray,
-                        ),
-                        child: Text(e)),
-                  ),
-                ))
-            .toList(),
+    AppBar searchAppBar = AppBar(
+          backgroundColor: AppColors.mainBackground,
+          automaticallyImplyLeading: false,
+          elevation: 0,
+          flexibleSpace: SearchAppBar(
+            onSubmitted: (String? a) {
+              searchManager.setSearch(false);
+              searchManager.saveInHistory(a!);
+              setState(() {});
+              BlocProvider.of<SearchAnnouncementCubit>(context)
+                  .searchAnnounces(a, true);
+            },
+            onChange: (String? a) {
+              searchManager.setSearch(true);
+              setState(() {});
+              BlocProvider.of<SearchItemsCubit>(context).search(a ?? '');
+              BlocProvider.of<PopularQueriesCubit>(context)
+                  .loadPopularQueries();
+            },
+            searchController: searchController,
+          ),
+        );
+
+    Widget searchScreenBuilder(context, state) {
+      if (state is SearchItemsSuccess &&
+          searchController.text.isNotEmpty &&
+          state.result.isNotEmpty) {
+        return SearchItemsWidget(state: state, setSearch: setSearch);
+      } else if (state is SearchItemsLoading) {
+        return Center(child: AppAnimations.bouncingLine);
+      }
+      return Column(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            child: Text(
+              'Recherches populaires',
+              style: AppTypography.font14black
+                  .copyWith(fontWeight: FontWeight.w600),
+            ),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          PopularQueriesWidget(onSearch: (e) {
+            setSearch(e);
+            searchManager.saveInHistory(e);
+          }),
+          const SizedBox(
+            height: 32,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Historique des recherches',
+                style: AppTypography.font14black
+                    .copyWith(fontWeight: FontWeight.w600),
+              ),
+              Text(
+                'Nettoyer',
+                style: AppTypography.font12lightGray
+                    .copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 7,
+          ),
+          HistoryWidget(onDelete: (e) {
+            searchManager.deleteQueryByName(e);
+            setState(() {});
+          }, onSearch: (e) {
+            setSearch(e.toString());
+          })
+        ],
       );
     }
 
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          color: AppColors.mainBackground,
-        ),
-        child: SafeArea(
-          child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: AppColors.mainBackground,
-              automaticallyImplyLeading: false,
-              elevation: 0,
-              flexibleSpace: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            setState(() {});
-                            Navigator.pop(context);
-                          },
-                          child: const Icon(
-                            Icons.arrow_back_ios,
-                            color: AppColors.black,
-                          ),
-                        ),
-                        ElevatedTextField(
-                          action: TextInputAction.search,
-                          onSubmitted: (String? a) {
-                            searchManager.setSearch(false);
-                            searchManager.saveInHistory(a!);
-                            setState(() {});
-                            BlocProvider.of<SearchAnnouncementCubit>(context)
-                                .searchAnnounces(a, true);
-                          },
-                          onChange: (String a) {
-                            searchManager.setSearch(true);
-                            setState(() {});
-                            BlocProvider.of<SearchItemsCubit>(context)
-                                .search(a);
-                            BlocProvider.of<PopularQueriesCubit>(context)
-                                .loadPopularQueries();
-                          },
-                          width: MediaQuery.of(context).size.width - 115,
-                          height: 44,
-                          hintText: 'Recherche a Alger',
-                          controller: searchController,
-                          icon: "Assets/icons/only_search.svg",
-                          onTap: () {},
-                        ),
-                      ],
-                    ),
-                    // searchManager.isSearch
-                    //     ? TextButton(
-                    //         onPressed: () {
-                    //           FocusScope.of(context).requestFocus(FocusNode());
-                    //           searchManager.setSearch(false);
-                    //           setState(() {});
-                    //         },
-                    //         child: const Text('Annulation'),
-                    //       )
-                    //     : Container(),
-                    CustomIconButtonSearch(
-                        assetName: 'Assets/icons/sliders.svg',
-                        callback: () {
-                          showModalBottomSheet(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20),
-                              ),
-                            ),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return getFilterShowModalBottomSheet();
-                            },
-                          );
-                        },
-                        height: 44,
-                        width: 44)
-                  ],
-                ),
-              ),
+    Widget announcementsBuilder(context, state) {
+      return CustomScrollView(
+        controller: _controller,
+        physics: const BouncingScrollPhysics(
+            decelerationRate: ScrollDecelerationRate.fast),
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
+            sliver: SliverGrid(
+              gridDelegate: gridDelegate,
+              delegate: sliverChildBuilderDelegate,
             ),
-            body: Stack(children: [
-              BlocBuilder<SearchAnnouncementCubit, SearchAnnouncementState>(
-                builder: (context, state) {
-                  return BlocBuilder<SearchAnnouncementCubit,
-                      SearchAnnouncementState>(
-                    builder: (context, state) {
-                      return CustomScrollView(
-                        controller: _controller,
-                        physics: const BouncingScrollPhysics(
-                            decelerationRate: ScrollDecelerationRate.fast),
-                        slivers: [
-                          SliverPadding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 22, vertical: 20),
-                            sliver: SliverGrid(
-                              gridDelegate:
-                                  SliverGridDelegateWithMaxCrossAxisExtent(
-                                      crossAxisSpacing: 10,
-                                      mainAxisSpacing: 15,
-                                      maxCrossAxisExtent:
-                                          MediaQuery.of(context).size.width / 2,
-                                      childAspectRatio: 160 / 272),
-                              delegate: SliverChildBuilderDelegate(
-                                  (context, ind) => AnnouncementContainer(
-                                      announcement: announcementRepository
-                                          .searchAnnouncements[ind]),
-                                  childCount: announcementRepository
-                                      .searchAnnouncements.length),
-                            ),
-                          ),
-                          if (state is SearchAnnouncementsLoadingState) ...[
-                            SliverToBoxAdapter(
-                              child: Center(child: AppAnimations.bouncingLine),
-                            )
-                          ] else if (state is SearchAnnouncementsFailState ||
-                              announcementRepository
-                                  .searchAnnouncements.isEmpty) ...[
-                            SliverToBoxAdapter(
-                                child: Center(
-                              child: Text(AppLocalizations.of(context)!.empty),
-                            ))
-                          ],
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
-              SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      width: width,
-                      curve: Curves.fastOutSlowIn,
-                      height: searchManager.isSearch ? height : 0,
-                      color: Colors.white,
-                      padding: const EdgeInsets.all(15),
-                      child: SingleChildScrollView(
-                        child: BlocBuilder<SearchItemsCubit, SearchItemsState>(
-                          builder: (context, state) {
-                            if (state is SearchItemsSuccess &&
-                                searchController.text.isNotEmpty &&
-                                state.result.isNotEmpty) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: buildSearchItems(state),
-                              );
-                            } else if (state is SearchItemsLoading) {
-                              return Center(child: AppAnimations.bouncingLine);
-                            }
-                            return Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Recherches populaires',
-                                      style: AppTypography.font14black.copyWith(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                SizedBox(
-                                    height: 30,
-                                    child: BlocBuilder<PopularQueriesCubit,
-                                        PopularQueriesState>(
-                                      builder: (context, state) {
-                                        if (state is PopularQueriesSuccess &&
-                                            searchManager
-                                                .popularQueries.isNotEmpty) {
-                                          return buildPopularQueries(state);
-                                        } else if (state
-                                            is PopularQueriesLoading) {
-                                          return Center(
-                                              child:
-                                                  AppAnimations.bouncingLine);
-                                        }
-                                        return const Text('проблемс');
-                                      },
-                                    )),
-                                const SizedBox(
-                                  height: 32,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Historique des recherches',
-                                      style: AppTypography.font14black.copyWith(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      'Nettoyer',
-                                      style: AppTypography.font12lightGray
-                                          .copyWith(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 7,
-                                ),
-                                buildHistory()
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ]),
           ),
-        ),
-      ),
-    );
-  }
-}
+          if (state is SearchAnnouncementsLoadingState) ...[
+            SliverToBoxAdapter(
+              child: Center(child: AppAnimations.bouncingLine),
+            )
+          ] else if (state is SearchAnnouncementsFailState ||
+              announcementRepository.searchAnnouncements.isEmpty) ...[
+            SliverToBoxAdapter(
+                child: Center(
+              child: Text(AppLocalizations.of(context)!.empty),
+            ))
+          ],
+        ],
+      );
+    }
 
-class FiltersBottomSheet extends StatefulWidget {
-  const FiltersBottomSheet({super.key, this.needOpenNewScreen = false});
-
-  final bool needOpenNewScreen;
-
-  @override
-  State<FiltersBottomSheet> createState() => _FiltersBottomSheetState();
-}
-
-class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
-  @override
-  Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<SearchAnnouncementCubit>(context);
-
-    final TextEditingController minPriceController =
-        TextEditingController(text: bloc.minPrice.toString());
-    final TextEditingController maxPriceController =
-        TextEditingController(text: bloc.maxPrice.toString());
-
-    return Container(
-      height: MediaQuery.sizeOf(context).height * 0.8,
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          children: <Widget>[
-            const SizedBox(
-              height: 16,
-            ),
-            Center(
-              child: Container(
-                width: 120,
-                height: 4,
-                decoration: ShapeDecoration(
-                    color: const Color(0xFFDDE1E7),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(1))),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Filtres',
-                    style: AppTypography.font20black,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      bloc.clearFilters();
-                      setState(() {});
-                    },
-                    child: Text(
-                      'Réinitialiser tout',
-                      style: AppTypography.font12black,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.mainBackground,
+        appBar: searchAppBar,
+        body: Stack(children: [
+          BlocBuilder<SearchAnnouncementCubit, SearchAnnouncementState>(
+            builder: (context, state) {
+              return BlocBuilder<SearchAnnouncementCubit,
+                  SearchAnnouncementState>(
+                builder: announcementsBuilder,
+              );
+            },
+          ),
+          SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  width: width,
+                  curve: Curves.fastOutSlowIn,
+                  height: searchManager.isSearch ? height : 0,
+                  color: Colors.white,
+                  padding: const EdgeInsets.all(15),
+                  child: SingleChildScrollView(
+                    child: BlocBuilder<SearchItemsCubit, SearchItemsState>(
+                      builder: searchScreenBuilder,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 12,
-            ),
-            PriceWidget(
-              minPriseController: minPriceController,
-              maxPriseController: maxPriceController,
-            ),
-            CustomDropDownSingleCheckBox(
-                parameters: Parameter(
-                    variants: SortTypes.toFrList(),
-                    key: 'Triage',
-                    current: SortTypes.frTranslates[bloc.sortBy]!),
-                onChange: (a) {
-                  bloc.sortType = SortTypes.codeFromFr(a ?? '');
-                  setState(() {});
-                },
-                currentVariable: SortTypes.frTranslates[bloc.sortBy]!),
-            CustomTextButton.orangeContinue(
-                callback: () {
-                  RepositoryProvider.of<SearchManager>(context)
-                      .setSearch(false);
-                  bloc.minPrice = double.parse(minPriceController.text);
-                  bloc.maxPrice = double.parse(maxPriceController.text);
-                  bloc.setFilters();
-                  Navigator.pop(context);
-                  if (widget.needOpenNewScreen) {
-                    Navigator.pushNamed(context, '/search_screen');
-                  }
-
-                  setState(() {});
-                },
-                text: 'Appliquer',
-                active: true)
-          ],
-        ),
+          ),
+        ]),
       ),
     );
   }

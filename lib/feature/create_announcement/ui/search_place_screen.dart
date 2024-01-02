@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
+import 'package:smart/utils/routes/route_names.dart';
 
 import '../../../managers/creating_announcement_manager.dart';
 import '../../../managers/places_manager.dart';
@@ -132,7 +133,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
             creatingAnnouncementManager.setPlaceById(
                 placeManager.searchPlaceIdByName(placeController.text)!);
             creatingAnnouncementManager.setTitle(creatingAnnouncementManager.buildTitle);
-            Navigator.pushNamed(context, '/create_description');
+            Navigator.pushNamed(context, AppRoutesNames.announcementCreatingDescription);
           }
         },
         active: isTouch,
