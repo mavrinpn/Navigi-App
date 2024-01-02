@@ -9,7 +9,7 @@ class ItemManager {
 
   List<SubCategoryItem> items = [];
   List<SubCategoryItem> searchedItems = [];
-  String searchController = '';
+  String searchControllerText = '';
 
   Future initialLoadItems(String query, subcategoryId) async =>
       items = await databaseService.categories.getItemsFromSubcategory(subcategoryId);
@@ -29,12 +29,12 @@ class ItemManager {
   }
 
   void setSearchController(String value) {
-    searchController = value;
+    searchControllerText = value;
   }
 
   SubCategoryItem? hasItemInSearchedItems() {
     for (var item in searchedItems) {
-      if (searchController == item.name) {
+      if (searchControllerText == item.name) {
         return item;
       }
     }

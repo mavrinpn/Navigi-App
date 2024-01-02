@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/announcement/data/creator_repository.dart';
+import 'package:smart/feature/announcement/ui/widgets/tabs.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
@@ -34,6 +35,29 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
 
   @override
   Widget build(BuildContext context) {
+    Widget buildAnnouncementsGrid(CreatorSuccessState state) {
+      return SliverGrid(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) => Container(
+              color: AppColors.mainBackground,
+              child: Center(
+                child: AnnouncementContainer(
+                    announcement: _tabController.index == 0
+                        ? state.available[index]
+                        : state.sold[index]),
+              ),
+            ),
+            childCount: (_tabController.index == 0
+                ? state.available.length
+                : state.sold.length),
+          ),
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              crossAxisSpacing: 18,
+              mainAxisSpacing: 16,
+              maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+              childAspectRatio: 160 / 272));
+    }
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
@@ -119,73 +143,19 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                     height: 25,
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: Container(
-                      width: 190,
-                      color: Colors.white,
-                      alignment: Alignment.center,
-                      child: TabBar(
-                        labelColor: Colors.black,
-                        indicatorColor: Colors.black,
-                        indicatorWeight: 2,
-                        unselectedLabelColor: AppColors.lightGray,
-                        indicator: const UnderlineTabIndicator(
-                            borderSide:
-                                BorderSide(color: AppColors.red, width: 2),
-                            insets: EdgeInsets.symmetric(horizontal: 20)),
-                        onTap: (int val) {
-                          setState(() {});
-                        },
-                        controller: _tabController,
-                        tabs: [
-                          Tab(
-                            child: Text(
-                                'Actif (${state is CreatorSuccessState ? state.available.length : 0})',
-                                style: AppTypography.font24black.copyWith(
-                                    fontSize: 14,
-                                    color: _tabController.index == 0
-                                        ? Colors.black
-                                        : Colors.grey)),
-                          ),
-                          Tab(
-                            child: Text(
-                                'Vendu (${state is CreatorSuccessState ? state.sold.length : 0})',
-                                style: AppTypography.font24black.copyWith(
-                                    fontSize: 14,
-                                    color: _tabController.index == 1
-                                        ? Colors.black
-                                        : Colors.grey)),
-                          ),
-                        ],
-                      )),
-                ),
+                AnnouncementTypeTabs(
+                    tabController: _tabController,
+                    onTap: (int val) {
+                      setState(() {});
+                    },
+                    state: state),
                 const SliverToBoxAdapter(
                   child: SizedBox(
                     height: 15,
                   ),
                 ),
                 if (state is CreatorSuccessState) ...[
-                  SliverGrid(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) => Container(
-                          color: AppColors.mainBackground,
-                          child: Center(
-                            child: AnnouncementContainer(
-                                announcement: _tabController.index == 0
-                                    ? state.available[index]
-                                    : state.sold[index]),
-                          ),
-                        ),
-                        childCount: (_tabController.index == 0
-                            ? state.available.length
-                            : state.sold.length),
-                      ),
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          crossAxisSpacing: 18,
-                          mainAxisSpacing: 16,
-                          maxCrossAxisExtent:
-                              MediaQuery.of(context).size.width / 2,
-                          childAspectRatio: 160 / 272)),
+                  buildAnnouncementsGrid(state)
                 ] else ...[
                   SliverToBoxAdapter(
                     child: SizedBox(
@@ -198,75 +168,6 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
               ],
             );
           },
-        ),
-      ),
-    );
-  }
-}
-
-class RowButton extends StatelessWidget {
-  const RowButton(
-      {super.key,
-      required this.title,
-      required this.icon,
-      required this.onTap});
-
-  final String icon;
-  final String title;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: InkWell(
-        focusColor: AppColors.empty,
-        hoverColor: AppColors.empty,
-        highlightColor: AppColors.empty,
-        splashColor: AppColors.empty,
-        onTap: onTap,
-        child: SizedBox(
-          width: double.infinity,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Container(
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: AppColors.backgroundIcon),
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: SvgPicture.asset(
-                    icon,
-                    width: 20,
-                    height: 20,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 12,
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      title,
-                      style: AppTypography.font14black
-                          .copyWith(fontWeight: FontWeight.w400),
-                    ),
-                    const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
         ),
       ),
     );

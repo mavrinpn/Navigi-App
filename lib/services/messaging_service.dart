@@ -17,7 +17,6 @@ class MessagingService {
     await _firebaseMessaging.requestPermission();
     final fCMToken = await _firebaseMessaging.getToken();
 
-    print('fcm token: $fCMToken');
     await saveTokenToDatabase(fCMToken);
 
     FirebaseMessaging.onMessage.listen(_onForegroundMessage);

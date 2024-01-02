@@ -24,6 +24,25 @@ class _FavoritesScreen extends State<FavoritesScreen> {
 
     final controller = ScrollController();
 
+    Widget buildAnnouncementsGrid() {
+      return SliverGrid(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) => Container(
+              color: AppColors.mainBackground,
+              child: Center(
+                child: AnnouncementContainer(
+                    announcement: favouritesManager.announcements[index]),
+              ),
+            ),
+            childCount: favouritesManager.announcements.length,
+          ),
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              crossAxisSpacing: 18,
+              mainAxisSpacing: 16,
+              maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+              childAspectRatio: 160 / 272));
+    }
+
     return RefreshIndicator(
       onRefresh: () async {
         favouritesManager.getFavourites();
@@ -54,28 +73,7 @@ class _FavoritesScreen extends State<FavoritesScreen> {
                       ? CustomScrollView(
                           controller: controller,
                           physics: const BouncingScrollPhysics(),
-                          slivers: [
-                            SliverGrid(
-                                delegate: SliverChildBuilderDelegate(
-                                  (context, index) => Container(
-                                    color: AppColors.mainBackground,
-                                    child: Center(
-                                      child: AnnouncementContainer(
-                                          announcement: favouritesManager
-                                              .announcements[index]),
-                                    ),
-                                  ),
-                                  childCount:
-                                      favouritesManager.announcements.length,
-                                ),
-                                gridDelegate:
-                                    SliverGridDelegateWithMaxCrossAxisExtent(
-                                        crossAxisSpacing: 18,
-                                        mainAxisSpacing: 16,
-                                        maxCrossAxisExtent:
-                                            MediaQuery.of(context).size.width / 2,
-                                        childAspectRatio: 160 / 272)),
-                          ],
+                          slivers: [buildAnnouncementsGrid()],
                         )
                       : Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),

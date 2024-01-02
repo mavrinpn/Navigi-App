@@ -9,7 +9,7 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthRepository authRepository;
-  String phone = '';
+  String _phone = '';
 
   AuthCubit({required this.authRepository}) : super(AuthInitial()) {
     authRepository.authState.stream.listen((event) {
@@ -20,10 +20,12 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  setPhone(String newPhone) => phone = newPhone;
+  setPhone(String newPhone) => _phone = newPhone;
 
-  String getPhone() => phone;
+  String getPhone() => _phone;
 
+
+  //TODO удалить в будущем
   registerWithEmail(
           {required String email,
           required String name,
@@ -32,15 +34,15 @@ class AuthCubit extends Cubit<AuthState> {
     //     email: email, password: password);
   }
 
-
+  //TODO удалить в будущем
   loginWithEmail({required String email, required String password}) {
     // authRepository.loginWithEmail(email: email, password: password);
   }
 
 
   void sendSms() async {
-    if (phone.isEmpty) throw Exception('phone must not be empty');
-    await authRepository.createAccountAndSendSms(phone);
+    if (_phone.isEmpty) throw Exception('phone must not be empty');
+    await authRepository.createAccountAndSendSms(_phone);
   }
 
   void confirmCode(String code) async {

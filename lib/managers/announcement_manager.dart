@@ -8,7 +8,6 @@ import '../services/database/database_service.dart';
 
 class AnnouncementManager {
   final DatabaseService dbService;
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   AnnouncementManager({required Client client})
       : dbService = DatabaseService(client: client);

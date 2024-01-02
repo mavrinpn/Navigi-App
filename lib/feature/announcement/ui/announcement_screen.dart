@@ -22,7 +22,7 @@ import '../../../widgets/accuont/account_small_info.dart';
 import '../../../widgets/button/custom_icon_button.dart';
 import '../../../widgets/images/network_image.dart';
 import '../../favorites/bloc/favourites_cubit.dart';
-import '../bloc/announcement_cubit.dart';
+import '../bloc/announcement/announcement_cubit.dart';
 import 'map.dart';
 
 int activePage = 0;

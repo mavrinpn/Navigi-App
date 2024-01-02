@@ -10,7 +10,7 @@ class ElevatedTextField extends StatelessWidget {
   final double width;
   final double height;
   final String hintText;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final TextInputType keyBoardType;
   final bool obscureText;
   final int maxLines;
@@ -25,7 +25,7 @@ class ElevatedTextField extends StatelessWidget {
   const ElevatedTextField(
       {Key? key,
       required this.hintText,
-      required this.controller,
+      this.controller,
       required this.onTap,
       this.width = 290,
       this.height = 50,

@@ -39,11 +39,11 @@ class CreatingAnnouncementManager {
 
     images.addAll(resImages);
 
-    compressingImages = compressImages(resImages);
+    compressingImages = _compressImages(resImages);
     return resImages;
   }
 
-  Future<void> compressImages(List<XFile> images) async {
+  Future<void> _compressImages(List<XFile> images) async {
     for (var image in images) {
       final bytes = await image.readAsBytes();
       final res = await _compressImage(bytes);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/bloc/app/app_cubit.dart';
-import 'package:smart/feature/announcement/bloc/announcement_cubit.dart';
+import 'package:smart/feature/announcement/bloc/announcement/announcement_cubit.dart';
 import 'package:smart/feature/announcement/data/creator_repository.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/create_announcement/bloc/category/category_cubit.dart';

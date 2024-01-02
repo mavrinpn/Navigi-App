@@ -31,7 +31,7 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
 
   void searchItems(String query) {
     emit(SearchLoadingState());
-    itemManager.searchController = query;
+    itemManager.searchControllerText = query;
 
     if (query.isEmpty) {
       itemManager.clearSearchItems();
@@ -43,5 +43,5 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
     emit(SearchSuccessState());
   }
 
-  String getSearchText() => itemManager.searchController;
+  String getSearchText() => itemManager.searchControllerText;
 }

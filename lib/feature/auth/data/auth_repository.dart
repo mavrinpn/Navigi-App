@@ -63,29 +63,6 @@ class AuthRepository {
     _messagingService.handleTokenRefreshing();
   }
 
-  // Future<void> _auth(Future<Session> method, {Future? requiredMethod}) async {
-  //   authState.add(EntranceStateEnum.loading);
-  //   try {
-  //     final promise = await method;
-  //     sessionID = promise.$id;
-  //
-  //     final prefs = await SharedPreferences.getInstance();
-  //     prefs.setString(sessionIdKey, sessionID!);
-  //
-  //     _user = await _account.get();
-  //     if (requiredMethod != null) {
-  //       await requiredMethod;
-  //     }
-  //     authState.add(EntranceStateEnum.success);
-  //     getUserData();
-  //     _initMessaging();
-  //     appState.add(AuthStateEnum.auth);
-  //   } catch (e) {
-  //     authState.add(EntranceStateEnum.fail);
-  //     rethrow;
-  //   }
-  // }
-
   void logout() async {
     await _account.deleteSession(sessionId: sessionID!);
     final prefs = await SharedPreferences.getInstance();
@@ -95,50 +72,7 @@ class AuthRepository {
     appState.add(AuthStateEnum.unAuth);
   }
 
-  // void registerWithEmail(
-  //     {required String email, required String password}) async {
-  //   final User res;
-  //
-  //   try {
-  //     res = await _account.create(
-  //         userId: ID.unique(), email: email, password: password, name: 'Guest');
-  //   } catch (e) {
-  //     authState.add(EntranceStateEnum.alreadyExist);
-  //     return;
-  //   }
-  //
-  //   await _auth(_account.createEmailSession(email: email, password: password),
-  //       requiredMethod: _databaseService.users
-  //           .createUser(name: res.name, uid: res.$id, phone: email));
-  // }
-  //
-  // void loginWithEmail({required String email, required String password}) =>
-  //     _auth(_account.createEmailSession(email: email, password: password));
-
   String _tempMail = '';
-
-  Future<String?> _getEmail(String phone) async {
-    final String? email;
-    if (!_tempMail.startsWith('89$phone')) {
-      email = convertPhoneToEmail(phone);
-      _tempMail = email;
-    } else {
-      email = null;
-    }
-    return email;
-  }
-
-  Future _createTempAccount(String phone) async {
-    const String password = 'temppassword123';
-    final String? email = await _getEmail(phone);
-    if (email != null) {
-      await _account.create(
-          userId: ID.unique(), email: email, password: password, name: 'Guest');
-      print('create account $email $password');
-    }
-    await _account.createEmailSession(
-        email: email ?? _tempMail, password: password);
-  }
 
   Future<void> createAccountAndSendSms(String phone) async {
     await _createTempAccount(phone);
@@ -157,32 +91,6 @@ class AuthRepository {
       authState.add(EntranceStateEnum.fail);
       rethrow;
     }
-  }
-
-  Future<void> _authorizeWithCredentials(UserCredentials credentials) async {
-    final promise = await _account.createEmailSession(
-        email: credentials.mail, password: credentials.password);
-
-    sessionID = promise.$id;
-    _user = await _account.get();
-
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString(sessionIdKey, sessionID!);
-
-    final result = await getUserData();
-    if (!result) {
-      await _createUserData(credentials.mail);
-      getUserData();
-    }
-
-    _initMessaging();
-  }
-
-  Future _createUserData(String email) async {
-    final phone = email.split('@')[0];
-
-    await _databaseService.users
-        .createUser(name: 'Guest', uid: userId, phone: phone);
   }
 
   void checkLogin() async {
@@ -233,5 +141,59 @@ class AuthRepository {
       profileState.add(LoadingStateEnum.fail);
       rethrow;
     }
+  }
+
+  Future<String?> _getEmailByPhone(String phone) async {
+    final String? email;
+    if (!_tempMail.startsWith('89$phone')) {
+      email = convertPhoneToEmail(phone);
+      _tempMail = email;
+    } else {
+      email = null;
+    }
+    return email;
+  }
+
+  Future _createTempAccount(String phone) async {
+    const String password = 'temppassword123';
+    final String? email = await _getEmailByPhone(phone);
+    if (email != null) {
+      await _account.create(
+          userId: ID.unique(), email: email, password: password, name: 'Guest');
+      print('create account $email $password');
+    }
+    await _account.createEmailSession(
+        email: email ?? _tempMail, password: password);
+  }
+
+  Future<void> _authorizeWithCredentials(UserCredentials credentials) async {
+    final promise = await _account.createEmailSession(
+        email: credentials.mail, password: credentials.password);
+    _user = await _account.get();
+
+    await _saveSessionId(promise.$id);
+    await _preloadUserDataAndCreateIfNeed(credentials.mail);
+    _initMessaging();
+  }
+
+  Future _saveSessionId(String newSessionId) async {
+    sessionID = newSessionId;
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(sessionIdKey, sessionID!);
+  }
+
+  Future _preloadUserDataAndCreateIfNeed(String email) async {
+    final result = await getUserData();
+    if (!result) {
+      await _createUserData(email);
+      getUserData();
+    }
+  }
+
+  Future _createUserData(String email) async {
+    final phone = email.split('@')[0];
+
+    await _databaseService.users
+        .createUser(name: 'Guest', uid: userId, phone: phone);
   }
 }

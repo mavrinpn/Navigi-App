@@ -9,10 +9,10 @@ class CreatorRepository {
 
   String? currentCreatorId;
   UserData? userData;
-  List<Announcement>? availableAnnouncements;
-  List<Announcement>? soldAnnouncements;
+  List<Announcement> availableAnnouncements = [];
+  List<Announcement> soldAnnouncements = [];
 
-  Future setUserData(UserData user) async {
+  setUserData(UserData user) {
     userData = user;
   }
 
@@ -25,15 +25,15 @@ class CreatorRepository {
     final announcements = await databaseService.announcements.getUserAnnouncements(
         userId: currentCreatorId!);
 
-    availableAnnouncements = [];
-    soldAnnouncements = [];
+    availableAnnouncements.clear();
+    soldAnnouncements.clear();
 
-    for (Announcement x in announcements){
-      if (x.active){
-        availableAnnouncements!.add(x);
+    for (Announcement announcement in announcements){
+      if (announcement.active){
+        availableAnnouncements.add(announcement);
       }
       else{
-        soldAnnouncements!.add(x);
+        soldAnnouncements.add(announcement);
       }
     }
   }

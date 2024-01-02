@@ -5,7 +5,7 @@ import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
-import '../../feature/announcement/bloc/announcement_cubit.dart';
+import '../../feature/announcement/bloc/announcement/announcement_cubit.dart';
 import '../../utils/colors.dart';
 
 class AnnouncementContainerHorizontal extends StatefulWidget {
