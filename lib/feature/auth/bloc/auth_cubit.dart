@@ -26,18 +26,18 @@ class AuthCubit extends Cubit<AuthState> {
 
 
   //TODO удалить в будущем
-  registerWithEmail(
-          {required String email,
-          required String name,
-          required String password}) {
-    // authRepository.registerWithEmail(
-    //     email: email, password: password);
-  }
+  // registerWithEmail(
+  //         {required String email,
+  //         required String name,
+  //         required String password}) {
+  //   // authRepository.registerWithEmail(
+  //   //     email: email, password: password);
+  // }
 
   //TODO удалить в будущем
-  loginWithEmail({required String email, required String password}) {
-    // authRepository.loginWithEmail(email: email, password: password);
-  }
+  // loginWithEmail({required String email, required String password}) {
+  //   // authRepository.loginWithEmail(email: email, password: password);
+  // }
 
 
   void sendSms() async {
