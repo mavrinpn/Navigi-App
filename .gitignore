@@ -28,6 +28,7 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .packages
 .pub-cache/
+.dart_tool/
 .pub/
 /build/
 
