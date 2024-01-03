@@ -5,8 +5,6 @@ import 'package:smart/widgets/checkBox/custom_check_box.dart';
 import '../../models/item/item.dart';
 import '../../utils/colors.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 class CustomDropDownSingleCheckBox extends StatefulWidget {
   const CustomDropDownSingleCheckBox(
       {super.key,
@@ -72,7 +70,8 @@ class _CustomDropDownSingleCheckBoxState
                       .map((e) => Row(
                             children: [
                               CustomCheckBox(
-                                  isActive: e.toString() == widget.currentVariable,
+                                  isActive:
+                                      e.toString() == widget.currentVariable,
                                   onChanged: () {
                                     widget.onChange(e.toString());
                                   }),

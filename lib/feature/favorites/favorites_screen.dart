@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/managers/favourites_manager.dart';
 import 'package:smart/widgets/conatainers/announcement.dart';
 

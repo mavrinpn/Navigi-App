@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
 import '../bloc/creating/creating_announcement_cubit.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smart/feature/main/ui/widgets/categories_scroll_view.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/fonts.dart';
 
 class CategoriesSection extends StatelessWidget {

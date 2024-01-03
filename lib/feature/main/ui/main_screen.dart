@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smart/feature/main/ui/sections/catrgories_section.dart';
 import 'package:smart/feature/main/ui/widgets/appbar_with_search_field.dart';
 import 'package:smart/feature/search/ui/widgets/filters_bottom_sheet.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';

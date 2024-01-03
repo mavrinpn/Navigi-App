@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/category/category.dart';
 
 import '../bloc/category/category_cubit.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});

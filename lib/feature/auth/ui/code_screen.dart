@@ -1,9 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:pinput/pinput.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
@@ -12,10 +12,6 @@ import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 import '../../../utils/dialogs.dart';
 import '../../../widgets/button/custom_text_button.dart';
-import '../../../widgets/textField/custom_text_field.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../data/auth_repository.dart';
 
 class CodeScreen extends StatefulWidget {
   const CodeScreen({Key? key}) : super(key: key);

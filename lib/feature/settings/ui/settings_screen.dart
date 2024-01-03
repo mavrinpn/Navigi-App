@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
 
 import '../../../models/custom_locate.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/singleCheckBox/CustomSinglCheckBox.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class SettingsScreen extends StatefulWidget {
@@ -30,8 +29,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final localizations = AppLocalizations.of(context)!;
 
     customLocate = CustomLocate(
-        shortName: AppLocalizations.of(context)!.localeName,
-        name: AppLocalizations.of(context)!.localeName == 'ar'
+        shortName: localizations.localeName,
+        name: localizations.localeName == 'ar'
             ? CustomLocate.ar().name
             : CustomLocate.fr().name);
     return Scaffold(

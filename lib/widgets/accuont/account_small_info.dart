@@ -9,10 +9,8 @@ import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/images/network_image.dart';
 
+import '../../localization/app_localizations.dart';
 import '../../models/announcement.dart';
-
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AccountSmallInfo extends StatefulWidget {
   const AccountSmallInfo({super.key, required this.creatorData, required this.clickable});

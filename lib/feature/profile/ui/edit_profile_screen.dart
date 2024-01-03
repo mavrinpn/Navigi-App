@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/dialogs.dart';
@@ -16,8 +17,6 @@ import '../../../widgets/images/network_image.dart';
 import '../../../widgets/snackBar/snack_bar.dart';
 import '../../../widgets/textField/custom_text_field.dart';
 import '../../auth/data/auth_repository.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});

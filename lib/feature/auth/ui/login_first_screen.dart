@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
 import '../../../widgets/button/custom_text_button.dart';

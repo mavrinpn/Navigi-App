@@ -5,9 +5,7 @@ import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/images/network_image.dart';
 
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import '../../localization/app_localizations.dart';
 import '../../models/user.dart';
 
 class AccountMediumInfo extends StatefulWidget {
@@ -22,7 +20,6 @@ class AccountMediumInfo extends StatefulWidget {
 class _AccountMediumInfoState extends State<AccountMediumInfo> {
   @override
   Widget build(BuildContext context) {
-
     final localizations = AppLocalizations.of(context)!;
 
     return Container(
@@ -99,10 +96,13 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const SizedBox(height: 3,),
+                                const SizedBox(
+                                  height: 3,
+                                ),
                                 Text(
                                   '${widget.user.score}',
-                                  style: AppTypography.font14black.copyWith(fontSize: 12),
+                                  style: AppTypography.font14black
+                                      .copyWith(fontSize: 12),
                                 ),
                               ],
                             ),

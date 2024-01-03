@@ -8,12 +8,12 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../managers/announcement_manager.dart';
 import '../../../managers/favourites_manager.dart';

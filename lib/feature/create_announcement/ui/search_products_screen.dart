@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/routes/route_names.dart';
+
 import '../../../managers/creating_announcement_manager.dart';
 import '../../../managers/item_manager.dart';
 import '../../../utils/colors.dart';
@@ -10,9 +12,6 @@ import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/category/products.dart';
 import '../../../widgets/textField/outline_text_field.dart';
 import '../bloc/item_search/item_search_cubit.dart';
-
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchProductsScreen extends StatefulWidget {
   const SearchProductsScreen({super.key});
@@ -30,8 +29,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
 
     final creatingAnnouncementManager =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
-    final itemManager =
-        RepositoryProvider.of<ItemManager>(context);
+    final itemManager = RepositoryProvider.of<ItemManager>(context);
 
     final cubit = BlocProvider.of<ItemSearchCubit>(context);
 
@@ -87,7 +85,8 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                 if (state is SearchSuccessState ||
                     state is SearchLoadingState) {
                   return Wrap(
-                    children: cubit.getItems()
+                    children: cubit
+                        .getItems()
                         .map((e) => Padding(
                               padding: const EdgeInsets.all(3),
                               child: ProductWidget(
@@ -124,8 +123,11 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
         text: 'Continuer',
         callback: () {
           if (isTouch) {
-            creatingAnnouncementManager.setItem(itemManager.hasItemInSearchedItems(), name: productsController.text);
-            Navigator.pushNamed(context, AppRoutesNames.announcementCreatingPhoto);
+            creatingAnnouncementManager.setItem(
+                itemManager.hasItemInSearchedItems(),
+                name: productsController.text);
+            Navigator.pushNamed(
+                context, AppRoutesNames.announcementCreatingPhoto);
           }
         },
         active: isTouch,

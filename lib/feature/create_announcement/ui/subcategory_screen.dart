@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/widgets/category/subcategory.dart';
 
@@ -7,16 +8,11 @@ import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../bloc/subcategory/subcategory_cubit.dart';
 
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-
 class SubCategoryScreen extends StatelessWidget {
   const SubCategoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
@@ -33,12 +29,15 @@ class SubCategoryScreen extends StatelessWidget {
         builder: (context, state) {
           if (state is SubcategorySuccessState) {
             return ListView(
-            children: state.subcategories
-                .map((e) => SubCategoryWidget(name: e.name ?? '', id: e.id ?? ''))
-                .toList(),
-          );
+              children: state.subcategories
+                  .map((e) =>
+                      SubCategoryWidget(name: e.name ?? '', id: e.id ?? ''))
+                  .toList(),
+            );
           } else if (state is SubcategoryFailState) {
-            return const Center(child: Text('проблемс'),);
+            return const Center(
+              child: Text('проблемс'),
+            );
           } else {
             return Center(child: AppAnimations.bouncingLine);
           }

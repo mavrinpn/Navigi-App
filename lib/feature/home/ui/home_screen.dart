@@ -6,13 +6,12 @@ import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/favorites/favorites_screen.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/feature/messenger/ui/all_chats_screen.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../../../utils/colors.dart';
 import '../../main/ui/main_screen.dart';
 import '../../profile/ui/profile_screen.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -135,7 +134,7 @@ class MessengerIcon extends StatelessWidget {
     return StreamBuilder(
         stream: repository.chatsStream.stream,
         builder: (context, snapshot) {
-          int count =  repository.notificationsAmount();
+          int count = repository.notificationsAmount();
           double size = 24;
 
           return SizedBox(

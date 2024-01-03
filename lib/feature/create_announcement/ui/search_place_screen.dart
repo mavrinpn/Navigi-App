@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
 import '../../../managers/creating_announcement_manager.dart';
@@ -11,9 +12,6 @@ import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/category/products.dart';
 import '../../../widgets/textField/outline_text_field.dart';
-
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchPlaceScreen extends StatefulWidget {
   const SearchPlaceScreen({super.key});
@@ -28,7 +26,6 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final localizations = AppLocalizations.of(context)!;
 
     final creatingAnnouncementManager =
@@ -43,7 +40,6 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
         TextPosition(offset: placeController.text.length));
 
     final width = MediaQuery.of(context).size.width;
-
 
     void setIsTouch(bool isT) {
       isTouch = isT;
@@ -132,8 +128,10 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
           if (isTouch) {
             creatingAnnouncementManager.setPlaceById(
                 placeManager.searchPlaceIdByName(placeController.text)!);
-            creatingAnnouncementManager.setTitle(creatingAnnouncementManager.buildTitle);
-            Navigator.pushNamed(context, AppRoutesNames.announcementCreatingDescription);
+            creatingAnnouncementManager
+                .setTitle(creatingAnnouncementManager.buildTitle);
+            Navigator.pushNamed(
+                context, AppRoutesNames.announcementCreatingDescription);
           }
         },
         active: isTouch,
