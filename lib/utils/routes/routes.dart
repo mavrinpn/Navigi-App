@@ -19,8 +19,8 @@ final appRoutes = {
   AppRoutesNames.root: (context) => const HomePage(),
   AppRoutesNames.loginFirst: (context) => const LoginFirstScreen(),
   AppRoutesNames.authCode: (context) => const CodeScreen(),
-  // AppRoutesNames.loginSecond: (context) => const LoginSecondScreen(),
-  // AppRoutesNames.register: (context) => const RegisterScreen(),
+  AppRoutesNames.loginSecond: (context) => const LoginSecondScreen(),
+  AppRoutesNames.register: (context) => const RegisterScreen(),
   AppRoutesNames.home: (context) => const HomeScreen(),
   AppRoutesNames.announcementCreatingCategory: (context) =>
       const CategoryScreen(),

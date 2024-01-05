@@ -59,9 +59,9 @@ class UserService {
     print(res.responseBody);
   }
 
-  Future<UserCredentials?> confirmSms(String code) async {
+  Future<UserCredentials?> confirmSms(String code, String password) async {
     final jwt = await getJwt();
-    final body = jsonEncode({'jwt': jwt, 'code': code});
+    final body = jsonEncode({'jwt': jwt, 'code': code, 'password': password});
     print(body);
 
     final res = await _functions.createExecution(

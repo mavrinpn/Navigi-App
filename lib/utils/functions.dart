@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 String dateTimeToString(DateTime dt) {
   String hour = '${dt.hour}';
   String minute = '${dt.minute}';
@@ -10,4 +12,15 @@ String dateTimeToString(DateTime dt) {
       : '${dt.day}.${dt.month}.${dt.day}';
 
   return '$date $hour:$minute';
+}
+
+String convertPhoneToTempEmail(String phone) {
+  const id = Uuid();
+
+  return '89$phone@${id.v1()}.ru';
+// return '$phone@gmail.com';
+}
+
+String convertPhoneToVerifiedEmail(String phone) {
+  return '89$phone@appwriteverificated.navigi';
 }

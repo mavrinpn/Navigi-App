@@ -9,6 +9,7 @@ import 'package:smart/models/user.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/storage_service.dart';
+import 'package:smart/utils/functions.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../enum/enum.dart';
@@ -50,47 +51,10 @@ class AuthRepository {
   BehaviorSubject<LoadingStateEnum> profileState =
       BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.loading);
 
-  static String convertPhoneToEmail(String phone) {
-    const id = Uuid();
-
-    return '89$phone@${id.v1()}.ru';
-    // return '$phone@gmail.com';
-  }
-
   Future<void> _initMessaging() async {
     _messagingService.userId = _user.$id;
     _messagingService.initNotification();
     _messagingService.handleTokenRefreshing();
-  }
-
-  void logout() async {
-    await _account.deleteSession(sessionId: sessionID!);
-    final prefs = await SharedPreferences.getInstance();
-    prefs.clear();
-    authState.add(EntranceStateEnum.wait);
-    _messagingService.userId = null;
-    appState.add(AuthStateEnum.unAuth);
-  }
-
-  String _tempMail = '';
-
-  Future<void> createAccountAndSendSms(String phone) async {
-    await _createTempAccount(phone);
-    await _databaseService.users.sendSms();
-  }
-
-  Future<void> confirmCode(String code) async {
-    authState.add(EntranceStateEnum.loading);
-    try {
-      final res = await _databaseService.users.confirmSms(code);
-      await _authorizeWithCredentials(res!);
-
-      authState.add(EntranceStateEnum.success);
-      appState.add(AuthStateEnum.auth);
-    } catch (e) {
-      authState.add(EntranceStateEnum.fail);
-      rethrow;
-    }
   }
 
   void checkLogin() async {
@@ -125,6 +89,53 @@ class AuthRepository {
     }
   }
 
+  void logout() async {
+    try {
+      await _account.deleteSession(sessionId: sessionID!);
+    } catch (e) {}
+
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    authState.add(EntranceStateEnum.wait);
+    _messagingService.userId = null;
+    appState.add(AuthStateEnum.unAuth);
+  }
+
+  String _tempMail = '';
+
+  Future<void> login(String email, String password) async {
+    authState.add(EntranceStateEnum.loading);
+    try {
+      await _authorizeWithCredentials(
+          UserCredentials(mail: email, password: password));
+      authState.add(EntranceStateEnum.success);
+      appState.add(AuthStateEnum.auth);
+    } catch (e) {
+      authState.add(EntranceStateEnum.fail);
+    }
+  }
+
+  Future<void> createAccountAndSendSms(String phone) async {
+    await _createTempAccount(phone);
+    await _databaseService.users.sendSms();
+  }
+
+  Future<void> confirmCode(String code,
+      {required String password, required String name}) async {
+    authState.add(EntranceStateEnum.loading);
+
+    final res = await _databaseService.users.confirmSms(code, password);
+    if (res != null) {
+      await _authorizeWithCredentials(res,
+          registrationName: name, needRegister: true);
+
+      authState.add(EntranceStateEnum.success);
+      appState.add(AuthStateEnum.auth);
+    } else {
+      authState.add(EntranceStateEnum.fail);
+    }
+  }
+
   Future<bool> getUserData() async {
     profileState.add(LoadingStateEnum.loading);
     try {
@@ -146,7 +157,7 @@ class AuthRepository {
   Future<String?> _getEmailByPhone(String phone) async {
     final String? email;
     if (!_tempMail.startsWith('89$phone')) {
-      email = convertPhoneToEmail(phone);
+      email = convertPhoneToTempEmail(phone);
       _tempMail = email;
     } else {
       email = null;
@@ -166,13 +177,20 @@ class AuthRepository {
         email: email ?? _tempMail, password: password);
   }
 
-  Future<void> _authorizeWithCredentials(UserCredentials credentials) async {
+  Future<void> _authorizeWithCredentials(UserCredentials credentials,
+      {String? registrationName, bool needRegister = false}) async {
+    assert(!needRegister || needRegister && registrationName != null,
+        'for registration required name');
     final promise = await _account.createEmailSession(
         email: credentials.mail, password: credentials.password);
     _user = await _account.get();
 
     await _saveSessionId(promise.$id);
-    await _preloadUserDataAndCreateIfNeed(credentials.mail);
+    if (needRegister) {
+      await _createUserData(credentials.mail, registrationName!);
+    }
+
+    await getUserData();
     _initMessaging();
   }
 
@@ -182,18 +200,10 @@ class AuthRepository {
     prefs.setString(sessionIdKey, sessionID!);
   }
 
-  Future _preloadUserDataAndCreateIfNeed(String email) async {
-    final result = await getUserData();
-    if (!result) {
-      await _createUserData(email);
-      getUserData();
-    }
-  }
-
-  Future _createUserData(String email) async {
+  Future _createUserData(String email, String name) async {
     final phone = email.split('@')[0];
 
     await _databaseService.users
-        .createUser(name: 'Guest', uid: userId, phone: phone);
+        .createUser(name: name, uid: userId, phone: phone);
   }
 }

@@ -1,15 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:smart/utils/functions.dart';
 
 import '../../../enum/enum.dart';
 import '../data/auth_repository.dart';
-
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthRepository authRepository;
   String _phone = '';
+  String _nameForRegistration = '';
+  String _passwordForRegistration = '';
 
   AuthCubit({required this.authRepository}) : super(AuthInitial()) {
     authRepository.authState.stream.listen((event) {
@@ -24,29 +26,29 @@ class AuthCubit extends Cubit<AuthState> {
 
   String getPhone() => _phone;
 
+  setName(String name) => _nameForRegistration = name;
 
-  //TODO удалить в будущем
-  // registerWithEmail(
-  //         {required String email,
-  //         required String name,
-  //         required String password}) {
-  //   // authRepository.registerWithEmail(
-  //   //     email: email, password: password);
-  // }
+  registerWithPhone(
+      {required String phone, required String name, required String password}) {
+    _nameForRegistration = name;
+    _passwordForRegistration = password;
+    _phone = phone;
+    _sendSms();
+  }
 
-  //TODO удалить в будущем
-  // loginWithEmail({required String email, required String password}) {
-  //   // authRepository.loginWithEmail(email: email, password: password);
-  // }
+  loginWithPhone({required String phone, required String password}) {
+    final email = convertPhoneToVerifiedEmail(phone);
+    authRepository.login(email, password);
+  }
 
-
-  void sendSms() async {
+  void _sendSms() async {
     if (_phone.isEmpty) throw Exception('phone must not be empty');
     await authRepository.createAccountAndSendSms(_phone);
   }
 
   void confirmCode(String code) async {
-    await authRepository.confirmCode(code);
+    await authRepository.confirmCode(code,
+        password: _passwordForRegistration, name: _nameForRegistration);
   }
 
   logout() => authRepository.logout();

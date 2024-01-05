@@ -2,9 +2,7 @@ class AppRoutesNames {
   static const String root = '/';
   static const String loginFirst = '/login_first_screen';
   static const String authCode = '/login_code_screen';
-  @Deprecated('экран не используется')
   static const String loginSecond = '/login_second_screen';
-  @Deprecated('экран не используется')
   static const String register = '/register_screen';
   static const String home = '/home_screen';
   static const String announcementCreatingCategory = '/create_category_screen';
