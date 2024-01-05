@@ -109,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 32,
                       ),
                       Text(
-                        'Enregistrement',
+                        localizations.registration,
                         style: AppTypography.font24black.copyWith(fontSize: 20),
                       ),
                       const SizedBox(
@@ -117,13 +117,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       CustomTextFormField(
                           controller: nameController,
-                          hintText: 'Votre nom',
+                          hintText: localizations.yourName,
                           keyboardType: TextInputType.text,
                           width: width * 0.95,
                           prefIcon: 'Assets/icons/profile.svg',
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Erreur! Réessayez ou entrez dautres informations.';
+                              return localizations.errorReviewOrEnterOther;
                             }
                             return null;
                           },
@@ -139,7 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         validator: (value) {
                           if (maskPhoneFormatter.getUnmaskedText().length !=
                               9) {
-                            return 'Erreur! Réessayez ou entrez dautres informations.';
+                            return localizations.errorReviewOrEnterOther;
                           }
                           return null;
                         },
@@ -150,7 +150,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       CustomTextFormField(
                           controller: firstPasswordController,
-                          hintText: 'Trouver un mot de passe',
+                          hintText: localizations.createPassword,
                           keyboardType: TextInputType.text,
                           width: width * 0.95,
                           prefIcon: 'Assets/icons/key.svg',
@@ -158,7 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           validator: (value) {
                             if (value! != secondPasswordController.text ||
                                 value.length < 8) {
-                              return 'Erreur! Réessayez ou entrez dautres informations.';
+                              return localizations.errorReviewOrEnterOther;
                             }
                             return null;
                           },
@@ -168,14 +168,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       CustomTextFormField(
                           controller: secondPasswordController,
                           keyboardType: TextInputType.text,
-                          hintText: 'Répétez le mot de passe',
+                          hintText: localizations.repeatePassword,
                           width: width * 0.95,
                           prefIcon: 'Assets/icons/key.svg',
                           obscureText: true,
                           validator: (value) {
                             if (value! != firstPasswordController.text ||
                                 value.length < 8) {
-                              return 'Erreur! Réessayez ou entrez dautres informations.';
+                              return localizations.errorReviewOrEnterOther;
                             }
                             return null;
                           },
@@ -229,7 +229,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             SizedBox(
                               width: width - 75,
                               child: Text(
-                                'Jaccepte les conditions dutilisation et confirme que jaccepte la politique de confidentialité.',
+                                localizations.jacceptsTheConditionsForTheilization,
                                 style: AppTypography.font14black,
                               ),
                             )
@@ -254,7 +254,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                           Navigator.pushNamed(context, AppRoutesNames.authCode);
                         },
-                        text: 'Se faire enregistrer',
+                        text: localizations.regg,
                         styleText: AppTypography.font14white,
                         height: 52,
                         active: isTouch,
@@ -266,7 +266,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 16,
                       ),
                       InkWell(
-                        child: Text('Entrée',
+                        child: Text(localizations.entrance,
                             style: AppTypography.font16UnderLinePink),
                         onTap: () {
                           Navigator.pop(context);

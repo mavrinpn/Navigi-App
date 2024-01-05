@@ -5,82 +5,76 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get addAnnouncement => '!مرحبا';
+  String get connectToDiscoverFeatures => 'الاتصال لاكتشاف جميع ميزاتنا.';
 
   @override
-  String get hello => '!مرحبا';
+  String get enter => 'يدخل';
 
   @override
-  String get logIn => 'تسجيل ';
+  String get noAccount => 'لا حساب؟';
 
   @override
-  String get next => 'التالي';
+  String get register => 'يسجل!';
 
   @override
-  String get dontHaveAnAccount => 'لا يوجد حساب؟';
+  String get enterPassword => 'أدخل كلمة المرور';
 
   @override
-  String get createNewAccount => '!انشاء حساب جديد';
+  String get forgotPassword => 'نسيت كلمة السر؟';
 
   @override
-  String get enterThePassword => 'ادخل كلمة السر';
+  String get enterPhone => 'أدخل رمز التحقق';
 
   @override
-  String get forgotThePassword => 'نسيت كلمة السر؟';
+  String get haventRecieveCode => 'لم تتلق الرمز؟';
 
   @override
-  String get enterThePhoneNumberAssociatedWithYourAccount => 'ادخل رقم الهاتف المرتبط بحسابك';
+  String get sendAgain => 'أعد الإرسال';
 
   @override
-  String get enterVerificationCode => 'Navigi ادخل الرقم المرسل من طرف ';
+  String get newPassword => 'أدخل كلمة مرور جديدة';
 
   @override
-  String get didntReceiveTheCode => 'لم تستقبل اي رقم؟';
+  String get yourName => 'اسمك';
 
   @override
-  String get sendAgain => 'ارسل من جديد';
+  String get createPassword => 'تمرير كلمة المرور';
 
   @override
-  String get resetPassword => 'البحث عن حسابك';
+  String get repeatePassword => 'كرر كلمة المرور';
 
   @override
-  String get enterTheEmailAddressAssociatedWithYourAccount => 'ادخل البريد الالكتروني المرتبط بحسابك';
+  String get acceptPolicy => 'أقبل شروط الاستخدام وأؤكد أنني أقبل سياسة الخصوصية.';
 
   @override
-  String get viewAll => 'مشاهدة جميع الفئات';
+  String get errorIncorrectInfo => 'خطأ! جرب أو أدخل معلومات أخرى.';
 
   @override
-  String get categories => 'الفئات';
+  String get registration => 'تسجيل';
 
   @override
-  String get realEstate => 'عقار';
+  String get confirmation => 'تأكيد';
 
   @override
-  String get electronics => 'اجهزة الكترونية ';
+  String get categories => 'فئات';
 
   @override
-  String get homeAppliance => 'اجهزة منزلية';
+  String get view => 'شاهد';
 
   @override
-  String get vehicles => 'مركبات';
+  String get researchInAlgiers => 'البحث في الجزائر';
 
   @override
-  String get accessoriesAndRepairs => 'قطع غيار السيارات';
+  String get recommendations => 'التوصيات';
 
   @override
-  String get clothes => 'ملابس و احذية';
+  String get viewAll => 'انظر إلى كل شيء';
 
   @override
-  String get homeAndLeisure => 'اثاث و ادوات منزلية';
+  String get city => 'مدينة';
 
   @override
-  String get animals => 'حيوانات';
-
-  @override
-  String get jobsAndServices => 'فرص عمل و خدمات';
-
-  @override
-  String get recommendations => 'اعلانات قد تعجبك';
+  String get kmOfYou => 'كم منكم)';
 
   @override
   String get homePage => 'الصفحة الرئيسية';
@@ -89,353 +83,401 @@ class AppLocalizationsAr extends AppLocalizations {
   String get messages => 'رسائل';
 
   @override
-  String get favorites => 'الاعلانات المفضلة ';
+  String get favourites => 'مفضل';
 
   @override
-  String get trademarkSearch => 'بحث عن الماركة';
+  String get profile => 'ملفي';
 
   @override
-  String get jobs => 'عمل';
+  String get showAll => 'عرض جميع العروض';
 
   @override
-  String get services => 'خدمات';
+  String get searchBrand => 'البحث العلامة التجارية';
 
   @override
-  String get lookingForEmployees => 'بحث عن عامل';
+  String get done => 'كفى';
 
   @override
-  String get workplace => 'المنصب';
+  String get location => 'موقع';
 
   @override
-  String get salary => 'الراتب';
+  String get searchZone => 'منطقة البحوث';
 
   @override
-  String get localisation => 'المكان';
+  String get displayAds => 'اعرض الاعلان';
 
   @override
-  String get searchArea => 'منطقة البحث';
-
-  @override
-  String get km => 'كم';
-
-  @override
-  String get driver => 'سائق حافلة';
-
-  @override
-  String get dZDmonth => 'دج شهريا';
-
-  @override
-  String get withPicture => 'بالصور';
+  String get withPicture => 'مع الصورة';
 
   @override
   String get sort => 'فرز';
 
   @override
-  String get filters => 'تدقيق';
+  String get dontHaveProducts => 'ليس لديك منتجات محددة';
 
   @override
-  String get price => 'السعر';
+  String get goRepertoire => 'اذهب إلى ذخيرة';
 
   @override
-  String get sortBy => 'فرز';
+  String get active => 'نشيط';
 
   @override
-  String get onlyAHighRanking => 'حسابات بتنقيط عالي';
+  String get sold => 'مُباع';
 
   @override
-  String get onlyWithReduction => 'اعلانات بتخفيضات في السعر';
+  String get youHaveNoAds => 'ليس لديك إعلانات';
 
   @override
-  String get random => 'عشوائي';
+  String get addAnAd => ' إضافة إعلان';
 
   @override
-  String get ascendingPrice => 'السعر- الأعلى اولا';
+  String get salesHaveReported => 'ذكرت المبيعات';
 
   @override
-  String get decreasingPrice => 'السعر- القل اولا';
-
-  @override
-  String get distance => 'المسافة';
-
-  @override
-  String get city => 'المدينة';
-
-  @override
-  String get theMerie => 'البلدية';
-
-  @override
-  String get show1000Ads => 'إظهار 1000 اعلان';
-
-  @override
-  String get searchInAlgiers => 'بحث في الجزائر';
-
-  @override
-  String get todayAt1825 => 'اليوم على 18:25';
-
-  @override
-  String get views => 'مشاهدة';
-
-  @override
-  String get write => 'مراسلة';
-
-  @override
-  String get makeAnOffer => 'تقديم عرض';
-
-  @override
-  String get typeOfProduct => 'نوع العرض';
-
-  @override
-  String get category => 'فئة';
-
-  @override
-  String get operatingSystem => 'نظام التشغيل';
-
-  @override
-  String get condition => 'الحالة';
-
-  @override
-  String get diagonal => 'الشاشة';
-
-  @override
-  String get touch => 'سمارت';
-
-  @override
-  String get builtinMemory => 'ذاكرة مدمجة';
-
-  @override
-  String get wiFi => 'واي فاي';
-
-  @override
-  String get camera => 'الكاميرا';
-
-  @override
-  String get tablet => 'تابلت';
-
-  @override
-  String get electronic => 'اجهزة الكترونية ';
-
-  @override
-  String get veryGood => 'جد جيدة';
-
-  @override
-  String get megapixels => 'ميغابيكسل';
-
-  @override
-  String get description => 'الوصف';
-
-  @override
-  String get seller => 'البائع';
-
-  @override
-  String get relatedAds => 'اعلانات مشابهة';
-
-  @override
-  String get block => 'حضر ';
-
-  @override
-  String get report => 'تبليغ';
-
-  @override
-  String get articleAddedToFavorites => 'اعلان مضاف الى الاعلانات المفضلة';
-
-  @override
-  String get offer => 'ارسال العرض';
-
-  @override
-  String get call => 'اتصال';
-
-  @override
-  String get onSale => 'جاري البيع';
-
-  @override
-  String get sold => 'تم البيع';
-
-  @override
-  String get theDealIsDone => 'تمت الصفقة';
-
-  @override
-  String get comments => 'تعليقات';
-
-  @override
-  String get writeAComment => 'تعليق';
-
-  @override
-  String get whatDidYouTalkAbout => 'عن ماذا كان الحديث؟';
-
-  @override
-  String get didYouPurchaseTheItem => 'هل اشتريته؟';
-
-  @override
-  String get yes => 'نعم';
-
-  @override
-  String get no => 'لا';
-
-  @override
-  String get meeting => 'ملاقاة ';
-
-  @override
-  String get datingConvention => 'اتفاقية ملاقاة ';
-
-  @override
-  String get communicationByPhone => 'مكالمة هاتفية';
-
-  @override
-  String get publish => 'نشر';
-
-  @override
-  String get noFavoritesAtTheMoment => 'لا يوجد اعلانات مفضلة';
-
-  @override
-  String get addArticlesToYourFavoritesToFindThemHere => 'اضف اعلانات الى مفضلاتك للعثور عليها هنا';
-
-  @override
-  String get juin => 'juin';
-
-  @override
-  String get myProfile => 'ملف شخصي';
-
-  @override
-  String get youHaveNoAds => 'ليس لديك  اعلانات';
-
-  @override
-  String get addAnAd => 'نشر اعلان';
-
-  @override
-  String get balanceGeneratedBySales => 'None';
-
-  @override
-  String get myInformations => 'معلوملتي الخاصة';
+  String get myData => 'بياناتي';
 
   @override
   String get myComments => 'تعليقاتي';
 
   @override
-  String get fAQ => 'FAQ';
+  String get faq => 'التعليمات';
 
   @override
   String get privacyPolicy => 'سياسة الخصوصية';
 
   @override
-  String get termsOfUse => 'شروط الاستخدام';
+  String get termsOfUse => 'شروط الاستعمال';
 
   @override
-  String get logOut => 'تسجيل الخروج';
+  String get disconnectFromTheAccount => 'افصل عن الحساب';
 
   @override
-  String get deleteMyAccount => 'حذف الحساب';
+  String get delProfile => 'حذف الملف الشخصي';
 
   @override
-  String get appSettings => 'الاعدادات';
+  String get onTheServiceOf => 'على خدمة';
 
   @override
-  String get notifications => 'الاشعارات';
+  String get charit => 'Charit';
 
   @override
-  String get language => 'اللغة';
+  String get applicationSettings => 'إعدادات التطبيق';
 
   @override
-  String get arabic => 'العربية';
+  String get notifications => 'إشعارات';
 
   @override
-  String get personalOffers => 'عروض خاصة';
+  String get language => 'لغة';
 
   @override
-  String get selectedAds => 'الاعلانات المفضلة';
+  String get fr => 'فرنسي';
 
   @override
-  String get accountCertification => 'توثيق الحساب';
+  String get ar => 'عرب';
 
   @override
-  String get takeAPictureOfYourselfHoldingAnIDCardNextToYourFaceLikeTheExampleBelow => 'التقط صورة لبطاقة التعريف الخاصة بك كما هو موضح اسفله.';
+  String get personalOffers => 'العروض الشخصية';
 
   @override
-  String get uploadThePhotoInPNGOrJPEGFormatFromYourDevice => 'Png, jpegادخل الصورة على شكل ';
+  String get selectedProducts => 'منتجات مختارة';
 
   @override
-  String get addPictures => 'اضافة صور';
+  String get certify => 'صدق';
 
   @override
-  String get statistics => 'احصائيات';
+  String get takeAphotoWith => 'التقط صورة مع بطاقة هوية تمسك بجانب الشخص كما هو موضح في المثال أدناه.';
 
   @override
-  String get totalViews => 'عدد المشاهدات';
+  String get downloadThePhoto => 'قم بتنزيل الصورة بتنسيق PNG ، JPEG.';
 
   @override
-  String get viewingRate => 'نسبة الاعجابات';
+  String get edit => 'يحرر';
 
   @override
-  String get numberOfFavorites => 'عدد الاعجابات';
+  String get del => 'يمسح';
 
   @override
-  String get numberOfInteractions => 'عدد التفاعلات';
+  String get features => 'سمات';
 
   @override
-  String get onModeration => 'جاري التحقق';
+  String get typeOfProduct => 'نوع المنتوج';
 
   @override
-  String get contactUs => 'اتصل بنا';
+  String get productCategory => 'فئة المنتج';
 
   @override
-  String get writeToUs => 'اكتب لنا';
+  String get operatingSystem => 'نظام التشغيل';
 
   @override
-  String get areYouSureYouWantToLogout => 'هل تريد تسجيل الخروج من حسابك؟';
+  String get state => 'حالة';
 
   @override
-  String get byLoggingOutYouWillNoLongerBeAbleToViewYourFavoriteAdsReceiveNotificationsFromPotentialCustomersOrSellersOrAccessCertainFeaturesReservedForLoggedinUsers => 'بخروجك من الحساب، لا يمكنك تلقي رسائل و عروض من المشترين. ';
+  String get diagonal => 'قطري';
 
   @override
-  String get enterTheNameOfYourItem => 'ما الذي تريد بيعه؟';
+  String get tactile => 'اللمس';
+
+  @override
+  String get integratedMemory => 'ذاكرة متكاملة';
+
+  @override
+  String get shooting => 'اطلاق الرصاص';
+
+  @override
+  String get description => 'وصف';
+
+  @override
+  String get board => 'سبورة';
+
+  @override
+  String get electronic => 'إلكتروني';
+
+  @override
+  String get ipados => 'iPados';
+
+  @override
+  String get todayAt => 'اليوم في';
+
+  @override
+  String get views => 'الآراء';
+
+  @override
+  String get statistical => 'إحصاء';
+
+  @override
+  String get euismodAeneanSed => 'Euismod Aenean SED؟';
+
+  @override
+  String get contactTheSupport => 'اتصل بالدعم';
+
+  @override
+  String get writeWithSupport => 'اكتب بدعم';
+
+  @override
+  String get doYouWant => 'هل تريد الخروج؟';
+
+  @override
+  String get yes => 'نعم';
+
+  @override
+  String get loremipsum => 'loremipsum';
+
+  @override
+  String get no => ' لا';
+
+  @override
+  String get indicateTheName => 'أشر إلى الاسم';
+
+  @override
+  String get typeOfNews => 'نوع الأخبار';
+
+  @override
+  String get new_ => 'جديد';
+
+  @override
+  String get price => 'سعر';
+
+  @override
+  String get color => 'لون';
+
+  @override
+  String get black => 'أسود';
+
+  @override
+  String get white => 'أبيض';
+
+  @override
+  String get roseGold => 'وارتفع الذهب';
+
+  @override
+  String get graySpace => 'مساحة رمادية';
+
+  @override
+  String get theModerationOfThe => 'اعتدال الإعلان جاري';
+
+  @override
+  String get doNotBlockThe => 'لا تمنع التطبيق أثناء علاج إعلانك';
+
+  @override
+  String get filters => ' المرشحات';
+
+  @override
+  String get resetEverything => 'أعد ضبط كل شيء';
+
+  @override
+  String get category => 'فئة';
+
+  @override
+  String get onlyAhighClassification => 'فقط تصنيف عالي';
+
+  @override
+  String get onlyWithReduction => 'فقط مع التخفيض';
+
+  @override
+  String get tacitly => 'ضمنيا';
+
+  @override
+  String get byDate => 'حسب التاريخ';
+
+  @override
+  String get firstCheap => 'الرخيصة الأولى';
+
+  @override
+  String get firstDear => 'أولا عزيزي';
+
+  @override
+  String get outOfDistance => 'خارج المسافة';
+
+  @override
+  String get realEstate => 'العقارات';
+
+  @override
+  String get car => 'سيارة';
+
+  @override
+  String get householdItems => 'الأدوات المنزلية';
+
+  @override
+  String get splash => 'دفقة';
+
+  @override
+  String get garment => 'ملابس';
+
+  @override
+  String get houseAndleisure => 'البيت والترفيه';
+
+  @override
+  String get animals => 'الحيوانات';
+
+  @override
+  String get jobsAndServices => 'الوظائف والخدمات';
+
+  @override
+  String get neighborhood => 'حيّ';
+
+  @override
+  String get researchArea => 'منطقة البحوث';
+
+  @override
+  String get toBlock => ' ليحجب';
+
+  @override
+  String get report => ' تقرير';
+
+  @override
+  String get productAddedToFavorites => 'المنتج يضاف إلى المفضلة!';
+
+  @override
+  String get toWrite => 'يكتب';
+
+  @override
+  String get toCall => 'للإتصال';
+
+  @override
+  String get onServiceSince => 'على الخدمة منذ ذلك الحين';
+
+  @override
+  String get comments => 'تعليقات';
+
+  @override
+  String get theTransactionTookPlace => 'وقعت الصفقة';
+
+  @override
+  String get whatDidYouTalkAbout => 'ماذا كنت تتحدث عن؟';
+
+  @override
+  String get haveYouBoughtTheGoods => ' هل اشتريت البضائع؟';
+
+  @override
+  String get howDidItEnd => 'كيف انتهى؟';
+
+  @override
+  String get phoneCommunication => 'الاتصالات الهاتفية';
+
+  @override
+  String get meetingAgreement => 'اتفاقية الاجتماع';
+
+  @override
+  String get toWriteAcomment => 'لكتابة تعليق';
+
+  @override
+  String get hello => 'مرحبا!';
+
+  @override
+  String get used => 'مستخدم';
+
+  @override
+  String get passwordOrEmailEnteredIncorrectly => 'لا تمريرة أو بريد إلكتروني مُصلح بشكل سيء';
 
   @override
   String get photo => 'صورة';
 
   @override
-  String get adType => 'نوع الاعلان';
+  String get popularResearch => 'البحث الشعبي';
 
   @override
-  String get nEw => 'جديد';
+  String get researchHistory => 'تاريخ البحث';
 
   @override
-  String get used => 'مستعمل';
+  String get toClean => 'لينظف';
 
   @override
-  String get features => 'الخصوصيات';
+  String get empty => 'كن فارغا';
 
   @override
-  String get color => 'اللون';
+  String get seller => 'البائع';
 
   @override
-  String get black => 'اسود';
+  String get offrirVotrePrix => 'قدم سعرك';
 
   @override
-  String get white => 'ابيض';
+  String get addPictures => 'أضف الصور';
 
   @override
-  String get roseGold => 'وردي';
+  String get afterwards => 'عقب ذلك مباشرة';
 
   @override
-  String get spaceGray => 'رمادي';
+  String get loremLobortisMi => 'Lorem Lobortis Mi ornare nisi tellus sed aliquam nis nis';
 
   @override
-  String get publishTheAd => 'نشر الاعلان';
+  String get errorReviewOrEnterOther => 'خطأ! مراجعة أو أدخل معلومات أخرى.';
 
   @override
-  String get yourAdIsBeingChecked => 'يتم التحقق من اعلانك';
+  String get jacceptsTheConditionsForTheilization => 'جاكسور الشروط الخاصة بالاستقرار ويؤكد أن جاكسيبوت سياسة الخصوصية.';
 
   @override
-  String get pleaseDoNotLeaveTheAppWhileWeAreProcessingYourAd => 'من فضلك لا تترك التطبيق بينما نقوم بمعالجة إعلانك';
+  String get regg => 'يسجل';
 
   @override
-  String get edit => 'عرض السعر الخاص بك';
+  String get entrance => 'مدخل';
 
   @override
-  String get offrirVotrePrix => 'Offrir votre prix';
+  String get continue_ => 'يكمل';
 
   @override
-  String get passwordOrEmailEnteredIncorrectly => 'تم إدخال كلمة المرور أو البريد الإلكتروني بشكل غير صحيح';
+  String get information => 'معلومة';
 
   @override
-  String get empty => 'فارغة';
+  String get title => 'عنوان';
+
+  @override
+  String get name => 'اسم';
+
+  @override
+  String get place => 'مكان';
+
+  @override
+  String get popularRequests => 'الطلبات الشعبية';
+
+  @override
+  String get cancelation => 'الإلغاء';
+
+  @override
+  String get withSuccess => 'بنجاح';
+
+  @override
+  String get save => 'يحفظ';
+
+  @override
+  String get placeApplicationSettings => 'ضع إعدادات التطبيق';
 }

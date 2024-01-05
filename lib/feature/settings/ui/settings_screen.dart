@@ -63,7 +63,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Paramètres de lapplication',
+                    localizations.placeApplicationSettings,
                     style: AppTypography.font20black,
                   ),
                 ],

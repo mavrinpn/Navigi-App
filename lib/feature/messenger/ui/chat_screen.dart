@@ -12,6 +12,7 @@ import 'package:smart/widgets/messenger/date_splitter_widget.dart';
 import 'package:smart/widgets/messenger/message_group_widget.dart';
 
 
+import '../../../localization/app_localizations.dart';
 import '../data/messenger_repository.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -31,6 +32,8 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     final repository = RepositoryProvider.of<MessengerRepository>(context);
+    final localizations = AppLocalizations.of(context)!;
+
     return WillPopScope(
       onWillPop: () async {
         repository.closeChat();
@@ -152,7 +155,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         cursorColor: AppColors.red,
                         cursorWidth: 1,
                         decoration: InputDecoration(
-                          hintText: 'Message',
+                          hintText: localizations.messages,
                             hintStyle: AppTypography.font14lightGray,
                             contentPadding:
                                 const EdgeInsets.fromLTRB(12, 4, 12, 4),

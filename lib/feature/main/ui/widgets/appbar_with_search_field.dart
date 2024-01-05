@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:smart/widgets/button/icon_button.dart';
 import 'package:smart/widgets/textField/elevated_text_field.dart';
 
+import '../../../../localization/app_localizations.dart';
+
 class MainAppBar extends StatelessWidget {
   const MainAppBar({super.key, required this.openSearchScreen, required this.isSearch, required this.openFilters, required this.cancel});
   final VoidCallback openSearchScreen;
@@ -10,6 +12,8 @@ class MainAppBar extends StatelessWidget {
   final VoidCallback cancel;
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Row(
@@ -22,7 +26,7 @@ class MainAppBar extends StatelessWidget {
                 ? MediaQuery.of(context).size.width - 120
                 : MediaQuery.of(context).size.width - 91,
             height: 44,
-            hintText: 'Recherche a Alger',
+            hintText: localizations.researchInAlgiers,
             icon: "Assets/icons/only_search.svg",
           ),
           const SizedBox(width: 16),
@@ -34,7 +38,7 @@ class MainAppBar extends StatelessWidget {
           isSearch
               ? TextButton(
             onPressed: cancel,
-            child: const Text('Annulation'),
+            child: Text(localizations.cancelation),
           )
               : Container(),
         ],

@@ -51,7 +51,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
         backgroundColor: AppColors.empty,
         elevation: 0,
         title: Text(
-          'Place',
+          localizations.place,
           style: AppTypography.font20black,
         ),
       ),
@@ -77,7 +77,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 26, 0, 13),
               child: Text(
-                'Requêtes populaires',
+                localizations.popularRequests,
                 style: AppTypography.font16black.copyWith(fontSize: 14),
               ),
             ),
@@ -123,7 +123,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
       ),
       floatingActionButton: CustomTextButton.orangeContinue(
         width: width - 30,
-        text: 'Continuer',
+        text: localizations.continue_,
         callback: () {
           if (isTouch) {
             creatingAnnouncementManager.setPlaceById(

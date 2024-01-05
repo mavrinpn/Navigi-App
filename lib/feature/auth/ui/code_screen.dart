@@ -84,7 +84,7 @@ class _CodeScreenState extends State<CodeScreen> {
                       height: 35,
                     ),
                     Text(
-                      'Confirmation',
+                      localizations.confirmation,
                       style: AppTypography.font24black,
                       textAlign: TextAlign.center,
                     ),
@@ -92,7 +92,7 @@ class _CodeScreenState extends State<CodeScreen> {
                     SizedBox(
                       width: width * 0.6,
                       child: Text(
-                        'Saisissez le code de vérification',
+                        localizations.enterPhone,
                         style: AppTypography.font14lightGray,
                         textAlign: TextAlign.center,
                       ),
@@ -129,11 +129,11 @@ class _CodeScreenState extends State<CodeScreen> {
                   text: TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                          text: "Vous n'avez pas reçu le code?",
+                          text: localizations.haventRecieveCode,
                           style: AppTypography.font14lightGray
                               .copyWith(fontSize: 16)),
                       TextSpan(
-                          text: " Envoyer à nouveau",
+                          text: localizations.sendAgain,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               // TODO send retry
@@ -150,7 +150,7 @@ class _CodeScreenState extends State<CodeScreen> {
                     }
                   },
                   active: buttonActive,
-                  text: 'Ensuite',
+                  text: localizations.afterwards,
                   styleText: AppTypography.font14white,
                   height: 52,
                   padding:

@@ -48,7 +48,7 @@ class LoadingScreen extends StatelessWidget {
                   height: 44,
                 ),
                 Text(
-                  'La modération de l\'annonce est en cours',
+                  localizations.theModerationOfThe,
                   textAlign: TextAlign.center,
                   style: AppTypography.font24dark,
                 ),
@@ -56,7 +56,7 @@ class LoadingScreen extends StatelessWidget {
                   height: 16,
                 ),
                 Text(
-                    'Ne bloquez pas l\'application pendant le traitement de votre annonce',
+                    localizations.doNotBlockThe,
                     textAlign: TextAlign.center,
                     style: AppTypography.font14light),
                 const SizedBox(

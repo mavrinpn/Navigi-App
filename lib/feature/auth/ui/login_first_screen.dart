@@ -66,7 +66,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                 SizedBox(
                   width: width * 0.6,
                   child: Text(
-                    'Lorem lobortis mi ornare nisi tellus sed aliquam accuornare nis',
+                    AppLocalizations.of(context)!.connectToDiscoverFeatures,
                     style: AppTypography.font14lightGray,
                     textAlign: TextAlign.center,
                   ),
@@ -85,7 +85,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                           validator: (value) {
                             if (maskPhoneFormatter.getUnmaskedText().length !=
                                 9) {
-                              return 'Erreur! Réessayez ou entrez dautres informations.';
+                              return localizations.errorIncorrectInfo;
                             }
                             return null;
                           },
@@ -120,7 +120,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                               print('push');
                             }
                           },
-                          text: AppLocalizations.of(context)!.next,
+                          text: AppLocalizations.of(context)!.enter,
                           styleText: AppTypography.font14white,
                           height: 52,
                           padding: const EdgeInsets.symmetric(
@@ -136,11 +136,11 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                   text: TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                          text: localizations.dontHaveAnAccount,
+                          text: localizations.noAccount,
                           style: AppTypography.font14lightGray
                               .copyWith(fontSize: 16)),
                       TextSpan(
-                          text: localizations.createNewAccount,
+                          text: localizations.register,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               Navigator.pushNamed(context, '/register_screen');

@@ -39,7 +39,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
           backgroundColor: AppColors.empty,
           elevation: 0,
           title: Text(
-            'Informations',
+            localizations.information,
             style: AppTypography.font20black,
           ),
         ),
@@ -57,13 +57,13 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
-                        'Titre',
+                        localizations.title,
                         style: AppTypography.font16black.copyWith(fontSize: 18),
                       ),
                     ),
                     const SizedBox(height: 5),
                     OutLineTextField(
-                      hintText: 'name',
+                      hintText: localizations.name,
                       controller: titleController,
                       maxLines: 5,
                       height: 100,
@@ -97,7 +97,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
                     ),
                     const SizedBox(height: 5),
                     OutLineTextField(
-                      hintText: 'description',
+                      hintText: localizations.description,
                       controller: descriptionController,
                       maxLines: 20,
                       height: 310,
@@ -116,7 +116,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
         floatingActionButton: CustomTextButton.orangeContinue(
             active: descriptionController.text.isNotEmpty && titleController.text.isNotEmpty,
             width: MediaQuery.of(context).size.width - 30,
-            text: 'Continuer',
+            text: localizations.continue_,
             callback: () {
               repository.setDescription(descriptionController.text);
               repository.setTitle(titleController.text);

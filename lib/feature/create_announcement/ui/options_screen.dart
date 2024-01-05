@@ -29,6 +29,8 @@ class _OptionsScreenState extends State<OptionsScreen> {
     final repository =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
 
+    final localizations = AppLocalizations.of(context)!;
+
     return Form(
       key: _formKey,
       child: Scaffold(
@@ -67,7 +69,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                   }
                   if (n < 0 || n > 20000000) {
                     isTouch = false;
-                    return 'Erreur! Réessayez ou entrez dautres informations.';
+                    return localizations.errorReviewOrEnterOther;
                   }
                   isTouch = true;
                   return null;
@@ -117,7 +119,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
         ),
         floatingActionButton: CustomTextButton.orangeContinue(
           width: MediaQuery.of(context).size.width - 30,
-          text: 'Continuer',
+          text: localizations.continue_,
           callback: () {
             repository.setPrice(priseController.text);
             repository.setInfoFormItem();

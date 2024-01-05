@@ -51,6 +51,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final localizations = AppLocalizations.of(context)!;
 
     final searchManager = RepositoryProvider.of<SearchManager>(context);
     final announcementRepository =
@@ -120,7 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
           SizedBox(
             width: double.infinity,
             child: Text(
-              'Recherches populaires',
+              localizations.popularResearch,
               style: AppTypography.font14black
                   .copyWith(fontWeight: FontWeight.w600),
             ),
@@ -139,12 +140,12 @@ class _SearchScreenState extends State<SearchScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Historique des recherches',
+                localizations.researchHistory,
                 style: AppTypography.font14black
                     .copyWith(fontWeight: FontWeight.w600),
               ),
               Text(
-                'Nettoyer',
+                localizations.toClean,
                 style: AppTypography.font12lightGray
                     .copyWith(fontSize: 12, fontWeight: FontWeight.w400),
               ),

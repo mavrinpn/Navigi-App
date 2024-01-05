@@ -95,71 +95,53 @@ abstract class AppLocalizations {
     Locale('fr')
   ];
 
-  /// No description provided for @addAnnouncement.
+  /// No description provided for @connectToDiscoverFeatures.
   ///
   /// In en, this message translates to:
-  /// **'Add announcement'**
-  String get addAnnouncement;
+  /// **'Connect to discover all our features.'**
+  String get connectToDiscoverFeatures;
 
-  /// No description provided for @hello.
+  /// No description provided for @enter.
   ///
   /// In en, this message translates to:
-  /// **'Hello!'**
-  String get hello;
+  /// **'Enter'**
+  String get enter;
 
-  /// No description provided for @logIn.
+  /// No description provided for @noAccount.
   ///
   /// In en, this message translates to:
-  /// **'Log in'**
-  String get logIn;
+  /// **'No account?'**
+  String get noAccount;
 
-  /// No description provided for @next.
+  /// No description provided for @register.
   ///
   /// In en, this message translates to:
-  /// **'Next'**
-  String get next;
+  /// **'Register!'**
+  String get register;
 
-  /// No description provided for @dontHaveAnAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'Don\'t have an account?'**
-  String get dontHaveAnAccount;
-
-  /// No description provided for @createNewAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'Create new account'**
-  String get createNewAccount;
-
-  /// No description provided for @enterThePassword.
+  /// No description provided for @enterPassword.
   ///
   /// In en, this message translates to:
   /// **'Enter the password'**
-  String get enterThePassword;
+  String get enterPassword;
 
-  /// No description provided for @forgotThePassword.
+  /// No description provided for @forgotPassword.
   ///
   /// In en, this message translates to:
-  /// **'Forgot the password?'**
-  String get forgotThePassword;
+  /// **'Forgot your password?'**
+  String get forgotPassword;
 
-  /// No description provided for @enterThePhoneNumberAssociatedWithYourAccount.
+  /// No description provided for @enterPhone.
   ///
   /// In en, this message translates to:
-  /// **'Enter the phone number associated with your account'**
-  String get enterThePhoneNumberAssociatedWithYourAccount;
+  /// **'Enter the verification code'**
+  String get enterPhone;
 
-  /// No description provided for @enterVerificationCode.
+  /// No description provided for @haventRecieveCode.
   ///
   /// In en, this message translates to:
-  /// **'Enter verification code'**
-  String get enterVerificationCode;
-
-  /// No description provided for @didntReceiveTheCode.
-  ///
-  /// In en, this message translates to:
-  /// **'Didn\'t receive the code?'**
-  String get didntReceiveTheCode;
+  /// **'Haven\'t received the code?'**
+  String get haventRecieveCode;
 
   /// No description provided for @sendAgain.
   ///
@@ -167,23 +149,53 @@ abstract class AppLocalizations {
   /// **'Send again'**
   String get sendAgain;
 
-  /// No description provided for @resetPassword.
+  /// No description provided for @newPassword.
   ///
   /// In en, this message translates to:
-  /// **'Reset password'**
-  String get resetPassword;
+  /// **'Enter a new password'**
+  String get newPassword;
 
-  /// No description provided for @enterTheEmailAddressAssociatedWithYourAccount.
+  /// No description provided for @yourName.
   ///
   /// In en, this message translates to:
-  /// **'Enter the email address associated with your account'**
-  String get enterTheEmailAddressAssociatedWithYourAccount;
+  /// **'Your name'**
+  String get yourName;
 
-  /// No description provided for @viewAll.
+  /// No description provided for @createPassword.
   ///
   /// In en, this message translates to:
-  /// **'View all'**
-  String get viewAll;
+  /// **'Pass a password'**
+  String get createPassword;
+
+  /// No description provided for @repeatePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat the password'**
+  String get repeatePassword;
+
+  /// No description provided for @acceptPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'I accept the conditions of use and confirm that I accept the privacy policy.'**
+  String get acceptPolicy;
+
+  /// No description provided for @errorIncorrectInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Error! Try or enter other information.'**
+  String get errorIncorrectInfo;
+
+  /// No description provided for @registration.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration'**
+  String get registration;
+
+  /// No description provided for @confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmation'**
+  String get confirmation;
 
   /// No description provided for @categories.
   ///
@@ -191,59 +203,17 @@ abstract class AppLocalizations {
   /// **'Categories'**
   String get categories;
 
-  /// No description provided for @realEstate.
+  /// No description provided for @view.
   ///
   /// In en, this message translates to:
-  /// **'Real estate'**
-  String get realEstate;
+  /// **'Look'**
+  String get view;
 
-  /// No description provided for @electronics.
+  /// No description provided for @researchInAlgiers.
   ///
   /// In en, this message translates to:
-  /// **'Electronics'**
-  String get electronics;
-
-  /// No description provided for @homeAppliance.
-  ///
-  /// In en, this message translates to:
-  /// **'Home appliance'**
-  String get homeAppliance;
-
-  /// No description provided for @vehicles.
-  ///
-  /// In en, this message translates to:
-  /// **'Vehicles'**
-  String get vehicles;
-
-  /// No description provided for @accessoriesAndRepairs.
-  ///
-  /// In en, this message translates to:
-  /// **'Accessories and Repairs'**
-  String get accessoriesAndRepairs;
-
-  /// No description provided for @clothes.
-  ///
-  /// In en, this message translates to:
-  /// **'Clothes'**
-  String get clothes;
-
-  /// No description provided for @homeAndLeisure.
-  ///
-  /// In en, this message translates to:
-  /// **'Home and leisure'**
-  String get homeAndLeisure;
-
-  /// No description provided for @animals.
-  ///
-  /// In en, this message translates to:
-  /// **'Animals'**
-  String get animals;
-
-  /// No description provided for @jobsAndServices.
-  ///
-  /// In en, this message translates to:
-  /// **'Jobs and services'**
-  String get jobsAndServices;
+  /// **'Research in Algiers'**
+  String get researchInAlgiers;
 
   /// No description provided for @recommendations.
   ///
@@ -251,10 +221,28 @@ abstract class AppLocalizations {
   /// **'Recommendations'**
   String get recommendations;
 
+  /// No description provided for @viewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Look at everything'**
+  String get viewAll;
+
+  /// No description provided for @city.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get city;
+
+  /// No description provided for @kmOfYou.
+  ///
+  /// In en, this message translates to:
+  /// **'km of you)'**
+  String get kmOfYou;
+
   /// No description provided for @homePage.
   ///
   /// In en, this message translates to:
-  /// **'home page'**
+  /// **'Home page'**
   String get homePage;
 
   /// No description provided for @messages.
@@ -263,77 +251,53 @@ abstract class AppLocalizations {
   /// **'Messages'**
   String get messages;
 
-  /// No description provided for @favorites.
+  /// No description provided for @favourites.
   ///
   /// In en, this message translates to:
-  /// **'Favorites'**
-  String get favorites;
+  /// **'Favorite'**
+  String get favourites;
 
-  /// No description provided for @trademarkSearch.
+  /// No description provided for @profile.
   ///
   /// In en, this message translates to:
-  /// **'Trademark search'**
-  String get trademarkSearch;
+  /// **'My profile'**
+  String get profile;
 
-  /// No description provided for @jobs.
+  /// No description provided for @showAll.
   ///
   /// In en, this message translates to:
-  /// **'Jobs'**
-  String get jobs;
+  /// **'Display all offers'**
+  String get showAll;
 
-  /// No description provided for @services.
+  /// No description provided for @searchBrand.
   ///
   /// In en, this message translates to:
-  /// **'Services'**
-  String get services;
+  /// **'Brand search'**
+  String get searchBrand;
 
-  /// No description provided for @lookingForEmployees.
+  /// No description provided for @done.
   ///
   /// In en, this message translates to:
-  /// **'Looking for employees'**
-  String get lookingForEmployees;
+  /// **'That\'s it'**
+  String get done;
 
-  /// No description provided for @workplace.
+  /// No description provided for @location.
   ///
   /// In en, this message translates to:
-  /// **'Workplace'**
-  String get workplace;
+  /// **'Location'**
+  String get location;
 
-  /// No description provided for @salary.
+  /// No description provided for @searchZone.
   ///
   /// In en, this message translates to:
-  /// **'Salary'**
-  String get salary;
+  /// **'Research area'**
+  String get searchZone;
 
-  /// No description provided for @localisation.
+  /// No description provided for @displayAds.
   ///
   /// In en, this message translates to:
-  /// **'Localisation'**
-  String get localisation;
-
-  /// No description provided for @searchArea.
-  ///
-  /// In en, this message translates to:
-  /// **'Search area'**
-  String get searchArea;
-
-  /// No description provided for @km.
-  ///
-  /// In en, this message translates to:
-  /// **'km'**
-  String get km;
-
-  /// No description provided for @driver.
-  ///
-  /// In en, this message translates to:
-  /// **'driver'**
-  String get driver;
-
-  /// No description provided for @dZDmonth.
-  ///
-  /// In en, this message translates to:
-  /// **'DZD/month'**
-  String get dZDmonth;
+  /// **'Display ads'**
+  String get displayAds;
 
   /// No description provided for @withPicture.
   ///
@@ -344,338 +308,32 @@ abstract class AppLocalizations {
   /// No description provided for @sort.
   ///
   /// In en, this message translates to:
-  /// **'sort'**
+  /// **'Sorting'**
   String get sort;
 
-  /// No description provided for @filters.
+  /// No description provided for @dontHaveProducts.
   ///
   /// In en, this message translates to:
-  /// **'Filters'**
-  String get filters;
+  /// **'You don\'t have selected products'**
+  String get dontHaveProducts;
 
-  /// No description provided for @price.
+  /// No description provided for @goRepertoire.
   ///
   /// In en, this message translates to:
-  /// **'Price'**
-  String get price;
+  /// **'go to the repertoire'**
+  String get goRepertoire;
 
-  /// No description provided for @sortBy.
+  /// No description provided for @active.
   ///
   /// In en, this message translates to:
-  /// **'sort by'**
-  String get sortBy;
-
-  /// No description provided for @onlyAHighRanking.
-  ///
-  /// In en, this message translates to:
-  /// **'Only a high ranking'**
-  String get onlyAHighRanking;
-
-  /// No description provided for @onlyWithReduction.
-  ///
-  /// In en, this message translates to:
-  /// **'Only with reduction'**
-  String get onlyWithReduction;
-
-  /// No description provided for @random.
-  ///
-  /// In en, this message translates to:
-  /// **'Random'**
-  String get random;
-
-  /// No description provided for @ascendingPrice.
-  ///
-  /// In en, this message translates to:
-  /// **'Ascending price'**
-  String get ascendingPrice;
-
-  /// No description provided for @decreasingPrice.
-  ///
-  /// In en, this message translates to:
-  /// **'Decreasing price'**
-  String get decreasingPrice;
-
-  /// No description provided for @distance.
-  ///
-  /// In en, this message translates to:
-  /// **'Distance'**
-  String get distance;
-
-  /// No description provided for @city.
-  ///
-  /// In en, this message translates to:
-  /// **'City'**
-  String get city;
-
-  /// No description provided for @theMerie.
-  ///
-  /// In en, this message translates to:
-  /// **'The merie'**
-  String get theMerie;
-
-  /// No description provided for @show1000Ads.
-  ///
-  /// In en, this message translates to:
-  /// **'Show 1000 ads'**
-  String get show1000Ads;
-
-  /// No description provided for @searchInAlgiers.
-  ///
-  /// In en, this message translates to:
-  /// **'Search in Algiers'**
-  String get searchInAlgiers;
-
-  /// No description provided for @todayAt1825.
-  ///
-  /// In en, this message translates to:
-  /// **'Today at 18:25'**
-  String get todayAt1825;
-
-  /// No description provided for @views.
-  ///
-  /// In en, this message translates to:
-  /// **'views'**
-  String get views;
-
-  /// No description provided for @write.
-  ///
-  /// In en, this message translates to:
-  /// **'Write'**
-  String get write;
-
-  /// No description provided for @makeAnOffer.
-  ///
-  /// In en, this message translates to:
-  /// **'Make an offer'**
-  String get makeAnOffer;
-
-  /// No description provided for @typeOfProduct.
-  ///
-  /// In en, this message translates to:
-  /// **'Type of product'**
-  String get typeOfProduct;
-
-  /// No description provided for @category.
-  ///
-  /// In en, this message translates to:
-  /// **'Category'**
-  String get category;
-
-  /// No description provided for @operatingSystem.
-  ///
-  /// In en, this message translates to:
-  /// **'Operating system'**
-  String get operatingSystem;
-
-  /// No description provided for @condition.
-  ///
-  /// In en, this message translates to:
-  /// **'condition'**
-  String get condition;
-
-  /// No description provided for @diagonal.
-  ///
-  /// In en, this message translates to:
-  /// **'Diagonal'**
-  String get diagonal;
-
-  /// No description provided for @touch.
-  ///
-  /// In en, this message translates to:
-  /// **'touch'**
-  String get touch;
-
-  /// No description provided for @builtinMemory.
-  ///
-  /// In en, this message translates to:
-  /// **'Built-in memory'**
-  String get builtinMemory;
-
-  /// No description provided for @wiFi.
-  ///
-  /// In en, this message translates to:
-  /// **'Wi-Fi'**
-  String get wiFi;
-
-  /// No description provided for @camera.
-  ///
-  /// In en, this message translates to:
-  /// **'Camera'**
-  String get camera;
-
-  /// No description provided for @tablet.
-  ///
-  /// In en, this message translates to:
-  /// **'Tablet'**
-  String get tablet;
-
-  /// No description provided for @electronic.
-  ///
-  /// In en, this message translates to:
-  /// **'Electronic'**
-  String get electronic;
-
-  /// No description provided for @veryGood.
-  ///
-  /// In en, this message translates to:
-  /// **'Very good'**
-  String get veryGood;
-
-  /// No description provided for @megapixels.
-  ///
-  /// In en, this message translates to:
-  /// **'megapixels'**
-  String get megapixels;
-
-  /// No description provided for @description.
-  ///
-  /// In en, this message translates to:
-  /// **'Description'**
-  String get description;
-
-  /// No description provided for @seller.
-  ///
-  /// In en, this message translates to:
-  /// **'Seller'**
-  String get seller;
-
-  /// No description provided for @relatedAds.
-  ///
-  /// In en, this message translates to:
-  /// **'Related Ads'**
-  String get relatedAds;
-
-  /// No description provided for @block.
-  ///
-  /// In en, this message translates to:
-  /// **'block'**
-  String get block;
-
-  /// No description provided for @report.
-  ///
-  /// In en, this message translates to:
-  /// **'Report'**
-  String get report;
-
-  /// No description provided for @articleAddedToFavorites.
-  ///
-  /// In en, this message translates to:
-  /// **'Article added to favorites!'**
-  String get articleAddedToFavorites;
-
-  /// No description provided for @offer.
-  ///
-  /// In en, this message translates to:
-  /// **'Offer'**
-  String get offer;
-
-  /// No description provided for @call.
-  ///
-  /// In en, this message translates to:
-  /// **'Call'**
-  String get call;
-
-  /// No description provided for @onSale.
-  ///
-  /// In en, this message translates to:
-  /// **'On sale'**
-  String get onSale;
+  /// **'Active'**
+  String get active;
 
   /// No description provided for @sold.
   ///
   /// In en, this message translates to:
   /// **'Sold'**
   String get sold;
-
-  /// No description provided for @theDealIsDone.
-  ///
-  /// In en, this message translates to:
-  /// **'The deal is done'**
-  String get theDealIsDone;
-
-  /// No description provided for @comments.
-  ///
-  /// In en, this message translates to:
-  /// **'Comments'**
-  String get comments;
-
-  /// No description provided for @writeAComment.
-  ///
-  /// In en, this message translates to:
-  /// **'Write a comment'**
-  String get writeAComment;
-
-  /// No description provided for @whatDidYouTalkAbout.
-  ///
-  /// In en, this message translates to:
-  /// **'What did you talk about?'**
-  String get whatDidYouTalkAbout;
-
-  /// No description provided for @didYouPurchaseTheItem.
-  ///
-  /// In en, this message translates to:
-  /// **'Did you purchase the item?'**
-  String get didYouPurchaseTheItem;
-
-  /// No description provided for @yes.
-  ///
-  /// In en, this message translates to:
-  /// **'Yes'**
-  String get yes;
-
-  /// No description provided for @no.
-  ///
-  /// In en, this message translates to:
-  /// **'No'**
-  String get no;
-
-  /// No description provided for @meeting.
-  ///
-  /// In en, this message translates to:
-  /// **'Meeting'**
-  String get meeting;
-
-  /// No description provided for @datingConvention.
-  ///
-  /// In en, this message translates to:
-  /// **'dating convention'**
-  String get datingConvention;
-
-  /// No description provided for @communicationByPhone.
-  ///
-  /// In en, this message translates to:
-  /// **'Communication by phone'**
-  String get communicationByPhone;
-
-  /// No description provided for @publish.
-  ///
-  /// In en, this message translates to:
-  /// **'Publish'**
-  String get publish;
-
-  /// No description provided for @noFavoritesAtTheMoment.
-  ///
-  /// In en, this message translates to:
-  /// **'No favorites at the moment.'**
-  String get noFavoritesAtTheMoment;
-
-  /// No description provided for @addArticlesToYourFavoritesToFindThemHere.
-  ///
-  /// In en, this message translates to:
-  /// **'Add articles to your favorites to find them here.'**
-  String get addArticlesToYourFavoritesToFindThemHere;
-
-  /// No description provided for @juin.
-  ///
-  /// In en, this message translates to:
-  /// **'juin'**
-  String get juin;
-
-  /// No description provided for @myProfile.
-  ///
-  /// In en, this message translates to:
-  /// **'My profile'**
-  String get myProfile;
 
   /// No description provided for @youHaveNoAds.
   ///
@@ -686,20 +344,20 @@ abstract class AppLocalizations {
   /// No description provided for @addAnAd.
   ///
   /// In en, this message translates to:
-  /// **'Add an ad'**
+  /// **' Add an ad'**
   String get addAnAd;
 
-  /// No description provided for @balanceGeneratedBySales.
+  /// No description provided for @salesHaveReported.
   ///
   /// In en, this message translates to:
-  /// **'Balance generated by sales'**
-  String get balanceGeneratedBySales;
+  /// **'Sales have reported'**
+  String get salesHaveReported;
 
-  /// No description provided for @myInformations.
+  /// No description provided for @myData.
   ///
   /// In en, this message translates to:
-  /// **'My informations'**
-  String get myInformations;
+  /// **'My data'**
+  String get myData;
 
   /// No description provided for @myComments.
   ///
@@ -707,11 +365,11 @@ abstract class AppLocalizations {
   /// **'My comments'**
   String get myComments;
 
-  /// No description provided for @fAQ.
+  /// No description provided for @faq.
   ///
   /// In en, this message translates to:
-  /// **'FAQ'**
-  String get fAQ;
+  /// **'Faq'**
+  String get faq;
 
   /// No description provided for @privacyPolicy.
   ///
@@ -725,28 +383,40 @@ abstract class AppLocalizations {
   /// **'Terms of use'**
   String get termsOfUse;
 
-  /// No description provided for @logOut.
+  /// No description provided for @disconnectFromTheAccount.
   ///
   /// In en, this message translates to:
-  /// **'Log out'**
-  String get logOut;
+  /// **'Disconnect from the account'**
+  String get disconnectFromTheAccount;
 
-  /// No description provided for @deleteMyAccount.
+  /// No description provided for @delProfile.
   ///
   /// In en, this message translates to:
-  /// **'Delete my account'**
-  String get deleteMyAccount;
+  /// **'Delete profile'**
+  String get delProfile;
 
-  /// No description provided for @appSettings.
+  /// No description provided for @onTheServiceOf.
   ///
   /// In en, this message translates to:
-  /// **'App settings'**
-  String get appSettings;
+  /// **'On the service of'**
+  String get onTheServiceOf;
+
+  /// No description provided for @charit.
+  ///
+  /// In en, this message translates to:
+  /// **'Charit'**
+  String get charit;
+
+  /// No description provided for @applicationSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Application settings'**
+  String get applicationSettings;
 
   /// No description provided for @notifications.
   ///
   /// In en, this message translates to:
-  /// **'notifications'**
+  /// **'Notifications'**
   String get notifications;
 
   /// No description provided for @language.
@@ -755,11 +425,17 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get language;
 
-  /// No description provided for @arabic.
+  /// No description provided for @fr.
   ///
   /// In en, this message translates to:
-  /// **'Arabic'**
-  String get arabic;
+  /// **'French'**
+  String get fr;
+
+  /// No description provided for @ar.
+  ///
+  /// In en, this message translates to:
+  /// **'Arab'**
+  String get ar;
 
   /// No description provided for @personalOffers.
   ///
@@ -767,131 +443,203 @@ abstract class AppLocalizations {
   /// **'Personal offers'**
   String get personalOffers;
 
-  /// No description provided for @selectedAds.
+  /// No description provided for @selectedProducts.
   ///
   /// In en, this message translates to:
-  /// **'Selected ads'**
-  String get selectedAds;
+  /// **'Selected products'**
+  String get selectedProducts;
 
-  /// No description provided for @accountCertification.
+  /// No description provided for @certify.
   ///
   /// In en, this message translates to:
-  /// **'Account certification'**
-  String get accountCertification;
+  /// **'Certify'**
+  String get certify;
 
-  /// No description provided for @takeAPictureOfYourselfHoldingAnIDCardNextToYourFaceLikeTheExampleBelow.
+  /// No description provided for @takeAphotoWith.
   ///
   /// In en, this message translates to:
-  /// **'Take a picture of yourself holding an ID card next to your face, like the example below.'**
-  String get takeAPictureOfYourselfHoldingAnIDCardNextToYourFaceLikeTheExampleBelow;
+  /// **'Take a photo with a identity card holding next to the person as seen on the example below.'**
+  String get takeAphotoWith;
 
-  /// No description provided for @uploadThePhotoInPNGOrJPEGFormatFromYourDevice.
+  /// No description provided for @downloadThePhoto.
   ///
   /// In en, this message translates to:
-  /// **'Upload the photo in PNG or JPEG format from your device.'**
-  String get uploadThePhotoInPNGOrJPEGFormatFromYourDevice;
+  /// **'Download the photo in PNG format, JPEG.'**
+  String get downloadThePhoto;
 
-  /// No description provided for @addPictures.
+  /// No description provided for @edit.
   ///
   /// In en, this message translates to:
-  /// **'Add pictures'**
-  String get addPictures;
+  /// **'Edit'**
+  String get edit;
 
-  /// No description provided for @statistics.
+  /// No description provided for @del.
   ///
   /// In en, this message translates to:
-  /// **'Statistics'**
-  String get statistics;
-
-  /// No description provided for @totalViews.
-  ///
-  /// In en, this message translates to:
-  /// **'Total views'**
-  String get totalViews;
-
-  /// No description provided for @viewingRate.
-  ///
-  /// In en, this message translates to:
-  /// **'Viewing rate'**
-  String get viewingRate;
-
-  /// No description provided for @numberOfFavorites.
-  ///
-  /// In en, this message translates to:
-  /// **'Number of favorites'**
-  String get numberOfFavorites;
-
-  /// No description provided for @numberOfInteractions.
-  ///
-  /// In en, this message translates to:
-  /// **'Number of interactions'**
-  String get numberOfInteractions;
-
-  /// No description provided for @onModeration.
-  ///
-  /// In en, this message translates to:
-  /// **'On moderation'**
-  String get onModeration;
-
-  /// No description provided for @contactUs.
-  ///
-  /// In en, this message translates to:
-  /// **'Contact us'**
-  String get contactUs;
-
-  /// No description provided for @writeToUs.
-  ///
-  /// In en, this message translates to:
-  /// **'write to us'**
-  String get writeToUs;
-
-  /// No description provided for @areYouSureYouWantToLogout.
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to logout'**
-  String get areYouSureYouWantToLogout;
-
-  /// No description provided for @byLoggingOutYouWillNoLongerBeAbleToViewYourFavoriteAdsReceiveNotificationsFromPotentialCustomersOrSellersOrAccessCertainFeaturesReservedForLoggedinUsers.
-  ///
-  /// In en, this message translates to:
-  /// **'By logging out, you will no longer be able to view your favorite ads, receive notifications from potential customers or sellers, or access certain features reserved for logged-in users.'**
-  String get byLoggingOutYouWillNoLongerBeAbleToViewYourFavoriteAdsReceiveNotificationsFromPotentialCustomersOrSellersOrAccessCertainFeaturesReservedForLoggedinUsers;
-
-  /// No description provided for @enterTheNameOfYourItem.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter the name of your item'**
-  String get enterTheNameOfYourItem;
-
-  /// No description provided for @photo.
-  ///
-  /// In en, this message translates to:
-  /// **'Photo'**
-  String get photo;
-
-  /// No description provided for @adType.
-  ///
-  /// In en, this message translates to:
-  /// **'Ad Type'**
-  String get adType;
-
-  /// No description provided for @nEw.
-  ///
-  /// In en, this message translates to:
-  /// **'New'**
-  String get nEw;
-
-  /// No description provided for @used.
-  ///
-  /// In en, this message translates to:
-  /// **'Used'**
-  String get used;
+  /// **'DELETE'**
+  String get del;
 
   /// No description provided for @features.
   ///
   /// In en, this message translates to:
   /// **'Features'**
   String get features;
+
+  /// No description provided for @typeOfProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Type of product'**
+  String get typeOfProduct;
+
+  /// No description provided for @productCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Product category'**
+  String get productCategory;
+
+  /// No description provided for @operatingSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Operating system'**
+  String get operatingSystem;
+
+  /// No description provided for @state.
+  ///
+  /// In en, this message translates to:
+  /// **'State'**
+  String get state;
+
+  /// No description provided for @diagonal.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagonal'**
+  String get diagonal;
+
+  /// No description provided for @tactile.
+  ///
+  /// In en, this message translates to:
+  /// **'Tactile'**
+  String get tactile;
+
+  /// No description provided for @integratedMemory.
+  ///
+  /// In en, this message translates to:
+  /// **'Integrated memory'**
+  String get integratedMemory;
+
+  /// No description provided for @shooting.
+  ///
+  /// In en, this message translates to:
+  /// **'Shooting'**
+  String get shooting;
+
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// No description provided for @board.
+  ///
+  /// In en, this message translates to:
+  /// **'Board'**
+  String get board;
+
+  /// No description provided for @electronic.
+  ///
+  /// In en, this message translates to:
+  /// **'Electronic'**
+  String get electronic;
+
+  /// No description provided for @ipados.
+  ///
+  /// In en, this message translates to:
+  /// **'ipados'**
+  String get ipados;
+
+  /// No description provided for @todayAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Today at'**
+  String get todayAt;
+
+  /// No description provided for @views.
+  ///
+  /// In en, this message translates to:
+  /// **'views'**
+  String get views;
+
+  /// No description provided for @statistical.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistical'**
+  String get statistical;
+
+  /// No description provided for @euismodAeneanSed.
+  ///
+  /// In en, this message translates to:
+  /// **'Euismod Aenean Sed?'**
+  String get euismodAeneanSed;
+
+  /// No description provided for @contactTheSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact the support'**
+  String get contactTheSupport;
+
+  /// No description provided for @writeWithSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Write with support'**
+  String get writeWithSupport;
+
+  /// No description provided for @doYouWant.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to go out?'**
+  String get doYouWant;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @loremipsum.
+  ///
+  /// In en, this message translates to:
+  /// **'Loremipsum'**
+  String get loremipsum;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **' No'**
+  String get no;
+
+  /// No description provided for @indicateTheName.
+  ///
+  /// In en, this message translates to:
+  /// **'Indicate the name'**
+  String get indicateTheName;
+
+  /// No description provided for @typeOfNews.
+  ///
+  /// In en, this message translates to:
+  /// **'Type of news'**
+  String get typeOfNews;
+
+  /// No description provided for @new_.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get new_;
+
+  /// No description provided for @price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
 
   /// No description provided for @color.
   ///
@@ -917,35 +665,281 @@ abstract class AppLocalizations {
   /// **'Rose gold'**
   String get roseGold;
 
-  /// No description provided for @spaceGray.
+  /// No description provided for @graySpace.
   ///
   /// In en, this message translates to:
-  /// **'space gray'**
-  String get spaceGray;
+  /// **'Gray space'**
+  String get graySpace;
 
-  /// No description provided for @publishTheAd.
+  /// No description provided for @theModerationOfThe.
   ///
   /// In en, this message translates to:
-  /// **'Publish the ad'**
-  String get publishTheAd;
+  /// **'The moderation of the advertisement is underway'**
+  String get theModerationOfThe;
 
-  /// No description provided for @yourAdIsBeingChecked.
+  /// No description provided for @doNotBlockThe.
   ///
   /// In en, this message translates to:
-  /// **'Your ad is being checked'**
-  String get yourAdIsBeingChecked;
+  /// **'Do not block the application during the treatment of your ad'**
+  String get doNotBlockThe;
 
-  /// No description provided for @pleaseDoNotLeaveTheAppWhileWeAreProcessingYourAd.
+  /// No description provided for @filters.
   ///
   /// In en, this message translates to:
-  /// **'Please do not leave the app while we are processing your ad.'**
-  String get pleaseDoNotLeaveTheAppWhileWeAreProcessingYourAd;
+  /// **' Filters'**
+  String get filters;
 
-  /// No description provided for @edit.
+  /// No description provided for @resetEverything.
   ///
   /// In en, this message translates to:
-  /// **'Edit'**
-  String get edit;
+  /// **'Reset everything'**
+  String get resetEverything;
+
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// No description provided for @onlyAhighClassification.
+  ///
+  /// In en, this message translates to:
+  /// **'Only a high classification'**
+  String get onlyAhighClassification;
+
+  /// No description provided for @onlyWithReduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Only with reduction'**
+  String get onlyWithReduction;
+
+  /// No description provided for @tacitly.
+  ///
+  /// In en, this message translates to:
+  /// **'Tacitly'**
+  String get tacitly;
+
+  /// No description provided for @byDate.
+  ///
+  /// In en, this message translates to:
+  /// **'By date'**
+  String get byDate;
+
+  /// No description provided for @firstCheap.
+  ///
+  /// In en, this message translates to:
+  /// **'First cheap'**
+  String get firstCheap;
+
+  /// No description provided for @firstDear.
+  ///
+  /// In en, this message translates to:
+  /// **'First dear'**
+  String get firstDear;
+
+  /// No description provided for @outOfDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of distance'**
+  String get outOfDistance;
+
+  /// No description provided for @realEstate.
+  ///
+  /// In en, this message translates to:
+  /// **'Real estate'**
+  String get realEstate;
+
+  /// No description provided for @car.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get car;
+
+  /// No description provided for @householdItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Household items'**
+  String get householdItems;
+
+  /// No description provided for @splash.
+  ///
+  /// In en, this message translates to:
+  /// **'Splash'**
+  String get splash;
+
+  /// No description provided for @garment.
+  ///
+  /// In en, this message translates to:
+  /// **'Garment'**
+  String get garment;
+
+  /// No description provided for @houseAndleisure.
+  ///
+  /// In en, this message translates to:
+  /// **'House and leisure'**
+  String get houseAndleisure;
+
+  /// No description provided for @animals.
+  ///
+  /// In en, this message translates to:
+  /// **'Animals'**
+  String get animals;
+
+  /// No description provided for @jobsAndServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Jobs and services'**
+  String get jobsAndServices;
+
+  /// No description provided for @neighborhood.
+  ///
+  /// In en, this message translates to:
+  /// **'Neighborhood'**
+  String get neighborhood;
+
+  /// No description provided for @researchArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Research area'**
+  String get researchArea;
+
+  /// No description provided for @toBlock.
+  ///
+  /// In en, this message translates to:
+  /// **' To block'**
+  String get toBlock;
+
+  /// No description provided for @report.
+  ///
+  /// In en, this message translates to:
+  /// **' Report'**
+  String get report;
+
+  /// No description provided for @productAddedToFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Product added to favorites!'**
+  String get productAddedToFavorites;
+
+  /// No description provided for @toWrite.
+  ///
+  /// In en, this message translates to:
+  /// **'To write'**
+  String get toWrite;
+
+  /// No description provided for @toCall.
+  ///
+  /// In en, this message translates to:
+  /// **'To call'**
+  String get toCall;
+
+  /// No description provided for @onServiceSince.
+  ///
+  /// In en, this message translates to:
+  /// **'On service since'**
+  String get onServiceSince;
+
+  /// No description provided for @comments.
+  ///
+  /// In en, this message translates to:
+  /// **'comments'**
+  String get comments;
+
+  /// No description provided for @theTransactionTookPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'The transaction took place'**
+  String get theTransactionTookPlace;
+
+  /// No description provided for @whatDidYouTalkAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'What did you talk about?'**
+  String get whatDidYouTalkAbout;
+
+  /// No description provided for @haveYouBoughtTheGoods.
+  ///
+  /// In en, this message translates to:
+  /// **' Have you bought the goods?'**
+  String get haveYouBoughtTheGoods;
+
+  /// No description provided for @howDidItEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'How did it end?'**
+  String get howDidItEnd;
+
+  /// No description provided for @phoneCommunication.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone communication'**
+  String get phoneCommunication;
+
+  /// No description provided for @meetingAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'Meeting agreement'**
+  String get meetingAgreement;
+
+  /// No description provided for @toWriteAcomment.
+  ///
+  /// In en, this message translates to:
+  /// **'To write a comment'**
+  String get toWriteAcomment;
+
+  /// No description provided for @hello.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome!'**
+  String get hello;
+
+  /// No description provided for @used.
+  ///
+  /// In en, this message translates to:
+  /// **'Used'**
+  String get used;
+
+  /// No description provided for @passwordOrEmailEnteredIncorrectly.
+  ///
+  /// In en, this message translates to:
+  /// **'Not of pass or badly seized email'**
+  String get passwordOrEmailEnteredIncorrectly;
+
+  /// No description provided for @photo.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get photo;
+
+  /// No description provided for @popularResearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular research'**
+  String get popularResearch;
+
+  /// No description provided for @researchHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Research history'**
+  String get researchHistory;
+
+  /// No description provided for @toClean.
+  ///
+  /// In en, this message translates to:
+  /// **'To clean'**
+  String get toClean;
+
+  /// No description provided for @empty.
+  ///
+  /// In en, this message translates to:
+  /// **'be empty'**
+  String get empty;
+
+  /// No description provided for @seller.
+  ///
+  /// In en, this message translates to:
+  /// **'seller'**
+  String get seller;
 
   /// No description provided for @offrirVotrePrix.
   ///
@@ -953,17 +947,107 @@ abstract class AppLocalizations {
   /// **'Offer your price'**
   String get offrirVotrePrix;
 
-  /// No description provided for @passwordOrEmailEnteredIncorrectly.
+  /// No description provided for @addPictures.
   ///
   /// In en, this message translates to:
-  /// **'Password or email entered incorrectly'**
-  String get passwordOrEmailEnteredIncorrectly;
+  /// **'Add pictures'**
+  String get addPictures;
 
-  /// No description provided for @empty.
+  /// No description provided for @afterwards.
   ///
   /// In en, this message translates to:
-  /// **'Empty'**
-  String get empty;
+  /// **'Afterwards'**
+  String get afterwards;
+
+  /// No description provided for @loremLobortisMi.
+  ///
+  /// In en, this message translates to:
+  /// **'Lorem Lobortis Mi Ornare Nisi Tellus Sed Aliquam Accidental Nis'**
+  String get loremLobortisMi;
+
+  /// No description provided for @errorReviewOrEnterOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Error! Review or enter other information.'**
+  String get errorReviewOrEnterOther;
+
+  /// No description provided for @jacceptsTheConditionsForTheilization.
+  ///
+  /// In en, this message translates to:
+  /// **'Jaccepts the conditions for theilization and confirms that Jaccepte the Privacy Policy.'**
+  String get jacceptsTheConditionsForTheilization;
+
+  /// No description provided for @regg.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get regg;
+
+  /// No description provided for @entrance.
+  ///
+  /// In en, this message translates to:
+  /// **'Entrance'**
+  String get entrance;
+
+  /// No description provided for @continue_.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continue_;
+
+  /// No description provided for @information.
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get information;
+
+  /// No description provided for @title.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get title;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// No description provided for @place.
+  ///
+  /// In en, this message translates to:
+  /// **'place'**
+  String get place;
+
+  /// No description provided for @popularRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular requests'**
+  String get popularRequests;
+
+  /// No description provided for @cancelation.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelation'**
+  String get cancelation;
+
+  /// No description provided for @withSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'With success'**
+  String get withSuccess;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @placeApplicationSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Place application settings'**
+  String get placeApplicationSettings;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

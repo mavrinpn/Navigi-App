@@ -338,7 +338,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             RepositoryProvider.of<MessengerRepository>(context).selectChat(announcement: state.data);
                             Navigator.pushNamed(context, AppRoutesNames.chat);
                           },
-                          text: AppLocalizations.of(context)!.write,
+                          text: AppLocalizations.of(context)!.toWrite,
                           styleText: AppTypography.font14white,
                           icon: SvgPicture.asset(
                             'Assets/icons/email.svg',

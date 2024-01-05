@@ -57,7 +57,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
                   width: 14,
                 ),
                 Text(
-                  localizations.nEw,
+                  localizations.new_,
                   style: AppTypography.font16black
                       .copyWith(fontWeight: FontWeight.w400),
                 )
@@ -88,7 +88,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
       ),
       floatingActionButton: CustomTextButton.orangeContinue(
         width: width - 30,
-        text: 'Continuer',
+        text: localizations.continue_,
         callback: () {
             repository.setType(!isBy);
             Navigator.pushNamed(context, '/create_options_screen');

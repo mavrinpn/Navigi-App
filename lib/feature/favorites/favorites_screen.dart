@@ -56,7 +56,7 @@ class _FavoritesScreen extends State<FavoritesScreen> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Favoris', style: AppTypography.font20black),
+                  Text(localizations.favourites, style: AppTypography.font20black),
                 ],
               ),
             ),
@@ -81,12 +81,12 @@ class _FavoritesScreen extends State<FavoritesScreen> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Text(
-                                    'Vous n\'aver pas de produits sélectionnés'),
+                                Text(
+                                    localizations.dontHaveProducts),
                                 const SizedBox(height: 14),
                                 CustomTextButton.orangeContinue(
                                     callback: () {},
-                                    text: 'aller au répertoire',
+                                    text: localizations.goRepertoire,
                                     active: true)
                               ],
                             ),

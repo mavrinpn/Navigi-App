@@ -115,7 +115,7 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
                     height: 5,
                   ),
                   Text(
-                    'Sur le service de ${widget.user.atService}',
+                    '${localizations.onTheServiceOf} ${widget.user.atService}',
                     style: AppTypography.font12lightGray
                         .copyWith(fontWeight: FontWeight.w400),
                   ),

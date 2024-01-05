@@ -66,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(localizations.myProfile, style: AppTypography.font20black),
+            Text(localizations.profile, style: AppTypography.font20black),
             InkWell(
               onTap: () {
                 Navigator.pushNamed(context, AppRoutesNames.settings);
@@ -110,7 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               Navigator.pushNamed(
                                   context, AppRoutesNames.announcementCreatingCategory);
                             },
-                            text: AppLocalizations.of(context)!.addAnnouncement,
+                            text: AppLocalizations.of(context)!.addAnAd,
                             styleText: AppTypography.font14white,
                             active: true,
                             icon: const Icon(
@@ -142,7 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 tabs: [
                                   Tab(
                                     child: Text(
-                                        'Actif (${creatorState is CreatorSuccessState ? creatorState.available.length : 0})',
+                                        '${localizations.active} (${creatorState is CreatorSuccessState ? creatorState.available.length : 0})',
                                         style: AppTypography.font24black
                                             .copyWith(
                                                 fontSize: 14,
@@ -152,7 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   ),
                                   Tab(
                                     child: Text(
-                                        'Vendu (${creatorState is CreatorSuccessState ? creatorState.sold.length : 0})',
+                                        '${localizations.sold} (${creatorState is CreatorSuccessState ? creatorState.sold.length : 0})',
                                         style: AppTypography.font24black
                                             .copyWith(
                                                 fontSize: 14,
@@ -170,12 +170,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ),
                         if (creatorState is CreatorSuccessState) ...[
                           getGridHeight() == 100
-                              ? const SliverPadding(
+                              ? SliverPadding(
                             padding: EdgeInsets.symmetric(vertical: 40),
                                   sliver: SliverToBoxAdapter(
                                     child: Center(
                                       child: Text(
-                                        'Vous n\'avez pas d\'annonces',
+                                        localizations.youHaveNoAds,
                                         style: TextStyle(
                                           color: Color(0xFF9B9FAA),
                                           fontSize: 14,
@@ -210,7 +210,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ],
                         SliverToBoxAdapter(
                           child: RowButton(
-                            title: localizations.myInformations,
+                            title: localizations.myData,
                             icon: 'Assets/icons/profile_settings.svg',
                             onTap: () {
                               Navigator.pushNamed(
@@ -227,7 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ),
                         SliverToBoxAdapter(
                           child: RowButton(
-                            title: localizations.fAQ,
+                            title: localizations.faq,
                             icon: 'Assets/icons/faq.svg',
                             onTap: () {},
                           ),
@@ -241,7 +241,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ),
                         SliverToBoxAdapter(
                           child: RowButton(
-                            title: 'Conditions dutilisation',
+                            title: localizations.termsOfUse,
                             icon: 'Assets/icons/terms_of_use.svg',
                             onTap: () {},
                           ),
@@ -254,7 +254,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         SliverToBoxAdapter(
                           child: CustomElevatedButton(
                               icon: "Assets/icons/exit.svg",
-                              title: "Se déconnecter du compte",
+                              title: localizations.disconnectFromTheAccount,
                               onPress: () {
                                 BlocProvider.of<AuthCubit>(context).logout();
                               },

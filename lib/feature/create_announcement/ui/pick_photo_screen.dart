@@ -113,7 +113,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
             ? CustomTextButton.orangeContinue(
             active: true,
                 width: MediaQuery.of(context).size.width - 30,
-                text: 'Continuer',
+                text: localizations.continue_,
                 callback: () {
                   setState(() {
                     repository.setImages(repository.images);

@@ -98,7 +98,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 width: 13,
               ),
               Text(
-                localizations.myInformations,
+                localizations.myData,
                 style: AppTypography.font20black,
               ),
             ],
@@ -117,7 +117,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               }
               if (state is EditSuccessState) {
                 CustomSnackBar.showSnackBarWithIcon(
-                    context, 'Avec succès', 'Assets/icons/heart_out_line.svg');
+                    context, localizations.withSuccess, 'Assets/icons/heart_out_line.svg');
               } else if (state is EditFailState) {
                 CustomSnackBar.showSnackBar(context, 'Essayez plus tard');
               }
@@ -203,7 +203,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             BlocProvider.of<UserCubit>(context).editProfile(
                                 name: changedName, phone: phone, bytes: bytes);
                           },
-                          text: 'Enregistrer',
+                          text: localizations.save,
                           styleText: AppTypography.font14white
                               .copyWith(fontWeight: FontWeight.w600),
                           active: true,

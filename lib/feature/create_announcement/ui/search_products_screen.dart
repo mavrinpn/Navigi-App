@@ -50,7 +50,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
         backgroundColor: AppColors.empty,
         elevation: 0,
         title: Text(
-          'Indiquez le nom',
+          localizations.indicateTheName,
           style: AppTypography.font20black,
         ),
       ),
@@ -76,7 +76,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 26, 0, 13),
               child: Text(
-                'Requêtes populaires',
+                localizations.popularRequests,
                 style: AppTypography.font16black.copyWith(fontSize: 14),
               ),
             ),
@@ -120,7 +120,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
       ),
       floatingActionButton: CustomTextButton.orangeContinue(
         width: width - 30,
-        text: 'Continuer',
+        text: localizations.continue_,
         callback: () {
           if (isTouch) {
             creatingAnnouncementManager.setItem(

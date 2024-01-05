@@ -5,328 +5,163 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get addAnnouncement => 'Ajouter une annonce';
+  String get connectToDiscoverFeatures => 'Connectez-vous pour découvrir toutes nos fonctionnalités.';
 
   @override
-  String get hello => 'Bienvenue!';
+  String get enter => 'Entrer';
 
   @override
-  String get logIn => 'Connectez-vous pour découvrir toutes nos fonctionnalités.';
+  String get noAccount => 'Pas de compte? ';
 
   @override
-  String get next => 'Entrer';
+  String get register => 'Inscrivez-vous!';
 
   @override
-  String get dontHaveAnAccount => 'Pas de compte? ';
+  String get enterPassword => 'Entrez le mot de passe';
 
   @override
-  String get createNewAccount => 'Inscrivez-vous!';
+  String get forgotPassword => 'Mot de passe oublié?';
 
   @override
-  String get enterThePassword => 'Entrez le mot de passe';
+  String get enterPhone => 'Saisissez le code de vérification';
 
   @override
-  String get forgotThePassword => 'Mot de passe oublié?';
-
-  @override
-  String get enterThePhoneNumberAssociatedWithYourAccount => 'Entrez le numéro télephone associée à votre compte';
-
-  @override
-  String get enterVerificationCode => 'Saisissez le code de vérification';
-
-  @override
-  String get didntReceiveTheCode => 'Vous n\'avez pas reçu le code? ';
+  String get haventRecieveCode => 'Vous n\'avez pas reçu le code? ';
 
   @override
   String get sendAgain => 'Envoyer à nouveau';
 
   @override
-  String get resetPassword => 'Réinitialisation du mot de passe';
+  String get newPassword => 'Saisissez un nouveau mot de passe';
 
   @override
-  String get enterTheEmailAddressAssociatedWithYourAccount => 'Entrez l’adresse e-mail associée à votre compte';
+  String get yourName => 'Votre nom';
 
   @override
-  String get viewAll => 'Regarder tout';
+  String get createPassword => 'Trouver un mot de passe';
+
+  @override
+  String get repeatePassword => 'Répétez le mot de passe';
+
+  @override
+  String get acceptPolicy => 'J\'accepte les conditions d\'utilisation et confirme que j\'accepte la politique de confidentialité.';
+
+  @override
+  String get errorIncorrectInfo => 'Erreur! Réessayez ou entrez d\'autres informations.';
+
+  @override
+  String get registration => 'Enregistrement';
+
+  @override
+  String get confirmation => 'Confirmation';
 
   @override
   String get categories => 'Catégories';
 
   @override
-  String get realEstate => 'Immobilier';
+  String get view => 'Regarder';
 
   @override
-  String get electronics => 'Électronique';
-
-  @override
-  String get homeAppliance => 'Électroménager';
-
-  @override
-  String get vehicles => 'Véhicules';
-
-  @override
-  String get accessoriesAndRepairs => 'Accessories and Repairs';
-
-  @override
-  String get clothes => 'Vêtements';
-
-  @override
-  String get homeAndLeisure => 'Maison et loisirs';
-
-  @override
-  String get animals => 'Animaux';
-
-  @override
-  String get jobsAndServices => 'Emplois et services';
+  String get researchInAlgiers => 'Recherche a Alger';
 
   @override
   String get recommendations => 'Recommandations';
 
   @override
-  String get homePage => 'Accueil';
-
-  @override
-  String get messages => 'Messages';
-
-  @override
-  String get favorites => 'Favoris';
-
-  @override
-  String get trademarkSearch => 'Recherche de marque';
-
-  @override
-  String get jobs => 'Emplois';
-
-  @override
-  String get services => 'Services';
-
-  @override
-  String get lookingForEmployees => 'À la recherche d\'employés';
-
-  @override
-  String get workplace => 'Poste';
-
-  @override
-  String get salary => 'Salaire';
-
-  @override
-  String get localisation => 'Localisation';
-
-  @override
-  String get searchArea => 'Zone de recherche';
-
-  @override
-  String get km => 'km';
-
-  @override
-  String get driver => 'Сonducteur';
-
-  @override
-  String get dZDmonth => 'DZD/mois';
-
-  @override
-  String get withPicture => 'Avec photo';
-
-  @override
-  String get sort => 'Trier';
-
-  @override
-  String get filters => 'Filtres';
-
-  @override
-  String get price => 'Prix';
-
-  @override
-  String get sortBy => 'Trier par';
-
-  @override
-  String get onlyAHighRanking => 'Seul un classement élevé';
-
-  @override
-  String get onlyWithReduction => 'Seulement avec réduction';
-
-  @override
-  String get random => 'Aléatoire';
-
-  @override
-  String get ascendingPrice => 'Prix croissant';
-
-  @override
-  String get decreasingPrice => 'Prix décroissant';
-
-  @override
-  String get distance => 'Distance';
+  String get viewAll => 'Regarder tout';
 
   @override
   String get city => 'Ville';
 
   @override
-  String get theMerie => 'La merie';
+  String get kmOfYou => 'km de vous)';
 
   @override
-  String get show1000Ads => 'Afficher 1000 annonces';
+  String get homePage => 'Page d\'accueil';
 
   @override
-  String get searchInAlgiers => 'Search in Algiers';
+  String get messages => 'Messages';
 
   @override
-  String get todayAt1825 => 'Aujourd\'hui à 18:25';
+  String get favourites => 'Favoris';
 
   @override
-  String get views => 'vues';
+  String get profile => 'Mon profil';
 
   @override
-  String get write => 'Écrire';
+  String get showAll => 'Afficher toutes les offres ';
 
   @override
-  String get makeAnOffer => 'Faire une offre';
+  String get searchBrand => 'Recherche de marque';
 
   @override
-  String get typeOfProduct => 'Type de produit';
+  String get done => 'Ça y est';
 
   @override
-  String get category => 'Catégorie';
+  String get location => 'Localisation';
 
   @override
-  String get operatingSystem => 'Système d\'exploitation';
+  String get searchZone => 'Zone de recherche';
 
   @override
-  String get condition => 'État';
+  String get displayAds => 'Afficher annonces';
 
   @override
-  String get diagonal => 'Diagonale';
+  String get withPicture => 'Avec photo';
 
   @override
-  String get touch => 'Tactile';
+  String get sort => 'Triage';
 
   @override
-  String get builtinMemory => 'Mémoire intégrée';
+  String get dontHaveProducts => 'Vous n\'avez pas de produits sélectionnés';
 
   @override
-  String get wiFi => 'Wi-Fi';
+  String get goRepertoire => 'aller au répertoire';
 
   @override
-  String get camera => 'Prise de vue';
-
-  @override
-  String get tablet => 'Tablette';
-
-  @override
-  String get electronic => 'Électronique';
-
-  @override
-  String get veryGood => 'Très bon';
-
-  @override
-  String get megapixels => 'mégapixels';
-
-  @override
-  String get description => 'Description';
-
-  @override
-  String get seller => 'Le Vendeur';
-
-  @override
-  String get relatedAds => 'Annonces connexes';
-
-  @override
-  String get block => 'Bloquer';
-
-  @override
-  String get report => 'Signaler';
-
-  @override
-  String get articleAddedToFavorites => 'Article ajouté aux favoris !';
-
-  @override
-  String get offer => 'Proposer';
-
-  @override
-  String get call => 'Appeler';
-
-  @override
-  String get onSale => 'En vente';
+  String get active => 'Actif ';
 
   @override
   String get sold => 'Vendu';
 
   @override
-  String get theDealIsDone => 'La transaction a eu lieu';
-
-  @override
-  String get comments => ' commentaires';
-
-  @override
-  String get writeAComment => 'Écrire un commentaire';
-
-  @override
-  String get whatDidYouTalkAbout => 'De quoi avez-vous parlé?';
-
-  @override
-  String get didYouPurchaseTheItem => 'Avez-vous acheté l’article ?';
-
-  @override
-  String get yes => 'Oui';
-
-  @override
-  String get no => 'Non';
-
-  @override
-  String get meeting => 'Rencontre';
-
-  @override
-  String get datingConvention => 'Convention de rencontre';
-
-  @override
-  String get communicationByPhone => 'Communication par téléphone';
-
-  @override
-  String get publish => 'Publier';
-
-  @override
-  String get noFavoritesAtTheMoment => 'Aucun favori pour le moment.';
-
-  @override
-  String get addArticlesToYourFavoritesToFindThemHere => 'Ajoutez des articles à vos favoris pour les retrouver ici.';
-
-  @override
-  String get juin => 'juin ';
-
-  @override
-  String get myProfile => 'Mon profil';
-
-  @override
   String get youHaveNoAds => 'Vous n\'avez pas d\'annonces';
 
   @override
-  String get addAnAd => 'Ajouter une annonce';
+  String get addAnAd => ' Ajouter une annonce';
 
   @override
-  String get balanceGeneratedBySales => 'Solde généré par les ventes';
+  String get salesHaveReported => 'Les ventes vous ont rapporté';
 
   @override
-  String get myInformations => 'Mes données';
+  String get myData => 'Mes données';
 
   @override
   String get myComments => 'Mes commentaires';
 
   @override
-  String get fAQ => 'FAQ';
+  String get faq => 'FAQ';
 
   @override
   String get privacyPolicy => 'Politique de confidentialité';
 
   @override
-  String get termsOfUse => 'Conditions d\'utilisation';
+  String get termsOfUse => 'Conditions dutilisation';
 
   @override
-  String get logOut => 'Me déconnecter';
+  String get disconnectFromTheAccount => 'Se déconnecter du compte';
 
   @override
-  String get deleteMyAccount => 'Supprimer mon profil';
+  String get delProfile => 'Supprimer le profil';
 
   @override
-  String get appSettings => 'Paramètres de l\'application';
+  String get onTheServiceOf => 'Sur le service de';
+
+  @override
+  String get charit => 'Se cértifier';
+
+  @override
+  String get applicationSettings => 'Paramètres de l\'application';
 
   @override
   String get notifications => 'Notifications';
@@ -335,73 +170,112 @@ class AppLocalizationsFr extends AppLocalizations {
   String get language => 'Langue';
 
   @override
-  String get arabic => 'Arabe';
+  String get fr => 'Français';
+
+  @override
+  String get ar => 'Arabe';
 
   @override
   String get personalOffers => 'Offres personnelles';
 
   @override
-  String get selectedAds => 'Produits sélectionnés';
+  String get selectedProducts => 'Produits sélectionnés';
 
   @override
-  String get accountCertification => 'Certification du compte';
+  String get certify => 'Passer la certification';
 
   @override
-  String get takeAPictureOfYourselfHoldingAnIDCardNextToYourFaceLikeTheExampleBelow => 'Prenez une photo de vous tenant une carte d\'identité à côté de votre visage, comme l\'exemple ci-dessous.';
+  String get takeAphotoWith => 'Prenez une photo avec une carte de\'identité tenant à côté de la personne comme on le voit sur l\'example ci-dessous.';
 
   @override
-  String get uploadThePhotoInPNGOrJPEGFormatFromYourDevice => 'Téléversez la photo au format PNG ou JPEG depuis votre appareil.';
+  String get downloadThePhoto => 'Téléchargez la photo au format PNG, jpeg.';
 
   @override
-  String get addPictures => 'Ajouter des photos';
+  String get edit => 'Éditer';
 
   @override
-  String get statistics => 'Statistique';
-
-  @override
-  String get totalViews => 'Vues totales';
-
-  @override
-  String get viewingRate => 'Taux de visualisation';
-
-  @override
-  String get numberOfFavorites => 'Nombre de favoris';
-
-  @override
-  String get numberOfInteractions => 'Nombre d\'interaction';
-
-  @override
-  String get onModeration => 'Sur modération';
-
-  @override
-  String get contactUs => 'Contacter le support';
-
-  @override
-  String get writeToUs => 'Écrire au support';
-
-  @override
-  String get areYouSureYouWantToLogout => 'Êtes-vous sûr(e) de vouloir vous déconnecter';
-
-  @override
-  String get byLoggingOutYouWillNoLongerBeAbleToViewYourFavoriteAdsReceiveNotificationsFromPotentialCustomersOrSellersOrAccessCertainFeaturesReservedForLoggedinUsers => 'En vous déconnectant, vous ne pourrez plus consulter vos annonces préférées, recevoir des notifications des potentiels clients ou vendeurs, ni accéder à certaines fonctionnalités réservées aux utilisateurs connectés. Vous pouvez toujours vous reconnecter plus tard pour profiter pleinement de toutes les fonctionnalités de l\'application.';
-
-  @override
-  String get enterTheNameOfYourItem => 'Saisissez le nom de votre article';
-
-  @override
-  String get photo => 'Photo';
-
-  @override
-  String get adType => 'Ad Type';
-
-  @override
-  String get nEw => 'Nouveau';
-
-  @override
-  String get used => 'Utilisé';
+  String get del => 'Supprimer';
 
   @override
   String get features => 'Caractéristiques';
+
+  @override
+  String get typeOfProduct => 'Type de produit';
+
+  @override
+  String get productCategory => 'Catégorie de produit';
+
+  @override
+  String get operatingSystem => 'Système d\'exploitation';
+
+  @override
+  String get state => 'État';
+
+  @override
+  String get diagonal => 'Diagonale';
+
+  @override
+  String get tactile => 'Tactile';
+
+  @override
+  String get integratedMemory => 'Mémoire intégrée';
+
+  @override
+  String get shooting => 'Prise de vue';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get board => 'Planchette';
+
+  @override
+  String get electronic => 'Électronique';
+
+  @override
+  String get ipados => 'iPadOS';
+
+  @override
+  String get todayAt => 'Aujourd\'hui à ';
+
+  @override
+  String get views => 'vues';
+
+  @override
+  String get statistical => 'Statistique';
+
+  @override
+  String get euismodAeneanSed => 'Euismod aenean sed?';
+
+  @override
+  String get contactTheSupport => 'Contacter le support';
+
+  @override
+  String get writeWithSupport => 'Écrire au support';
+
+  @override
+  String get doYouWant => 'Vous voulez sortir?';
+
+  @override
+  String get yes => 'Oui';
+
+  @override
+  String get loremipsum => 'Loremipsum';
+
+  @override
+  String get no => ' Non';
+
+  @override
+  String get indicateTheName => 'Indiquez le nom';
+
+  @override
+  String get typeOfNews => 'Type d\'annonce';
+
+  @override
+  String get new_ => 'Nouveau';
+
+  @override
+  String get price => 'Prix';
 
   @override
   String get color => 'Couleur';
@@ -416,26 +290,194 @@ class AppLocalizationsFr extends AppLocalizations {
   String get roseGold => 'Or rose';
 
   @override
-  String get spaceGray => 'Espace gris';
+  String get graySpace => 'Espace gris';
 
   @override
-  String get publishTheAd => 'Publier l’annonce';
+  String get theModerationOfThe => 'La modération de l\'annonce est en cours';
 
   @override
-  String get yourAdIsBeingChecked => 'Votre annonce est en cours de vérification';
+  String get doNotBlockThe => 'Ne bloquez pas l\'application pendant le traitement de votre annonce';
 
   @override
-  String get pleaseDoNotLeaveTheAppWhileWeAreProcessingYourAd => 'Veuillez ne pas quitter l\'application pendant que nous traitons votre annonce.';
+  String get filters => ' Filtres';
 
   @override
-  String get edit => 'Éditer';
+  String get resetEverything => 'Réinitialiser tout';
 
   @override
-  String get offrirVotrePrix => 'Offrir votre prix';
+  String get category => 'Catégorie';
+
+  @override
+  String get onlyAhighClassification => 'Seul un classement élevé';
+
+  @override
+  String get onlyWithReduction => 'Seulement avec réduction';
+
+  @override
+  String get tacitly => 'Tacitement';
+
+  @override
+  String get byDate => 'Par date';
+
+  @override
+  String get firstCheap => 'D\'abord pas cher';
+
+  @override
+  String get firstDear => 'D\'abord cher';
+
+  @override
+  String get outOfDistance => 'Par distance';
+
+  @override
+  String get realEstate => 'Immobilier';
+
+  @override
+  String get car => 'Auto';
+
+  @override
+  String get householdItems => 'Articles ménagers';
+
+  @override
+  String get splash => 'Rechanges';
+
+  @override
+  String get garment => 'Vêtement';
+
+  @override
+  String get houseAndleisure => 'Maison et loisirs';
+
+  @override
+  String get animals => 'Animaux';
+
+  @override
+  String get jobsAndServices => 'Emplois et services';
+
+  @override
+  String get neighborhood => 'Quartier';
+
+  @override
+  String get researchArea => 'Zone de recherche';
+
+  @override
+  String get toBlock => ' Bloquer';
+
+  @override
+  String get report => ' Signaler';
+
+  @override
+  String get productAddedToFavorites => 'Produit ajouté aux favoris!';
+
+  @override
+  String get toWrite => 'Écrire';
+
+  @override
+  String get toCall => 'Appeler';
+
+  @override
+  String get onServiceSince => 'Sur le service depuis ';
+
+  @override
+  String get comments => 'commentaires';
+
+  @override
+  String get theTransactionTookPlace => 'La transaction a eu lieu';
+
+  @override
+  String get whatDidYouTalkAbout => 'De quoi avez-vous parlé?';
+
+  @override
+  String get haveYouBoughtTheGoods => ' Avez-vous acheté la marchandise?';
+
+  @override
+  String get howDidItEnd => 'Comment ça s\'est terminé?';
+
+  @override
+  String get phoneCommunication => 'Communication par téléphone';
+
+  @override
+  String get meetingAgreement => 'Convention de rencontre';
+
+  @override
+  String get toWriteAcomment => 'Écrire un commentaire';
+
+  @override
+  String get hello => 'Bienvenue!';
+
+  @override
+  String get used => 'Utilisé';
 
   @override
   String get passwordOrEmailEnteredIncorrectly => 'Not de passe ou email mal saisi';
 
   @override
+  String get photo => 'Photo';
+
+  @override
+  String get popularResearch => 'Recherches populaires';
+
+  @override
+  String get researchHistory => 'Historique des recherches';
+
+  @override
+  String get toClean => 'Nettoyer';
+
+  @override
   String get empty => 'être vide';
+
+  @override
+  String get seller => 'le Vendeur';
+
+  @override
+  String get offrirVotrePrix => 'Offrir votre prix';
+
+  @override
+  String get addPictures => 'Ajouter des photos';
+
+  @override
+  String get afterwards => 'Ensuite';
+
+  @override
+  String get loremLobortisMi => 'Lorem lobortis mi ornare nisi tellus sed aliquam accuornare nis';
+
+  @override
+  String get errorReviewOrEnterOther => 'Erreur! Réessayez ou entrez dautres informations.';
+
+  @override
+  String get jacceptsTheConditionsForTheilization => 'Jaccepte les conditions dutilisation et confirme que jaccepte la politique de confidentialité.';
+
+  @override
+  String get regg => 'Se faire enregistrer';
+
+  @override
+  String get entrance => 'Entrée';
+
+  @override
+  String get continue_ => 'Continuer';
+
+  @override
+  String get information => 'Informations';
+
+  @override
+  String get title => 'Titre';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get place => 'lieu';
+
+  @override
+  String get popularRequests => 'Requêtes populaires';
+
+  @override
+  String get cancelation => 'Annulation';
+
+  @override
+  String get withSuccess => 'Avec succès';
+
+  @override
+  String get save => 'Enregistrer';
+
+  @override
+  String get placeApplicationSettings => 'Paramètres de l\'application place';
 }
