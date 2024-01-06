@@ -105,8 +105,8 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                     child: Text('ниче не найдено'),
                   );
                 } else if (state is SearchFailState) {
-                  return const Center(
-                    child: Text('ошибка'),
+                  return Center(
+                    child: Text(localizations.errorReviewOrEnterOther),
                   );
                 } else {
                   return Center(

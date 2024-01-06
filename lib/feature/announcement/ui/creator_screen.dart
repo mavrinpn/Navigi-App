@@ -7,6 +7,7 @@ import 'package:smart/feature/announcement/ui/widgets/tabs.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
+import '../../../localization/app_localizations.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/accuont/account_medium_info.dart';
@@ -35,7 +36,13 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
 
   @override
   Widget build(BuildContext context) {
+
+    final localizations = AppLocalizations.of(context)!;
+
     Widget buildAnnouncementsGrid(CreatorSuccessState state) {
+
+
+
       return SliverGrid(
           delegate: SliverChildBuilderDelegate(
             (context, index) => Container(
@@ -109,7 +116,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                 SliverToBoxAdapter(
                   child: CustomTextButton.withIcon(
                     callback: () {},
-                    text: 'Écrire',
+                    text: localizations.toWrite,
                     styleText: AppTypography.font14white,
                     active: true,
                     icon: const Icon(
@@ -127,7 +134,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                 SliverToBoxAdapter(
                   child: CustomTextButton.withIcon(
                     callback: () {},
-                    text: 'Appeler',
+                    text: localizations.toCall,
                     styleText: AppTypography.font14white,
                     active: true,
                     activeColor: AppColors.dark,

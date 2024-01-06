@@ -35,8 +35,8 @@ class SubCategoryScreen extends StatelessWidget {
                   .toList(),
             );
           } else if (state is SubcategoryFailState) {
-            return const Center(
-              child: Text('проблемс'),
+            return Center(
+              child: Text(localizations.errorReviewOrEnterOther),
             );
           } else {
             return Center(child: AppAnimations.bouncingLine);

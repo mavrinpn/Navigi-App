@@ -32,7 +32,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
         backgroundColor: AppColors.empty,
         elevation: 0,
         title: Text(
-          'Type d\'annonce',
+          localizations.typeOfNews,
           style: AppTypography.font20black,
         ),
       ),

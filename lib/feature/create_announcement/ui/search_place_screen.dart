@@ -108,8 +108,8 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
                     child: Text('ниче не найдено'),
                   );
                 } else if (state is PlacesFailState) {
-                  return const Center(
-                    child: Text('ошибка'),
+                  return Center(
+                    child: Text(localizations.errorReviewOrEnterOther),
                   );
                 } else {
                   return Center(
