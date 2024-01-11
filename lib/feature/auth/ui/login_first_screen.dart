@@ -112,7 +112,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                             }
                             if (isTouch) {
                               final bloc = BlocProvider.of<AuthCubit>(context);
-                              bloc.setPhone(
+                              bloc.setPhoneForLogin(
                                   maskPhoneFormatter.getUnmaskedText());
                               print('set phone ${maskPhoneFormatter.getMaskedText()}');
                               Navigator.pushNamed(

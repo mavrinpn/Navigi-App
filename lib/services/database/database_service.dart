@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
+import 'package:smart/feature/announcement_editing/data/models/edit_data.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/models/announcement_creating_data.dart';
 import 'package:smart/models/category.dart';

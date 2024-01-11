@@ -22,11 +22,7 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  setPhone(String newPhone) => _phone = newPhone;
-
-  String getPhone() => _phone;
-
-  setName(String name) => _nameForRegistration = name;
+  setPhoneForLogin(String newPhone) => _phone = newPhone;
 
   registerWithPhone(
       {required String phone, required String name, required String password}) {
@@ -36,8 +32,8 @@ class AuthCubit extends Cubit<AuthState> {
     _sendSms();
   }
 
-  loginWithPhone({required String phone, required String password}) {
-    final email = convertPhoneToVerifiedEmail(phone);
+  loginWithPhone({required String password}) {
+    final email = convertPhoneToVerifiedEmail(_phone);
     authRepository.login(email, password);
   }
 

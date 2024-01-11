@@ -4,6 +4,8 @@ class AnnouncementsService {
   final Databases _databases;
   final Storage _storage;
 
+  static const String activeAttribute = 'active';
+
   AnnouncementsService(Databases databases, Storage storage)
       : _databases = databases,
         _storage = storage;
@@ -11,6 +13,7 @@ class AnnouncementsService {
   Future<List<Announcement>> getAnnouncements(String? lastId) async {
     List<String> queries = [
       Query.orderDesc(DefaultDocumentParameters.createdAt),
+      Query.equal(activeAttribute, true),
       Query.limit(24)
     ];
     if ((lastId ?? '').isEmpty) lastId = null;
@@ -33,6 +36,7 @@ class AnnouncementsService {
       {double? minPrice, double? maxPrice}) async {
     List<String> queries = [];
 
+    queries.add(Query.equal(activeAttribute, true));
     if ((lastId ?? "").isEmpty) lastId = null;
 
     if (lastId != null) queries.add(Query.cursorAfter(lastId));
@@ -76,7 +80,6 @@ class AnnouncementsService {
         data: creatingData.toJson(uid, urls));
   }
 
-
   Future getUserAnnouncements({required String userId}) async {
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
@@ -94,13 +97,22 @@ class AnnouncementsService {
         databaseId: mainDatabase,
         collectionId: postCollection,
         documentId: announcementsId);
-    final bool currentValue = res.data['active'];
+    final bool currentValue = res.data[activeAttribute];
 
     await _databases.updateDocument(
         databaseId: mainDatabase,
         collectionId: postCollection,
         documentId: announcementsId,
-        data: {'active': !currentValue});
+        data: {activeAttribute: !currentValue});
+  }
+
+  Future<Uint8List> getAnnouncementImage(String url) async {
+    final id = getIdFromUrl(url);
+
+    final futureBytes =
+        _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+
+    return futureBytes;
   }
 
   Future<Announcement> getAnnouncementById(String announcementId) async {
@@ -109,11 +121,16 @@ class AnnouncementsService {
         collectionId: postCollection,
         documentId: announcementId);
 
-    final id = getIdFromUrl(res.data['images'][0]);
-
-    final futureBytes =
-    _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+    final futureBytes = getAnnouncementImage(res.data['images'][0]);
 
     return Announcement.fromJson(json: res.data, futureBytes: futureBytes);
+  }
+
+  Future<void> editAnnouncement(AnnouncementEditData editData) async {
+    await _databases.updateDocument(
+        databaseId: mainDatabase,
+        collectionId: postCollection,
+        documentId: editData.id,
+        data: editData.toJson());
   }
 }

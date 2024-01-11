@@ -13,9 +13,9 @@ class ItemParameters {
     } else {
       p = '';
     }
-    // print(staticParameters);
-    // print(p);
-    return '{$p${variableParametersList.join(', ')}}';
+    final string = '{$p${variableParametersList.join(', ')}}';
+
+    return string !=  '{, }' ? string : '{}';
   }
 
   String getParametersValues () {

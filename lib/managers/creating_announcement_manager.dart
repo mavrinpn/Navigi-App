@@ -24,7 +24,7 @@ class CreatingAnnouncementManager {
         storageManager = FileStorageManager(client: client);
 
   AnnouncementCreatingData creatingData = AnnouncementCreatingData();
-  SubCategoryItem? currentItem;
+  SubcategoryItem? currentItem;
   List<XFile> images = [];
   List<Uint8List> imagesAsBytes = [];
   Future? compressingImages;
@@ -65,11 +65,13 @@ class CreatingAnnouncementManager {
 
   void setType(bool type) => creatingData.type = type;
 
-  void setItem(SubCategoryItem? newItem, {String? name}) {
+  void setItem(SubcategoryItem? newItem, {String? name, String? id}) {
     currentItem =
-        newItem ?? SubCategoryItem.withName(name!, creatingData.subcategoryId!)
+        newItem ?? SubcategoryItem.withName(name!, creatingData.subcategoryId!)
           ..initialParameters();
+
     creatingData.itemName = currentItem!.name;
+    creatingData.itemId = currentItem!.id;
   }
 
   void setPlaceById(String id) => creatingData.placeId = id;

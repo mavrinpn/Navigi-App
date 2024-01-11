@@ -31,15 +31,15 @@ class CategoriesService {
     return subcategories;
   }
 
-  Future<List<SubCategoryItem>> getItemsFromSubcategory(
+  Future<List<SubcategoryItem>> getItemsFromSubcategory(
       String subcategory) async {
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: itemsCollection,
         queries: [Query.equal(subcategoryId, subcategory)]);
-    List<SubCategoryItem> items = [];
+    List<SubcategoryItem> items = [];
     for (var doc in res.documents) {
-      items.add(SubCategoryItem.fromJson(doc.data)..initialParameters());
+      items.add(SubcategoryItem.fromJson(doc.data)..initialParameters());
     }
     return items;
   }
@@ -64,9 +64,9 @@ class CategoriesService {
         databaseId: mainDatabase,
         collectionId: itemsCollection,
         queries: queries);
-    List<SubCategoryItem> items = [];
+    List<SubcategoryItem> items = [];
     for (var doc in res.documents) {
-      items.add(SubCategoryItem.fromJson(doc.data));
+      items.add(SubcategoryItem.fromJson(doc.data));
     }
     return items;
   }
@@ -76,5 +76,18 @@ class CategoriesService {
         databaseId: mainDatabase, collectionId: 'queries');
 
     return res.documents.map((e) => e.data['name'].toString()).toList();
+  }
+
+  Future<SubcategoryItem?> getItem(String itemId) async {
+    final res = await _databases.getDocument(
+        databaseId: mainDatabase,
+        collectionId: itemsCollection,
+        documentId: itemId);
+
+    return SubcategoryItem(
+        name: res.data['name'],
+        id: res.$id,
+        subcategoryId: res.data['subcategory'],
+        parameters: res.data['parametrs']);
   }
 }

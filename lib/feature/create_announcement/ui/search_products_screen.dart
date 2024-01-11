@@ -38,10 +38,10 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
         TextPosition(offset: productsController.text.length));
     final width = MediaQuery.of(context).size.width;
 
-    bool isTouch = cubit.getSearchText().isNotEmpty;
+    bool buttonActive = cubit.getSearchText().isNotEmpty;
 
     void setIsTouch(bool isT) {
-      isTouch = isT;
+      buttonActive = isT;
     }
 
     return Scaffold(
@@ -122,15 +122,17 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
         width: width - 30,
         text: localizations.continue_,
         callback: () {
-          if (isTouch) {
-            creatingAnnouncementManager.setItem(
-                itemManager.hasItemInSearchedItems(),
-                name: productsController.text);
+          if (buttonActive) {
+            final item = itemManager.hasItemInSearchedItems();
+
+            creatingAnnouncementManager.setItem(item,
+                name: productsController.text,
+                id: item?.id);
             Navigator.pushNamed(
                 context, AppRoutesNames.announcementCreatingPhoto);
           }
         },
-        active: isTouch,
+        active: buttonActive,
       ),
     );
   }

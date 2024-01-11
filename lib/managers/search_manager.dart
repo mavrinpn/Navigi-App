@@ -23,7 +23,7 @@ class SearchManager {
 
   BehaviorSubject<String> searchTextStream = BehaviorSubject<String>.seeded('');
 
-  Future<List<SubCategoryItem>> searchItemsByName(String query) async =>
+  Future<List<SubcategoryItem>> searchItemsByName(String query) async =>
       await dbService.categories.searchItemsByQuery(query);
 
   Future<void> loadPopularQueries() async {
