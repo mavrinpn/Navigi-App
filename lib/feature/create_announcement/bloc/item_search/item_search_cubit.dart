@@ -13,7 +13,7 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
   ItemSearchCubit({required this.creatingManager, required this.itemManager})
       : super(ItemSearchInitial());
 
-  List<SubCategoryItem> getItems() => itemManager.searchedItems;
+  List<SubcategoryItem> getItems() => itemManager.searchedItems;
 
   void setSubcategory(String subcategory) {
     emit(SearchLoadingState());

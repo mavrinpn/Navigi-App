@@ -11,7 +11,6 @@ import 'package:smart/widgets/messenger/announcement_short_info.dart';
 import 'package:smart/widgets/messenger/date_splitter_widget.dart';
 import 'package:smart/widgets/messenger/message_group_widget.dart';
 
-
 import '../../../localization/app_localizations.dart';
 import '../data/messenger_repository.dart';
 
@@ -28,6 +27,9 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController messageController = TextEditingController();
 
   bool preparing = false;
+  final messageTextFieldBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(18),
+      borderSide: const BorderSide(color: AppColors.whiteGray));
 
   @override
   Widget build(BuildContext context) {
@@ -108,8 +110,8 @@ class _ChatScreenState extends State<ChatScreen> {
                               return item is MessagesGroup
                                   ? MessageGroupWidget(
                                       data: item,
-                                      avatarUrl: repository
-                                              .currentRoom!.otherUserAvatarUrl ??
+                                      avatarUrl: repository.currentRoom!
+                                              .otherUserAvatarUrl ??
                                           '')
                                   : DateSplitterWidget(
                                       data: item as DateSplitter);
@@ -119,12 +121,14 @@ class _ChatScreenState extends State<ChatScreen> {
                       }),
                 ),
               ),
-              if (preparing)...[
+              if (preparing) ...[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     AppAnimations.bouncingLine,
-                    SizedBox(width: 15,),
+                    SizedBox(
+                      width: 15,
+                    ),
                   ],
                 )
               ],
@@ -155,26 +159,14 @@ class _ChatScreenState extends State<ChatScreen> {
                         cursorColor: AppColors.red,
                         cursorWidth: 1,
                         decoration: InputDecoration(
-                          hintText: localizations.messages,
+                            hintText: localizations.messages,
                             hintStyle: AppTypography.font14lightGray,
                             contentPadding:
                                 const EdgeInsets.fromLTRB(12, 4, 12, 4),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(18),
-                                borderSide:
-                                    const BorderSide(color: AppColors.whiteGray)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(18),
-                                borderSide:
-                                    const BorderSide(color: AppColors.whiteGray)),
-                            disabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(18),
-                                borderSide:
-                                    const BorderSide(color: AppColors.whiteGray)),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(18),
-                                borderSide:
-                                    const BorderSide(color: AppColors.whiteGray)),
+                            focusedBorder: messageTextFieldBorder,
+                            enabledBorder: messageTextFieldBorder,
+                            disabledBorder: messageTextFieldBorder,
+                            border: messageTextFieldBorder,
                             fillColor: Colors.white,
                             filled: true),
                       ),

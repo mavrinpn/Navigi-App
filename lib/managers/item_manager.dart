@@ -7,15 +7,15 @@ class ItemManager {
 
   ItemManager({required this.databaseService});
 
-  List<SubCategoryItem> items = [];
-  List<SubCategoryItem> searchedItems = [];
+  List<SubcategoryItem> items = [];
+  List<SubcategoryItem> searchedItems = [];
   String searchControllerText = '';
 
   Future initialLoadItems(String query, subcategoryId) async =>
       items = await databaseService.categories.getItemsFromSubcategory(subcategoryId);
 
   void searchItemsByName(String query) {
-    List<SubCategoryItem> resList = [];
+    List<SubcategoryItem> resList = [];
     for (var item in items) {
       if (item.name.toLowerCase().contains(query.toLowerCase())) {
         resList.add(item);
@@ -32,7 +32,7 @@ class ItemManager {
     searchControllerText = value;
   }
 
-  SubCategoryItem? hasItemInSearchedItems() {
+  SubcategoryItem? hasItemInSearchedItems() {
     for (var item in searchedItems) {
       if (searchControllerText == item.name) {
         return item;

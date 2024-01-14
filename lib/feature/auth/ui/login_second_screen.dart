@@ -141,7 +141,6 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
 
                               if (buttonActive) {
                                 bloc.loginWithPhone(
-                                    phone: bloc.getPhone(),
                                     password: passwordController.text.trim());
                               }
                             },

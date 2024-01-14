@@ -7,6 +7,7 @@ class AnnouncementCreatingData {
   bool? type;
   double? price;
   String? itemName;
+  String? itemId;
   String? parameters;
   String? placeId;
 
@@ -23,12 +24,14 @@ class AnnouncementCreatingData {
         'type': type,
         'price': price,
         'item_name': itemName,
-        'parametrs': parameters != '{, }' ? parameters : '{}',
+        'parametrs': parameters,
         'creator_id': creatorId,
         'place_id': placeId,
         'images': urls,
         'creator': creatorId,
-        'place': placeId
+        'place': placeId,
+        if (subcategoryId != null) 'subcategoryId': subcategoryId,
+        if (itemId != null) 'itemId': itemId
       };
 
   void clear () {

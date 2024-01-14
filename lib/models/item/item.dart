@@ -4,14 +4,16 @@ part 'item_parameters.dart';
 
 part 'parameter.dart';
 
-class SubCategoryItem {
+class SubcategoryItem {
+  final String? id;
   final String _name;
   final String _subcategoryId;
   final Map<String, dynamic> _parameters;
   late ItemParameters _itemParameters;
 
-  SubCategoryItem(
+  SubcategoryItem(
       {required String name,
+      required this.id,
       required String subcategoryId,
       required Map<String, dynamic> parameters})
       : _parameters = parameters,
@@ -29,14 +31,16 @@ class SubCategoryItem {
 
   String get title => '$_name ${_itemParameters.getParametersValues()}';
 
-  SubCategoryItem.fromJson(Map<String, dynamic> json1)
+  SubcategoryItem.fromJson(Map<String, dynamic> json1)
       : _name = json1['name'] ?? '',
+        id = json1['\$id'],
         _subcategoryId = json1['sub_category'] ?? '',
         _parameters = jsonDecode(json1['parametrs']);
 
-  SubCategoryItem.withName(String name, String subCategory)
+  SubcategoryItem.withName(String name, String subCategory)
       : _name = name,
         _subcategoryId = subCategory,
+        id = null,
         _parameters = {};
 
   void initialParameters() {
