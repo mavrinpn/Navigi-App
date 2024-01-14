@@ -27,12 +27,12 @@ class AnnouncementEditData {
     }
   }
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'name': title,
         'description': description,
         'price': price,
-        'parametrs': parameters,
+        'parametrs':
+            parameters != null ? parameters!.buildJsonFormatParameters() : null,
         'images': images,
       };
 }

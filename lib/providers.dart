@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/bloc/app/app_cubit.dart';
 import 'package:smart/feature/announcement/bloc/announcement/announcement_cubit.dart';
 import 'package:smart/feature/announcement/data/creator_repository.dart';
+import 'package:smart/feature/announcement_editing/bloc/announcement_edit_cubit.dart';
+import 'package:smart/feature/announcement_editing/data/announcement_editing_repository.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/create_announcement/bloc/category/category_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/creating/creating_announcement_cubit.dart';
@@ -82,7 +84,9 @@ class MyRepositoryProviders extends StatelessWidget {
       RepositoryProvider(
           create: (_) => CreatorRepository(databaseService: databaseService)),
       RepositoryProvider(
-          create: (_) => FavouritesManager(databaseService: databaseService))
+          create: (_) => FavouritesManager(databaseService: databaseService)),
+      RepositoryProvider(
+          create: (_) => AnnouncementEditingRepository(databaseService, storageManager))
     ], child: const MyBlocProviders());
   }
 }
@@ -114,6 +118,11 @@ class MyBlocProviders extends StatelessWidget {
             categoriesManager:
                 RepositoryProvider.of<CategoriesManager>(context))
           ..loadCategories(),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => AnnouncementEditCubit(
+            RepositoryProvider.of<AnnouncementEditingRepository>(context)),
         lazy: false,
       ),
       BlocProvider(

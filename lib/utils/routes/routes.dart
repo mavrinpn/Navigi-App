@@ -1,6 +1,6 @@
 import 'package:smart/feature/announcement/ui/announcement_screen.dart';
 import 'package:smart/feature/announcement/ui/creator_screen.dart';
-import 'package:smart/feature/announcement/ui/editing_announcement.dart';
+import 'package:smart/feature/announcement_editing/ui/editing_announcement.dart';
 import 'package:smart/feature/auth/ui/code_screen.dart';
 import 'package:smart/feature/auth/ui/login_first_screen.dart';
 import 'package:smart/feature/auth/ui/login_second_screen.dart';

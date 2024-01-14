@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
+import 'package:smart/feature/announcement/ui/widgets/settings_bottom_sheet.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/localization/app_localizations.dart';
@@ -13,6 +14,7 @@ import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 
 import '../../../managers/announcement_manager.dart';
@@ -35,15 +37,27 @@ class AnnouncementScreen extends StatefulWidget {
 }
 
 class _AnnouncementScreenState extends State<AnnouncementScreen> {
+  void incViewsIfNeed(AnnouncementSuccessState state) {
+    final userId = RepositoryProvider.of<AuthRepository>(context).userId;
+    if (userId != state.data.creatorData.uid) {
+      RepositoryProvider.of<AnnouncementManager>(context)
+          .incTotalViews(state.data.id);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     PageController pageController =
         PageController(viewportFraction: 0.9, initialPage: activePage);
-
+    FavouritesManager favouritesManager =
+        RepositoryProvider.of<FavouritesManager>(context);
+    FavouritesCubit favouritesCubit = BlocProvider.of<FavouritesCubit>(context);
     final width = MediaQuery.of(context).size.width;
     return BlocBuilder<AnnouncementCubit, AnnouncementState>(
       builder: (context, state) {
         if (state is AnnouncementSuccessState) {
+          incViewsIfNeed(state);
+
           return Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: false,
@@ -52,30 +66,13 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(
-                    focusColor: AppColors.empty,
-                    hoverColor: AppColors.empty,
-                    highlightColor: AppColors.empty,
-                    splashColor: AppColors.empty,
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const SizedBox(
-                      width: 35,
-                      height: 48,
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: AppColors.black,
-                      ),
-                    ),
-                  ),
+                  const CustomBackButton(),
                   Row(
                     children: [
                       BlocBuilder<FavouritesCubit, FavouritesState>(
                         builder: (context, state1) {
                           bool liked =
-                              RepositoryProvider.of<FavouritesManager>(context)
-                                  .contains(state.data.id);
+                              favouritesManager.contains(state.data.id);
                           return InkWell(
                             focusColor: AppColors.empty,
                             hoverColor: AppColors.empty,
@@ -89,13 +86,9 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                                   ));
                               try {
                                 if (!liked) {
-                                  await BlocProvider.of<FavouritesCubit>(
-                                          context)
-                                      .like(state.data.id);
+                                  await favouritesCubit.like(state.data.id);
                                 } else {
-                                  await BlocProvider.of<FavouritesCubit>(
-                                          context)
-                                      .unlike(state.data.id);
+                                  await favouritesCubit.unlike(state.data.id);
                                 }
                               } catch (e) {
                                 Dialogs.hide(context);
@@ -140,52 +133,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                                 ),
                                 showDragHandle: true,
                                 builder: (ctx) {
-                                  return SizedBox(
-                                    height: 300,
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 8, horizontal: 16),
-                                          child: InkWell(
-                                            onTap: () async {
-                                              await RepositoryProvider.of<
-                                                          AnnouncementManager>(
-                                                      context)
-                                                  .changeActivity(
-                                                      state.data.id);
-                                              Navigator.pop(context);
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                      content:
-                                                          Text('success')));
-                                              BlocProvider.of<CreatorCubit>(
-                                                      context)
-                                                  .setUserId(state
-                                                      .data.creatorData.uid);
-                                            },
-                                            child: Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.edit,
-                                                  color: Colors.black,
-                                                  size: 24,
-                                                ),
-                                                const SizedBox(
-                                                  width: 12,
-                                                ),
-                                                Text(
-                                                  'Change activity',
-                                                  style:
-                                                      AppTypography.font18black,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  );
+                                  return SettingsBottomSheet(announcement: state.data);
                                 });
                           }
                         },

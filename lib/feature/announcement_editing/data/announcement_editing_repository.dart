@@ -31,6 +31,9 @@ class AnnouncementEditingRepository {
     images.clear();
   }
 
+  Future<void> deleteAnnouncement(String announcementId) =>
+      _databaseService.announcements.deleteAnnouncement(announcementId);
+
   Future<void> setAnnouncementForEdit(Announcement announcement) async {
     _currentAnnouncement = announcement;
     editData = AnnouncementEditData.fromAnnouncement(announcement);

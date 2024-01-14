@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/feature/announcement/ui/widgets/settings_bottom_sheet.dart';
+import 'package:smart/feature/announcement_editing/bloc/announcement_edit_cubit.dart';
+import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
@@ -14,13 +17,11 @@ class AnnouncementContainerHorizontal extends StatefulWidget {
       required this.announcement,
       this.width,
       this.height,
-      required this.viewCount,
       required this.likeCount,
       required this.userCount});
 
   final double? width, height;
   final Announcement announcement;
-  final String viewCount;
   final String likeCount;
   final String userCount;
 
@@ -131,7 +132,7 @@ class _AnnouncementContainerHorizontalState
                           width: 4,
                         ),
                         Text(
-                          widget.viewCount,
+                          widget.announcement.totalViews.toString(),
                           style: AppTypography.font12black
                               .copyWith(color: AppColors.lightGray),
                         ),
@@ -186,14 +187,31 @@ class _AnnouncementContainerHorizontalState
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutesNames.editingAnnouncement);
+                              if (widget.announcement.creatorData.uid ==
+                                  RepositoryProvider.of<AuthRepository>(context)
+                                      .userId) {
+                                showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    showDragHandle: true,
+                                    builder: (ctx) {
+                                      return SettingsBottomSheet(
+                                          announcement: widget.announcement);
+                                    });
+                              }
                             },
-                            child: SvgPicture.asset(
-                              'Assets/icons/three_dots.svg',
-                              color: AppColors.lightGray,
-                              width: 16,
-                              fit: BoxFit.fitWidth,
+                            child: Container(
+                              width: 24,
+                              height: 24,
+                              padding: const EdgeInsets.all(4),
+                              child: SvgPicture.asset(
+                                'Assets/icons/three_dots.svg',
+                                color: AppColors.lightGray,
+                                fit: BoxFit.fitWidth,
+                              ),
                             ),
                           ),
                         ],

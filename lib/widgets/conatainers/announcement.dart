@@ -14,7 +14,7 @@ import '../../feature/announcement/bloc/announcement/announcement_cubit.dart';
 import '../../utils/colors.dart';
 
 class AnnouncementContainer extends StatefulWidget {
-  AnnouncementContainer(
+  const AnnouncementContainer(
       {super.key, required this.announcement, this.width, this.height});
 
   final double? width, height;
@@ -168,14 +168,6 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
             ),
             BlocListener<FavouritesCubit, FavouritesState>(
               listener: (context, state) {
-                log('');
-                log('');
-                log(state.toString());
-                log(widget.announcement.id);
-                log((state is LikeSuccessState).toString());
-                log('');
-                log('');
-
                 if (state is LikeSuccessState &&
                     state.changedPostId == widget.announcement.id) {
                   setState(() {

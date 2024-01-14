@@ -4,6 +4,7 @@ import 'package:smart/feature/announcement_editing/data/announcement_editing_rep
 import 'package:smart/feature/announcement_editing/data/models/edit_data.dart';
 import 'package:smart/feature/announcement_editing/data/models/image_data.dart';
 import 'package:smart/models/announcement.dart';
+import 'package:smart/models/item/item.dart';
 
 part 'announcement_edit_state.dart';
 
@@ -15,16 +16,33 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
   /// всю информацию на экране брать отсюда
   AnnouncementEditData get data => repository.editData!;
 
+  List<ImageData> get images => repository.images.currentImages;
+
   /// Повесить на экран [PopScope] и вызывать когда он закрывается
   void closeEdit() => repository.closeEdit();
 
+  Future<void> deleteAnnouncement(Announcement announcement) =>
+      repository.deleteAnnouncement(announcement.id);
+
   /// Вызывать в initState экрана, либо если будет агрессировать то до пуша
-  void setAnnouncement(Announcement announcement) =>
-      repository.setAnnouncementForEdit(announcement);
+  Future setAnnouncement(Announcement announcement) async {
+    await repository.setAnnouncementForEdit(announcement);
+    print('announcement setted');
+  }
 
   /// функция для onChange филда названия
   void onTitleChange(String? newTitle) {
     if (newTitle != null) repository.setTitle(newTitle);
+  }
+
+  void setParameterValue(String parameterKey, String value) {
+    for (Parameter parameter in data.parameters!.variableParametersList) {
+      if (parameterKey == parameter.key) {
+        parameter.setVariant(value);
+        emit(AnnouncementChangeParameters());
+        return;
+      }
+    }
   }
 
   void onDescriptionChanged(String? newDescription) {

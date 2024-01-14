@@ -78,7 +78,12 @@ class MessagesService {
   Future<List<Message>> getChatMessages(String chatId, String userId,
       {int? limit}) async {
     final queries = [Query.equal('roomId', chatId)];
-    if (limit != null) queries.add(Query.limit(limit));
+    if (limit != null) {
+      queries.add(Query.limit(limit));
+      if (limit == 1) {
+        queries.add(Query.orderDesc(DefaultDocumentParameters.createdAt));
+      }
+    }
 
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,

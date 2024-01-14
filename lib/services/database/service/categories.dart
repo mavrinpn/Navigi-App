@@ -88,6 +88,6 @@ class CategoriesService {
         name: res.data['name'],
         id: res.$id,
         subcategoryId: res.data['subcategory'],
-        parameters: res.data['parametrs']);
+        parameters: jsonDecode(res.data['parametrs']));
   }
 }

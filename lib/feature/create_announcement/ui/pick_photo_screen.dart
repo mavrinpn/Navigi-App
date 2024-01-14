@@ -11,7 +11,8 @@ import '../../../managers/creating_announcement_manager.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/button/custom_text_button.dart';
-
+import 'widgets/add_image.dart';
+import 'widgets/image.dart';
 
 class PickPhotosScreen extends StatefulWidget {
   const PickPhotosScreen({super.key});
@@ -21,12 +22,10 @@ class PickPhotosScreen extends StatefulWidget {
 }
 
 class _PickPhotosScreenState extends State<PickPhotosScreen> {
-
   @override
   Widget build(BuildContext context) {
     final repository =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
-
 
     final localizations = AppLocalizations.of(context)!;
 
@@ -61,7 +60,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
               ),
               !repository.images.isNotEmpty
                   ? CustomTextButton.withIcon(
-                active: true,
+                      active: true,
                       activeColor: AppColors.dark,
                       callback: () {
                         addImages();
@@ -111,101 +110,16 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
         ),
         floatingActionButton: repository.images.isNotEmpty
             ? CustomTextButton.orangeContinue(
-            active: true,
+                active: true,
                 width: MediaQuery.of(context).size.width - 30,
                 text: localizations.continue_,
                 callback: () {
                   setState(() {
                     repository.setImages(repository.images);
-                    Navigator.pushNamed(context, AppRoutesNames.announcementCreatingType);
+                    Navigator.pushNamed(
+                        context, AppRoutesNames.announcementCreatingType);
                   });
                 })
             : Container());
-  }
-}
-
-class ImageWidget extends StatelessWidget {
-  const ImageWidget({super.key, required this.path, required this.callback});
-
-  final String path;
-  final VoidCallback callback;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 113,
-      height: 106,
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: Container(
-              width: 105,
-              height: 98,
-              alignment: Alignment.bottomLeft,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14),
-                  color: Colors.red,
-                  image: DecorationImage(
-                      image: FileImage(File(path)), fit: BoxFit.cover)),
-            ),
-          ),
-          Container(
-              padding: const EdgeInsets.only(right: 6),
-              alignment: Alignment.topRight,
-              child: InkWell(
-                onTap: callback,
-                child: SvgPicture.asset(
-                  'Assets/icons/delete_button.svg',
-                  width: 27,
-                ),
-              )),
-        ],
-      ),
-    );
-  }
-}
-
-class AddImageWidget extends StatelessWidget {
-  const AddImageWidget({super.key, required this.callback});
-
-  final VoidCallback callback;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: callback,
-      child: Container(
-        width: 105,
-        height: 98,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
-          color: AppColors.backgroundLightGray,
-        ),
-        child: Center(
-          child: SvgPicture.asset(
-            'Assets/icons/add_image.svg',
-            width: 32,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ImagePreparingWidget extends StatelessWidget {
-  const ImagePreparingWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 105,
-      height: 98,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-        color: AppColors.backgroundLightGray,
-      ),
-      child: Center(child: AppAnimations.bouncingLine),
-    );
   }
 }

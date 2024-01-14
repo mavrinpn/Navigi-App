@@ -47,6 +47,14 @@ class AnnouncementManager {
   }
 
   Future<Announcement?> getAnnouncementById(String id) async {
+    final localAnnouncement = _getAnnouncementFromLocal(id);
+    if (localAnnouncement != null) return localAnnouncement;
+
+    final announcement = await dbService.announcements.getAnnouncementById(id);
+    return announcement;
+  }
+
+  Announcement? _getAnnouncementFromLocal(String id) {
     for (var a in announcements) {
       if (a.id == id) {
         lastAnnouncement = a;
@@ -59,9 +67,7 @@ class AnnouncementManager {
         return a;
       }
     }
-
-    final announcement = await dbService.announcements.getAnnouncementById(id);
-    return announcement;
+    return null;
   }
 
   void incTotalViews(String id) async {

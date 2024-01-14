@@ -16,8 +16,8 @@ class CreatorCubit extends Cubit<CreatorState> {
     try {
       await creatorRepository.setCreator(creatorId);
       emit(CreatorSuccessState(
-          available: creatorRepository.availableAnnouncements ?? [],
-          sold: creatorRepository.soldAnnouncements ?? []));
+          available: creatorRepository.availableAnnouncements,
+          sold: creatorRepository.soldAnnouncements));
     } catch (e) {
       emit(CreatorFailState());
       rethrow;

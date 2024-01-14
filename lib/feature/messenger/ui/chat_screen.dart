@@ -81,11 +81,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 repository.currentRoom!.otherUserName,
                 style: AppTypography.font12lightGray,
               ),
-              // Container(
-              //   alignment: Alignment.topCenter,
-              //   height: 16,
-              //   child: SvgPicture.asset('Assets/icons/online_circle.svg'),
-              // )
             ],
           ),
         ),
@@ -126,7 +121,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     AppAnimations.bouncingLine,
-                    SizedBox(
+                    const SizedBox(
                       width: 15,
                     ),
                   ],

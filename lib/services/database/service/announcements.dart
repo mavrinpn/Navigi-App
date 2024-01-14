@@ -133,4 +133,9 @@ class AnnouncementsService {
         documentId: editData.id,
         data: editData.toJson());
   }
+
+  Future<void> deleteAnnouncement(String id) async {
+    await _databases.deleteDocument(
+        databaseId: mainDatabase, collectionId: postCollection, documentId: id);
+  }
 }

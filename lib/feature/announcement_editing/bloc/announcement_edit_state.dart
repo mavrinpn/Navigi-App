@@ -12,3 +12,4 @@ class AnnouncementEditSuccess extends AnnouncementEditState {}
 class AnnouncementEditFail extends AnnouncementEditState {}
 
 class AnnouncementChangeImages extends AnnouncementEditState {}
+class AnnouncementChangeParameters extends AnnouncementEditState {}
