@@ -11,6 +11,8 @@ import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:smart/widgets/dropDownSingleCheckBox/custom_dropdown_single_checkbox.dart';
 import 'package:smart/widgets/textField/price_widget.dart';
 
+import '../../../../localization/app_localizations.dart';
+
 class FiltersBottomSheet extends StatefulWidget {
   const FiltersBottomSheet({super.key, this.needOpenNewScreen = false});
 
@@ -24,7 +26,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-
+    final localizations = AppLocalizations.of(context)!;
     final TextEditingController minPriceController =
     TextEditingController(text: searchCubit.minPrice.toString());
     final TextEditingController maxPriceController =
@@ -56,7 +58,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Filtres',
+                    localizations.filters,
                     style: AppTypography.font20black,
                   ),
                   InkWell(
@@ -65,7 +67,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                       setState(() {});
                     },
                     child: Text(
-                      'Réinitialiser tout',
+                      localizations.resetEverything,
                       style: AppTypography.font12black,
                     ),
                   ),
@@ -82,7 +84,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
             CustomDropDownSingleCheckBox(
                 parameters: Parameter(
                     variants: SortTypes.toFrList(),
-                    key: 'Triage',
+                    key: localizations.sort,
                     current: SortTypes.frTranslates[searchCubit.sortBy]!),
                 onChange: (a) {
                   searchCubit.sortType = SortTypes.codeFromFr(a ?? '');

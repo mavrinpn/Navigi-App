@@ -1,5 +1,6 @@
 import 'package:smart/feature/announcement/ui/announcement_screen.dart';
 import 'package:smart/feature/announcement/ui/creator_screen.dart';
+import 'package:smart/feature/announcement/ui/editing_announcement.dart';
 import 'package:smart/feature/auth/ui/code_screen.dart';
 import 'package:smart/feature/auth/ui/login_first_screen.dart';
 import 'package:smart/feature/auth/ui/login_second_screen.dart';
@@ -41,4 +42,5 @@ final appRoutes = {
   AppRoutesNames.search: (context) => const SearchScreen(),
   AppRoutesNames.announcementCreator: (context) => const CreatorProfileScreen(),
   AppRoutesNames.chat: (context) => const ChatScreen(),
+  AppRoutesNames.editingAnnouncement: (context) => const EditingAnnouncement(),
 };

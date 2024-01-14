@@ -171,12 +171,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                         if (creatorState is CreatorSuccessState) ...[
                           getGridHeight() == 100
                               ? SliverPadding(
-                            padding: EdgeInsets.symmetric(vertical: 40),
+                            padding: const EdgeInsets.symmetric(vertical: 40),
                                   sliver: SliverToBoxAdapter(
                                     child: Center(
                                       child: Text(
                                         localizations.youHaveNoAds,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Color(0xFF9B9FAA),
                                           fontSize: 14,
                                           fontFamily: 'SF Pro Display',

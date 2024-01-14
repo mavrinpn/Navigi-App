@@ -173,10 +173,31 @@ class _AnnouncementContainerHorizontalState
                     const SizedBox(
                       height: 5,
                     ),
-                    Text(
-                      widget.announcement.stringPrice,
-                      style: AppTypography.font16boldRed,
-                      textDirection: TextDirection.ltr,
+                    SizedBox(
+                      width: 240,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.announcement.stringPrice,
+                            style: AppTypography.font16boldRed,
+                            textDirection: TextDirection.ltr,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutesNames.editingAnnouncement);
+                            },
+                            child: SvgPicture.asset(
+                              'Assets/icons/three_dots.svg',
+                              color: AppColors.lightGray,
+                              width: 16,
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
