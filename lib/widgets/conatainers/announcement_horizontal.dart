@@ -111,22 +111,6 @@ class _AnnouncementContainerHorizontalState
                           width: 20,
                         ),
                         SvgPicture.asset(
-                          'Assets/icons/profile.svg',
-                          width: 16,
-                          fit: BoxFit.fitWidth,
-                        ),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          widget.userCount,
-                          style: AppTypography.font12black
-                              .copyWith(color: AppColors.lightGray),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        SvgPicture.asset(
                           'Assets/icons/follow.svg',
                           color: AppColors.lightGray,
                           width: 16,
