@@ -197,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     return AnnouncementContainerHorizontal(
                                         announcement: _tabController.index == 0
                                             ? creatorState.available[index]
-                                            : creatorState.sold[index], likeCount: '13', userCount: '13',);
+                                            : creatorState.sold[index], likeCount: '13');
                                   })
                         ] else ...[
                           SliverToBoxAdapter(

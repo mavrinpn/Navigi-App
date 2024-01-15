@@ -18,13 +18,11 @@ class AnnouncementContainerHorizontal extends StatefulWidget {
       required this.announcement,
       this.width,
       this.height,
-      required this.likeCount,
-      required this.userCount});
+      required this.likeCount,});
 
   final double? width, height;
   final Announcement announcement;
   final String likeCount;
-  final String userCount;
 
   @override
   State<AnnouncementContainerHorizontal> createState() =>
