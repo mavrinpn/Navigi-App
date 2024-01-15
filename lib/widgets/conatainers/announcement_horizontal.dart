@@ -7,6 +7,7 @@ import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/images/announcement_image.dart';
 
 import '../../feature/announcement/bloc/announcement/announcement_cubit.dart';
 import '../../utils/colors.dart';
@@ -40,11 +41,7 @@ class _AnnouncementContainerHorizontalState
     final double imageWidth = widget.width ?? width / 2 - 25;
     final double imageHeight = widget.height ?? (width / 2 - 25) * 1.032;
 
-    return InkWell(
-        focusColor: AppColors.empty,
-        hoverColor: AppColors.empty,
-        highlightColor: AppColors.empty,
-        splashColor: AppColors.empty,
+    return GestureDetector(
         onTap: () async {
           BlocProvider.of<AnnouncementCubit>(context)
               .loadAnnouncementById(widget.announcement.id);
@@ -61,42 +58,16 @@ class _AnnouncementContainerHorizontalState
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               SizedBox(
                 width: 100,
                 height: 100,
-                child: FutureBuilder(
-                    future: widget.announcement.futureBytes,
-                    builder: (context, snapshot) {
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(14),
-                        child: snapshot.hasData
-                            ? Image.memory(
-                                widget.announcement.bytes,
-                                fit: BoxFit.cover,
-                                width: imageWidth,
-                                height: imageHeight,
-                                frameBuilder: ((context, child, frame,
-                                    wasSynchronouslyLoaded) {
-                                  return AnimatedSwitcher(
-                                    duration: const Duration(milliseconds: 300),
-                                    child: frame != null
-                                        ? child
-                                        : Container(
-                                            height: imageHeight,
-                                            width: imageWidth,
-                                            color: Colors.grey[300],
-                                          ),
-                                  );
-                                }),
-                              )
-                            : Container(
-                                height: imageHeight,
-                                width: imageWidth,
-                                color: Colors.grey[300],
-                              ),
-                      );
-                    }),
+                child: AnnouncementImage(
+                  announcement: widget.announcement,
+                  width: imageWidth,
+                  height: imageHeight,
+                ),
               ),
               const SizedBox(
                 width: 10,
@@ -175,9 +146,8 @@ class _AnnouncementContainerHorizontalState
                       height: 5,
                     ),
                     SizedBox(
-                      width: 240,
+                      width: width - imageWidth - 10,
                       child: Row(
-                        mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
@@ -204,9 +174,9 @@ class _AnnouncementContainerHorizontalState
                               }
                             },
                             child: Container(
-                              width: 24,
-                              height: 24,
-                              padding: const EdgeInsets.all(4),
+                              width: 26,
+                              height: 16,
+                              padding: const EdgeInsets.only(right: 10),
                               child: SvgPicture.asset(
                                 'Assets/icons/three_dots.svg',
                                 color: AppColors.lightGray,

@@ -48,11 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
           automaticallyImplyLeading: false,
           title: Row(
             children: [
-              InkWell(
-                focusColor: AppColors.empty,
-                hoverColor: AppColors.empty,
-                highlightColor: AppColors.empty,
-                splashColor: AppColors.empty,
+              GestureDetector(
                 onTap: () {
                   repository.closeChat();
                   Navigator.pop(context);

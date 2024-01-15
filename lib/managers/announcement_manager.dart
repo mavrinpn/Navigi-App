@@ -33,7 +33,8 @@ class AnnouncementManager {
           _lastId = '';
         }
 
-        announcements.addAll(await dbService.announcements.getAnnouncements(_lastId));
+        announcements
+            .addAll(await dbService.announcements.getAnnouncements(_lastId));
         _lastId = announcements.last.id;
       } catch (e) {
         if (e.toString() != 'Bad state: No element') {
@@ -52,6 +53,25 @@ class AnnouncementManager {
 
     final announcement = await dbService.announcements.getAnnouncementById(id);
     return announcement;
+  }
+
+  Future<Announcement?> refreshAnnouncement(String id) async {
+    for (var a in announcements) {
+      if (a.id == id) {
+        a = await dbService.announcements.getAnnouncementById(id);
+        lastAnnouncement = a;
+        return a;
+      }
+    }
+    for (var a in searchAnnouncements) {
+      if (a.id == id) {
+        a = await dbService.announcements.getAnnouncementById(id);
+        lastAnnouncement = a;
+        return a;
+      }
+    }
+
+    return await dbService.announcements.getAnnouncementById(id);
   }
 
   Announcement? _getAnnouncementFromLocal(String id) {
@@ -89,9 +109,9 @@ class AnnouncementManager {
         _searchLastId = '';
       }
 
-      searchAnnouncements.addAll(await dbService.announcements.searchLimitAnnouncements(
-          _searchLastId, searchText, sortBy,
-          minPrice: minPrice, maxPrice: maxPrice));
+      searchAnnouncements.addAll(await dbService.announcements
+          .searchLimitAnnouncements(_searchLastId, searchText, sortBy,
+              minPrice: minPrice, maxPrice: maxPrice));
 
       _searchLastId = searchAnnouncements.last.id;
     } catch (e) {

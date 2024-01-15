@@ -53,370 +53,377 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
         RepositoryProvider.of<FavouritesManager>(context);
     FavouritesCubit favouritesCubit = BlocProvider.of<FavouritesCubit>(context);
     final width = MediaQuery.of(context).size.width;
+
     return BlocBuilder<AnnouncementCubit, AnnouncementState>(
       builder: (context, state) {
         if (state is AnnouncementSuccessState) {
           incViewsIfNeed(state);
 
-          return Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              backgroundColor: AppColors.empty,
-              elevation: 0,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const CustomBackButton(),
-                  Row(
-                    children: [
-                      BlocBuilder<FavouritesCubit, FavouritesState>(
-                        builder: (context, state1) {
-                          bool liked =
-                              favouritesManager.contains(state.data.id);
-                          return InkWell(
-                            focusColor: AppColors.empty,
-                            hoverColor: AppColors.empty,
-                            highlightColor: AppColors.empty,
-                            splashColor: AppColors.empty,
-                            onTap: () async {
-                              Dialogs.showModal(
-                                  context,
-                                  Center(
-                                    child: AppAnimations.circleFadingAnimation,
-                                  ));
-                              try {
-                                if (!liked) {
-                                  await favouritesCubit.like(state.data.id);
-                                } else {
-                                  await favouritesCubit.unlike(state.data.id);
+          return RefreshIndicator(
+            onRefresh: () async {
+              BlocProvider.of<AnnouncementCubit>(context)
+                  .refreshAnnouncement(state.data.id);
+            },
+            child: Scaffold(
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                backgroundColor: AppColors.empty,
+                elevation: 0,
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const CustomBackButton(),
+                    Row(
+                      children: [
+                        BlocBuilder<FavouritesCubit, FavouritesState>(
+                          builder: (context, state1) {
+                            bool liked =
+                                favouritesManager.contains(state.data.id);
+                            return GestureDetector(
+                              onTap: () async {
+                                Dialogs.showModal(
+                                    context,
+                                    Center(
+                                      child:
+                                          AppAnimations.circleFadingAnimation,
+                                    ));
+                                try {
+                                  if (!liked) {
+                                    await favouritesCubit.like(state.data.id);
+                                  } else {
+                                    await favouritesCubit.unlike(state.data.id);
+                                  }
+                                } catch (e) {
+                                  Dialogs.hide(context);
+                                  rethrow;
                                 }
-                              } catch (e) {
                                 Dialogs.hide(context);
-                                rethrow;
-                              }
-                              Dialogs.hide(context);
-                            },
-                            child: SizedBox(
-                              width: 40,
-                              height: 40,
-                              child: Center(
-                                child: SvgPicture.asset(
-                                  'Assets/icons/follow.svg',
-                                  width: 24,
-                                  height: 24,
-                                  color: liked
-                                      ? AppColors.red
-                                      : AppColors.whiteGray,
+                              },
+                              child: SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    'Assets/icons/follow.svg',
+                                    width: 24,
+                                    height: 24,
+                                    color: liked
+                                        ? AppColors.red
+                                        : AppColors.whiteGray,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      InkWell(
-                        focusColor: AppColors.empty,
-                        hoverColor: AppColors.empty,
-                        highlightColor: AppColors.empty,
-                        splashColor: AppColors.empty,
-                        onTap: () {
-                          if (state.data.creatorData.uid ==
-                              RepositoryProvider.of<AuthRepository>(context)
-                                  .userId) {
-                            showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                showDragHandle: true,
-                                builder: (ctx) {
-                                  return SettingsBottomSheet(announcement: state.data);
+                            );
+                          },
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        InkWell(
+                          focusColor: AppColors.empty,
+                          hoverColor: AppColors.empty,
+                          highlightColor: AppColors.empty,
+                          splashColor: AppColors.empty,
+                          onTap: () {
+                            if (state.data.creatorData.uid ==
+                                RepositoryProvider.of<AuthRepository>(context)
+                                    .userId) {
+                              showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  showDragHandle: true,
+                                  builder: (ctx) {
+                                    return SettingsBottomSheet(
+                                        announcement: state.data);
+                                  });
+                            }
+                          },
+                          child: SvgPicture.asset(
+                            'Assets/icons/three_dots.svg',
+                            width: 24,
+                            height: 24,
+                            color: AppColors.black,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              body: SizedBox(
+                width: width,
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(
+                      decelerationRate: ScrollDecelerationRate.fast),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: width,
+                        height: 260,
+                        child: InkWell(
+                          focusColor: AppColors.empty,
+                          hoverColor: AppColors.empty,
+                          highlightColor: AppColors.empty,
+                          splashColor: AppColors.empty,
+                          onTap: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const PhotoViews()));
+                          },
+                          child: PageView.builder(
+                              itemCount: state.data.images.length,
+                              pageSnapping: true,
+                              controller: pageController,
+                              onPageChanged: (int page) {
+                                setState(() {
+                                  activePage = page;
                                 });
-                          }
-                        },
-                        child: SvgPicture.asset(
-                          'Assets/icons/three_dots.svg',
-                          width: 24,
-                          height: 24,
-                          color: AppColors.black,
+                              },
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: CustomNetworkImage(
+                                    width: 320,
+                                    height: 258,
+                                    url: state.data.images[index],
+                                  ),
+                                );
+                              }),
                         ),
                       ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            body: SizedBox(
-              width: width,
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(
-                    decelerationRate: ScrollDecelerationRate.fast),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: width,
-                      height: 260,
-                      child: InkWell(
-                        focusColor: AppColors.empty,
-                        hoverColor: AppColors.empty,
-                        highlightColor: AppColors.empty,
-                        splashColor: AppColors.empty,
-                        onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => const PhotoViews()));
-                        },
-                        child: PageView.builder(
-                            itemCount: state.data.images.length,
-                            pageSnapping: true,
-                            controller: pageController,
-                            onPageChanged: (int page) {
-                              setState(() {
-                                activePage = page;
-                              });
-                            },
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: CustomNetworkImage(
-                                  width: 320,
-                                  height: 258,
-                                  url: state.data.images[index],
-                                ),
-                              );
-                            }),
+                      const SizedBox(
+                        height: 5,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children:
-                          indicators(state.data.images.length, activePage),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 6),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              SvgPicture.asset(
-                                'Assets/icons/calendar.svg',
-                                color: AppColors.lightGray,
-                                width: 16,
-                                height: 16,
-                              ),
-                              const SizedBox(
-                                width: 6,
-                              ),
-                              Text(
-                                state.data.createdAt,
-                                style: AppTypography.font14lightGray
-                                    .copyWith(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              SvgPicture.asset(
-                                'Assets/icons/eye.svg',
-                                color: AppColors.lightGray,
-                                width: 16,
-                                height: 16,
-                              ),
-                              const SizedBox(
-                                width: 6,
-                              ),
-                              Text(state.data.totalViews.toString(),
-                                  style: AppTypography.font14lightGray
-                                      .copyWith(fontSize: 12)),
-                            ],
-                          ),
-                        ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:
+                            indicators(state.data.images.length, activePage),
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 6),
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        state.data.title,
-                        style: AppTypography.font18black,
-                        softWrap: true,
+                      const SizedBox(
+                        height: 12,
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 12, 15, 18),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => Aboba(
-                                        placeData: state.data.placeData,
-                                      )));
-                        },
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 6),
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SvgPicture.asset('Assets/icons/point.svg'),
-                            RichText(
-                                text: TextSpan(children: [
-                              TextSpan(
-                                  text: ' ${state.data.placeData.name}',
-                                  style: AppTypography.font14black),
-                              TextSpan(
-                                  text: '  ${state.data.creatorData.distance}',
-                                  style: AppTypography.font14lightGray),
-                            ]))
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'Assets/icons/calendar.svg',
+                                  color: AppColors.lightGray,
+                                  width: 16,
+                                  height: 16,
+                                ),
+                                const SizedBox(
+                                  width: 6,
+                                ),
+                                Text(
+                                  state.data.createdAt,
+                                  style: AppTypography.font14lightGray
+                                      .copyWith(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'Assets/icons/eye.svg',
+                                  color: AppColors.lightGray,
+                                  width: 16,
+                                  height: 16,
+                                ),
+                                const SizedBox(
+                                  width: 6,
+                                ),
+                                Text(state.data.totalViews.toString(),
+                                    style: AppTypography.font14lightGray
+                                        .copyWith(fontSize: 12)),
+                              ],
+                            ),
                           ],
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 6),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            state.data.stringPrice,
-                            style: AppTypography.font22red,
-                            textDirection: TextDirection.ltr,
-                          ),
-                        ],
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 6),
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          state.data.title,
+                          style: AppTypography.font18black,
+                          softWrap: true,
+                        ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        CustomTextButton.withIcon(
-                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                          disableColor: AppColors.red,
-                          width: MediaQuery.of(context).size.width - 62,
-                          callback: () {
-                            final userId =
-                                RepositoryProvider.of<AuthRepository>(context)
-                                    .userId;
-                            if (state.data.creatorData.uid == userId) return;
-                            RepositoryProvider.of<MessengerRepository>(context)
-                                .selectChat(announcement: state.data);
-                            Navigator.pushNamed(context, AppRoutesNames.chat);
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 12, 15, 18),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => Aboba(
+                                          placeData: state.data.placeData,
+                                        )));
                           },
-                          text: AppLocalizations.of(context)!.toWrite,
-                          styleText: AppTypography.font14white,
-                          icon: SvgPicture.asset(
-                            'Assets/icons/email.svg',
-                            color: Colors.white,
-                            width: 24,
-                            height: 24,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset('Assets/icons/point.svg'),
+                              RichText(
+                                  text: TextSpan(children: [
+                                TextSpan(
+                                    text: ' ${state.data.placeData.name}',
+                                    style: AppTypography.font14black),
+                                TextSpan(
+                                    text:
+                                        '  ${state.data.creatorData.distance}',
+                                    style: AppTypography.font14lightGray),
+                              ]))
+                            ],
                           ),
                         ),
-                        CustomIconButton(
-                          callback: () {},
-                          icon: 'Assets/icons/phone.svg',
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 6),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              state.data.stringPrice,
+                              style: AppTypography.font22red,
+                              textDirection: TextDirection.ltr,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    CustomTextButton.withIcon(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      callback: () {},
-                      text: AppLocalizations.of(context)!.offrirVotrePrix,
-                      styleText: AppTypography.font14black,
-                      icon: SvgPicture.asset('Assets/icons/dzd.svg'),
-                      disableColor: AppColors.backgroundLightGray,
-                    ),
-                    const SizedBox(
-                      height: 26,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
+                      ),
+                      Row(
                         children: [
-                          Text(
-                            AppLocalizations.of(context)!.features,
-                            style: AppTypography.font18black
-                                .copyWith(fontSize: 16),
+                          CustomTextButton.withIcon(
+                            padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                            disableColor: AppColors.red,
+                            width: MediaQuery.of(context).size.width - 62,
+                            callback: () {
+                              final userId =
+                                  RepositoryProvider.of<AuthRepository>(context)
+                                      .userId;
+                              if (state.data.creatorData.uid == userId) return;
+                              RepositoryProvider.of<MessengerRepository>(
+                                      context)
+                                  .selectChat(announcement: state.data);
+                              Navigator.pushNamed(context, AppRoutesNames.chat);
+                            },
+                            text: AppLocalizations.of(context)!.toWrite,
+                            styleText: AppTypography.font14white,
+                            icon: SvgPicture.asset(
+                              'Assets/icons/email.svg',
+                              color: Colors.white,
+                              width: 24,
+                              height: 24,
+                            ),
+                          ),
+                          CustomIconButton(
+                            callback: () {},
+                            icon: 'Assets/icons/phone.svg',
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(
-                          decelerationRate: ScrollDecelerationRate.fast),
-                      child: Column(
-                        children: state.data.staticParameters.parameters
-                            .map((e) => Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 5),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        e.key,
-                                        style: AppTypography.font14lightGray,
-                                      ),
-                                      Text(
-                                        e.currentValue,
-                                        style: AppTypography.font14black
-                                            .copyWith(
-                                                fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
-                                ))
-                            .toList(),
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context)!.description,
-                            style: AppTypography.font16black
-                                .copyWith(fontWeight: FontWeight.w700),
-                          ),
-                        ],
+                      CustomTextButton.withIcon(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        callback: () {},
+                        text: AppLocalizations.of(context)!.offrirVotrePrix,
+                        styleText: AppTypography.font14black,
+                        icon: SvgPicture.asset('Assets/icons/dzd.svg'),
+                        disableColor: AppColors.backgroundLightGray,
                       ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width - 30,
-                      child: Text(
-                        state.data.description,
-                        style: AppTypography.font14black.copyWith(height: 2),
-                        softWrap: true,
+                      const SizedBox(
+                        height: 26,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 26,
-                    ),
-                    AccountSmallInfo(
-                      creatorData: state.data.creatorData,
-                      clickable: true,
-                    ),
-                    const SizedBox(
-                      height: 100,
-                    )
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Row(
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.features,
+                              style: AppTypography.font18black
+                                  .copyWith(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(
+                            decelerationRate: ScrollDecelerationRate.fast),
+                        child: Column(
+                          children: state.data.staticParameters.parameters
+                              .map((e) => Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          e.key,
+                                          style: AppTypography.font14lightGray,
+                                        ),
+                                        Text(
+                                          e.currentValue,
+                                          style: AppTypography.font14black
+                                              .copyWith(
+                                                  fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                  ))
+                              .toList(),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.description,
+                              style: AppTypography.font16black
+                                  .copyWith(fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - 30,
+                        child: Text(
+                          state.data.description,
+                          style: AppTypography.font14black.copyWith(height: 2),
+                          softWrap: true,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 26,
+                      ),
+                      AccountSmallInfo(
+                        creatorData: state.data.creatorData,
+                        clickable: true,
+                      ),
+                      const SizedBox(
+                        height: 100,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -23,4 +23,15 @@ class AnnouncementCubit extends Cubit<AnnouncementState> {
       rethrow;
     }
   }
+
+  void refreshAnnouncement(String id) async {
+    emit(AnnouncementLoadingState());
+    try {
+      final data = await _announcementManager.refreshAnnouncement(id);
+      emit(AnnouncementSuccessState(data: data!));
+    } catch (e) {
+      emit(AnnouncementFailState());
+      rethrow;
+    }
+  }
 }

@@ -266,7 +266,8 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
               }
             }),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                mainAxisExtent: 113,
+                mainAxisExtent: 106,
+                childAspectRatio: 0.938,
                 mainAxisSpacing: 7,
                 crossAxisSpacing: 7,
                 crossAxisCount: 3));

@@ -5,6 +5,7 @@ import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/images/announcement_image.dart';
 
 class AnnouncementShortInfo extends StatelessWidget {
   const AnnouncementShortInfo({super.key, required this.announcement});
@@ -36,38 +37,7 @@ class AnnouncementShortInfo extends StatelessWidget {
             ]),
         child: Row(
           children: [
-            FutureBuilder(
-                future: announcement.futureBytes,
-                builder: (context, snapshot) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(14),
-                    child: snapshot.hasData
-                        ? Image.memory(
-                            snapshot.data!,
-                            fit: BoxFit.cover,
-                            width: 65,
-                            height: 55,
-                            frameBuilder: ((context, child, frame,
-                                wasSynchronouslyLoaded) {
-                              return AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 300),
-                                child: frame != null
-                                    ? child
-                                    : Container(
-                                        height: 65,
-                                        width: 55,
-                                        color: Colors.grey[300],
-                                      ),
-                              );
-                            }),
-                          )
-                        : Container(
-                            height: 65,
-                            width: 66,
-                            color: Colors.grey[300],
-                          ),
-                  );
-                }),
+            AnnouncementImage(announcement: announcement, width: 65, height: 55),
             const SizedBox(
               width: 10,
             ),

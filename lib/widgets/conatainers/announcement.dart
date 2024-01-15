@@ -9,6 +9,7 @@ import 'package:smart/managers/favourites_manager.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/images/announcement_image.dart';
 
 import '../../feature/announcement/bloc/announcement/announcement_cubit.dart';
 import '../../utils/colors.dart';
@@ -36,11 +37,9 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
 
   void likeOrUnlike() {
     if (!liked) {
-      BlocProvider.of<FavouritesCubit>(context)
-          .like(widget.announcement.id);
+      BlocProvider.of<FavouritesCubit>(context).like(widget.announcement.id);
     } else {
-      BlocProvider.of<FavouritesCubit>(context)
-          .unlike(widget.announcement.id);
+      BlocProvider.of<FavouritesCubit>(context).unlike(widget.announcement.id);
     }
     setState(() {
       liked = !liked;
@@ -55,45 +54,14 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
     final image = SizedBox(
       width: imageWidth,
       height: imageHeight,
-      child: FutureBuilder(
-          future: widget.announcement.futureBytes,
-          builder: (context, snapshot) {
-            return ClipRRect(
-              borderRadius: BorderRadius.circular(14),
-              child: snapshot.hasData
-                  ? Image.memory(
-                      snapshot.data!,
-                      fit: BoxFit.cover,
-                      width: imageWidth,
-                      height: imageHeight,
-                      frameBuilder:
-                          ((context, child, frame, wasSynchronouslyLoaded) {
-                        return AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 300),
-                          child: frame != null
-                              ? child
-                              : Container(
-                                  height: imageHeight,
-                                  width: imageWidth,
-                                  color: Colors.grey[300],
-                                ),
-                        );
-                      }),
-                    )
-                  : Container(
-                      height: imageHeight,
-                      width: imageWidth,
-                      color: Colors.grey[300],
-                    ),
-            );
-          }),
+      child: AnnouncementImage(
+        announcement: widget.announcement,
+        width: imageWidth,
+        height: imageHeight,
+      ),
     );
 
-    return InkWell(
-        focusColor: AppColors.empty,
-        hoverColor: AppColors.empty,
-        highlightColor: AppColors.empty,
-        splashColor: AppColors.empty,
+    return GestureDetector(
         onTap: () async {
           BlocProvider.of<AnnouncementCubit>(context)
               .loadAnnouncementById(widget.announcement.id);

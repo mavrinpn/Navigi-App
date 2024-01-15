@@ -1,3 +1,4 @@
+import 'package:appwrite/models.dart';
 import 'package:smart/utils/functions.dart';
 
 class Message {
@@ -42,4 +43,19 @@ class Message {
         createdAtDt = DateTime.now(),
         wasRead = read,
         owned = owned_;
+
+  Message.fromDocument(Document doc, String userId)
+      : id = doc.$id,
+        content = doc.data['content'],
+        senderId = doc.data['creatorId'],
+        images = doc.data['images'],
+        owned = userId == doc.data['creatorId'],
+        createdAt = doc.$createdAt,
+        createdAtDt =
+            DateTime.parse(doc.$createdAt).add(DateTime.now().timeZoneOffset) {
+    if (doc.data['wasRead'] != null) {
+      wasRead =
+          DateTime.fromMillisecondsSinceEpoch(doc.data['wasRead']);
+    }
+  }
 }

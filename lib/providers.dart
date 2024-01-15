@@ -86,7 +86,8 @@ class MyRepositoryProviders extends StatelessWidget {
       RepositoryProvider(
           create: (_) => FavouritesManager(databaseService: databaseService)),
       RepositoryProvider(
-          create: (_) => AnnouncementEditingRepository(databaseService, storageManager))
+          create: (_) =>
+              AnnouncementEditingRepository(databaseService, storageManager))
     ], child: const MyBlocProviders());
   }
 }
@@ -122,7 +123,8 @@ class MyBlocProviders extends StatelessWidget {
       ),
       BlocProvider(
         create: (_) => AnnouncementEditCubit(
-            RepositoryProvider.of<AnnouncementEditingRepository>(context)),
+            RepositoryProvider.of<AnnouncementEditingRepository>(context),
+            RepositoryProvider.of<AnnouncementManager>(context)),
         lazy: false,
       ),
       BlocProvider(

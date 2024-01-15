@@ -16,42 +16,25 @@ class MessagesService {
   RealtimeSubscription getMessagesSubscription() => _realtime.subscribe(
       ['databases.$mainDatabase.collections.$messagesCollection.documents']);
 
-  Map<String, String?> getOtherUserNameAndImage(
+  ChatUserInfo _getOtherUserNameAndImage(
       Map<String, dynamic> documentData, String userId) {
     final user1 = documentData['user1'];
+    final user2 = documentData['user2'];
     if (user1[DefaultDocumentParameters.id] != userId) {
-      return {
-        'name': user1['name'],
-        'image': user1['image_url'],
-        'id': user1['\$id'],
-      };
+      return ChatUserInfo.fromJson(user1);
     } else {
-      return {
-        'name': documentData['user2']['name'],
-        'image': documentData['user2']['image_url'],
-        'id': documentData['user2']['\$id'],
-      };
+      return ChatUserInfo.fromJson(user2);
     }
   }
 
   Room _roomFromDoc(Document doc, String userId) {
-    final data = doc.data;
-    final otherUser = getOtherUserNameAndImage(data, userId);
-    final String announcementName = data['announcement']['name'];
-
-    final id = getIdFromUrl(data['announcement']['images'][0]);
+    final otherUser = _getOtherUserNameAndImage(doc.data, userId);
+    final id = getIdFromUrl(doc.data['announcement']['images'][0]);
 
     final futureBytes =
         _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
 
-    return Room(
-        announcement: Announcement.fromJson(
-            json: data['announcement'], futureBytes: futureBytes),
-        chatName: '${otherUser['name']} $announcementName',
-        otherUserId: otherUser['id']!,
-        otherUserAvatarUrl: otherUser['image'],
-        otherUserName: otherUser['name']!,
-        id: doc.$id);
+    return Room.fromDocument(doc, futureBytes, otherUser);
   }
 
   Future<List<Room>> getUserChats(String userId) async {
@@ -93,25 +76,29 @@ class MessagesService {
 
     List<Message> messages = [];
     for (var doc in res.documents) {
-      final message = Message(
-        id: doc.$id,
-        content: doc.data['content'],
-        senderId: doc.data['creatorId'],
-        images: doc.data['images'],
-        owned: userId == doc.data['creatorId'],
-        createdAt: doc.$createdAt,
-        createdAtDt:
-            DateTime.parse(doc.$createdAt).add(DateTime.now().timeZoneOffset),
-      );
-      if (doc.data['wasRead'] != null) {
-        message.wasRead =
-            DateTime.fromMillisecondsSinceEpoch(doc.data['wasRead']);
-      }
-
+      final message = Message.fromDocument(doc, userId);
       messages.add(message);
     }
 
     return messages;
+  }
+
+
+  Future<void> refreshOnlineStatus(String userId) async {
+    final time = DateTime.now().toIso8601String();
+    _databases.updateDocument(
+        databaseId: mainDatabase,
+        collectionId: usersCollection,
+        documentId: userId,
+        data: {'lastSeen': time});
+  }
+
+  Future<DateTime?> userLastSeen(String userId) async {
+    final res = await _databases.getDocument(
+        databaseId: mainDatabase,
+        collectionId: usersCollection,
+        documentId: userId);
+    return DateTime.tryParse(res.data['lastSeen']);
   }
 
   Future<void> markMessagesAsRead(String chatId, String userId) async {
@@ -133,7 +120,6 @@ class MessagesService {
       }
     }
   }
-
   Future<void> markMessageAsRead(String messageId) async {
     _databases.updateDocument(
         databaseId: mainDatabase,

@@ -22,6 +22,7 @@ class AuthRepository {
   final FileStorageManager _fileStorageManager;
 
   late User _user;
+  String _tempMail = '';
   late UserData userData;
   String? sessionID;
   static const sessionIdKey = 'sessionID';
@@ -101,8 +102,6 @@ class AuthRepository {
     appState.add(AuthStateEnum.unAuth);
   }
 
-  String _tempMail = '';
-
   Future<void> login(String email, String password) async {
     authState.add(EntranceStateEnum.loading);
     try {
@@ -153,6 +152,8 @@ class AuthRepository {
       rethrow;
     }
   }
+
+  
 
   Future<String?> _getEmailByPhone(String phone) async {
     final String? email;

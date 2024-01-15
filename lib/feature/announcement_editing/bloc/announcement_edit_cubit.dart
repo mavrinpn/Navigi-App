@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:smart/feature/announcement_editing/data/announcement_editing_repository.dart';
 import 'package:smart/feature/announcement_editing/data/models/edit_data.dart';
 import 'package:smart/feature/announcement_editing/data/models/image_data.dart';
+import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/models/item/item.dart';
 
@@ -10,8 +12,10 @@ part 'announcement_edit_state.dart';
 
 class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
   AnnouncementEditingRepository repository;
+  AnnouncementManager announcementManager;
 
-  AnnouncementEditCubit(this.repository) : super(AnnouncementEditInitial());
+  AnnouncementEditCubit(this.repository, this.announcementManager)
+      : super(AnnouncementEditInitial());
 
   /// всю информацию на экране брать отсюда
   AnnouncementEditData get data => repository.editData!;
@@ -66,6 +70,7 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
   /// ну крестик на фотке
   void deleteImage(ImageData image) {
     repository.deleteImage(image);
+    emit(AnnouncementChangeImages());
   }
 
   /// надеюсь понятно куда

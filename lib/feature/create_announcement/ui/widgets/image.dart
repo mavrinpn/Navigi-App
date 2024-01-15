@@ -20,7 +20,7 @@ class ImageWidget extends StatelessWidget {
       child: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.only(top: 8, right: 8),
             child: Container(
               width: 105,
               height: 98,
