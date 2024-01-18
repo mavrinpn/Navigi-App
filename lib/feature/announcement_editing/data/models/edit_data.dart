@@ -32,7 +32,7 @@ class AnnouncementEditData {
         'description': description,
         'price': price,
         'parametrs':
-            parameters != null ? parameters!.buildJsonFormatParameters() : null,
+            parameters != null ? parameters!.buildJsonFormatParameters() : "{}",
         'images': images,
       };
 }

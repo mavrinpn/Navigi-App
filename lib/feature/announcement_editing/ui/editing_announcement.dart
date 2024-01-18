@@ -48,13 +48,14 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
 
   String? priceValidator(String? value) {
     final localizations = AppLocalizations.of(context)!;
+    final cubit = BlocProvider.of<AnnouncementEditCubit>(context);
     double? n;
     n = double.tryParse(priceController.text) ?? -1;
     if (n < 0 || n > 20000000) {
       buttonActive = false;
       return localizations.errorReviewOrEnterOther;
     }
-    buttonActive = true;
+    buttonActive = true && cubit.images.isNotEmpty;
     return null;
   }
 
@@ -76,9 +77,15 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
         TextPosition(offset: titleController.text.length));
   }
 
+  void validateButtonActive() {
+    buttonActive = titleController.text.isNotEmpty;
+    buttonActive = buttonActive && descriptionController.text.isNotEmpty;
+
+    priceValidator(priceController.text);
+  }
+
   void initialTextFields() {
     final cubit = RepositoryProvider.of<AnnouncementEditCubit>(context);
-
     titleController.text = cubit.data.title;
     descriptionController.text = cubit.data.description;
     priceController.text = cubit.data.price.toString();
@@ -96,7 +103,6 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
     updateTextSelection();
     final cubit = context.read<AnnouncementEditCubit>();
     final localizations = AppLocalizations.of(context)!;
-
     return PopScope(
         canPop: true,
         onPopInvoked: (v) {
@@ -123,6 +129,8 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
             }
           },
           builder: (context, state) {
+            validateButtonActive();
+
             return Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
