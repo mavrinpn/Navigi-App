@@ -30,17 +30,14 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
 
   @override
   void initState() {
-    liked = RepositoryProvider.of<FavouritesManager>(context)
-        .contains(widget.announcement.id);
+    liked = BlocProvider.of<FavouritesCubit>(context)
+        .isLiked(widget.announcement.id);
     super.initState();
   }
 
   void likeOrUnlike() {
-    if (!liked) {
-      BlocProvider.of<FavouritesCubit>(context).like(widget.announcement.id);
-    } else {
-      BlocProvider.of<FavouritesCubit>(context).unlike(widget.announcement.id);
-    }
+    BlocProvider.of<FavouritesCubit>(context)
+        .likeUnlike(widget.announcement.id);
     setState(() {
       liked = !liked;
     });
@@ -49,17 +46,9 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+
     final double imageWidth = widget.width ?? width / 2 - 25;
     final double imageHeight = widget.height ?? (width / 2 - 25) * 1.032;
-    final image = SizedBox(
-      width: imageWidth,
-      height: imageHeight,
-      child: AnnouncementImage(
-        announcement: widget.announcement,
-        width: imageWidth,
-        height: imageHeight,
-      ),
-    );
 
     return GestureDetector(
         onTap: () async {
@@ -70,7 +59,15 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            image,
+            SizedBox(
+              width: imageWidth,
+              height: imageHeight,
+              child: AnnouncementImage(
+                announcement: widget.announcement,
+                width: imageWidth,
+                height: imageHeight,
+              ),
+            ),
             const SizedBox(
               height: 10,
             ),
@@ -151,11 +148,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                       style: AppTypography.font16boldRed,
                       textDirection: TextDirection.ltr,
                     ),
-                    InkWell(
-                        focusColor: AppColors.empty,
-                        hoverColor: AppColors.empty,
-                        highlightColor: AppColors.empty,
-                        splashColor: AppColors.empty,
+                    GestureDetector(
                         onTap: likeOrUnlike,
                         child: SvgPicture.asset('Assets/icons/follow.svg',
                             width: 24,

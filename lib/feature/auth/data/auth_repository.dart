@@ -25,6 +25,25 @@ class AuthRepository {
   String _tempMail = '';
   late UserData userData;
   String? sessionID;
+
+  bool appMounted = true;
+
+  static const Duration _onlineRefreshDuration = Duration(seconds: 30);
+  Timer? _onlineTimer;
+
+  void _timerFunction(Timer timer) {
+    if (sessionID == null) {
+      timer.cancel();
+      return;
+    }
+
+    if (appMounted) _databaseService.users.updateOnlineStatus(userId);
+  }
+
+  void _startOnlineTimer() {
+    _onlineTimer = Timer.periodic(_onlineRefreshDuration, _timerFunction);
+  }
+
   static const sessionIdKey = 'sessionID';
 
   String get userId => _user.$id;
@@ -58,14 +77,19 @@ class AuthRepository {
     _messagingService.handleTokenRefreshing();
   }
 
+  void _initialize() async {
+    getUserData();
+    _initMessaging();
+    _startOnlineTimer();
+  }
+
   void checkLogin() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       sessionID = prefs.getString(sessionIdKey);
       if (sessionID != null) {
         _user = await _account.get();
-        getUserData();
-        _initMessaging();
+        _initialize();
         appState.add(AuthStateEnum.auth);
       } else {
         appState.add(AuthStateEnum.unAuth);
@@ -93,6 +117,7 @@ class AuthRepository {
   void logout() async {
     try {
       await _account.deleteSession(sessionId: sessionID!);
+      sessionID = null;
     } catch (e) {}
 
     final prefs = await SharedPreferences.getInstance();
@@ -107,6 +132,7 @@ class AuthRepository {
     try {
       await _authorizeWithCredentials(
           UserCredentials(mail: email, password: password));
+
       authState.add(EntranceStateEnum.success);
       appState.add(AuthStateEnum.auth);
     } catch (e) {
@@ -127,7 +153,6 @@ class AuthRepository {
     if (res != null) {
       await _authorizeWithCredentials(res,
           registrationName: name, needRegister: true);
-
       authState.add(EntranceStateEnum.success);
       appState.add(AuthStateEnum.auth);
     } else {
@@ -152,8 +177,6 @@ class AuthRepository {
       rethrow;
     }
   }
-
-  
 
   Future<String?> _getEmailByPhone(String phone) async {
     final String? email;
@@ -193,6 +216,7 @@ class AuthRepository {
 
     await getUserData();
     _initMessaging();
+    _startOnlineTimer();
   }
 
   Future _saveSessionId(String newSessionId) async {

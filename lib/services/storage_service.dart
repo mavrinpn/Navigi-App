@@ -10,22 +10,22 @@ class FileStorageManager {
 
   FileStorageManager({required this.client}) : _storage = Storage(client);
 
+  Future<List<String>> uploadMessageImages(List<Uint8List> listOfBytes) async {
+    List<String> urlsList = [];
+
+    for (var bytes in listOfBytes) {
+      final url = await _uploadImage(chatImagesBucket, bytes);
+      urlsList.add(url);
+    }
+    return urlsList;
+  }
+
   Future<List<String>> uploadAnnouncementImages(
       List<Uint8List> listOfBytes) async {
     List<String> urlsList = [];
 
     for (var bytes in listOfBytes) {
       final url = await _uploadImage(announcementsBucketId, bytes);
-      urlsList.add(url);
-    }
-    return urlsList;
-  }
-
-  Future<List<String>> uploadMessageImages(List<Uint8List> listOfBytes) async {
-    List<String> urlsList = [];
-
-    for (var bytes in listOfBytes) {
-      final url = await _uploadImage(chatImagesBucket, bytes);
       urlsList.add(url);
     }
     return urlsList;

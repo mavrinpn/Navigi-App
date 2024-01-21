@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/firebase_options.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/providers.dart';
@@ -17,7 +18,6 @@ import 'package:smart/widgets/splash.dart';
 import 'bloc/app/app_cubit.dart';
 import 'feature/auth/ui/login_first_screen.dart';
 import 'feature/home/ui/home_screen.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,8 +41,20 @@ class MyApp extends StatefulWidget {
   }
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Locale? _locale;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    RepositoryProvider.of<AuthRepository>(context).appMounted =
+        state == AppLifecycleState.resumed;
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
   setLocale(Locale locale) {
     setState(() {
@@ -52,7 +64,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -86,8 +100,6 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-
-
 class HomePage extends StatelessWidget {
   const HomePage({
     Key? key,
@@ -113,31 +125,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-
-// {
-// '/': (context) => const HomePage(),
-// // '/': (context) => const CodeScreen(),
-// '/login_first_screen': (context) => const LoginFirstScreen(),
-// '/login_code_screen': (context) => const CodeScreen(),
-// '/login_second_screen': (context) => const LoginSecondScreen(),
-// '/register_screen': (context) => const RegisterScreen(),
-// '/home_screen': (context) => const HomeScreen(),
-// '/create_category_screen': (context) => const CategoryScreen(),
-// '/create_sub_category_screen': (context) => const SubCategoryScreen(),
-// '/create_search_products_screen': (context) =>
-// const SearchProductsScreen(),
-// '/create_pick_photos_screen': (context) => const PickPhotosScreen(),
-// '/create_by_not_by_screen': (context) => const ByNotByScreen(),
-// '/create_description': (context) => const DescriptionScreen(),
-// '/create_search_places_screen': (context) => const SearchPlaceScreen(),
-// '/loading_screen': (context) => const LoadingScreen(),
-// '/create_options_screen': (context) => const OptionsScreen(),
-// '/main_screen': (context) => const MainScreen(),
-// '/announcement_screen': (context) => const AnnouncementScreen(),
-// '/edit_profile_screen': (context) => const EditProfileScreen(),
-// '/settings_screen': (context) => const SettingsScreen(),
-// '/search_screen': (context) => const SearchScreen(),
-// '/creator_screen': (context) => const CreatorProfileScreen(),
-// '/chat_screen': (context) => const ChatScreen(),
-// }

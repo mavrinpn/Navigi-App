@@ -18,26 +18,20 @@ class FavouritesCubit extends Cubit<FavouritesState> {
     });
   }
 
-  Future<bool> like(String postId) async {
+  bool isLiked(String id) => favouritesManager.contains(id);
+
+  Future<bool> likeUnlike(String postId) async {
     emit(LikeProcessState());
     try {
-      await favouritesManager.like(postId);
+      if (isLiked(postId)) {
+        await favouritesManager.unlike(postId);
+      } else {
+        await favouritesManager.like(postId);
+      }
+
       emit(LikeSuccessState(changedPostId: postId, value: true));
       await favouritesManager.getFavourites();
       return true;
-    } catch (e) {
-      emit(LikeFailState());
-      rethrow;
-    }
-  }
-
-  Future<bool> unlike(String postId) async {
-    emit(LikeProcessState());
-    try {
-      await favouritesManager.unlike(postId);
-      emit(LikeSuccessState(changedPostId: postId, value: false));
-      await favouritesManager.getFavourites();
-      return false;
     } catch (e) {
       emit(LikeFailState());
       rethrow;

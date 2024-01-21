@@ -1,22 +1,27 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/feature/messenger/ui/widgets/image_message.dart';
+import 'package:smart/feature/messenger/ui/widgets/message_widget.dart';
 import 'package:smart/models/messenger/messages_group.dart';
 import 'package:smart/utils/fonts.dart';
-import 'package:smart/widgets/messenger/message_widget.dart';
 
 class MessageGroupWidget extends StatelessWidget {
   const MessageGroupWidget(
       {super.key, required this.data, required this.avatarUrl});
 
   final String avatarUrl;
-  final MessagesGroup data;
+  final MessagesGroupData data;
 
   List<Widget> generateMessages() {
     List<Widget> items = [];
     for (var message in data.messages) {
-      items.add(MessageContainer(
-          text: message.content, isCurrentUser: message.owned));
+      if ((message.images ?? []).isEmpty) {
+        items.add(MessageContainer(
+            text: message.content, isCurrentUser: message.owned));
+      } else {
+        items.add(ImageMessage(
+            imageUrl: message.images!.first, isCurrentUser: message.owned));
+      }
     }
     MainAxisAlignment alignment;
     if (!data.owned) {
@@ -60,7 +65,9 @@ class MessageGroupWidget extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 20, right: 8),
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: NetworkImage(avatarUrl),
+                backgroundColor: Colors.grey[300],
+                backgroundImage:
+                    avatarUrl != '' ? NetworkImage(avatarUrl) : null,
               ),
             ),
           ],

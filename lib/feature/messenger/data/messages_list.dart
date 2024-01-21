@@ -16,9 +16,9 @@ class MessagesList {
 
     for (Message message in _messages) {
       if (items.last is DateSplitter) {
-        items.add(MessagesGroup(messages: [message]));
+        items.add(MessagesGroupData(messages: [message]));
       } else {
-        final lastGroup = items.last as MessagesGroup;
+        final lastGroup = items.last as MessagesGroupData;
         bool timeConditionToSplitGroups =
             (lastGroup.sentAt.difference(message.createdAtDt).inSeconds).abs() >
                 30;
@@ -27,9 +27,9 @@ class MessagesList {
             items.add(DateSplitter(dateTime: message.createdAtDt));
           }
 
-          items.add(MessagesGroup(messages: [message]));
+          items.add(MessagesGroupData(messages: [message]));
         } else {
-          (items.last as MessagesGroup).addMessage(message);
+          (items.last as MessagesGroupData).addMessage(message);
         }
       }
     }

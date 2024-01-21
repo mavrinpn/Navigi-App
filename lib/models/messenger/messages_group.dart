@@ -2,10 +2,10 @@ import 'package:smart/models/messenger/chat_item.dart';
 import 'package:smart/models/messenger/message.dart';
 import 'package:smart/utils/functions.dart';
 
-class MessagesGroup implements ChatItem {
+class MessagesGroupData implements ChatItem {
   List<Message> messages;
 
-  MessagesGroup({required this.messages}) : assert(messages.isNotEmpty, 'messages cannot be empty');
+  MessagesGroupData({required this.messages}) : assert(messages.isNotEmpty, 'messages cannot be empty');
 
   void addMessage(Message message) => messages.add(message);
 

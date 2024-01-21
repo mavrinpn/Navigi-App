@@ -11,6 +11,7 @@ import 'package:smart/feature/create_announcement/bloc/creating/creating_announc
 import 'package:smart/feature/create_announcement/bloc/item_search/item_search_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/subcategory/subcategory_cubit.dart';
+import 'package:smart/feature/messenger/ui/bloc/message_images_cubit.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/managers/favourites_manager.dart';
@@ -76,7 +77,8 @@ class MyRepositoryProviders extends StatelessWidget {
         create: (_) => PlacesManager(databaseService: databaseService),
       ),
       RepositoryProvider(
-        create: (_) => MessengerRepository(databaseService: databaseService),
+        create: (_) => MessengerRepository(
+            databaseService: databaseService, storage: storageManager),
       ),
       RepositoryProvider(
         create: (_) => SearchManager(client: client),
@@ -205,6 +207,12 @@ class MyBlocProviders extends StatelessWidget {
       BlocProvider(
         create: (_) => CreatorCubit(
           creatorRepository: RepositoryProvider.of<CreatorRepository>(context),
+        ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => MessageImagesCubit(
+          RepositoryProvider.of<MessengerRepository>(context),
         ),
         lazy: false,
       ),

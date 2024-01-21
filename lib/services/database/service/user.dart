@@ -73,8 +73,26 @@ class UserService {
       print(res.responseBody);
       return null;
     }
+  }
 
+  static const String lastSeen = 'lastSeen';
 
+  Future<void> updateOnlineStatus(String userId) async {
+    final time = DateTime.now();
+    await _databases.updateDocument(
+        databaseId: mainDatabase,
+        collectionId: usersCollection,
+        documentId: userId,
+        data: {lastSeen: time.millisecondsSinceEpoch});
+  }
+
+  Future<DateTime> getLastUserOnline(String userId) async {
+    final res = await _databases.getDocument(
+        databaseId: mainDatabase,
+        collectionId: usersCollection,
+        documentId: userId);
+
+    return DateTime.fromMillisecondsSinceEpoch(res.data[lastSeen] ?? 0);
   }
 }
 
@@ -84,5 +102,7 @@ class UserCredentials {
 
   UserCredentials({required this.mail, required this.password});
 
-  UserCredentials.fromJson(Map<String, dynamic> json) : mail = json['mail'], password = json['password'];
+  UserCredentials.fromJson(Map<String, dynamic> json)
+      : mail = json['mail'],
+        password = json['password'];
 }

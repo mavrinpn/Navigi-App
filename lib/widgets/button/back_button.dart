@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:smart/utils/colors.dart';
 
 class CustomBackButton extends StatelessWidget {
-  const CustomBackButton({super.key, this.callback});
+  const CustomBackButton({super.key, this.callback, this.color});
   final VoidCallback? callback;
-
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +17,12 @@ class CustomBackButton extends StatelessWidget {
         if (callback != null) callback!();
         Navigator.pop(context);
       },
-      child: const SizedBox(
+      child: SizedBox(
         width: 35,
         height: 48,
         child: Icon(
           Icons.arrow_back,
-          color: AppColors.black,
+          color: color ?? AppColors.black,
         ),
       ),
     )

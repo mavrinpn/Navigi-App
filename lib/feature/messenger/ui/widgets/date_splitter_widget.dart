@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:smart/utils/fonts.dart';
 
-import '../../models/messenger/date_splitter.dart';
+import '../../../../models/messenger/date_splitter.dart';
 
 class DateSplitterWidget extends StatelessWidget {
   const DateSplitterWidget({super.key, required this.data});

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
-
-import '../../utils/colors.dart';
 
 class MessageContainer extends StatelessWidget {
   const MessageContainer({

@@ -6,11 +6,14 @@ class MessagesService {
   final Functions _functions;
   final Storage _storage;
 
+  final UserService _usersService;
+
   MessagesService(Databases databases, Realtime realtime, Functions functions,
-      Storage storage)
+      Storage storage, UserService userService)
       : _databases = databases,
         _storage = storage,
         _functions = functions,
+        _usersService = userService,
         _realtime = realtime;
 
   RealtimeSubscription getMessagesSubscription() => _realtime.subscribe(
@@ -27,6 +30,13 @@ class MessagesService {
     }
   }
 
+  Future<bool> _onlineGetter(String userId) async {
+    final dt = await _usersService.getLastUserOnline(userId);
+
+    final now = DateTime.now();
+    return now.difference(dt).inSeconds < 40;
+  }
+
   Room _roomFromDoc(Document doc, String userId) {
     final otherUser = _getOtherUserNameAndImage(doc.data, userId);
     final id = getIdFromUrl(doc.data['announcement']['images'][0]);
@@ -34,7 +44,8 @@ class MessagesService {
     final futureBytes =
         _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
 
-    return Room.fromDocument(doc, futureBytes, otherUser);
+    return Room.fromDocument(doc, futureBytes, otherUser,
+        onlineGetter: _onlineGetter);
   }
 
   Future<List<Room>> getUserChats(String userId) async {
@@ -83,7 +94,6 @@ class MessagesService {
     return messages;
   }
 
-
   Future<void> refreshOnlineStatus(String userId) async {
     final time = DateTime.now().toIso8601String();
     _databases.updateDocument(
@@ -120,6 +130,7 @@ class MessagesService {
       }
     }
   }
+
   Future<void> markMessageAsRead(String messageId) async {
     _databases.updateDocument(
         databaseId: mainDatabase,
@@ -150,9 +161,16 @@ class MessagesService {
       required String content,
       required String senderId,
       List<String>? images}) async {
-    final encodedBody = jsonEncode(
-        {'roomId': roomId, 'senderId': senderId, 'message': content});
+    final encodedBody = jsonEncode({
+      'roomId': roomId,
+      'senderId': senderId,
+      'message': content,
+      'images': images ?? []
+    });
     final res = await _functions.createExecution(
         functionId: '657f16bf26ccb6ca8093', body: encodedBody);
+
+    print(res.errors);
+    print(res.responseBody);
   }
 }

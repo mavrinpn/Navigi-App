@@ -26,6 +26,7 @@ class DatabaseService {
     users = UserService(_databases, _functions, _account);
     announcements = AnnouncementsService(_databases, _storage);
     favourites = FavouritesService(_databases, _storage);
-    messages = MessagesService(_databases, _realtime, _functions, _storage);
+    messages =
+        MessagesService(_databases, _realtime, _functions, _storage, users);
   }
 }

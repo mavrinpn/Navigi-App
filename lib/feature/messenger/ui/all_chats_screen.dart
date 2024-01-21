@@ -3,7 +3,7 @@ import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/models/messenger/room.dart';
 import 'package:smart/utils/utils.dart';
-import 'package:smart/widgets/messenger/chat_container.dart';
+import 'package:smart/feature/messenger/ui/widgets/chat_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

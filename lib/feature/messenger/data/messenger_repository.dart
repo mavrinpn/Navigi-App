@@ -1,25 +1,31 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smart/feature/messenger/data/messages_list.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/models/messenger/chat_item.dart';
 import 'package:smart/models/messenger/room.dart';
-import 'package:smart/models/messenger/date_splitter.dart';
 import 'package:smart/models/messenger/message.dart';
 import 'package:smart/models/messenger/messages_group.dart';
 import 'package:smart/services/database/database_service.dart';
+import 'package:smart/services/storage_service.dart';
 
 class MessengerRepository {
   static const String _needCreateRoomId = 'NEED_CREATE_ROOM';
 
   final DatabaseService _databaseService;
+  final FileStorageManager _storageManager;
   RealtimeSubscription? _messageListener;
 
-  MessengerRepository({required DatabaseService databaseService})
-      : _databaseService = databaseService;
+  MessengerRepository(
+      {required DatabaseService databaseService,
+      required FileStorageManager storage})
+      : _databaseService = databaseService,
+        _storageManager = storage;
 
   String? _userId;
   List<Room> _chats = [];
@@ -67,6 +73,26 @@ class MessengerRepository {
     _loadChatsPreviewMessages();
   }
 
+  Future<void> sendImages(List<XFile> images) async {
+    if (currentRoom?.id == _needCreateRoomId) await _createRoom();
+    final List<Uint8List> bytes = [];
+
+    for (var i in images) {
+      bytes.add(await i.readAsBytes());
+    }
+
+    final urls = await _storageManager.uploadMessageImages(bytes);
+
+    for (var i in urls) {
+      await _databaseService.messages.sendMessage(
+        roomId: currentRoom!.id,
+        content: '',
+        senderId: _userId!,
+        images: [i]
+      );
+    }
+  }
+
   Future<void> sendMessage(String content) async {
     if (currentRoom?.id == _needCreateRoomId) await _createRoom();
 
@@ -75,7 +101,6 @@ class MessengerRepository {
       content: content,
       senderId: _userId!,
     );
-    print('message sent');
   }
 
   void searchChat(String query) {
@@ -125,10 +150,11 @@ class MessengerRepository {
   void _selectRoomById(String id) {
     final Message? lastMessage = _chats[_findChatById(id)!].lastMessage;
     currentRoom = _chats[_findChatById(id)!];
-    _currentChatMessages = MessagesList( lastMessage != null ? [lastMessage] : []);
+    _currentChatMessages =
+        MessagesList(lastMessage != null ? [lastMessage] : []);
     currentChatItemsStream.add(lastMessage != null
         ? [
-            MessagesGroup(messages: [lastMessage])
+            MessagesGroupData(messages: [lastMessage])
           ]
         : []);
     _loadChatMessages(id);

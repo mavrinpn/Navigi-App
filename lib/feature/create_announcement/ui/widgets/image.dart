@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -6,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ImageWidget extends StatelessWidget {
-  const ImageWidget({super.key,  this.path, required this.callback, this.bytes});
+  const ImageWidget({super.key, this.path, required this.callback, this.bytes});
 
   final String? path;
   final Uint8List? bytes;
@@ -29,7 +28,10 @@ class ImageWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14),
                   color: Colors.red,
                   image: DecorationImage(
-                      image: (path != null ? FileImage(File(path!)) : MemoryImage(bytes!)) as ImageProvider, fit: BoxFit.cover)),
+                      image: (path != null
+                          ? FileImage(File(path!))
+                          : MemoryImage(bytes!)) as ImageProvider,
+                      fit: BoxFit.cover)),
             ),
           ),
           Container(
