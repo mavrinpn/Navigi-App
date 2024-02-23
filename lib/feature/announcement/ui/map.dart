@@ -10,7 +10,7 @@ import '../../../utils/fonts.dart';
 class Aboba extends StatelessWidget {
   const Aboba({super.key, required this.placeData});
 
-  final PlaceData placeData;
+  final CityDistrict placeData;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class Aboba extends StatelessWidget {
 class MapSample extends StatefulWidget {
   const MapSample({super.key, required this.placeData});
 
-  final PlaceData placeData;
+  final CityDistrict placeData;
 
   @override
   State<MapSample> createState() => MapSampleState();
@@ -90,7 +90,7 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     CameraPosition center = CameraPosition(
-      target: LatLng(widget.placeData.x, widget.placeData.y),
+      target: LatLng(widget.placeData.latitude, widget.placeData.longitude),
       zoom: 14.4746,
     );
 
@@ -112,7 +112,7 @@ class MapSampleState extends State<MapSample> {
                   Marker(
                     icon: customMarker,
                     markerId: MarkerId(widget.placeData.name),
-                    position: LatLng(widget.placeData.x, widget.placeData.y),
+                    position: LatLng(widget.placeData.latitude, widget.placeData.longitude),
                   )
                 }),
       floatingActionButton: Row(

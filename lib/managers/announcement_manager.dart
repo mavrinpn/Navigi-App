@@ -2,6 +2,8 @@ import 'package:appwrite/appwrite.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/enum/enum.dart';
+import 'package:smart/models/item/item.dart';
+import 'package:smart/services/filters/filter_dto.dart';
 
 import '../../models/announcement.dart';
 import '../services/database/database_service.dart';
@@ -97,21 +99,67 @@ class AnnouncementManager {
     }
   }
 
+  Future<void> searchWithSubcategory(
+      {String? searchText,
+      required bool isNew,
+      required String subcategoryId,
+      required List<Parameter> parameters,
+      String? mark,
+      String? model,
+      String? sortBy,
+      double? minPrice,
+      double? maxPrice,
+      double? radius}) async {
+    try {
+      if (isNew) {
+        searchAnnouncements.clear();
+        _searchLastId = '';
+      }
+
+      final filter = SubcategoryFilterDTO(
+          lastId: _searchLastId,
+          text: searchText,
+          sortBy: sortBy,
+          minPrice: minPrice,
+          maxPrice: maxPrice,
+          radius: radius,
+          subcategory: subcategoryId,
+          parameters: parameters);
+
+      searchAnnouncements.addAll(await dbService.announcements
+          .searchAnnouncementsInSubcategory(filter));
+
+      _searchLastId = searchAnnouncements.last.id;
+    } catch (e) {
+      if (e.toString() != 'Bad state: No element') {
+        rethrow;
+      }
+    }
+  }
+
   Future<void> loadSearchAnnouncement(
       {String? searchText,
       required bool isNew,
       String? sortBy,
       double? minPrice,
-      double? maxPrice}) async {
+      double? maxPrice,
+      double? radius}) async {
     try {
       if (isNew) {
-        searchAnnouncements = <Announcement>[];
+        searchAnnouncements.clear();
         _searchLastId = '';
       }
 
-      searchAnnouncements.addAll(await dbService.announcements
-          .searchLimitAnnouncements(_searchLastId, searchText, sortBy,
-              minPrice: minPrice, maxPrice: maxPrice));
+      final filter = DefaultFilterDto(
+          lastId: _searchLastId,
+          text: searchText,
+          sortBy: sortBy,
+          minPrice: minPrice,
+          maxPrice: maxPrice,
+          radius: radius);
+
+      searchAnnouncements.addAll(
+          await dbService.announcements.searchLimitAnnouncements(filter));
 
       _searchLastId = searchAnnouncements.last.id;
     } catch (e) {

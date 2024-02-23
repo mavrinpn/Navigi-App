@@ -11,14 +11,7 @@ class AnnouncementsService {
         _storage = storage;
 
   Future<List<Announcement>> getAnnouncements(String? lastId) async {
-    List<String> queries = [
-      Query.orderDesc(DefaultDocumentParameters.createdAt),
-      Query.equal(activeAttribute, true),
-      Query.limit(24)
-    ];
-    if ((lastId ?? '').isEmpty) lastId = null;
-
-    if (lastId != null) queries.add(Query.cursorAfter(lastId));
+    List<String> queries = ParametersFilterBuilder.getQueriesForGet(lastId);
 
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
@@ -32,22 +25,13 @@ class AnnouncementsService {
   }
 
   Future<List<Announcement>> searchLimitAnnouncements(
-      String? lastId, String? searchText, String? sortBy,
-      {double? minPrice, double? maxPrice}) async {
-    List<String> queries = [];
+      DefaultFilterDto filterData) async {
+    List<String> queries = ParametersFilterBuilder.getSearchQueries(filterData);
 
-    queries.add(Query.equal(activeAttribute, true));
-    if ((lastId ?? "").isEmpty) lastId = null;
-
-    if (lastId != null) queries.add(Query.cursorAfter(lastId));
-    if (searchText != null && searchText.isNotEmpty) {
-      queries.add(Query.search('name', searchText));
+    if ((filterData.radius ?? 0) != 0) {
+      queries.addAll(
+          await LocationFilter.getLocationFilterForRadius(filterData.radius!));
     }
-    if (sortBy != null) queries.add(SortTypes.toQuery(sortBy)!);
-    if (minPrice != null) {
-      queries.add(Query.greaterThanEqual('price', minPrice));
-    }
-    if (maxPrice != null) queries.add(Query.lessThanEqual('price', maxPrice));
 
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
@@ -58,6 +42,85 @@ class AnnouncementsService {
         announcementsFromDocuments(res.documents, _storage);
 
     return newAnnounces;
+  }
+
+  Future<List<Announcement>> searchAnnouncementsInSubcategory(
+      SubcategoryFilterDTO filterData) async {
+    List<String> queries =
+        ParametersFilterBuilder.getSearchQueries(filterData.toDefaultFilter());
+
+    queries.addAll(filterData.convertParametersToQuery());
+
+    if ((filterData.radius ?? 0) != 0) {
+      queries.addAll(
+          await LocationFilter.getLocationFilterForRadius(filterData.radius!));
+    }
+
+    if (filterData.mark != null) {
+      queries.add(Query.equal('mark', filterData.mark));
+    }
+
+    if (filterData.model != null) {
+      queries.add(Query.equal('model', filterData.model));
+    }
+
+    print(queries);
+
+    final res = await _databases.listDocuments(
+        databaseId: mainDatabase,
+        collectionId: filterData.subcategory,
+        queries: queries);
+
+    List<Announcement> newAnnounces = [];
+
+    for (var doc in res.documents) {
+      final id = getIdFromUrl(doc.data['announcements']['images'][0]);
+
+      final futureBytes =
+          _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+
+      newAnnounces.add(Announcement.fromJson(
+          json: doc.data['announcements'], futureBytes: futureBytes));
+    }
+    print(newAnnounces.length);
+    return newAnnounces;
+  }
+
+  Future<void> writeAnnouncementSubcategoryParameters(
+      String announcement,
+      AnnouncementCreatingData creatingData,
+      List<Parameter> parameters,
+      double lat,
+      double lng,
+      MarksFilter? marksFilter) async {
+    final data = <String, dynamic>{
+      'announcements': announcement,
+      'latitude': lat,
+      'longitude': lng,
+      'price': creatingData.price,
+      'title': creatingData.title,
+      'active': true,
+    };
+
+    if (marksFilter != null) {
+      data.addAll({'mark': marksFilter.markId});
+      if (marksFilter.modelId != null) {
+        data.addAll({'model': marksFilter.modelId});
+      }
+    }
+
+    for (var i in parameters) {
+      data.addAll(
+          {i.key: i is SelectParameter ? i.currentValue.key : i.currentValue});
+    }
+
+    print(data);
+
+    await _databases.createDocument(
+        databaseId: mainDatabase,
+        collectionId: creatingData.subcategoryId!,
+        documentId: ID.unique(),
+        data: data);
   }
 
   Future<void> incTotalViewsById(String id) async {
@@ -71,13 +134,35 @@ class AnnouncementsService {
         data: {totalViews: res.data[totalViews] + 1});
   }
 
-  Future<void> createAnnouncement(String uid, List<String> urls,
-      AnnouncementCreatingData creatingData) async {
-    await _databases.createDocument(
+  Future<void> createAnnouncement(
+      String uid,
+      List<String> urls,
+      AnnouncementCreatingData creatingData,
+      List<Parameter> subcategoryParameters,
+      CityDistrict district,
+      LatLng? customPosition,
+      MarksFilter? marksFilter) async {
+    final data = creatingData.toJson(uid, urls);
+
+    double lat = district.latitude;
+    double lng = district.longitude;
+
+    if (customPosition != null) lat = customPosition.latitude;
+    if (customPosition != null) lng = customPosition.longitude;
+
+    data.addAll({
+      'latitude': lat,
+      'longitude': lng,
+    });
+
+    final doc = await _databases.createDocument(
         databaseId: mainDatabase,
         collectionId: postCollection,
         documentId: ID.unique(),
-        data: creatingData.toJson(uid, urls));
+        data: data);
+
+    await writeAnnouncementSubcategoryParameters(
+        doc.$id, creatingData, subcategoryParameters, lat, lng, marksFilter);
   }
 
   Future getUserAnnouncements({required String userId}) async {
@@ -97,6 +182,7 @@ class AnnouncementsService {
         databaseId: mainDatabase,
         collectionId: postCollection,
         documentId: announcementsId);
+
     final bool currentValue = res.data[activeAttribute];
 
     await _databases.updateDocument(

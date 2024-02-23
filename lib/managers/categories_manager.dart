@@ -7,12 +7,17 @@ class CategoriesManager {
 
   CategoriesManager({required this.databaseService});
 
-  List<Category> categories = [];
-  List<Subcategory> subcategories = [];
+  Future<List<Category>> loadCategories() async =>
+      databaseService.categories.getAllCategories();
 
-  Future loadCategories() async =>
-      categories = await databaseService.categories.getAllCategories();
+  Future<List<Subcategory>> loadSubcategoriesByCategory(
+          String categoryID) async =>
+      databaseService.categories.getAllSubcategoriesFromCategoryId(categoryID);
 
-  Future loadSubcategory(String categoryID) async => subcategories =
-      await databaseService.categories.getAllSubcategoriesFromCategoryId(categoryID);
+  Future<List<Subcategory>> tryToLoadSubcategoriesBuSubcategory(
+          String subcategoryId) async =>
+      databaseService.categories.getSubcategoriesBySubcategory(subcategoryId);
+
+  Future getFilters(String subcategoryId) async =>
+      databaseService.categories.getSubcategoryParameters(subcategoryId);
 }

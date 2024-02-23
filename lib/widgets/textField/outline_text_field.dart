@@ -17,6 +17,8 @@ class OutLineTextField extends StatelessWidget {
   final int? maxLength;
   final ValueChanged<String>? onChange;
   final String icon;
+  final bool readonly;
+  final bool error;
 
   const OutLineTextField(
       {Key? key,
@@ -29,7 +31,9 @@ class OutLineTextField extends StatelessWidget {
       this.maxLength,
       this.keyBoardType = TextInputType.text,
       this.onChange,
-      this.icon = ""})
+      this.readonly = false,
+      this.icon = "",
+      this.error = false})
       : super(key: key);
 
   @override
@@ -39,6 +43,7 @@ class OutLineTextField extends StatelessWidget {
       height: height,
       alignment: Alignment.center,
       child: TextFormField(
+        readOnly: readonly,
         maxLines: maxLines,
         maxLength: maxLength,
         onChanged: onChange ?? (value) {},
@@ -64,18 +69,18 @@ class OutLineTextField extends StatelessWidget {
                   ],
                 )
               : null,
-          enabledBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(13)),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(13)),
             borderSide: BorderSide(
               width: 2,
-              color: AppColors.whiteGray,
+              color: !error ? AppColors.whiteGray : AppColors.red,
             ),
           ),
-          focusedBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(13)),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(13)),
             borderSide: BorderSide(
               width: 2,
-              color: AppColors.whiteGray,
+              color: !error ? AppColors.whiteGray : AppColors.red,
             ),
           ),
         ),

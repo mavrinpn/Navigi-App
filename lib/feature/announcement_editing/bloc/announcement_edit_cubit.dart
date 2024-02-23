@@ -7,6 +7,7 @@ import 'package:smart/feature/announcement_editing/data/models/image_data.dart';
 import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/models/item/item.dart';
+import 'package:smart/services/parameters_parser.dart';
 
 part 'announcement_edit_state.dart';
 
@@ -39,8 +40,8 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
     if (newTitle != null) repository.setTitle(newTitle);
   }
 
-  void setParameterValue(String parameterKey, String value) {
-    for (Parameter parameter in data.parameters!.variableParametersList) {
+  void setParameterValue(String parameterKey, ParameterOption value) {
+    for (SelectParameter parameter in []) {
       if (parameterKey == parameter.key) {
         parameter.setVariant(value);
         emit(AnnouncementChangeParameters());

@@ -55,14 +55,11 @@ class UserService {
     final jwt = await getJwt();
     final res = await _functions.createExecution(
         functionId: '658d94ecc79d136f5fec', body: jsonEncode({'jwt': jwt}));
-
-    print(res.responseBody);
   }
 
   Future<UserCredentials?> confirmSms(String code, String password) async {
     final jwt = await getJwt();
     final body = jsonEncode({'jwt': jwt, 'code': code, 'password': password});
-    print(body);
 
     final res = await _functions.createExecution(
         functionId: '658d94c13158a0f7ba5b', body: body);
@@ -70,7 +67,6 @@ class UserService {
     try {
       return UserCredentials.fromJson(jsonDecode(res.responseBody));
     } catch (e) {
-      print(res.responseBody);
       return null;
     }
   }

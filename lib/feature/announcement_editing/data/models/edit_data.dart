@@ -18,10 +18,10 @@ class AnnouncementEditData {
         price = announcement.price;
 
   mergeParameters(StaticParameters staticParameters) {
-    for (var parameter in parameters!.variableParametersList) {
+    for (var parameter in []) {
       for (var staticParameter in staticParameters.parameters) {
         if (parameter.key == staticParameter.key) {
-          parameter.setVariant(staticParameter.currentValue);
+          // parameter.setVariant(staticParameter.currentValue);
         }
       }
     }
@@ -32,7 +32,7 @@ class AnnouncementEditData {
         'description': description,
         'price': price,
         'parametrs':
-            parameters != null ? parameters!.buildJsonFormatParameters() : "{}",
+            parameters != null ? parameters!.buildJsonFormatParameters(addParameters: []) : "{}",
         'images': images,
       };
 }

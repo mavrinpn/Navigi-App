@@ -170,7 +170,14 @@ class MessagesService {
     final res = await _functions.createExecution(
         functionId: '657f16bf26ccb6ca8093', body: encodedBody);
 
-    print(res.errors);
-    print(res.responseBody);
+    print('errors: ${res.errors}');
+    print('body: ${res.responseBody}');
+    print('headers: ${res.requestHeaders}');
+    print('status code: ${res.responseStatusCode}');
+    print('logs: ${res.logs}');
+
+    if (res.responseStatusCode == 500) {
+      throw Exception('Функция в канаве');
+    }
   }
 }

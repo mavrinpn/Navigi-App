@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:smart/models/item/subcategoryFilters.dart';
 
 import '../../../../managers/creating_announcement_manager.dart';
 import '../../../../managers/item_manager.dart';
@@ -15,7 +16,13 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
 
   List<SubcategoryItem> getItems() => itemManager.searchedItems;
 
-  void setSubcategory(String subcategory) {
+  Future<SubcategoryFilters> getSubcategoryFilters(String subcategory) async {
+    final parameters = await itemManager.getSubcategoryFilters(subcategory);
+    creatingManager.subcategoryFilters = parameters;
+    return parameters;
+  }
+
+  void setSubcategory(String subcategory) async {
     emit(SearchLoadingState());
     try {
       creatingManager.setSubcategory(subcategory);
@@ -24,6 +31,7 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
       emit(SearchEmptyState());
     } catch (e) {
       emit(SearchFailState());
+      rethrow;
     }
   }
 

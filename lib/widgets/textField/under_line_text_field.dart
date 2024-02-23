@@ -16,6 +16,7 @@ class UnderLineTextField extends StatelessWidget {
   final Function(dynamic)? onTapOutside;
   final String suffixIcon;
   final String? Function(String?)? validator;
+  final bool error;
 
   const UnderLineTextField(
       {Key? key,
@@ -30,7 +31,8 @@ class UnderLineTextField extends StatelessWidget {
       this.onEditingComplete,
       this.onTapOutside,
       this.validator,
-      required this.suffixIcon})
+      required this.suffixIcon,
+      this.error = false})
       : super(key: key);
 
   @override
@@ -52,16 +54,18 @@ class UnderLineTextField extends StatelessWidget {
         onEditingComplete: onEditingComplete,
         style: AppTypography.font16black,
         decoration: InputDecoration(
-            enabledBorder: const UnderlineInputBorder(
+            hintText: hintText,
+            hintStyle: AppTypography.font14lightGray,
+            enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
                 width: 2,
-                color: AppColors.whiteGray,
+                color: error ? AppColors.red : AppColors.whiteGray,
               ),
             ),
-            focusedBorder: const UnderlineInputBorder(
+            focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
                 width: 2,
-                color: AppColors.whiteGray,
+                color: error ? AppColors.red : AppColors.whiteGray,
               ),
             ),
             suffixIcon: Column(

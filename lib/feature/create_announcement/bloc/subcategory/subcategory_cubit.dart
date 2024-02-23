@@ -9,18 +9,28 @@ class SubcategoryCubit extends Cubit<SubcategoryState> {
   final CreatingAnnouncementManager creatingManager;
   final CategoriesManager categoriesManager;
 
-  SubcategoryCubit({required this.creatingManager, required this.categoriesManager}) : super(SubcategoryInitial());
+  SubcategoryCubit(
+      {required this.creatingManager, required this.categoriesManager})
+      : super(SubcategoryInitial());
 
-  void loadSubCategories(String categoryId) async {
+  void loadSubCategories({String? categoryId, String? subcategoryId}) async {
     emit(SubcategoryLoadingState());
     try {
-      creatingManager.setCategory(categoryId);
-      await categoriesManager.loadSubcategory(categoryId);
-      emit(SubcategorySuccessState(subcategories: categoriesManager.subcategories));
+      assert(categoryId != null || subcategoryId != null);
+      final List<Subcategory> subcategories;
+      if (categoryId != null) {
+        creatingManager.setCategory(categoryId);
+        subcategories =
+            await categoriesManager.loadSubcategoriesByCategory(categoryId);
+      } else {
+        subcategories = await categoriesManager
+            .tryToLoadSubcategoriesBuSubcategory(subcategoryId!);
+      }
+
+      emit(SubcategorySuccessState(subcategories: subcategories));
     } catch (e) {
       emit(SubcategoryFailState());
       rethrow;
     }
   }
-
 }

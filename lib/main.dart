@@ -39,6 +39,11 @@ class MyApp extends StatefulWidget {
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
     state?.setLocale(newLocale);
   }
+
+  static String? getLocale(BuildContext context) {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    return state?._locale?.languageCode;
+  }
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {

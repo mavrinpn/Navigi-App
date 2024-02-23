@@ -9,6 +9,7 @@ import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/scaffold/main_scaffold.dart';
 
 import '../../../managers/announcement_manager.dart';
 import '../../../utils/animations.dart';
@@ -72,6 +73,9 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     void openSearchScreen() {
+      context
+          .read<SearchAnnouncementCubit>()
+          .setSearchMode(SearchModeEnum.simple);
       BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
       BlocProvider.of<SearchAnnouncementCubit>(context)
           .searchAnnounces('', true);
@@ -79,6 +83,9 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     void openFilters() {
+      context
+          .read<SearchAnnouncementCubit>()
+          .setSearchMode(SearchModeEnum.simple);
       showModalBottomSheet(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -96,86 +103,77 @@ class _MainScreenState extends State<MainScreen> {
       );
     }
 
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.mainBackground,
-            elevation: 0,
-            flexibleSpace: MainAppBar(
-              isSearch: isSearch,
-              openSearchScreen: openSearchScreen,
-              openFilters: openFilters,
-              cancel: () {
-                FocusScope.of(context).unfocus();
-                setSearch(false);
-              },
-            ),
-          ),
-          body: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
-            builder: (context, state) {
-              return RefreshIndicator(
-                color: AppColors.red,
-                onRefresh: () async {
-                  BlocProvider.of<AnnouncementsCubit>(context)
-                      .loadAnnounces(true);
-                },
-                child: CustomScrollView(
-                  controller: _controller,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  slivers: [
-                    const CategoriesSection(),
-                    SliverToBoxAdapter(
-                      child: AdvertisementContainer(
-                        onTap: () {},
-                        imageUrl:
-                            'https://avatars.mds.yandex.net/i?id=6deffd61630391bd9df44801831eb1ef_sr-5241446-images-thumbs&n=13',
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 11,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                    AppLocalizations.of(context)!
-                                        .recommendations,
-                                    textAlign: TextAlign.center,
-                                    style: AppTypography.font20black),
-                                Text(AppLocalizations.of(context)!.viewAll,
-                                    style: AppTypography.font14lightGray
-                                        .copyWith(fontSize: 12)),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SliverPadding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        sliver: getAnnouncementsGrid()),
-                    if (state is AnnouncementsLoadingState) ...[
-                      SliverToBoxAdapter(
-                        child: Container(
-                          child: Center(child: AppAnimations.bouncingLine),
-                        ),
-                      )
-                    ],
-                  ],
-                ),
-              );
-            },
-          ),
+    return MainScaffold(
+      canPop: false,
+      appBar: AppBar(
+        backgroundColor: AppColors.mainBackground,
+        elevation: 0,
+        flexibleSpace: MainAppBar(
+          isSearch: isSearch,
+          openSearchScreen: openSearchScreen,
+          openFilters: openFilters,
+          cancel: () {
+            FocusScope.of(context).unfocus();
+            setSearch(false);
+          },
         ),
+      ),
+      body: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
+        builder: (context, state) {
+          return RefreshIndicator(
+            color: AppColors.red,
+            onRefresh: () async {
+              BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(true);
+            },
+            child: CustomScrollView(
+              controller: _controller,
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                const CategoriesSection(),
+                SliverToBoxAdapter(
+                  child: AdvertisementContainer(
+                    onTap: () {},
+                    imageUrl:
+                        'https://avatars.mds.yandex.net/i?id=6deffd61630391bd9df44801831eb1ef_sr-5241446-images-thumbs&n=13',
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 11,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(AppLocalizations.of(context)!.recommendations,
+                                textAlign: TextAlign.center,
+                                style: AppTypography.font20black),
+                            Text(AppLocalizations.of(context)!.viewAll,
+                                style: AppTypography.font14lightGray
+                                    .copyWith(fontSize: 12)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    sliver: getAnnouncementsGrid()),
+                if (state is AnnouncementsLoadingState) ...[
+                  SliverToBoxAdapter(
+                    child: Container(
+                      child: Center(child: AppAnimations.bouncingLine),
+                    ),
+                  )
+                ],
+              ],
+            ),
+          );
+        },
       ),
     );
   }

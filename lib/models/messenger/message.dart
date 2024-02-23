@@ -2,12 +2,12 @@ import 'package:appwrite/models.dart';
 import 'package:smart/utils/functions.dart';
 
 class Message {
+  String id;
   String content;
   List? images;
   String createdAt;
   DateTime createdAtDt;
   String senderId;
-  String id;
   bool owned;
   DateTime? wasRead;
 
@@ -33,16 +33,6 @@ class Message {
         createdAt = json['\$createdAt'],
         createdAtDt = DateTime.parse(json['\$createdAt'])
             .add(DateTime.now().timeZoneOffset);
-
-  Message.fish({bool owned_ = false, DateTime? read})
-      : id = '',
-        content =
-            'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s',
-        senderId = '',
-        createdAt = dateTimeToString(DateTime.now()),
-        createdAtDt = DateTime.now(),
-        wasRead = read,
-        owned = owned_;
 
   Message.fromDocument(Document doc, String userId)
       : id = doc.$id,

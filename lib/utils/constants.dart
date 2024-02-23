@@ -18,6 +18,8 @@ const String responseResult = 'result';
 const String responseDocuments = 'documents';
 
 const String placeCollection = 'places';
+const String citiesCollection = '65c637b9d82a67b81506';
+const String cityDistrictsCollection = '65c63eec9045e0110734';
 
 const String usersCollection = 'name';
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
@@ -10,7 +11,6 @@ import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/storage_service.dart';
 import 'package:smart/utils/functions.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../enum/enum.dart';
 
@@ -118,7 +118,9 @@ class AuthRepository {
     try {
       await _account.deleteSession(sessionId: sessionID!);
       sessionID = null;
-    } catch (e) {}
+    } catch (e) {
+      log('session already deleted');
+    }
 
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
@@ -137,6 +139,7 @@ class AuthRepository {
       appState.add(AuthStateEnum.auth);
     } catch (e) {
       authState.add(EntranceStateEnum.fail);
+      rethrow;
     }
   }
 

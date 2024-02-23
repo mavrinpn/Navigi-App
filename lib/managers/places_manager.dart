@@ -1,21 +1,40 @@
 import 'package:smart/models/announcement.dart';
+import 'package:smart/models/city.dart';
 import 'package:smart/services/database/database_service.dart';
-
 
 class PlacesManager {
   final DatabaseService databaseService;
 
   PlacesManager({required this.databaseService});
 
-  List<PlaceData> _places = [];
-  List<PlaceData> searchedPlaces = [];
-  String searchController = '';
+  List<CityDistrict> _places = [];
+  List<CityDistrict> searchedPlaces = [];
+  String searchPlaceController = '';
+  String searchCityController = '';
+
+
+  List<City> cities = [];
+  List<City> searchedCities = [];
 
   Future initialLoadItems() async =>
-      _places = await databaseService.categories.getAllPlaces();
+      cities = await databaseService.categories.getAllCities();
+
+  Future selectCity(final String city) async {
+    _places = await databaseService.categories.getCityDistricts(city);
+  }
+
+  void searchCities(String query) {
+    List<City> resList = [];
+    for (var item in cities) {
+      if (item.name.toLowerCase().contains(query.toLowerCase().trimLeft())) {
+        resList.add(item);
+      }
+    }
+    searchedCities = resList;
+  }
 
   void searchPlacesByName(String query) {
-    List<PlaceData> resList = [];
+    List<CityDistrict> resList = [];
     for (var item in _places) {
       if (item.name.toLowerCase().contains(query.toLowerCase().trimLeft())) {
         resList.add(item);
@@ -24,9 +43,18 @@ class PlacesManager {
     searchedPlaces = resList;
   }
 
-  String? searchPlaceIdByName(value){
-    for(var item in _places){
-      if(item.name == value){
+  CityDistrict? searchPlaceIdByName(value) {
+    for (var item in _places) {
+      if (item.name == value) {
+        return item;
+      }
+    }
+    return null;
+  }
+
+  String? searchCityIdByName(value) {
+    for (var item in cities) {
+      if (item.name == value) {
         return item.id;
       }
     }
@@ -35,10 +63,13 @@ class PlacesManager {
 
   void clearSearchItems() {
     searchedPlaces.clear();
+    searchedCities.clear();
   }
 
-  void setSearchController(String value) {
-    searchController = value;
+  void setCityController(String value) {
+    searchCityController = value;
   }
-
+  void setPlaceController(String value) {
+    searchPlaceController = value;
+  }
 }

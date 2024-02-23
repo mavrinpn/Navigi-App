@@ -6,7 +6,7 @@ import 'package:smart/main.dart';
 import '../../../models/custom_locate.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
-import '../../../widgets/singleCheckBox/CustomSinglCheckBox.dart';
+import '../../../widgets/parameters_selection/single_pick_list.dart';
 
 
 class SettingsScreen extends StatefulWidget {

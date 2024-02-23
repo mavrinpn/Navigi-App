@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart/feature/announcement_editing/bloc/announcement_edit_cubit.dart';
-import 'package:smart/widgets/dropDownSingleCheckBox/custom_dropdown_single_checkbox.dart';
+import 'package:smart/widgets/parameters_selection/custom_dropdown_single_pick.dart';
 
 class ParametersSection extends StatelessWidget {
   const ParametersSection({super.key, required this.cubit});
@@ -12,13 +12,13 @@ class ParametersSection extends StatelessWidget {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: (cubit.data.parameters != null
-            ? cubit.data.parameters!.variableParametersList
+            ? []
             : [])
             .map((e) =>
             CustomDropDownSingleCheckBox(
-              parameters: e,
-              onChange: (String? value) {
-                cubit.setParameterValue(e.key, value!);
+              parameter: e,
+              onChange: (value) {
+                cubit.setParameterValue(e.key, value);
               },
               currentVariable: e.currentValue,
             ))

@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:photo_view/photo_view_gallery.dart';
+import 'package:smart/main.dart';
 import 'package:smart/feature/announcement/ui/photo_view.dart';
 import 'package:smart/feature/announcement/ui/widgets/favourite_indicator.dart';
+import 'package:smart/feature/announcement/ui/widgets/images_amount_indicators.dart';
 import 'package:smart/feature/announcement/ui/widgets/parameter.dart';
 import 'package:smart/feature/announcement/ui/widgets/settings_bottom_sheet.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
@@ -13,19 +13,16 @@ import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/animations.dart';
-import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 
 import '../../../managers/announcement_manager.dart';
-import '../../../managers/favourites_manager.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/accuont/account_small_info.dart';
 import '../../../widgets/button/custom_icon_button.dart';
 import '../../../widgets/images/network_image.dart';
-import '../../favorites/bloc/favourites_cubit.dart';
 import '../bloc/announcement/announcement_cubit.dart';
 import 'map.dart';
 
@@ -61,6 +58,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
         PageController(viewportFraction: 0.9, initialPage: activePage);
 
     final width = MediaQuery.of(context).size.width;
+    final String currentLocale = MyApp.getLocale(context) ?? 'fr';
 
     return BlocBuilder<AnnouncementCubit, AnnouncementState>(
       builder: (context, state) {
@@ -152,10 +150,9 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     const SizedBox(
                       height: 5,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children:
-                          indicators(state.data.images.length, activePage),
+                    ImagesIndicators(
+                      length: state.data.images.length,
+                      currentIndex: activePage,
                     ),
                     const SizedBox(
                       height: 12,
@@ -300,7 +297,9 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     ),
                     ...state.data.staticParameters.parameters
                         .map((e) => ItemParameterWidget(
-                            name: e.key, currentValue: e.currentValue))
+                            name: currentLocale == 'fr' ? e.nameFr : e.nameAr,
+                            currentValue:
+                                currentLocale == 'fr' ? e.valueFr : e.valueAr))
                         .toList(),
                     Padding(
                       padding: const EdgeInsets.symmetric(

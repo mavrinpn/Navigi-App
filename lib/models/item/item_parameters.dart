@@ -1,30 +1,40 @@
 part of 'item.dart';
 
 class ItemParameters {
-  List<String> staticParameters;
-  List<Parameter> variableParametersList;
-
-  ItemParameters({required this.staticParameters, required this.variableParametersList});
-
-  String buildJsonFormatParameters() {
-    String p;
-    if (staticParameters.isNotEmpty) {
-      p = staticParameters.join(', ');
-    } else {
-      p = '';
+  String parameterToJson(Parameter parameter) {
+    if (parameter is SelectParameter) {
+      final Map map = {
+        'nameAr': parameter.arName,
+        'nameFr': parameter.frName,
+        'id': parameter.key,
+        'type': 'option',
+        'currentValue': parameter.currentValue.toJson()
+      };
+      return jsonEncode(map);
     }
-    final string = '{$p${variableParametersList.join(', ')}}';
-
-    return string !=  '{, }' ? string : '{}';
+    if (parameter is InputParameter) {
+      final Map map = {
+        'nameAr': parameter.arName,
+        'nameFr': parameter.frName,
+        'id': parameter.key,
+        'type': 'number',
+        'currentValue': parameter.currentValue.toJson()
+      };
+      return jsonEncode(map);
+    }
+    return '';
   }
 
-  String getParametersValues () {
-    List<String> values = [];
-
-    for (var param in variableParametersList) {
-      values.add(param.currentValue);
+  String buildJsonFormatParameters({required List<Parameter> addParameters}) {
+    String str = '[';
+    for (int i = 0; i < addParameters.length; i++) {
+      if (i != 0) {
+        str += ', ';
+      }
+      str += parameterToJson(addParameters[i]);
     }
+    str += ']';
 
-    return values.join(' ');
+    return str;
   }
 }

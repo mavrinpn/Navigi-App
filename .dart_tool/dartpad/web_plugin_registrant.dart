@@ -13,6 +13,7 @@ import 'package:flutter_image_compress_web/flutter_image_compress_web.dart';
 import 'package:flutter_localization/flutter_localization_web.dart';
 import 'package:flutter_native_splash/flutter_native_splash_web.dart';
 import 'package:flutter_web_auth_2/src/flutter_web_auth_2_web.dart';
+import 'package:geolocator_web/geolocator_web.dart';
 import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
 import 'package:image_cropper_for_web/image_cropper_for_web.dart';
 import 'package:image_picker_for_web/image_picker_for_web.dart';
@@ -31,6 +32,7 @@ void registerPlugins([final Registrar? pluginRegistrar]) {
   FlutterLocalizationWeb.registerWith(registrar);
   FlutterNativeSplashWeb.registerWith(registrar);
   FlutterWebAuth2WebPlugin.registerWith(registrar);
+  GeolocatorPlugin.registerWith(registrar);
   GoogleMapsPlugin.registerWith(registrar);
   ImageCropperPlugin.registerWith(registrar);
   ImagePickerPlugin.registerWith(registrar);

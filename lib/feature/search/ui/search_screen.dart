@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/ui/sections/history.dart';
 import 'package:smart/feature/search/ui/sections/popular_queries.dart';
 import 'package:smart/feature/search/ui/sections/search_items.dart';
@@ -86,27 +87,28 @@ class _SearchScreenState extends State<SearchScreen> {
             childAspectRatio: 160 / 272);
 
     AppBar searchAppBar = AppBar(
-          backgroundColor: AppColors.mainBackground,
-          automaticallyImplyLeading: false,
-          elevation: 0,
-          flexibleSpace: SearchAppBar(
-            onSubmitted: (String? a) {
-              searchManager.setSearch(false);
-              searchManager.saveInHistory(a!);
-              setState(() {});
-              BlocProvider.of<SearchAnnouncementCubit>(context)
-                  .searchAnnounces(a, true);
-            },
-            onChange: (String? a) {
-              searchManager.setSearch(true);
-              setState(() {});
-              BlocProvider.of<SearchItemsCubit>(context).search(a ?? '');
-              BlocProvider.of<PopularQueriesCubit>(context)
-                  .loadPopularQueries();
-            },
-            searchController: searchController,
-          ),
-        );
+      backgroundColor: AppColors.mainBackground,
+      automaticallyImplyLeading: false,
+      elevation: 0,
+      flexibleSpace: SearchAppBar(
+        onSubmitted: (String? a) {
+          searchManager.setSearch(false);
+          searchManager.saveInHistory(a!);
+          setState(() {});
+          BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
+              a, true,
+              parameters:
+                  context.read<SearchSelectSubcategoryCubit>().parameters);
+        },
+        onChange: (String? a) {
+          searchManager.setSearch(true);
+          setState(() {});
+          BlocProvider.of<SearchItemsCubit>(context).search(a ?? '');
+          BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
+        },
+        searchController: searchController,
+      ),
+    );
 
     Widget searchScreenBuilder(context, state) {
       if (state is SearchItemsSuccess &&

@@ -12,19 +12,17 @@ class CategoryWidget extends StatefulWidget {
   CategoryWidget(
       {super.key,
       required Category category,
-      this.isActive = true,
       required this.height,
-      required this.width})
+      required this.width, required this.onTap})
       : name = category.name ?? '',
-        id = category.id ?? '',
         url = category.imageUrl!;
 
-  final bool isActive;
   final String name;
-  final String id;
   final String url;
   final double width;
   final double height;
+
+  final VoidCallback onTap;
 
   @override
   State<CategoryWidget> createState() => _CategoryWidgetState();
@@ -33,18 +31,8 @@ class CategoryWidget extends StatefulWidget {
 class _CategoryWidgetState extends State<CategoryWidget> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      focusColor: AppColors.empty,
-      hoverColor: AppColors.empty,
-      highlightColor: AppColors.empty,
-      splashColor: AppColors.empty,
-      onTap: () {
-        if (widget.isActive) {
-          BlocProvider.of<SubcategoryCubit>(context)
-              .loadSubCategories(widget.id);
-          Navigator.pushNamed(context, AppRoutesNames.announcementCreatingSubcategory);
-        }
-      },
+    return GestureDetector(
+      onTap: widget.onTap,
       child: SizedBox(
         width: widget.width,
         height: widget.height,
@@ -52,7 +40,9 @@ class _CategoryWidgetState extends State<CategoryWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
-            const SizedBox(height: 15,),
+            const SizedBox(
+              height: 15,
+            ),
             CustomNetworkImage(width: 108, height: 100, url: widget.url),
             const SizedBox(
               height: 12,

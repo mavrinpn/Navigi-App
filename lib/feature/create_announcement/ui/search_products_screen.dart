@@ -27,7 +27,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    final creatingAnnouncementManager =
+    final creatingManager =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
     final itemManager = RepositoryProvider.of<ItemManager>(context);
 
@@ -92,7 +92,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                               child: ProductWidget(
                                 onTap: () {
                                   cubit.setItemName(e.name);
-                                  creatingAnnouncementManager.setItem(e);
+                                  creatingManager.setItem(e);
                                   setState(() {});
                                 },
                                 name: e.name,
@@ -125,9 +125,8 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
           if (buttonActive) {
             final item = itemManager.hasItemInSearchedItems();
 
-            creatingAnnouncementManager.setItem(item,
-                name: productsController.text,
-                id: item?.id);
+            creatingManager.setItem(item,
+                name: productsController.text, id: item?.id);
             Navigator.pushNamed(
                 context, AppRoutesNames.announcementCreatingPhoto);
           }

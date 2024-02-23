@@ -26,7 +26,6 @@ class AnnouncementCreatingData {
         'item_name': itemName,
         'parametrs': parameters,
         'creator_id': creatorId,
-        'place_id': placeId,
         'images': urls,
         'creator': creatorId,
         'place': placeId,

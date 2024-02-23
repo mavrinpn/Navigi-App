@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/feature/create_announcement/bloc/item_search/item_search_cubit.dart';
+import 'package:smart/feature/create_announcement/bloc/subcategory/subcategory_cubit.dart';
+import 'package:smart/feature/create_announcement/ui/select_auto_model_screen.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/managers/creating_announcement_manager.dart';
+import 'package:smart/models/category.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/category/category.dart';
 
 import '../bloc/category/category_cubit.dart';
@@ -16,9 +22,24 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+  void selectCategory(Category e) async {
+    final creatingManager = context.read<CreatingAnnouncementManager>();
+
+    BlocProvider.of<SubcategoryCubit>(context)
+        .loadSubCategories(categoryId: e.id);
+    creatingManager.clearSpecifications();
+
+    if (e.id == '65119464be0573e5852b' || e.id == '651194f27d010cd0186e') {
+      creatingManager.specialOptions
+          .add(SpecialAnnouncementOptions.customPlace);
+    }
+
+    Navigator.pushNamed(
+        context, AppRoutesNames.announcementCreatingSubcategory);
+  }
+
   @override
   Widget build(BuildContext context) {
-
     final localizations = AppLocalizations.of(context)!;
 
     return BlocBuilder<CategoryCubit, CategoryState>(
@@ -40,6 +61,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               children: state.categories
                   .map((e) => CategoryWidget(
                         category: e,
+                        onTap: () => selectCategory(e),
                         width: double.infinity,
                         height: double.infinity,
                       ))

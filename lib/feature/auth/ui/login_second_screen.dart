@@ -6,14 +6,11 @@ import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
-import 'package:smart/utils/functions.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 import '../../../utils/dialogs.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/custom_text_field.dart';
-
-import '../data/auth_repository.dart';
 
 class LoginSecondScreen extends StatefulWidget {
   const LoginSecondScreen({Key? key}) : super(key: key);

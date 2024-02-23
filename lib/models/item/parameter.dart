@@ -1,15 +1,96 @@
 part of 'item.dart';
 
-class Parameter {
-  String key;
-  List variants;
-  String currentValue;
+abstract class Parameter {
+  String get key;
 
-  Parameter({required this.key, required this.variants, String? current})
-      : currentValue = current ?? variants[0].toString();
+  String get arName;
+
+  String get frName;
+
+  dynamic get currentValue;
+}
+
+class SelectParameter implements Parameter {
+  @override
+  final String key;
+  @override
+  final String arName;
+  @override
+  final String frName;
+
+  @override
+  ParameterOption currentValue;
+
+  List<ParameterOption> variants;
+
+  List<ParameterOption> selectedVariants = [];
+
+  void addSelectedValue(dynamic value) => selectedVariants.add(value);
+
+  void removeSelectedValue(dynamic value) => selectedVariants.remove(value);
+
+  bool isSelected(ParameterOption value) => selectedVariants.contains(value);
+
+  SelectParameter(
+      {required this.key,
+      required this.variants,
+      ParameterOption? current,
+      required this.arName,
+      required this.frName})
+      : currentValue = current ?? variants[0];
 
   @override
   String toString() => '"$key": "$currentValue"';
 
-  void setVariant(String value) => currentValue = value;
+  void setVariant(dynamic value) => currentValue = value;
+}
+
+class InputParameter implements Parameter {
+  @override
+  final String key;
+
+  @override
+  final String arName;
+  @override
+  final String frName;
+
+  final String type;
+  dynamic value;
+
+  @override
+  String toString() => '"$key": "$currentValue"';
+
+  @override
+  dynamic get currentValue => value;
+
+  Map<String, dynamic> toJson() =>
+      {'id': key, 'nameAr': arName, 'nameFr': frName, 'value': currentValue};
+
+  InputParameter(this.key, this.type, this.arName, this.frName);
+
+  bool validValue(dynamic value) {
+    if (type == 'int' && value.runtimeType is int) return true;
+    if (type == 'double' && value.runtimeType is double) return true;
+    if (type == 'String' && value.runtimeType is String) return true;
+
+    return false;
+  }
+}
+
+class MinMaxParameter implements Parameter {
+  MinMaxParameter(this.key, this.arName, this.frName);
+
+  @override
+  get currentValue => '$min - $max';
+
+  int? min;
+  int? max;
+
+  @override
+  final String key;
+
+  @override
+  final String arName;
+  @override
+  final String frName;
 }

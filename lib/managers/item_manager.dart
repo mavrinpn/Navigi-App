@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:smart/models/item/subcategoryFilters.dart';
 import 'package:smart/services/database/database_service.dart';
+import 'package:smart/services/parameters_parser.dart';
 
 import '../../models/item/item.dart';
 
@@ -11,8 +15,20 @@ class ItemManager {
   List<SubcategoryItem> searchedItems = [];
   String searchControllerText = '';
 
-  Future initialLoadItems(String query, subcategoryId) async =>
-      items = await databaseService.categories.getItemsFromSubcategory(subcategoryId);
+  Future<SubcategoryFilters> getSubcategoryFilters(String subcategoryId) async {
+    final res = await databaseService.categories
+        .getSubcategoryParameters(subcategoryId);
+    final parameters = res['parameters'];
+    print(parameters);
+    final decodedFilters = ParametersParser(parameters).decodedParameters;
+    return SubcategoryFilters(decodedFilters,
+        hasMark: res['hasMark'], hasModel: res['hasModel']);
+  }
+
+  Future initialLoadItems(String query, subcategoryId) async {
+    items =
+        await databaseService.categories.getItemsFromSubcategory(subcategoryId);
+  }
 
   void searchItemsByName(String query) {
     List<SubcategoryItem> resList = [];

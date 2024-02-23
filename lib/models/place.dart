@@ -1,22 +1,31 @@
 part of 'announcement.dart';
 
-class PlaceData {
-  final double x;
-  final double y;
+class CityDistrict {
+  final double latitude;
+  final double longitude;
   final String name;
   final String id;
+  final String cityId;
 
-  PlaceData({required this.x, required this.y, required this.name, required this.id});
+  CityDistrict({
+    required this.latitude,
+    required this.longitude,
+    required this.name,
+    required this.id,
+    required this.cityId,
+  });
 
-  PlaceData.fromJson(Map<String, dynamic> json):
-      id = json['\$id'],
-      x = json['x'],
-      y = json['y'],
-      name = json['name'];
+  CityDistrict.fromJson(Map<String, dynamic> json)
+      : id = json['\$id'],
+        cityId = json['cityId'],
+        latitude = json['latitude'],
+        longitude = json['longitude'],
+        name = json['name'];
 
-  PlaceData.fish()
-      : x = 37.570802,
-        y = 126.975959,
+  CityDistrict.fish()
+      : latitude = 37.570802,
+        longitude = 126.975959,
         name = 'Séoul',
+        cityId = 'asdasdawfe',
         id = '64a69ed363ce7489b87c';
 }

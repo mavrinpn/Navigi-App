@@ -17,7 +17,7 @@ class Announcement {
   List images;
   final String id;
   final StaticParameters staticParameters;
-  final PlaceData placeData;
+  final CityDistrict placeData;
   final CreatorData creatorData;
   late final Widget previewImage;
   final String _createdAt;
@@ -35,13 +35,15 @@ class Announcement {
         creatorData = CreatorData.fromJson(data: json['creator']),
         price = double.parse(json['price'].toString()),
         images = json['images'],
-        staticParameters = StaticParameters(parameters: json['parametrs']),
+        staticParameters = StaticParameters(
+          encodedParameters: json['parametrs'],
+        ),
         totalViews = json['total_views'] ?? 0,
         _createdAt = json['\$createdAt'],
         id = json['\$id'],
         active = json['active'],
         itemId = json['itemId'],
-        placeData = PlaceData.fromJson(json['place']) {
+        placeData = CityDistrict.fromJson(json['place']) {
     var l = [];
     for (String i in images) {
       i.replaceAll('89.253.237.166', 'admin.navigidz.online');
@@ -49,7 +51,6 @@ class Announcement {
     }
     images = l;
     loadBytes();
-
   }
 
   void loadBytes() async {

@@ -22,7 +22,6 @@ class MessagingService {
     FirebaseMessaging.onMessage.listen(_onForegroundMessage);
   }
 
-
   Future _onForegroundMessage(RemoteMessage message) async {
     print('got message in foreground');
     print('data: ${message.data}');
@@ -31,7 +30,6 @@ class MessagingService {
       print('message notification: ${message.notification}');
     }
   }
-
 
   static Future onBackgroundMessage(RemoteMessage message) async {
     await Firebase.initializeApp();
@@ -44,10 +42,16 @@ class MessagingService {
     }
   }
 
-
   Future<void> saveTokenToDatabase(String? token) async {
     if (userId != null && token != null) {
-      _databaseService.notifications.refreshNotificationToken(userId!, token);
+      bool userExists =
+          await _databaseService.notifications.userExists(userId!);
+
+      userExists
+          ? await _databaseService.notifications
+              .updateNotificationToken(userId!, token)
+          : await _databaseService.notifications
+              .createNotificationToken(userId!, token);
     }
   }
 

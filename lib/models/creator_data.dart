@@ -5,7 +5,7 @@ class CreatorData {
   final String name;
   final double score;
   final String imageUrl;
-  final PlaceData place;
+  final CityDistrict place;
   final int _distance;
   final bool verified;
 
@@ -17,11 +17,11 @@ class CreatorData {
       this.verified = false})
       : _distance = d,
         imageUrl = '',
-        place = PlaceData.fish();
+        place = CityDistrict.fish();
 
   CreatorData.fromJson({required Map<String, dynamic>? data})
       : _distance = 4,
-        place = PlaceData.fish(),
+        place = CityDistrict.fish(),
         name = data != null ? data['name'] : 'John E.',
         score = 4.1,
         verified = data != null ? data['verified'] : true,

@@ -142,6 +142,7 @@ class MessengerRepository {
 
     currentRoom =
         await _databaseService.messages.getRoom(roomData['room'], _userId!);
+
     _chats.add(currentRoom!);
     chatsStream.add(_chats);
     // refreshSubscription();
@@ -179,7 +180,7 @@ class MessengerRepository {
         otherUserAvatarUrl: announcement.creatorData.imageUrl,
         announcement: announcement);
 
-    _currentChatMessages = null;
+    _currentChatMessages = MessagesList([]);
     currentChatItemsStream.add([]);
   }
 

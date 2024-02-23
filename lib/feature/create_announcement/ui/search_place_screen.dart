@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
+import 'package:smart/feature/create_announcement/ui/specify_place.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/models/announcement.dart';
+import 'package:smart/models/city.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
 import '../../../managers/creating_announcement_manager.dart';
@@ -22,28 +26,51 @@ class SearchPlaceScreen extends StatefulWidget {
 
 class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
   final placeController = TextEditingController();
-  bool isTouch = false;
+  final cityController = TextEditingController();
+
+  bool active = false;
+  bool initial = true;
+  bool selectingCity = true;
+
+  void setActive(bool value) => active = value;
+
+  void selectCity(City city) async {
+    final placesCubit = BlocProvider.of<PlacesCubit>(context);
+    await placesCubit.setCity(city);
+    cityController.text = city.name;
+    selectingCity = false;
+    setState(() {});
+
+    print('selectingCity = false');
+  }
+
+  void selectPlace(CityDistrict selectedDistrict) async {
+    final creatingManager =
+        RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    final placesCubit = BlocProvider.of<PlacesCubit>(context);
+
+    placesCubit.setPlaceName(selectedDistrict.name);
+    creatingManager.setPlace(selectedDistrict);
+
+    placeController.text = selectedDistrict.name;
+
+
+    district = selectedDistrict;
+    setActive(true);
+    setState(() {});
+  }
+
+  CityDistrict? district;
 
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    final creatingAnnouncementManager =
+    final creatingManager =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
-
     final placeManager = RepositoryProvider.of<PlacesManager>(context);
-
-    final cubit = BlocProvider.of<PlacesCubit>(context);
-
-    placeController.text = cubit.getSearchText();
-    placeController.selection = TextSelection.fromPosition(
-        TextPosition(offset: placeController.text.length));
-
+    final placesCubit = BlocProvider.of<PlacesCubit>(context);
     final width = MediaQuery.of(context).size.width;
-
-    void setIsTouch(bool isT) {
-      isTouch = isT;
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -63,61 +90,141 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
             const SizedBox(
               height: 16,
             ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 26, 0, 13),
+              child: Text(
+                'City',
+                style: AppTypography.font16black.copyWith(fontSize: 14),
+              ),
+            ),
+            OutLineTextField(
+              controller: cityController,
+              height: 55,
+              hintText: '',
+              width: double.infinity,
+              onChange: (value) {
+                setState(() {
+                  selectingCity = true;
+                  initial = false;
+                  setActive(false);
+                });
+                BlocProvider.of<PlacesCubit>(context).searchCities(value);
+              },
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            if (selectingCity && !initial) ...[
+              BlocBuilder<PlacesCubit, PlacesState>(
+                builder: (context, state) {
+                  if (state is PlacesSuccessState ||
+                      state is PlacesLoadingState) {
+                    return Wrap(
+                      children: placesCubit
+                          .getCities()
+                          .map((e) => Padding(
+                                padding: const EdgeInsets.all(3),
+                                child: ProductWidget(
+                                  onTap: () => selectCity(e),
+                                  name: e.name,
+                                ),
+                              ))
+                          .toList(),
+                    );
+                  } else if (state is PlacesEmptyState) {
+                    return const Center(
+                      child: Text('ниче не найдено'),
+                    );
+                  } else if (state is PlacesFailState) {
+                    return Center(
+                      child: Text(localizations.errorReviewOrEnterOther),
+                    );
+                  } else {
+                    return Center(
+                      child: AppAnimations.bouncingLine,
+                    );
+                  }
+                },
+              ),
+            ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 16, 0, 13),
+              child: Text(
+                'Area',
+                style: AppTypography.font16black.copyWith(fontSize: 14),
+              ),
+            ),
             OutLineTextField(
               controller: placeController,
               height: 55,
               hintText: '',
               width: double.infinity,
+              readonly: selectingCity,
               onChange: (value) {
                 BlocProvider.of<PlacesCubit>(context).searchPlaces(value);
-                setIsTouch(placeManager.searchPlaceIdByName(value) != null);
+                // setActive(placeManager.searchCityIdByName(value) != null);
                 setState(() {});
               },
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 26, 0, 13),
-              child: Text(
-                localizations.popularRequests,
-                style: AppTypography.font16black.copyWith(fontSize: 14),
+            const SizedBox(
+              height: 16,
+            ),
+            if (!selectingCity) ...[
+              BlocBuilder<PlacesCubit, PlacesState>(
+                builder: (context, state) {
+                  if (state is PlacesSuccessState ||
+                      state is PlacesLoadingState) {
+                    return Wrap(
+                      children: placesCubit
+                          .getPlaces()
+                          .map((e) => Padding(
+                                padding: const EdgeInsets.all(3),
+                                child: ProductWidget(
+                                  onTap: () => selectPlace(e),
+                                  name: e.name,
+                                ),
+                              ))
+                          .toList(),
+                    );
+                  } else if (state is PlacesEmptyState) {
+                    return const Center(
+                      child: Text('ниче не найдено'),
+                    );
+                  } else if (state is PlacesFailState) {
+                    return Center(
+                      child: Text(localizations.errorReviewOrEnterOther),
+                    );
+                  } else {
+                    return Center(
+                      child: AppAnimations.bouncingLine,
+                    );
+                  }
+                },
               ),
+            ],
+            const SizedBox(
+              height: 16,
             ),
-            BlocBuilder<PlacesCubit, PlacesState>(
-              builder: (context, state) {
-                if (state is PlacesSuccessState ||
-                    state is PlacesLoadingState) {
-                  return Wrap(
-                    children: cubit
-                        .getPlaces()
-                        .map((e) => Padding(
-                              padding: const EdgeInsets.all(3),
-                              child: ProductWidget(
-                                onTap: () {
-                                  cubit.setPlaceName(e.name);
-                                  creatingAnnouncementManager
-                                      .setPlaceById(e.id);
-                                  setIsTouch(true);
-                                  setState(() {});
-                                },
-                                name: e.name,
-                              ),
-                            ))
-                        .toList(),
-                  );
-                } else if (state is PlacesEmptyState) {
-                  return const Center(
-                    child: Text('ниче не найдено'),
-                  );
-                } else if (state is PlacesFailState) {
-                  return Center(
-                    child: Text(localizations.errorReviewOrEnterOther),
-                  );
-                } else {
-                  return Center(
-                    child: AppAnimations.bouncingLine,
-                  );
-                }
-              },
-            ),
+            if (creatingManager.specialOptions
+                .contains(SpecialAnnouncementOptions.customPlace)) ...[
+              GestureDetector(
+                onTap: () async {
+                  if (active) {
+                    final LatLng latLng = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                SpecifyPlaceScreen(placeData: district!)));
+
+                    creatingManager.customPosition = latLng;
+                  }
+                },
+                child: Text(
+                  "Indiquer l'emplacement sur la carte",
+                  style: AppTypography.font16black,
+                ),
+              )
+            ]
           ],
         ),
       ),
@@ -125,16 +232,17 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
         width: width - 30,
         text: localizations.continue_,
         callback: () {
-          if (isTouch) {
-            creatingAnnouncementManager.setPlaceById(
-                placeManager.searchPlaceIdByName(placeController.text)!);
-            creatingAnnouncementManager
-                .setTitle(creatingAnnouncementManager.buildTitle);
+          if (active) {
+            final place =
+                placeManager.searchPlaceIdByName(placeController.text)!;
+            creatingManager.setPlace(place);
+            creatingManager.setTitle(creatingManager.buildTitle);
+
             Navigator.pushNamed(
                 context, AppRoutesNames.announcementCreatingDescription);
           }
         },
-        active: isTouch,
+        active: active,
       ),
     );
   }

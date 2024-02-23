@@ -2,14 +2,21 @@ import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smart/feature/create_announcement/data/models/auto_filter.dart';
+import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
+import 'package:smart/models/announcement.dart';
+import 'package:smart/models/item/subcategoryFilters.dart';
 import 'package:smart/services/database/database_service.dart';
 
 import '../../models/announcement_creating_data.dart';
 import '../../models/models.dart';
 import '../enum/enum.dart';
 import '../services/storage_service.dart';
+
+enum SpecialAnnouncementOptions { customPlace, auto }
 
 class CreatingAnnouncementManager {
   final Client client;
@@ -18,21 +25,43 @@ class CreatingAnnouncementManager {
   final Account account;
   final _picker = ImagePicker();
 
+  final List<SpecialAnnouncementOptions> specialOptions = [];
+
   CreatingAnnouncementManager({required this.client})
       : dbService = DatabaseService(client: client),
         account = Account(client),
         storageManager = FileStorageManager(client: client);
 
   AnnouncementCreatingData creatingData = AnnouncementCreatingData();
+  SubcategoryFilters? subcategoryFilters;
+  MarksFilter? marksFilter;
+
   SubcategoryItem? currentItem;
   List<XFile> images = [];
   List<Uint8List> imagesAsBytes = [];
   Future? compressingImages;
 
+  CityDistrict? cityDistrict;
+  LatLng? customPosition;
+
+  AutoFilter? autoFilter;
+
   BehaviorSubject<LoadingStateEnum> creatingState =
       BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
 
   String get prise => (creatingData.price ?? 0).toString();
+
+  List<Parameter> getParametersList() {
+    final parameters = <Parameter>[];
+    parameters.addAll(subcategoryFilters!.parameters);
+
+    if (autoFilter != null) {
+      parameters.add(autoFilter!.dotation);
+      parameters.add(autoFilter!.engine);
+    }
+
+    return parameters;
+  }
 
   Future<List<XFile>> pickImages() async {
     final resImages = await _picker.pickMultiImage();
@@ -60,24 +89,33 @@ class CreatingAnnouncementManager {
 
   void setCategory(String categoryId) => creatingData.categoryId = categoryId;
 
-  void setSubcategory(String subcategoryId) =>
-      creatingData.subcategoryId = subcategoryId;
+  void setSubcategory(String subcategoryId) {
+    creatingData.subcategoryId = subcategoryId;
+  }
 
   void setType(bool type) => creatingData.type = type;
 
   void setItem(SubcategoryItem? newItem, {String? name, String? id}) {
     currentItem =
-        newItem ?? SubcategoryItem.withName(name!, creatingData.subcategoryId!)
-          ..initialParameters();
+        newItem ?? SubcategoryItem.withName(name!, creatingData.subcategoryId!);
 
     creatingData.itemName = currentItem!.name;
     creatingData.itemId = currentItem!.id;
   }
 
-  void setPlaceById(String id) => creatingData.placeId = id;
+  void setPlace(CityDistrict district) {
+    creatingData.placeId = district.id;
+    cityDistrict = district;
+  }
 
   void setImages(List<XFile> images) {
     creatingData.images = images.map((e) => e.path).toList();
+  }
+
+  void clearSpecifications() {
+    autoFilter = null;
+    customPosition = null;
+    specialOptions.clear();
   }
 
   void setDescription(String description) =>
@@ -85,8 +123,9 @@ class CreatingAnnouncementManager {
 
   void setPrice(String price) => creatingData.price = double.parse(price);
 
-  void _setParameters() => creatingData.parameters =
-      currentItem!.parameters.buildJsonFormatParameters();
+  void _setParameters() =>
+      creatingData.parameters = ItemParameters()
+          .buildJsonFormatParameters(addParameters: subcategoryFilters!.parameters);
 
   String get buildTitle => currentItem!.title;
 
@@ -104,19 +143,28 @@ class CreatingAnnouncementManager {
       await compressingImages;
       final List<String> urls = await uploadImages(imagesAsBytes);
 
-      await dbService.announcements.createAnnouncement(uid, urls, creatingData);
+      await dbService.announcements.createAnnouncement(uid, urls, creatingData,
+          getParametersList(), cityDistrict!, customPosition, marksFilter);
 
-      images.clear();
-      creatingData.clear;
-      imagesAsBytes.clear();
-      compressingImages = null;
-      currentItem = null;
-
+      clearAllData();
       creatingState.add(LoadingStateEnum.success);
     } catch (e) {
       creatingState.add(LoadingStateEnum.fail);
       rethrow;
     }
+  }
+
+  void clearAllData() {
+    images.clear();
+    creatingData.clear;
+    imagesAsBytes.clear();
+    compressingImages = null;
+    currentItem = null;
+
+    customPosition = null;
+    specialOptions.clear();
+    subcategoryFilters = null;
+    marksFilter = null;
   }
 
   Future<List<String>> uploadImages(List<Uint8List> bytesList) async =>

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smart/feature/messenger/ui/bloc/message_images_cubit.dart';
+import 'package:smart/feature/messenger/bloc/message_images_cubit.dart';
 import 'package:smart/feature/messenger/ui/widgets/chat_input.dart';
 import 'package:smart/feature/messenger/ui/widgets/message_group_widget.dart';
 import 'package:smart/models/messenger/chat_item.dart';

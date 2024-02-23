@@ -22,4 +22,5 @@ class AppRoutesNames {
   static const String announcementCreator = '/creator_screen';
   static const String chat = '/chat_screen';
   static const String editingAnnouncement = '/editing_announcement_screen';
+  static const String searchSelectSubcategory = '/search_select_subcategory';
 }

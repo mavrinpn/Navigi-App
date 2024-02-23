@@ -6,14 +6,19 @@ import 'package:smart/feature/announcement/data/creator_repository.dart';
 import 'package:smart/feature/announcement_editing/bloc/announcement_edit_cubit.dart';
 import 'package:smart/feature/announcement_editing/data/announcement_editing_repository.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
+import 'package:smart/feature/create_announcement/bloc/auto_model/auto_models_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/category/category_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/creating/creating_announcement_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/item_search/item_search_cubit.dart';
+import 'package:smart/feature/create_announcement/bloc/marks/select_mark_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/subcategory/subcategory_cubit.dart';
-import 'package:smart/feature/messenger/ui/bloc/message_images_cubit.dart';
+import 'package:smart/feature/create_announcement/data/auto_repository.dart';
+import 'package:smart/feature/create_announcement/data/marks_repository.dart';
+import 'package:smart/feature/messenger/bloc/message_images_cubit.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
+import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/managers/favourites_manager.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/messaging_service.dart';
@@ -87,6 +92,8 @@ class MyRepositoryProviders extends StatelessWidget {
           create: (_) => CreatorRepository(databaseService: databaseService)),
       RepositoryProvider(
           create: (_) => FavouritesManager(databaseService: databaseService)),
+      RepositoryProvider(create: (_) => AutoMarksRepository(databaseService)),
+      RepositoryProvider(create: (_) => MarksRepository(databaseService)),
       RepositoryProvider(
           create: (_) =>
               AnnouncementEditingRepository(databaseService, storageManager))
@@ -159,6 +166,11 @@ class MyBlocProviders extends StatelessWidget {
         lazy: false,
       ),
       BlocProvider(
+        create: (_) => SearchSelectSubcategoryCubit(
+            RepositoryProvider.of<CategoriesManager>(context)),
+        lazy: false,
+      ),
+      BlocProvider(
         create: (_) => AnnouncementCubit(
           announcementManager:
               RepositoryProvider.of<AnnouncementManager>(context),
@@ -213,6 +225,18 @@ class MyBlocProviders extends StatelessWidget {
       BlocProvider(
         create: (_) => MessageImagesCubit(
           RepositoryProvider.of<MessengerRepository>(context),
+        ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => AutoModelsCubit(
+          RepositoryProvider.of<AutoMarksRepository>(context),
+        ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => SelectMarkCubit(
+          RepositoryProvider.of<MarksRepository>(context),
         ),
         lazy: false,
       ),

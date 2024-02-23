@@ -40,7 +40,6 @@ class AnnouncementEditingRepository {
 
     images.clear();
     await _getCurrentAnnouncementImages();
-    await _getCurrentItemParameters();
   }
 
   void deleteImage(ImageData image) => images.deleteImage(image);
@@ -99,16 +98,5 @@ class AnnouncementEditingRepository {
     }
 
     images.addCurrentImages(newImages);
-  }
-
-  Future _getCurrentItemParameters() async {
-    if (_currentAnnouncement!.itemId == null) return;
-
-    final item = await _databaseService.categories
-        .getItem(_currentAnnouncement!.itemId!);
-    if (item == null) return;
-
-    editData!.parameters = item.parameters;
-    editData!.mergeParameters(_currentAnnouncement!.staticParameters);
   }
 }

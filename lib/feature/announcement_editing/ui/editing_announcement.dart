@@ -12,7 +12,6 @@ import 'package:smart/feature/create_announcement/ui/widgets/image.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/dialogs.dart';
-import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/back_button.dart';
 
 import '../../../models/custom_locate.dart';

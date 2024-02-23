@@ -1,25 +1,11 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:smart/feature/announcement/ui/announcement_screen.dart';
+import 'package:smart/feature/announcement/ui/widgets/images_amount_indicators.dart';
 import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/utils/utils.dart';
-
-List<Widget> indicators(imagesLength, currentIndex, {double size = 5}) {
-  return List<Widget>.generate(imagesLength, (index) {
-    return Container(
-      margin: const EdgeInsets.all(3),
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-          color: currentIndex == index ? AppColors.red : AppColors.lightGray,
-          shape: BoxShape.circle),
-    );
-  });
-}
 
 class PhotoViews extends StatefulWidget {
   const PhotoViews({super.key});
@@ -40,7 +26,7 @@ class _PhotoViewsState extends State<PhotoViews> {
       onWillPop: () async {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (_) => const AnnouncementScreen()));
-        return true;
+        return false;
       },
       child: Scaffold(
         backgroundColor: Colors.black,
@@ -57,7 +43,7 @@ class _PhotoViewsState extends State<PhotoViews> {
                         MaterialPageRoute(
                             builder: (_) => const AnnouncementScreen()));
                   },
-                  child: const Icon(Icons.arrow_back))
+                  child: const Icon(Icons.arrow_back, color: Colors.white))
             ],
           ),
         ),
@@ -69,7 +55,7 @@ class _PhotoViewsState extends State<PhotoViews> {
                 builder: (BuildContext context, int index) {
                   return PhotoViewGalleryPageOptions(
                     imageProvider:
-                    NetworkImage(currentAnnouncement.images[index]),
+                        NetworkImage(currentAnnouncement.images[index]),
                     initialScale: PhotoViewComputedScale.contained,
                   );
                 },
@@ -92,12 +78,10 @@ class _PhotoViewsState extends State<PhotoViews> {
             const SizedBox(
               height: 30,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: indicators(
-                  currentAnnouncement.images.length, activePage,
-                  size: 10),
-            ),
+            ImagesIndicators(
+                length: currentAnnouncement.images.length,
+                currentIndex: activePage,
+                size: 10),
             const SizedBox(
               height: 20,
             )
