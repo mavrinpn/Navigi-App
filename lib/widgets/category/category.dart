@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/models/category.dart';
 import 'package:smart/utils/fonts.dart';
-import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/images/network_image.dart';
-
-import '../../feature/create_announcement/bloc/subcategory/subcategory_cubit.dart';
-import '../../utils/colors.dart';
 
 class CategoryWidget extends StatefulWidget {
   CategoryWidget(

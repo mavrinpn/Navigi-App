@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/textField/under_line_text_field.dart';
-
 
 class PriceWidget extends StatelessWidget {
   const PriceWidget(
@@ -27,7 +27,8 @@ class PriceWidget extends StatelessWidget {
           const SizedBox(
             width: 12,
           ),
-          Text('Prix', style: AppTypography.font18gray)
+          Text(AppLocalizations.of(context)!.price,
+              style: AppTypography.font18gray)
         ]),
         const SizedBox(
           height: 14,
@@ -69,7 +70,6 @@ class PriceWidget extends StatelessWidget {
                 )),
           )
         ]),
-
       ]),
     );
   }

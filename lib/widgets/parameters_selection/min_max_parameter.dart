@@ -46,7 +46,7 @@ class _MinMaxParameterWidgetState extends State<MinMaxParameterWidget> {
                     border: UnderlineInputBorder(),
                   ),
                   onChanged: (v) {
-                    widget.parameter.min = int.tryParse(v ?? '');
+                    widget.parameter.min = int.tryParse(v);
                   },
                 )),
                 const SizedBox(
@@ -60,7 +60,7 @@ class _MinMaxParameterWidgetState extends State<MinMaxParameterWidget> {
                     border: UnderlineInputBorder(),
                   ),
                   onChanged: (v) {
-                    widget.parameter.max = int.tryParse(v ?? '');
+                    widget.parameter.max = int.tryParse(v );
                   },
                 )),
               ],

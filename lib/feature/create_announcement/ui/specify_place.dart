@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart/models/announcement.dart';
+import 'package:smart/widgets/button/custom_text_button.dart';
 
 class SpecifyPlaceScreen extends StatefulWidget {
   const SpecifyPlaceScreen({super.key, required this.placeData});
@@ -15,7 +16,7 @@ class SpecifyPlaceScreen extends StatefulWidget {
 
 class SpecifyPlaceScreenState extends State<SpecifyPlaceScreen> {
   final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
+  Completer<GoogleMapController>();
 
   BitmapDescriptor customMarker = BitmapDescriptor.defaultMarker;
   bool loading = true;
@@ -52,34 +53,38 @@ class SpecifyPlaceScreenState extends State<SpecifyPlaceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Specify place'),), // TODO localize
       body: loading
           ? const Center(
-              child: Text('loading'),
-            )
+        child: Text('loading'),
+      )
           : GoogleMap(
-              myLocationEnabled: true,
-              myLocationButtonEnabled: true,
-              mapType: MapType.normal,
-              initialCameraPosition: initialCenter,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-              onTap: (LatLng target) {
-                setState(() {
-                  markerPosition = CameraPosition(target: target);
-                  marker = Marker(
-                    icon: customMarker,
-                    markerId: MarkerId(widget.placeData.name),
-                    position: markerPosition.target,
-                  );
-                });
-              },
-              markers: {marker}),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
+          myLocationEnabled: true,
+          myLocationButtonEnabled: true,
+          zoomControlsEnabled: false,
+          mapType: MapType.normal,
+          initialCameraPosition: initialCenter,
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+          onTap: (LatLng target) {
+            setState(() {
+              markerPosition = CameraPosition(target: target);
+              marker = Marker(
+                icon: customMarker,
+                markerId: MarkerId(widget.placeData.name),
+                position: markerPosition.target,
+              );
+            });
+          },
+          markers: {marker}),
+      floatingActionButton: CustomTextButton.orangeContinue(
+        callback: () {
           Navigator.pop(context, markerPosition.target);
         },
-        child: const Icon(Icons.add),
+        width: 200,
+        text: 'change', // TODO localize
+        active: true,
       ),
     );
   }

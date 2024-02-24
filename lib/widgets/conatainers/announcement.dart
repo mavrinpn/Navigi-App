@@ -1,11 +1,8 @@
 // ignore_for_file: deprecated_member_use
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
-import 'package:smart/managers/favourites_manager.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';

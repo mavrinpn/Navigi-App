@@ -29,8 +29,6 @@ class AuthRepository {
   bool appMounted = true;
 
   static const Duration _onlineRefreshDuration = Duration(seconds: 30);
-  Timer? _onlineTimer;
-
   void _timerFunction(Timer timer) {
     if (sessionID == null) {
       timer.cancel();
@@ -41,7 +39,7 @@ class AuthRepository {
   }
 
   void _startOnlineTimer() {
-    _onlineTimer = Timer.periodic(_onlineRefreshDuration, _timerFunction);
+   Timer.periodic(_onlineRefreshDuration, _timerFunction);
   }
 
   static const sessionIdKey = 'sessionID';

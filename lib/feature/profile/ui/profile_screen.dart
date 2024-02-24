@@ -91,13 +91,17 @@ class _ProfileScreenState extends State<ProfileScreen>
             return BlocBuilder<CreatorCubit, CreatorState>(
               builder: (context, creatorState) {
                 return Padding(
-                    padding: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                     child: CustomScrollView(
                       slivers: [
-                        SliverToBoxAdapter(
-                          child: AccountMediumInfo(
-                            user: RepositoryProvider.of<AuthRepository>(context)
-                                .userData,
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          sliver: SliverToBoxAdapter(
+                            child: AccountMediumInfo(
+                              user:
+                                  RepositoryProvider.of<AuthRepository>(context)
+                                      .userData,
+                            ),
                           ),
                         ),
                         const SliverToBoxAdapter(
@@ -105,19 +109,24 @@ class _ProfileScreenState extends State<ProfileScreen>
                             height: 40,
                           ),
                         ),
-                        SliverToBoxAdapter(
-                          child: CustomTextButton.withIcon(
-                            callback: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutesNames.announcementCreatingCategory);
-                            },
-                            text: AppLocalizations.of(context)!.addAnAd,
-                            styleText: AppTypography.font14white,
-                            active: true,
-                            icon: const Icon(
-                              Icons.add,
-                              color: Colors.white,
-                              size: 24,
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          sliver: SliverToBoxAdapter(
+                            child: CustomTextButton.withIcon(
+                              callback: () {
+                                Navigator.pushNamed(
+                                    context,
+                                    AppRoutesNames
+                                        .announcementCreatingCategory);
+                              },
+                              text: AppLocalizations.of(context)!.addAnAd,
+                              styleText: AppTypography.font14white,
+                              active: true,
+                              icon: const Icon(
+                                Icons.add,
+                                color: Colors.white,
+                                size: 24,
+                              ),
                             ),
                           ),
                         ),
@@ -172,7 +181,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                         if (creatorState is CreatorSuccessState) ...[
                           getGridHeight() == 100
                               ? SliverPadding(
-                            padding: const EdgeInsets.symmetric(vertical: 40),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 40),
                                   sliver: SliverToBoxAdapter(
                                     child: Center(
                                       child: Text(
@@ -197,7 +207,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     return AnnouncementContainerHorizontal(
                                         announcement: _tabController.index == 0
                                             ? creatorState.available[index]
-                                            : creatorState.sold[index], likeCount: '13');
+                                            : creatorState.sold[index],
+                                        likeCount: '13');
                                   })
                         ] else ...[
                           SliverToBoxAdapter(
@@ -208,42 +219,57 @@ class _ProfileScreenState extends State<ProfileScreen>
                             ),
                           )
                         ],
-                        SliverToBoxAdapter(
-                          child: RowButton(
-                            title: localizations.myData,
-                            icon: 'Assets/icons/profile_settings.svg',
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutesNames.editProfile);
-                            },
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          sliver: SliverToBoxAdapter(
+                            child: RowButton(
+                              title: localizations.myData,
+                              icon: 'Assets/icons/profile_settings.svg',
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutesNames.editProfile);
+                              },
+                            ),
                           ),
                         ),
-                        SliverToBoxAdapter(
-                          child: RowButton(
-                            title: localizations.myComments,
-                            icon: 'Assets/icons/messages.svg',
-                            onTap: () {},
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          sliver: SliverToBoxAdapter(
+                            child: RowButton(
+                              title: localizations.myComments,
+                              icon: 'Assets/icons/messages.svg',
+                              onTap: () {},
+                            ),
                           ),
                         ),
-                        SliverToBoxAdapter(
-                          child: RowButton(
-                            title: localizations.faq,
-                            icon: 'Assets/icons/faq.svg',
-                            onTap: () {},
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          sliver: SliverToBoxAdapter(
+                            child: RowButton(
+                              title: localizations.faq,
+                              icon: 'Assets/icons/faq.svg',
+                              onTap: () {},
+                            ),
                           ),
                         ),
-                        SliverToBoxAdapter(
-                          child: RowButton(
-                            title: localizations.privacyPolicy,
-                            icon: 'Assets/icons/security.svg',
-                            onTap: () {},
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          sliver: SliverToBoxAdapter(
+                            child: RowButton(
+                              title: localizations.privacyPolicy,
+                              icon: 'Assets/icons/security.svg',
+                              onTap: () {},
+                            ),
                           ),
                         ),
-                        SliverToBoxAdapter(
-                          child: RowButton(
-                            title: localizations.termsOfUse,
-                            icon: 'Assets/icons/terms_of_use.svg',
-                            onTap: () {},
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          sliver: SliverToBoxAdapter(
+                            child: RowButton(
+                              title: localizations.termsOfUse,
+                              icon: 'Assets/icons/terms_of_use.svg',
+                              onTap: () {},
+                            ),
                           ),
                         ),
                         const SliverToBoxAdapter(
@@ -251,15 +277,19 @@ class _ProfileScreenState extends State<ProfileScreen>
                             height: 20,
                           ),
                         ),
-                        SliverToBoxAdapter(
-                          child: CustomElevatedButton(
-                              icon: "Assets/icons/exit.svg",
-                              title: localizations.disconnectFromTheAccount,
-                              onPress: () {
-                                BlocProvider.of<AuthCubit>(context).logout();
-                              },
-                              height: 52,
-                              width: double.infinity),
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          sliver: SliverToBoxAdapter(
+                            child: CustomElevatedButton(
+                                icon: "Assets/icons/exit.svg",
+                                title: localizations.disconnectFromTheAccount,
+                                onPress: () {
+                                  BlocProvider.of<AuthCubit>(context)
+                                      .logout();
+                                },
+                                height: 52,
+                                width: double.infinity),
+                          ),
                         )
                       ],
                     ));

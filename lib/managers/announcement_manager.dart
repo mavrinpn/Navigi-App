@@ -1,6 +1,5 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/enum/enum.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/services/filters/filter_dto.dart';

@@ -1,5 +1,4 @@
 import 'package:appwrite/models.dart';
-import 'package:smart/utils/functions.dart';
 
 class Message {
   String id;

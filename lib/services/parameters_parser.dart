@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:smart/models/item/item.dart';
 
 class ParametersParser {

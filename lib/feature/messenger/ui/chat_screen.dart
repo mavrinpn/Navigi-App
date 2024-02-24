@@ -15,7 +15,6 @@ import 'package:smart/utils/fonts.dart';
 import 'package:smart/feature/messenger/ui/widgets/announcement_short_info.dart';
 import 'package:smart/feature/messenger/ui/widgets/date_splitter_widget.dart';
 
-import '../../../localization/app_localizations.dart';
 import '../data/messenger_repository.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -40,7 +39,6 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     final repository = RepositoryProvider.of<MessengerRepository>(context);
-    final localizations = AppLocalizations.of(context)!;
 
     return PopScope(
       canPop: true,

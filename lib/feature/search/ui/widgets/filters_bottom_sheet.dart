@@ -7,7 +7,6 @@ import 'package:smart/feature/create_announcement/ui/select_auto_model_screen.da
 import 'package:smart/feature/create_announcement/ui/select_mark_screen.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
-import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/models/sort_types.dart';
@@ -73,8 +72,6 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
         TextEditingController(text: searchCubit.minPrice.toString());
     final TextEditingController maxPriceController =
         TextEditingController(text: searchCubit.maxPrice.toString());
-
-    final currentLocale = MyApp.getLocale(context);
 
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.8,
@@ -255,7 +252,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                                         selectCategoryCubit.subcategoryId!,
                                   )));
 
-
+                      searchCubit.setMarksFilter(filter);
                     },
                     child: Row(
                       children: [

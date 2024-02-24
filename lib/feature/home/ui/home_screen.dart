@@ -45,7 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
 
-    return WillPopScope(
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         body: widgetOptions[_selectedTab],
         bottomNavigationBar: Container(
@@ -97,7 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      onWillPop: () async => false,
     );
   }
 }
@@ -156,7 +156,7 @@ class MessengerIcon extends StatelessWidget {
                   Align(
                     alignment: Alignment.topRight,
                     child: CircleAvatar(
-                      backgroundColor: const Color(0xFFFFAF39),
+                      backgroundColor: const Color(0xFFFFB039),
                       radius: 6,
                       child: Text(
                         count.toString(),

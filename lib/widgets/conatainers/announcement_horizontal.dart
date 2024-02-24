@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/announcement/ui/widgets/settings_bottom_sheet.dart';
-import 'package:smart/feature/announcement_editing/bloc/announcement_edit_cubit.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
@@ -48,11 +47,16 @@ class _AnnouncementContainerHorizontalState
         child: Container(
           height: 118,
           width: double.infinity,
+          margin: const EdgeInsets.symmetric(horizontal: 15),
+          padding: EdgeInsets.all(10),
           decoration: ShapeDecoration(
             color: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
+            shadows: [
+              BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 18)
+            ]
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,20 +112,20 @@ class _AnnouncementContainerHorizontalState
                         const SizedBox(
                           width: 20,
                         ),
-                        SvgPicture.asset(
-                          'Assets/icons/follow.svg',
-                          color: AppColors.lightGray,
-                          width: 16,
-                          fit: BoxFit.fitWidth,
-                        ),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          widget.likeCount,
-                          style: AppTypography.font12black
-                              .copyWith(color: AppColors.lightGray),
-                        ),
+                        // SvgPicture.asset(
+                        //   'Assets/icons/follow.svg',
+                        //   color: AppColors.lightGray,
+                        //   width: 16,
+                        //   fit: BoxFit.fitWidth,
+                        // ),
+                        // const SizedBox(
+                        //   width: 4,
+                        // ),
+                        // Text(
+                        //   widget.likeCount,
+                        //   style: AppTypography.font12black
+                        //       .copyWith(color: AppColors.lightGray),
+                        // ),
                       ],
                     ),
                     const SizedBox(

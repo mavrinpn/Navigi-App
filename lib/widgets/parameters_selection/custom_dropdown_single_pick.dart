@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:smart/main.dart';
 import 'package:smart/services/parameters_parser.dart';
 import 'package:smart/utils/fonts.dart';

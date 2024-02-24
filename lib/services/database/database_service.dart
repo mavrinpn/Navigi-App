@@ -16,13 +16,11 @@ import 'package:smart/models/category.dart';
 import 'package:smart/models/city.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/models/messenger/message.dart';
-import 'package:smart/models/sort_types.dart';
 import 'package:smart/models/subcategory.dart';
 import 'package:smart/models/user.dart';
 import 'package:smart/services/filters/filter_dto.dart';
 import 'package:smart/services/filters/location_filter.dart';
 import 'package:smart/services/filters/parameters_filter_builder.dart';
-import 'package:smart/utils/routes/route_names.dart';
 
 import '../../models/messenger/room.dart';
 import '../../utils/constants.dart';

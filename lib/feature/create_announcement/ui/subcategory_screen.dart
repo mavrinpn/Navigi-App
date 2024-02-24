@@ -43,7 +43,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
 
   void setParametersToManagerAndPushNext(
       SubcategoryFilters parameters, MarksFilter? marksFilter) {
-    if (marksFilter == null) return;
+    if (marksFilter == null && parameters.hasMark) return;
 
     final repository = context.read<CreatingAnnouncementManager>();
     repository.subcategoryFilters = parameters;

@@ -79,7 +79,9 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
             isNew: true,
             sortBy: _sortBy,
             minPrice: _minPrice,
-            maxPrice: _maxPrice);
+            maxPrice: _maxPrice,
+            mark: marksFilter?.markId,
+            model: marksFilter?.modelId);
       }
 
       emit(SearchAnnouncementsSuccessState());
@@ -89,7 +91,8 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     }
   }
 
-  void searchAnnounces(String? searchText, bool isNew, {List<Parameter>? parameters}) async {
+  void searchAnnounces(String? searchText, bool isNew,
+      {List<Parameter>? parameters}) async {
     emit(SearchAnnouncementsLoadingState());
     try {
       if (searchMode == SearchModeEnum.simple) {

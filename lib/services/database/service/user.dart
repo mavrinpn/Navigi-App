@@ -53,7 +53,7 @@ class UserService {
 
   Future<void> sendSms() async {
     final jwt = await getJwt();
-    final res = await _functions.createExecution(
+    await _functions.createExecution(
         functionId: '658d94ecc79d136f5fec', body: jsonEncode({'jwt': jwt}));
   }
 

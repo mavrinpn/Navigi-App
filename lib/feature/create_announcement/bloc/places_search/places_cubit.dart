@@ -45,10 +45,10 @@ class PlacesCubit extends Cubit<PlacesState> {
     emit(PlacesLoadingState());
     placesManager.searchPlaceController = query;
 
-    if (query.isEmpty) {
-      emit(PlacesEmptyState());
-      return;
-    }
+    // if (query.isEmpty) {
+    //   emit(PlacesEmptyState());
+    //   return;
+    // }
 
     placesManager.searchPlacesByName(query);
     emit(PlacesSuccessState());
@@ -58,11 +58,11 @@ class PlacesCubit extends Cubit<PlacesState> {
     emit(PlacesLoadingState());
     placesManager.searchCityController = query;
 
-    if (query.isEmpty) {
-      placesManager.clearSearchItems();
-      emit(PlacesEmptyState());
-      return;
-    }
+    // if (query.isEmpty) {
+    //   placesManager.clearSearchItems();
+    //   emit(PlacesEmptyState());
+    //   return;
+    // }
 
     placesManager.searchCities(query);
     emit(PlacesSuccessState());

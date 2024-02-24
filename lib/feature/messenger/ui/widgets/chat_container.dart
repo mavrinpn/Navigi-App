@@ -33,7 +33,7 @@ class ChatContainer extends StatefulWidget {
   final String chatImageUrl;
   final String otherUser;
   final String announcementName;
-  bool userOnline;
+  final bool userOnline;
   final String roomId;
   final BehaviorSubject refreshStream;
 

@@ -1,7 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/services/parameters_parser.dart';
-import 'package:smart/services/parameters_parser.dart';
 
 class SortTypes {
   static const String priceASC = 'priceASC';

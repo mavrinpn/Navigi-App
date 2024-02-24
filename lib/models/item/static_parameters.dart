@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:smart/models/item/item.dart';
 import 'package:smart/models/item/static_localized_parameter.dart';
-import 'package:smart/services/parameters_parser.dart';
 
 class StaticParameters {
   late final List<StaticLocalizedParameter> parameters;

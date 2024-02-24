@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart.';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/category/category_cubit.dart';
-import 'package:smart/feature/main/bloc/popularQueries/popular_queries_cubit.dart';
-import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/models/category.dart';
 import 'package:smart/utils/animations.dart';

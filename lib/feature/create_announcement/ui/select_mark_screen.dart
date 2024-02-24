@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart/feature/create_announcement/bloc/auto_model/auto_models_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/marks/select_mark_cubit.dart';
-import 'package:smart/feature/create_announcement/ui/widgets/auto_mark_widget.dart';
 import 'package:smart/feature/create_announcement/ui/widgets/mark_widget.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';

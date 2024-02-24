@@ -29,17 +29,27 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
   final cityController = TextEditingController();
 
   bool active = false;
-  bool initial = true;
+  bool initial = false;
   bool selectingCity = true;
+
+  @override
+  void initState() {
+    BlocProvider.of<PlacesCubit>(context).searchCities('');
+    super.initState();
+  }
 
   void setActive(bool value) => active = value;
 
   void selectCity(City city) async {
     final placesCubit = BlocProvider.of<PlacesCubit>(context);
-    await placesCubit.setCity(city);
-    cityController.text = city.name;
-    selectingCity = false;
-    setState(() {});
+
+    await placesCubit.setCity(city).then((value) {
+      BlocProvider.of<PlacesCubit>(context).searchPlaces('');
+      cityController.text = city.name;
+      selectingCity = false;
+
+      setState(() {});
+    });
 
     print('selectingCity = false');
   }
@@ -54,10 +64,12 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
 
     placeController.text = selectedDistrict.name;
 
-
     district = selectedDistrict;
     setActive(true);
-    setState(() {});
+    setState(() {
+      // initial = true;
+      selectingCity = true;
+    });
   }
 
   CityDistrict? district;
@@ -207,8 +219,10 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
             ),
             if (creatingManager.specialOptions
                 .contains(SpecialAnnouncementOptions.customPlace)) ...[
-              GestureDetector(
-                onTap: () async {
+              CustomTextButton.orangeContinue(
+                activeColor: AppColors.dark,
+                active: active,
+                callback: () async {
                   if (active) {
                     final LatLng latLng = await Navigator.push(
                         context,
@@ -219,10 +233,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
                     creatingManager.customPosition = latLng;
                   }
                 },
-                child: Text(
-                  "Indiquer l'emplacement sur la carte",
-                  style: AppTypography.font16black,
-                ),
+                text: "Indiquer l'emplacement sur la carte",
               )
             ]
           ],

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart/feature/create_announcement/bloc/item_search/item_search_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/subcategory/subcategory_cubit.dart';
-import 'package:smart/feature/create_announcement/ui/select_auto_model_screen.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/managers/creating_announcement_manager.dart';
 import 'package:smart/models/category.dart';
@@ -29,7 +27,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         .loadSubCategories(categoryId: e.id);
     creatingManager.clearSpecifications();
 
-    if (e.id == '65119464be0573e5852b' || e.id == '651194f27d010cd0186e') {
+    if (e.id == 'home' || e.id == 'job') {
       creatingManager.specialOptions
           .add(SpecialAnnouncementOptions.customPlace);
     }
