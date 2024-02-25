@@ -108,6 +108,7 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.mainBackground,
         elevation: 0,
+        surfaceTintColor: Colors.transparent,
         flexibleSpace: MainAppBar(
           isSearch: isSearch,
           openSearchScreen: openSearchScreen,
@@ -130,6 +131,11 @@ class _MainScreenState extends State<MainScreen> {
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
                 const CategoriesSection(),
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 10,
+                  ),
+                ),
                 SliverToBoxAdapter(
                   child: AdvertisementContainer(
                     onTap: () {},

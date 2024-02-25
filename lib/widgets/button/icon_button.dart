@@ -28,7 +28,7 @@ class CustomIconButtonSearch extends StatelessWidget {
             decoration: ShapeDecoration(
                 color: AppColors.dark,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6))),
+                    borderRadius: BorderRadius.circular(10))),
             child: Center(
               child: SvgPicture.asset(
                 assetName,

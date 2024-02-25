@@ -34,9 +34,6 @@ class _CategoryWidgetState extends State<CategoryWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
-            const SizedBox(
-              height: 15,
-            ),
             CustomNetworkImage(
                 width: 108, height: 100, url: widget.category.imageUrl!),
             const SizedBox(

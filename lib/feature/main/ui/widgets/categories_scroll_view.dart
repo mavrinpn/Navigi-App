@@ -17,7 +17,7 @@ class CategoriesScrollView extends StatelessWidget {
         if (state is CategorySuccessState) {
           return SizedBox(
             width: double.infinity,
-            height: 160,
+            height: 140,
             child: ListView(
               physics: const BouncingScrollPhysics(
                   decelerationRate: ScrollDecelerationRate.fast),
@@ -45,40 +45,16 @@ class CategoriesScrollView extends StatelessWidget {
               child: CategoryWidget(
                 category: e,
                 onTap: () {
-                  // if (e.id == '651194bfe89e3b67023f') {
-                  //   final bloc =
-                  //       BlocProvider.of<SearchSelectSubcategoryCubit>(context);
-                  //
-                  //   const String autoId = '65d22164b9589fde26d9';
-                  //   context
-                  //       .read<SearchSelectSubcategoryCubit>().autoFilter = null;
-                  //   context
-                  //       .read<SearchSelectSubcategoryCubit>()
-                  //       .setAutoSubcategory();
-                  //   context
-                  //       .read<SearchSelectSubcategoryCubit>()
-                  //       .getSubcategoryFilters(autoId);
-                  //   context
-                  //       .read<SearchAnnouncementCubit>()
-                  //       .setSubcategory(autoId);
-                  //   context
-                  //       .read<SearchAnnouncementCubit>()
-                  //       .setSearchMode(SearchModeEnum.subcategory);
-                  //   BlocProvider.of<PopularQueriesCubit>(context)
-                  //       .loadPopularQueries();
-                  //   BlocProvider.of<SearchAnnouncementCubit>(context)
-                  //       .searchAnnounces('', true);
-                  //   Navigator.pushNamed(context, AppRoutesNames.search);
-                  // } else {
+
                     context
                         .read<SearchSelectSubcategoryCubit>()
                         .getSubcategories(categoryId: e.id);
                     Navigator.pushNamed(
                         context, AppRoutesNames.searchSelectSubcategory);
-                  // }
+
                 },
                 width: 108,
-                height: 160,
+                height: 140,
               ),
             ))
         .toList();

@@ -77,6 +77,33 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
+            ),   const SizedBox(
+              height: 5,
+            ),
+            BlocListener<FavouritesCubit, FavouritesState>(
+              listener: (context, state) {
+                if (state is LikeSuccessState &&
+                    state.changedPostId == widget.announcement.id) {
+                  setState(() {
+                    liked = state.value;
+                  });
+                }
+              },
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      widget.announcement.stringPrice,
+                      style: AppTypography.font16boldRed,
+                      textDirection: TextDirection.ltr,
+                    ),
+                    GestureDetector(
+                        onTap: onLikeTapped,
+                        child: SvgPicture.asset('Assets/icons/follow.svg',
+                            width: 24,
+                            height: 24,
+                            color: liked ? AppColors.red : AppColors.whiteGray))
+                  ]),
             ),
             const SizedBox(
               height: 5,
@@ -125,34 +152,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                 )
               ],
             ),
-            const SizedBox(
-              height: 5,
-            ),
-            BlocListener<FavouritesCubit, FavouritesState>(
-              listener: (context, state) {
-                if (state is LikeSuccessState &&
-                    state.changedPostId == widget.announcement.id) {
-                  setState(() {
-                    liked = state.value;
-                  });
-                }
-              },
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      widget.announcement.stringPrice,
-                      style: AppTypography.font16boldRed,
-                      textDirection: TextDirection.ltr,
-                    ),
-                    GestureDetector(
-                        onTap: onLikeTapped,
-                        child: SvgPicture.asset('Assets/icons/follow.svg',
-                            width: 24,
-                            height: 24,
-                            color: liked ? AppColors.red : AppColors.whiteGray))
-                  ]),
-            )
+
           ],
         ));
   }
