@@ -40,6 +40,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
     return Form(
       key: _formKey,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           iconTheme: const IconThemeData.fallback(),
           backgroundColor: AppColors.empty,
@@ -111,7 +112,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                           ? repository.getParametersList()
                           : <Parameter>[])
                       .map((e) => buildParameter(e))
-                      .toList(),
+                      .toList() + [const SizedBox(height: 60,)],
                 ))
               ],
             ),
@@ -139,7 +140,10 @@ class _OptionsScreenState extends State<OptionsScreen> {
     if (parameter is SelectParameter) {
       return SelectParameterWidget(parameter: parameter,);
     } else {
-      return InputParameterWidget(parameter: parameter as InputParameter);
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: InputParameterWidget(parameter: parameter as InputParameter),
+      );
     }
   }
 }

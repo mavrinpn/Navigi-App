@@ -183,7 +183,7 @@ class CategoriesService {
 
     final models = <MarkModel>[];
     for (var i in res.documents) {
-      models.add(MarkModel(i.$id, i.data['name']));
+      models.add(MarkModel(i.$id, i.data['name'], i.data['parameters']));
     }
 
     return models;

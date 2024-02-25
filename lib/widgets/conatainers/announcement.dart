@@ -32,7 +32,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
     super.initState();
   }
 
-  void likeOrUnlike() {
+  void onLikeTapped() {
     BlocProvider.of<FavouritesCubit>(context)
         .likeUnlike(widget.announcement.id);
     setState(() {
@@ -146,7 +146,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                       textDirection: TextDirection.ltr,
                     ),
                     GestureDetector(
-                        onTap: likeOrUnlike,
+                        onTap: onLikeTapped,
                         child: SvgPicture.asset('Assets/icons/follow.svg',
                             width: 24,
                             height: 24,

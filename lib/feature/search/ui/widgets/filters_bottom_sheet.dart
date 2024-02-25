@@ -7,6 +7,7 @@ import 'package:smart/feature/create_announcement/ui/select_auto_model_screen.da
 import 'package:smart/feature/create_announcement/ui/select_mark_screen.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
+import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/models/sort_types.dart';
@@ -59,6 +60,8 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
   }
 
   void changeRadius(double value) {}
+
+  String locale() => MyApp.getLocale(context) ?? 'fr';
 
   @override
   Widget build(BuildContext context) {
@@ -161,6 +164,42 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                   ),
                 )
               ],
+              if (selectCategoryCubit.subcategoryFilters != null &&
+                  selectCategoryCubit.subcategoryFilters!.hasMark) ...[
+                const SizedBox(
+                  height: 16,
+                ),
+                InkWell(
+                  onTap: () async {
+                    final MarksFilter filter = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => SelectMarkScreen(
+                                  needSelectModel: true,
+                                  subcategory:
+                                      selectCategoryCubit.subcategoryId!,
+                                )));
+
+                    searchCubit.setMarksFilter(filter);
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        locale() == 'fr'
+                            ? 'Choisir une marque'
+                            : 'اختر علامة تجارية',
+                        style: AppTypography.font16black.copyWith(fontSize: 18),
+                      ),
+                      const Spacer(),
+                      const Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        size: 16,
+                        color: AppColors.lightGray,
+                      )
+                    ],
+                  ),
+                ),
+              ],
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,7 +216,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                         width: 10,
                       ),
                       Text(
-                        'Radius',
+                        locale() == 'fr' ? 'Rayon' : 'دائرة نصف قطرها',
                         style: AppTypography.font16black,
                       ),
                       const SizedBox(
@@ -222,8 +261,9 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
               const SizedBox(
                 height: 16,
               ),
-              if (context.read<SearchAnnouncementCubit>().searchMode ==
-                  SearchModeEnum.subcategory) ...[
+              if (searchCubit.marksFilter?.modelParameters != null)
+                ...buildModelFilters(),
+              if (searchCubit.searchMode == SearchModeEnum.subcategory) ...[
                 BlocBuilder<SearchSelectSubcategoryCubit,
                     SearchSelectSubcategoryState>(
                   builder: (context, state) {
@@ -237,34 +277,6 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                     return Container();
                   },
                 ),
-                if (selectCategoryCubit.subcategoryFilters!.hasMark) ...[
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  InkWell(
-                    onTap: () async {
-                      final MarksFilter filter = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => SelectMarkScreen(
-                                    needSelectModel: true,
-                                    subcategory:
-                                        selectCategoryCubit.subcategoryId!,
-                                  )));
-
-                      searchCubit.setMarksFilter(filter);
-                    },
-                    child: Row(
-                      children: [
-                        Text(
-                          'Choisir une marque ',
-                          style:
-                              AppTypography.font16black.copyWith(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                  ),
-                ]
               ],
               const SizedBox(
                 height: 16,
@@ -287,7 +299,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
 
                     setState(() {});
                   },
-                  text: 'Appliquer',
+                  text: locale() == 'fr' ? 'Appliquer' : 'تطبيق',
                   active: true)
             ],
           ),
@@ -297,6 +309,22 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
   }
 
   List<Widget> buildFiltersSelection(List<Parameter> parameters) {
+    final children = <Widget>[];
+    for (var i in parameters) {
+      if (i is SelectParameter) {
+        children.add(MultipleCheckboxPicker(parameter: i));
+      } else if (i is MinMaxParameter) {
+        children.add(MinMaxParameterWidget(parameter: i));
+      }
+    }
+    return children;
+  }
+
+  List<Widget> buildModelFilters() {
+    final searchCubit = RepositoryProvider.of<SearchAnnouncementCubit>(context);
+
+    final parameters = searchCubit.marksFilter!.modelParameters!;
+
     final children = <Widget>[];
     for (var i in parameters) {
       if (i is SelectParameter) {

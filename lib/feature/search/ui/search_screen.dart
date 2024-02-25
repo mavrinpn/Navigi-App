@@ -71,13 +71,11 @@ class _SearchScreenState extends State<SearchScreen> {
     }
 
     Widget announcementGridBuilder(BuildContext context, int index) {
+      print('built announcement $index');
+
       return AnnouncementContainer(
           announcement: announcementRepository.searchAnnouncements[index]);
     }
-
-    SliverChildBuilderDelegate sliverChildBuilderDelegate =
-        SliverChildBuilderDelegate(announcementGridBuilder,
-            childCount: announcementRepository.searchAnnouncements.length);
 
     SliverGridDelegateWithMaxCrossAxisExtent gridDelegate =
         SliverGridDelegateWithMaxCrossAxisExtent(
@@ -166,30 +164,45 @@ class _SearchScreenState extends State<SearchScreen> {
       );
     }
 
+    Widget gridBuild() {
+      print('grid building, length: ${announcementRepository.searchAnnouncements.length}');
+
+      return SliverPadding(
+        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
+        sliver: SliverGrid(
+          gridDelegate: gridDelegate,
+          delegate:  SliverChildBuilderDelegate(announcementGridBuilder,
+              childCount: announcementRepository.searchAnnouncements.length),
+        ),
+      );
+    }
+
     Widget announcementsBuilder(context, state) {
+      print(
+          'rebuild grid called with new length ${announcementRepository.searchAnnouncements.length}');
+
+      if (announcementRepository.searchAnnouncements.isNotEmpty) {
+
+      }
+
+      if (state is SearchAnnouncementsFailState ||
+          announcementRepository.searchAnnouncements.isEmpty) {
+        return Center(
+          child: Text(AppLocalizations.of(context)!.empty),
+        );
+      }
+
       return CustomScrollView(
         controller: _controller,
         physics: const BouncingScrollPhysics(
             decelerationRate: ScrollDecelerationRate.fast),
         slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
-            sliver: SliverGrid(
-              gridDelegate: gridDelegate,
-              delegate: sliverChildBuilderDelegate,
-            ),
-          ),
+          gridBuild(),
           if (state is SearchAnnouncementsLoadingState) ...[
             SliverToBoxAdapter(
               child: Center(child: AppAnimations.bouncingLine),
             )
-          ] else if (state is SearchAnnouncementsFailState ||
-              announcementRepository.searchAnnouncements.isEmpty) ...[
-            SliverToBoxAdapter(
-                child: Center(
-              child: Text(AppLocalizations.of(context)!.empty),
-            ))
-          ],
+          ]
         ],
       );
     }

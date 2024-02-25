@@ -8,11 +8,13 @@ class CreatorData {
   final CityDistrict place;
   final int _distance;
   final bool verified;
+  final String phone;
 
   CreatorData(
       {this.name = 'John E.',
       this.score = 4.1,
       this.uid = 'aboba',
+        this.phone = '',
       int d = 4,
       this.verified = false})
       : _distance = d,
@@ -23,6 +25,7 @@ class CreatorData {
       : _distance = 4,
         place = CityDistrict.fish(),
         name = data != null ? data['name'] : 'John E.',
+        phone = data != null ? data['phone'] : '',
         score = 4.1,
         verified = data != null ? data['verified'] : true,
         imageUrl = data != null ? data['image_url'] ?? '' : '',

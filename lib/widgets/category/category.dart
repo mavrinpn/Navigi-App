@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:smart/main.dart';
 import 'package:smart/models/category.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/images/network_image.dart';
 
 class CategoryWidget extends StatefulWidget {
-  CategoryWidget(
+  const CategoryWidget(
       {super.key,
-      required Category category,
+      required this.category,
       required this.height,
-      required this.width, required this.onTap})
-      : name = category.name ?? '',
-        url = category.imageUrl!;
+      required this.width,
+      required this.onTap});
 
-  final String name;
-  final String url;
   final double width;
   final double height;
+  final Category category;
 
   final VoidCallback onTap;
 
@@ -38,12 +37,14 @@ class _CategoryWidgetState extends State<CategoryWidget> {
             const SizedBox(
               height: 15,
             ),
-            CustomNetworkImage(width: 108, height: 100, url: widget.url),
+            CustomNetworkImage(
+                width: 108, height: 100, url: widget.category.imageUrl!),
             const SizedBox(
               height: 12,
             ),
             Text(
-              widget.name,
+              widget.category
+                  .getLocalizedName(MyApp.getLocale(context) ?? 'fr'),
               style: AppTypography.font24black.copyWith(fontSize: 12),
               textAlign: TextAlign.center,
             ),

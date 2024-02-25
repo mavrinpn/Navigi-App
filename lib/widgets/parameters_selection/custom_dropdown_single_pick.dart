@@ -40,40 +40,38 @@ class _CustomDropDownSingleCheckBoxState
       child: AnimatedContainer(
         height: isOpen ? 36.5 * (widget.parameter.variants.length + 1) : 25,
         duration: const Duration(milliseconds: 100),
-        child: SingleChildScrollView(
-          child: Column(children: [
-            InkWell(
-              onTap: () {
-                isOpen = !isOpen;
-                setState(() {});
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    currentLocale == 'fr' ? widget.parameter.frName : widget.parameter.arName,
-                    style: AppTypography.font16black.copyWith(fontSize: 18),
-                  ),
-                  !isOpen
-                      ? const Icon(
-                    Icons.arrow_forward_ios_outlined,
-                    size: 16,
-                    color: AppColors.lightGray,
-                  )
-                      : const Icon(
-                    Icons.keyboard_arrow_down_sharp,
-                    color: AppColors.lightGray,
-                  )
-                ],
-              ),
+        child: Column(children: [
+          InkWell(
+            onTap: () {
+              isOpen = !isOpen;
+              setState(() {});
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  currentLocale == 'fr' ? widget.parameter.frName : widget.parameter.arName,
+                  style: AppTypography.font16black.copyWith(fontSize: 18),
+                ),
+                !isOpen
+                    ? const Icon(
+                  Icons.arrow_forward_ios_outlined,
+                  size: 16,
+                  color: AppColors.lightGray,
+                )
+                    : const Icon(
+                  Icons.keyboard_arrow_down_sharp,
+                  color: AppColors.lightGray,
+                )
+              ],
             ),
-            if (isOpen) ...[
-              !showAll
-                  ? buildSimplePicker()
-                  : SinglePickWithSearch(parameter: widget.parameter)
-            ]
-          ]),
-        ),
+          ),
+          if (isOpen) ...[
+            !showAll
+                ? buildSimplePicker()
+                : SinglePickWithSearch(parameter: widget.parameter)
+          ]
+        ]),
       ),
     );
   }

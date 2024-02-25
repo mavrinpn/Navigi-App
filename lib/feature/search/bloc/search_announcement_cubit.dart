@@ -97,7 +97,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     try {
       if (searchMode == SearchModeEnum.simple) {
         await _announcementManager.loadSearchAnnouncement(
-            searchText: _lastText,
+            searchText: searchText,
             isNew: true,
             sortBy: _sortBy,
             minPrice: _minPrice,
@@ -106,7 +106,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
         await _announcementManager.searchWithSubcategory(
             subcategoryId: _subcategoryId!,
             parameters: parameters!,
-            searchText: _lastText,
+            searchText: searchText,
             isNew: true,
             sortBy: _sortBy,
             minPrice: _minPrice,

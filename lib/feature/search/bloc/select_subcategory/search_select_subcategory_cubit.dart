@@ -18,6 +18,9 @@ class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
   List<Subcategory> subcategories = [];
   List<Parameter> _parameters = [];
 
+  String? _lastCategory;
+  String? _lastSubcategory;
+
   SubcategoryFilters? subcategoryFilters;
   String? subcategoryId;
 
@@ -58,7 +61,14 @@ class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
   }
 
   void getSubcategories({String? categoryId, String? subcategoryId}) async {
+    if (categoryId != null && categoryId == _lastCategory ||
+        subcategoryId != null && subcategoryId == _lastCategory) {
+      return emit(SubcategoriesGotState());
+    }
     emit(SubcategoriesLoadingState());
+    _lastSubcategory = subcategoryId;
+    _lastCategory = categoryId;
+
     needAddAutoSelectButton = false;
     autoFilter = null;
     if (categoryId != null) {
@@ -72,16 +82,17 @@ class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
     emit(SubcategoriesGotState());
   }
 
-  void getSubcategoryFilters(String selectdeSubcategoryId) async {
+  Future getSubcategoryFilters(String selectedSubcategoryId) async {
     emit(FiltersLoadingState());
 
-    final res = await categoriesManager.getFilters(selectdeSubcategoryId);
+    final res = await categoriesManager.getFilters(selectedSubcategoryId);
     _parameters = ParametersParser(res['parameters']).decodedParameters;
 
     subcategoryFilters = SubcategoryFilters(_parameters,
         hasMark: res['hasMark'], hasModel: res['hasModel']);
-    subcategoryId = selectdeSubcategoryId;
+    subcategoryId = selectedSubcategoryId;
     print('got parameters: $_parameters');
     emit(FiltersGotState(_parameters));
+    return parameters;
   }
 }

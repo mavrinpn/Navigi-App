@@ -23,6 +23,9 @@ class MessagesService {
       Map<String, dynamic> documentData, String userId) {
     final user1 = documentData['user1'];
     final user2 = documentData['user2'];
+    print(user1);
+    print(user2);
+
     if (user1[DefaultDocumentParameters.id] != userId) {
       return ChatUserInfo.fromJson(user1);
     } else {

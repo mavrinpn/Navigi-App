@@ -7,6 +7,7 @@ import 'package:smart/feature/favorites/favorites_screen.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/feature/messenger/ui/all_chats_screen.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/main.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../../../utils/colors.dart';
@@ -64,8 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     asset: 'Assets/icons/search.svg',
                     isSelected: _selectedTab == 0,
                   ),
-                  tooltip: 'Page daccueil',
-                  label: 'Page daccueil'),
+                  tooltip: MyApp.getLocale(context) == 'fr' ? 'Page daccueil' : 'الصفحة الرئيسية',
+                  label:  MyApp.getLocale(context) == 'fr' ? 'Page daccueil' : 'الصفحة الرئيسية'),
               BottomNavigationBarItem(
                 icon: MessengerIcon(
                   isSelected: _selectedTab == 1,
@@ -78,8 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   asset: 'Assets/icons/like.svg',
                   isSelected: _selectedTab == 2,
                 ),
-                tooltip: 'Délection',
-                label: 'Délection',
+                tooltip:  MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المتعة',
+                label:  MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المتعة',
               ),
               BottomNavigationBarItem(
                 icon: NavigatorBarItem(

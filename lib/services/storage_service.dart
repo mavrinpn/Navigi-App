@@ -45,6 +45,8 @@ class FileStorageManager {
   Future<void> deleteImage(String fileID, String bucketID) =>
       _storage.deleteFile(bucketId: bucketID, fileId: fileID);
 
+  // String createViewUrl(String fileID, String bucketID) =>
+  //     'http://admin.navigidz.online/v1/storage/buckets/$bucketID/files/$fileID/view?project=64fb37419dc681fa6860';
   String createViewUrl(String fileID, String bucketID) =>
-      'http://admin.navigidz.online/v1/storage/buckets/$bucketID/files/$fileID/view?project=64fb37419dc681fa6860';
+      'http://143.244.206.96/v1/storage/buckets/$bucketID/files/$fileID/view?project=65d8fa703a95c4ef256b';
 }

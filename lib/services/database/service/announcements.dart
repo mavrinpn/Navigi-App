@@ -47,7 +47,7 @@ class AnnouncementsService {
   Future<List<Announcement>> searchAnnouncementsInSubcategory(
       SubcategoryFilterDTO filterData) async {
     List<String> queries =
-        ParametersFilterBuilder.getSearchQueries(filterData.toDefaultFilter());
+        ParametersFilterBuilder.getSearchQueries(filterData.toDefaultFilter(), subcategory: true);
 
     queries.addAll(filterData.convertParametersToQuery());
 

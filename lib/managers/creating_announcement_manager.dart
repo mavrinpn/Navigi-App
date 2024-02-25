@@ -60,6 +60,10 @@ class CreatingAnnouncementManager {
       parameters.add(autoFilter!.engine);
     }
 
+    if (marksFilter?.modelParameters != null) {
+      parameters.addAll(marksFilter!.modelParameters!);
+    }
+
     return parameters;
   }
 

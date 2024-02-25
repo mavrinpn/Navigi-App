@@ -13,7 +13,8 @@ class ParametersFilterBuilder {
     return Query.search(attribute, '"${parameter.key}": "${parameter.value}"');
   }
 
-  static List<String> getSearchQueries(DefaultFilterDto filterData) {
+  static List<String> getSearchQueries(DefaultFilterDto filterData,
+      {bool subcategory = false}) {
     List<String> queries = [];
 
     queries.add(Query.equal(activeAttribute, true));
@@ -22,7 +23,7 @@ class ParametersFilterBuilder {
       queries.add(Query.cursorAfter(filterData.lastId!));
     }
     if ((filterData.text ?? '') != '') {
-      queries.add(Query.search('name', filterData.text!));
+      queries.add(Query.search(subcategory ? 'title' : 'name', filterData.text!));
     }
     if (filterData.sortBy != null) {
       queries.add(SortTypes.toQuery(filterData.sortBy!)!);

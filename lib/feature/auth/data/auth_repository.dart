@@ -114,8 +114,8 @@ class AuthRepository {
 
   void logout() async {
     try {
-      await _account.deleteSession(sessionId: sessionID!);
       sessionID = null;
+      await _account.deleteSession(sessionId: sessionID!);
     } catch (e) {
       log('session already deleted');
     }

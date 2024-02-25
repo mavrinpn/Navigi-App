@@ -55,6 +55,7 @@ class UserService {
     final jwt = await getJwt();
     await _functions.createExecution(
         functionId: '658d94ecc79d136f5fec', body: jsonEncode({'jwt': jwt}));
+    log('sms sent');
   }
 
   Future<UserCredentials?> confirmSms(String code, String password) async {

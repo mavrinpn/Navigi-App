@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart/main.dart';
 import 'package:smart/models/models.dart';
 import 'package:smart/utils/fonts.dart';
 
@@ -20,7 +21,7 @@ class SubCategoryWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              subcategory.name,
+              subcategory.localizedName(MyApp.getLocale(context) ?? 'fr'),
               style: AppTypography.font16black,
             ),
             const Icon(

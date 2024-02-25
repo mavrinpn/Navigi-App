@@ -47,8 +47,8 @@ class MyRepositoryProviders extends StatelessWidget {
   MyRepositoryProviders({Key? key}) : super(key: key);
 
   final client = a.Client()
-      .setEndpoint('http://admin.navigidz.online/v1')
-      .setProject('64fb37419dc681fa6860');
+      .setEndpoint('http://143.244.206.96/v1')
+      .setProject('65d8fa703a95c4ef256b');
 
   @override
   Widget build(BuildContext context) {

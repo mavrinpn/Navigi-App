@@ -14,6 +14,10 @@ List<Announcement> announcementsFromDocuments(
     final futureBytes =
         storage.getFileView(bucketId: announcementsBucketId, fileId: id);
 
+    doc.data.forEach((key, value) {
+      print('$key: $value');
+    });
+
     newAnnounces
         .add(Announcement.fromJson(json: doc.data, futureBytes: futureBytes));
   }
