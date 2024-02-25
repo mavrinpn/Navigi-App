@@ -18,7 +18,7 @@ class ItemParameters {
         'nameFr': parameter.frName,
         'id': parameter.key,
         'type': 'number',
-        'currentValue': parameter.currentValue.toJson()
+        'currentValue': parameter.currentValue
       };
       return jsonEncode(map);
     }
