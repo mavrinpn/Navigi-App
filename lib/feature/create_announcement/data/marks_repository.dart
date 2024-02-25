@@ -10,6 +10,6 @@ class MarksRepository {
   Future<List<Mark>> getMarks(String subcategory) =>
       databaseService.categories.getSubcategoryMarks(subcategory);
 
-  Future<List<MarkModel>> getModels(String markId, String subcategory) =>
-      databaseService.categories.getSubcategoryMarksModels(subcategory, markId);
+  Future<List<MarkModel>> getModels({required String markId, required String subcategory}) =>
+      databaseService.categories.getSubcategoryMarksModels(subcategory: subcategory, mark: markId);
 }

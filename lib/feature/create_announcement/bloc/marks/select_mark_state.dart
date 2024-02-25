@@ -9,10 +9,14 @@ class MarksLoadingState extends SelectMarkState {}
 
 class MarksGotState extends SelectMarkState {}
 
-class ModelsLoadingState extends SelectMarkState {}
+class ModelsLoadingState extends SelectMarkState {
+  final String markId;
+  ModelsLoadingState(this.markId);
+}
 
 class ModelsGotState extends SelectMarkState {
+  final String markId;
   final List<MarkModel> models;
 
-  ModelsGotState(this.models);
+  ModelsGotState(this.models, this.markId);
 }

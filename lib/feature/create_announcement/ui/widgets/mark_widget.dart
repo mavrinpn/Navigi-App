@@ -25,6 +25,8 @@ class _MarkWidgetState extends State<MarkWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print('rebuild with $opened on widget ${widget.mark.name}');
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,13 +39,15 @@ class _MarkWidgetState extends State<MarkWidget> {
             }
 
             if (!opened) {
-              context
-                  .read<SelectMarkCubit>()
-                  .getModels(widget.mark.id, widget.subcategory);
+              context.read<SelectMarkCubit>().getModels(
+                    widget.subcategory,
+                    widget.mark.id,
+                  );
             }
 
             setState(() {
               opened = !opened;
+              print('set opened to $opened on widget ${widget.mark.id}');
             });
           },
           child: Container(
@@ -67,36 +71,50 @@ class _MarkWidgetState extends State<MarkWidget> {
         if (opened) ...[
           BlocBuilder<SelectMarkCubit, SelectMarkState>(
               builder: (context, state) {
+            if (state is ModelsLoadingState) {
+              if (state.markId != widget.mark.id) {
+                opened = false;
+              }
+            }
+
             if (state is ModelsGotState) {
-              return Column(
-                  children: List.generate(
-                state.models.length,
-                (index) => InkWell(
-                  onTap: () {
-                    Navigator.pop(
-                        context,
-                        MarksFilter(
-                            markId: widget.mark.id,
-                            modelId: state.models[index].id));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 28.0, right: 16),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            state.models[index].name,
-                            style: AppTypography.font16black
-                                .copyWith(fontWeight: FontWeight.w400),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            size: 16,
-                          ),
-                        ]),
+              print('models length: ${state.models.length}');
+              if (state.models.isNotEmpty) {
+                return Column(
+                    children: List.generate(
+                  state.models.length,
+                  (index) => InkWell(
+                    onTap: () {
+                      Navigator.pop(
+                          context,
+                          MarksFilter(
+                              markId: widget.mark.id,
+                              modelId: state.models[index].id));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 28.0, right: 16),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              state.models[index].name,
+                              style: AppTypography.font16black
+                                  .copyWith(fontWeight: FontWeight.w400),
+                            ),
+                            const Icon(
+                              Icons.arrow_forward_ios,
+                              size: 16,
+                            ),
+                          ]),
+                    ),
                   ),
-                ),
-              ));
+                ));
+              } else {
+                return const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Text('nothing')],
+                );
+              }
             } else {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,

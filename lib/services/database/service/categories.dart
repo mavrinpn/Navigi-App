@@ -23,7 +23,7 @@ class CategoriesService {
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: subcategoriesCollection,
-        queries: [Query.equal(categoryId, categoryID)]);
+        queries: [Query.equal(categoryId, categoryID), Query.limit(1000)]);
 
     for (var doc in res.documents) {
       subcategories.add(Subcategory.fromJson(doc.data));
@@ -52,7 +52,7 @@ class CategoriesService {
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: subcategoriesCollection,
-        queries: [Query.equal('subcategoryId', subcategoryID)]);
+        queries: [Query.equal('subcategoryId', subcategoryID), Query.limit(1000)]);
 
     for (var doc in res.documents) {
       subcategories.add(Subcategory.fromJson(doc.data));
@@ -159,7 +159,7 @@ class CategoriesService {
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: 'manufacturerSubcategory',
-        queries: [Query.equal('subcategoryId', subcategory)]);
+        queries: [Query.equal('subcategoryId', subcategory), Query.limit(1000)]);
 
     final marks = <Mark>[];
     for (var i in res.documents) {
@@ -172,14 +172,18 @@ class CategoriesService {
   }
 
   Future<List<MarkModel>> getSubcategoryMarksModels(
-      String subcategory, String mark) async {
+      {required String subcategory, required String mark}) async {
+    final query = [
+      Query.equal('subcategoryId', subcategory),
+      Query.equal('manufacturerId', mark), Query.limit(1000)
+    ];
+
+    print(query);
+
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: 'models',
-        queries: [
-          Query.equal('subcategoryId', subcategory),
-          Query.equal('manufacturerId', mark)
-        ]);
+        queries: query);
 
     final models = <MarkModel>[];
     for (var i in res.documents) {

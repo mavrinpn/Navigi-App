@@ -86,7 +86,8 @@ class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
     emit(FiltersLoadingState());
 
     final res = await categoriesManager.getFilters(selectedSubcategoryId);
-    _parameters = ParametersParser(res['parameters']).decodedParameters;
+    _parameters =
+        ParametersParser(res['parameters'], useMinMax: true).decodedParameters;
 
     subcategoryFilters = SubcategoryFilters(_parameters,
         hasMark: res['hasMark'], hasModel: res['hasModel']);

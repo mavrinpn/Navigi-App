@@ -199,6 +199,9 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                     ],
                   ),
                 ),
+                const SizedBox(
+                  height: 16,
+                ),
               ],
               Column(
                 mainAxisSize: MainAxisSize.min,

@@ -19,19 +19,22 @@ class SelectMarkCubit extends Cubit<SelectMarkState> {
   void getMarks(String subcategory) async {
     if (subcategory == lastSubcategory) return emit(MarksGotState());
 
-    emit(ModelsLoadingState());
+    emit(MarksLoadingState());
     lastSubcategory = subcategory;
     marks = await marksRepository.getMarks(subcategory);
     emit(MarksGotState());
   }
 
   void getModels(String subcategory, String mark) async {
-    if (subcategory == lastSubcategory && mark == lastMark) return emit(ModelsGotState(models));
+    if (subcategory == lastSubcategory && mark == lastMark) {
+      return emit(ModelsGotState(models, mark));
+    }
 
     lastMark = mark;
 
-    emit(ModelsLoadingState());
-    models = await marksRepository.getModels(subcategory, mark);
-    emit(ModelsGotState(models));
+    emit(ModelsLoadingState(mark));
+    models =
+        await marksRepository.getModels(subcategory: subcategory, markId: mark);
+    emit(ModelsGotState(models, mark));
   }
 }

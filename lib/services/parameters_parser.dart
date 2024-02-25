@@ -3,13 +3,13 @@ import 'package:smart/models/item/item.dart';
 class ParametersParser {
   final List encodedString;
 
-  ParametersParser(this.encodedString) {
-    initialize();
+  ParametersParser(this.encodedString, {bool useMinMax = false}) {
+    initialize(useMinMax);
   }
 
   List<Parameter> decodedParameters = [];
 
-  void initialize() {
+  void initialize(bool useMinMax) {
     final List decode = encodedString;
 
     print(decode.length);
@@ -18,7 +18,13 @@ class ParametersParser {
       print(json['type']);
 
       if (json['type'] == 'option') parseOptionParameter(json);
-      if (json['type'] == 'number') parseInputParameter(json);
+      if (json['type'] == 'number') {
+        if (useMinMax) {
+          parseMinMaxParameter(json);
+        } else {
+          parseInputParameter(json);
+        }
+      }
     }
 
     print('decoded parameters length: ${decodedParameters.length}');
@@ -49,6 +55,13 @@ class ParametersParser {
 
     decodedParameters.add(parameter);
   }
+
+  void parseMinMaxParameter(Map json) {
+    final parameter =
+        MinMaxParameter(json['id'], json['nameAr'], json['nameFr']);
+
+    decodedParameters.add(parameter);
+  }
 }
 
 class ParameterOption {
@@ -63,11 +76,8 @@ class ParameterOption {
         nameAr = json['nameAr'],
         nameFr = json['nameFr'];
 
-  Map<String, dynamic> toJson() => {
-    'id': key,
-    'nameAr': nameAr,
-    'nameFr': nameFr
-  };
+  Map<String, dynamic> toJson() =>
+      {'id': key, 'nameAr': nameAr, 'nameFr': nameFr};
 
   @override
   bool operator ==(Object other) {
