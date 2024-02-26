@@ -9,11 +9,12 @@ import '../../models/item/item.dart';
 import '../../utils/colors.dart';
 
 class CustomDropDownSingleCheckBox extends StatefulWidget {
-  const CustomDropDownSingleCheckBox({super.key,
-    required this.parameter,
-    required this.onChange,
-    required this.currentVariable,
-    this.useLocalizationKeys = false});
+  const CustomDropDownSingleCheckBox(
+      {super.key,
+      required this.parameter,
+      required this.onChange,
+      required this.currentVariable,
+      this.useLocalizationKeys = false});
 
   final Function(ParameterOption) onChange;
   final SelectParameter parameter;
@@ -50,19 +51,21 @@ class _CustomDropDownSingleCheckBoxState
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  currentLocale == 'fr' ? widget.parameter.frName : widget.parameter.arName,
+                  currentLocale == 'fr'
+                      ? widget.parameter.frName
+                      : widget.parameter.arName,
                   style: AppTypography.font16black.copyWith(fontSize: 18),
                 ),
                 !isOpen
                     ? const Icon(
-                  Icons.arrow_forward_ios_outlined,
-                  size: 16,
-                  color: AppColors.lightGray,
-                )
+                        Icons.arrow_forward_ios_outlined,
+                        size: 16,
+                        color: AppColors.lightGray,
+                      )
                     : const Icon(
-                  Icons.keyboard_arrow_down_sharp,
-                  color: AppColors.lightGray,
-                )
+                        Icons.keyboard_arrow_down_sharp,
+                        color: AppColors.lightGray,
+                      )
               ],
             ),
           ),
@@ -92,23 +95,21 @@ class _CustomDropDownSingleCheckBoxState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ...(widget.parameter.variants.sublist(0, maximum))
-              .map((e) =>
-              Row(
-                children: [
-                  CustomCheckBox(
-                      isActive: e == widget.currentVariable,
-                      onChanged: () {
-                        widget.onChange(e);
-                      }),
-                  Text(
-                    MyApp.getLocale(context) == 'fr' ? e.nameFr : e.nameAr,
-                    maxLines: 1,
-                    overflow: TextOverflow.clip,
-                    style: AppTypography.font14black
-                        .copyWith(fontSize: 16),
-                  ),
-                ],
-              ))
+              .map((e) => Row(
+                    children: [
+                      CustomCheckBox(
+                          isActive: e == widget.currentVariable,
+                          onChanged: () {
+                            widget.onChange(e);
+                          }),
+                      Text(
+                        MyApp.getLocale(context) == 'fr' ? e.nameFr : e.nameAr,
+                        maxLines: 1,
+                        overflow: TextOverflow.clip,
+                        style: AppTypography.font14black.copyWith(fontSize: 16),
+                      ),
+                    ],
+                  ))
               .toList(),
           if (widget.parameter.variants.length > 7) ...[
             GestureDetector(
@@ -118,8 +119,9 @@ class _CustomDropDownSingleCheckBoxState
                 });
               },
               child: Text(
-                'show more',
-                style: AppTypography.font12lightGray,
+                "${MyApp.getLocale(context) == 'fr' ? 'Afficher tout' : 'عرض الكل'} ${widget.parameter.variants.length}",
+                style: AppTypography.font12lightGray
+                    .copyWith(color: AppColors.red),
               ),
             )
           ]
