@@ -87,8 +87,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(
-                      repository.currentRoom!.otherUserAvatarUrl ?? ''),
+                  backgroundImage:  (repository.currentRoom!.otherUserAvatarUrl ?? '').isNotEmpty ?  NetworkImage(
+                      repository.currentRoom!.otherUserAvatarUrl ?? '') : null,
                 ),
                 const SizedBox(
                   width: 10,
