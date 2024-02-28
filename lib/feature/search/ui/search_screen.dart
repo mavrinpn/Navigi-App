@@ -272,10 +272,11 @@ class _SearchScreenState extends State<SearchScreen> {
 
   _buildCategoryAppBarBottom() {
     return PreferredSize(
-      preferredSize: const Size.fromHeight(96),
+      preferredSize: const Size.fromHeight(90),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -296,18 +297,84 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ],
           ),
-          Wrap(
-            spacing: 6,
-            children: [
-              FilterChip(
-                label: const Text('Prix'),
-                onSelected: (value) {},
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: SingleChildScrollView(
+              clipBehavior: Clip.none,
+              scrollDirection: Axis.horizontal,
+              child: Wrap(
+                alignment: WrapAlignment.start,
+                spacing: 6,
+                children: [
+                  FilterChip(
+                    selected: true,
+                    label: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Prix'),
+                        Icon(Icons.keyboard_arrow_down_rounded)
+                      ],
+                    ),
+                    onSelected: (value) {},
+                  ),
+                  FilterChip(
+                    selected: false,
+                    label: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Telephones'),
+                        Icon(Icons.keyboard_arrow_down_rounded)
+                      ],
+                    ),
+                    onSelected: (value) {},
+                  ),
+                  FilterChip(
+                    selected: false,
+                    label: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Telephones'),
+                        Icon(Icons.keyboard_arrow_down_rounded)
+                      ],
+                    ),
+                    onSelected: (value) {},
+                  ),
+                  FilterChip(
+                    selected: false,
+                    label: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Telephones'),
+                        Icon(Icons.keyboard_arrow_down_rounded)
+                      ],
+                    ),
+                    onSelected: (value) {},
+                  ),
+                  FilterChip(
+                    selected: false,
+                    label: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Telephones'),
+                        Icon(Icons.keyboard_arrow_down_rounded)
+                      ],
+                    ),
+                    onSelected: (value) {},
+                  ),
+                  FilterChip(
+                    selected: false,
+                    label: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Telephones'),
+                        Icon(Icons.keyboard_arrow_down_rounded)
+                      ],
+                    ),
+                    onSelected: (value) {},
+                  ),
+                ],
               ),
-              FilterChip(
-                label: const Text('Telephones'),
-                onSelected: (value) {},
-              ),
-            ],
+            ),
           ),
         ],
       ),

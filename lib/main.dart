@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -100,6 +101,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         appBarTheme: const AppBarTheme(
             backgroundColor: AppColors.mainBackground, elevation: 0),
         fontFamily: GoogleFonts.nunito().fontFamily,
+        chipTheme: const ChipThemeData(
+          showCheckmark: false,
+          selectedColor: Color(0xffED5434),
+          backgroundColor: Color(0xffF4F5F6),
+          side: BorderSide.none,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(4))),
+        ),
       ),
       routes: appRoutes,
       onGenerateRoute: (settings) {
