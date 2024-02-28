@@ -98,17 +98,18 @@ class AnnouncementManager {
     }
   }
 
-  Future<void> searchWithSubcategory(
-      {String? searchText,
-      required bool isNew,
-      required String subcategoryId,
-      required List<Parameter> parameters,
-      String? mark,
-      String? model,
-      String? sortBy,
-      double? minPrice,
-      double? maxPrice,
-      double? radius}) async {
+  Future<void> searchWithSubcategory({
+    String? searchText,
+    required bool isNew,
+    required String subcategoryId,
+    required List<Parameter> parameters,
+    String? mark,
+    String? model,
+    String? sortBy,
+    double? minPrice,
+    double? maxPrice,
+    double? radius,
+  }) async {
     try {
       if (isNew) {
         searchAnnouncements.clear();
@@ -116,14 +117,17 @@ class AnnouncementManager {
       }
 
       final filter = SubcategoryFilterDTO(
-          lastId: _searchLastId,
-          text: searchText,
-          sortBy: sortBy,
-          minPrice: minPrice,
-          maxPrice: maxPrice,
-          radius: radius,
-          subcategory: subcategoryId,
-          parameters: parameters);
+        lastId: _searchLastId,
+        text: searchText,
+        sortBy: sortBy,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
+        radius: radius,
+        subcategory: subcategoryId,
+        parameters: parameters,
+        mark: mark,
+        model: model,
+      );
 
       searchAnnouncements.addAll(await dbService.announcements
           .searchAnnouncementsInSubcategory(filter));

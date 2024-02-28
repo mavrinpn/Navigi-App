@@ -10,8 +10,11 @@ import '../../../utils/fonts.dart';
 import '../bloc/subcategory/subcategory_cubit.dart';
 
 class SelectMarkScreen extends StatefulWidget {
-  const SelectMarkScreen(
-      {super.key, required this.needSelectModel, required this.subcategory});
+  const SelectMarkScreen({
+    super.key,
+    required this.needSelectModel,
+    required this.subcategory,
+  });
 
   final bool needSelectModel;
   final String subcategory;
@@ -33,13 +36,14 @@ class _SelectMarkScreenState extends State<SelectMarkScreen> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     final cubit = BlocProvider.of<SelectMarkCubit>(context);
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData.fallback(),
         backgroundColor: AppColors.empty,
         elevation: 0,
         title: Text(
-          'Select mark',
+          'Select mark', //TODO localize
           style: AppTypography.font20black,
         ),
       ),
@@ -47,13 +51,13 @@ class _SelectMarkScreenState extends State<SelectMarkScreen> {
         builder: (context, state) {
           if (state is MarksGotState || marksPreloaded) {
             if (state is MarksGotState) marksPreloaded = true;
-            // print(cubit.marks.length);
+
             return ListView(
               children: cubit.marks
                   .map((e) => MarkWidget(
                         mark: e,
                         needSelectModel: widget.needSelectModel,
-                subcategory: widget.subcategory,
+                        subcategory: widget.subcategory,
                       ))
                   .toList(),
             );

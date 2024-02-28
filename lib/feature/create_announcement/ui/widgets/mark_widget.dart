@@ -3,14 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/marks/select_mark_cubit.dart';
 import 'package:smart/feature/create_announcement/data/models/auto_marks.dart';
 import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
+import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/utils/utils.dart';
 
 class MarkWidget extends StatefulWidget {
-  const MarkWidget(
-      {super.key,
-      required this.mark,
-      required this.needSelectModel,
-      required this.subcategory});
+  const MarkWidget({
+    super.key,
+    required this.mark,
+    required this.needSelectModel,
+    required this.subcategory,
+  });
 
   final Mark mark;
   final bool needSelectModel;
@@ -25,7 +27,7 @@ class _MarkWidgetState extends State<MarkWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // print('rebuild with $opened on widget ${widget.mark.name}');
+    final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -34,8 +36,17 @@ class _MarkWidgetState extends State<MarkWidget> {
         InkWell(
           onTap: () {
             if (!widget.needSelectModel) {
+              updateAppBarFilterCubit.needUpdateAppBarFilters();
               return Navigator.pop(
-                  context, MarksFilter(markId: widget.mark.id));
+                context,
+                [
+                  MarksFilter(
+                    markId: widget.mark.id,
+                    markTitle: widget.mark.name,
+                    modelTitle: '',
+                  )
+                ],
+              );
             }
 
             if (!opened) {
@@ -56,9 +67,12 @@ class _MarkWidgetState extends State<MarkWidget> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  widget.mark.name,
-                  style: AppTypography.font16black,
+                Expanded(
+                  child: Text(
+                    widget.mark.name,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTypography.font16black,
+                  ),
                 ),
                 const Icon(
                   Icons.arrow_forward_ios,
@@ -85,27 +99,35 @@ class _MarkWidgetState extends State<MarkWidget> {
                   state.models.length,
                   (index) => InkWell(
                     onTap: () {
-                      Navigator.pop(
-                          context,
-                          MarksFilter(
-                              markId: widget.mark.id,
-                              modelId: state.models[index].id));
+                      updateAppBarFilterCubit.needUpdateAppBarFilters();
+                      Navigator.pop(context, [
+                        MarksFilter(
+                          markId: widget.mark.id,
+                          modelId: state.models[index].id,
+                          markTitle: widget.mark.name,
+                          modelTitle: state.models[index].name,
+                        ),
+                      ]);
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(left: 28.0, right: 16),
                       child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
                               state.models[index].name,
+                              overflow: TextOverflow.ellipsis,
                               style: AppTypography.font16black
                                   .copyWith(fontWeight: FontWeight.w400),
                             ),
-                            const Icon(
-                              Icons.arrow_forward_ios,
-                              size: 16,
-                            ),
-                          ]),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ));

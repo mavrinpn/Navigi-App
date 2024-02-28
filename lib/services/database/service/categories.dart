@@ -52,7 +52,10 @@ class CategoriesService {
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: subcategoriesCollection,
-        queries: [Query.equal('subcategoryId', subcategoryID), Query.limit(1000)]);
+        queries: [
+          Query.equal('subcategoryId', subcategoryID),
+          Query.limit(1000)
+        ]);
 
     for (var doc in res.documents) {
       subcategories.add(Subcategory.fromJson(doc.data));
@@ -145,12 +148,14 @@ class CategoriesService {
 
   Future<List<Mark>> getAutoMarks() async {
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase, collectionId: 'autoMarks');
+        databaseId: mainDatabase, collectionId: 'manufacturers');
 
-    final marks = <Mark>[];
+    List<Mark> marks = <Mark>[];
     for (var i in res.documents) {
       marks.add(Mark(i.$id, i.data['name']));
     }
+
+    marks.sort((a, b) => a.name.compareTo(b.name));
 
     return marks;
   }
@@ -159,14 +164,18 @@ class CategoriesService {
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: 'manufacturerSubcategory',
-        queries: [Query.equal('subcategoryId', subcategory), Query.limit(1000)]);
+        queries: [
+          Query.equal('subcategoryId', subcategory),
+          Query.limit(1000)
+        ]);
 
-    final marks = <Mark>[];
+    List<Mark> marks = <Mark>[];
     for (var i in res.documents) {
-      // print(i.data);
       marks.add(Mark(
           i.data['manufacturers']['\$id'], i.data['manufacturers']['name']));
     }
+
+    marks.sort((a, b) => a.name.compareTo(b.name));
 
     return marks;
   }
@@ -175,20 +184,19 @@ class CategoriesService {
       {required String subcategory, required String mark}) async {
     final query = [
       Query.equal('subcategoryId', subcategory),
-      Query.equal('manufacturerId', mark), Query.limit(1000)
+      Query.equal('manufacturerId', mark),
+      Query.limit(1000)
     ];
 
-    // print(query);
-
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: 'models',
-        queries: query);
+        databaseId: mainDatabase, collectionId: 'models', queries: query);
 
-    final models = <MarkModel>[];
+    List<MarkModel> models = <MarkModel>[];
     for (var i in res.documents) {
       models.add(MarkModel(i.$id, i.data['name'], i.data['parameters']));
     }
+
+    models.sort((a, b) => a.name.compareTo(b.name));
 
     return models;
   }
@@ -196,15 +204,17 @@ class CategoriesService {
   Future<List<AutoModel>> getAutoModels(String markId) async {
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
-        collectionId: 'autoModels',
+        collectionId: 'models',
         queries: [Query.equal('markId', markId)]);
 
-    final models = <AutoModel>[];
+    List<AutoModel> models = <AutoModel>[];
 
     for (var doc in res.documents) {
       models.add(AutoModel(doc.$id, doc.data['name'],
           doc.data['complectations'], doc.data['engines']));
     }
+
+    models.sort((a, b) => a.name.compareTo(b.name));
 
     return models;
   }

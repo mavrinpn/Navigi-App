@@ -10,13 +10,14 @@ class DefaultFilterDto {
   double? maxPrice;
   double? radius;
 
-  DefaultFilterDto(
-      {this.text = '',
-      this.lastId,
-      this.sortBy,
-      this.minPrice,
-      this.maxPrice,
-      this.radius});
+  DefaultFilterDto({
+    this.text = '',
+    this.lastId,
+    this.sortBy,
+    this.minPrice,
+    this.maxPrice,
+    this.radius,
+  });
 }
 
 class SubcategoryFilterDTO {
@@ -24,6 +25,9 @@ class SubcategoryFilterDTO {
   String? lastId;
   String? mark;
   String? model;
+  //TODO multiple marks and models
+  // List<String> marks;
+  // List<String> models;
   String? sortBy;
   double? minPrice;
   double? maxPrice;
@@ -31,25 +35,27 @@ class SubcategoryFilterDTO {
   String subcategory;
   List<Parameter> parameters;
 
-  SubcategoryFilterDTO(
-      {this.text,
-      this.lastId,
-      this.sortBy,
-      this.minPrice,
-      this.maxPrice,
-      this.radius,
-      this.mark,
-      this.model,
-      required this.parameters,
-      required this.subcategory});
+  SubcategoryFilterDTO({
+    this.text,
+    this.lastId,
+    this.sortBy,
+    this.minPrice,
+    this.maxPrice,
+    this.radius,
+    this.mark,
+    this.model,
+    required this.parameters,
+    required this.subcategory,
+  });
 
   DefaultFilterDto toDefaultFilter() => DefaultFilterDto(
-      text: text,
-      lastId: lastId,
-      sortBy: sortBy,
-      minPrice: minPrice,
-      maxPrice: maxPrice,
-      radius: radius);
+        text: text,
+        lastId: lastId,
+        sortBy: sortBy,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
+        radius: radius,
+      );
 
   List<dynamic> convertSelectedParametersToStringList(
       List<ParameterOption> parameters) {

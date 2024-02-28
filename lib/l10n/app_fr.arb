@@ -162,5 +162,6 @@
 "cancelation": "Annulation",
 "withSuccess": "Avec succès",
 "save": "Enregistrer",
-"placeApplicationSettings": "Paramètres de l'application place"
+"placeApplicationSettings": "Paramètres de l'application place",
+"mark": "Marque"
 }

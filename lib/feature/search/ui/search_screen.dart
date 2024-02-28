@@ -5,7 +5,8 @@ import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_fil
 import 'package:smart/feature/search/ui/sections/history.dart';
 import 'package:smart/feature/search/ui/sections/popular_queries.dart';
 import 'package:smart/feature/search/ui/sections/search_items.dart';
-import 'package:smart/feature/search/ui/widgets/filters_bottom_sheet.dart';
+import 'package:smart/feature/search/ui/widgets/filter_chip_widget.dart';
+import 'package:smart/feature/search/ui/widgets/mark_chip_widget.dart';
 import 'package:smart/feature/search/ui/widgets/search_appbar.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
@@ -41,6 +42,7 @@ class _SearchScreenState extends State<SearchScreen> {
   final searchController = TextEditingController();
   final _controller = ScrollController();
   late SearchManager searchManager;
+  bool _isSearched = false;
 
   @override
   void initState() {
@@ -61,8 +63,12 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void didChangeDependencies() {
     searchManager = RepositoryProvider.of<SearchManager>(context);
-    if (widget.queryString != null) {
-      setSearch(widget.queryString!, searchManager);
+    if (widget.queryString != null && !_isSearched) {
+      _isSearched = true;
+      //TODO
+      Future.delayed(const Duration(seconds: 1)).then((value) {
+        setSearch(widget.queryString!, searchManager);
+      });
     }
 
     context.watch<SearchSelectSubcategoryCubit>();
@@ -120,13 +126,13 @@ class _SearchScreenState extends State<SearchScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: SearchAppBar(
               showBackButton: widget.showBackButton,
-              onSubmitted: (String? a) {
+              onSubmitted: (String? value) {
                 searchManager.setSearch(false);
-                searchManager.saveInHistory(a!);
+                searchManager.saveInHistory(value!);
                 setState(() {});
                 BlocProvider.of<SearchAnnouncementCubit>(context)
                     .searchAnnounces(
-                  a,
+                  value,
                   true,
                   parameters:
                       context.read<SearchSelectSubcategoryCubit>().parameters,
@@ -317,36 +323,28 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Wrap(
                     alignment: WrapAlignment.start,
                     spacing: 6,
-                    children: selectCategoryCubit.parameters.map((parameter) {
-                      bool isSelected = false;
-                      if (parameter is SelectParameter) {
-                        isSelected = parameter.selectedVariants.isNotEmpty;
-                      } else if (parameter is MinMaxParameter) {
-                        isSelected =
-                            parameter.min != null || parameter.max != null;
-                      }
+                    children: [
+                      if (selectCategoryCubit.subcategoryFilters?.hasMark ??
+                          false)
+                        const MarkChipWidget(),
+                      ...selectCategoryCubit.parameters.map((parameter) {
+                        bool isSelected = false;
+                        if (parameter is SelectParameter) {
+                          isSelected = parameter.selectedVariants.isNotEmpty;
+                        } else if (parameter is MinMaxParameter) {
+                          isSelected =
+                              parameter.min != null || parameter.max != null;
+                        }
 
-                      return FilterChip(
-                        selected: isSelected,
-                        label: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              MyApp.getLocale(context) == 'fr'
-                                  ? parameter.frName
-                                  : parameter.arName,
-                            ),
-                            const Icon(Icons.keyboard_arrow_down_rounded)
-                          ],
-                        ),
-                        onSelected: (value) {
-                          showFilterBottomSheet(
-                            context: context,
-                            parameterKey: parameter.key,
-                          );
-                        },
-                      );
-                    }).toList(),
+                        return FilterChipWidget(
+                          isSelected: isSelected,
+                          title: MyApp.getLocale(context) == 'fr'
+                              ? parameter.frName
+                              : parameter.arName,
+                          parameterKey: parameter.key,
+                        );
+                      }).toList(),
+                    ],
                   ),
                 ),
               ),

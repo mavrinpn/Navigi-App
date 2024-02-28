@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/search/ui/search_screen.dart';
 import 'package:smart/firebase_options.dart';
@@ -12,7 +11,7 @@ import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/providers.dart';
 import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/services.dart';
-import 'package:smart/utils/colors.dart';
+import 'package:smart/utils/app_theme.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/utils/routes/routes.dart';
 import 'package:smart/widgets/splash.dart';
@@ -94,21 +93,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       locale: _locale,
       title: 'Navigi',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: AppColors.mainBackground,
-        scaffoldBackgroundColor: AppColors.mainBackground,
-        appBarTheme: const AppBarTheme(
-            backgroundColor: AppColors.mainBackground, elevation: 0),
-        fontFamily: GoogleFonts.nunito().fontFamily,
-        chipTheme: const ChipThemeData(
-          showCheckmark: false,
-          selectedColor: Color(0xffED5434),
-          backgroundColor: Color(0xffF4F5F6),
-          side: BorderSide.none,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(4))),
-        ),
-      ),
+      theme: AppTheme.theme,
       routes: appRoutes,
       onGenerateRoute: (settings) {
         if (settings.name == AppRoutesNames.search) {

@@ -480,4 +480,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get placeApplicationSettings => 'ضع إعدادات التطبيق';
+
+  @override
+  String get mark => 'مارك';
 }

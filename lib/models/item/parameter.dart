@@ -37,7 +37,13 @@ class SelectParameter implements Parameter {
       ParameterOption? current,
       required this.arName,
       required this.frName})
-      : currentValue = current ?? variants[0];
+      : currentValue = current ??
+            variants.firstOrNull ??
+            ParameterOption(
+              'key',
+              nameAr: 'nameAr',
+              nameFr: 'nameFr',
+            );
 
   @override
   String toString() => '"$key": "$currentValue"';

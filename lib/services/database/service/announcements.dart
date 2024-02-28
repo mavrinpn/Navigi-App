@@ -46,8 +46,10 @@ class AnnouncementsService {
 
   Future<List<Announcement>> searchAnnouncementsInSubcategory(
       SubcategoryFilterDTO filterData) async {
-    List<String> queries =
-        ParametersFilterBuilder.getSearchQueries(filterData.toDefaultFilter(), subcategory: true);
+    List<String> queries = ParametersFilterBuilder.getSearchQueries(
+      filterData.toDefaultFilter(),
+      subcategory: true,
+    );
 
     queries.addAll(filterData.convertParametersToQuery());
 
@@ -56,6 +58,8 @@ class AnnouncementsService {
           await LocationFilter.getLocationFilterForRadius(filterData.radius!));
     }
 
+
+    //TODO multiple marks and models
     if (filterData.mark != null) {
       queries.add(Query.equal('mark', filterData.mark));
     }

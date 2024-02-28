@@ -87,7 +87,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
       emit(SearchAnnouncementsSuccessState());
     } catch (e) {
       emit(SearchAnnouncementsFailState());
-      rethrow;
+      // rethrow;
     }
   }
 
@@ -122,7 +122,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
       emit(SearchAnnouncementsSuccessState());
     } catch (e) {
       emit(SearchAnnouncementsFailState());
-      rethrow;
+      // rethrow;
     }
   }
 }

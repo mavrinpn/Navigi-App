@@ -6,7 +6,7 @@ import 'package:smart/feature/announcement/data/creator_repository.dart';
 import 'package:smart/feature/announcement_editing/bloc/announcement_edit_cubit.dart';
 import 'package:smart/feature/announcement_editing/data/announcement_editing_repository.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
-import 'package:smart/feature/create_announcement/bloc/auto_model/auto_models_cubit.dart';
+import 'package:smart/feature/create_announcement/bloc/car_model/car_models_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/category/category_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/creating/creating_announcement_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/item_search/item_search_cubit.dart';
@@ -235,7 +235,7 @@ class MyBlocProviders extends StatelessWidget {
         lazy: false,
       ),
       BlocProvider(
-        create: (_) => AutoModelsCubit(
+        create: (_) => CarModelsCubit(
           RepositoryProvider.of<AutoMarksRepository>(context),
         ),
         lazy: false,

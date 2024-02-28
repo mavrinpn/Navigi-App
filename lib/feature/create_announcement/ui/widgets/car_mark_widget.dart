@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart/feature/create_announcement/bloc/auto_model/auto_models_cubit.dart';
+import 'package:smart/feature/create_announcement/bloc/car_model/car_models_cubit.dart';
 import 'package:smart/feature/create_announcement/data/models/auto_filter.dart';
 import 'package:smart/feature/create_announcement/data/models/auto_marks.dart';
 import 'package:smart/utils/utils.dart';
 
-class AutoMarkWidget extends StatefulWidget {
-  const AutoMarkWidget({super.key, required this.mark, required this.needSelectModel});
+class CarMarkWidget extends StatefulWidget {
+  const CarMarkWidget({
+    super.key,
+    required this.mark,
+    required this.needSelectModel,
+  });
 
   final Mark mark;
   final bool needSelectModel;
 
   @override
-  State<AutoMarkWidget> createState() => _AutoMarkWidgetState();
+  State<CarMarkWidget> createState() => _CarMarkWidgetState();
 }
 
-class _AutoMarkWidgetState extends State<AutoMarkWidget> {
+class _CarMarkWidgetState extends State<CarMarkWidget> {
   bool opened = false;
 
   @override
@@ -26,12 +30,13 @@ class _AutoMarkWidgetState extends State<AutoMarkWidget> {
       children: [
         InkWell(
           onTap: () {
+            print('123');
             if (!widget.needSelectModel) {
               return Navigator.pop(context, widget.mark.id);
             }
 
             if (!opened) {
-              context.read<AutoModelsCubit>().getModels(widget.mark.id);
+              context.read<CarModelsCubit>().getModels(widget.mark.id);
             }
 
             setState(() {
@@ -44,9 +49,12 @@ class _AutoMarkWidgetState extends State<AutoMarkWidget> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  widget.mark.name,
-                  style: AppTypography.font16black,
+                Expanded(
+                  child: Text(
+                    widget.mark.name,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTypography.font16black,
+                  ),
                 ),
                 const Icon(
                   Icons.arrow_forward_ios,
@@ -57,7 +65,7 @@ class _AutoMarkWidgetState extends State<AutoMarkWidget> {
           ),
         ),
         if (opened) ...[
-          BlocBuilder<AutoModelsCubit, AutoModelsState>(
+          BlocBuilder<CarModelsCubit, CarModelsState>(
               builder: (context, state) {
             if (state is ModelsSuccessState) {
               return Column(
@@ -65,19 +73,31 @@ class _AutoMarkWidgetState extends State<AutoMarkWidget> {
                 state.models.length,
                 (index) => InkWell(
                   onTap: () {
+                    //TODO
+                    final filter = AutoFilter(
+                      widget.mark.id,
+                      state.models[index].id,
+                      state.models[index].variants,
+                      state.models[index].engines,
+                    );
+                    print(filter.engine.frName);
                     Navigator.pop(
-                        context,
-                        AutoFilter(widget.mark.id, state.models[index].id,
-                            state.models[index].variants, state.models[index].engines));
+                      context,
+                      filter,
+                    );
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(left: 28.0, right: 16),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            state.models[index].name,
-                            style: AppTypography.font16black.copyWith(fontWeight: FontWeight.w400),
+                          Expanded(
+                            child: Text(
+                              state.models[index].name,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTypography.font16black
+                                  .copyWith(fontWeight: FontWeight.w400),
+                            ),
                           ),
                           const Icon(
                             Icons.arrow_forward_ios,

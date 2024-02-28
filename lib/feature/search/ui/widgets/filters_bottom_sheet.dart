@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
-import 'package:smart/feature/create_announcement/ui/select_auto_model_screen.dart';
+import 'package:smart/feature/create_announcement/ui/select_car_model_screen.dart';
 import 'package:smart/feature/create_announcement/ui/select_mark_screen.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
@@ -87,12 +87,17 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
 
   void changeRadius(double value) {}
 
+  List<MarksFilter> filters = [];
+
   String locale() => MyApp.getLocale(context) ?? 'fr';
 
   @override
   Widget build(BuildContext context) {
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
     final localizations = AppLocalizations.of(context)!;
+    if (searchCubit.marksFilter != null) {
+      filters = [searchCubit.marksFilter!];
+    }
 
     final selectCategoryCubit =
         BlocProvider.of<SearchSelectSubcategoryCubit>(context);
@@ -111,10 +116,9 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const SizedBox(
-                  height: 16,
-                ),
+                const SizedBox(height: 16),
                 Center(
                   child: Container(
                     width: 120,
@@ -168,29 +172,30 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                     padding: const EdgeInsets.only(bottom: 16),
                     child: InkWell(
                       onTap: () {
+                        print('SelectCarModelScreen');
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) => const SelectAutoModelScreen(
+                                builder: (_) => const SelectCarModelScreen(
                                       needSelectModel: true,
                                     ))).then((value) {
                           selectCategoryCubit.setAutoFilter(value);
                           setState(() {});
-                          // print(
-                          // 'rebuild with ${selectCategoryCubit.autoFilter != null}');
                         });
                       },
                       child: Row(
                         children: [
                           Text(
-                            'Choisir une marque ',
+                            locale() == 'fr'
+                                ? 'Choisir une marque'
+                                : 'اختر علامة تجارية',
                             style: AppTypography.font16black
                                 .copyWith(fontSize: 18),
                           ),
                         ],
                       ),
                     ),
-                  )
+                  ),
                 ],
                 if (selectCategoryCubit.subcategoryFilters != null &&
                     selectCategoryCubit.subcategoryFilters!.hasMark) ...[
@@ -199,16 +204,24 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                   ),
                   InkWell(
                     onTap: () async {
-                      final MarksFilter filter = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => SelectMarkScreen(
-                                    needSelectModel: true,
-                                    subcategory:
-                                        selectCategoryCubit.subcategoryId!,
-                                  )));
+                      final needSelectModel =
+                          selectCategoryCubit.subcategoryFilters!.hasModel;
+                      final List<MarksFilter>? filter = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => SelectMarkScreen(
+                            needSelectModel: needSelectModel,
+                            subcategory: selectCategoryCubit.subcategoryId!,
+                          ),
+                        ),
+                      );
 
-                      searchCubit.setMarksFilter(filter);
+                      if (filter != null && filter.isNotEmpty) {
+                        setState(() {
+                          filters = filter;
+                        });
+                        searchCubit.setMarksFilter(filter.first);
+                      }
                     },
                     child: Row(
                       children: [
@@ -220,15 +233,27 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                               AppTypography.font16black.copyWith(fontSize: 18),
                         ),
                         const Spacer(),
-                        const Icon(
-                          Icons.arrow_forward_ios_outlined,
-                          size: 16,
-                          color: AppColors.lightGray,
-                        )
+                        filters.isEmpty
+                            ? const Icon(
+                                Icons.arrow_forward_ios_outlined,
+                                size: 16,
+                                color: AppColors.lightGray,
+                              )
+                            : const Icon(
+                                Icons.keyboard_arrow_down_sharp,
+                                color: AppColors.lightGray,
+                              )
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  if (filters.isNotEmpty) ...[
+                    const SizedBox(height: 16),
+                    Text(
+                      '${filters.first.markTitle} ${filters.first.modelTitle}',
+                      style: AppTypography.font18lightGray,
+                    ),
+                  ],
+                  const SizedBox(height: 24),
                 ],
                 Column(
                   mainAxisSize: MainAxisSize.min,

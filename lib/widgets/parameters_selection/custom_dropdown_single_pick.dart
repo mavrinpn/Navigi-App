@@ -38,36 +38,43 @@ class _CustomDropDownSingleCheckBoxState
     final currentLocale = MyApp.getLocale(context);
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 16, 0, 16),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: AnimatedContainer(
-        height: isOpen ? 36.5 * (widget.parameter.variants.length + 1) : 25,
         duration: const Duration(milliseconds: 100),
         child: Column(children: [
-          InkWell(
-            onTap: () {
-              isOpen = !isOpen;
-              setState(() {});
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  currentLocale == 'fr'
-                      ? widget.parameter.frName
-                      : widget.parameter.arName,
-                  style: AppTypography.font16black.copyWith(fontSize: 18),
+          Material(
+            color: Colors.transparent,
+            clipBehavior: Clip.hardEdge,
+            borderRadius: const BorderRadius.all(Radius.circular(12)),
+            child: InkWell(
+              onTap: () {
+                isOpen = !isOpen;
+                setState(() {});
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      currentLocale == 'fr'
+                          ? widget.parameter.frName
+                          : widget.parameter.arName,
+                      style: AppTypography.font16black.copyWith(fontSize: 18),
+                    ),
+                    !isOpen
+                        ? const Icon(
+                            Icons.arrow_forward_ios_outlined,
+                            size: 16,
+                            color: AppColors.lightGray,
+                          )
+                        : const Icon(
+                            Icons.keyboard_arrow_down_sharp,
+                            color: AppColors.lightGray,
+                          )
+                  ],
                 ),
-                !isOpen
-                    ? const Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        size: 16,
-                        color: AppColors.lightGray,
-                      )
-                    : const Icon(
-                        Icons.keyboard_arrow_down_sharp,
-                        color: AppColors.lightGray,
-                      )
-              ],
+              ),
             ),
           ),
           if (isOpen) ...[
@@ -99,7 +106,8 @@ class _CustomDropDownSingleCheckBoxState
               .map((parametrOption) => Row(
                     children: [
                       CustomCheckBox(
-                          isActive: parametrOption.key.toString() == widget.currentKey,
+                          isActive: parametrOption.key.toString() ==
+                              widget.currentKey,
                           onChanged: () {
                             widget.onChange(parametrOption);
                           }),

@@ -103,17 +103,17 @@ class _OptionsScreenState extends State<OptionsScreen> {
                   },
                   suffixIcon: 'DZD',
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
+                const SizedBox(height: 16),
                 SingleChildScrollView(
-                    child: Column(
-                  children: (repository.currentItem != null
-                          ? repository.getParametersList()
-                          : <Parameter>[])
-                      .map((e) => buildParameter(e))
-                      .toList() + [const SizedBox(height: 60,)],
-                ))
+                  child: Column(
+                    children: (repository.currentItem != null
+                                ? repository.getParametersList()
+                                : <Parameter>[])
+                            .map((e) => buildParameter(e))
+                            .toList() +
+                        [const SizedBox(height: 120)],
+                  ),
+                )
               ],
             ),
           ),
@@ -127,7 +127,9 @@ class _OptionsScreenState extends State<OptionsScreen> {
               repository.setInfoFormItem();
               BlocProvider.of<PlacesCubit>(context).initialLoad();
               Navigator.pushNamed(
-                  context, AppRoutesNames.announcementCreatingPlace);
+                context,
+                AppRoutesNames.announcementCreatingPlace,
+              );
             }
           },
           active: buttonActive,
@@ -138,7 +140,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
 
   Widget buildParameter(Parameter parameter) {
     if (parameter is SelectParameter) {
-      return SelectParameterWidget(parameter: parameter,);
+      return SelectParameterWidget(parameter: parameter);
     } else {
       return Padding(
         padding: const EdgeInsets.only(bottom: 16.0),

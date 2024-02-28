@@ -4,12 +4,12 @@ import 'package:smart/feature/create_announcement/data/auto_repository.dart';
 import 'package:smart/feature/create_announcement/data/models/auto_marks.dart';
 import 'package:smart/feature/create_announcement/data/models/auto_model.dart';
 
-part 'auto_models_state.dart';
+part 'car_models_state.dart';
 
-class AutoModelsCubit extends Cubit<AutoModelsState> {
+class CarModelsCubit extends Cubit<CarModelsState> {
   AutoMarksRepository autoMarksRepository;
 
-  AutoModelsCubit(this.autoMarksRepository) : super(AutoModelsInitial());
+  CarModelsCubit(this.autoMarksRepository) : super(CarModelsInitial());
 
   List<Mark> marks = [];
 

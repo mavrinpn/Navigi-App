@@ -99,6 +99,12 @@ class AppTypography {
     fontWeight: FontWeight.w600
   );
 
+  static final font18lightGray = _font.copyWith(
+    color: AppColors.lightGray,
+    fontSize: 18,
+    fontWeight: FontWeight.w400
+  );
+
   static final font16boldRed = _font.copyWith(
     color: AppColors.red,
     fontSize: 16,

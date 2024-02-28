@@ -12,11 +12,7 @@ class ParametersParser {
   void initialize(bool useMinMax) {
     final List decode = encodedString;
 
-    // print(decode.length);
-
     for (var json in decode) {
-      // print(json['type']);
-
       if (json['type'] == 'option') parseOptionParameter(json);
       if (json['type'] == 'number') {
         if (useMinMax) {
@@ -26,8 +22,6 @@ class ParametersParser {
         }
       }
     }
-
-    // print('decoded parameters length: ${decodedParameters.length}');
   }
 
   void parseOptionParameter(Map json) {

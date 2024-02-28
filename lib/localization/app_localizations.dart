@@ -1048,6 +1048,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Place application settings'**
   String get placeApplicationSettings;
+
+  /// No description provided for @mark.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark'**
+  String get mark;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

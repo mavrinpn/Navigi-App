@@ -25,20 +25,19 @@ class SubCategoryScreen extends StatefulWidget {
 class _SubCategoryScreenState extends State<SubCategoryScreen> {
   Future<MarksFilter?> getMarksFilters(
       SubcategoryFilters parameters, String subcategoryId) async {
-    final MarksFilter? marksFilter;
-
     if (parameters.hasMark) {
-      marksFilter = await Navigator.push(
+      final List<MarksFilter>? marksFilters = await Navigator.push(
           context,
           MaterialPageRoute(
               builder: (_) => SelectMarkScreen(
                     subcategory: subcategoryId,
                     needSelectModel: parameters.hasModel,
                   )));
+
+      return marksFilters?.firstOrNull;
     } else {
-      marksFilter = null;
+      return null;
     }
-    return marksFilter;
   }
 
   void setParametersToManagerAndPushNext(

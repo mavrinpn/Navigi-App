@@ -12,8 +12,14 @@ class MarkModel {
     if (encodedParameters == null) {
       parameters = null;
     } else {
-      parameters =
-          ParametersParser(jsonDecode(encodedParameters)).decodedParameters;
+      try {
+        //TODO remove replaceAll
+        final result =
+            jsonDecode(encodedParameters.replaceAll("'", '"')) as List;
+        parameters = ParametersParser(result).decodedParameters;
+      } catch (err) {
+        parameters = null;
+      }
     }
   }
 }
