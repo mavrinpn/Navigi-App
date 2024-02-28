@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
+import 'package:smart/managers/search_manager.dart';
 import 'package:smart/utils/utils.dart';
 
 class SearchItemsWidget extends StatelessWidget {
-  const SearchItemsWidget({super.key, required this.state, required this.setSearch});
+  const SearchItemsWidget(
+      {super.key, required this.state, required this.setSearch});
 
-  final Function(String) setSearch;
+  final Function(String, SearchManager?) setSearch;
   final SearchItemsSuccess state;
 
   @override
@@ -17,7 +19,7 @@ class SearchItemsWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(15),
                 child: InkWell(
                   onTap: () {
-                    setSearch(e.name);
+                    setSearch(e.name, null);
                   },
                   child: Text(
                     e.name,

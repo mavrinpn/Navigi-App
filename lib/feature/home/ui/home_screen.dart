@@ -65,8 +65,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     asset: 'Assets/icons/search.svg',
                     isSelected: _selectedTab == 0,
                   ),
-                  tooltip: MyApp.getLocale(context) == 'fr' ? 'Page daccueil' : 'الصفحة الرئيسية',
-                  label:  MyApp.getLocale(context) == 'fr' ? 'Page daccueil' : 'الصفحة الرئيسية'),
+                  tooltip: MyApp.getLocale(context) == 'fr'
+                      ? 'Page daccueil'
+                      : 'الصفحة الرئيسية',
+                  label: MyApp.getLocale(context) == 'fr'
+                      ? 'Page daccueil'
+                      : 'الصفحة الرئيسية'),
               BottomNavigationBarItem(
                 icon: MessengerIcon(
                   isSelected: _selectedTab == 1,
@@ -79,8 +83,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   asset: 'Assets/icons/like.svg',
                   isSelected: _selectedTab == 2,
                 ),
-                tooltip:  MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المتعة',
-                label:  MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المتعة',
+                tooltip:
+                    MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المتعة',
+                label:
+                    MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المتعة',
               ),
               BottomNavigationBarItem(
                 icon: NavigatorBarItem(
@@ -117,8 +123,10 @@ class NavigatorBarItem extends StatelessWidget {
       asset,
       height: 24,
       width: 24,
-      // ignore: deprecated_member_use
-      color: isSelected ? AppColors.red : AppColors.lightGray,
+      colorFilter: ColorFilter.mode(
+        isSelected ? AppColors.red : AppColors.lightGray,
+        BlendMode.srcIn,
+      ),
     );
   }
 }
@@ -133,47 +141,50 @@ class MessengerIcon extends StatelessWidget {
     final repository = RepositoryProvider.of<MessengerRepository>(context);
 
     return StreamBuilder(
-        stream: repository.chatsStream.stream,
-        builder: (context, snapshot) {
-          int count = repository.notificationsAmount();
-          double size = 24;
+      stream: repository.chatsStream.stream,
+      builder: (context, snapshot) {
+        int count = repository.notificationsAmount();
+        double size = 24;
 
-          return SizedBox(
-            width: size + 3,
-            height: size,
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: SvgPicture.asset(
-                    'Assets/icons/email.svg',
-                    height: 24,
-                    width: 24,
-                    // ignore: deprecated_member_use
-                    color: isSelected ? AppColors.red : AppColors.lightGray,
+        return SizedBox(
+          width: size + 3,
+          height: size,
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: SvgPicture.asset(
+                  'Assets/icons/email.svg',
+                  height: 24,
+                  width: 24,
+                  colorFilter: ColorFilter.mode(
+                    isSelected ? AppColors.red : AppColors.lightGray,
+                    BlendMode.srcIn,
                   ),
                 ),
-                if (count > 0) ...[
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: CircleAvatar(
-                      backgroundColor: const Color(0xFFFFB039),
-                      radius: 6,
-                      child: Text(
-                        count.toString(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 8,
-                          fontFamily: 'SF Pro Display',
-                          fontWeight: FontWeight.w600,
-                        ),
+              ),
+              if (count > 0) ...[
+                Align(
+                  alignment: Alignment.topRight,
+                  child: CircleAvatar(
+                    backgroundColor: const Color(0xFFFFB039),
+                    radius: 6,
+                    child: Text(
+                      count.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 8,
+                        fontFamily: 'SF Pro Display',
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  )
-                ]
-              ],
-            ),
-          );
-        });
+                  ),
+                )
+              ]
+            ],
+          ),
+        );
+      },
+    );
   }
 }

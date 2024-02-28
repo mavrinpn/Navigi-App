@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:smart/models/item/subcategoryFilters.dart';
+import 'package:smart/models/item/subcategory_filters.dart';
 
 import '../../../../managers/creating_announcement_manager.dart';
 import '../../../../managers/item_manager.dart';

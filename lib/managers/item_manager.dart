@@ -1,4 +1,4 @@
-import 'package:smart/models/item/subcategoryFilters.dart';
+import 'package:smart/models/item/subcategory_filters.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/parameters_parser.dart';
 

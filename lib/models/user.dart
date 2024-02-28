@@ -11,7 +11,8 @@ class UserData {
       this.score = 4.9,
       this.verified = true,
       this.imageUrl =
-          'http://admin.navigidz.online/v1/storage/buckets/64abdd27c9326a1cdfde/files/64abe12a025c0060fe51/view?project=64fb37419dc681fa6860',
+          'http://143.244.206.96//v1/storage/buckets/64abdd27c9326a1cdfde/files/64abe12a025c0060fe51/view?project=64fb37419dc681fa6860',
+          //admin.navigidz.online
       String createdAt = '2022-10-01',
       this.phone = '12345678910'})
       : _atService = createdAt;
@@ -21,7 +22,8 @@ class UserData {
         score = 4.9,
         verified = json['verified'],
         imageUrl = json['image_url'] ??
-            'http://admin.navigidz.online/v1/storage/buckets/64abdd27c9326a1cdfde/files/64abe12a025c0060fe51/view?project=64fb37419dc681fa6860',
+            'http://143.244.206.96/v1/storage/buckets/64abdd27c9326a1cdfde/files/64abe12a025c0060fe51/view?project=64fb37419dc681fa6860',
+            //admin.navigidz.online
         _atService = json['\$createdAt'],
         phone = json['phone'];
 

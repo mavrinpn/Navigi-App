@@ -18,22 +18,22 @@ class UnderLineTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool error;
 
-  const UnderLineTextField(
-      {Key? key,
-      required this.hintText,
-      required this.controller,
-      this.maxLength,
-      this.width = 290,
-      this.height = 50,
-      this.obscureText = false,
-      this.keyBoardType = TextInputType.phone,
-      required this.onChange,
-      this.onEditingComplete,
-      this.onTapOutside,
-      this.validator,
-      required this.suffixIcon,
-      this.error = false})
-      : super(key: key);
+  const UnderLineTextField({
+    Key? key,
+    required this.hintText,
+    required this.controller,
+    this.maxLength,
+    this.width = 290,
+    this.height = 50,
+    this.obscureText = false,
+    this.keyBoardType = TextInputType.phone,
+    required this.onChange,
+    this.onEditingComplete,
+    this.onTapOutside,
+    this.validator,
+    required this.suffixIcon,
+    this.error = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +42,7 @@ class UnderLineTextField extends StatelessWidget {
       height: height,
       alignment: Alignment.bottomCenter,
       child: TextFormField(
+        textInputAction: TextInputAction.done,
         maxLength: maxLength,
         validator: validator,
         onTap: () => controller.selection = TextSelection(

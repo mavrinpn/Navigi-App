@@ -11,7 +11,7 @@ const String likesCollection = 'likes';
 const String messagesCollection = 'messages';
 
 /// [rooms] - именно чаты
-const String roomsCollection = 'rooms';
+const String roomsCollection = 'rooms2';
 
 const String getAnnouncementFunctionID = '64b2f9bddb98c4afed2d';
 const String responseResult = 'result';

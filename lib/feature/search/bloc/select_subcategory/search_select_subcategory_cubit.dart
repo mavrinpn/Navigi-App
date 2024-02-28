@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:smart/feature/create_announcement/data/models/auto_filter.dart';
 import 'package:smart/managers/categories_manager.dart';
-import 'package:smart/models/item/subcategoryFilters.dart';
+import 'package:smart/models/item/subcategory_filters.dart';
 import 'package:smart/models/models.dart';
 import 'package:smart/services/parameters_parser.dart';
 
@@ -19,7 +19,7 @@ class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
   List<Parameter> _parameters = [];
 
   String? _lastCategory;
-  String? _lastSubcategory;
+  // String? _lastSubcategory;
 
   SubcategoryFilters? subcategoryFilters;
   String? subcategoryId;
@@ -66,7 +66,7 @@ class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
       return emit(SubcategoriesGotState());
     }
     emit(SubcategoriesLoadingState());
-    _lastSubcategory = subcategoryId;
+    // _lastSubcategory = subcategoryId;
     _lastCategory = categoryId;
 
     needAddAutoSelectButton = false;
@@ -92,7 +92,7 @@ class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
     subcategoryFilters = SubcategoryFilters(_parameters,
         hasMark: res['hasMark'], hasModel: res['hasModel']);
     subcategoryId = selectedSubcategoryId;
-    print('got parameters: $_parameters');
+    // print('got parameters: $_parameters');
     emit(FiltersGotState(_parameters));
     return parameters;
   }

@@ -53,7 +53,7 @@ class SpecifyPlaceScreenState extends State<SpecifyPlaceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Specify place'),), // TODO localize
+      appBar: AppBar(title: const Text('Specify place'),), // TODO localize
       body: loading
           ? const Center(
         child: Text('loading'),

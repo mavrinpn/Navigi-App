@@ -5,6 +5,7 @@ import 'package:smart/feature/main/bloc/popularQueries/popular_queries_cubit.dar
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
 import 'package:smart/models/subcategory.dart';
 import 'package:smart/utils/animations.dart';
@@ -42,7 +43,16 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> {
       RepositoryProvider.of<SearchManager>(context).setSearch(false);
       BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
 
-      Navigator.pushNamed(context, AppRoutesNames.search);
+      final String currentLocale = MyApp.getLocale(context) ?? 'fr';
+
+      Navigator.pushNamed(
+        context,
+        AppRoutesNames.search,
+        arguments: {
+          'showBackButton': false,
+          'title': currentLocale == 'fr' ? e.nameFr : e.nameAr
+        },
+      );
     }
   }
 

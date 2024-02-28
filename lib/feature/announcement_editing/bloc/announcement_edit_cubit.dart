@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:meta/meta.dart';
 import 'package:smart/feature/announcement_editing/data/announcement_editing_repository.dart';
 import 'package:smart/feature/announcement_editing/data/models/edit_data.dart';
 import 'package:smart/feature/announcement_editing/data/models/image_data.dart';

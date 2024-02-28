@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:smart/main.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/services/parameters_parser.dart';

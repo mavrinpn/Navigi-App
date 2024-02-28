@@ -9,20 +9,16 @@ class PopularQueryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6),
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(
-                horizontal: 14, vertical: 4),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: AppColors.backgroundLightGray,
-            ),
-            child: Text(name)),
-      ),
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: AppColors.backgroundLightGray,
+          ),
+          child: Text(name)),
     );
   }
 }

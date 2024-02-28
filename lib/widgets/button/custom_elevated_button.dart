@@ -7,13 +7,14 @@ import 'package:smart/utils/fonts.dart';
 import '../../utils/colors.dart';
 
 class CustomElevatedButton extends StatefulWidget {
-  const CustomElevatedButton(
-      {super.key,
-      required this.icon,
-      required this.title,
-      required this.onPress,
-      required this.height,
-      required this.width});
+  const CustomElevatedButton({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.onPress,
+    required this.height,
+    required this.width,
+  });
 
   final double width;
   final double height;
@@ -56,7 +57,9 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                 height: 24,
                 color: AppColors.black,
               ),
-              const SizedBox(width: 10,),
+              const SizedBox(
+                width: 10,
+              ),
               Text(
                 widget.title,
                 style: AppTypography.font14black

@@ -10,7 +10,7 @@ import 'package:smart/utils/functions.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
 class ChatContainer extends StatefulWidget {
-  ChatContainer(
+  const ChatContainer(
       {super.key,
       required this.message,
       required this.chatImageUrl,

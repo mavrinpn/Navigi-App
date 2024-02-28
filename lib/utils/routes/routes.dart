@@ -9,7 +9,6 @@ import 'package:smart/feature/home/ui/home_screen.dart';
 import 'package:smart/feature/main/ui/main_screen.dart';
 import 'package:smart/feature/messenger/ui/chat_screen.dart';
 import 'package:smart/feature/profile/ui/edit_profile_screen.dart';
-import 'package:smart/feature/search/ui/search_screen.dart';
 import 'package:smart/feature/search/ui/select_subcategory.dart';
 import 'package:smart/feature/settings/ui/settings_screen.dart';
 import 'package:smart/main.dart';
@@ -40,7 +39,7 @@ final appRoutes = {
   AppRoutesNames.announcement: (context) => const AnnouncementScreen(),
   AppRoutesNames.editProfile: (context) => const EditProfileScreen(),
   AppRoutesNames.settings: (context) => const SettingsScreen(),
-  AppRoutesNames.search: (context) => const SearchScreen(),
+  // AppRoutesNames.search: (context) => const SearchScreen(),
   AppRoutesNames.announcementCreator: (context) => const CreatorProfileScreen(),
   AppRoutesNames.chat: (context) => const ChatScreen(),
   AppRoutesNames.editingAnnouncement: (context) => const EditingAnnouncement(),

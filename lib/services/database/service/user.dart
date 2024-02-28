@@ -47,11 +47,12 @@ class UserService {
     print(editData);
     print(uid);
 
-    final res = await _databases.updateDocument(
-        databaseId: mainDatabase,
-        collectionId: usersCollection,
-        documentId: uid,
-        data: editData);
+    // final res = await _databases.updateDocument(
+    //   databaseId: mainDatabase,
+    //   collectionId: usersCollection,
+    //   documentId: uid,
+    //   data: editData,
+    // );
   }
 
   Future<String> getJwt() => _account.createJWT().then((value) => value.jwt);

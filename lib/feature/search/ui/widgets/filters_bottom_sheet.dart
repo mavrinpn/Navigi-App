@@ -22,7 +22,10 @@ import 'package:smart/widgets/textField/price_widget.dart';
 import '../../../../localization/app_localizations.dart';
 
 class FiltersBottomSheet extends StatefulWidget {
-  const FiltersBottomSheet({super.key, this.needOpenNewScreen = false});
+  const FiltersBottomSheet({
+    super.key,
+    this.needOpenNewScreen = false,
+  });
 
   final bool needOpenNewScreen;
 
@@ -199,9 +202,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
+                const SizedBox(height: 16),
               ],
               Column(
                 mainAxisSize: MainAxisSize.min,

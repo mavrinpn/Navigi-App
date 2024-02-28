@@ -18,7 +18,7 @@ class AnnouncementImage extends StatelessWidget {
         future: announcement.futureBytes,
         builder: (context, snapshot) {
           return ClipRRect(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(6),
             child: snapshot.hasData
                 ? Image.memory(
                     announcement.bytes,

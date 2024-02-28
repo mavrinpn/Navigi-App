@@ -18,7 +18,16 @@ import '../../main/bloc/search/search_announcements_cubit.dart';
 import '../bloc/search_announcement_cubit.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+  const SearchScreen({
+    super.key,
+    required this.showBackButton,
+    required this.title,
+    this.queryString,
+  });
+
+  final bool showBackButton;
+  final String title;
+  final String? queryString;
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -27,6 +36,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final searchController = TextEditingController();
   final _controller = ScrollController();
+  late SearchManager searchManager;
 
   @override
   void initState() {
@@ -44,8 +54,26 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    searchManager = RepositoryProvider.of<SearchManager>(context);
+    if (widget.queryString != null) {
+      setSearch(widget.queryString!, searchManager);
+    }
+
+    super.didChangeDependencies();
+  }
+
   void setSearchText(String text) {
     searchController.text = text;
+  }
+
+  void setSearch(String query, SearchManager? searchManager) {
+    BlocProvider.of<SearchAnnouncementCubit>(context)
+        .searchAnnounces(query, true);
+    searchManager?.setSearch(false);
+    setSearchText(query);
+    setState(() {});
   }
 
   @override
@@ -53,26 +81,16 @@ class _SearchScreenState extends State<SearchScreen> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final localizations = AppLocalizations.of(context)!;
-
-    final searchManager = RepositoryProvider.of<SearchManager>(context);
     final announcementRepository =
         RepositoryProvider.of<AnnouncementManager>(context);
+
+    searchManager = RepositoryProvider.of<SearchManager>(context);
 
     searchController.selection = TextSelection(
         baseOffset: searchController.text.length,
         extentOffset: searchController.text.length);
 
-    void setSearch(String query) {
-      BlocProvider.of<SearchAnnouncementCubit>(context)
-          .searchAnnounces(query, true);
-      searchManager.setSearch(false);
-      setSearchText(query);
-      setState(() {});
-    }
-
     Widget announcementGridBuilder(BuildContext context, int index) {
-      print('built announcement $index');
-
       return AnnouncementContainer(
           announcement: announcementRepository.searchAnnouncements[index]);
     }
@@ -88,23 +106,36 @@ class _SearchScreenState extends State<SearchScreen> {
       backgroundColor: AppColors.mainBackground,
       automaticallyImplyLeading: false,
       elevation: 0,
-      flexibleSpace: SearchAppBar(
-        onSubmitted: (String? a) {
-          searchManager.setSearch(false);
-          searchManager.saveInHistory(a!);
-          setState(() {});
-          BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
-              a, true,
-              parameters:
-                  context.read<SearchSelectSubcategoryCubit>().parameters);
-        },
-        onChange: (String? a) {
-          searchManager.setSearch(true);
-          setState(() {});
-          BlocProvider.of<SearchItemsCubit>(context).search(a ?? '');
-          BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
-        },
-        searchController: searchController,
+      titleSpacing: 0,
+      clipBehavior: Clip.none,
+      bottom: !widget.showBackButton ? _buildCategoryAppBarBottom() : null,
+      title: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: SearchAppBar(
+              showBackButton: widget.showBackButton,
+              onSubmitted: (String? a) {
+                searchManager.setSearch(false);
+                searchManager.saveInHistory(a!);
+                setState(() {});
+                BlocProvider.of<SearchAnnouncementCubit>(context)
+                    .searchAnnounces(a, true,
+                        parameters: context
+                            .read<SearchSelectSubcategoryCubit>()
+                            .parameters);
+              },
+              onChange: (String? a) {
+                searchManager.setSearch(true);
+                setState(() {});
+                BlocProvider.of<SearchItemsCubit>(context).search(a ?? '');
+                BlocProvider.of<PopularQueriesCubit>(context)
+                    .loadPopularQueries();
+              },
+              searchController: searchController,
+            ),
+          ),
+        ],
       ),
     );
 
@@ -126,16 +157,14 @@ class _SearchScreenState extends State<SearchScreen> {
                   .copyWith(fontWeight: FontWeight.w600),
             ),
           ),
-          const SizedBox(
-            height: 16,
+          const SizedBox(height: 16),
+          PopularQueriesWidget(
+            onSearch: (e) {
+              setSearch(e, searchManager);
+              searchManager.saveInHistory(e);
+            },
           ),
-          PopularQueriesWidget(onSearch: (e) {
-            setSearch(e);
-            searchManager.saveInHistory(e);
-          }),
-          const SizedBox(
-            height: 32,
-          ),
+          const SizedBox(height: 32),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -151,39 +180,30 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ],
           ),
-          const SizedBox(
-            height: 7,
-          ),
+          const SizedBox(height: 7),
           HistoryWidget(onDelete: (e) {
             searchManager.deleteQueryByName(e);
             setState(() {});
           }, onSearch: (e) {
-            setSearch(e.toString());
+            setSearch(e.toString(), searchManager);
           })
         ],
       );
     }
 
     Widget gridBuild() {
-      print('grid building, length: ${announcementRepository.searchAnnouncements.length}');
-
       return SliverPadding(
         padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
         sliver: SliverGrid(
           gridDelegate: gridDelegate,
-          delegate:  SliverChildBuilderDelegate(announcementGridBuilder,
+          delegate: SliverChildBuilderDelegate(announcementGridBuilder,
               childCount: announcementRepository.searchAnnouncements.length),
         ),
       );
     }
 
     Widget announcementsBuilder(context, state) {
-      print(
-          'rebuild grid called with new length ${announcementRepository.searchAnnouncements.length}');
-
-      if (announcementRepository.searchAnnouncements.isNotEmpty) {
-
-      }
+      if (announcementRepository.searchAnnouncements.isNotEmpty) {}
 
       if (state is SearchAnnouncementsFailState ||
           announcementRepository.searchAnnouncements.isEmpty) {
@@ -207,40 +227,89 @@ class _SearchScreenState extends State<SearchScreen> {
       );
     }
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.mainBackground,
-        appBar: searchAppBar,
-        body: Stack(children: [
-          BlocBuilder<SearchAnnouncementCubit, SearchAnnouncementState>(
-            builder: (context, state) {
-              return BlocBuilder<SearchAnnouncementCubit,
-                  SearchAnnouncementState>(
-                builder: announcementsBuilder,
-              );
-            },
-          ),
-          SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  width: width,
-                  curve: Curves.fastOutSlowIn,
-                  height: searchManager.isSearch ? height : 0,
-                  color: Colors.white,
-                  padding: const EdgeInsets.all(15),
-                  child: SingleChildScrollView(
-                    child: BlocBuilder<SearchItemsCubit, SearchItemsState>(
-                      builder: searchScreenBuilder,
+    return Container(
+      color: AppColors.mainBackground,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: AppColors.mainBackground,
+          appBar: searchAppBar,
+          body: Stack(
+            children: [
+              BlocBuilder<SearchAnnouncementCubit, SearchAnnouncementState>(
+                builder: (context, state) {
+                  return BlocBuilder<SearchAnnouncementCubit,
+                      SearchAnnouncementState>(
+                    builder: announcementsBuilder,
+                  );
+                },
+              ),
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      width: width,
+                      curve: Curves.fastOutSlowIn,
+                      height: searchManager.isSearch ? height : 0,
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(15),
+                      child: SingleChildScrollView(
+                        child: BlocBuilder<SearchItemsCubit, SearchItemsState>(
+                          builder: searchScreenBuilder,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ]),
+        ),
+      ),
+    );
+  }
+
+  _buildCategoryAppBarBottom() {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(96),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(
+                  Icons.arrow_back_sharp,
+                  color: AppColors.black,
+                ),
+              ),
+              Text(
+                widget.title,
+                style: const TextStyle(
+                  fontFamily: 'SF Pro Display',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          Wrap(
+            spacing: 6,
+            children: [
+              FilterChip(
+                label: const Text('Prix'),
+                onSelected: (value) {},
+              ),
+              FilterChip(
+                label: const Text('Telephones'),
+                onSelected: (value) {},
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

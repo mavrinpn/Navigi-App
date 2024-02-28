@@ -46,7 +46,7 @@ class Announcement {
         placeData = CityDistrict.fromJson(json['place']) {
     var l = [];
     for (String i in images) {
-      i.replaceAll('89.253.237.166', 'admin.navigidz.online');
+      i.replaceAll('89.253.237.166', '143.244.206.96'); //admin.navigidz.online
       l.add(i);
     }
     images = l;

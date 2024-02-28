@@ -5,12 +5,13 @@ import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/images/network_image.dart';
 
 class CategoryWidget extends StatefulWidget {
-  const CategoryWidget(
-      {super.key,
-      required this.category,
-      required this.height,
-      required this.width,
-      required this.onTap});
+  const CategoryWidget({
+    super.key,
+    required this.category,
+    required this.height,
+    required this.width,
+    required this.onTap,
+  });
 
   final double width;
   final double height;
@@ -37,7 +38,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
             CustomNetworkImage(
                 width: 108, height: 100, url: widget.category.imageUrl!),
             const SizedBox(
-              height: 12,
+              height: 10,
             ),
             Text(
               widget.category

@@ -87,8 +87,10 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                 'Assets/icons/menu_dots_vertical.svg',
                 width: 24,
                 height: 24,
-                // ignore: deprecated_member_use
-                color: AppColors.black,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.black,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
           ],

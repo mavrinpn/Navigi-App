@@ -1,9 +1,8 @@
-// ignore_for_file: avoid_unnecessary_containers
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart/feature/main/ui/sections/catrgories_section.dart';
+import 'package:smart/feature/main/ui/sections/categories_section.dart';
 import 'package:smart/feature/main/ui/widgets/appbar_with_search_field.dart';
+import 'package:smart/feature/search/ui/sections/popular_queries.dart';
 import 'package:smart/feature/search/ui/widgets/filters_bottom_sheet.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/colors.dart';
@@ -34,6 +33,8 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
 
+    BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
+
     _controller.addListener(() async {
       if (_controller.position.atEdge) {
         double maxScroll = _controller.position.maxScrollExtent;
@@ -61,8 +62,8 @@ class _MainScreenState extends State<MainScreen> {
     Widget getAnnouncementsGrid() {
       return SliverGrid(
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 15,
+            crossAxisSpacing: 25,
+            mainAxisSpacing: 14,
             maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
             childAspectRatio: 160 / 272),
         delegate: SliverChildBuilderDelegate(
@@ -72,14 +73,18 @@ class _MainScreenState extends State<MainScreen> {
       );
     }
 
-    void openSearchScreen() {
+    void openSearchScreen(String? query) {
       context
           .read<SearchAnnouncementCubit>()
           .setSearchMode(SearchModeEnum.simple);
       BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
       BlocProvider.of<SearchAnnouncementCubit>(context)
           .searchAnnounces('', true);
-      Navigator.pushNamed(context, AppRoutesNames.search);
+      Navigator.pushNamed(
+        context,
+        AppRoutesNames.search,
+        arguments: {'query': query, 'backButton': false},
+      );
     }
 
     void openFilters() {
@@ -111,7 +116,7 @@ class _MainScreenState extends State<MainScreen> {
         surfaceTintColor: Colors.transparent,
         flexibleSpace: MainAppBar(
           isSearch: isSearch,
-          openSearchScreen: openSearchScreen,
+          openSearchScreen: () => openSearchScreen(null),
           openFilters: openFilters,
           cancel: () {
             FocusScope.of(context).unfocus();
@@ -130,11 +135,19 @@ class _MainScreenState extends State<MainScreen> {
               controller: _controller,
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: PopularQueriesWidget(
+                      onSearch: (e) {
+                        openSearchScreen(e);
+                      },
+                    ),
+                  ),
+                ),
                 const CategoriesSection(),
                 const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 10,
-                  ),
+                  child: SizedBox(height: 8),
                 ),
                 SliverToBoxAdapter(
                   child: AdvertisementContainer(
@@ -146,9 +159,7 @@ class _MainScreenState extends State<MainScreen> {
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      const SizedBox(
-                        height: 11,
-                      ),
+                      const SizedBox(height: 8),
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: Row(

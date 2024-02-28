@@ -38,9 +38,7 @@ class AnnouncementScreen extends StatefulWidget {
 
 class _AnnouncementScreenState extends State<AnnouncementScreen> {
   void incViewsIfNeed(AnnouncementSuccessState state) {
-    final userId = RepositoryProvider
-        .of<AuthRepository>(context)
-        .userId;
+    final userId = RepositoryProvider.of<AuthRepository>(context).userId;
     if (userId != state.data.creatorData.uid) {
       RepositoryProvider.of<AnnouncementManager>(context)
           .incTotalViews(state.data.id);
@@ -48,10 +46,13 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
   }
 
   void write(Announcement data) {
-    final userId = RepositoryProvider
-        .of<AuthRepository>(context)
-        .userId;
-    if (data.creatorData.uid == userId) return;
+    final userId = RepositoryProvider.of<AuthRepository>(context).userId;
+    if (data.creatorData.uid == userId) {
+      
+      print('Cette annonce est votre');
+      return;
+    }
+
     RepositoryProvider.of<MessengerRepository>(context)
         .selectChat(announcement: data);
     Navigator.pushNamed(context, AppRoutesNames.chat);
@@ -60,12 +61,9 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
   @override
   Widget build(BuildContext context) {
     PageController pageController =
-    PageController(viewportFraction: 0.9, initialPage: activePage);
+        PageController(viewportFraction: 0.9, initialPage: activePage);
 
-    final width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final width = MediaQuery.of(context).size.width;
     final String currentLocale = MyApp.getLocale(context) ?? 'fr';
 
     return BlocBuilder<AnnouncementCubit, AnnouncementState>(
@@ -94,8 +92,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     GestureDetector(
                       onTap: () {
                         if (state.data.creatorData.uid ==
-                            RepositoryProvider
-                                .of<AuthRepository>(context)
+                            RepositoryProvider.of<AuthRepository>(context)
                                 .userId) {
                           showModalBottomSheet(
                               context: context,
@@ -218,8 +215,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) =>
-                                      Aboba(
+                                  builder: (_) => Aboba(
                                         placeData: state.data.placeData,
                                       )));
                         },
@@ -229,10 +225,10 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             SvgPicture.asset('Assets/icons/point.svg'),
                             RichText(
                                 text: TextSpan(children: [
-                                  TextSpan(
-                                      text: ' ${state.data.placeData.name}',
-                                      style: AppTypography.font14black),
-                                ]))
+                              TextSpan(
+                                  text: ' ${state.data.placeData.name}',
+                                  style: AppTypography.font14black),
+                            ]))
                           ],
                         ),
                       ),
@@ -256,10 +252,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         CustomTextButton.withIcon(
                           padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                           disableColor: AppColors.red,
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width - 62,
+                          width: MediaQuery.of(context).size.width - 62,
                           callback: () => write(state.data),
                           text: AppLocalizations.of(context)!.toWrite,
                           styleText: AppTypography.font14white,
@@ -309,11 +302,10 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       height: 10,
                     ),
                     ...state.data.staticParameters.parameters
-                        .map((e) =>
-                        ItemParameterWidget(
+                        .map((e) => ItemParameterWidget(
                             name: currentLocale == 'fr' ? e.nameFr : e.nameAr,
                             currentValue:
-                            currentLocale == 'fr' ? e.valueFr : e.valueAr))
+                                currentLocale == 'fr' ? e.valueFr : e.valueAr))
                         .toList(),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -330,10 +322,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       ),
                     ),
                     SizedBox(
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width - 30,
+                      width: MediaQuery.of(context).size.width - 30,
                       child: Text(
                         state.data.description,
                         style: AppTypography.font14black.copyWith(height: 2),

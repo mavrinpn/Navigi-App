@@ -6,12 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
+import 'package:smart/feature/search/ui/search_screen.dart';
 import 'package:smart/firebase_options.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/providers.dart';
 import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/services.dart';
 import 'package:smart/utils/colors.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/utils/routes/routes.dart';
 import 'package:smart/widgets/splash.dart';
 
@@ -100,6 +102,29 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         fontFamily: GoogleFonts.nunito().fontFamily,
       ),
       routes: appRoutes,
+      onGenerateRoute: (settings) {
+        if (settings.name == AppRoutesNames.search) {
+          final arguments = settings.arguments as Map<String, dynamic>;
+          final query = arguments['query'] as String?;
+          final title = arguments['title'] as String?;
+          final showBackButton = arguments['showBackButton'] as bool?;
+
+          return MaterialPageRoute(
+            builder: (context) {
+              return SearchScreen(
+                showBackButton: showBackButton ?? true,
+                title: title ?? '',
+                queryString: query,
+              );
+            },
+          );
+        }
+        return MaterialPageRoute(
+          builder: (context) {
+            return const Text('Page not found');
+          },
+        );
+      },
       color: const Color(0xff292B57),
     );
   }

@@ -5,10 +5,11 @@ import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/textField/under_line_text_field.dart';
 
 class PriceWidget extends StatelessWidget {
-  const PriceWidget(
-      {super.key,
-      required this.maxPriseController,
-      required this.minPriseController});
+  const PriceWidget({
+    super.key,
+    required this.maxPriseController,
+    required this.minPriseController,
+  });
 
   final TextEditingController minPriseController;
   final TextEditingController maxPriseController;
@@ -41,7 +42,8 @@ class PriceWidget extends StatelessWidget {
                 child: UnderLineTextField(
                   width: MediaQuery.of(context).size.width * 0.4,
                   hintText: '',
-                  keyBoardType: TextInputType.number,
+                  keyBoardType: const TextInputType.numberWithOptions(
+                      signed: true, decimal: true),
                   suffixIcon: 'DZD',
                   controller: minPriseController,
                   onChange: (String value) {},

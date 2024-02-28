@@ -5,7 +5,7 @@ import 'package:smart/feature/create_announcement/data/models/marks_filter.dart'
 import 'package:smart/feature/create_announcement/ui/select_mark_screen.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/managers/creating_announcement_manager.dart';
-import 'package:smart/models/item/subcategoryFilters.dart';
+import 'package:smart/models/item/subcategory_filters.dart';
 import 'package:smart/models/subcategory.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/routes/route_names.dart';
