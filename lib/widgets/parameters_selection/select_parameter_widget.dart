@@ -18,7 +18,7 @@ class _SelectParameterWidgetState extends State<SelectParameterWidget> {
         widget.parameter.setVariant(value!);
         setState(() {});
       },
-      currentVariable: widget.parameter.currentValue,
+      currentKey: widget.parameter.currentValue.key,
     );
   }
 }

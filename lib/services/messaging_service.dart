@@ -23,22 +23,22 @@ class MessagingService {
   }
 
   Future _onForegroundMessage(RemoteMessage message) async {
-    print('got message in foreground');
-    print('data: ${message.data}');
+    // print('got message in foreground');
+    // print('data: ${message.data}');
 
     if (message.notification != null) {
-      print('message notification: ${message.notification}');
+      // print('message notification: ${message.notification}');
     }
   }
 
   static Future onBackgroundMessage(RemoteMessage message) async {
     await Firebase.initializeApp();
 
-    print('got message in background');
-    print('data: ${message.data}');
+    // print('got message in background');
+    // print('data: ${message.data}');
 
     if (message.notification != null) {
-      print('message notification: ${message.notification}');
+      // print('message notification: ${message.notification}');
     }
   }
 

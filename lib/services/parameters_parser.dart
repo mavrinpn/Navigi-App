@@ -12,10 +12,10 @@ class ParametersParser {
   void initialize(bool useMinMax) {
     final List decode = encodedString;
 
-    print(decode.length);
+    // print(decode.length);
 
     for (var json in decode) {
-      print(json['type']);
+      // print(json['type']);
 
       if (json['type'] == 'option') parseOptionParameter(json);
       if (json['type'] == 'number') {
@@ -27,7 +27,7 @@ class ParametersParser {
       }
     }
 
-    print('decoded parameters length: ${decodedParameters.length}');
+    // print('decoded parameters length: ${decodedParameters.length}');
   }
 
   void parseOptionParameter(Map json) {
@@ -43,10 +43,10 @@ class ParametersParser {
         arName: json['nameAr'],
         frName: json['nameFr']);
 
-    print('fr: ${parameter.frName} ar: ${parameter.arName}');
+    // print('fr: ${parameter.frName} ar: ${parameter.arName}');
 
     decodedParameters.add(parameter);
-    print('decoded parameters length: ${decodedParameters.length}');
+    // print('decoded parameters length: ${decodedParameters.length}');
   }
 
   void parseInputParameter(Map json) {
@@ -69,7 +69,11 @@ class ParameterOption {
   final String nameAr;
   final String nameFr;
 
-  ParameterOption(this.key, {required this.nameAr, required this.nameFr});
+  ParameterOption(
+    this.key, {
+    required this.nameAr,
+    required this.nameFr,
+  });
 
   ParameterOption.fromJson(Map<String, dynamic> json)
       : key = json['id'],
@@ -79,11 +83,11 @@ class ParameterOption {
   Map<String, dynamic> toJson() =>
       {'id': key, 'nameAr': nameAr, 'nameFr': nameFr};
 
-  @override
-  bool operator ==(Object other) {
-    if (other is ParameterOption) {
-      return key == other.key;
-    }
-    return super == other;
-  }
+  // @override
+  // bool operator ==(Object other) {
+  //   if (other is ParameterOption) {
+  //     return key == other.key;
+  //   }
+  //   return super == other;
+  // }
 }

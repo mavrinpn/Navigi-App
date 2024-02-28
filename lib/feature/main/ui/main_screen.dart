@@ -182,9 +182,7 @@ class _MainScreenState extends State<MainScreen> {
                     sliver: getAnnouncementsGrid()),
                 if (state is AnnouncementsLoadingState) ...[
                   SliverToBoxAdapter(
-                    child: Container(
-                      child: Center(child: AppAnimations.bouncingLine),
-                    ),
+                    child: Center(child: AppAnimations.bouncingLine),
                   )
                 ],
               ],

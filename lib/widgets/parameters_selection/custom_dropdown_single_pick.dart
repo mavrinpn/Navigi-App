@@ -9,16 +9,17 @@ import '../../models/item/item.dart';
 import '../../utils/colors.dart';
 
 class CustomDropDownSingleCheckBox extends StatefulWidget {
-  const CustomDropDownSingleCheckBox(
-      {super.key,
-      required this.parameter,
-      required this.onChange,
-      required this.currentVariable,
-      this.useLocalizationKeys = false});
+  const CustomDropDownSingleCheckBox({
+    super.key,
+    required this.parameter,
+    required this.onChange,
+    required this.currentKey,
+    this.useLocalizationKeys = false,
+  });
 
   final Function(ParameterOption) onChange;
   final SelectParameter parameter;
-  final dynamic currentVariable;
+  final String currentKey;
 
   final bool useLocalizationKeys;
 
@@ -88,22 +89,24 @@ class _CustomDropDownSingleCheckBoxState
       maximum = 7;
     }
 
-    print('Current locale: ${MyApp.getLocale(context)}');
+    // print('Current locale: ${MyApp.getLocale(context)}');
 
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ...(widget.parameter.variants.sublist(0, maximum))
-              .map((e) => Row(
+              .map((parametrOption) => Row(
                     children: [
                       CustomCheckBox(
-                          isActive: e == widget.currentVariable,
+                          isActive: parametrOption.key.toString() == widget.currentKey,
                           onChanged: () {
-                            widget.onChange(e);
+                            widget.onChange(parametrOption);
                           }),
                       Text(
-                        MyApp.getLocale(context) == 'fr' ? e.nameFr : e.nameAr,
+                        MyApp.getLocale(context) == 'fr'
+                            ? parametrOption.nameFr
+                            : parametrOption.nameAr,
                         maxLines: 1,
                         overflow: TextOverflow.clip,
                         style: AppTypography.font14black.copyWith(fontSize: 16),

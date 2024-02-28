@@ -66,8 +66,8 @@ class _SinglePickWithSearchState extends State<SinglePickWithSearch> {
                         isActive: e == widget.parameter.currentValue,
                         onChanged: () {
                           widget.parameter.setVariant(e);
-                          print(
-                              'current variant ${widget.parameter.currentValue}');
+                          // print(
+                          //     'current variant ${widget.parameter.currentValue}');
                           setState(() {});
                         }),
                     Text(

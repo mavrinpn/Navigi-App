@@ -26,7 +26,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
 
   @override
   void initState() {
-    print(context.read<CreatingAnnouncementManager>().getParametersList());
+    // print(context.read<CreatingAnnouncementManager>().getParametersList());
     super.initState();
   }
 

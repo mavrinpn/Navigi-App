@@ -15,7 +15,7 @@ List<Announcement> announcementsFromDocuments(
         storage.getFileView(bucketId: announcementsBucketId, fileId: id);
 
     doc.data.forEach((key, value) {
-      print('$key: $value');
+      // print('$key: $value');
     });
 
     newAnnounces

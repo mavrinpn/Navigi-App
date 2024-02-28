@@ -96,10 +96,13 @@ class _ChatInputState extends State<ChatInput> {
                     'Assets/icons/send.svg',
                     width: 20,
                     height: 20,
-                    color: widget.messageController.text.isNotEmpty ||
-                            widget.images.isNotEmpty
-                        ? Colors.white
-                        : AppColors.darkGrey,
+                    colorFilter: ColorFilter.mode(
+                      widget.messageController.text.isNotEmpty ||
+                              widget.images.isNotEmpty
+                          ? Colors.white
+                          : AppColors.darkGrey,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               )

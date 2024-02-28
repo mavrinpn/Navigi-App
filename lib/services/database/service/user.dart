@@ -38,14 +38,14 @@ class UserService {
       String? name,
       String? phone,
       String? imageUrl}) async {
-    final editData = {
-      if (name != null) userName: name,
-      if (phone != null) userPhone: phone,
-      if (imageUrl != null) userImageUrl: imageUrl
-    };
+    // final editData = {
+    //   if (name != null) userName: name,
+    //   if (phone != null) userPhone: phone,
+    //   if (imageUrl != null) userImageUrl: imageUrl
+    // };
 
-    print(editData);
-    print(uid);
+    // print(editData);
+    // print(uid);
 
     // final res = await _databases.updateDocument(
     //   databaseId: mainDatabase,

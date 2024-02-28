@@ -20,7 +20,7 @@ class ParametersSection extends StatelessWidget {
               onChange: (value) {
                 cubit.setParameterValue(e.key, value);
               },
-              currentVariable: e.currentValue,
+              currentKey: e.currentValue,
             ))
             .toList(),
       );

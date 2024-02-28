@@ -29,7 +29,7 @@ class _CustomSingleCheckBoxesState extends State<CustomSingleCheckBoxes> {
                       isActive: e.shortName == widget.currentVariable.shortName,
                       onChanged: () {
                         widget.onChange(e);
-                        print(e.name);
+                        // print(e.name);
                       }),
                   Text(
                     e.name,

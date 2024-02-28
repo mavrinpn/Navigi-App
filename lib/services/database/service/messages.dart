@@ -23,8 +23,8 @@ class MessagesService {
       Map<String, dynamic> documentData, String userId) {
     final user1 = documentData['user1'];
     final user2 = documentData['user2'];
-    print(user1);
-    print(user2);
+    // print(user1);
+    // print(user2);
 
     if (user1[DefaultDocumentParameters.id] != userId) {
       return ChatUserInfo.fromJson(user1);
@@ -173,11 +173,11 @@ class MessagesService {
     final res = await _functions.createExecution(
         functionId: '657f16bf26ccb6ca8093', body: encodedBody);
 
-    print('errors: ${res.errors}');
-    print('body: ${res.responseBody}');
-    print('headers: ${res.requestHeaders}');
-    print('status code: ${res.responseStatusCode}');
-    print('logs: ${res.logs}');
+    // print('errors: ${res.errors}');
+    // print('body: ${res.responseBody}');
+    // print('headers: ${res.requestHeaders}');
+    // print('status code: ${res.responseStatusCode}');
+    // print('logs: ${res.logs}');
 
     if (res.responseStatusCode == 500) {
       throw Exception('Функция в канаве');

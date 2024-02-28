@@ -33,16 +33,16 @@ class CategoriesService {
 
   Future<Map<String, dynamic>> getSubcategoryParameters(
       String subcategory) async {
-    print(subcategory);
+    // print(subcategory);
 
     final res = await _databases.getDocument(
         databaseId: mainDatabase,
         collectionId: 'categoryFilters',
         documentId: subcategory);
 
-    print(res.data);
+    // print(res.data);
     final decodedParameters = jsonDecode(res.data['parameters']);
-    print(decodedParameters);
+    // print(decodedParameters);
     return decodedParameters;
   }
 
@@ -163,7 +163,7 @@ class CategoriesService {
 
     final marks = <Mark>[];
     for (var i in res.documents) {
-      print(i.data);
+      // print(i.data);
       marks.add(Mark(
           i.data['manufacturers']['\$id'], i.data['manufacturers']['name']));
     }
@@ -178,7 +178,7 @@ class CategoriesService {
       Query.equal('manufacturerId', mark), Query.limit(1000)
     ];
 
-    print(query);
+    // print(query);
 
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,

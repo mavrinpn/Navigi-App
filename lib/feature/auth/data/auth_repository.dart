@@ -196,7 +196,7 @@ class AuthRepository {
     if (email != null) {
       await _account.create(
           userId: ID.unique(), email: email, password: password, name: 'Guest');
-      print('create account $email $password');
+      // print('create account $email $password');
     }
     await _account.createEmailSession(
         email: email ?? _tempMail, password: password);

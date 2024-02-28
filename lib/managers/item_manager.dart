@@ -17,7 +17,7 @@ class ItemManager {
     final res = await databaseService.categories
         .getSubcategoryParameters(subcategoryId);
     final parameters = res['parameters'];
-    print(parameters);
+    // print(parameters);
     final decodedFilters = ParametersParser(parameters).decodedParameters;
     return SubcategoryFilters(decodedFilters,
         hasMark: res['hasMark'], hasModel: res['hasModel']);

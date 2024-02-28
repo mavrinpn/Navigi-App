@@ -49,7 +49,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     final userId = RepositoryProvider.of<AuthRepository>(context).userId;
     if (data.creatorData.uid == userId) {
       
-      print('Cette annonce est votre');
+      // print('Cette annonce est votre');
       return;
     }
 

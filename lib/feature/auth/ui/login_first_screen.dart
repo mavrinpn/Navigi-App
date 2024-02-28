@@ -114,10 +114,10 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                               final bloc = BlocProvider.of<AuthCubit>(context);
                               bloc.setPhoneForLogin(
                                   maskPhoneFormatter.getUnmaskedText());
-                              print('set phone ${maskPhoneFormatter.getMaskedText()}');
+                              // print('set phone ${maskPhoneFormatter.getMaskedText()}');
                               Navigator.pushNamed(
                                   context, AppRoutesNames.loginSecond);
-                              print('push');
+                              // print('push');
                             }
                           },
                           text: AppLocalizations.of(context)!.enter,

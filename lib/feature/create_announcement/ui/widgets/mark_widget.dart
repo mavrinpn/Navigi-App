@@ -25,7 +25,7 @@ class _MarkWidgetState extends State<MarkWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print('rebuild with $opened on widget ${widget.mark.name}');
+    // print('rebuild with $opened on widget ${widget.mark.name}');
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -47,7 +47,7 @@ class _MarkWidgetState extends State<MarkWidget> {
 
             setState(() {
               opened = !opened;
-              print('set opened to $opened on widget ${widget.mark.id}');
+              // print('set opened to $opened on widget ${widget.mark.id}');
             });
           },
           child: Container(
@@ -78,7 +78,7 @@ class _MarkWidgetState extends State<MarkWidget> {
             }
 
             if (state is ModelsGotState) {
-              print('models length: ${state.models.length}');
+              // print('models length: ${state.models.length}');
               if (state.models.isNotEmpty) {
                 return Column(
                     children: List.generate(

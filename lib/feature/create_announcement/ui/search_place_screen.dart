@@ -51,7 +51,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
       setState(() {});
     });
 
-    print('selectingCity = false');
+    // print('selectingCity = false');
   }
 
   void selectPlace(CityDistrict selectedDistrict) async {

@@ -31,7 +31,7 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
   /// Вызывать в initState экрана, либо если будет агрессировать то до пуша
   Future setAnnouncement(Announcement announcement) async {
     await repository.setAnnouncementForEdit(announcement);
-    print('announcement setted');
+    // print('announcement setted');
   }
 
   /// функция для onChange филда названия

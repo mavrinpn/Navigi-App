@@ -5,10 +5,10 @@ import 'package:smart/utils/colors.dart';
 class CustomIconButtonSearch extends StatelessWidget {
   const CustomIconButtonSearch(
       {super.key,
-        required this.assetName,
-        required this.callback,
-        required this.height,
-        required this.width});
+      required this.assetName,
+      required this.callback,
+      required this.height,
+      required this.width});
 
   final VoidCallback callback;
   final String assetName;
@@ -17,7 +17,8 @@ class CustomIconButtonSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column( mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
           onTap: callback,
@@ -32,7 +33,10 @@ class CustomIconButtonSearch extends StatelessWidget {
             child: Center(
               child: SvgPicture.asset(
                 assetName,
-                color: AppColors.mainBackground,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.mainBackground,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
           ),

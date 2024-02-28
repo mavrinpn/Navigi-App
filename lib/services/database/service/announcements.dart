@@ -64,7 +64,7 @@ class AnnouncementsService {
       queries.add(Query.equal('model', filterData.model));
     }
 
-    print(queries);
+    // print(queries);
 
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
@@ -82,7 +82,7 @@ class AnnouncementsService {
       newAnnounces.add(Announcement.fromJson(
           json: doc.data['announcements'], futureBytes: futureBytes));
     }
-    print(newAnnounces.length);
+    // print(newAnnounces.length);
     return newAnnounces;
   }
 
@@ -114,7 +114,7 @@ class AnnouncementsService {
           {i.key: i is SelectParameter ? i.currentValue.key : i.currentValue});
     }
 
-    print(data);
+    // print(data);
 
     await _databases.createDocument(
         databaseId: mainDatabase,

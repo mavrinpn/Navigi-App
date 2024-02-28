@@ -47,7 +47,7 @@ class _SelectMarkScreenState extends State<SelectMarkScreen> {
         builder: (context, state) {
           if (state is MarksGotState || marksPreloaded) {
             if (state is MarksGotState) marksPreloaded = true;
-            print(cubit.marks.length);
+            // print(cubit.marks.length);
             return ListView(
               children: cubit.marks
                   .map((e) => MarkWidget(

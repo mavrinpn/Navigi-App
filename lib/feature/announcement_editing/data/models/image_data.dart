@@ -18,11 +18,11 @@ class ImageData {
     return id.v4();
   }
 
-  @override
-  bool operator ==(Object other) {
-    if (other is ImageData) {
-      return other.id == id;
-    }
-    return super == other;
-  }
+  // @override
+  // bool operator ==(Object other) {
+  //   if (other is ImageData) {
+  //     return other.id == id;
+  //   }
+  //   return super == other;
+  // }
 }

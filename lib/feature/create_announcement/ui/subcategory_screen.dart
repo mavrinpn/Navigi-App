@@ -49,8 +49,8 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
     repository.subcategoryFilters = parameters;
     repository.marksFilter = marksFilter;
 
-    print(
-        'subcategory parameters select, length: ${repository.subcategoryFilters!.parameters.length}');
+    // print(
+    // 'subcategory parameters select, length: ${repository.subcategoryFilters!.parameters.length}');
 
     Navigator.pushNamed(context, AppRoutesNames.announcementCreatingItem);
   }

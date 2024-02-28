@@ -39,7 +39,10 @@ class FavouriteIndicator extends StatelessWidget {
                 'Assets/icons/follow.svg',
                 width: 24,
                 height: 24,
-                color: liked ? AppColors.red : AppColors.whiteGray,
+                colorFilter: ColorFilter.mode(
+                  liked ? AppColors.red : AppColors.whiteGray,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
           ),
