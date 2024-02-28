@@ -322,7 +322,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     label: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Telephones'),
+                        Text('Telephones '),
                         Icon(Icons.keyboard_arrow_down_rounded)
                       ],
                     ),
