@@ -298,7 +298,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 15),
+            padding: const EdgeInsets.only(left: 15, right: 15),
             child: SingleChildScrollView(
               clipBehavior: Clip.none,
               scrollDirection: Axis.horizontal,
