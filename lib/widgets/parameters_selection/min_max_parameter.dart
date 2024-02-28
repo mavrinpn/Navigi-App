@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:smart/main.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/utils/fonts.dart';
 
 class MinMaxParameterWidget extends StatefulWidget {
-  const MinMaxParameterWidget({super.key, required this.parameter});
+  const MinMaxParameterWidget({
+    super.key,
+    required this.parameter,
+  });
 
   final MinMaxParameter parameter;
 
@@ -31,7 +35,9 @@ class _MinMaxParameterWidgetState extends State<MinMaxParameterWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.parameter.key,
+            MyApp.getLocale(context) == 'fr'
+                ? widget.parameter.frName
+                : widget.parameter.arName,
             style: AppTypography.font16black.copyWith(fontSize: 18),
           ),
           Padding(
@@ -41,6 +47,8 @@ class _MinMaxParameterWidgetState extends State<MinMaxParameterWidget> {
                 Expanded(
                     child: TextField(
                   controller: minController,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(signed: true),
                   decoration: const InputDecoration(
                     hintText: 'min',
                     border: UnderlineInputBorder(),
@@ -55,12 +63,14 @@ class _MinMaxParameterWidgetState extends State<MinMaxParameterWidget> {
                 Expanded(
                     child: TextField(
                   controller: maxController,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(signed: true),
                   decoration: const InputDecoration(
                     hintText: 'max',
                     border: UnderlineInputBorder(),
                   ),
                   onChanged: (v) {
-                    widget.parameter.max = int.tryParse(v );
+                    widget.parameter.max = int.tryParse(v);
                   },
                 )),
               ],

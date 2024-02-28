@@ -52,19 +52,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
         CustomIconButtonSearch(
           assetName: 'Assets/icons/sliders.svg',
           callback: () {
-            showModalBottomSheet(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20),
-                ),
-              ),
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              isScrollControlled: true,
-              context: context,
-              builder: (BuildContext context) {
-                return const FiltersBottomSheet();
-              },
-            );
+            showFilterBottomSheet(context: context);
           },
           height: 44,
           width: 44,

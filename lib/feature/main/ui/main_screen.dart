@@ -91,21 +91,22 @@ class _MainScreenState extends State<MainScreen> {
       context
           .read<SearchAnnouncementCubit>()
           .setSearchMode(SearchModeEnum.simple);
-      showModalBottomSheet(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
-        ),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext context) {
-          return const FiltersBottomSheet(
-            needOpenNewScreen: true,
-          );
-        },
-      );
+      showFilterBottomSheet(context: context);
+      // showModalBottomSheet(
+      //   shape: const RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.vertical(
+      //       top: Radius.circular(20),
+      //     ),
+      //   ),
+      //   clipBehavior: Clip.antiAliasWithSaveLayer,
+      //   isScrollControlled: true,
+      //   context: context,
+      //   builder: (BuildContext context) {
+      //     return const FiltersBottomSheet(
+      //       needOpenNewScreen: true,
+      //     );
+      //   },
+      // );
     }
 
     return MainScaffold(

@@ -20,9 +20,12 @@ class SubCategoryWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              subcategory.localizedName(MyApp.getLocale(context) ?? 'fr'),
-              style: AppTypography.font16black,
+            Expanded(
+              child: Text(
+                subcategory.localizedName(MyApp.getLocale(context) ?? 'fr'),
+                overflow: TextOverflow.ellipsis,
+                style: AppTypography.font16black,
+              ),
             ),
             const Icon(
               Icons.arrow_forward_ios,

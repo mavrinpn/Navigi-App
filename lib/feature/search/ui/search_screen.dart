@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
+import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/feature/search/ui/sections/history.dart';
 import 'package:smart/feature/search/ui/sections/popular_queries.dart';
 import 'package:smart/feature/search/ui/sections/search_items.dart';
+import 'package:smart/feature/search/ui/widgets/filters_bottom_sheet.dart';
 import 'package:smart/feature/search/ui/widgets/search_appbar.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/main.dart';
+import 'package:smart/models/item/item.dart';
 
 import '../../../managers/announcement_manager.dart';
 import '../../../managers/search_manager.dart';
@@ -61,6 +65,7 @@ class _SearchScreenState extends State<SearchScreen> {
       setSearch(widget.queryString!, searchManager);
     }
 
+    context.watch<SearchSelectSubcategoryCubit>();
     super.didChangeDependencies();
   }
 
@@ -120,10 +125,12 @@ class _SearchScreenState extends State<SearchScreen> {
                 searchManager.saveInHistory(a!);
                 setState(() {});
                 BlocProvider.of<SearchAnnouncementCubit>(context)
-                    .searchAnnounces(a, true,
-                        parameters: context
-                            .read<SearchSelectSubcategoryCubit>()
-                            .parameters);
+                    .searchAnnounces(
+                  a,
+                  true,
+                  parameters:
+                      context.read<SearchSelectSubcategoryCubit>().parameters,
+                );
               },
               onChange: (String? a) {
                 searchManager.setSearch(true);
@@ -273,110 +280,79 @@ class _SearchScreenState extends State<SearchScreen> {
   _buildCategoryAppBarBottom() {
     return PreferredSize(
       preferredSize: const Size.fromHeight(90),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+      child: BlocBuilder<UpdateAppBarFilterCubit, UpdateAppBarFilterState>(
+        builder: (context, state) {
+          final selectCategoryCubit =
+              BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(
-                  Icons.arrow_back_sharp,
-                  color: AppColors.black,
-                ),
-              ),
-              Text(
-                widget.title,
-                style: const TextStyle(
-                  fontFamily: 'SF Pro Display',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15),
-            child: SingleChildScrollView(
-              clipBehavior: Clip.none,
-              scrollDirection: Axis.horizontal,
-              child: Wrap(
-                alignment: WrapAlignment.start,
-                spacing: 6,
+              Row(
                 children: [
-                  FilterChip(
-                    selected: true,
-                    label: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Prix'),
-                        Icon(Icons.keyboard_arrow_down_rounded)
-                      ],
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(
+                      Icons.arrow_back_sharp,
+                      color: AppColors.black,
                     ),
-                    onSelected: (value) {},
                   ),
-                  FilterChip(
-                    selected: false,
-                    label: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Telephones'),
-                        Icon(Icons.keyboard_arrow_down_rounded)
-                      ],
+                  Text(
+                    widget.title,
+                    style: const TextStyle(
+                      fontFamily: 'SF Pro Display',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
-                    onSelected: (value) {},
-                  ),
-                  FilterChip(
-                    selected: false,
-                    label: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Telephones'),
-                        Icon(Icons.keyboard_arrow_down_rounded)
-                      ],
-                    ),
-                    onSelected: (value) {},
-                  ),
-                  FilterChip(
-                    selected: false,
-                    label: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Telephones'),
-                        Icon(Icons.keyboard_arrow_down_rounded)
-                      ],
-                    ),
-                    onSelected: (value) {},
-                  ),
-                  FilterChip(
-                    selected: false,
-                    label: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Telephones'),
-                        Icon(Icons.keyboard_arrow_down_rounded)
-                      ],
-                    ),
-                    onSelected: (value) {},
-                  ),
-                  FilterChip(
-                    selected: false,
-                    label: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Telephones'),
-                        Icon(Icons.keyboard_arrow_down_rounded)
-                      ],
-                    ),
-                    onSelected: (value) {},
                   ),
                 ],
               ),
-            ),
-          ),
-        ],
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                child: SingleChildScrollView(
+                  clipBehavior: Clip.none,
+                  scrollDirection: Axis.horizontal,
+                  child: Wrap(
+                    alignment: WrapAlignment.start,
+                    spacing: 6,
+                    children: selectCategoryCubit.parameters.map((parameter) {
+                      bool isSelected = false;
+                      if (parameter is SelectParameter) {
+                        isSelected = parameter.selectedVariants.isNotEmpty;
+                      } else if (parameter is MinMaxParameter) {
+                        isSelected =
+                            parameter.min != null || parameter.max != null;
+                      }
+
+                      return FilterChip(
+                        selected: isSelected,
+                        label: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              MyApp.getLocale(context) == 'fr'
+                                  ? parameter.frName
+                                  : parameter.arName,
+                            ),
+                            const Icon(Icons.keyboard_arrow_down_rounded)
+                          ],
+                        ),
+                        onSelected: (value) {
+                          showFilterBottomSheet(
+                            context: context,
+                            parameterKey: parameter.key,
+                          );
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

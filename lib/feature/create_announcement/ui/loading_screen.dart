@@ -19,6 +19,7 @@ class LoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
+    // ignore: deprecated_member_use
     return WillPopScope(
       child: BlocListener<CreatingAnnouncementCubit, CreatingAnnouncementState>(
         listener: (context, state) {

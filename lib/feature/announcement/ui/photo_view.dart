@@ -22,6 +22,7 @@ class _PhotoViewsState extends State<PhotoViews> {
     final currentAnnouncement =
         RepositoryProvider.of<AnnouncementManager>(context).lastAnnouncement;
 
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushReplacement(context,

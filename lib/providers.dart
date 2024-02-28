@@ -19,6 +19,7 @@ import 'package:smart/feature/messenger/bloc/message_images_cubit.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
+import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/managers/favourites_manager.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/messaging_service.dart';
@@ -168,6 +169,11 @@ class MyBlocProviders extends StatelessWidget {
       BlocProvider(
         create: (_) => SearchSelectSubcategoryCubit(
             RepositoryProvider.of<CategoriesManager>(context)),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) =>
+            UpdateAppBarFilterCubit(UpdateAppBarFilterState(needUpdate: false)),
         lazy: false,
       ),
       BlocProvider(

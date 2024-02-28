@@ -7,6 +7,7 @@ import 'package:smart/feature/create_announcement/ui/select_auto_model_screen.da
 import 'package:smart/feature/create_announcement/ui/select_mark_screen.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
+import 'package:smart/feature/search/ui/widgets/single_filter_bottom_sheet.dart';
 import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
 import 'package:smart/models/item/item.dart';
@@ -19,6 +20,29 @@ import 'package:smart/widgets/parameters_selection/multiple_chekbox.dart';
 import 'package:smart/widgets/textField/price_widget.dart';
 
 import '../../../../localization/app_localizations.dart';
+
+void showFilterBottomSheet({
+  required BuildContext context,
+  String? parameterKey,
+}) {
+  showModalBottomSheet(
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(20),
+      ),
+    ),
+    clipBehavior: Clip.antiAliasWithSaveLayer,
+    isScrollControlled: true,
+    context: context,
+    builder: (BuildContext context) {
+      if (parameterKey != null) {
+        return SingleFilterBottomSheet(parameterKey: parameterKey);
+      } else {
+        return const FiltersBottomSheet();
+      }
+    },
+  );
+}
 
 class FiltersBottomSheet extends StatefulWidget {
   const FiltersBottomSheet({
@@ -267,9 +291,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                     ]
                   ],
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
+                const SizedBox(height: 16),
                 if (searchCubit.marksFilter?.modelParameters != null)
                   ...buildModelFilters(),
                 if (searchCubit.searchMode == SearchModeEnum.subcategory) ...[
@@ -278,18 +300,17 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                     builder: (context, state) {
                       if (state is FiltersGotState) {
                         return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: buildFiltersSelection(
-                                selectCategoryCubit.parameters));
+                          mainAxisSize: MainAxisSize.min,
+                          children: buildFiltersSelection(
+                              selectCategoryCubit.parameters),
+                        );
                       }
 
                       return Container();
                     },
                   ),
                 ],
-                const SizedBox(
-                  height: 16,
-                ),
+                const SizedBox(height: 16),
                 CustomTextButton.orangeContinue(
                     callback: () {
                       RepositoryProvider.of<SearchManager>(context)
@@ -332,7 +353,6 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
 
   List<Widget> buildModelFilters() {
     final searchCubit = RepositoryProvider.of<SearchAnnouncementCubit>(context);
-
     final parameters = searchCubit.marksFilter!.modelParameters!;
 
     final children = <Widget>[];

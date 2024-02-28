@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/main.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/utils/colors.dart';
@@ -18,6 +20,8 @@ class _MultipleCheckboxPickerState extends State<MultipleCheckboxPicker> {
   Widget build(BuildContext context) {
     final variants = widget.parameter.variants;
 
+    final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
+
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Column(
@@ -25,14 +29,19 @@ class _MultipleCheckboxPickerState extends State<MultipleCheckboxPicker> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            MyApp.getLocale(context) == 'fr' ? widget.parameter.frName : widget.parameter.arName,
+            MyApp.getLocale(context) == 'fr'
+                ? widget.parameter.frName
+                : widget.parameter.arName,
             style: AppTypography.font16black.copyWith(fontSize: 18),
           ),
           ...List.generate(
               variants.length,
-                  (index) => MultipleCheckboxWidget(
-                  value:  MyApp.getLocale(context) == 'fr' ? variants[index].nameFr : variants[index].nameAr,
+              (index) => MultipleCheckboxWidget(
+                  value: MyApp.getLocale(context) == 'fr'
+                      ? variants[index].nameFr
+                      : variants[index].nameAr,
                   onTap: (bool? v) {
+                    updateAppBarFilterCubit.needUpdateAppBarFilters();
                     if (v ?? false) {
                       widget.parameter.addSelectedValue(variants[index]);
                     } else {
@@ -42,18 +51,19 @@ class _MultipleCheckboxPickerState extends State<MultipleCheckboxPicker> {
                     setState(() {});
                   },
                   active: widget.parameter.isSelected(variants[index]))),
-        ]
+        ],
       ),
     );
   }
 }
 
 class MultipleCheckboxWidget extends StatelessWidget {
-  const MultipleCheckboxWidget(
-      {super.key,
-      required this.value,
-      required this.onTap,
-      required this.active});
+  const MultipleCheckboxWidget({
+    super.key,
+    required this.value,
+    required this.onTap,
+    required this.active,
+  });
 
   final bool active;
   final String value;
@@ -74,13 +84,12 @@ class MultipleCheckboxWidget extends StatelessWidget {
               activeColor: AppColors.red,
             ),
           ),
-          const SizedBox(width: 4,),
+          const SizedBox(width: 4),
           Text(
             value,
             maxLines: 1,
             overflow: TextOverflow.clip,
-            style: AppTypography.font14black
-                .copyWith(fontSize: 16),
+            style: AppTypography.font14black.copyWith(fontSize: 16),
           ),
         ],
       ),
