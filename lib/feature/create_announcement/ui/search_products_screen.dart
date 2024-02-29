@@ -101,8 +101,8 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                         .toList(),
                   );
                 } else if (state is SearchEmptyState) {
-                  return const Center(
-                    child: Text('ниче не найдено'),
+                  return Center(
+                    child: Text(localizations.notFound),
                   );
                 } else if (state is SearchFailState) {
                   return Center(

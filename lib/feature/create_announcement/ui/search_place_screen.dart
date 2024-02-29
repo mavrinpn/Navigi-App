@@ -144,8 +144,8 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
                           .toList(),
                     );
                   } else if (state is PlacesEmptyState) {
-                    return const Center(
-                      child: Text('ниче не найдено'),
+                    return Center(
+                      child: Text(localizations.notFound),
                     );
                   } else if (state is PlacesFailState) {
                     return Center(
@@ -199,8 +199,8 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
                           .toList(),
                     );
                   } else if (state is PlacesEmptyState) {
-                    return const Center(
-                      child: Text('ниче не найдено'),
+                    return Center(
+                      child: Text(localizations.notFound),
                     );
                   } else if (state is PlacesFailState) {
                     return Center(

@@ -18,7 +18,7 @@ class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
   List<Subcategory> subcategories = [];
   List<Parameter> _parameters = [];
 
-  String? _lastCategory;
+  String? lastCategory;
   // String? _lastSubcategory;
 
   SubcategoryFilters? subcategoryFilters;
@@ -35,12 +35,12 @@ class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
     return _parameters + added;
   }
 
-  AutoFilter? autoFilter;
+  CarFilter? autoFilter;
 
   SelectParameter? dotationFilter;
   SelectParameter? engineFilter;
 
-  void setAutoFilter(AutoFilter? newAutoFilter) {
+  void setAutoFilter(CarFilter? newAutoFilter) {
     autoFilter = newAutoFilter;
     if (autoFilter != null) {
       dotationFilter = autoFilter!.dotation;
@@ -48,7 +48,11 @@ class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
     }
   }
 
-  bool needAddAutoSelectButton = false;
+  bool needAddCarSelectButton = false;
+
+  void clearFilters() {
+    autoFilter = null;
+  }
 
   void getCategories() async {
     emit(CategoryLoadingState());
@@ -56,20 +60,20 @@ class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
     emit(CategoriesGotState());
   }
 
-  void setAutoSubcategory() async {
-    needAddAutoSelectButton = true;
+  void setCarSubcategory() async {
+    needAddCarSelectButton = true;
   }
 
   void getSubcategories({String? categoryId, String? subcategoryId}) async {
-    if (categoryId != null && categoryId == _lastCategory ||
-        subcategoryId != null && subcategoryId == _lastCategory) {
+    if (categoryId != null && categoryId == lastCategory ||
+        subcategoryId != null && subcategoryId == lastCategory) {
       return emit(SubcategoriesGotState());
     }
     emit(SubcategoriesLoadingState());
     // _lastSubcategory = subcategoryId;
-    _lastCategory = categoryId;
+    lastCategory = categoryId;
 
-    needAddAutoSelectButton = false;
+    needAddCarSelectButton = false;
     autoFilter = null;
     if (categoryId != null) {
       subcategories =

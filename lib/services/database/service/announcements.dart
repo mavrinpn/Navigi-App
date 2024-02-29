@@ -14,9 +14,10 @@ class AnnouncementsService {
     List<String> queries = ParametersFilterBuilder.getQueriesForGet(lastId);
 
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: postCollection,
-        queries: queries);
+      databaseId: mainDatabase,
+      collectionId: postCollection,
+      queries: queries,
+    );
 
     List<Announcement> newAnnounces =
         announcementsFromDocuments(res.documents, _storage);
@@ -58,8 +59,6 @@ class AnnouncementsService {
           await LocationFilter.getLocationFilterForRadius(filterData.radius!));
     }
 
-
-    //TODO multiple marks and models
     if (filterData.mark != null) {
       queries.add(Query.equal('mark', filterData.mark));
     }

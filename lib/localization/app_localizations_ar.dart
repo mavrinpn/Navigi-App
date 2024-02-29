@@ -483,4 +483,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get mark => 'مارك';
+
+  @override
+  String get choosingCarBrand => 'اختيار ماركة السيارة';
+
+  @override
+  String get choosingMark => 'اختيار علامة';
+
+  @override
+  String get specifyPlace => 'حدد المكان';
+
+  @override
+  String get change => 'التغيير';
+
+  @override
+  String get loading => 'تحميل';
+
+  @override
+  String get notFound => 'لم يتم العثور على شيء';
 }

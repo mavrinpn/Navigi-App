@@ -44,7 +44,7 @@ class CreatingAnnouncementManager {
   CityDistrict? cityDistrict;
   LatLng? customPosition;
 
-  AutoFilter? autoFilter;
+  CarFilter? carFilter;
 
   BehaviorSubject<LoadingStateEnum> creatingState =
       BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
@@ -55,9 +55,9 @@ class CreatingAnnouncementManager {
     final parameters = <Parameter>[];
     parameters.addAll(subcategoryFilters!.parameters);
 
-    if (autoFilter != null) {
-      parameters.add(autoFilter!.dotation);
-      parameters.add(autoFilter!.engine);
+    if (carFilter != null) {
+      parameters.add(carFilter!.dotation);
+      parameters.add(carFilter!.engine);
     }
 
     if (marksFilter?.modelParameters != null) {
@@ -117,7 +117,7 @@ class CreatingAnnouncementManager {
   }
 
   void clearSpecifications() {
-    autoFilter = null;
+    carFilter = null;
     customPosition = null;
     specialOptions.clear();
   }

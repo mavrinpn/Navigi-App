@@ -9,10 +9,12 @@ class CarMarkWidget extends StatefulWidget {
   const CarMarkWidget({
     super.key,
     required this.mark,
+    required this.subcategory,
     required this.needSelectModel,
   });
 
   final Mark mark;
+  final String subcategory;
   final bool needSelectModel;
 
   @override
@@ -30,13 +32,15 @@ class _CarMarkWidgetState extends State<CarMarkWidget> {
       children: [
         InkWell(
           onTap: () {
-            print('123');
             if (!widget.needSelectModel) {
               return Navigator.pop(context, widget.mark.id);
             }
 
             if (!opened) {
-              context.read<CarModelsCubit>().getModels(widget.mark.id);
+              context.read<CarModelsCubit>().getModels(
+                    subcategory: widget.subcategory,
+                    mark: widget.mark.id,
+                  );
             }
 
             setState(() {
@@ -73,18 +77,15 @@ class _CarMarkWidgetState extends State<CarMarkWidget> {
                 state.models.length,
                 (index) => InkWell(
                   onTap: () {
-                    //TODO
-                    final filter = AutoFilter(
-                      widget.mark.id,
-                      state.models[index].id,
-                      state.models[index].variants,
-                      state.models[index].engines,
+                    final filter = CarFilter(
+                      markId:  widget.mark.id,
+                      modelId:  state.models[index].id,
+                      markTitle: widget.mark.name,
+                      modelTitle: state.models[index].name,
+                      stringDotations: state.models[index].variants,
+                      stringEngines: state.models[index].engines,
                     );
-                    print(filter.engine.frName);
-                    Navigator.pop(
-                      context,
-                      filter,
-                    );
+                    Navigator.pop(context, filter);
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(left: 28.0, right: 16),

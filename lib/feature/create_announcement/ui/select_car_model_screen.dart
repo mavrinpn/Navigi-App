@@ -10,9 +10,14 @@ import '../../../utils/fonts.dart';
 import '../bloc/subcategory/subcategory_cubit.dart';
 
 class SelectCarModelScreen extends StatefulWidget {
-  const SelectCarModelScreen({super.key, required this.needSelectModel});
+  const SelectCarModelScreen({
+    super.key,
+    required this.needSelectModel,
+    required this.subcategory,
+  });
 
   final bool needSelectModel;
+  final String subcategory;
 
   @override
   State<SelectCarModelScreen> createState() => _SelectCarModelScreenState();
@@ -23,7 +28,7 @@ class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
 
   @override
   void initState() {
-    context.read<CarModelsCubit>().getMarks();
+    context.read<CarModelsCubit>().getMarks(widget.subcategory);
     super.initState();
   }
 
@@ -31,13 +36,14 @@ class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     final cubit = BlocProvider.of<CarModelsCubit>(context);
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData.fallback(),
         backgroundColor: AppColors.empty,
         elevation: 0,
         title: Text(
-          'Select mark', //TODO localize
+          localizations.choosingCarBrand,
           style: AppTypography.font20black,
         ),
       ),
@@ -48,10 +54,13 @@ class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
 
             return ListView(
               children: cubit.marks
-                  .map((e) => CarMarkWidget(
-                        mark: e,
-                        needSelectModel: widget.needSelectModel,
-                      ))
+                  .map(
+                    (e) => CarMarkWidget(
+                      mark: e,
+                      subcategory: widget.subcategory,
+                      needSelectModel: widget.needSelectModel,
+                    ),
+                  )
                   .toList(),
             );
           } else if (state is SubcategoryFailState) {

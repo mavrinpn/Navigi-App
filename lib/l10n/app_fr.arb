@@ -163,5 +163,11 @@
 "withSuccess": "Avec succès",
 "save": "Enregistrer",
 "placeApplicationSettings": "Paramètres de l'application place",
-"mark": "Marque"
+"mark": "Marque",
+"choosingCarBrand": "La marque de voiture",
+"choosingMark": "Choix de la marque",
+"specifyPlace": "Précisez le lieu",
+"change": "Changement",
+"loading": "Chargement",
+"notFound": "Rien n'a été trouvé"
 }

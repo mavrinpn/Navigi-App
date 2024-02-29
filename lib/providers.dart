@@ -93,7 +93,7 @@ class MyRepositoryProviders extends StatelessWidget {
           create: (_) => CreatorRepository(databaseService: databaseService)),
       RepositoryProvider(
           create: (_) => FavouritesManager(databaseService: databaseService)),
-      RepositoryProvider(create: (_) => AutoMarksRepository(databaseService)),
+      RepositoryProvider(create: (_) => CarMarksRepository(databaseService)),
       RepositoryProvider(create: (_) => MarksRepository(databaseService)),
       RepositoryProvider(
           create: (_) =>
@@ -236,7 +236,7 @@ class MyBlocProviders extends StatelessWidget {
       ),
       BlocProvider(
         create: (_) => CarModelsCubit(
-          RepositoryProvider.of<AutoMarksRepository>(context),
+          RepositoryProvider.of<CarMarksRepository>(context),
         ),
         lazy: false,
       ),

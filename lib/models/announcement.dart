@@ -26,17 +26,18 @@ class Announcement {
   bool liked;
   final String? itemId;
 
-  Announcement.fromJson(
-      {required Map<String, dynamic> json,
-      required this.futureBytes,
-      this.liked = false})
-      : title = json['name'],
+  Announcement.fromJson({
+    required Map<String, dynamic> json,
+    required this.futureBytes,
+    this.liked = false,
+  })  : title = json['name'],
         description = json['description'],
         creatorData = CreatorData.fromJson(data: json['creator']),
         price = double.parse(json['price'].toString()),
         images = json['images'],
         staticParameters = StaticParameters(
-          encodedParameters: json['parametrs'],
+          encodedParameters:
+              json['parametrs'] is List ? json['parametrs'] : '[]',
         ),
         totalViews = json['total_views'] ?? 0,
         _createdAt = json['\$createdAt'],

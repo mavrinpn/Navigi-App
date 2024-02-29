@@ -136,7 +136,7 @@ class _CodeScreenState extends State<CodeScreen> {
                           text: localizations.sendAgain,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              // TODO send retry
+                              //TODO send retry
                             },
                           style: AppTypography.font16UnderLinePink)
                     ],

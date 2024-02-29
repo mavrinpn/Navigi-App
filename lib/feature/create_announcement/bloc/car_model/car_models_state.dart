@@ -8,7 +8,7 @@ class CarModelsInitial extends CarModelsState {}
 class ModelsLoadingState extends CarModelsState {}
 
 class ModelsSuccessState extends CarModelsState {
-  final List<AutoModel> models;
+  final List<CarModel> models;
 
   ModelsSuccessState(this.models);
 }

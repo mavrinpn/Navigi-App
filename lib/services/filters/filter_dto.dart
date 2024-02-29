@@ -25,9 +25,6 @@ class SubcategoryFilterDTO {
   String? lastId;
   String? mark;
   String? model;
-  //TODO multiple marks and models
-  // List<String> marks;
-  // List<String> models;
   String? sortBy;
   double? minPrice;
   double? maxPrice;

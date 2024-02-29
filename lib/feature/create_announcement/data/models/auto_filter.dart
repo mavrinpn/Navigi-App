@@ -1,23 +1,38 @@
 import 'package:smart/models/item/item.dart';
 import 'package:smart/services/parameters_parser.dart';
 
-class AutoFilter {
+class CarFilter {
   final String markId;
   final String modelId;
   final List<ParameterOption> complectations;
   final List<ParameterOption> engines;
 
-  AutoFilter(
-      this.markId, this.modelId, List stringDotations, List stringEngines)
-      : complectations = List.generate(
-            stringDotations.length,
-            (index) => ParameterOption(stringDotations[index],
-                nameAr: stringDotations[index],
-                nameFr: stringDotations[index])),
+  final String markTitle;
+  final String modelTitle;
+
+  CarFilter({
+    required this.markId,
+    required this.modelId,
+    required this.markTitle,
+    required this.modelTitle,
+    required List stringDotations,
+    required List stringEngines,
+  })  : complectations = List.generate(
+          stringDotations.length,
+          (index) => ParameterOption(
+            stringDotations[index]['id'],
+            nameAr: stringDotations[index]['nameAr'],
+            nameFr: stringDotations[index]['nameFr'],
+          ),
+        ),
         engines = List.generate(
-            stringEngines.length,
-            (index) => ParameterOption(stringEngines[index],
-                nameAr: stringEngines[index], nameFr: stringEngines[index]));
+          stringEngines.length,
+          (index) => ParameterOption(
+            stringEngines[index]['id'],
+            nameAr: stringEngines[index]['nameAr'],
+            nameFr: stringEngines[index]['nameFr'],
+          ),
+        );
 
   SelectParameter get dotation => SelectParameter(
       key: 'Dotation',
@@ -26,5 +41,9 @@ class AutoFilter {
       frName: 'Dotation');
 
   SelectParameter get engine => SelectParameter(
-      key: 'engines', variants: engines, arName: 'المحرك', frName: 'Moteur');
+        key: 'engines',
+        variants: engines,
+        arName: 'المحرك',
+        frName: 'Moteur',
+      );
 }

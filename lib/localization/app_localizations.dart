@@ -1054,6 +1054,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mark'**
   String get mark;
+
+  /// No description provided for @choosingCarBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Choosing a car brand'**
+  String get choosingCarBrand;
+
+  /// No description provided for @choosingMark.
+  ///
+  /// In en, this message translates to:
+  /// **'Choosing mark'**
+  String get choosingMark;
+
+  /// No description provided for @specifyPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Specify place'**
+  String get specifyPlace;
+
+  /// No description provided for @change.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get change;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading'**
+  String get loading;
+
+  /// No description provided for @notFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing was found'**
+  String get notFound;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

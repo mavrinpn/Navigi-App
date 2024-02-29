@@ -1,3 +1,5 @@
+const String carSubcategoryId = '65d45e64812538dfea60';
+
 const String mainDatabase = 'annonces';
 
 const String postCollection = 'anounces';

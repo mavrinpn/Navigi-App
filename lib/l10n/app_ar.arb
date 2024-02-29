@@ -163,5 +163,11 @@
 "withSuccess": "بنجاح",
 "save": "يحفظ",
 "placeApplicationSettings": "ضع إعدادات التطبيق",
-"mark": "مارك"
+"mark": "مارك",
+"choosingCarBrand": "اختيار ماركة السيارة",
+"choosingMark": "اختيار علامة",
+"specifyPlace": "حدد المكان",
+"change": "التغيير",
+"loading": "تحميل",
+"notFound": "لم يتم العثور على شيء"
 }

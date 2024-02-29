@@ -7,7 +7,9 @@ class CategoriesService {
 
   Future<List<Category>> getAllCategories() async {
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase, collectionId: categoriesCollection);
+      databaseId: mainDatabase,
+      collectionId: categoriesCollection,
+    );
 
     List<Category> categories = [];
     for (var doc in res.documents) {
@@ -21,9 +23,10 @@ class CategoriesService {
       String categoryID) async {
     List<Subcategory> subcategories = <Subcategory>[];
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: subcategoriesCollection,
-        queries: [Query.equal(categoryId, categoryID), Query.limit(1000)]);
+      databaseId: mainDatabase,
+      collectionId: subcategoriesCollection,
+      queries: [Query.equal(categoryId, categoryID), Query.limit(1000)],
+    );
 
     for (var doc in res.documents) {
       subcategories.add(Subcategory.fromJson(doc.data));
@@ -50,12 +53,13 @@ class CategoriesService {
       String subcategoryID) async {
     List<Subcategory> subcategories = <Subcategory>[];
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: subcategoriesCollection,
-        queries: [
-          Query.equal('subcategoryId', subcategoryID),
-          Query.limit(1000)
-        ]);
+      databaseId: mainDatabase,
+      collectionId: subcategoriesCollection,
+      queries: [
+        Query.equal('subcategoryId', subcategoryID),
+        Query.limit(1000),
+      ],
+    );
 
     for (var doc in res.documents) {
       subcategories.add(Subcategory.fromJson(doc.data));
@@ -146,19 +150,44 @@ class CategoriesService {
         subcategoryId: res.data['subcategory']);
   }
 
-  Future<List<Mark>> getAutoMarks() async {
+  Future<List<Mark>> getCarMarks(String subcategory) async {
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase, collectionId: 'manufacturers');
+        databaseId: mainDatabase,
+        collectionId: 'manufacturerSubcategory',
+        queries: [
+          Query.equal('subcategoryId', subcategory),
+          Query.limit(1000)
+        ]);
 
     List<Mark> marks = <Mark>[];
     for (var i in res.documents) {
-      marks.add(Mark(i.$id, i.data['name']));
+      marks.add(Mark(
+          i.data['manufacturers']['\$id'], i.data['manufacturers']['name']));
     }
 
     marks.sort((a, b) => a.name.compareTo(b.name));
 
     return marks;
   }
+
+  // Future<List<Mark>> getCarMarks() async {
+  //   final res = await _databases.listDocuments(
+  //     databaseId: mainDatabase,
+  //     collectionId: 'manufacturers',
+  //     queries: [
+  //       Query.limit(1000),
+  //     ],
+  //   );
+
+  //   List<Mark> marks = <Mark>[];
+  //   for (var i in res.documents) {
+  //     marks.add(Mark(i.$id, i.data['name']));
+  //   }
+
+  //   marks.sort((a, b) => a.name.compareTo(b.name));
+
+  //   return marks;
+  // }
 
   Future<List<Mark>> getSubcategoryMarks(String subcategory) async {
     final res = await _databases.listDocuments(
@@ -180,8 +209,10 @@ class CategoriesService {
     return marks;
   }
 
-  Future<List<MarkModel>> getSubcategoryMarksModels(
-      {required String subcategory, required String mark}) async {
+  Future<List<MarkModel>> getSubcategoryMarksModels({
+    required String subcategory,
+    required String mark,
+  }) async {
     final query = [
       Query.equal('subcategoryId', subcategory),
       Query.equal('manufacturerId', mark),
@@ -189,7 +220,10 @@ class CategoriesService {
     ];
 
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase, collectionId: 'models', queries: query);
+      databaseId: mainDatabase,
+      collectionId: 'models',
+      queries: query,
+    );
 
     List<MarkModel> models = <MarkModel>[];
     for (var i in res.documents) {
@@ -201,21 +235,78 @@ class CategoriesService {
     return models;
   }
 
-  Future<List<AutoModel>> getAutoModels(String markId) async {
+  Future<List<CarModel>> getCarModels({
+    required String subcategory,
+    required String mark,
+  }) async {
+    final query = [
+      Query.equal('subcategoryId', subcategory),
+      Query.equal('manufacturerId', mark),
+      Query.limit(1000)
+    ];
+
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: 'models',
-        queries: [Query.equal('markId', markId)]);
+      databaseId: mainDatabase,
+      collectionId: 'models',
+      queries: query,
+    );
 
-    List<AutoModel> models = <AutoModel>[];
-
+    List<CarModel> models = <CarModel>[];
     for (var doc in res.documents) {
-      models.add(AutoModel(doc.$id, doc.data['name'],
-          doc.data['complectations'], doc.data['engines']));
+      String paramsString = doc.data['parameters'] as String;
+      paramsString = paramsString.replaceAll("'", '"');
+      final params = jsonDecode(paramsString) as List;
+
+      String complectations = '';
+      String engines = '';
+      for (var param in params) {
+        final paramMap = param as Map<String, dynamic>;
+        final id = paramMap['id'] as String;
+        if (id == 'complectation') {
+          final type = paramMap['type'] as String;
+          if (type == 'option') {
+            final options = paramMap['options'] as List;
+            complectations = jsonEncode(options);
+          }
+        } else if (id == 'engine') {
+          final type = paramMap['type'] as String;
+          if (type == 'option') {
+            final options = paramMap['options'] as List;
+            engines = jsonEncode(options);
+          }
+        }
+      }
+
+      models.add(
+        CarModel(
+          doc.$id,
+          doc.data['name'],
+          complectations,
+          engines,
+        ),
+      );
     }
 
     models.sort((a, b) => a.name.compareTo(b.name));
 
     return models;
   }
+
+  // Future<List<CarModel>> getCarModels(String markId) async {
+  //   final res = await _databases.listDocuments(
+  //       databaseId: mainDatabase,
+  //       collectionId: 'models',
+  //       queries: [Query.equal('markId', markId)]);
+
+  //   List<CarModel> models = <CarModel>[];
+
+  //   for (var doc in res.documents) {
+  //     models.add(CarModel(doc.$id, doc.data['name'], doc.data['complectations'],
+  //         doc.data['engines']));
+  //   }
+
+  //   models.sort((a, b) => a.name.compareTo(b.name));
+
+  //   return models;
+  // }
 }

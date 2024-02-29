@@ -65,7 +65,7 @@ class _SearchScreenState extends State<SearchScreen> {
     searchManager = RepositoryProvider.of<SearchManager>(context);
     if (widget.queryString != null && !_isSearched) {
       _isSearched = true;
-      //TODO
+      //TODO remove Future.delayed
       Future.delayed(const Duration(seconds: 1)).then((value) {
         setSearch(widget.queryString!, searchManager);
       });

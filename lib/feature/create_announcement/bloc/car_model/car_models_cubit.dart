@@ -7,26 +7,32 @@ import 'package:smart/feature/create_announcement/data/models/auto_model.dart';
 part 'car_models_state.dart';
 
 class CarModelsCubit extends Cubit<CarModelsState> {
-  AutoMarksRepository autoMarksRepository;
+  CarMarksRepository carMarksRepository;
 
-  CarModelsCubit(this.autoMarksRepository) : super(CarModelsInitial());
+  CarModelsCubit(this.carMarksRepository) : super(CarModelsInitial());
 
   List<Mark> marks = [];
 
-  AutoModel? selectedModel;
+  CarModel? selectedModel;
 
-  void getMarks() async {
+  void getMarks(String subcategory) async {
     if (marks.isNotEmpty) return emit(MarksSuccessState());
 
     emit(MarksLoadingState());
-    marks = await autoMarksRepository.getMarks();
+    marks = await carMarksRepository.getMarks(subcategory);
     emit(MarksSuccessState());
   }
 
-  void getModels(String mark) async {
+  void getModels({
+    required String subcategory,
+    required String mark,
+  }) async {
     emit(ModelsLoadingState());
 
-    final models = await autoMarksRepository.getModels(mark);
+    final models = await carMarksRepository.getModels(
+      subcategory: subcategory,
+      markId: mark,
+    );
     emit(ModelsSuccessState(models));
   }
 }

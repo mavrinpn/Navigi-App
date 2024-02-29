@@ -73,15 +73,16 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
             maxPrice: _maxPrice);
       } else {
         await _announcementManager.searchWithSubcategory(
-            subcategoryId: _subcategoryId!,
-            parameters: parameters!,
-            searchText: _lastText,
-            isNew: true,
-            sortBy: _sortBy,
-            minPrice: _minPrice,
-            maxPrice: _maxPrice,
-            mark: marksFilter?.markId,
-            model: marksFilter?.modelId);
+          subcategoryId: _subcategoryId ?? '',
+          parameters: parameters ?? [],
+          searchText: _lastText,
+          isNew: true,
+          sortBy: _sortBy,
+          minPrice: _minPrice,
+          maxPrice: _maxPrice,
+          mark: marksFilter?.markId,
+          model: marksFilter?.modelId,
+        );
       }
 
       emit(SearchAnnouncementsSuccessState());

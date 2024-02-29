@@ -43,7 +43,7 @@ class _SelectMarkScreenState extends State<SelectMarkScreen> {
         backgroundColor: AppColors.empty,
         elevation: 0,
         title: Text(
-          'Select mark', //TODO localize
+          localizations.choosingMark,
           style: AppTypography.font20black,
         ),
       ),

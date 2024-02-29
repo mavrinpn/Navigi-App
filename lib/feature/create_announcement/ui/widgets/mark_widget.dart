@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/marks/select_mark_cubit.dart';
 import 'package:smart/feature/create_announcement/data/models/auto_marks.dart';
 import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
-import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/utils/utils.dart';
 
 class MarkWidget extends StatefulWidget {
@@ -27,7 +26,7 @@ class _MarkWidgetState extends State<MarkWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
+    // final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -36,8 +35,8 @@ class _MarkWidgetState extends State<MarkWidget> {
         InkWell(
           onTap: () {
             if (!widget.needSelectModel) {
-              updateAppBarFilterCubit.needUpdateAppBarFilters();
-              return Navigator.pop(
+              // updateAppBarFilterCubit.needUpdateAppBarFilters();
+              Navigator.pop(
                 context,
                 [
                   MarksFilter(
@@ -99,7 +98,7 @@ class _MarkWidgetState extends State<MarkWidget> {
                   state.models.length,
                   (index) => InkWell(
                     onTap: () {
-                      updateAppBarFilterCubit.needUpdateAppBarFilters();
+                      // updateAppBarFilterCubit.needUpdateAppBarFilters();
                       Navigator.pop(context, [
                         MarksFilter(
                           markId: widget.mark.id,

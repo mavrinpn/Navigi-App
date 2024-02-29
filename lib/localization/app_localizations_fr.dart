@@ -483,4 +483,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get mark => 'Marque';
+
+  @override
+  String get choosingCarBrand => 'La marque de voiture';
+
+  @override
+  String get choosingMark => 'Choix de la marque';
+
+  @override
+  String get specifyPlace => 'Précisez le lieu';
+
+  @override
+  String get change => 'Changement';
+
+  @override
+  String get loading => 'Chargement';
+
+  @override
+  String get notFound => 'Rien n\'a été trouvé';
 }

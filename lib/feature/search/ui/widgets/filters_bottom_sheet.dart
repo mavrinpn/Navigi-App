@@ -7,10 +7,12 @@ import 'package:smart/feature/create_announcement/ui/select_car_model_screen.dar
 import 'package:smart/feature/create_announcement/ui/select_mark_screen.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
+import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/feature/search/ui/widgets/single_filter_bottom_sheet.dart';
 import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
 import 'package:smart/models/item/item.dart';
+import 'package:smart/utils/constants.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/utils/utils.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
@@ -87,20 +89,22 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
 
   void changeRadius(double value) {}
 
-  List<MarksFilter> filters = [];
+  dynamic choosedMarksFilter;
+  dynamic choosedCarFilter;
 
   String locale() => MyApp.getLocale(context) ?? 'fr';
 
   @override
   Widget build(BuildContext context) {
-    final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
     final localizations = AppLocalizations.of(context)!;
-    if (searchCubit.marksFilter != null) {
-      filters = [searchCubit.marksFilter!];
-    }
 
+    final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
     final selectCategoryCubit =
         BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+    final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
+
+    choosedMarksFilter = searchCubit.marksFilter;
+    choosedCarFilter = selectCategoryCubit.autoFilter;
 
     final TextEditingController minPriceController =
         TextEditingController(text: searchCubit.minPrice.toString());
@@ -140,7 +144,18 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                       ),
                       InkWell(
                         onTap: () {
+                          updateAppBarFilterCubit.needUpdateAppBarFilters();
                           searchCubit.clearFilters();
+                          selectCategoryCubit.clearFilters();
+                          for (var param in selectCategoryCubit.parameters) {
+                            if (param is SelectParameter) {
+                              param.selectedVariants = [];
+                            } else if (param is MinMaxParameter) {
+                              param.min = null;
+                              param.max = null;
+                            }
+                          }
+
                           setState(() {});
                         },
                         child: Text(
@@ -166,42 +181,64 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                   // currentVariable: SortTypes.frTranslates[searchCubit.sortBy]!,
                   currentKey: searchCubit.sortBy,
                 ),
-                if (selectCategoryCubit.needAddAutoSelectButton &&
-                    selectCategoryCubit.autoFilter == null) ...[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: InkWell(
-                      onTap: () {
-                        print('SelectCarModelScreen');
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const SelectCarModelScreen(
-                                      needSelectModel: true,
-                                    ))).then((value) {
-                          selectCategoryCubit.setAutoFilter(value);
-                          setState(() {});
-                        });
-                      },
-                      child: Row(
-                        children: [
-                          Text(
-                            locale() == 'fr'
-                                ? 'Choisir une marque'
-                                : 'اختر علامة تجارية',
-                            style: AppTypography.font16black
-                                .copyWith(fontSize: 18),
+                // if (selectCategoryCubit.needAddCarSelectButton &&
+                // selectCategoryCubit.autoFilter == null)
+                if (selectCategoryCubit.subcategoryId == carSubcategoryId) ...[
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => SelectCarModelScreen(
+                            needSelectModel: true,
+                            subcategory: selectCategoryCubit.subcategoryId!,
                           ),
-                        ],
-                      ),
+                        ),
+                      ).then((filter) {
+                        if (filter != null) {
+                          setState(() {
+                            choosedCarFilter = filter;
+                          });
+                          selectCategoryCubit.setAutoFilter(filter);
+                          setState(() {});
+                        }
+                        updateAppBarFilterCubit.needUpdateAppBarFilters();
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          localizations.choosingCarBrand,
+                          style:
+                              AppTypography.font16black.copyWith(fontSize: 18),
+                        ),
+                        const Spacer(),
+                        choosedCarFilter == null
+                            ? const Icon(
+                                Icons.arrow_forward_ios_outlined,
+                                size: 16,
+                                color: AppColors.lightGray,
+                              )
+                            : const Icon(
+                                Icons.keyboard_arrow_down_sharp,
+                                color: AppColors.lightGray,
+                              )
+                      ],
                     ),
                   ),
+                  if (choosedCarFilter != null) ...[
+                    const SizedBox(height: 16),
+                    Text(
+                      '${choosedCarFilter.markTitle} ${choosedCarFilter.modelTitle}',
+                      style: AppTypography.font18lightGray,
+                    ),
+                  ],
+                  const SizedBox(height: 24),
                 ],
                 if (selectCategoryCubit.subcategoryFilters != null &&
-                    selectCategoryCubit.subcategoryFilters!.hasMark) ...[
-                  const SizedBox(
-                    height: 16,
-                  ),
+                    selectCategoryCubit.subcategoryFilters!.hasMark &&
+                    selectCategoryCubit.subcategoryId != carSubcategoryId) ...[
+                  const SizedBox(height: 16),
                   InkWell(
                     onTap: () async {
                       final needSelectModel =
@@ -218,7 +255,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
 
                       if (filter != null && filter.isNotEmpty) {
                         setState(() {
-                          filters = filter;
+                          choosedMarksFilter = filter.first;
                         });
                         searchCubit.setMarksFilter(filter.first);
                       }
@@ -226,14 +263,12 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                     child: Row(
                       children: [
                         Text(
-                          locale() == 'fr'
-                              ? 'Choisir une marque'
-                              : 'اختر علامة تجارية',
+                          localizations.choosingMark,
                           style:
                               AppTypography.font16black.copyWith(fontSize: 18),
                         ),
                         const Spacer(),
-                        filters.isEmpty
+                        choosedMarksFilter == null
                             ? const Icon(
                                 Icons.arrow_forward_ios_outlined,
                                 size: 16,
@@ -246,10 +281,10 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                       ],
                     ),
                   ),
-                  if (filters.isNotEmpty) ...[
+                  if (choosedMarksFilter != null) ...[
                     const SizedBox(height: 16),
                     Text(
-                      '${filters.first.markTitle} ${filters.first.modelTitle}',
+                      '${choosedMarksFilter.markTitle} ${choosedMarksFilter.modelTitle}',
                       style: AppTypography.font18lightGray,
                     ),
                   ],

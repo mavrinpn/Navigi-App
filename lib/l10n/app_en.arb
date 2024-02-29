@@ -163,5 +163,11 @@
 "withSuccess": "With success",
 "save": "Save",
 "placeApplicationSettings": "Place application settings",
-"mark": "Mark"
+"mark": "Mark",
+"choosingCarBrand": "Choosing a car brand",
+"choosingMark": "Choosing mark",
+"specifyPlace": "Specify place",
+"change": "Change",
+"loading": "Loading",
+"notFound": "Nothing was found"
 }

@@ -483,4 +483,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mark => 'Mark';
+
+  @override
+  String get choosingCarBrand => 'Choosing a car brand';
+
+  @override
+  String get choosingMark => 'Choosing mark';
+
+  @override
+  String get specifyPlace => 'Specify place';
+
+  @override
+  String get change => 'Change';
+
+  @override
+  String get loading => 'Loading';
+
+  @override
+  String get notFound => 'Nothing was found';
 }
