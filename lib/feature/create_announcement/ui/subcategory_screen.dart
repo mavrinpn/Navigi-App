@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/item_search/item_search_cubit.dart';
-import 'package:smart/feature/create_announcement/data/models/auto_filter.dart';
+import 'package:smart/feature/create_announcement/data/models/car_filter.dart';
 import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
 import 'package:smart/feature/create_announcement/ui/select_car_model_screen.dart';
 import 'package:smart/feature/create_announcement/ui/select_mark_screen.dart';

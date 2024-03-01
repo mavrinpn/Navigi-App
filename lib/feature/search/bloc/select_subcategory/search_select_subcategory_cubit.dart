@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:smart/feature/create_announcement/data/models/auto_filter.dart';
+import 'package:smart/feature/create_announcement/data/models/car_filter.dart';
 import 'package:smart/managers/categories_manager.dart';
 import 'package:smart/models/item/subcategory_filters.dart';
 import 'package:smart/models/models.dart';

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:smart/feature/create_announcement/data/marks_repository.dart';
-import 'package:smart/feature/create_announcement/data/models/auto_marks.dart';
+import 'package:smart/feature/create_announcement/data/models/mark.dart';
 import 'package:smart/feature/create_announcement/data/models/mark_model.dart';
 
 part 'select_mark_state.dart';

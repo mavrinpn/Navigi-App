@@ -13,6 +13,7 @@ class Room {
   String? otherUserAvatarUrl;
   String otherUserId;
   String otherUserName;
+  String otherUserPhone;
   Message? lastMessage;
   Announcement announcement;
   final Future<bool> Function(String)? onlineGetter;
@@ -20,23 +21,27 @@ class Room {
 
   final BehaviorSubject<bool> onlineRefreshStream = BehaviorSubject();
 
-  Room({required this.id,
+  Room({
+    required this.id,
     required this.chatName,
     required this.otherUserId,
     required this.otherUserName,
+    required this.otherUserPhone,
     required this.otherUserAvatarUrl,
     required this.announcement,
     this.lastMessage,
-    this.onlineGetter}) {
+    this.onlineGetter,
+  }) {
     _refreshOnlineStatus();
   }
 
-  Room.fromDocument(Document doc, Future<Uint8List> announcementImage,
-      ChatUserInfo otherUser,
+  Room.fromDocument(
+      Document doc, Future<Uint8List> announcementImage, ChatUserInfo otherUser,
       {this.onlineGetter})
       : announcement = Announcement.fromJson(
-      json: doc.data['announcement'], futureBytes: announcementImage),
+            json: doc.data['announcement'], futureBytes: announcementImage),
         chatName = '${otherUser.name} ${doc.data['announcement']['name']}',
+        otherUserPhone = otherUser.phone,
         otherUserId = otherUser.id,
         otherUserAvatarUrl = otherUser.image,
         otherUserName = otherUser.name,
@@ -61,8 +66,6 @@ class Room {
     final dt = DateTime.parse(lastMessage!.createdAt);
     final otherDt = DateTime.parse(other.lastMessage!.createdAt);
 
-    return otherDt
-        .difference(dt)
-        .inSeconds;
+    return otherDt.difference(dt).inSeconds;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/marks/select_mark_cubit.dart';
-import 'package:smart/feature/create_announcement/data/models/auto_marks.dart';
+import 'package:smart/feature/create_announcement/data/models/mark.dart';
 import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
 import 'package:smart/utils/utils.dart';
 
@@ -57,7 +57,6 @@ class _MarkWidgetState extends State<MarkWidget> {
 
             setState(() {
               opened = !opened;
-              // print('set opened to $opened on widget ${widget.mark.id}');
             });
           },
           child: Container(
@@ -91,7 +90,6 @@ class _MarkWidgetState extends State<MarkWidget> {
             }
 
             if (state is ModelsGotState) {
-              // print('models length: ${state.models.length}');
               if (state.models.isNotEmpty) {
                 return Column(
                     children: List.generate(

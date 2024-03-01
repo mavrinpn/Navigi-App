@@ -5,7 +5,10 @@ abstract class CarModelsState {}
 
 class CarModelsInitial extends CarModelsState {}
 
-class ModelsLoadingState extends CarModelsState {}
+class ModelsLoadingState extends CarModelsState {
+  final String markId;
+  ModelsLoadingState(this.markId);
+}
 
 class ModelsSuccessState extends CarModelsState {
   final List<CarModel> models;

@@ -5,7 +5,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:smart/feature/create_announcement/data/models/auto_filter.dart';
+import 'package:smart/feature/create_announcement/data/models/car_filter.dart';
 import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/models/item/subcategory_filters.dart';

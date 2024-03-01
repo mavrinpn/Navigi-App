@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:smart/feature/create_announcement/data/auto_repository.dart';
-import 'package:smart/feature/create_announcement/data/models/auto_marks.dart';
-import 'package:smart/feature/create_announcement/data/models/auto_model.dart';
+import 'package:smart/feature/create_announcement/data/car_marks_repository.dart';
+import 'package:smart/feature/create_announcement/data/models/mark.dart';
+import 'package:smart/feature/create_announcement/data/models/car_model.dart';
 
 part 'car_models_state.dart';
 
@@ -27,7 +27,7 @@ class CarModelsCubit extends Cubit<CarModelsState> {
     required String subcategory,
     required String mark,
   }) async {
-    emit(ModelsLoadingState());
+    emit(ModelsLoadingState(mark));
 
     final models = await carMarksRepository.getModels(
       subcategory: subcategory,

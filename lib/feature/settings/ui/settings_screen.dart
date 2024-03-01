@@ -59,14 +59,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    localizations.placeApplicationSettings,
-                    style: AppTypography.font20black,
-                  ),
-                ],
+              child: Text(
+                localizations.placeApplicationSettings,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style: AppTypography.font20black,
               ),
             )
           ],

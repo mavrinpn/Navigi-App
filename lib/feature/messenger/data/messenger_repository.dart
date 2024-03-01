@@ -177,6 +177,7 @@ class MessengerRepository {
         chatName: '',
         otherUserId: announcement.creatorData.uid,
         otherUserName: announcement.creatorData.name,
+        otherUserPhone: announcement.creatorData.phone,
         otherUserAvatarUrl: announcement.creatorData.imageUrl,
         announcement: announcement);
 

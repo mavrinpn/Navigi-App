@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/car_model/car_models_cubit.dart';
-import 'package:smart/feature/create_announcement/data/models/auto_filter.dart';
-import 'package:smart/feature/create_announcement/data/models/auto_marks.dart';
+import 'package:smart/feature/create_announcement/data/models/car_filter.dart';
+import 'package:smart/feature/create_announcement/data/models/mark.dart';
 import 'package:smart/utils/utils.dart';
 
 class CarMarkWidget extends StatefulWidget {
@@ -71,6 +71,11 @@ class _CarMarkWidgetState extends State<CarMarkWidget> {
         if (opened) ...[
           BlocBuilder<CarModelsCubit, CarModelsState>(
               builder: (context, state) {
+            if (state is ModelsLoadingState) {
+              if (state.markId != widget.mark.id) {
+                opened = false;
+              }
+            }
             if (state is ModelsSuccessState) {
               return Column(
                   children: List.generate(
@@ -78,8 +83,8 @@ class _CarMarkWidgetState extends State<CarMarkWidget> {
                 (index) => InkWell(
                   onTap: () {
                     final filter = CarFilter(
-                      markId:  widget.mark.id,
-                      modelId:  state.models[index].id,
+                      markId: widget.mark.id,
+                      modelId: state.models[index].id,
                       markTitle: widget.mark.name,
                       modelTitle: state.models[index].name,
                       stringDotations: state.models[index].variants,

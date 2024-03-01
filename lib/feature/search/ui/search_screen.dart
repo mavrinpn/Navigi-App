@@ -41,7 +41,6 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final searchController = TextEditingController();
   final _controller = ScrollController();
-  late SearchManager searchManager;
   bool _isSearched = false;
 
   @override
@@ -62,15 +61,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void didChangeDependencies() {
-    searchManager = RepositoryProvider.of<SearchManager>(context);
-    if (widget.queryString != null && !_isSearched) {
-      _isSearched = true;
-      //TODO remove Future.delayed
-      Future.delayed(const Duration(seconds: 1)).then((value) {
-        setSearch(widget.queryString!, searchManager);
-      });
-    }
-
     context.watch<SearchSelectSubcategoryCubit>();
     super.didChangeDependencies();
   }
@@ -89,13 +79,13 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final searchManager = RepositoryProvider.of<SearchManager>(context);
+    
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final localizations = AppLocalizations.of(context)!;
     final announcementRepository =
         RepositoryProvider.of<AnnouncementManager>(context);
-
-    searchManager = RepositoryProvider.of<SearchManager>(context);
 
     searchController.selection = TextSelection(
         baseOffset: searchController.text.length,
@@ -248,7 +238,15 @@ class _SearchScreenState extends State<SearchScreen> {
           appBar: searchAppBar,
           body: Stack(
             children: [
-              BlocBuilder<SearchAnnouncementCubit, SearchAnnouncementState>(
+              BlocConsumer<SearchAnnouncementCubit, SearchAnnouncementState>(
+                listener: (context, state) {
+                  if (state is SearchAnnouncementsSuccessState) {
+                    if (widget.queryString != null && !_isSearched) {
+                      _isSearched = true;
+                      setSearch(widget.queryString!, searchManager);
+                    }
+                  }
+                },
                 builder: (context, state) {
                   return BlocBuilder<SearchAnnouncementCubit,
                       SearchAnnouncementState>(

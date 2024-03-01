@@ -1,4 +1,4 @@
-import 'package:smart/feature/create_announcement/data/models/auto_marks.dart';
+import 'package:smart/feature/create_announcement/data/models/mark.dart';
 import 'package:smart/feature/create_announcement/data/models/mark_model.dart';
 import 'package:smart/services/database/database_service.dart';
 

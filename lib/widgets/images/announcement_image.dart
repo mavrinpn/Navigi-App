@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:smart/models/announcement.dart';
 
@@ -21,7 +23,7 @@ class AnnouncementImage extends StatelessWidget {
             borderRadius: BorderRadius.circular(6),
             child: snapshot.hasData
                 ? Image.memory(
-                    announcement.bytes,
+                    announcement.bytes ?? Uint8List(0),
                     fit: BoxFit.cover,
                     width: width,
                     height: height,

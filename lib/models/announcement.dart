@@ -21,7 +21,7 @@ class Announcement {
   final CreatorData creatorData;
   late final Widget previewImage;
   final String _createdAt;
-  late final Uint8List bytes;
+  Uint8List? bytes;
   final Future<Uint8List> futureBytes;
   bool liked;
   final String? itemId;

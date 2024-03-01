@@ -14,6 +14,7 @@ import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/feature/messenger/ui/widgets/announcement_short_info.dart';
 import 'package:smart/feature/messenger/ui/widgets/date_splitter_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../data/messenger_repository.dart';
 
@@ -63,9 +64,19 @@ class _ChatScreenState extends State<ChatScreen> {
         },
         child: Scaffold(
           resizeToAvoidBottomInset: true,
+          backgroundColor: AppColors.backgroundLightGray,
           appBar: AppBar(
             backgroundColor: AppColors.mainBackground,
             automaticallyImplyLeading: false,
+            actions: [
+              IconButton(
+                onPressed: () {
+                  launchUrl(Uri.parse(
+                      'tel://${repository.currentRoom!.otherUserName}'));
+                },
+                icon: SvgPicture.asset('Assets/icons/phone.svg'),
+              ),
+            ],
             title: Row(
               children: [
                 GestureDetector(
@@ -82,17 +93,17 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: 18,
-                ),
+                const SizedBox(width: 10),
                 CircleAvatar(
                   radius: 20,
-                  backgroundImage:  (repository.currentRoom!.otherUserAvatarUrl ?? '').isNotEmpty ?  NetworkImage(
-                      repository.currentRoom!.otherUserAvatarUrl ?? '') : null,
+                  backgroundImage:
+                      (repository.currentRoom!.otherUserAvatarUrl ?? '')
+                              .isNotEmpty
+                          ? NetworkImage(
+                              repository.currentRoom!.otherUserAvatarUrl ?? '')
+                          : null,
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
+                const SizedBox(width: 10),
                 Text(
                   repository.currentRoom!.otherUserName,
                   style: AppTypography.font12lightGray,
@@ -120,75 +131,78 @@ class _ChatScreenState extends State<ChatScreen> {
               ],
             ),
           ),
-          body: Center(
-            child: Column(
-              children: [
-                Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: AnnouncementShortInfo(
-                        announcement: repository.currentRoom!.announcement)),
-                Expanded(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                    child: StreamBuilder<List<ChatItem>>(
-                        stream: repository.currentChatItemsStream,
-                        initialData: const [],
-                        builder: (context, snapshot) {
-                          return ListView.builder(
-                              itemBuilder: (ctx, i) {
-                                final item = snapshot.data![i];
-                                return item is MessagesGroupData
-                                    ? MessageGroupWidget(
-                                        data: item,
-                                        avatarUrl: repository.currentRoom!
-                                                .otherUserAvatarUrl ??
-                                            '')
-                                    : DateSplitterWidget(
-                                        data: item as DateSplitter);
-                              },
-                              itemCount: snapshot.data!.length,
-                              reverse: true);
-                        }),
+          body: SafeArea(
+            child: Container(
+              color: AppColors.mainBackground,
+              child: Column(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: AnnouncementShortInfo(
+                          announcement: repository.currentRoom!.announcement)),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 8),
+                      child: StreamBuilder<List<ChatItem>>(
+                          stream: repository.currentChatItemsStream,
+                          initialData: const [],
+                          builder: (context, snapshot) {
+                            return ListView.builder(
+                                itemBuilder: (ctx, i) {
+                                  final item = snapshot.data![i];
+                                  return item is MessagesGroupData
+                                      ? MessageGroupWidget(
+                                          data: item,
+                                          avatarUrl: repository.currentRoom!
+                                                  .otherUserAvatarUrl ??
+                                              '')
+                                      : DateSplitterWidget(
+                                          data: item as DateSplitter);
+                                },
+                                itemCount: snapshot.data!.length,
+                                reverse: true);
+                          }),
+                    ),
                   ),
-                ),
-                if (preparing) ...[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      AppAnimations.bouncingLine,
-                      const SizedBox(
-                        width: 15,
-                      ),
-                    ],
+                  if (preparing) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        AppAnimations.bouncingLine,
+                        const SizedBox(
+                          width: 15,
+                        ),
+                      ],
+                    )
+                  ],
+                  ChatInput(
+                    messageController: messageController,
+                    onChange: (s) {
+                      setState(() {});
+                    },
+                    send: () async {
+                      if (images.isNotEmpty) {
+                        BlocProvider.of<MessageImagesCubit>(context)
+                            .sendImages(images);
+                        return;
+                      }
+                      if (messageController.text.isNotEmpty) {
+                        setState(() {
+                          preparing = true;
+                        });
+
+                        await repository.sendMessage(messageController.text);
+                        setState(() {
+                          messageController.text = '';
+                          preparing = false;
+                        });
+                      }
+                    },
+                    images: images,
                   )
                 ],
-                ChatInput(
-                  messageController: messageController,
-                  onChange: (s) {
-                    setState(() {});
-                  },
-                  send: () async {
-                    if (images.isNotEmpty) {
-                      BlocProvider.of<MessageImagesCubit>(context)
-                          .sendImages(images);
-                      return;
-                    }
-                    if (messageController.text.isNotEmpty) {
-                      setState(() {
-                        preparing = true;
-                      });
-
-                      await repository.sendMessage(messageController.text);
-                      setState(() {
-                        messageController.text = '';
-                        preparing = false;
-                      });
-                    }
-                  },
-                  images: images,
-                )
-              ],
+              ),
             ),
           ),
         ),

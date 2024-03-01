@@ -13,7 +13,7 @@ import 'package:smart/feature/create_announcement/bloc/item_search/item_search_c
 import 'package:smart/feature/create_announcement/bloc/marks/select_mark_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/subcategory/subcategory_cubit.dart';
-import 'package:smart/feature/create_announcement/data/auto_repository.dart';
+import 'package:smart/feature/create_announcement/data/car_marks_repository.dart';
 import 'package:smart/feature/create_announcement/data/marks_repository.dart';
 import 'package:smart/feature/messenger/bloc/message_images_cubit.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';

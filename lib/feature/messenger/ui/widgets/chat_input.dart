@@ -60,27 +60,31 @@ class _ChatInputState extends State<ChatInput> {
                     height: 40,
                   ),
                 ),
-                SizedBox(
-                  height: 40,
-                  width: 260,
-                  child: TextField(
-                    controller: widget.messageController,
-                    onChanged: widget.onChange,
-                    cursorColor: AppColors.red,
-                    cursorWidth: 1,
-                    decoration: InputDecoration(
-                        hintText: localizations.messages,
-                        hintStyle: AppTypography.font14lightGray,
-                        contentPadding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
-                        focusedBorder: messageTextFieldBorder,
-                        enabledBorder: messageTextFieldBorder,
-                        disabledBorder: messageTextFieldBorder,
-                        border: messageTextFieldBorder,
-                        fillColor: Colors.white,
-                        filled: true),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: SizedBox(
+                    height: 40,
+                    child: TextField(
+                      controller: widget.messageController,
+                      onChanged: widget.onChange,
+                      cursorColor: AppColors.red,
+                      cursorWidth: 1,
+                      decoration: InputDecoration(
+                          hintText: localizations.messages,
+                          hintStyle: AppTypography.font14lightGray,
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(12, 4, 12, 4),
+                          focusedBorder: messageTextFieldBorder,
+                          enabledBorder: messageTextFieldBorder,
+                          disabledBorder: messageTextFieldBorder,
+                          border: messageTextFieldBorder,
+                          fillColor: Colors.white,
+                          filled: true),
+                    ),
                   ),
                 )
               ],
+              const SizedBox(width: 12),
               InkWell(
                 onTap: widget.send,
                 child: Container(
@@ -94,8 +98,6 @@ class _ChatInputState extends State<ChatInput> {
                   height: 40,
                   child: SvgPicture.asset(
                     'Assets/icons/send.svg',
-                    width: 20,
-                    height: 20,
                     colorFilter: ColorFilter.mode(
                       widget.messageController.text.isNotEmpty ||
                               widget.images.isNotEmpty

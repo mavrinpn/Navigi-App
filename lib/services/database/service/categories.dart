@@ -254,6 +254,7 @@ class CategoriesService {
     List<CarModel> models = <CarModel>[];
     for (var doc in res.documents) {
       String paramsString = doc.data['parameters'] as String;
+      //TODO remove replaceAll
       paramsString = paramsString.replaceAll("'", '"');
       final params = jsonDecode(paramsString) as List;
 
