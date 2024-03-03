@@ -8,6 +8,7 @@ import 'package:smart/feature/create_announcement/ui/select_mark_screen.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
+import 'package:smart/feature/search/ui/widgets/filters/city_area_filter_widget.dart';
 import 'package:smart/feature/search/ui/widgets/single_filter_bottom_sheet.dart';
 import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
@@ -40,7 +41,11 @@ void showFilterBottomSheet({
       if (parameterKey != null) {
         return SingleFilterBottomSheet(parameterKey: parameterKey);
       } else {
-        return const FiltersBottomSheet();
+        return Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: const FiltersBottomSheet(),
+        );
       }
     },
   );
@@ -62,6 +67,8 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
   bool radiusOptionShown = false;
   double sliderValue = 0;
 
+  String? selectedCityId;
+  String? selectedAreaId;
   double kilometerRatio = 100;
 
   void requestLocation() async {
@@ -172,186 +179,22 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                   maxPriseController: maxPriceController,
                 ),
                 CustomDropDownSingleCheckBox(
+                  icon: 'Assets/icons/tirage.svg',
                   parameter: searchCubit.sortTypesParameter,
                   onChange: (parametrOption) {
                     searchCubit.sortTypesParameter.setVariant(parametrOption);
                     searchCubit.sortType = parametrOption.key;
                     setState(() {});
                   },
-                  // currentVariable: SortTypes.frTranslates[searchCubit.sortBy]!,
                   currentKey: searchCubit.sortBy,
                 ),
-                // if (selectCategoryCubit.needAddCarSelectButton &&
-                // selectCategoryCubit.autoFilter == null)
-                if (selectCategoryCubit.subcategoryId == carSubcategoryId) ...[
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => SelectCarModelScreen(
-                            needSelectModel: true,
-                            subcategory: selectCategoryCubit.subcategoryId!,
-                          ),
-                        ),
-                      ).then((filter) {
-                        if (filter != null) {
-                          setState(() {
-                            choosedCarFilter = filter;
-                          });
-                          selectCategoryCubit.setAutoFilter(filter);
-                          setState(() {});
-                        }
-                        updateAppBarFilterCubit.needUpdateAppBarFilters();
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        Text(
-                          localizations.choosingCarBrand,
-                          style:
-                              AppTypography.font16black.copyWith(fontSize: 18),
-                        ),
-                        const Spacer(),
-                        choosedCarFilter == null
-                            ? const Icon(
-                                Icons.arrow_forward_ios_outlined,
-                                size: 16,
-                                color: AppColors.lightGray,
-                              )
-                            : const Icon(
-                                Icons.keyboard_arrow_down_sharp,
-                                color: AppColors.lightGray,
-                              )
-                      ],
-                    ),
-                  ),
-                  if (choosedCarFilter != null) ...[
-                    const SizedBox(height: 16),
-                    Text(
-                      '${choosedCarFilter.markTitle} ${choosedCarFilter.modelTitle}',
-                      style: AppTypography.font18lightGray,
-                    ),
-                  ],
-                  const SizedBox(height: 24),
-                ],
+                if (selectCategoryCubit.subcategoryId == carSubcategoryId)
+                  ..._buildCarMarkWidget(context),
                 if (selectCategoryCubit.subcategoryFilters != null &&
                     selectCategoryCubit.subcategoryFilters!.hasMark &&
-                    selectCategoryCubit.subcategoryId != carSubcategoryId) ...[
-                  const SizedBox(height: 16),
-                  InkWell(
-                    onTap: () async {
-                      final needSelectModel =
-                          selectCategoryCubit.subcategoryFilters!.hasModel;
-                      final List<MarksFilter>? filter = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => SelectMarkScreen(
-                            needSelectModel: needSelectModel,
-                            subcategory: selectCategoryCubit.subcategoryId!,
-                          ),
-                        ),
-                      );
-
-                      if (filter != null && filter.isNotEmpty) {
-                        setState(() {
-                          choosedMarksFilter = filter.first;
-                        });
-                        searchCubit.setMarksFilter(filter.first);
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        Text(
-                          localizations.choosingMark,
-                          style:
-                              AppTypography.font16black.copyWith(fontSize: 18),
-                        ),
-                        const Spacer(),
-                        choosedMarksFilter == null
-                            ? const Icon(
-                                Icons.arrow_forward_ios_outlined,
-                                size: 16,
-                                color: AppColors.lightGray,
-                              )
-                            : const Icon(
-                                Icons.keyboard_arrow_down_sharp,
-                                color: AppColors.lightGray,
-                              )
-                      ],
-                    ),
-                  ),
-                  if (choosedMarksFilter != null) ...[
-                    const SizedBox(height: 16),
-                    Text(
-                      '${choosedMarksFilter.markTitle} ${choosedMarksFilter.modelTitle}',
-                      style: AppTypography.font18lightGray,
-                    ),
-                  ],
-                  const SizedBox(height: 24),
-                ],
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          'Assets/icons/point.svg',
-                          width: 26,
-                          height: 26,
-                          colorFilter: const ColorFilter.mode(
-                            AppColors.red,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          locale() == 'fr' ? 'Rayon' : 'دائرة نصف قطرها',
-                          style: AppTypography.font16black,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const Spacer(),
-                        InkWell(
-                          onTap: showHideRadiusOption,
-                          child: !radiusOptionShown
-                              ? const Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  size: 16,
-                                  color: AppColors.lightGray,
-                                )
-                              : const Icon(
-                                  Icons.keyboard_arrow_down_sharp,
-                                  color: AppColors.lightGray,
-                                ),
-                        ),
-                      ],
-                    ),
-                    if (radiusOptionShown) ...[
-                      Slider(
-                          thumbColor: AppColors.red,
-                          activeColor: AppColors.red,
-                          value: sliderValue,
-                          onChanged: (b) {
-                            setState(() {
-                              sliderValue = b;
-                              context.read<SearchAnnouncementCubit>().radius =
-                                  b * kilometerRatio;
-                            });
-                          }),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 25.0),
-                        child: Text(
-                            '${(sliderValue * kilometerRatio).toStringAsFixed(2)} km'),
-                      )
-                    ]
-                  ],
-                ),
-                const SizedBox(height: 16),
+                    selectCategoryCubit.subcategoryId != carSubcategoryId)
+                  ..._buildSelectMarkWidget(context),
+                ..._buildLocationWidget(context),
                 if (searchCubit.marksFilter?.modelParameters != null)
                   ...buildModelFilters(),
                 if (searchCubit.searchMode == SearchModeEnum.subcategory) ...[
@@ -359,38 +202,47 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                       SearchSelectSubcategoryState>(
                     builder: (context, state) {
                       if (state is FiltersGotState) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: buildFiltersSelection(
-                              selectCategoryCubit.parameters),
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: buildFiltersSelection(
+                                selectCategoryCubit.parameters),
+                          ),
                         );
                       }
-
-                      return Container();
+                      return const SizedBox.shrink();
                     },
                   ),
                 ],
                 const SizedBox(height: 16),
                 CustomTextButton.orangeContinue(
-                    callback: () {
-                      RepositoryProvider.of<SearchManager>(context)
-                          .setSearch(false);
-                      searchCubit.minPrice =
-                          double.parse(minPriceController.text);
-                      searchCubit.maxPrice =
-                          double.parse(maxPriceController.text);
-                      searchCubit.setFilters(
-                          parameters: selectCategoryCubit.parameters);
-                      Navigator.pop(context);
+                  callback: () {
+                    RepositoryProvider.of<SearchManager>(context)
+                        .setSearch(false);
+                    searchCubit.minPrice =
+                        double.parse(minPriceController.text);
+                    searchCubit.maxPrice =
+                        double.parse(maxPriceController.text);
+                    searchCubit.setFilters(
+                      parameters: selectCategoryCubit.parameters,
+                      cityId: selectedCityId,
+                      areaId: selectedAreaId,
+                    );
 
-                      if (widget.needOpenNewScreen) {
-                        Navigator.pushNamed(context, AppRoutesNames.search);
-                      }
+                    Navigator.pop(context);
 
-                      setState(() {});
-                    },
-                    text: locale() == 'fr' ? 'Appliquer' : 'تطبيق',
-                    active: true)
+                    if (widget.needOpenNewScreen) {
+                      Navigator.pushNamed(context, AppRoutesNames.search);
+                    }
+
+                    setState(() {});
+                  },
+                  text: locale() == 'fr' ? 'Appliquer' : 'تطبيق',
+                  active: true,
+                ),
+                const SizedBox(height: 16),
               ],
             ),
           ),
@@ -424,5 +276,209 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
       }
     }
     return children;
+  }
+
+  List<Widget> _buildCarMarkWidget(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final selectCategoryCubit =
+        BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+    final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
+
+    return [
+      Material(
+        color: Colors.transparent,
+        clipBehavior: Clip.hardEdge,
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => SelectCarModelScreen(
+                  needSelectModel: true,
+                  subcategory: selectCategoryCubit.subcategoryId!,
+                ),
+              ),
+            ).then((filter) {
+              if (filter != null) {
+                setState(() {
+                  choosedCarFilter = filter;
+                });
+                selectCategoryCubit.setAutoFilter(filter);
+                setState(() {});
+              }
+              updateAppBarFilterCubit.needUpdateAppBarFilters();
+            });
+          },
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(6, 8, 4, 8),
+            child: Row(
+              children: [
+                Text(
+                  localizations.choosingCarBrand,
+                  style: AppTypography.font16black.copyWith(fontSize: 18),
+                ),
+                const Spacer(),
+                choosedCarFilter == null
+                    ? const Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        size: 16,
+                        color: AppColors.lightGray,
+                      )
+                    : const Icon(
+                        Icons.keyboard_arrow_down_sharp,
+                        color: AppColors.lightGray,
+                      )
+              ],
+            ),
+          ),
+        ),
+      ),
+      if (choosedCarFilter != null) ...[
+        const SizedBox(height: 16),
+        Text(
+          '${choosedCarFilter.markTitle} ${choosedCarFilter.modelTitle}',
+          style: AppTypography.font18lightGray,
+        ),
+      ],
+      const SizedBox(height: 10),
+    ];
+  }
+
+  List<Widget> _buildSelectMarkWidget(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final selectCategoryCubit =
+        BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+    final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+
+    return [
+      Material(
+        color: Colors.transparent,
+        clipBehavior: Clip.hardEdge,
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
+        child: InkWell(
+          onTap: () async {
+            final needSelectModel =
+                selectCategoryCubit.subcategoryFilters!.hasModel;
+            final List<MarksFilter>? filter = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => SelectMarkScreen(
+                  needSelectModel: needSelectModel,
+                  subcategory: selectCategoryCubit.subcategoryId!,
+                ),
+              ),
+            );
+
+            if (filter != null && filter.isNotEmpty) {
+              setState(() {
+                choosedMarksFilter = filter.first;
+              });
+              searchCubit.setMarksFilter(filter.first);
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+            child: Row(
+              children: [
+                Text(
+                  localizations.choosingMark,
+                  style: AppTypography.font16black.copyWith(fontSize: 18),
+                ),
+                const Spacer(),
+                choosedMarksFilter == null
+                    ? const Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        size: 16,
+                        color: AppColors.lightGray,
+                      )
+                    : const Icon(
+                        Icons.keyboard_arrow_down_sharp,
+                        color: AppColors.lightGray,
+                      )
+              ],
+            ),
+          ),
+        ),
+      ),
+      if (choosedMarksFilter != null) ...[
+        const SizedBox(height: 16),
+        Text(
+          '${choosedMarksFilter.markTitle} ${choosedMarksFilter.modelTitle}',
+          style: AppTypography.font18lightGray,
+        ),
+      ],
+      const SizedBox(height: 10),
+    ];
+  }
+
+  List<Widget> _buildLocationWidget(BuildContext context) {
+    return [
+      Material(
+        color: Colors.transparent,
+        clipBehavior: Clip.hardEdge,
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
+        child: InkWell(
+          onTap: showHideRadiusOption,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  'Assets/icons/point2.svg',
+                  width: 26,
+                  height: 26,
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  locale() == 'fr' ? 'Rayon' : 'دائرة نصف قطرها',
+                  style: AppTypography.font16black,
+                ),
+                const SizedBox(width: 10),
+                const Spacer(),
+                !radiusOptionShown
+                    ? const Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        size: 16,
+                        color: AppColors.lightGray,
+                      )
+                    : const Icon(
+                        Icons.keyboard_arrow_down_sharp,
+                        color: AppColors.lightGray,
+                      ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      if (radiusOptionShown) ...[
+        CityAreaFilterWidget(
+          onSelecetCity: (id) {
+            selectedCityId = id;
+          },
+          onSelecetArea: (id) {
+            selectedAreaId = id;
+          },
+        ),
+        // Slider(
+        //   thumbColor: AppColors.red,
+        //   activeColor: AppColors.red,
+        //   value: sliderValue,
+        //   onChanged: (b) {
+        //     setState(() {
+        //       sliderValue = b;
+        //       context.read<SearchAnnouncementCubit>().radius =
+        //           b * kilometerRatio;
+        //     });
+        //   },
+        // ),
+        // Padding(
+        //   padding: const EdgeInsets.only(left: 25.0),
+        //   child:
+        //       Text('${(sliderValue * kilometerRatio).toStringAsFixed(2)} km'),
+        // ),
+      ],
+      const SizedBox(height: 10),
+    ];
   }
 }

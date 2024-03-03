@@ -10,15 +10,15 @@ class AnnouncementCreatingData {
   String? itemId;
   String? parameters;
   String? placeId;
-
+  String? cityId;
+  String? areaId;
 
   @override
   String toString() {
     return 'category: $categoryId, \nsubcategory: $subcategoryId, \ndescription: $description, \ntype: $type, \nprice: $price \nparameters: $parameters';
   }
 
-  Map<String, dynamic> toJson(String creatorId, List<String> urls) =>
-      {
+  Map<String, dynamic> toJson(String creatorId, List<String> urls) => {
         'name': title,
         'description': description,
         'type': type,
@@ -29,11 +29,13 @@ class AnnouncementCreatingData {
         'images': urls,
         'creator': creatorId,
         'place': placeId,
+        'city': cityId,
+        'area_id': areaId,
         if (subcategoryId != null) 'subcategoryId': subcategoryId,
         if (itemId != null) 'itemId': itemId
       };
 
-  void clear () {
+  void clear() {
     categoryId = null;
     subcategoryId = null;
     title = null;
@@ -44,5 +46,7 @@ class AnnouncementCreatingData {
     itemName = null;
     parameters = null;
     placeId = null;
+    cityId = null;
+    areaId = null;
   }
 }

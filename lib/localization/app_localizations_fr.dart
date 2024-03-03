@@ -353,6 +353,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get jobsAndServices => 'Emplois et services';
 
   @override
+  String get area => 'Quartier';
+
+  @override
   String get neighborhood => 'Quartier';
 
   @override

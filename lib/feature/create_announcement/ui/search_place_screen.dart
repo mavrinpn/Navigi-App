@@ -50,8 +50,6 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
 
       setState(() {});
     });
-
-    // print('selectingCity = false');
   }
 
   void selectPlace(CityDistrict selectedDistrict) async {
@@ -99,17 +97,15 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 26, 0, 13),
               child: Text(
-                'City',
+                localizations.city,
                 style: AppTypography.font16black.copyWith(fontSize: 14),
               ),
             ),
-            OutLineTextField(
+            OutlineTextField(
               controller: cityController,
               height: 55,
               hintText: '',
@@ -123,9 +119,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
                 BlocProvider.of<PlacesCubit>(context).searchCities(value);
               },
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             if (selectingCity && !initial) ...[
               BlocBuilder<PlacesCubit, PlacesState>(
                 builder: (context, state) {
@@ -162,11 +156,11 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 16, 0, 13),
               child: Text(
-                'Area',
+                localizations.area,
                 style: AppTypography.font16black.copyWith(fontSize: 14),
               ),
             ),
-            OutLineTextField(
+            OutlineTextField(
               controller: placeController,
               height: 55,
               hintText: '',
@@ -178,9 +172,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
                 setState(() {});
               },
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             if (!selectingCity) ...[
               BlocBuilder<PlacesCubit, PlacesState>(
                 builder: (context, state) {
@@ -214,9 +206,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
                 },
               ),
             ],
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             if (creatingManager.specialOptions
                 .contains(SpecialAnnouncementOptions.customPlace)) ...[
               CustomTextButton.orangeContinue(

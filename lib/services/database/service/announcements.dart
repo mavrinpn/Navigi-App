@@ -34,10 +34,19 @@ class AnnouncementsService {
           await LocationFilter.getLocationFilterForRadius(filterData.radius!));
     }
 
+    if (filterData.cityId != null) {
+      queries.add(Query.equal('city', filterData.cityId));
+    }
+
+    if (filterData.areaId != null) {
+      queries.add(Query.equal('area_id', filterData.areaId));
+    }
+
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: postCollection,
-        queries: queries);
+      databaseId: mainDatabase,
+      collectionId: postCollection,
+      queries: queries,
+    );
 
     List<Announcement> newAnnounces =
         announcementsFromDocuments(res.documents, _storage);
@@ -67,12 +76,19 @@ class AnnouncementsService {
       queries.add(Query.equal('model', filterData.model));
     }
 
-    // print(queries);
+    if (filterData.cityId != null) {
+      queries.add(Query.equal('city', filterData.cityId));
+    }
+
+    if (filterData.areaId != null) {
+      queries.add(Query.equal('area', filterData.areaId));
+    }
 
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: filterData.subcategory,
-        queries: queries);
+      databaseId: mainDatabase,
+      collectionId: filterData.subcategory,
+      queries: queries,
+    );
 
     List<Announcement> newAnnounces = [];
 
@@ -138,13 +154,14 @@ class AnnouncementsService {
   }
 
   Future<void> createAnnouncement(
-      String uid,
-      List<String> urls,
-      AnnouncementCreatingData creatingData,
-      List<Parameter> subcategoryParameters,
-      CityDistrict district,
-      LatLng? customPosition,
-      MarksFilter? marksFilter) async {
+    String uid,
+    List<String> urls,
+    AnnouncementCreatingData creatingData,
+    List<Parameter> subcategoryParameters,
+    CityDistrict district,
+    LatLng? customPosition,
+    MarksFilter? marksFilter,
+  ) async {
     final data = creatingData.toJson(uid, urls);
 
     double lat = district.latitude;
@@ -159,13 +176,20 @@ class AnnouncementsService {
     });
 
     final doc = await _databases.createDocument(
-        databaseId: mainDatabase,
-        collectionId: postCollection,
-        documentId: ID.unique(),
-        data: data);
+      databaseId: mainDatabase,
+      collectionId: postCollection,
+      documentId: ID.unique(),
+      data: data,
+    );
 
     await writeAnnouncementSubcategoryParameters(
-        doc.$id, creatingData, subcategoryParameters, lat, lng, marksFilter);
+      doc.$id,
+      creatingData,
+      subcategoryParameters,
+      lat,
+      lng,
+      marksFilter,
+    );
   }
 
   Future getUserAnnouncements({required String userId}) async {

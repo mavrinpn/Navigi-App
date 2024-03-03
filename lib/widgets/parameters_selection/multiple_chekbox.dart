@@ -7,7 +7,10 @@ import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 
 class MultipleCheckboxPicker extends StatefulWidget {
-  const MultipleCheckboxPicker({super.key, required this.parameter});
+  const MultipleCheckboxPicker({
+    super.key,
+    required this.parameter,
+  });
 
   final SelectParameter parameter;
 
@@ -25,7 +28,6 @@ class _MultipleCheckboxPickerState extends State<MultipleCheckboxPicker> {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -34,9 +36,13 @@ class _MultipleCheckboxPickerState extends State<MultipleCheckboxPicker> {
                 : widget.parameter.arName,
             style: AppTypography.font16black.copyWith(fontSize: 18),
           ),
-          ...List.generate(
-              variants.length,
-              (index) => MultipleCheckboxWidget(
+          const SizedBox(height: 10),
+          Wrap(
+            direction: Axis.horizontal,
+            children: [
+              ...List.generate(
+                variants.length,
+                (index) => MultipleCheckboxWidget(
                   value: MyApp.getLocale(context) == 'fr'
                       ? variants[index].nameFr
                       : variants[index].nameAr,
@@ -50,7 +56,13 @@ class _MultipleCheckboxPickerState extends State<MultipleCheckboxPicker> {
 
                     setState(() {});
                   },
-                  active: widget.parameter.isSelected(variants[index]))),
+                  active: widget.parameter.isSelected(
+                    variants[index],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -71,27 +83,47 @@ class MultipleCheckboxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(6, 0, 0, 5),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 24,
-            height: 24,
-            child: Checkbox(
-              value: active,
-              onChanged: onTap,
-              activeColor: AppColors.red,
-            ),
+    return Material(
+      color: Colors.transparent,
+      clipBehavior: Clip.hardEdge,
+      borderRadius: const BorderRadius.all(Radius.circular(12)),
+      child: InkWell(
+        onTap: () {
+          onTap(!active);
+        },
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 6, 6, 6),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 24,
+                height: 24,
+                child: Checkbox(
+                  value: active,
+                  onChanged: onTap,
+                  activeColor: AppColors.red,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  side: MaterialStateBorderSide.resolveWith(
+                    (states) => BorderSide(
+                      width: 1,
+                      color: active ? AppColors.red : AppColors.radioButtonGray,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 4),
+              Text(
+                value,
+                maxLines: 1,
+                overflow: TextOverflow.clip,
+                style: AppTypography.font14black.copyWith(fontSize: 16),
+              ),
+            ],
           ),
-          const SizedBox(width: 4),
-          Text(
-            value,
-            maxLines: 1,
-            overflow: TextOverflow.clip,
-            style: AppTypography.font14black.copyWith(fontSize: 16),
-          ),
-        ],
+        ),
       ),
     );
   }

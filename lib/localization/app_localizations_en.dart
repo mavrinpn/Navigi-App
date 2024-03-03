@@ -353,6 +353,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get jobsAndServices => 'Jobs and services';
 
   @override
+  String get area => 'Area';
+
+  @override
   String get neighborhood => 'Neighborhood';
 
   @override

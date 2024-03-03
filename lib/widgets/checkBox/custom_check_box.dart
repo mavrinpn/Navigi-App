@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import '../../utils/colors.dart';
 
 class CustomCheckBox extends StatefulWidget {
-  const CustomCheckBox(
-      {super.key, required this.isActive, required this.onChanged});
+  const CustomCheckBox({
+    super.key,
+    required this.isActive,
+    required this.onChanged,
+  });
 
   final bool isActive;
   final VoidCallback onChanged;
@@ -27,21 +30,20 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-                width: 2,
+                width: 1,
                 color: widget.isActive
                     ? AppColors.red
-                    : AppColors.lightGray),
+                    : AppColors.radioButtonGray),
             borderRadius: BorderRadius.circular(12),
           ),
-          width: 24,
-          height: 24,
+          width: 22,
+          height: 22,
           child: Container(
               padding: const EdgeInsets.all(4),
               child: CircleAvatar(
                 radius: 5,
-                backgroundColor: widget.isActive
-                    ? AppColors.red
-                    : AppColors.empty,
+                backgroundColor:
+                    widget.isActive ? AppColors.red : AppColors.empty,
               )),
         ),
       ),

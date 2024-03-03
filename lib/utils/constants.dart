@@ -19,7 +19,7 @@ const String getAnnouncementFunctionID = '64b2f9bddb98c4afed2d';
 const String responseResult = 'result';
 const String responseDocuments = 'documents';
 
-const String placeCollection = 'places';
+// const String placeCollection = 'places';
 const String citiesCollection = '65c637b9d82a67b81506';
 const String cityDistrictsCollection = '65c63eec9045e0110734';
 

@@ -62,7 +62,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
                       ),
                     ),
                     const SizedBox(height: 5),
-                    OutLineTextField(
+                    OutlineTextField(
                       hintText: localizations.name,
                       controller: titleController,
                       maxLines: 5,
@@ -96,7 +96,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
                       ),
                     ),
                     const SizedBox(height: 5),
-                    OutLineTextField(
+                    OutlineTextField(
                       hintText: localizations.description,
                       controller: descriptionController,
                       maxLines: 20,

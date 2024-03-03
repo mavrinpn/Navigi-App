@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
-import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
 import 'package:smart/models/item/item.dart';
-import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:smart/widgets/parameters_selection/min_max_parameter.dart';
@@ -32,7 +30,6 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-    final localizations = AppLocalizations.of(context)!;
 
     final selectCategoryCubit =
         BlocProvider.of<SearchSelectSubcategoryCubit>(context);
@@ -51,6 +48,7 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(height: 16),
                 Center(
@@ -61,17 +59,6 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
                         color: const Color(0xFFDDE1E7),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(1))),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Row(
-                    children: [
-                      Text(
-                        localizations.filters,
-                        style: AppTypography.font20black,
-                      ),
-                    ],
                   ),
                 ),
                 if (searchCubit.searchMode == SearchModeEnum.subcategory) ...[

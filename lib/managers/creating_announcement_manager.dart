@@ -109,6 +109,8 @@ class CreatingAnnouncementManager {
 
   void setPlace(CityDistrict district) {
     creatingData.placeId = district.id;
+    creatingData.cityId = district.cityId;
+    creatingData.areaId = district.id;
     cityDistrict = district;
   }
 
@@ -127,9 +129,8 @@ class CreatingAnnouncementManager {
 
   void setPrice(String price) => creatingData.price = double.parse(price);
 
-  void _setParameters() =>
-      creatingData.parameters = ItemParameters()
-          .buildJsonFormatParameters(addParameters: subcategoryFilters!.parameters);
+  void _setParameters() => creatingData.parameters = ItemParameters()
+      .buildJsonFormatParameters(addParameters: subcategoryFilters!.parameters);
 
   String get buildTitle => currentItem!.title;
 
@@ -147,8 +148,15 @@ class CreatingAnnouncementManager {
       await compressingImages;
       final List<String> urls = await uploadImages(imagesAsBytes);
 
-      await dbService.announcements.createAnnouncement(uid, urls, creatingData,
-          getParametersList(), cityDistrict!, customPosition, marksFilter);
+      await dbService.announcements.createAnnouncement(
+        uid,
+        urls,
+        creatingData,
+        getParametersList(),
+        cityDistrict!,
+        customPosition,
+        marksFilter,
+      );
 
       clearAllData();
       creatingState.add(LoadingStateEnum.success);

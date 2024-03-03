@@ -109,13 +109,14 @@ class AnnouncementManager {
     double? minPrice,
     double? maxPrice,
     double? radius,
+    String? cityId,
+    String? areaId,
   }) async {
     try {
       if (isNew) {
         searchAnnouncements.clear();
         _searchLastId = '';
       }
-
       final filter = SubcategoryFilterDTO(
         lastId: _searchLastId,
         text: searchText,
@@ -127,6 +128,8 @@ class AnnouncementManager {
         parameters: parameters,
         mark: mark,
         model: model,
+        cityId: cityId,
+        areaId: areaId,
       );
 
       searchAnnouncements.addAll(await dbService.announcements
@@ -140,13 +143,16 @@ class AnnouncementManager {
     }
   }
 
-  Future<void> loadSearchAnnouncement(
-      {String? searchText,
-      required bool isNew,
-      String? sortBy,
-      double? minPrice,
-      double? maxPrice,
-      double? radius}) async {
+  Future<void> loadSearchAnnouncement({
+    String? searchText,
+    required bool isNew,
+    String? sortBy,
+    double? minPrice,
+    double? maxPrice,
+    double? radius,
+    String? cityId,
+    String? areaId,
+  }) async {
     try {
       if (isNew) {
         searchAnnouncements.clear();
@@ -154,13 +160,16 @@ class AnnouncementManager {
       }
 
       final filter = DefaultFilterDto(
-          lastId: _searchLastId,
-          text: searchText,
-          sortBy: sortBy,
-          minPrice: minPrice,
-          maxPrice: maxPrice,
-          radius: radius);
-
+        lastId: _searchLastId,
+        text: searchText,
+        sortBy: sortBy,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
+        radius: radius,
+        cityId: cityId,
+        areaId: areaId,
+      );
+  
       searchAnnouncements.addAll(
           await dbService.announcements.searchLimitAnnouncements(filter));
 

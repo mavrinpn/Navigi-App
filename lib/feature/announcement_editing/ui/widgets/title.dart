@@ -28,7 +28,7 @@ class TitleSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          OutLineTextField(
+          OutlineTextField(
             hintText: localizations.name,
             controller: titleController,
             maxLines: 5,

@@ -9,6 +9,8 @@ class DefaultFilterDto {
   double? minPrice;
   double? maxPrice;
   double? radius;
+  String? cityId;
+  String? areaId;
 
   DefaultFilterDto({
     this.text = '',
@@ -17,6 +19,8 @@ class DefaultFilterDto {
     this.minPrice,
     this.maxPrice,
     this.radius,
+    this.cityId,
+    this.areaId,
   });
 }
 
@@ -31,6 +35,8 @@ class SubcategoryFilterDTO {
   double? radius;
   String subcategory;
   List<Parameter> parameters;
+  String? cityId;
+  String? areaId;
 
   SubcategoryFilterDTO({
     this.text,
@@ -41,6 +47,8 @@ class SubcategoryFilterDTO {
     this.radius,
     this.mark,
     this.model,
+    this.cityId,
+    this.areaId,
     required this.parameters,
     required this.subcategory,
   });

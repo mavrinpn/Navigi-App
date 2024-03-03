@@ -19,7 +19,7 @@ class _InputParameterWidgetState extends State<InputParameterWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return OutLineTextField(
+    return OutlineTextField(
       hintText: MyApp.getLocale(context) == 'fr'
           ? widget.parameter.frName
           : widget.parameter.arName,

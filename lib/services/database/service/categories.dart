@@ -80,16 +80,16 @@ class CategoriesService {
     return items;
   }
 
-  Future<List<CityDistrict>> getAllPlaces() async {
-    final res = await _databases.listDocuments(
-        databaseId: mainDatabase, collectionId: placeCollection);
+  // Future<List<CityDistrict>> getAllPlaces() async {
+  //   final res = await _databases.listDocuments(
+  //       databaseId: mainDatabase, collectionId: placeCollection);
 
-    List<CityDistrict> places = [];
-    for (var doc in res.documents) {
-      places.add(CityDistrict.fromJson(doc.data));
-    }
-    return places;
-  }
+  //   List<CityDistrict> places = [];
+  //   for (var doc in res.documents) {
+  //     places.add(CityDistrict.fromJson(doc.data));
+  //   }
+  //   return places;
+  // }
 
   Future<List<City>> getAllCities() async {
     final res = await _databases.listDocuments(

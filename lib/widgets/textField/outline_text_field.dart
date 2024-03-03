@@ -6,7 +6,7 @@ import 'package:smart/utils/colors.dart';
 
 import '../../utils/fonts.dart';
 
-class OutLineTextField extends StatelessWidget {
+class OutlineTextField extends StatelessWidget {
   final double width;
   final double height;
   final String hintText;
@@ -20,7 +20,7 @@ class OutLineTextField extends StatelessWidget {
   final bool readonly;
   final bool error;
 
-  const OutLineTextField(
+  const OutlineTextField(
       {Key? key,
       required this.hintText,
       required this.controller,

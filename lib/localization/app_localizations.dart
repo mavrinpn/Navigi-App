@@ -791,6 +791,12 @@ abstract class AppLocalizations {
   /// **'Jobs and services'**
   String get jobsAndServices;
 
+  /// No description provided for @area.
+  ///
+  /// In en, this message translates to:
+  /// **'Area'**
+  String get area;
+
   /// No description provided for @neighborhood.
   ///
   /// In en, this message translates to:

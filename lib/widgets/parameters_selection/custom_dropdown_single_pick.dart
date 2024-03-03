@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:smart/main.dart';
 import 'package:smart/services/parameters_parser.dart';
 import 'package:smart/utils/fonts.dart';
@@ -14,12 +15,14 @@ class CustomDropDownSingleCheckBox extends StatefulWidget {
     required this.parameter,
     required this.onChange,
     required this.currentKey,
+    this.icon,
     this.useLocalizationKeys = false,
   });
 
   final Function(ParameterOption) onChange;
   final SelectParameter parameter;
   final String currentKey;
+  final String? icon;
 
   final bool useLocalizationKeys;
 
@@ -56,11 +59,19 @@ class _CustomDropDownSingleCheckBoxState
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      currentLocale == 'fr'
-                          ? widget.parameter.frName
-                          : widget.parameter.arName,
-                      style: AppTypography.font16black.copyWith(fontSize: 18),
+                    if (widget.icon != null)
+                      SvgPicture.asset(
+                        widget.icon!,
+                        width: 24,
+                      ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        currentLocale == 'fr'
+                            ? widget.parameter.frName
+                            : widget.parameter.arName,
+                        style: AppTypography.font16black.copyWith(fontSize: 18),
+                      ),
                     ),
                     !isOpen
                         ? const Icon(
@@ -96,30 +107,36 @@ class _CustomDropDownSingleCheckBoxState
       maximum = 7;
     }
 
-    // print('Current locale: ${MyApp.getLocale(context)}');
-
     return SingleChildScrollView(
+      padding: const EdgeInsets.only(left: 6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ...(widget.parameter.variants.sublist(0, maximum))
-              .map((parametrOption) => Row(
-                    children: [
-                      CustomCheckBox(
-                          isActive: parametrOption.key.toString() ==
-                              widget.currentKey,
-                          onChanged: () {
-                            widget.onChange(parametrOption);
-                          }),
-                      Text(
-                        MyApp.getLocale(context) == 'fr'
-                            ? parametrOption.nameFr
-                            : parametrOption.nameAr,
-                        maxLines: 1,
-                        overflow: TextOverflow.clip,
-                        style: AppTypography.font14black.copyWith(fontSize: 16),
+              .map((parametrOption) => InkWell(
+                    onTap: () => widget.onChange(parametrOption),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Row(
+                        children: [
+                          CustomCheckBox(
+                              isActive: parametrOption.key.toString() ==
+                                  widget.currentKey,
+                              onChanged: () {
+                                widget.onChange(parametrOption);
+                              }),
+                          Text(
+                            MyApp.getLocale(context) == 'fr'
+                                ? parametrOption.nameFr
+                                : parametrOption.nameAr,
+                            maxLines: 1,
+                            overflow: TextOverflow.clip,
+                            style:
+                                AppTypography.font14black.copyWith(fontSize: 16),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ))
               .toList(),
           if (widget.parameter.variants.length > 7) ...[

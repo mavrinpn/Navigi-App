@@ -61,16 +61,23 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     marksFilter = newMarksFilter;
   }
 
-  void setFilters({List<Parameter>? parameters}) async {
+  void setFilters({
+    List<Parameter>? parameters,
+    String? cityId,
+    String? areaId,
+  }) async {
     emit(SearchAnnouncementsLoadingState());
     try {
       if (searchMode == SearchModeEnum.simple) {
         await _announcementManager.loadSearchAnnouncement(
-            searchText: _lastText,
-            isNew: true,
-            sortBy: _sortBy,
-            minPrice: _minPrice,
-            maxPrice: _maxPrice);
+          searchText: _lastText,
+          isNew: true,
+          sortBy: _sortBy,
+          minPrice: _minPrice,
+          maxPrice: _maxPrice,
+          cityId: cityId,
+          areaId: areaId,
+        );
       } else {
         await _announcementManager.searchWithSubcategory(
           subcategoryId: _subcategoryId ?? '',
@@ -82,6 +89,8 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
           maxPrice: _maxPrice,
           mark: marksFilter?.markId,
           model: marksFilter?.modelId,
+          cityId: cityId,
+          areaId: areaId,
         );
       }
 

@@ -62,7 +62,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
             const SizedBox(
               height: 16,
             ),
-            OutLineTextField(
+            OutlineTextField(
               controller: productsController,
               height: 55,
               hintText: '',
