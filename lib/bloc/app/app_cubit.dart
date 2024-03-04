@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
 
@@ -15,12 +16,12 @@ class AppCubit extends Cubit<AppState> {
   FavouritesManager favouritesManager;
   MessengerRepository messengerRepository;
 
-  AppCubit(
-      {required this.appRepository,
-      required this.announcementManager,
-      required this.messengerRepository,
-      required this.favouritesManager})
-      : super(AppInitial()) {
+  AppCubit({
+    required this.appRepository,
+    required this.announcementManager,
+    required this.messengerRepository,
+    required this.favouritesManager,
+  }) : super(AppInitial()) {
     appRepository.appState.stream.listen((event) {
       if (event == AuthStateEnum.auth) {
         announcementManager.addLimitAnnouncements(true);

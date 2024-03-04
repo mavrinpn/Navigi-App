@@ -19,9 +19,9 @@ class CategoriesSection extends StatelessWidget {
                 Text(AppLocalizations.of(context)!.categories,
                     textAlign: TextAlign.center,
                     style: AppTypography.font20black),
-                Text(AppLocalizations.of(context)!.viewAll,
-                    style:
-                        AppTypography.font14lightGray.copyWith(fontSize: 12)),
+                // Text(AppLocalizations.of(context)!.viewAll,
+                //     style:
+                //         AppTypography.font14lightGray.copyWith(fontSize: 12)),
               ],
             ),
           ),

@@ -8,12 +8,13 @@ import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 
 class ChatInput extends StatefulWidget {
-  const ChatInput(
-      {super.key,
-      required this.messageController,
-      required this.onChange,
-      required this.send,
-      required this.images});
+  const ChatInput({
+    super.key,
+    required this.messageController,
+    required this.onChange,
+    required this.send,
+    required this.images,
+  });
 
   final TextEditingController messageController;
   final Function(String?) onChange;
@@ -66,6 +67,7 @@ class _ChatInputState extends State<ChatInput> {
                     height: 40,
                     child: TextField(
                       controller: widget.messageController,
+                      autofocus: true,
                       onChanged: widget.onChange,
                       cursorColor: AppColors.red,
                       cursorWidth: 1,

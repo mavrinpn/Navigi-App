@@ -21,6 +21,7 @@
 "view": "Regarder",
 "researchInAlgiers": "Recherche a Alger",
 "recommendations": "Recommandations",
+"relatedAnnouncements": "Annonces connexes",
 "viewAll": "Regarder tout",
 "city": "Ville ( ",
 "kmOfYou": "km de vous)",
@@ -31,7 +32,7 @@
 "showAll": "Afficher toutes les offres ",
 "searchBrand": "Recherche de marque",
 "done": "Ça y est",
-"location": "Localisation",
+"location": "Rayon",
 "searchZone": "Zone de recherche",
 "displayAds": "Afficher annonces",
 "withPicture": "Avec photo",
@@ -170,5 +171,7 @@
 "specifyPlace": "Précisez le lieu",
 "change": "Changement",
 "loading": "Chargement",
-"notFound": "Rien n'a été trouvé"
+"notFound": "Rien n'a été trouvé",
+"send": "Envoyer",
+"offerMessage": "Salut! Je vous propose"
 }

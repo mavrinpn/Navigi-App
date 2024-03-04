@@ -221,6 +221,12 @@ abstract class AppLocalizations {
   /// **'Recommendations'**
   String get recommendations;
 
+  /// No description provided for @relatedAnnouncements.
+  ///
+  /// In en, this message translates to:
+  /// **'Related announcements'**
+  String get relatedAnnouncements;
+
   /// No description provided for @viewAll.
   ///
   /// In en, this message translates to:
@@ -1096,6 +1102,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Nothing was found'**
   String get notFound;
+
+  /// No description provided for @send.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get send;
+
+  /// No description provided for @offerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello! I propose you'**
+  String get offerMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

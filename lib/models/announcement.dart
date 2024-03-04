@@ -10,6 +10,7 @@ part 'place.dart';
 
 class Announcement {
   final String title;
+  final String subcategoryId;
   final String description;
   final int totalViews;
   final double price;
@@ -31,6 +32,7 @@ class Announcement {
     required this.futureBytes,
     this.liked = false,
   })  : title = json['name'],
+        subcategoryId = json['subcategoryId'],
         description = json['description'],
         creatorData = CreatorData.fromJson(data: json['creator']),
         price = double.parse(json['price'].toString()),

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
+import 'package:smart/feature/messenger/ui/chat_screen.dart';
 import 'package:smart/feature/search/ui/search_screen.dart';
 import 'package:smart/firebase_options.dart';
 import 'package:smart/localization/app_localizations.dart';
@@ -15,9 +16,7 @@ import 'package:smart/utils/app_theme.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/utils/routes/routes.dart';
 import 'package:smart/widgets/splash.dart';
-
 import 'bloc/app/app_cubit.dart';
-import 'feature/auth/ui/login_first_screen.dart';
 import 'feature/home/ui/home_screen.dart';
 
 Future<void> main() async {
@@ -107,8 +106,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               return SearchScreen(
                 showBackButton: showBackButton ?? true,
                 title: title ?? '',
-                queryString: query,
+                searchQueryString: query,
               );
+            },
+          );
+        } else if (settings.name == AppRoutesNames.chat) {
+          final arguments = settings.arguments as String?;
+          return MaterialPageRoute(
+            builder: (context) {
+              return ChatScreen(message: arguments);
             },
           );
         }
@@ -127,19 +133,14 @@ class HomePage extends StatelessWidget {
   const HomePage({
     Key? key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
-          if (state is AppAuthState) {
+          if (state is AppAuthState || state is AppUnAuthState) {
             return const HomeScreen();
-          } else if (state is AppUnAuthState) {
-            return const Center(
-              child: LoginFirstScreen(),
-            );
           } else {
             return const Splash();
           }
@@ -147,4 +148,21 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     resizeToAvoidBottomInset: false,
+  //     body: BlocBuilder<AppCubit, AppState>(
+  //       builder: (context, state) {
+  //         if (state is AppAuthState) {
+  //           return const HomeScreen();
+  //         } else if (state is AppUnAuthState) {
+  //           return const LoginFirstScreen();
+  //         } else {
+  //           return const Splash();
+  //         }
+  //       },
+  //     ),
+  //   );
+  // }
 }

@@ -68,6 +68,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get recommendations => 'التوصيات';
 
   @override
+  String get relatedAnnouncements => 'إعلانات ذات صلة';
+
+  @override
   String get viewAll => 'انظر إلى كل شيء';
 
   @override
@@ -98,7 +101,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get done => 'كفى';
 
   @override
-  String get location => 'موقع';
+  String get location => 'دائرة نصف قطرها';
 
   @override
   String get searchZone => 'منطقة البحوث';
@@ -504,4 +507,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get notFound => 'لم يتم العثور على شيء';
+
+  @override
+  String get send => 'إرسال';
+
+  @override
+  String get offerMessage => 'مرحبا! أقترح عليك';
 }

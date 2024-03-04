@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/bloc/app/app_cubit.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/favorites/favorites_screen.dart';
@@ -9,6 +10,7 @@ import 'package:smart/feature/messenger/ui/all_chats_screen.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/routes/route_names.dart';
 
 import '../../../utils/colors.dart';
 import '../../main/ui/main_screen.dart';
@@ -23,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedTab = 0;
+  int _targetTab = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +40,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     void onSelectTab(int index) {
       if (_selectedTab == index) return;
+
+      final isUserAith = context.read<AppCubit>().state is AppAuthState;
+      if (index != 0 && !isUserAith) {
+        _targetTab = index;
+        Navigator.of(context).pushNamed(AppRoutesNames.loginFirst);
+        return;
+      }
+
       if (index == 3) {
         BlocProvider.of<CreatorCubit>(context)
             .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
@@ -49,7 +60,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        body: widgetOptions[_selectedTab],
+        body: BlocListener<AppCubit, AppState>(
+          listener: (context, state) {
+            if (state is AppAuthState) {
+              _showTargetScreenOnLogin();
+            } else {
+              _showMainScreenOnLogout();
+            }
+          },
+          child: widgetOptions[_selectedTab],
+        ),
         bottomNavigationBar: Container(
           decoration: const BoxDecoration(
               border:
@@ -106,6 +126,19 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  void _showTargetScreenOnLogin() {
+    setState(() {
+      _selectedTab = _targetTab;
+    });
+    Navigator.of(context).pop();
+  }
+
+  void _showMainScreenOnLogout() {
+    setState(() {
+      _selectedTab = 0;
+    });
   }
 }
 

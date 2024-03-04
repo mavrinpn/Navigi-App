@@ -23,6 +23,15 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
   double? _minPrice;
   double? _maxPrice;
 
+  String? _cityId;
+  String? _areaId;
+  String? get cityId => _cityId;
+  String? get areaId => _areaId;
+  String? _cityTitle;
+  String? _areaTitle;
+  String? get cityTitle => _cityTitle;
+  String? get areaTitle => _areaTitle;
+
   String? _subcategoryId;
 
   String get sortBy => _sortBy ?? SortTypes.dateDESC;
@@ -45,6 +54,10 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     _sortBy = null;
     _minPrice = 0;
     _maxPrice = 200000;
+    _cityId = null;
+    _areaId = null;
+    _cityTitle = null;
+    _areaTitle = null;
     marksFilter = null;
     setFilters();
   }
@@ -65,9 +78,16 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     List<Parameter>? parameters,
     String? cityId,
     String? areaId,
+    String? cityTitle,
+    String? areaTitle,
   }) async {
     emit(SearchAnnouncementsLoadingState());
     try {
+      _cityId = cityId;
+      _areaId = areaId;
+      _cityTitle = cityTitle;
+      _areaTitle = areaTitle;
+
       if (searchMode == SearchModeEnum.simple) {
         await _announcementManager.loadSearchAnnouncement(
           searchText: _lastText,
@@ -97,12 +117,15 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
       emit(SearchAnnouncementsSuccessState());
     } catch (e) {
       emit(SearchAnnouncementsFailState());
-      // rethrow;
+      rethrow;
     }
   }
 
-  void searchAnnounces(String? searchText, bool isNew,
-      {List<Parameter>? parameters}) async {
+  void searchAnnounces({
+    required String? searchText,
+    required bool isNew,
+    List<Parameter> parameters = const <Parameter>[],
+  }) async {
     emit(SearchAnnouncementsLoadingState());
     try {
       if (searchMode == SearchModeEnum.simple) {
@@ -115,7 +138,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
       } else {
         await _announcementManager.searchWithSubcategory(
             subcategoryId: _subcategoryId!,
-            parameters: parameters!,
+            parameters: parameters,
             searchText: searchText,
             isNew: true,
             sortBy: _sortBy,
@@ -132,7 +155,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
       emit(SearchAnnouncementsSuccessState());
     } catch (e) {
       emit(SearchAnnouncementsFailState());
-      // rethrow;
+      rethrow;
     }
   }
 }

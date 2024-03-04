@@ -68,6 +68,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recommendations => 'Recommendations';
 
   @override
+  String get relatedAnnouncements => 'Related announcements';
+
+  @override
   String get viewAll => 'Look at everything';
 
   @override
@@ -504,4 +507,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notFound => 'Nothing was found';
+
+  @override
+  String get send => 'Send';
+
+  @override
+  String get offerMessage => 'Hello! I propose you';
 }

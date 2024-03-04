@@ -37,6 +37,8 @@ class SubcategoryFilterDTO {
   List<Parameter> parameters;
   String? cityId;
   String? areaId;
+  int? limit;
+  String? excludeId;
 
   SubcategoryFilterDTO({
     this.text,
@@ -49,6 +51,8 @@ class SubcategoryFilterDTO {
     this.model,
     this.cityId,
     this.areaId,
+    this.limit,
+    this.excludeId,
     required this.parameters,
     required this.subcategory,
   });

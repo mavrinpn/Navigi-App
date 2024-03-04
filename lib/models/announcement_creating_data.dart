@@ -29,7 +29,7 @@ class AnnouncementCreatingData {
         'images': urls,
         'creator': creatorId,
         'place': placeId,
-        'city': cityId,
+        'city_id': cityId,
         'area_id': areaId,
         if (subcategoryId != null) 'subcategoryId': subcategoryId,
         if (itemId != null) 'itemId': itemId

@@ -26,19 +26,24 @@ class SearchSubcategoryScreen extends StatefulWidget {
 class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> {
   bool subcategoriesGot = false;
 
-  void onSubcategoryTapped(Subcategory e) {
+  void onSubcategoryTapped(Subcategory subcategory) {
     final subcategoriesCubit = context.read<SearchSelectSubcategoryCubit>();
 
-    if (e.containsOther) {
+    if (subcategory.containsOther) {
       subcategoriesGot = false;
-      subcategoriesCubit.getSubcategories(subcategoryId: e.id);
+      subcategoriesCubit.getSubcategories(subcategoryId: subcategory.id);
     } else {
       final searchCubit = context.read<SearchAnnouncementCubit>();
 
-      searchCubit.setSubcategory(e.id);
+      searchCubit.setSubcategory(subcategory.id);
       searchCubit.setSearchMode(SearchModeEnum.subcategory);
-      subcategoriesCubit.getSubcategoryFilters(e.id).then(
-          (value) => searchCubit.searchAnnounces('', true, parameters: value));
+      subcategoriesCubit
+          .getSubcategoryFilters(subcategory.id)
+          .then((value) => searchCubit.searchAnnounces(
+                searchText: '',
+                isNew: true,
+                parameters: value,
+              ));
 
       RepositoryProvider.of<SearchManager>(context).setSearch(false);
       BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
@@ -50,7 +55,8 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> {
         AppRoutesNames.search,
         arguments: {
           'showBackButton': false,
-          'title': currentLocale == 'fr' ? e.nameFr : e.nameAr
+          'title':
+              currentLocale == 'fr' ? subcategory.nameFr : subcategory.nameAr
         },
       );
     }
@@ -59,7 +65,8 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    final bloc = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+    final aearchSelectSubcategoryCubit =
+        BlocProvider.of<SearchSelectSubcategoryCubit>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -78,7 +85,7 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> {
             if (!subcategoriesGot) subcategoriesGot = true;
 
             return ListView(
-              children: bloc.subcategories
+              children: aearchSelectSubcategoryCubit.subcategories
                   .map((e) => SubCategoryWidget(
                         subcategory: e,
                         onTap: () => onSubcategoryTapped(e),

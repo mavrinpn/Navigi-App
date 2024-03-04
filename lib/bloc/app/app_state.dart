@@ -1,10 +1,19 @@
 part of 'app_cubit.dart';
 
 @immutable
-abstract class AppState {}
+abstract class AppState extends Equatable {}
 
-class AppInitial extends AppState {}
+class AppInitial extends AppState {
+  @override
+  List<Object?> get props => [];
+}
 
-class AppAuthState extends AppState {}
+class AppAuthState extends AppState {
+  @override
+  List<Object?> get props => [];
+}
 
-class AppUnAuthState extends AppState {}
+class AppUnAuthState extends AppState {
+  @override
+  List<Object?> get props => [];
+}

@@ -14,18 +14,22 @@ class CityAreaFilterWidget extends StatefulWidget {
     super.key,
     required this.onSelecetCity,
     required this.onSelecetArea,
+    required this.cityTitle,
+    required this.areaTitle,
   });
 
-  final Function(String? id) onSelecetCity;
-  final Function(String? id) onSelecetArea;
+  final String cityTitle;
+  final String areaTitle;
+  final Function(String? id, String? title) onSelecetCity;
+  final Function(String? id, String? title) onSelecetArea;
 
   @override
   State<CityAreaFilterWidget> createState() => _CityAreaFilterWidgetState();
 }
 
 class _CityAreaFilterWidgetState extends State<CityAreaFilterWidget> {
-  final placeController = TextEditingController();
-  final cityController = TextEditingController();
+  late final TextEditingController placeController;
+  late final TextEditingController cityController;
 
   bool active = false;
   bool initial = false;
@@ -33,37 +37,32 @@ class _CityAreaFilterWidgetState extends State<CityAreaFilterWidget> {
 
   CityDistrict? district;
 
-  void selectCity(City city) async {
+  void _selectCity(City city) async {
     final placesCubit = BlocProvider.of<PlacesCubit>(context);
 
     await placesCubit.setCity(city).then((value) {
       BlocProvider.of<PlacesCubit>(context).searchPlaces('');
       cityController.text = city.name;
       selectingCity = false;
-      widget.onSelecetCity(city.id);
-      resetPlace();
+      widget.onSelecetCity(
+        city.id,
+        city.name,
+      );
+      _resetPlace();
 
       setState(() {});
     });
   }
 
-  void resetPlace() {
-    final placesCubit = BlocProvider.of<PlacesCubit>(context);
-    placesCubit.setPlaceName('');
-
-    placeController.text = '';
-    widget.onSelecetArea(null);
-
-    district = null;
-    setState(() {});
-  }
-
-  void selectPlace(CityDistrict selectedDistrict) async {
+  void _selectPlace(CityDistrict selectedDistrict) async {
     final placesCubit = BlocProvider.of<PlacesCubit>(context);
     placesCubit.setPlaceName(selectedDistrict.name);
 
     placeController.text = selectedDistrict.name;
-    widget.onSelecetArea(selectedDistrict.id);
+    widget.onSelecetArea(
+      selectedDistrict.id,
+      selectedDistrict.name,
+    );
 
     district = selectedDistrict;
     setState(() {
@@ -71,8 +70,21 @@ class _CityAreaFilterWidgetState extends State<CityAreaFilterWidget> {
     });
   }
 
+  void _resetPlace() {
+    final placesCubit = BlocProvider.of<PlacesCubit>(context);
+    placesCubit.setPlaceName('');
+
+    placeController.text = '';
+    widget.onSelecetArea(null, null);
+
+    district = null;
+    setState(() {});
+  }
+
   @override
   void initState() {
+    placeController = TextEditingController(text: widget.areaTitle);
+    cityController = TextEditingController(text: widget.cityTitle);
     BlocProvider.of<PlacesCubit>(context).initialLoad();
     BlocProvider.of<PlacesCubit>(context).searchCities('');
     super.initState();
@@ -120,7 +132,7 @@ class _CityAreaFilterWidgetState extends State<CityAreaFilterWidget> {
                         .map((e) => Padding(
                               padding: const EdgeInsets.all(3),
                               child: ProductWidget(
-                                onTap: () => selectCity(e),
+                                onTap: () => _selectCity(e),
                                 name: e.name,
                               ),
                             ))
@@ -172,7 +184,7 @@ class _CityAreaFilterWidgetState extends State<CityAreaFilterWidget> {
                         .map((e) => Padding(
                               padding: const EdgeInsets.all(3),
                               child: ProductWidget(
-                                onTap: () => selectPlace(e),
+                                onTap: () => _selectPlace(e),
                                 name: e.name,
                               ),
                             ))

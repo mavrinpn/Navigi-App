@@ -12,8 +12,12 @@ import '../../feature/announcement/bloc/announcement/announcement_cubit.dart';
 import '../../utils/colors.dart';
 
 class AnnouncementContainer extends StatefulWidget {
-  const AnnouncementContainer(
-      {super.key, required this.announcement, this.width, this.height});
+  const AnnouncementContainer({
+    super.key,
+    required this.announcement,
+    this.width,
+    this.height,
+  });
 
   final double? width, height;
   final Announcement announcement;
@@ -77,7 +81,8 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-            ),   const SizedBox(
+            ),
+            const SizedBox(
               height: 5,
             ),
             BlocListener<FavouritesCubit, FavouritesState>(
@@ -152,7 +157,6 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                 )
               ],
             ),
-
           ],
         ));
   }

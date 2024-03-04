@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/feature/announcement/ui/dialogs/offer_price_bottom_sheet.dart';
+import 'package:smart/feature/announcement/ui/widgets/related_announcement_widget.dart';
 import 'package:smart/main.dart';
 import 'package:smart/feature/announcement/ui/photo_view.dart';
 import 'package:smart/feature/announcement/ui/widgets/favourite_indicator.dart';
@@ -45,21 +47,25 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     }
   }
 
-  void write(Announcement data) {
+  void write(Announcement data, {String? message}) {
     final userId = RepositoryProvider.of<AuthRepository>(context).userId;
     if (data.creatorData.uid == userId) {
-      
       // print('Cette annonce est votre');
       return;
     }
 
     RepositoryProvider.of<MessengerRepository>(context)
         .selectChat(announcement: data);
-    Navigator.pushNamed(context, AppRoutesNames.chat);
+    Navigator.pushNamed(
+      context,
+      AppRoutesNames.chat,
+      arguments: message,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     PageController pageController =
         PageController(viewportFraction: 0.9, initialPage: activePage);
 
@@ -153,16 +159,12 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             }),
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    const SizedBox(height: 5),
                     ImagesIndicators(
                       length: state.data.images.length,
                       currentIndex: activePage,
                     ),
-                    const SizedBox(
-                      height: 12,
-                    ),
+                    const SizedBox(height: 12),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 6),
@@ -174,9 +176,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             width: 16,
                             height: 16,
                           ),
-                          const SizedBox(
-                            width: 6,
-                          ),
+                          const SizedBox(width: 6),
                           Text(
                             state.data.createdAt,
                             style: AppTypography.font14lightGray
@@ -189,9 +189,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             width: 16,
                             height: 16,
                           ),
-                          const SizedBox(
-                            width: 6,
-                          ),
+                          const SizedBox(width: 6),
                           Text(state.data.totalViews.toString(),
                               style: AppTypography.font14lightGray
                                   .copyWith(fontSize: 12)),
@@ -272,20 +270,28 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     CustomTextButton.withIcon(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
-                      callback: () {},
+                      callback: () async {
+                        final double? offerPrice = await showOfferPriceDialog(
+                          context: context,
+                          announcementId: state.data.id,
+                        );
+                        if (offerPrice != null) {
+                          write(
+                            state.data,
+                            message:
+                                '${localizations.offerMessage} ${offerPrice.round()}',
+                          );
+                        }
+                      },
                       text: AppLocalizations.of(context)!.offrirVotrePrix,
                       styleText: AppTypography.font14black,
                       icon: SvgPicture.asset('Assets/icons/dzd.svg'),
                       disableColor: AppColors.backgroundLightGray,
                     ),
-                    const SizedBox(
-                      height: 26,
-                    ),
+                    const SizedBox(height: 26),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Row(
@@ -298,9 +304,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     ...state.data.staticParameters.parameters
                         .map((e) => ItemParameterWidget(
                             name: currentLocale == 'fr' ? e.nameFr : e.nameAr,
@@ -329,16 +333,16 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         softWrap: true,
                       ),
                     ),
-                    const SizedBox(
-                      height: 26,
-                    ),
+                    const SizedBox(height: 12),
                     AccountSmallInfo(
                       creatorData: state.data.creatorData,
                       clickable: true,
                     ),
-                    const SizedBox(
-                      height: 100,
-                    )
+                    RelatedAnnouncementWidget(
+                      price: state.data.price,
+                      subcategoryId: state.data.subcategoryId,
+                      parentId: state.data.id,
+                    ),
                   ],
                 ),
               ),

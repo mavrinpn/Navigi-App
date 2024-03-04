@@ -9,7 +9,6 @@ import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/feature/search/ui/widgets/filters/city_area_filter_widget.dart';
-import 'package:smart/feature/search/ui/widgets/single_filter_bottom_sheet.dart';
 import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
 import 'package:smart/models/item/item.dart';
@@ -24,35 +23,8 @@ import 'package:smart/widgets/textField/price_widget.dart';
 
 import '../../../../localization/app_localizations.dart';
 
-void showFilterBottomSheet({
-  required BuildContext context,
-  String? parameterKey,
-}) {
-  showModalBottomSheet(
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-        top: Radius.circular(20),
-      ),
-    ),
-    clipBehavior: Clip.antiAliasWithSaveLayer,
-    isScrollControlled: true,
-    context: context,
-    builder: (BuildContext context) {
-      if (parameterKey != null) {
-        return SingleFilterBottomSheet(parameterKey: parameterKey);
-      } else {
-        return Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: const FiltersBottomSheet(),
-        );
-      }
-    },
-  );
-}
-
-class FiltersBottomSheet extends StatefulWidget {
-  const FiltersBottomSheet({
+class CommonFiltersBottomSheet extends StatefulWidget {
+  const CommonFiltersBottomSheet({
     super.key,
     this.needOpenNewScreen = false,
   });
@@ -60,15 +32,18 @@ class FiltersBottomSheet extends StatefulWidget {
   final bool needOpenNewScreen;
 
   @override
-  State<FiltersBottomSheet> createState() => _FiltersBottomSheetState();
+  State<CommonFiltersBottomSheet> createState() =>
+      _CommonFiltersBottomSheetState();
 }
 
-class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
+class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
   bool radiusOptionShown = false;
   double sliderValue = 0;
 
   String? selectedCityId;
   String? selectedAreaId;
+  String? selectedCityTitle;
+  String? selectedAreaTitle;
   double kilometerRatio = 100;
 
   void requestLocation() async {
@@ -79,7 +54,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
   void showHideRadiusOption() async {
     if (!radiusOptionShown) {
       final locationEnabled = await Geolocator.isLocationServiceEnabled();
-      // print(locationEnabled);
+
       if (locationEnabled) {
         setState(() {
           radiusOptionShown = !radiusOptionShown;
@@ -119,7 +94,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
         TextEditingController(text: searchCubit.maxPrice.toString());
 
     return Container(
-      height: MediaQuery.sizeOf(context).height * 0.8,
+      height: MediaQuery.sizeOf(context).height * 0.9,
       color: Colors.white,
       child: SafeArea(
         child: SingleChildScrollView(
@@ -128,7 +103,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+              children: [
                 const SizedBox(height: 16),
                 Center(
                   child: Container(
@@ -229,13 +204,16 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                       parameters: selectCategoryCubit.parameters,
                       cityId: selectedCityId,
                       areaId: selectedAreaId,
+                      cityTitle: selectedCityTitle,
+                      areaTitle: selectedAreaTitle,
                     );
-
                     Navigator.pop(context);
 
                     if (widget.needOpenNewScreen) {
                       Navigator.pushNamed(context, AppRoutesNames.search);
                     }
+
+                    updateAppBarFilterCubit.needUpdateAppBarFilters();
 
                     setState(() {});
                   },
@@ -413,6 +391,9 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
   }
 
   List<Widget> _buildLocationWidget(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+
     return [
       Material(
         color: Colors.transparent,
@@ -431,7 +412,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  locale() == 'fr' ? 'Rayon' : 'دائرة نصف قطرها',
+                  localizations.location,
                   style: AppTypography.font16black,
                 ),
                 const SizedBox(width: 10),
@@ -453,11 +434,15 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
       ),
       if (radiusOptionShown) ...[
         CityAreaFilterWidget(
-          onSelecetCity: (id) {
+          cityTitle: searchCubit.cityTitle ?? '',
+          areaTitle: searchCubit.areaTitle ?? '',
+          onSelecetCity: (id, title) {
             selectedCityId = id;
+            selectedCityTitle = title;
           },
-          onSelecetArea: (id) {
+          onSelecetArea: (id, title) {
             selectedAreaId = id;
+            selectedAreaTitle = title;
           },
         ),
         // Slider(

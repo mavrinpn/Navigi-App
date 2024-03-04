@@ -21,6 +21,7 @@
 "view": "Look",
 "researchInAlgiers": "Research in Algiers",
 "recommendations": "Recommendations",
+"relatedAnnouncements": "Related announcements",
 "viewAll": "Look at everything",
 "city": "City (",
 "kmOfYou": "km of you)",
@@ -170,5 +171,7 @@
 "specifyPlace": "Specify place",
 "change": "Change",
 "loading": "Loading",
-"notFound": "Nothing was found"
+"notFound": "Nothing was found",
+"send": "Send",
+"offerMessage": "Hello! I propose you"
 }

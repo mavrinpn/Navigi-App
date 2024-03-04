@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart/feature/search/ui/widgets/filters_bottom_sheet.dart';
+import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
 
 class FilterChipWidget extends StatelessWidget {
   const FilterChipWidget({

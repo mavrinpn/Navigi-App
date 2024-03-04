@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/widgets/button/icon_button.dart';
 import 'package:smart/widgets/textField/elevated_text_field.dart';
-
-import 'filters_bottom_sheet.dart';
 
 class SearchAppBar extends StatefulWidget {
   const SearchAppBar({

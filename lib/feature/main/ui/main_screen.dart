@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/main/ui/sections/categories_section.dart';
 import 'package:smart/feature/main/ui/widgets/appbar_with_search_field.dart';
+import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
 import 'package:smart/feature/search/ui/sections/popular_queries.dart';
-import 'package:smart/feature/search/ui/widgets/filters_bottom_sheet.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
@@ -78,8 +78,10 @@ class _MainScreenState extends State<MainScreen> {
           .read<SearchAnnouncementCubit>()
           .setSearchMode(SearchModeEnum.simple);
       BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
-      BlocProvider.of<SearchAnnouncementCubit>(context)
-          .searchAnnounces('', true);
+      BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
+        searchText: '',
+        isNew: true,
+      );
       Navigator.pushNamed(
         context,
         AppRoutesNames.search,
@@ -92,21 +94,6 @@ class _MainScreenState extends State<MainScreen> {
           .read<SearchAnnouncementCubit>()
           .setSearchMode(SearchModeEnum.simple);
       showFilterBottomSheet(context: context);
-      // showModalBottomSheet(
-      //   shape: const RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.vertical(
-      //       top: Radius.circular(20),
-      //     ),
-      //   ),
-      //   clipBehavior: Clip.antiAliasWithSaveLayer,
-      //   isScrollControlled: true,
-      //   context: context,
-      //   builder: (BuildContext context) {
-      //     return const FiltersBottomSheet(
-      //       needOpenNewScreen: true,
-      //     );
-      //   },
-      // );
     }
 
     return MainScaffold(
@@ -158,24 +145,19 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(AppLocalizations.of(context)!.recommendations,
-                                textAlign: TextAlign.center,
-                                style: AppTypography.font20black),
-                            Text(AppLocalizations.of(context)!.viewAll,
-                                style: AppTypography.font14lightGray
-                                    .copyWith(fontSize: 12)),
-                          ],
-                        ),
-                      ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 25, 15, 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(AppLocalizations.of(context)!.recommendations,
+                            textAlign: TextAlign.center,
+                            style: AppTypography.font20black),
+                        // Text(AppLocalizations.of(context)!.viewAll,
+                        //     style: AppTypography.font14lightGray
+                        //         .copyWith(fontSize: 12)),
+                      ],
+                    ),
                   ),
                 ),
                 SliverPadding(

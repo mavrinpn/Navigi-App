@@ -68,6 +68,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get recommendations => 'Recommandations';
 
   @override
+  String get relatedAnnouncements => 'Annonces connexes';
+
+  @override
   String get viewAll => 'Regarder tout';
 
   @override
@@ -98,7 +101,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get done => 'Ça y est';
 
   @override
-  String get location => 'Localisation';
+  String get location => 'Rayon';
 
   @override
   String get searchZone => 'Zone de recherche';
@@ -504,4 +507,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get notFound => 'Rien n\'a été trouvé';
+
+  @override
+  String get send => 'Envoyer';
+
+  @override
+  String get offerMessage => 'Salut! Je vous propose';
 }

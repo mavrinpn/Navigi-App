@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
+import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
 import 'package:smart/models/item/item.dart';
@@ -30,14 +31,10 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+    final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
 
     final selectCategoryCubit =
         BlocProvider.of<SearchSelectSubcategoryCubit>(context);
-
-    final TextEditingController minPriceController =
-        TextEditingController(text: searchCubit.minPrice.toString());
-    final TextEditingController maxPriceController =
-        TextEditingController(text: searchCubit.maxPrice.toString());
 
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.8,
@@ -82,17 +79,16 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
                   callback: () {
                     RepositoryProvider.of<SearchManager>(context)
                         .setSearch(false);
-                    searchCubit.minPrice =
-                        double.parse(minPriceController.text);
-                    searchCubit.maxPrice =
-                        double.parse(maxPriceController.text);
+
                     searchCubit.setFilters(
-                        parameters: selectCategoryCubit.parameters);
+                      parameters: selectCategoryCubit.parameters,
+                    );
                     Navigator.pop(context);
 
                     if (widget.needOpenNewScreen) {
                       Navigator.pushNamed(context, AppRoutesNames.search);
                     }
+                    updateAppBarFilterCubit.needUpdateAppBarFilters();
 
                     setState(() {});
                   },

@@ -21,6 +21,7 @@
 "view": "شاهد",
 "researchInAlgiers": "البحث في الجزائر",
 "recommendations": "التوصيات",
+"relatedAnnouncements": "إعلانات ذات صلة",
 "viewAll": "انظر إلى كل شيء",
 "city": "مدينة (",
 "kmOfYou": "كم منكم)",
@@ -31,7 +32,7 @@
 "showAll": "عرض جميع العروض",
 "searchBrand": "البحث العلامة التجارية",
 "done": "كفى",
-"location": "موقع",
+"location": "دائرة نصف قطرها",
 "searchZone": "منطقة البحوث",
 "displayAds": "اعرض الاعلان",
 "withPicture": "مع الصورة",
@@ -170,5 +171,7 @@
 "specifyPlace": "حدد المكان",
 "change": "التغيير",
 "loading": "تحميل",
-"notFound": "لم يتم العثور على شيء"
+"notFound": "لم يتم العثور على شيء",
+"send": "إرسال",
+"offerMessage": "مرحبا! أقترح عليك"
 }

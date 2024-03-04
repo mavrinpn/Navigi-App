@@ -21,14 +21,17 @@ import '../data/messenger_repository.dart';
 class ChatScreen extends StatefulWidget {
   const ChatScreen({
     super.key,
+    this.message,
   });
+
+  final String? message;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final TextEditingController messageController = TextEditingController();
+  late final TextEditingController messageController;
 
   bool preparing = false;
   final messageTextFieldBorder = OutlineInputBorder(
@@ -36,6 +39,12 @@ class _ChatScreenState extends State<ChatScreen> {
       borderSide: const BorderSide(color: AppColors.whiteGray));
 
   final List<XFile> images = [];
+
+  @override
+  void initState() {
+    messageController = TextEditingController(text: widget.message ?? '');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

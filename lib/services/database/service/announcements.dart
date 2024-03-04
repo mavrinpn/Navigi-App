@@ -35,7 +35,7 @@ class AnnouncementsService {
     }
 
     if (filterData.cityId != null) {
-      queries.add(Query.equal('city', filterData.cityId));
+      queries.add(Query.equal('city_id', filterData.cityId));
     }
 
     if (filterData.areaId != null) {
@@ -77,11 +77,19 @@ class AnnouncementsService {
     }
 
     if (filterData.cityId != null) {
-      queries.add(Query.equal('city', filterData.cityId));
+      queries.add(Query.equal('city_id', filterData.cityId));
     }
 
     if (filterData.areaId != null) {
-      queries.add(Query.equal('area', filterData.areaId));
+      queries.add(Query.equal('area_id', filterData.areaId));
+    }
+
+    if (filterData.limit != null) {
+      queries.add(Query.limit(filterData.limit!));
+    }
+
+    if (filterData.excludeId != null) {
+      queries.add(Query.notEqual('announcements', filterData.excludeId));
     }
 
     final res = await _databases.listDocuments(
@@ -93,15 +101,24 @@ class AnnouncementsService {
     List<Announcement> newAnnounces = [];
 
     for (var doc in res.documents) {
-      final id = getIdFromUrl(doc.data['announcements']['images'][0]);
+      if (doc.data['announcements'] != null) {
+        Future<Uint8List> futureBytes = Future.value(Uint8List.fromList([]));
+        if (doc.data['announcements']['images'] != null) {
+          final id = getIdFromUrl(doc.data['announcements']['images'][0]);
 
-      final futureBytes =
-          _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+          futureBytes = _storage.getFileView(
+            bucketId: announcementsBucketId,
+            fileId: id,
+          );
+        }
 
-      newAnnounces.add(Announcement.fromJson(
-          json: doc.data['announcements'], futureBytes: futureBytes));
+        newAnnounces.add(Announcement.fromJson(
+          json: doc.data['announcements'],
+          futureBytes: futureBytes,
+        ));
+      }
     }
-    // print(newAnnounces.length);
+
     return newAnnounces;
   }
 
@@ -116,6 +133,8 @@ class AnnouncementsService {
       'announcements': announcement,
       'latitude': lat,
       'longitude': lng,
+      'area_id': creatingData.areaId,
+      'city_id': creatingData.cityId,
       'price': creatingData.price,
       'title': creatingData.title,
       'active': true,
@@ -133,13 +152,12 @@ class AnnouncementsService {
           {i.key: i is SelectParameter ? i.currentValue.key : i.currentValue});
     }
 
-    // print(data);
-
     await _databases.createDocument(
-        databaseId: mainDatabase,
-        collectionId: creatingData.subcategoryId!,
-        documentId: ID.unique(),
-        data: data);
+      databaseId: mainDatabase,
+      collectionId: creatingData.subcategoryId!,
+      documentId: ID.unique(),
+      data: data,
+    );
   }
 
   Future<void> incTotalViewsById(String id) async {

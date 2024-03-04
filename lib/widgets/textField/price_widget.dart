@@ -38,16 +38,17 @@ class PriceWidget extends StatelessWidget {
             Expanded(
               flex: 3,
               child: SizedBox(
-                  height: 24,
-                  child: UnderLineTextField(
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    hintText: '',
-                    keyBoardType: const TextInputType.numberWithOptions(
-                        signed: true, decimal: true),
-                    suffixIcon: 'DZD',
-                    controller: minPriseController,
-                    onChange: (String value) {},
-                  )),
+                height: 24,
+                child: UnderLineTextField(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  hintText: '',
+                  keyBoardType: const TextInputType.numberWithOptions(
+                      signed: true, decimal: true),
+                  suffixIcon: 'DZD',
+                  controller: minPriseController,
+                  onChange: (String value) {},
+                ),
+              ),
             ),
             Expanded(
               flex: 1,
