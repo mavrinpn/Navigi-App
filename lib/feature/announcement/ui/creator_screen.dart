@@ -56,10 +56,11 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                 : state.sold.length),
           ),
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              crossAxisSpacing: 18,
-              mainAxisSpacing: 16,
-              maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-              childAspectRatio: 160 / 272));
+            crossAxisSpacing: 18,
+            mainAxisSpacing: 16,
+            maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+            childAspectRatio: 160 / 272,
+          ));
     }
 
     return Scaffold(
@@ -108,9 +109,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                           .userData!),
                 ),
                 const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 26,
-                  ),
+                  child: SizedBox(height: 26),
                 ),
                 SliverToBoxAdapter(
                   child: CustomTextButton.withIcon(
@@ -126,9 +125,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                   ),
                 ),
                 const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 10,
-                  ),
+                  child: SizedBox(height: 10),
                 ),
                 SliverToBoxAdapter(
                   child: CustomTextButton.withIcon(

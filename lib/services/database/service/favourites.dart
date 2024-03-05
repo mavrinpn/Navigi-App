@@ -52,23 +52,34 @@ class FavouritesService {
         documentId: doc.$id);
   }
 
-  Future getFavouritesAnnouncements(
-      {String? lastId, required String userId}) async {
+  Future getFavouritesAnnouncements({
+    String? lastId,
+    required String userId,
+  }) async {
     final documents = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: likesCollection,
-        queries: [Query.equal('user_id', userId)]);
+      databaseId: mainDatabase,
+      collectionId: likesCollection,
+      queries: [Query.equal('user_id', userId)],
+    );
 
     List<Announcement> announcements = [];
 
     for (var doc in documents.documents) {
-      final id = getIdFromUrl(doc.data['postCollection']['images'][0]);
+      Future<Uint8List> futureBytes;
+      if (doc.data['postCollection'] != null &&
+          doc.data['postCollection']['images'] != null) {
+        final id = getIdFromUrl(doc.data['postCollection']['images'][0]);
 
-      final futureBytes =
-          _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
-
-      announcements.add(Announcement.fromJson(
-          json: doc.data['postCollection'], futureBytes: futureBytes));
+        futureBytes =
+            _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+      } else {
+        futureBytes = Future.value(Uint8List.fromList([]));
+      }
+      if (doc.data['postCollection'] != null) {
+        final announcement = Announcement.fromJson(
+            json: doc.data['postCollection'], futureBytes: futureBytes);
+        announcements.add(announcement);
+      }
     }
     for (int i = 0; i < announcements.length; i++) {
       announcements[i].liked = true;

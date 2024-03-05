@@ -513,4 +513,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offerMessage => 'Hello! I propose you';
+
+  @override
+  String get writeComment => 'Write a comment';
+
+  @override
+  String get dataDownloadError => 'Data download error';
+
+  @override
+  String get publish => 'Publish';
 }

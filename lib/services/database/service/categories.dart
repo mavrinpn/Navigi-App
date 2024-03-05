@@ -161,8 +161,10 @@ class CategoriesService {
 
     List<Mark> marks = <Mark>[];
     for (var i in res.documents) {
-      marks.add(Mark(
-          i.data['manufacturers']['\$id'], i.data['manufacturers']['name']));
+      if (i.data['manufacturers'] != null) {
+        marks.add(Mark(
+            i.data['manufacturers']['\$id'], i.data['manufacturers']['name']));
+      }
     }
 
     marks.sort((a, b) => a.name.compareTo(b.name));

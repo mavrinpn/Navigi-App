@@ -17,6 +17,7 @@ import 'package:smart/models/category.dart';
 import 'package:smart/models/city.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/models/messenger/message.dart';
+import 'package:smart/models/review.dart';
 import 'package:smart/models/subcategory.dart';
 import 'package:smart/models/user.dart';
 import 'package:smart/services/filters/filter_dto.dart';
@@ -43,3 +44,5 @@ part 'service/user.dart';
 part 'service/notifications.dart';
 
 part 'service/service.dart';
+
+part 'service/reviews.dart';

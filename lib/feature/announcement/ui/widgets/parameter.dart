@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:smart/utils/fonts.dart';
 
 class ItemParameterWidget extends StatelessWidget {
-  const ItemParameterWidget(
-      {super.key, required this.name, required this.currentValue});
+  const ItemParameterWidget({
+    super.key,
+    required this.name,
+    required this.currentValue,
+  });
 
   final String name;
   final String currentValue;

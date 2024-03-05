@@ -25,19 +25,21 @@ class AnnouncementShortInfo extends StatelessWidget {
         height: 75,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x19000000),
-                blurRadius: 18,
-                offset: Offset(0, 0),
-                spreadRadius: 0,
-              )
-            ]),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x19000000),
+              blurRadius: 18,
+              offset: Offset(0, 0),
+              spreadRadius: 0,
+            )
+          ],
+        ),
         child: Row(
           children: [
-            AnnouncementImage(announcement: announcement, width: 65, height: 55),
+            AnnouncementImage(
+                announcement: announcement, width: 65, height: 55),
             const SizedBox(
               width: 10,
             ),

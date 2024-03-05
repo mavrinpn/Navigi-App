@@ -142,7 +142,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                         },
                         child: Text(
                           localizations.resetEverything,
-                          style: AppTypography.font12black,
+                          style: AppTypography.font12gray,
                         ),
                       ),
                     ],

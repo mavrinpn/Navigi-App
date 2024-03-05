@@ -173,5 +173,8 @@
 "loading": "Chargement",
 "notFound": "Rien n'a été trouvé",
 "send": "Envoyer",
-"offerMessage": "Salut! Je vous propose"
+"offerMessage": "Salut! Je vous propose",
+"writeComment": "Écrire un commentaire",
+"dataDownloadError": "Erreur de téléchargement de données",
+"publish": "Publier"
 }

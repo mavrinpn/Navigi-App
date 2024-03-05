@@ -18,10 +18,12 @@ import 'package:smart/feature/create_announcement/data/car_marks_repository.dart
 import 'package:smart/feature/create_announcement/data/marks_repository.dart';
 import 'package:smart/feature/messenger/bloc/message_images_cubit.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
+import 'package:smart/feature/reviews/bloc/reviews_cubit.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/managers/favourites_manager.dart';
+import 'package:smart/managers/reviews_manager.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/storage_service.dart';
@@ -79,6 +81,12 @@ class MyRepositoryProviders extends StatelessWidget {
       ),
       RepositoryProvider(
         create: (_) => AnnouncementManager(client: client),
+      ),
+      RepositoryProvider(
+        create: (_) => ReviewsManager(
+          databaseService: databaseService,
+          client: client,
+        ),
       ),
       RepositoryProvider(
         create: (_) => PlacesManager(databaseService: databaseService),
@@ -202,6 +210,12 @@ class MyBlocProviders extends StatelessWidget {
       BlocProvider(
         create: (_) => UserCubit(
           authRepository: RepositoryProvider.of<AuthRepository>(context),
+        ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => ReviewsCubit(
+          reviewsManager: RepositoryProvider.of<ReviewsManager>(context),
         ),
         lazy: false,
       ),

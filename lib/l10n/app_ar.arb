@@ -173,5 +173,8 @@
 "loading": "تحميل",
 "notFound": "لم يتم العثور على شيء",
 "send": "إرسال",
-"offerMessage": "مرحبا! أقترح عليك"
+"offerMessage": "مرحبا! أقترح عليك",
+"writeComment": "اكتب تعليق",
+"dataDownloadError": "خطأ في تنزيل البيانات",
+"publish": "للنشر"
 }

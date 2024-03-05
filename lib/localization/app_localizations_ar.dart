@@ -513,4 +513,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get offerMessage => 'مرحبا! أقترح عليك';
+
+  @override
+  String get writeComment => 'اكتب تعليق';
+
+  @override
+  String get dataDownloadError => 'خطأ في تنزيل البيانات';
+
+  @override
+  String get publish => 'للنشر';
 }

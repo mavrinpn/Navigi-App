@@ -513,4 +513,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get offerMessage => 'Salut! Je vous propose';
+
+  @override
+  String get writeComment => 'Écrire un commentaire';
+
+  @override
+  String get dataDownloadError => 'Erreur de téléchargement de données';
+
+  @override
+  String get publish => 'Publier';
 }

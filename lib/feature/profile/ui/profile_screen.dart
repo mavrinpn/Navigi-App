@@ -153,11 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ],
                       ),
                     ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 15,
-                      ),
-                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 15)),
                     if (creatorState is CreatorSuccessState) ...[
                       getGridHeight() == 100
                           ? SliverPadding(

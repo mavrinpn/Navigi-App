@@ -5,15 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
-import 'package:smart/feature/messenger/ui/chat_screen.dart';
-import 'package:smart/feature/search/ui/search_screen.dart';
 import 'package:smart/firebase_options.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/providers.dart';
 import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/services.dart';
 import 'package:smart/utils/app_theme.dart';
-import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/utils/routes/routes.dart';
 import 'package:smart/widgets/splash.dart';
 import 'bloc/app/app_cubit.dart';
@@ -94,36 +91,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.theme,
       routes: appRoutes,
-      onGenerateRoute: (settings) {
-        if (settings.name == AppRoutesNames.search) {
-          final arguments = settings.arguments as Map<String, dynamic>;
-          final query = arguments['query'] as String?;
-          final title = arguments['title'] as String?;
-          final showBackButton = arguments['showBackButton'] as bool?;
-
-          return MaterialPageRoute(
-            builder: (context) {
-              return SearchScreen(
-                showBackButton: showBackButton ?? true,
-                title: title ?? '',
-                searchQueryString: query,
-              );
-            },
-          );
-        } else if (settings.name == AppRoutesNames.chat) {
-          final arguments = settings.arguments as String?;
-          return MaterialPageRoute(
-            builder: (context) {
-              return ChatScreen(message: arguments);
-            },
-          );
-        }
-        return MaterialPageRoute(
-          builder: (context) {
-            return const Text('Page not found');
-          },
-        );
-      },
+      onGenerateRoute: onGenerateRoute,
       color: const Color(0xff292B57),
     );
   }

@@ -42,13 +42,24 @@ class MessagesService {
 
   Room _roomFromDoc(Document doc, String userId) {
     final otherUser = _getOtherUserNameAndImage(doc.data, userId);
-    final id = getIdFromUrl(doc.data['announcement']['images'][0]);
 
-    final futureBytes =
-        _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+    Future<Uint8List> futureBytes;
+    if (doc.data['announcement'] != null &&
+        doc.data['announcement']['images'] != null) {
+      final id = getIdFromUrl(doc.data['announcement']['images'][0]);
 
-    return Room.fromDocument(doc, futureBytes, otherUser,
-        onlineGetter: _onlineGetter);
+      futureBytes =
+          _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+    } else {
+      futureBytes = Future.value(Uint8List.fromList([]));
+    }
+
+    return Room.fromDocument(
+      doc,
+      futureBytes,
+      otherUser,
+      onlineGetter: _onlineGetter,
+    );
   }
 
   Future<List<Room>> getUserChats(String userId) async {

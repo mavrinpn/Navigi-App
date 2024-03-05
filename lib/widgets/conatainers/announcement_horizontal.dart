@@ -103,7 +103,7 @@ class _AnnouncementContainerHorizontalState
                             const SizedBox(width: 4),
                             Text(
                               widget.announcement.totalViews.toString(),
-                              style: AppTypography.font12black
+                              style: AppTypography.font12gray
                                   .copyWith(color: AppColors.lightGray),
                             ),
                             const SizedBox(width: 20),

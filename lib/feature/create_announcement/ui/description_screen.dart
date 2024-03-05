@@ -34,95 +34,99 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
         TextPosition(offset: titleController.text.length));
 
     return Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData.fallback(),
-          backgroundColor: AppColors.empty,
-          elevation: 0,
-          title: Text(
-            localizations.information,
-            style: AppTypography.font20black,
-          ),
+      appBar: AppBar(
+        iconTheme: const IconThemeData.fallback(),
+        backgroundColor: AppColors.empty,
+        elevation: 0,
+        title: Text(
+          localizations.information,
+          style: AppTypography.font20black,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 16,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      localizations.title,
+                      style: AppTypography.font16black.copyWith(fontSize: 18),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        localizations.title,
-                        style: AppTypography.font16black.copyWith(fontSize: 18),
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    OutlineTextField(
-                      hintText: localizations.name,
-                      controller: titleController,
-                      maxLines: 5,
-                      height: 100,
-                      width: double.infinity,
-                      maxLength: 100,
-                      onChange: (value) {
-                        if (value.isNotEmpty) {
-                          repository.setTitle(value);
-                        } else {
-                          repository.setTitle(repository.buildTitle);
-                        }
-                      },
-                    )
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 5),
+                  OutlineTextField(
+                    hintText: localizations.name,
+                    controller: titleController,
+                    maxLines: 5,
+                    height: 100,
+                    width: double.infinity,
+                    maxLength: 100,
+                    onChange: (value) {
+                      if (value.isNotEmpty) {
+                        repository.setTitle(value);
+                      } else {
+                        repository.setTitle(repository.buildTitle);
+                      }
+                    },
+                  )
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 16,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      localizations.description,
+                      style: AppTypography.font16black.copyWith(fontSize: 18),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        localizations.description,
-                        style: AppTypography.font16black.copyWith(fontSize: 18),
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    OutlineTextField(
-                      hintText: localizations.description,
-                      controller: descriptionController,
-                      maxLines: 20,
-                      height: 310,
-                      width: double.infinity,
-                      maxLength: 500,
-                      onChange: (value) {
-                        setState(() {});
-                      },
-                    )
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 5),
+                  OutlineTextField(
+                    hintText: localizations.description,
+                    controller: descriptionController,
+                    maxLines: 20,
+                    height: 310,
+                    width: double.infinity,
+                    maxLength: 500,
+                    onChange: (value) {
+                      setState(() {});
+                    },
+                  )
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        floatingActionButton: CustomTextButton.orangeContinue(
-            active: descriptionController.text.isNotEmpty && titleController.text.isNotEmpty,
-            width: MediaQuery.of(context).size.width - 30,
-            text: localizations.continue_,
-            callback: () {
-              repository.setDescription(descriptionController.text);
-              repository.setTitle(titleController.text);
-              repository.setInfoFormItem();
-              BlocProvider.of<CreatingAnnouncementCubit>(context).createAnnouncement();
-              Navigator.pushNamed(context, '/loading_screen');
-            }));
+      ),
+      floatingActionButton: CustomTextButton.orangeContinue(
+        active: descriptionController.text.isNotEmpty &&
+            titleController.text.isNotEmpty,
+        width: MediaQuery.of(context).size.width - 30,
+        text: localizations.continue_,
+        callback: () {
+          repository.setDescription(descriptionController.text);
+          repository.setTitle(titleController.text);
+          repository.setInfoFormItem();
+          BlocProvider.of<CreatingAnnouncementCubit>(context)
+              .createAnnouncement();
+          Navigator.pushNamed(context, '/loading_screen');
+        },
+      ),
+    );
   }
 }

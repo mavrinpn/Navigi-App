@@ -14,6 +14,7 @@ class DatabaseService {
   late final UserService users;
   late final MessagesService messages;
   late final NotificationsDatabaseService notifications;
+  late final ReviewsService reviews;
 
   DatabaseService({required Client client})
       : _databases = Databases(client),
@@ -25,6 +26,7 @@ class DatabaseService {
     notifications = NotificationsDatabaseService(_databases);
     users = UserService(_databases, _functions, _account);
     announcements = AnnouncementsService(_databases, _storage);
+    reviews = ReviewsService(_databases, _storage);
     favourites = FavouritesService(_databases, _storage);
     messages =
         MessagesService(_databases, _realtime, _functions, _storage, users);

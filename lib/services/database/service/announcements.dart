@@ -112,10 +112,11 @@ class AnnouncementsService {
           );
         }
 
-        newAnnounces.add(Announcement.fromJson(
+        final ann = Announcement.fromJson(
           json: doc.data['announcements'],
           futureBytes: futureBytes,
-        ));
+        );
+        newAnnounces.add(ann);
       }
     }
 

@@ -173,5 +173,8 @@
 "loading": "Loading",
 "notFound": "Nothing was found",
 "send": "Send",
-"offerMessage": "Hello! I propose you"
+"offerMessage": "Hello! I propose you",
+"writeComment": "Write a comment",
+"dataDownloadError": "Data download error",
+"publish": "Publish"
 }

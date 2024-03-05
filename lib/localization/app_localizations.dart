@@ -1114,6 +1114,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hello! I propose you'**
   String get offerMessage;
+
+  /// No description provided for @writeComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a comment'**
+  String get writeComment;
+
+  /// No description provided for @dataDownloadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Data download error'**
+  String get dataDownloadError;
+
+  /// No description provided for @publish.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish'**
+  String get publish;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
