@@ -130,20 +130,22 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     try {
       if (searchMode == SearchModeEnum.simple) {
         await _announcementManager.loadSearchAnnouncement(
-            searchText: searchText,
-            isNew: true,
-            sortBy: _sortBy,
-            minPrice: _minPrice,
-            maxPrice: _maxPrice);
+          searchText: searchText,
+          isNew: true,
+          sortBy: _sortBy,
+          minPrice: _minPrice,
+          maxPrice: _maxPrice,
+        );
       } else {
         await _announcementManager.searchWithSubcategory(
-            subcategoryId: _subcategoryId!,
-            parameters: parameters,
-            searchText: searchText,
-            isNew: true,
-            sortBy: _sortBy,
-            minPrice: _minPrice,
-            maxPrice: _maxPrice);
+          subcategoryId: _subcategoryId!,
+          parameters: parameters,
+          searchText: searchText,
+          isNew: true,
+          sortBy: _sortBy,
+          minPrice: _minPrice,
+          maxPrice: _maxPrice,
+        );
       }
       // await _announcementManager.loadSearchAnnouncement(
       //     searchText: searchText,

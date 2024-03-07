@@ -9,9 +9,11 @@ import '../services/database/database_service.dart';
 
 class AnnouncementManager {
   final DatabaseService dbService;
+  final Account account;
 
   AnnouncementManager({required Client client})
-      : dbService = DatabaseService(client: client);
+      : dbService = DatabaseService(client: client),
+        account = Account(client);
 
   String? _lastId;
   String? _searchLastId;
@@ -34,8 +36,13 @@ class AnnouncementManager {
           _lastId = '';
         }
 
-        announcements
-            .addAll(await dbService.announcements.getAnnouncements(_lastId));
+        final user = await account.get();
+        final uid = user.$id;
+
+        announcements.addAll(await dbService.announcements.getAnnouncements(
+          lastId: _lastId,
+          excudeUserId: uid,
+        ));
         _lastId = announcements.last.id;
       } catch (e) {
         if (e.toString() != 'Bad state: No element') {
@@ -169,7 +176,7 @@ class AnnouncementManager {
         cityId: cityId,
         areaId: areaId,
       );
-  
+
       searchAnnouncements.addAll(
           await dbService.announcements.searchLimitAnnouncements(filter));
 

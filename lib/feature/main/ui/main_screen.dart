@@ -13,7 +13,7 @@ import 'package:smart/widgets/scaffold/main_scaffold.dart';
 import '../../../managers/announcement_manager.dart';
 import '../../../utils/animations.dart';
 import '../../../widgets/conatainers/advertisement_containers.dart';
-import '../../../widgets/conatainers/announcement.dart';
+import '../../../widgets/conatainers/announcement_container.dart';
 import '../../search/bloc/search_announcement_cubit.dart';
 import '../bloc/announcements/announcement_cubit.dart';
 import '../bloc/popularQueries/popular_queries_cubit.dart';
@@ -67,9 +67,10 @@ class _MainScreenState extends State<MainScreen> {
             maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
             childAspectRatio: 160 / 272),
         delegate: SliverChildBuilderDelegate(
-            (context, ind) => AnnouncementContainer(
-                announcement: announcementRepository.announcements[ind]),
-            childCount: announcementRepository.announcements.length),
+          (context, index) => AnnouncementContainer(
+              announcement: announcementRepository.announcements[index]),
+          childCount: announcementRepository.announcements.length,
+        ),
       );
     }
 

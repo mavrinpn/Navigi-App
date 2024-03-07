@@ -4,8 +4,11 @@ import 'package:smart/managers/search_manager.dart';
 import 'package:smart/utils/utils.dart';
 
 class SearchItemsWidget extends StatelessWidget {
-  const SearchItemsWidget(
-      {super.key, required this.state, required this.setSearch});
+  const SearchItemsWidget({
+    super.key,
+    required this.state,
+    required this.setSearch,
+  });
 
   final Function(String, SearchManager?) setSearch;
   final SearchItemsSuccess state;

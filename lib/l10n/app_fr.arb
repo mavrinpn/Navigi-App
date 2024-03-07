@@ -176,5 +176,7 @@
 "offerMessage": "Salut! Je vous propose",
 "writeComment": "Écrire un commentaire",
 "dataDownloadError": "Erreur de téléchargement de données",
-"publish": "Publier"
+"publish": "Publier",
+"changesSaved": "Modifications enregistrées",
+"dataSavingError": "Erreur d'enregistrement des données"
 }

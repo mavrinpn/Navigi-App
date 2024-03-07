@@ -74,7 +74,7 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
 
     return Container(
-      height: MediaQuery.sizeOf(context).height * 0.9,
+      // height: MediaQuery.sizeOf(context).height * 0.9,
       color: Colors.white,
       child: SafeArea(
         child: SingleChildScrollView(
@@ -113,7 +113,13 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
                     Navigator.pop(context);
 
                     if (widget.needOpenNewScreen) {
-                      Navigator.pushNamed(context, AppRoutesNames.search);
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutesNames.search,
+                        arguments: {
+                          'showSearchHelper': false,
+                        },
+                      );
                     }
 
                     updateAppBarFilterCubit.needUpdateAppBarFilters();

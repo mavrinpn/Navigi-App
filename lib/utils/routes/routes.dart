@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/feature/announcement/bloc/announcement/announcement_cubit.dart';
+import 'package:smart/feature/announcement/bloc/related/related_announcement_cubit.dart';
 import 'package:smart/feature/announcement/ui/announcement_screen.dart';
 import 'package:smart/feature/announcement/ui/creator_screen.dart';
 import 'package:smart/feature/announcement_editing/ui/editing_announcement.dart';
@@ -16,6 +19,7 @@ import 'package:smart/feature/search/ui/search_screen.dart';
 import 'package:smart/feature/search/ui/select_subcategory.dart';
 import 'package:smart/feature/settings/ui/settings_screen.dart';
 import 'package:smart/main.dart';
+import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/models/user.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
@@ -27,11 +31,13 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     final query = arguments['query'] as String?;
     final title = arguments['title'] as String?;
     final showBackButton = arguments['showBackButton'] as bool?;
+    final showSearchHelper = arguments['showSearchHelper'] as bool?;
 
     return MaterialPageRoute(
       builder: (context) {
         return SearchScreen(
           showBackButton: showBackButton ?? true,
+          showSearchHelper: showSearchHelper ?? true,
           title: title ?? '',
           searchQueryString: query,
         );
@@ -56,6 +62,31 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (context) {
         return CreateReviewScreen(user: arguments);
+      },
+    );
+  } else if (settings.name == AppRoutesNames.announcement) {
+    final arguments = settings.arguments as String;
+    return MaterialPageRoute(
+      builder: (context) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => AnnouncementCubit(
+                announcementManager:
+                    RepositoryProvider.of<AnnouncementManager>(context),
+              ),
+              lazy: false,
+            ),
+            BlocProvider(
+              create: (_) => RelatedAnnouncementCubit(
+                announcementManager:
+                    RepositoryProvider.of<AnnouncementManager>(context),
+              ),
+              lazy: false,
+            ),
+          ],
+          child: AnnouncementScreen(announcementId: arguments),
+        );
       },
     );
   }
@@ -92,7 +123,7 @@ final appRoutes = {
   AppRoutesNames.announcementCreatingOptions: (context) =>
       const OptionsScreen(),
   AppRoutesNames.main: (context) => const MainScreen(),
-  AppRoutesNames.announcement: (context) => const AnnouncementScreen(),
+  // AppRoutesNames.announcement: (context) => const AnnouncementScreen(),
   AppRoutesNames.editProfile: (context) => const EditProfileScreen(),
   AppRoutesNames.settings: (context) => const SettingsScreen(),
   AppRoutesNames.announcementCreator: (context) => const CreatorProfileScreen(),

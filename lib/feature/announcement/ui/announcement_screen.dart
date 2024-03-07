@@ -32,13 +32,25 @@ import 'map.dart';
 int activePage = 0;
 
 class AnnouncementScreen extends StatefulWidget {
-  const AnnouncementScreen({super.key});
+  const AnnouncementScreen({
+    super.key,
+    required this.announcementId,
+  });
+
+  final String announcementId;
 
   @override
   State<AnnouncementScreen> createState() => _AnnouncementScreenState();
 }
 
 class _AnnouncementScreenState extends State<AnnouncementScreen> {
+  @override
+  void initState() {
+    BlocProvider.of<AnnouncementCubit>(context)
+        .loadAnnouncementById(widget.announcementId);
+    super.initState();
+  }
+
   void incViewsIfNeed(AnnouncementSuccessState state) {
     final userId = RepositoryProvider.of<AuthRepository>(context).userId;
     if (userId != state.data.creatorData.uid) {
@@ -87,14 +99,13 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                 automaticallyImplyLeading: false,
                 backgroundColor: AppColors.empty,
                 elevation: 0,
+                titleSpacing: 6,
                 title: Row(
                   children: [
                     const CustomBackButton(),
                     const Spacer(),
                     FavouriteIndicator(postId: state.data.id),
-                    const SizedBox(
-                      width: 4,
-                    ),
+                    const SizedBox(width: 4),
                     GestureDetector(
                       onTap: () {
                         if (state.data.creatorData.uid ==

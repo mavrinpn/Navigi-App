@@ -10,8 +10,15 @@ class AnnouncementsService {
       : _databases = databases,
         _storage = storage;
 
-  Future<List<Announcement>> getAnnouncements(String? lastId) async {
+  Future<List<Announcement>> getAnnouncements({
+    required String? lastId,
+    required String? excudeUserId,
+  }) async {
     List<String> queries = ParametersFilterBuilder.getQueriesForGet(lastId);
+
+    if (excudeUserId != null) {
+      queries.add(Query.notEqual('creator_id', excudeUserId));
+    }
 
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
@@ -124,12 +131,14 @@ class AnnouncementsService {
   }
 
   Future<void> writeAnnouncementSubcategoryParameters(
-      String announcement,
-      AnnouncementCreatingData creatingData,
-      List<Parameter> parameters,
-      double lat,
-      double lng,
-      MarksFilter? marksFilter) async {
+    String announcement,
+    AnnouncementCreatingData creatingData,
+    List<Parameter> parameters,
+    double lat,
+    double lng,
+    MarksFilter? marksFilter,
+    CarFilter? carFilter,
+  ) async {
     final data = <String, dynamic>{
       'announcements': announcement,
       'latitude': lat,
@@ -140,6 +149,11 @@ class AnnouncementsService {
       'title': creatingData.title,
       'active': true,
     };
+
+    if (carFilter != null) {
+      data.addAll({'mark': carFilter.markId});
+      data.addAll({'model': carFilter.modelId});
+    }
 
     if (marksFilter != null) {
       data.addAll({'mark': marksFilter.markId});
@@ -180,6 +194,7 @@ class AnnouncementsService {
     CityDistrict district,
     LatLng? customPosition,
     MarksFilter? marksFilter,
+    CarFilter? carFilter,
   ) async {
     final data = creatingData.toJson(uid, urls);
 
@@ -208,6 +223,7 @@ class AnnouncementsService {
       lat,
       lng,
       marksFilter,
+      carFilter,
     );
   }
 

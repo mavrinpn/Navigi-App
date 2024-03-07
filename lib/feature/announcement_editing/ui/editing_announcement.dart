@@ -90,8 +90,6 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
     priceController.text = cubit.data.price.toString();
   }
 
-  final formKey = GlobalKey<FormState>();
-
   @override
   void dispose() {
     super.dispose();
@@ -121,10 +119,10 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
 
             if (state is AnnouncementEditSuccess) {
               ScaffoldMessenger.of(context)
-                  .showSnackBar(const SnackBar(content: Text('success')));
+                  .showSnackBar( SnackBar(content: Text(localizations.changesSaved)));
             } else if (state is AnnouncementEditFail) {
               ScaffoldMessenger.of(context)
-                  .showSnackBar(const SnackBar(content: Text('fail')));
+                  .showSnackBar( SnackBar(content: Text(localizations.dataSavingError)));
             }
           },
           builder: (context, state) {
@@ -135,6 +133,7 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
                 automaticallyImplyLeading: false,
                 backgroundColor: AppColors.empty,
                 elevation: 0,
+                titleSpacing: 6,
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -165,9 +164,6 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
                     PriceSection(
                       onChange: (String value) {
                         cubit.onPriceChanged(value);
-                        setState(() {
-                          formKey.currentState!.validate();
-                        });
                       },
                       priceController: priceController,
                       priceValidator: priceValidator,

@@ -20,21 +20,21 @@ class OutlineTextField extends StatelessWidget {
   final bool readonly;
   final bool error;
 
-  const OutlineTextField(
-      {Key? key,
-      required this.hintText,
-      required this.controller,
-      this.width = 290,
-      this.height = 50,
-      this.obscureText = false,
-      this.maxLines = 1,
-      this.maxLength,
-      this.keyBoardType = TextInputType.text,
-      this.onChange,
-      this.readonly = false,
-      this.icon = "",
-      this.error = false})
-      : super(key: key);
+  const OutlineTextField({
+    Key? key,
+    required this.hintText,
+    required this.controller,
+    this.width = 290,
+    this.height = 50,
+    this.obscureText = false,
+    this.maxLines = 1,
+    this.maxLength,
+    this.keyBoardType = TextInputType.text,
+    this.onChange,
+    this.readonly = false,
+    this.icon = "",
+    this.error = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +43,7 @@ class OutlineTextField extends StatelessWidget {
       height: height,
       alignment: Alignment.center,
       child: TextFormField(
+        keyboardType: keyBoardType,
         readOnly: readonly,
         maxLines: maxLines,
         maxLength: maxLength,

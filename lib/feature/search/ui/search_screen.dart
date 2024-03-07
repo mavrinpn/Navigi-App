@@ -12,13 +12,14 @@ import 'package:smart/feature/search/ui/widgets/search_appbar.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
 import 'package:smart/models/item/item.dart';
+import 'package:smart/widgets/button/back_button.dart';
 
 import '../../../managers/announcement_manager.dart';
 import '../../../managers/search_manager.dart';
 import '../../../utils/animations.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
-import '../../../widgets/conatainers/announcement.dart';
+import '../../../widgets/conatainers/announcement_container.dart';
 import '../../main/bloc/popularQueries/popular_queries_cubit.dart';
 import '../../main/bloc/search/search_announcements_cubit.dart';
 import '../bloc/search_announcement_cubit.dart';
@@ -28,10 +29,12 @@ class SearchScreen extends StatefulWidget {
     super.key,
     required this.showBackButton,
     required this.title,
+    required this.showSearchHelper,
     this.searchQueryString,
   });
 
   final bool showBackButton;
+  final bool showSearchHelper;
   final String title;
   final String? searchQueryString;
 
@@ -42,30 +45,38 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final searchController = TextEditingController();
   final _controller = ScrollController();
-  bool _isSearched = false;
+  String? searchQueryString;
 
   @override
   void initState() {
     super.initState();
+    final searchManager = RepositoryProvider.of<SearchManager>(context);
+    searchManager.setSearch(widget.showSearchHelper);
+    searchQueryString = widget.searchQueryString;
 
-    _controller.addListener(() async {
-      if (_controller.position.atEdge) {
-        double maxScroll = _controller.position.maxScrollExtent;
-        double currentScroll = _controller.position.pixels;
-        if (currentScroll >= maxScroll * 0.8) {
-          BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
-            searchText: '',
-            isNew: false,
-          );
-        }
-      }
-    });
+    // _controller.addListener(() async {
+    //   if (_controller.position.atEdge) {
+    //     double maxScroll = _controller.position.maxScrollExtent;
+    //     double currentScroll = _controller.position.pixels;
+    //     if (currentScroll >= maxScroll * 0.8) {
+    //       BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
+    //         searchText: '',
+    //         isNew: false,
+    //       );
+    //     }
+    //   }
+    // });
   }
 
   @override
   void didChangeDependencies() {
     context.watch<SearchSelectSubcategoryCubit>();
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   void setSearchText(String text) {
@@ -191,12 +202,15 @@ class _SearchScreenState extends State<SearchScreen> {
             ],
           ),
           const SizedBox(height: 7),
-          HistoryWidget(onDelete: (e) {
-            searchManager.deleteQueryByName(e);
-            setState(() {});
-          }, onSearch: (e) {
-            setSearch(e.toString(), searchManager);
-          })
+          HistoryWidget(
+            onDelete: (e) {
+              searchManager.deleteQueryByName(e);
+              setState(() {});
+            },
+            onSearch: (e) {
+              setSearch(e.toString(), searchManager);
+            },
+          )
         ],
       );
     }
@@ -250,12 +264,12 @@ class _SearchScreenState extends State<SearchScreen> {
               BlocConsumer<SearchAnnouncementCubit, SearchAnnouncementState>(
                 listener: (context, state) {
                   if (state is SearchAnnouncementsSuccessState) {
-                    if (widget.searchQueryString != null && !_isSearched) {
-                      _isSearched = true;
+                    if (searchQueryString != null) {
                       setSearch(
-                        widget.searchQueryString!,
+                        searchQueryString!,
                         searchManager,
                       );
+                      searchQueryString = null;
                     }
                   }
                 },
@@ -310,13 +324,7 @@ class _SearchScreenState extends State<SearchScreen> {
             children: [
               Row(
                 children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(
-                      Icons.arrow_back_sharp,
-                      color: AppColors.black,
-                    ),
-                  ),
+                  const CustomBackButton(),
                   Text(
                     widget.title,
                     style: const TextStyle(

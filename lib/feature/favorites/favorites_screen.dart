@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/managers/favourites_manager.dart';
-import 'package:smart/widgets/conatainers/announcement.dart';
+import 'package:smart/widgets/conatainers/announcement_container.dart';
 
 import '../../utils/utils.dart';
 import '../../widgets/button/custom_text_button.dart';

@@ -19,17 +19,22 @@ class _InputParameterWidgetState extends State<InputParameterWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final type = widget.parameter.type;
+    final keyBoardType = ['int', 'double'].contains(type)
+        ? TextInputType.number
+        : TextInputType.text;
+
     return OutlineTextField(
       hintText: MyApp.getLocale(context) == 'fr'
           ? widget.parameter.frName
           : widget.parameter.arName,
       controller: controller,
+      keyBoardType: keyBoardType,
       width: double.infinity,
       maxLength: 100,
       error: error,
       onChange: (value) {
         if (value.isNotEmpty) {
-          final type = widget.parameter.type;
           final dynamic typedValue;
           switch (type) {
             case 'int':

@@ -55,6 +55,7 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> {
         AppRoutesNames.search,
         arguments: {
           'showBackButton': false,
+          'showSearchHelper': false,
           'title':
               currentLocale == 'fr' ? subcategory.nameFr : subcategory.nameAr
         },

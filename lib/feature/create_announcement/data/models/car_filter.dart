@@ -35,13 +35,15 @@ class CarFilter {
         );
 
   SelectParameter get dotation => SelectParameter(
-      key: 'Dotation',
+      // key: 'Dotation',
+      key: 'complectation',
       variants: complectations,
       arName: 'مجموعة كاملة',
       frName: 'Dotation');
 
   SelectParameter get engine => SelectParameter(
-        key: 'engines',
+        // key: 'engines',
+        key: 'engine',
         variants: engines,
         arName: 'المحرك',
         frName: 'Moteur',

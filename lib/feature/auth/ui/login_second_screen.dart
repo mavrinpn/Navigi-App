@@ -6,6 +6,7 @@ import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 import '../../../utils/dialogs.dart';
@@ -60,16 +61,10 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            title: Row(
+            titleSpacing: 6,
+            title: const Row(
               children: [
-                InkWell(
-                    child: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.black,
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    })
+                CustomBackButton(),
               ],
             ),
           ),

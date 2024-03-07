@@ -176,5 +176,7 @@
 "offerMessage": "مرحبا! أقترح عليك",
 "writeComment": "اكتب تعليق",
 "dataDownloadError": "خطأ في تنزيل البيانات",
-"publish": "للنشر"
+"publish": "للنشر",
+"changesSaved": "يتم حفظ التغييرات",
+"dataSavingError": "خطأ في حفظ البيانات"
 }

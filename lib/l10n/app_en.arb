@@ -176,5 +176,7 @@
 "offerMessage": "Hello! I propose you",
 "writeComment": "Write a comment",
 "dataDownloadError": "Data download error",
-"publish": "Publish"
+"publish": "Publish",
+"changesSaved": "The changes are saved",
+"dataSavingError": "Data saving error"
 }

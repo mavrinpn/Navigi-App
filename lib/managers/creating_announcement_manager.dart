@@ -156,6 +156,7 @@ class CreatingAnnouncementManager {
         cityDistrict!,
         customPosition,
         marksFilter,
+        carFilter,
       );
 
       clearAllData();

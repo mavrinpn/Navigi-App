@@ -1132,6 +1132,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Publish'**
   String get publish;
+
+  /// No description provided for @changesSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'The changes are saved'**
+  String get changesSaved;
+
+  /// No description provided for @dataSavingError.
+  ///
+  /// In en, this message translates to:
+  /// **'Data saving error'**
+  String get dataSavingError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -6,6 +6,7 @@ import 'package:smart/feature/announcement/data/creator_repository.dart';
 import 'package:smart/feature/announcement/ui/widgets/tabs.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/button/back_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../localization/app_localizations.dart';
@@ -13,7 +14,7 @@ import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/accuont/account_medium_info.dart';
 import '../../../widgets/button/custom_text_button.dart';
-import '../../../widgets/conatainers/announcement.dart';
+import '../../../widgets/conatainers/announcement_container.dart';
 
 class CreatorProfileScreen extends StatefulWidget {
   const CreatorProfileScreen({super.key});
@@ -66,17 +67,10 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: const Icon(
-            Icons.arrow_back_sharp,
-            color: Colors.black,
-          ),
-        ),
+        leading: const CustomBackButton(),
         backgroundColor: AppColors.mainBackground,
         elevation: 0,
+        titleSpacing: 6,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [

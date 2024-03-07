@@ -94,7 +94,7 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
                                         color: color,
                                         size: 20,
                                       ),
-                                      starCount: 5, //TODO starCount
+                                      starCount: 5,
                                       starSize: 20,
                                       valueLabelColor: const Color(0xff9b9b9b),
                                       maxValue: 5,

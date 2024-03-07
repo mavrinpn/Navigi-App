@@ -522,4 +522,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get publish => 'للنشر';
+
+  @override
+  String get changesSaved => 'يتم حفظ التغييرات';
+
+  @override
+  String get dataSavingError => 'خطأ في حفظ البيانات';
 }

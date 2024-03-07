@@ -5,7 +5,8 @@ import 'package:smart/utils/functions.dart';
 class MessagesGroupData implements ChatItem {
   List<Message> messages;
 
-  MessagesGroupData({required this.messages}) : assert(messages.isNotEmpty, 'messages cannot be empty');
+  MessagesGroupData({required this.messages})
+      : assert(messages.isNotEmpty, 'messages cannot be empty');
 
   void addMessage(Message message) => messages.add(message);
 
@@ -18,6 +19,8 @@ class MessagesGroupData implements ChatItem {
   bool get owned => messages.last.owned;
 
   bool diffDate(DateTime dt) {
-    return (dt.year != sentAt.year || dt.month != sentAt.month || dt.day != sentAt.day);
+    return (dt.year != sentAt.year ||
+        dt.month != sentAt.month ||
+        dt.day != sentAt.day);
   }
 }

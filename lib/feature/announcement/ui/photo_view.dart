@@ -5,6 +5,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:smart/feature/announcement/ui/announcement_screen.dart';
 import 'package:smart/feature/announcement/ui/widgets/images_amount_indicators.dart';
 import 'package:smart/managers/announcement_manager.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/utils/utils.dart';
 
 class PhotoViews extends StatefulWidget {
@@ -25,8 +26,12 @@ class _PhotoViewsState extends State<PhotoViews> {
     // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) => const AnnouncementScreen()));
+        Navigator.pushReplacementNamed(
+          context,
+          AppRoutesNames.announcement,
+          arguments: currentAnnouncement.id,
+        );
+
         return false;
       },
       child: Scaffold(
@@ -39,10 +44,11 @@ class _PhotoViewsState extends State<PhotoViews> {
             children: [
               InkWell(
                   onTap: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const AnnouncementScreen()));
+                    Navigator.pushReplacementNamed(
+                      context,
+                      AppRoutesNames.announcement,
+                      arguments: currentAnnouncement?.id,
+                    );
                   },
                   child: const Icon(Icons.arrow_back, color: Colors.white))
             ],

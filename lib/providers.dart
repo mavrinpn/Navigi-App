@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/bloc/app/app_cubit.dart';
-import 'package:smart/feature/announcement/bloc/announcement/announcement_cubit.dart';
-import 'package:smart/feature/announcement/bloc/related/related_announcement_cubit.dart';
 import 'package:smart/feature/announcement/data/creator_repository.dart';
 import 'package:smart/feature/announcement_editing/bloc/announcement_edit_cubit.dart';
 import 'package:smart/feature/announcement_editing/data/announcement_editing_repository.dart';
@@ -183,20 +181,6 @@ class MyBlocProviders extends StatelessWidget {
       BlocProvider(
         create: (_) =>
             UpdateAppBarFilterCubit(UpdateAppBarFilterState(needUpdate: false)),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => AnnouncementCubit(
-          announcementManager:
-              RepositoryProvider.of<AnnouncementManager>(context),
-        ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => RelatedAnnouncementCubit(
-          announcementManager:
-              RepositoryProvider.of<AnnouncementManager>(context),
-        ),
         lazy: false,
       ),
       BlocProvider(

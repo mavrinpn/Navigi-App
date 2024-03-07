@@ -8,7 +8,6 @@ import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/images/announcement_image.dart';
 
-import '../../feature/announcement/bloc/announcement/announcement_cubit.dart';
 import '../../utils/colors.dart';
 
 class AnnouncementContainerHorizontal extends StatefulWidget {
@@ -41,9 +40,11 @@ class _AnnouncementContainerHorizontalState
 
     return GestureDetector(
       onTap: () async {
-        BlocProvider.of<AnnouncementCubit>(context)
-            .loadAnnouncementById(widget.announcement.id);
-        Navigator.pushNamed(context, AppRoutesNames.announcement);
+        Navigator.pushNamed(
+          context,
+          AppRoutesNames.announcement,
+          arguments: widget.announcement.id,
+        );
       },
       child: Stack(
         children: [

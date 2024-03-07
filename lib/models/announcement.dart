@@ -37,8 +37,8 @@ class Announcement {
         creatorData = CreatorData.fromJson(data: json['creator']),
         price = double.parse(json['price'].toString()),
         images = json['images'],
-        staticParameters = json['parametrs'] is List
-            ? StaticParameters(encodedParameters: json['parametrs'] ?? '[]')
+        staticParameters = json['parametrs'] is String
+            ? StaticParameters(encodedParameters: '${json['parametrs']}')
             : StaticParameters(encodedParameters: '[]'),
         totalViews = json['total_views'] ?? 0,
         _createdAt = json['\$createdAt'],

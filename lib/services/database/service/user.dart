@@ -10,10 +10,11 @@ class UserService {
         _account = account,
         _functions = functions;
 
-  Future<void> createUser(
-      {required String name,
-      required String uid,
-      required String phone}) async {
+  Future<void> createUser({
+    required String name,
+    required String uid,
+    required String phone,
+  }) async {
     await _databases.createDocument(
         databaseId: mainDatabase,
         collectionId: usersCollection,

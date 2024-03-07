@@ -8,7 +8,6 @@ import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/images/announcement_image.dart';
 
-import '../../feature/announcement/bloc/announcement/announcement_cubit.dart';
 import '../../utils/colors.dart';
 
 class AnnouncementContainer extends StatefulWidget {
@@ -53,9 +52,11 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
 
     return GestureDetector(
         onTap: () async {
-          BlocProvider.of<AnnouncementCubit>(context)
-              .loadAnnouncementById(widget.announcement.id);
-          Navigator.pushNamed(context, AppRoutesNames.announcement);
+          Navigator.pushNamed(
+            context,
+            AppRoutesNames.announcement,
+            arguments: widget.announcement.id,
+          );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,9 +70,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                 height: imageHeight,
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             SizedBox(
               width: imageWidth,
               child: Text(
@@ -82,16 +81,15 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const SizedBox(
-              height: 5,
-            ),
+            const SizedBox(height: 5),
             BlocListener<FavouritesCubit, FavouritesState>(
               listener: (context, state) {
+                print(state);
                 if (state is LikeSuccessState &&
                     state.changedPostId == widget.announcement.id) {
-                  setState(() {
-                    liked = state.value;
-                  });
+                  // setState(() {
+                  //   liked = state.value;
+                  // });
                 }
               },
               child: Row(

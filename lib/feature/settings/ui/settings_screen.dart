@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
+import 'package:smart/widgets/button/back_button.dart';
 
 import '../../../models/custom_locate.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/parameters_selection/single_pick_list.dart';
-
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -38,26 +38,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.empty,
         elevation: 0,
+        titleSpacing: 6,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            InkWell(
-              focusColor: AppColors.empty,
-              hoverColor: AppColors.empty,
-              highlightColor: AppColors.empty,
-              splashColor: AppColors.empty,
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const SizedBox(
-                width: 35,
-                height: 48,
-                child: Icon(
-                  Icons.arrow_back,
-                  color: AppColors.black,
-                ),
-              ),
-            ),
+            const CustomBackButton(),
             Expanded(
               child: Text(
                 localizations.placeApplicationSettings,

@@ -18,40 +18,30 @@ class ImageMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute<void>(builder: (context) {
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.black,
-              automaticallyImplyLeading: false,
-              title: const Row(
-                children: [
-                  CustomBackButton(
-                    color: Colors.white,
-                  )
-                ],
-              ),
-            ),
-            body: PhotoScreen(
-              image: NetworkImage(imageUrl),
-            ),
-          );
-        }));
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (context) {
+              return PhotoScreen(
+                image: NetworkImage(imageUrl),
+              );
+            },
+          ),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
         child: Container(
           decoration: BoxDecoration(
-            color: !isCurrentUser ? AppColors.backgroundLightGray : AppColors.red,
-            borderRadius: BorderRadius.circular(16)
-          ),
+              color: !isCurrentUser
+                  ? AppColors.backgroundLightGray
+                  : AppColors.red,
+              borderRadius: BorderRadius.circular(16)),
           clipBehavior: Clip.hardEdge,
           padding: const EdgeInsets.all(2),
           constraints:
               BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
           child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14)
-            ),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(14)),
             clipBehavior: Clip.hardEdge,
             child: Image.network(
               imageUrl,
@@ -98,14 +88,29 @@ class PhotoHero extends StatelessWidget {
 }
 
 class PhotoScreen extends StatelessWidget {
-  const PhotoScreen({super.key, required this.image});
+  const PhotoScreen({
+    super.key,
+    required this.image,
+  });
 
   final ImageProvider image;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Expanded(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        automaticallyImplyLeading: false,
+        titleSpacing: 6,
+        title: const Row(
+          children: [
+            CustomBackButton(
+              color: Colors.white,
+            )
+          ],
+        ),
+      ),
+      body: Center(
         child: PhotoViewGallery.builder(
             itemCount: 1,
             builder: (BuildContext context, int index) {

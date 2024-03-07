@@ -4,7 +4,7 @@ import 'package:smart/feature/announcement/bloc/related/related_announcement_cub
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
-import 'package:smart/widgets/conatainers/announcement.dart';
+import 'package:smart/widgets/conatainers/announcement_container.dart';
 
 class RelatedAnnouncementWidget extends StatefulWidget {
   const RelatedAnnouncementWidget({

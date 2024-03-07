@@ -11,6 +11,7 @@ import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 
 import '../../../widgets/images/network_image.dart';
@@ -80,23 +81,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           automaticallyImplyLeading: false,
+          titleSpacing: 6,
           title: Row(
             children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: const SizedBox(
-                    width: 30,
-                    height: 48,
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: AppColors.black,
-                    )),
-              ),
-              const SizedBox(
-                width: 13,
-              ),
+              const CustomBackButton(),
+              const SizedBox(width: 13),
               Text(
                 localizations.myData,
                 style: AppTypography.font20black,
@@ -117,7 +106,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               }
               if (state is EditSuccessState) {
                 CustomSnackBar.showSnackBarWithIcon(
-                    context, localizations.withSuccess, 'Assets/icons/heart_out_line.svg');
+                    context,
+                    localizations.withSuccess,
+                    'Assets/icons/heart_out_line.svg');
               } else if (state is EditFailState) {
                 CustomSnackBar.showSnackBar(context, 'Essayez plus tard');
               }

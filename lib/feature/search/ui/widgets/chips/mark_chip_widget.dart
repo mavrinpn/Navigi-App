@@ -55,7 +55,17 @@ class _MarkChipWidgetState extends State<MarkChipWidget> {
                 ),
               ).then((filter) {
                 if (filter != null) {
+                  searchCubit.setMarksFilter(MarksFilter(
+                    markId: filter.markId,
+                    modelId: filter.modelId,
+                    markTitle: filter.markTitle,
+                    modelTitle: filter.modelTitle,
+                  ));
                   selectCategoryCubit.setAutoFilter(filter);
+
+                  searchCubit.setFilters(
+                    parameters: selectCategoryCubit.parameters,
+                  );
                   setState(() {});
                 }
               });

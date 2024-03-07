@@ -53,6 +53,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
           child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

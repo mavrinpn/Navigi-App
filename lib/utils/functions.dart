@@ -1,17 +1,21 @@
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
+int _calculateDifference(DateTime date) {
+  DateTime now = DateTime.now();
+  return DateTime(date.year, date.month, date.day)
+      .difference(DateTime(now.year, now.month, now.day))
+      .inDays;
+}
+
 String dateTimeToString(DateTime dt) {
-  String hour = '${dt.hour}';
-  String minute = '${dt.minute}';
+  final isToday = _calculateDifference(dt) == 0;
 
-  if (hour.length == 1) hour = '0$hour';
-  if (minute.length == 1) minute = '0$minute';
-  final DateTime n = DateTime.now();
-  String date = dt.month == n.month && dt.day == n.day && dt.year == n.year
-      ? 'Сегодня'
-      : '${dt.day}.${dt.month}.${dt.day}';
-
-  return '$date $hour:$minute';
+  if (isToday) {
+    return 'Today ${DateFormat('HH:mm').format(dt)}';
+  } else {
+    return DateFormat('d MMM HH:mm').format(dt);
+  }
 }
 
 String convertPhoneToTempEmail(String phone) {

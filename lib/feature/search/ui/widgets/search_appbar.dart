@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
-import 'package:smart/utils/colors.dart';
+import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/button/icon_button.dart';
 import 'package:smart/widgets/textField/elevated_text_field.dart';
 
@@ -27,14 +27,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
     return Row(
       mainAxisSize: MainAxisSize.max,
       children: [
-        if (widget.showBackButton)
-          IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(
-              Icons.arrow_back_sharp,
-              color: AppColors.black,
-            ),
-          ),
+        if (widget.showBackButton) const CustomBackButton(),
         Expanded(
           child: ElevatedTextField(
             action: TextInputAction.search,

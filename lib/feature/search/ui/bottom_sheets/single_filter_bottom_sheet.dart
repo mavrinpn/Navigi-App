@@ -37,7 +37,7 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
         BlocProvider.of<SearchSelectSubcategoryCubit>(context);
 
     return Container(
-      height: MediaQuery.sizeOf(context).height * 0.8,
+      // height: MediaQuery.sizeOf(context).height * 0.8,
       color: Colors.white,
       child: SafeArea(
         child: SingleChildScrollView(
@@ -86,7 +86,13 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
                     Navigator.pop(context);
 
                     if (widget.needOpenNewScreen) {
-                      Navigator.pushNamed(context, AppRoutesNames.search);
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutesNames.search,
+                        arguments: {
+                          'showSearchHelper': false,
+                        },
+                      );
                     }
                     updateAppBarFilterCubit.needUpdateAppBarFilters();
 
@@ -108,7 +114,10 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
     for (var i in parameters) {
       if (i.key == widget.parameterKey) {
         if (i is SelectParameter) {
-          children.add(MultipleCheckboxPicker(parameter: i));
+          children.add(MultipleCheckboxPicker(
+            parameter: i,
+            wrapDirection: Axis.vertical,
+          ));
         } else if (i is MinMaxParameter) {
           children.add(MinMaxParameterWidget(parameter: i));
         }

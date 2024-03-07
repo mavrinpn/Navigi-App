@@ -6,8 +6,11 @@ import 'package:smart/models/messenger/messages_group.dart';
 import 'package:smart/utils/fonts.dart';
 
 class MessageGroupWidget extends StatelessWidget {
-  const MessageGroupWidget(
-      {super.key, required this.data, required this.avatarUrl});
+  const MessageGroupWidget({
+    super.key,
+    required this.data,
+    required this.avatarUrl,
+  });
 
   final String avatarUrl;
   final MessagesGroupData data;
@@ -17,10 +20,14 @@ class MessageGroupWidget extends StatelessWidget {
     for (var message in data.messages) {
       if ((message.images ?? []).isEmpty) {
         items.add(MessageContainer(
-            text: message.content, isCurrentUser: message.owned));
+          text: message.content,
+          isCurrentUser: message.owned,
+        ));
       } else {
         items.add(ImageMessage(
-            imageUrl: message.images!.first, isCurrentUser: message.owned));
+          imageUrl: message.images!.first,
+          isCurrentUser: message.owned,
+        ));
       }
     }
     MainAxisAlignment alignment;
@@ -79,7 +86,7 @@ class MessageGroupWidget extends StatelessWidget {
                 width:
                     MediaQuery.sizeOf(context).width - (data.owned ? 30 : 78),
               )),
-          )
+          ),
         ],
       ),
     );

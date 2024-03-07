@@ -522,4 +522,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get publish => 'Publier';
+
+  @override
+  String get changesSaved => 'Modifications enregistrées';
+
+  @override
+  String get dataSavingError => 'Erreur d\'enregistrement des données';
 }

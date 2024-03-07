@@ -522,4 +522,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get publish => 'Publish';
+
+  @override
+  String get changesSaved => 'The changes are saved';
+
+  @override
+  String get dataSavingError => 'Data saving error';
 }

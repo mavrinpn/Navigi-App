@@ -37,7 +37,7 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
         TextEditingController(text: searchCubit.maxPrice.toString());
 
     return Container(
-      height: MediaQuery.sizeOf(context).height * 0.8,
+      // height: MediaQuery.sizeOf(context).height * 0.8,
       color: Colors.white,
       child: SafeArea(
         child: SingleChildScrollView(
@@ -78,7 +78,13 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
                     Navigator.pop(context);
 
                     if (widget.needOpenNewScreen) {
-                      Navigator.pushNamed(context, AppRoutesNames.search);
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutesNames.search,
+                        arguments: {
+                          'showSearchHelper': false,
+                        },
+                      );
                     }
                     updateAppBarFilterCubit.needUpdateAppBarFilters();
 

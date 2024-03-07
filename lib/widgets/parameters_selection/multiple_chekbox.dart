@@ -10,9 +10,11 @@ class MultipleCheckboxPicker extends StatefulWidget {
   const MultipleCheckboxPicker({
     super.key,
     required this.parameter,
+    required this.wrapDirection,
   });
 
   final SelectParameter parameter;
+  final Axis wrapDirection;
 
   @override
   State<MultipleCheckboxPicker> createState() => _MultipleCheckboxPickerState();
@@ -38,7 +40,7 @@ class _MultipleCheckboxPickerState extends State<MultipleCheckboxPicker> {
           ),
           const SizedBox(height: 10),
           Wrap(
-            direction: Axis.horizontal,
+            direction: widget.wrapDirection,
             children: [
               ...List.generate(
                 variants.length,

@@ -14,6 +14,7 @@ import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/feature/messenger/ui/widgets/announcement_short_info.dart';
 import 'package:smart/feature/messenger/ui/widgets/date_splitter_widget.dart';
+import 'package:smart/widgets/button/back_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../data/messenger_repository.dart';
@@ -86,22 +87,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 icon: SvgPicture.asset('Assets/icons/phone.svg'),
               ),
             ],
+            titleSpacing: 6,
             title: Row(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    repository.closeChat();
-                    Navigator.pop(context);
-                  },
-                  child: const SizedBox(
-                    width: 35,
-                    height: 48,
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: AppColors.black,
-                    ),
-                  ),
-                ),
+                const CustomBackButton(),
                 const SizedBox(width: 10),
                 CircleAvatar(
                   radius: 20,
@@ -167,7 +156,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                                   .otherUserAvatarUrl ??
                                               '')
                                       : DateSplitterWidget(
-                                          data: item as DateSplitter);
+                                          data: item as DateSplitter,
+                                        );
                                 },
                                 itemCount: snapshot.data!.length,
                                 reverse: true);

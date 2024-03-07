@@ -18,7 +18,7 @@ class CategoriesScrollView extends StatelessWidget {
           final items = getCategories(state.categories, context);
           return SizedBox(
             width: double.infinity,
-            height: 140,
+            height: 150,
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               physics: const BouncingScrollPhysics(

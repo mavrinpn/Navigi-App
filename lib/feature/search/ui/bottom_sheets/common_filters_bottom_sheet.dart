@@ -97,133 +97,155 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
       height: MediaQuery.sizeOf(context).height * 0.9,
       color: Colors.white,
       child: SafeArea(
-        child: SingleChildScrollView(
-          clipBehavior: Clip.none,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 16),
-                Center(
-                  child: Container(
-                    width: 120,
-                    height: 4,
-                    decoration: ShapeDecoration(
-                        color: const Color(0xFFDDE1E7),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(1))),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                children: [
+                  const SizedBox(height: 16),
+                  Center(
+                    child: Container(
+                      width: 120,
+                      height: 4,
+                      decoration: ShapeDecoration(
+                          color: const Color(0xFFDDE1E7),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(1))),
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        localizations.filters,
-                        style: AppTypography.font20black,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          updateAppBarFilterCubit.needUpdateAppBarFilters();
-                          searchCubit.clearFilters();
-                          selectCategoryCubit.clearFilters();
-                          for (var param in selectCategoryCubit.parameters) {
-                            if (param is SelectParameter) {
-                              param.selectedVariants = [];
-                            } else if (param is MinMaxParameter) {
-                              param.min = null;
-                              param.max = null;
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          localizations.filters,
+                          style: AppTypography.font20black,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            updateAppBarFilterCubit.needUpdateAppBarFilters();
+                            searchCubit.clearFilters();
+                            selectCategoryCubit.clearFilters();
+                            for (var param in selectCategoryCubit.parameters) {
+                              if (param is SelectParameter) {
+                                param.selectedVariants = [];
+                              } else if (param is MinMaxParameter) {
+                                param.min = null;
+                                param.max = null;
+                              }
                             }
+
+                            setState(() {});
+                          },
+                          child: Text(
+                            localizations.resetEverything,
+                            style: AppTypography.font12gray,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 90),
+              child: SingleChildScrollView(
+                clipBehavior: Clip.hardEdge,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PriceWidget(
+                        minPriseController: minPriceController,
+                        maxPriseController: maxPriceController,
+                      ),
+                      CustomDropDownSingleCheckBox(
+                        icon: 'Assets/icons/tirage.svg',
+                        parameter: searchCubit.sortTypesParameter,
+                        onChange: (parametrOption) {
+                          searchCubit.sortTypesParameter
+                              .setVariant(parametrOption);
+                          searchCubit.sortType = parametrOption.key;
+                          setState(() {});
+                        },
+                        currentKey: searchCubit.sortBy,
+                      ),
+                      if (selectCategoryCubit.subcategoryId == carSubcategoryId)
+                        ..._buildCarMarkWidget(context),
+                      if (selectCategoryCubit.subcategoryFilters != null &&
+                          selectCategoryCubit.subcategoryFilters!.hasMark &&
+                          selectCategoryCubit.subcategoryId != carSubcategoryId)
+                        ..._buildSelectMarkWidget(context),
+                      ..._buildLocationWidget(context),
+                      if (searchCubit.marksFilter?.modelParameters != null)
+                        ...buildModelFilters(),
+                      if (searchCubit.searchMode ==
+                          SearchModeEnum.subcategory) ...[
+                        BlocBuilder<SearchSelectSubcategoryCubit,
+                            SearchSelectSubcategoryState>(
+                          builder: (context, state) {
+                            if (state is FiltersGotState) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 4),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: buildFiltersSelection(
+                                      selectCategoryCubit.parameters),
+                                ),
+                              );
+                            }
+                            return const SizedBox.shrink();
+                          },
+                        ),
+                      ],
+                      const SizedBox(height: 16),
+                      CustomTextButton.orangeContinue(
+                        callback: () {
+                          RepositoryProvider.of<SearchManager>(context)
+                              .setSearch(false);
+                          searchCubit.minPrice =
+                              double.parse(minPriceController.text);
+                          searchCubit.maxPrice =
+                              double.parse(maxPriceController.text);
+                          searchCubit.setFilters(
+                            parameters: selectCategoryCubit.parameters,
+                            cityId: selectedCityId,
+                            areaId: selectedAreaId,
+                            cityTitle: selectedCityTitle,
+                            areaTitle: selectedAreaTitle,
+                          );
+                          Navigator.pop(context);
+
+                          if (widget.needOpenNewScreen) {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutesNames.search,
+                              arguments: {
+                                'showSearchHelper': false,
+                              },
+                            );
                           }
+
+                          updateAppBarFilterCubit.needUpdateAppBarFilters();
 
                           setState(() {});
                         },
-                        child: Text(
-                          localizations.resetEverything,
-                          style: AppTypography.font12gray,
-                        ),
+                        text: locale() == 'fr' ? 'Appliquer' : 'تطبيق',
+                        active: true,
                       ),
+                      const SizedBox(height: 16),
                     ],
                   ),
                 ),
-                const SizedBox(height: 12),
-                PriceWidget(
-                  minPriseController: minPriceController,
-                  maxPriseController: maxPriceController,
-                ),
-                CustomDropDownSingleCheckBox(
-                  icon: 'Assets/icons/tirage.svg',
-                  parameter: searchCubit.sortTypesParameter,
-                  onChange: (parametrOption) {
-                    searchCubit.sortTypesParameter.setVariant(parametrOption);
-                    searchCubit.sortType = parametrOption.key;
-                    setState(() {});
-                  },
-                  currentKey: searchCubit.sortBy,
-                ),
-                if (selectCategoryCubit.subcategoryId == carSubcategoryId)
-                  ..._buildCarMarkWidget(context),
-                if (selectCategoryCubit.subcategoryFilters != null &&
-                    selectCategoryCubit.subcategoryFilters!.hasMark &&
-                    selectCategoryCubit.subcategoryId != carSubcategoryId)
-                  ..._buildSelectMarkWidget(context),
-                ..._buildLocationWidget(context),
-                if (searchCubit.marksFilter?.modelParameters != null)
-                  ...buildModelFilters(),
-                if (searchCubit.searchMode == SearchModeEnum.subcategory) ...[
-                  BlocBuilder<SearchSelectSubcategoryCubit,
-                      SearchSelectSubcategoryState>(
-                    builder: (context, state) {
-                      if (state is FiltersGotState) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: buildFiltersSelection(
-                                selectCategoryCubit.parameters),
-                          ),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                ],
-                const SizedBox(height: 16),
-                CustomTextButton.orangeContinue(
-                  callback: () {
-                    RepositoryProvider.of<SearchManager>(context)
-                        .setSearch(false);
-                    searchCubit.minPrice =
-                        double.parse(minPriceController.text);
-                    searchCubit.maxPrice =
-                        double.parse(maxPriceController.text);
-                    searchCubit.setFilters(
-                      parameters: selectCategoryCubit.parameters,
-                      cityId: selectedCityId,
-                      areaId: selectedAreaId,
-                      cityTitle: selectedCityTitle,
-                      areaTitle: selectedAreaTitle,
-                    );
-                    Navigator.pop(context);
-
-                    if (widget.needOpenNewScreen) {
-                      Navigator.pushNamed(context, AppRoutesNames.search);
-                    }
-
-                    updateAppBarFilterCubit.needUpdateAppBarFilters();
-
-                    setState(() {});
-                  },
-                  text: locale() == 'fr' ? 'Appliquer' : 'تطبيق',
-                  active: true,
-                ),
-                const SizedBox(height: 16),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -233,7 +255,10 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
     final children = <Widget>[];
     for (var i in parameters) {
       if (i is SelectParameter) {
-        children.add(MultipleCheckboxPicker(parameter: i));
+        children.add(MultipleCheckboxPicker(
+          parameter: i,
+          wrapDirection: Axis.horizontal,
+        ));
       } else if (i is MinMaxParameter) {
         children.add(MinMaxParameterWidget(parameter: i));
       }
@@ -248,7 +273,10 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
     final children = <Widget>[];
     for (var i in parameters) {
       if (i is SelectParameter) {
-        children.add(MultipleCheckboxPicker(parameter: i));
+        children.add(MultipleCheckboxPicker(
+          parameter: i,
+          wrapDirection: Axis.horizontal,
+        ));
       } else if (i is MinMaxParameter) {
         children.add(MinMaxParameterWidget(parameter: i));
       }
@@ -261,6 +289,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
     final selectCategoryCubit =
         BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
+    final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
 
     return [
       Material(
@@ -282,7 +311,20 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                 setState(() {
                   choosedCarFilter = filter;
                 });
+                searchCubit.setMarksFilter(MarksFilter(
+                  markId: filter.markId,
+                  markTitle: filter.markTitle,
+                  modelTitle: filter.modelTitle,
+                ));
                 selectCategoryCubit.setAutoFilter(filter);
+
+                searchCubit.setFilters(
+                  parameters: selectCategoryCubit.parameters,
+                  cityId: selectedCityId,
+                  areaId: selectedAreaId,
+                  cityTitle: selectedCityTitle,
+                  areaTitle: selectedAreaTitle,
+                );
                 setState(() {});
               }
               updateAppBarFilterCubit.needUpdateAppBarFilters();

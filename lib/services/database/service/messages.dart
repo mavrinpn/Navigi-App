@@ -127,20 +127,25 @@ class MessagesService {
 
   Future<void> markMessagesAsRead(String chatId, String userId) async {
     final docs = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: messagesCollection,
-        queries: [
-          Query.equal('roomId', chatId),
-          Query.notEqual('creatorId', userId),
-          Query.isNull('wasRead')
-        ]);
+      databaseId: mainDatabase,
+      collectionId: messagesCollection,
+      queries: [
+        Query.equal('roomId', chatId),
+        Query.notEqual('creatorId', userId),
+        Query.isNull('wasRead'),
+      ],
+    );
+
     for (var doc in docs.documents) {
       if (doc.data['wasRead'] == null) {
+        final data = {'wasRead': DateTime.now().millisecondsSinceEpoch};
+
         _databases.updateDocument(
-            databaseId: mainDatabase,
-            collectionId: messagesCollection,
-            documentId: doc.$id,
-            data: {'wasRead': DateTime.now().millisecondsSinceEpoch});
+          databaseId: mainDatabase,
+          collectionId: messagesCollection,
+          documentId: doc.$id,
+          data: data,
+        );
       }
     }
   }
@@ -182,7 +187,9 @@ class MessagesService {
       'images': images ?? []
     });
     final res = await _functions.createExecution(
-        functionId: '657f16bf26ccb6ca8093', body: encodedBody);
+      functionId: '657f16bf26ccb6ca8093',
+      body: encodedBody,
+    );
 
     // print('errors: ${res.errors}');
     // print('body: ${res.responseBody}');

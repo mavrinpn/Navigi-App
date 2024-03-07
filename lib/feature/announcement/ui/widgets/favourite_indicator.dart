@@ -13,18 +13,7 @@ class FavouriteIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<FavouritesCubit>();
 
-    return BlocConsumer<FavouritesCubit, FavouritesState>(
-      listener: (ctx, state) {
-        if (state is LikeProcessState) {
-          Dialogs.showModal(
-              context,
-              Center(
-                child: AppAnimations.circleFadingAnimation,
-              ));
-        } else {
-          Dialogs.hide(context);
-        }
-      },
+    return BlocBuilder<FavouritesCubit, FavouritesState>(
       builder: (context, state1) {
         bool liked = cubit.isLiked(postId);
         return GestureDetector(

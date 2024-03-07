@@ -8,6 +8,7 @@ import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 import '../../../utils/dialogs.dart';
@@ -53,16 +54,10 @@ class _CodeScreenState extends State<CodeScreen> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            title: Row(
+            titleSpacing: 6,
+            title: const Row(
               children: [
-                InkWell(
-                    child: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.black,
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    })
+                CustomBackButton(),
               ],
             ),
           ),
@@ -99,7 +94,9 @@ class _CodeScreenState extends State<CodeScreen> {
                     ),
                   ],
                 ),
-                const Spacer(flex: 16,),
+                const Spacer(
+                  flex: 16,
+                ),
                 Pinput(
                   controller: codeController,
                   length: codeLength,
@@ -124,7 +121,9 @@ class _CodeScreenState extends State<CodeScreen> {
                                 color: AppColors.darkGrayUnderline, width: 1)),
                       )),
                 ),
-                const SizedBox(height: 16,),
+                const SizedBox(
+                  height: 16,
+                ),
                 RichText(
                   text: TextSpan(
                     children: <TextSpan>[
@@ -136,13 +135,15 @@ class _CodeScreenState extends State<CodeScreen> {
                           text: localizations.sendAgain,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              //TODO send retry
+                              //send retry
                             },
                           style: AppTypography.font16UnderLinePink)
                     ],
                   ),
                 ),
-                const Spacer(flex: 24,),
+                const Spacer(
+                  flex: 24,
+                ),
                 CustomTextButton(
                   callback: () {
                     if (buttonActive) {
