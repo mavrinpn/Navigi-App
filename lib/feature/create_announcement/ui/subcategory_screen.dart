@@ -75,12 +75,11 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
 
     final creatingManager = context.read<CreatingAnnouncementManager>();
 
-    creatingManager.clearAllData(); //TODO create
+    creatingManager.clearAllData();
 
     creatingManager.subcategoryFilters = parameters;
     creatingManager.marksFilter = marksFilter;
 
-    //TODO create
     Navigator.pushNamed(
       context,
       AppRoutesNames.announcementCreatingPhoto,
@@ -95,12 +94,11 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
 
     final creatingManager = context.read<CreatingAnnouncementManager>();
 
-    creatingManager.clearAllData(); //TODO create
+    creatingManager.clearAllData();
 
     creatingManager.subcategoryFilters = parameters;
     creatingManager.carFilter = carFilter;
 
-    //TODO create
     Navigator.pushNamed(
       context,
       AppRoutesNames.announcementCreatingPhoto,

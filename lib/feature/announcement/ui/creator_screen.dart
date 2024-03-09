@@ -120,7 +120,6 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                 SliverToBoxAdapter(
                   child: CustomTextButton.withIcon(
                     callback: () {
-                      //TODO block
                       final userData =
                           context.read<CreatorRepository>().userData;
                       if (userData != null) {

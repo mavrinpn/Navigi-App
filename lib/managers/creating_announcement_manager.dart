@@ -158,7 +158,6 @@ class CreatingAnnouncementManager {
       // await compressingImages;
       final imagesAsBytes = await compressImagesToBytes();
 
-      //TODO images
       final List<String> urls = await uploadImages(imagesAsBytes);
 
       await dbService.announcements.createAnnouncement(

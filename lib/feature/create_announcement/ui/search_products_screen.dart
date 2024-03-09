@@ -125,7 +125,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
           if (buttonActive) {
             final item = itemManager.hasItemInSearchedItems();
 
-            creatingManager.setTitle(productsController.text); //TODO create
+            creatingManager.setTitle(productsController.text);
 
             creatingManager.setItem(
               item,
@@ -133,7 +133,6 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
               id: item?.id,
             );
 
-            //TODO create
             Navigator.pushNamed(
                 context, AppRoutesNames.announcementCreatingDescription);
           }

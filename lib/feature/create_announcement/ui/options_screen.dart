@@ -111,7 +111,6 @@ class _OptionsScreenState extends State<OptionsScreen> {
                             .map((e) => buildParameter(e))
                             .toList() +
                         [const SizedBox(height: 120)],
-                    //TODO create
                     // children: (repository.currentItem != null
                     //             ? repository.getParametersList()
                     //             : <Parameter>[])

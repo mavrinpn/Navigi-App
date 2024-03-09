@@ -245,7 +245,6 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           disableColor: AppColors.red,
                           width: MediaQuery.of(context).size.width - 62,
                           callback: () {
-                            //TODO block
                             checkBlockedAndPushChat(
                               context: context,
                               data: state.data,
@@ -262,7 +261,6 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         ),
                         CustomIconButton(
                           callback: () {
-                            //TODO block
                             checkBlockedAndCall(
                               context: context,
                               userId: state.data.creatorData.uid,

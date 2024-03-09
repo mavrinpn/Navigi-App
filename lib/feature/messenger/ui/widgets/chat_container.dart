@@ -63,7 +63,6 @@ class _ChatContainerState extends State<ChatContainer> {
         sliver: SliverToBoxAdapter(
             child: InkWell(
           onTap: () {
-            //TODO block
             final blockedUsersManager =
                 RepositoryProvider.of<BlockedUsersManager>(context);
 

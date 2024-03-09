@@ -84,7 +84,6 @@ class _ChatScreenState extends State<ChatScreen> {
             actions: [
               IconButton(
                 onPressed: () {
-                  //TODO block
                   checkBlockedAndCall(
                     context: context,
                     userId: repository.currentRoom!.otherUserId,
