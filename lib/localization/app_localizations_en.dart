@@ -528,4 +528,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dataSavingError => 'Data saving error';
+
+  @override
+  String get adSuccessfullyAdded => 'The ad was successfully added';
+
+  @override
+  String get errorCreatingAd => 'Error creating the ad';
+
+  @override
+  String get chatBlocked => 'The chat is blocked';
+
+  @override
+  String get blockUser => 'Block user';
+
+  @override
+  String get unblockUser => 'Unblock user';
 }

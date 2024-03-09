@@ -528,4 +528,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get dataSavingError => 'خطأ في حفظ البيانات';
+
+  @override
+  String get adSuccessfullyAdded => 'تمت إضافة الإعلان بنجاح';
+
+  @override
+  String get errorCreatingAd => 'خطأ في إنشاء الإعلان';
+
+  @override
+  String get chatBlocked => 'تم حظر الدردشة';
+
+  @override
+  String get blockUser => 'حظر المستخدم';
+
+  @override
+  String get unblockUser => 'إلغاء حظر المستخدم';
 }

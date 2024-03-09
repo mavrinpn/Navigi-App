@@ -44,44 +44,52 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
             const SizedBox(
               height: 16,
             ),
-            Row(
-              children: [
-                CustomCheckBox(
-                    isActive: isBy,
-                    onChanged: () {
-                      setState(() {
-                        isBy = true;
-                      });
-                    }),
-                const SizedBox(
-                  width: 14,
-                ),
-                Text(
-                  localizations.new_,
-                  style: AppTypography.font16black
-                      .copyWith(fontWeight: FontWeight.w400),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                CustomCheckBox(
-                    isActive: !isBy,
-                    onChanged: () {
-                      setState(() {
-                        isBy = false;
-                      });
-                    }),
-                const SizedBox(
-                  width: 14,
-                ),
-                Text(localizations.used,
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isBy = true;
+                });
+              },
+              child: Row(
+                children: [
+                  CustomCheckBox(
+                      isActive: isBy,
+                      onChanged: () {
+                        setState(() {
+                          isBy = true;
+                        });
+                      }),
+                  const SizedBox(width: 14),
+                  Text(
+                    localizations.new_,
                     style: AppTypography.font16black
-                        .copyWith(fontWeight: FontWeight.w400)),
-              ],
+                        .copyWith(fontWeight: FontWeight.w400),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isBy = false;
+                });
+              },
+              child: Row(
+                children: [
+                  CustomCheckBox(
+                      isActive: !isBy,
+                      onChanged: () {
+                        setState(() {
+                          isBy = false;
+                        });
+                      }),
+                  const SizedBox(width: 14),
+                  Text(localizations.used,
+                      style: AppTypography.font16black
+                          .copyWith(fontWeight: FontWeight.w400)),
+                ],
+              ),
             ),
           ],
         ),
@@ -90,8 +98,8 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
         width: width - 30,
         text: localizations.continue_,
         callback: () {
-            repository.setType(!isBy);
-            Navigator.pushNamed(context, '/create_options_screen');
+          repository.setType(!isBy);
+          Navigator.pushNamed(context, '/create_options_screen');
         },
         active: true,
       ),

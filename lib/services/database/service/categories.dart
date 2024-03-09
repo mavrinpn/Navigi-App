@@ -162,8 +162,13 @@ class CategoriesService {
     List<Mark> marks = <Mark>[];
     for (var i in res.documents) {
       if (i.data['manufacturers'] != null) {
-        marks.add(Mark(
-            i.data['manufacturers']['\$id'], i.data['manufacturers']['name']));
+        marks.add(
+          Mark(
+            id: i.data['manufacturers']['\$id'],
+            name: i.data['manufacturers']['name'],
+            image: i.data['manufacturers']['image'],
+          ),
+        );
       }
     }
 
@@ -202,8 +207,13 @@ class CategoriesService {
 
     List<Mark> marks = <Mark>[];
     for (var i in res.documents) {
-      marks.add(Mark(
-          i.data['manufacturers']['\$id'], i.data['manufacturers']['name']));
+      marks.add(
+        Mark(
+          id: i.data['manufacturers']['\$id'],
+          name: i.data['manufacturers']['name'],
+          image: i.data['manufacturers']['image'],
+        ),
+      );
     }
 
     marks.sort((a, b) => a.name.compareTo(b.name));

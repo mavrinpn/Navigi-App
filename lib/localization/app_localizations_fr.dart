@@ -528,4 +528,19 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dataSavingError => 'Erreur d\'enregistrement des données';
+
+  @override
+  String get adSuccessfullyAdded => 'L\'annonce a été ajoutée avec succès';
+
+  @override
+  String get errorCreatingAd => 'Erreur lors de la création de l\'annonce';
+
+  @override
+  String get chatBlocked => 'Chat bloqué';
+
+  @override
+  String get blockUser => 'Bloquer l\'utilisateur';
+
+  @override
+  String get unblockUser => 'Débloquer l\'utilisateur';
 }

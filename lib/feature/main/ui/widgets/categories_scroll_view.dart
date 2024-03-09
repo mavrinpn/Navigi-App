@@ -5,21 +5,29 @@ import 'package:smart/feature/search/bloc/select_subcategory/search_select_subca
 import 'package:smart/models/category.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/routes/route_names.dart';
-import 'package:smart/widgets/category/category.dart';
+import 'package:smart/widgets/category/category_widget.dart';
 
 class CategoriesScrollView extends StatelessWidget {
   const CategoriesScrollView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final itemWidth = (MediaQuery.of(context).size.width - 15 * 2 - 10 * 2) / 3;
+    final itemHeight = itemWidth / 10 * 14;
+
     return BlocBuilder<CategoryCubit, CategoryState>(
       builder: (context, state) {
         if (state is CategorySuccessState) {
-          final items = getCategories(state.categories, context);
+          final items = getCategories(
+            state.categories,
+            context,
+            itemWidth,
+          );
+
           return SizedBox(
-            width: double.infinity,
-            height: 150,
+            height: itemHeight,
             child: ListView.separated(
+              shrinkWrap: true,
               padding: const EdgeInsets.symmetric(horizontal: 15),
               physics: const BouncingScrollPhysics(
                   decelerationRate: ScrollDecelerationRate.fast),
@@ -42,19 +50,26 @@ class CategoriesScrollView extends StatelessWidget {
     );
   }
 
-  List<Widget> getCategories(List<Category> categories, BuildContext context) {
+  List<Widget> getCategories(
+    List<Category> categories,
+    BuildContext context,
+    double itemWidth,
+  ) {
     return categories
-        .map((e) => CategoryWidget(
-              category: e,
-              onTap: () {
-                context
-                    .read<SearchSelectSubcategoryCubit>()
-                    .getSubcategories(categoryId: e.id);
-                Navigator.pushNamed(
-                    context, AppRoutesNames.searchSelectSubcategory);
-              },
-              width: 108,
-              height: 140,
+        .map((e) => SizedBox(
+              width: itemWidth,
+              child: CategoryWidget(
+                category: e,
+                onTap: () {
+                  context
+                      .read<SearchSelectSubcategoryCubit>()
+                      .getSubcategories(categoryId: e.id);
+                  Navigator.pushNamed(
+                      context, AppRoutesNames.searchSelectSubcategory);
+                },
+                // width: 108,
+                // height: 140,
+              ),
             ))
         .toList();
   }

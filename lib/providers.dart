@@ -14,12 +14,14 @@ import 'package:smart/feature/create_announcement/bloc/places_search/places_cubi
 import 'package:smart/feature/create_announcement/bloc/subcategory/subcategory_cubit.dart';
 import 'package:smart/feature/create_announcement/data/car_marks_repository.dart';
 import 'package:smart/feature/create_announcement/data/marks_repository.dart';
+import 'package:smart/feature/messenger/bloc/blocked_users/blocked_users_cubit.dart';
 import 'package:smart/feature/messenger/bloc/message_images_cubit.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/reviews/bloc/reviews_cubit.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
+import 'package:smart/managers/blocked_users_manager.dart';
 import 'package:smart/managers/favourites_manager.dart';
 import 'package:smart/managers/reviews_manager.dart';
 import 'package:smart/services/database/database_service.dart';
@@ -82,6 +84,12 @@ class MyRepositoryProviders extends StatelessWidget {
       ),
       RepositoryProvider(
         create: (_) => ReviewsManager(
+          databaseService: databaseService,
+          client: client,
+        ),
+      ),
+      RepositoryProvider(
+        create: (_) => BlockedUsersManager(
           databaseService: databaseService,
           client: client,
         ),
@@ -200,6 +208,13 @@ class MyBlocProviders extends StatelessWidget {
       BlocProvider(
         create: (_) => ReviewsCubit(
           reviewsManager: RepositoryProvider.of<ReviewsManager>(context),
+        ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => BlockedUsersCubit(
+          blockedUsersManager:
+              RepositoryProvider.of<BlockedUsersManager>(context),
         ),
         lazy: false,
       ),

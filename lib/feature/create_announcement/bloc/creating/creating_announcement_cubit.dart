@@ -15,7 +15,7 @@ class CreatingAnnouncementCubit extends Cubit<CreatingAnnouncementState> {
       if (event == LoadingStateEnum.loading) emit(CreatingLoadingState());
       if (event == LoadingStateEnum.success) {
         creatingAnnouncementManager.images = [];
-        creatingAnnouncementManager.imagesAsBytes = [];
+        //creatingAnnouncementManager.imagesAsBytes = [];
         emit(CreatingSuccessState());
       }
       if (event == LoadingStateEnum.fail) emit(CreatingFailState());

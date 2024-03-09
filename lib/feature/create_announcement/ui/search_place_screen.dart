@@ -237,10 +237,14 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
             final place =
                 placeManager.searchPlaceIdByName(placeController.text)!;
             creatingManager.setPlace(place);
-            creatingManager.setTitle(creatingManager.buildTitle);
+            
+            //creatingManager.setTitle(creatingManager.buildTitle);
 
+            //TODO create
             Navigator.pushNamed(
-                context, AppRoutesNames.announcementCreatingDescription);
+              context,
+              AppRoutesNames.announcementCreatingTitle,
+            );
           }
         },
         active: active,

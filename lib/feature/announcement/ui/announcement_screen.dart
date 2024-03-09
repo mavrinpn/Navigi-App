@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/announcement/ui/dialogs/offer_price_bottom_sheet.dart';
 import 'package:smart/feature/announcement/ui/widgets/related_announcement_widget.dart';
+import 'package:smart/feature/messenger/chat_function.dart';
 import 'package:smart/main.dart';
 import 'package:smart/feature/announcement/ui/photo_view.dart';
 import 'package:smart/feature/announcement/ui/widgets/favourite_indicator.dart';
@@ -11,15 +12,11 @@ import 'package:smart/feature/announcement/ui/widgets/images_amount_indicators.d
 import 'package:smart/feature/announcement/ui/widgets/parameter.dart';
 import 'package:smart/feature/announcement/ui/widgets/settings_bottom_sheet.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
-import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/localization/app_localizations.dart';
-import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
-import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../managers/announcement_manager.dart';
 import '../../../utils/colors.dart';
@@ -59,22 +56,6 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     }
   }
 
-  void write(Announcement data, {String? message}) {
-    final userId = RepositoryProvider.of<AuthRepository>(context).userId;
-    if (data.creatorData.uid == userId) {
-      // print('Cette annonce est votre');
-      return;
-    }
-
-    RepositoryProvider.of<MessengerRepository>(context)
-        .selectChat(announcement: data);
-    Navigator.pushNamed(
-      context,
-      AppRoutesNames.chat,
-      arguments: message,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
@@ -112,16 +93,17 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             RepositoryProvider.of<AuthRepository>(context)
                                 .userId) {
                           showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              showDragHandle: true,
-                              builder: (ctx) {
-                                return SettingsBottomSheet(
-                                    announcement: state.data);
-                              });
+                            context: context,
+                            isScrollControlled: true,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            showDragHandle: true,
+                            builder: (ctx) {
+                              return SettingsBottomSheet(
+                                  announcement: state.data);
+                            },
+                          );
                         }
                       },
                       child: SvgPicture.asset(
@@ -262,7 +244,13 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                           disableColor: AppColors.red,
                           width: MediaQuery.of(context).size.width - 62,
-                          callback: () => write(state.data),
+                          callback: () {
+                            //TODO block
+                            checkBlockedAndPushChat(
+                              context: context,
+                              data: state.data,
+                            );
+                          },
                           text: AppLocalizations.of(context)!.toWrite,
                           styleText: AppTypography.font14white,
                           icon: SvgPicture.asset(
@@ -274,8 +262,12 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         ),
                         CustomIconButton(
                           callback: () {
-                            launchUrl(Uri.parse(
-                                'tel://${state.data.creatorData.phone}'));
+                            //TODO block
+                            checkBlockedAndCall(
+                              context: context,
+                              userId: state.data.creatorData.uid,
+                              phone: state.data.creatorData.phone,
+                            );
                           },
                           icon: 'Assets/icons/phone.svg',
                         ),
@@ -284,18 +276,20 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     const SizedBox(height: 10),
                     CustomTextButton.withIcon(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
-                      callback: () async {
-                        final double? offerPrice = await showOfferPriceDialog(
+                      callback: () {
+                        showOfferPriceDialog(
                           context: context,
                           announcementId: state.data.id,
-                        );
-                        if (offerPrice != null) {
-                          write(
-                            state.data,
-                            message:
-                                '${localizations.offerMessage} ${offerPrice.round()}',
-                          );
-                        }
+                        ).then((offerPrice) {
+                          if (offerPrice != null) {
+                            checkBlockedAndPushChat(
+                              context: context,
+                              data: state.data,
+                              message:
+                                  '${localizations.offerMessage} ${offerPrice.round()}',
+                            );
+                          }
+                        });
                       },
                       text: AppLocalizations.of(context)!.offrirVotrePrix,
                       styleText: AppTypography.font14black,

@@ -7,12 +7,12 @@ import 'package:smart/widgets/textField/under_line_text_field.dart';
 class PriceWidget extends StatelessWidget {
   const PriceWidget({
     super.key,
-    required this.maxPriseController,
-    required this.minPriseController,
+    required this.maxPriceController,
+    required this.minPriceController,
   });
 
-  final TextEditingController minPriseController;
-  final TextEditingController maxPriseController;
+  final TextEditingController minPriceController;
+  final TextEditingController maxPriceController;
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +31,7 @@ class PriceWidget extends StatelessWidget {
             Text(AppLocalizations.of(context)!.price,
                 style: AppTypography.font18gray)
           ]),
-          const SizedBox(
-            height: 14,
-          ),
+          const SizedBox(height: 14),
           Row(children: [
             Expanded(
               flex: 3,
@@ -43,9 +41,11 @@ class PriceWidget extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.4,
                   hintText: '',
                   keyBoardType: const TextInputType.numberWithOptions(
-                      signed: true, decimal: true),
+                    signed: true,
+                    decimal: true,
+                  ),
                   suffixIcon: 'DZD',
-                  controller: minPriseController,
+                  controller: minPriceController,
                   onChange: (String value) {},
                 ),
               ),
@@ -68,7 +68,7 @@ class PriceWidget extends StatelessWidget {
                     hintText: '',
                     keyBoardType: TextInputType.number,
                     suffixIcon: 'DZD',
-                    controller: maxPriseController,
+                    controller: maxPriceController,
                     onChange: (String value) {},
                   )),
             )

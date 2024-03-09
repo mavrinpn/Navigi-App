@@ -117,24 +117,26 @@ class _CustomDropDownSingleCheckBoxState
                     onTap: () => widget.onChange(parametrOption),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 2),
-                      child: Row(
-                        children: [
-                          CustomCheckBox(
+                      child: GestureDetector(
+                        onTap: () => widget.onChange(parametrOption),
+                        child: Row(
+                          children: [
+                            CustomCheckBox(
                               isActive: parametrOption.key.toString() ==
                                   widget.currentKey,
-                              onChanged: () {
-                                widget.onChange(parametrOption);
-                              }),
-                          Text(
-                            MyApp.getLocale(context) == 'fr'
-                                ? parametrOption.nameFr
-                                : parametrOption.nameAr,
-                            maxLines: 1,
-                            overflow: TextOverflow.clip,
-                            style:
-                                AppTypography.font14black.copyWith(fontSize: 16),
-                          ),
-                        ],
+                              onChanged: () => widget.onChange(parametrOption),
+                            ),
+                            Text(
+                              MyApp.getLocale(context) == 'fr'
+                                  ? parametrOption.nameFr
+                                  : parametrOption.nameAr,
+                              maxLines: 1,
+                              overflow: TextOverflow.clip,
+                              style: AppTypography.font14black
+                                  .copyWith(fontSize: 16),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ))

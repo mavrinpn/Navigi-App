@@ -89,9 +89,9 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
     choosedCarFilter = selectCategoryCubit.autoFilter;
 
     final TextEditingController minPriceController =
-        TextEditingController(text: searchCubit.minPrice.toString());
+        TextEditingController(text: '${searchCubit.minPrice ?? ''}');
     final TextEditingController maxPriceController =
-        TextEditingController(text: searchCubit.maxPrice.toString());
+        TextEditingController(text: '${searchCubit.maxPrice ?? ''}');
 
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.9,
@@ -160,8 +160,8 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       PriceWidget(
-                        minPriseController: minPriceController,
-                        maxPriseController: maxPriceController,
+                        minPriceController: minPriceController,
+                        maxPriceController: maxPriceController,
                       ),
                       CustomDropDownSingleCheckBox(
                         icon: 'Assets/icons/tirage.svg',
@@ -210,9 +210,9 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                           RepositoryProvider.of<SearchManager>(context)
                               .setSearch(false);
                           searchCubit.minPrice =
-                              double.parse(minPriceController.text);
+                              double.tryParse(minPriceController.text);
                           searchCubit.maxPrice =
-                              double.parse(maxPriceController.text);
+                              double.tryParse(maxPriceController.text);
                           searchCubit.setFilters(
                             parameters: selectCategoryCubit.parameters,
                             cityId: selectedCityId,

@@ -14,10 +14,12 @@ class SelectMarkScreen extends StatefulWidget {
     super.key,
     required this.needSelectModel,
     required this.subcategory,
+    this.isBottomSheet = false,
   });
 
   final bool needSelectModel;
   final String subcategory;
+  final bool isBottomSheet;
 
   @override
   State<SelectMarkScreen> createState() => _SelectMarkScreenState();
@@ -38,15 +40,45 @@ class _SelectMarkScreenState extends State<SelectMarkScreen> {
     final cubit = BlocProvider.of<SelectMarkCubit>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: const IconThemeData.fallback(),
-        backgroundColor: AppColors.empty,
-        elevation: 0,
-        title: Text(
-          localizations.choosingMark,
-          style: AppTypography.font20black,
-        ),
-      ),
+      appBar: widget.isBottomSheet
+          ? AppBar(
+              automaticallyImplyLeading: false,
+              toolbarHeight: 70,
+              flexibleSpace: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 12),
+                  Center(
+                    child: Container(
+                      width: 120,
+                      height: 4,
+                      decoration: ShapeDecoration(
+                          color: const Color(0xFFDDE1E7),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(1))),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Text(
+                      localizations.choosingMark,
+                      style: AppTypography.font20black,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                ],
+              ),
+            )
+          : AppBar(
+              iconTheme: const IconThemeData.fallback(),
+              backgroundColor: AppColors.empty,
+              elevation: 0,
+              title: Text(
+                localizations.choosingMark,
+                style: AppTypography.font20black,
+              ),
+            ),
       body: BlocBuilder<SelectMarkCubit, SelectMarkState>(
         builder: (context, state) {
           if (state is MarksGotState || marksPreloaded) {

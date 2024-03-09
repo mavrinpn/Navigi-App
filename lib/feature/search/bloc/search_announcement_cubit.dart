@@ -36,15 +36,17 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
 
   String get sortBy => _sortBy ?? SortTypes.dateDESC;
 
-  double get minPrice => _minPrice ?? 0;
+  // ignore: unnecessary_getters_setters
+  double? get minPrice => _minPrice;// ?? 0;
 
-  double get maxPrice => _maxPrice ?? 200000;
+  // ignore: unnecessary_getters_setters
+  double? get maxPrice => _maxPrice;// ?? 200000;
 
   set sortType(String? searchType) => _sortBy = searchType;
 
-  set minPrice(double price) => _minPrice = price;
+  set minPrice(double? price) => _minPrice = price;
 
-  set maxPrice(double price) => _maxPrice = price;
+  set maxPrice(double? price) => _maxPrice = price;
 
   double radius = 0;
 
@@ -52,8 +54,8 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
 
   void clearFilters() {
     _sortBy = null;
-    _minPrice = 0;
-    _maxPrice = 200000;
+    _minPrice = null;
+    _maxPrice = null;
     _cityId = null;
     _areaId = null;
     _cityTitle = null;

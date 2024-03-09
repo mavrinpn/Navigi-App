@@ -45,9 +45,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 26,
-              ),
+              const SizedBox(height: 26),
               Text(
                   'Pharetra ultricies ullamcorper a et magna convallis condimentum. Proin mi orci dignissim lectus nulla neque',
                   style: AppTypography.font14lightGray),
@@ -91,16 +89,12 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                               },
                             );
                           } else {
-                            return AddImageWidget(
-                              callback: addImages,
-                            );
+                            return AddImageWidget(callback: addImages);
                           }
                         },
                       ),
                     ),
-              const SizedBox(
-                height: 80,
-              )
+              const SizedBox(height: 80)
             ],
           ),
         ),

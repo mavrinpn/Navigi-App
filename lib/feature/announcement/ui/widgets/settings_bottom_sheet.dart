@@ -76,9 +76,7 @@ class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
               color: Colors.black,
               size: 24,
             ),
-            const SizedBox(
-              width: 12,
-            ),
+            const SizedBox(width: 12),
             Text(
               'Change activity',
               style: AppTypography.font18black,
@@ -90,9 +88,7 @@ class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
               color: Colors.black,
               size: 24,
             ),
-            const SizedBox(
-              width: 12,
-            ),
+            const SizedBox(width: 12),
             Text(
               localizations.edit,
               style: AppTypography.font18black,
@@ -119,8 +115,11 @@ class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
 }
 
 class RowSettingsButton extends StatelessWidget {
-  const RowSettingsButton(
-      {super.key, required this.children, required this.onTap});
+  const RowSettingsButton({
+    super.key,
+    required this.children,
+    required this.onTap,
+  });
 
   final List<Widget> children;
   final VoidCallback onTap;
@@ -130,9 +129,15 @@ class RowSettingsButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: InkWell(
+        customBorder: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
         onTap: onTap,
-        child: Row(
-          children: children,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: children,
+          ),
         ),
       ),
     );

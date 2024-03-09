@@ -33,7 +33,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
 
     final cubit = BlocProvider.of<ItemSearchCubit>(context);
 
-    productsController.text = cubit.getSearchText();
+    // productsController.text = cubit.getSearchText();
     productsController.selection = TextSelection.fromPosition(
         TextPosition(offset: productsController.text.length));
     final width = MediaQuery.of(context).size.width;
@@ -125,10 +125,17 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
           if (buttonActive) {
             final item = itemManager.hasItemInSearchedItems();
 
-            creatingManager.setItem(item,
-                name: productsController.text, id: item?.id);
+            creatingManager.setTitle(productsController.text); //TODO create
+
+            creatingManager.setItem(
+              item,
+              name: productsController.text,
+              id: item?.id,
+            );
+
+            //TODO create
             Navigator.pushNamed(
-                context, AppRoutesNames.announcementCreatingPhoto);
+                context, AppRoutesNames.announcementCreatingDescription);
           }
         },
         active: buttonActive,

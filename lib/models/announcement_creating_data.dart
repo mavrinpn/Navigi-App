@@ -19,7 +19,7 @@ class AnnouncementCreatingData {
   }
 
   Map<String, dynamic> toJson(String creatorId, List<String> urls) => {
-        'name': title,
+        'name': itemName,//title,
         'description': description,
         'type': type,
         'price': price,

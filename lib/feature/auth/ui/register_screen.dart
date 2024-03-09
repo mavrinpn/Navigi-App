@@ -183,55 +183,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 2.5),
-                              child: SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: Checkbox(
-                                  splashRadius: 2,
-                                  checkColor: Colors.white,
-                                  activeColor: AppColors.red,
-                                  side: const BorderSide(
-                                      width: 1, color: AppColors.lightGray),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(2)),
-                                  value: isTapCheckBox,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      isTapCheckBox = !isTapCheckBox;
-                                    });
-
-                                    if (checkFields(
-                                        maskPhoneFormatter.getUnmaskedText(),
-                                        nameController.text,
-                                        firstPasswordController.text,
-                                        secondPasswordController.text)) {
-                                      isTouch = true;
-                                      setState(() {});
-                                      return;
-                                    }
-                                    isTouch = false;
-                                    setState(() {});
-                                  },
+                        child: GestureDetector(
+                          onTap: _checkBoxPressed,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 2.5),
+                                child: SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: Checkbox(
+                                    splashRadius: 2,
+                                    checkColor: Colors.white,
+                                    activeColor: AppColors.red,
+                                    side: const BorderSide(
+                                        width: 1, color: AppColors.lightGray),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(2)),
+                                    value: isTapCheckBox,
+                                    onChanged: (bool? value) {
+                                      _checkBoxPressed();
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            SizedBox(
-                              width: width - 75,
-                              child: Text(
-                                localizations.jacceptsTheConditionsForTheilization,
-                                style: AppTypography.font14black,
-                              ),
-                            )
-                          ],
+                              const SizedBox(width: 15),
+                              SizedBox(
+                                width: width - 75,
+                                child: Text(
+                                  localizations
+                                      .jacceptsTheConditionsForTheilization,
+                                  style: AppTypography.font14black,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -280,5 +268,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  _checkBoxPressed() {
+    setState(() {
+      isTapCheckBox = !isTapCheckBox;
+    });
+
+    if (checkFields(maskPhoneFormatter.getUnmaskedText(), nameController.text,
+        firstPasswordController.text, secondPasswordController.text)) {
+      isTouch = true;
+      setState(() {});
+      return;
+    }
+    isTouch = false;
+    setState(() {});
   }
 }

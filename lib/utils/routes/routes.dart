@@ -109,7 +109,7 @@ final appRoutes = {
       const CategoryScreen(),
   AppRoutesNames.announcementCreatingSubcategory: (context) =>
       const SubCategoryScreen(),
-  AppRoutesNames.announcementCreatingItem: (context) =>
+  AppRoutesNames.announcementCreatingTitle: (context) =>
       const SearchProductsScreen(),
   AppRoutesNames.announcementCreatingPhoto: (context) =>
       const PickPhotosScreen(),

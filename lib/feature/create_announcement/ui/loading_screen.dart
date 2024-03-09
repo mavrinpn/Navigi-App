@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
@@ -24,17 +22,22 @@ class LoadingScreen extends StatelessWidget {
       child: BlocListener<CreatingAnnouncementCubit, CreatingAnnouncementState>(
         listener: (context, state) {
           if (state is CreatingSuccessState) {
-            BlocProvider.of<CreatorCubit>(context)
-                .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
-            log('абоаба');
+            BlocProvider.of<CreatorCubit>(context).setUserId(
+                RepositoryProvider.of<AuthRepository>(context).userId);
             RepositoryProvider.of<AnnouncementManager>(context)
                 .addLimitAnnouncements(true);
-            Navigator.of(context).popUntil(ModalRoute.withName(AppRoutesNames.root));
+
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(localizations.adSuccessfullyAdded)));
+
+            Navigator.of(context)
+                .popUntil(ModalRoute.withName(AppRoutesNames.root));
           }
           if (state is CreatingFailState) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(const SnackBar(content: Text('ошибка')));
-            Navigator.of(context).popUntil(ModalRoute.withName(AppRoutesNames.root));
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(localizations.errorCreatingAd)));
+            Navigator.of(context)
+                .popUntil(ModalRoute.withName(AppRoutesNames.root));
           }
         },
         child: Scaffold(
@@ -56,8 +59,7 @@ class LoadingScreen extends StatelessWidget {
                 const SizedBox(
                   height: 16,
                 ),
-                Text(
-                    localizations.doNotBlockThe,
+                Text(localizations.doNotBlockThe,
                     textAlign: TextAlign.center,
                     style: AppTypography.font14light),
                 const SizedBox(

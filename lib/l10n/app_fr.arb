@@ -178,5 +178,10 @@
 "dataDownloadError": "Erreur de téléchargement de données",
 "publish": "Publier",
 "changesSaved": "Modifications enregistrées",
-"dataSavingError": "Erreur d'enregistrement des données"
+"dataSavingError": "Erreur d'enregistrement des données",
+"adSuccessfullyAdded": "L'annonce a été ajoutée avec succès",
+"errorCreatingAd": "Erreur lors de la création de l'annonce",
+"chatBlocked": "Chat bloqué",
+"blockUser": "Bloquer l'utilisateur",
+"unblockUser": "Débloquer l'utilisateur"
 }

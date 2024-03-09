@@ -84,33 +84,45 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
             const SizedBox(height: 5),
             BlocListener<FavouritesCubit, FavouritesState>(
               listener: (context, state) {
-                print(state);
                 if (state is LikeSuccessState &&
                     state.changedPostId == widget.announcement.id) {
-                  // setState(() {
-                  //   liked = state.value;
-                  // });
+                  setState(() {
+                    liked = state.value;
+                  });
                 }
               },
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      widget.announcement.stringPrice,
-                      style: AppTypography.font16boldRed,
-                      textDirection: TextDirection.ltr,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.announcement.stringPrice,
+                          style: AppTypography.font16boldRed,
+                          textDirection: TextDirection.ltr,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    top: -12,
+                    right: -10,
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: onLikeTapped,
+                      icon: SvgPicture.asset(
+                        'Assets/icons/follow.svg',
+                        width: 24,
+                        height: 24,
+                        color: liked ? AppColors.red : AppColors.whiteGray,
+                      ),
                     ),
-                    GestureDetector(
-                        onTap: onLikeTapped,
-                        child: SvgPicture.asset('Assets/icons/follow.svg',
-                            width: 24,
-                            height: 24,
-                            color: liked ? AppColors.red : AppColors.whiteGray))
-                  ]),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(
-              height: 5,
-            ),
+            const SizedBox(height: 5),
             Row(
               children: [
                 Text(
@@ -125,9 +137,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 if (widget.announcement.creatorData.verified) ...[
-                  const SizedBox(
-                    width: 5,
-                  ),
+                  const SizedBox(width: 5),
                   SvgPicture.asset(
                     'Assets/icons/verified-user.svg',
                     width: 12,
@@ -135,9 +145,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                 ]
               ],
             ),
-            const SizedBox(
-              height: 5,
-            ),
+            const SizedBox(height: 5),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

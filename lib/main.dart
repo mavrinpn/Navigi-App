@@ -18,11 +18,17 @@ import 'feature/home/ui/home_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   PaintingBinding.instance.imageCache.maximumSizeBytes = 1024 * 1024 * 50;
+
   Bloc.observer = CustomBlocObserver();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   await dotenv.load();
+
   FirebaseMessaging.onBackgroundMessage(MessagingService.onBackgroundMessage);
+
   runApp(MyRepositoryProviders());
 }
 

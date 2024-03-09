@@ -1,9 +1,11 @@
 class Mark {
   final String id;
   final String name;
+  final String? image;
 
-  Mark(
-    this.id,
-    this.name,
-  );
+  Mark({
+    required this.id,
+    required this.name,
+    required this.image,
+  });
 }

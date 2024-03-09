@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/car_model/car_models_cubit.dart';
@@ -53,6 +54,16 @@ class _CarMarkWidgetState extends State<CarMarkWidget> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                SizedBox(
+                  height: 24,
+                  width: 28,
+                  child: widget.mark.image != null
+                      ? CachedNetworkImage(
+                          imageUrl: widget.mark.image!,
+                        )
+                      : Container(),
+                ),
+                const SizedBox(width: 6),
                 Expanded(
                   child: Text(
                     widget.mark.name,

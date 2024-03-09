@@ -73,11 +73,18 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
   ) {
     if (marksFilter == null && parameters.hasMark) return;
 
-    final repository = context.read<CreatingAnnouncementManager>();
-    repository.subcategoryFilters = parameters;
-    repository.marksFilter = marksFilter;
+    final creatingManager = context.read<CreatingAnnouncementManager>();
 
-    Navigator.pushNamed(context, AppRoutesNames.announcementCreatingItem);
+    creatingManager.clearAllData(); //TODO create
+
+    creatingManager.subcategoryFilters = parameters;
+    creatingManager.marksFilter = marksFilter;
+
+    //TODO create
+    Navigator.pushNamed(
+      context,
+      AppRoutesNames.announcementCreatingPhoto,
+    );
   }
 
   void setParametersCarToManagerAndPushNext(
@@ -86,11 +93,18 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
   ) {
     if (carFilter == null && parameters.hasMark) return;
 
-    final repository = context.read<CreatingAnnouncementManager>();
-    repository.subcategoryFilters = parameters;
-    repository.carFilter = carFilter;
+    final creatingManager = context.read<CreatingAnnouncementManager>();
 
-    Navigator.pushNamed(context, AppRoutesNames.announcementCreatingItem);
+    creatingManager.clearAllData(); //TODO create
+
+    creatingManager.subcategoryFilters = parameters;
+    creatingManager.carFilter = carFilter;
+
+    //TODO create
+    Navigator.pushNamed(
+      context,
+      AppRoutesNames.announcementCreatingPhoto,
+    );
   }
 
   void getSubcategoryParameters(Subcategory subcategory) async {
@@ -143,8 +157,12 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
           if (state is SubcategorySuccessState) {
             return ListView(
               children: state.subcategories
-                  .map((e) => SubCategoryWidget(
-                      subcategory: e, onTap: () => selectSubcategory(e)))
+                  .map(
+                    (e) => SubCategoryWidget(
+                      subcategory: e,
+                      onTap: () => selectSubcategory(e),
+                    ),
+                  )
                   .toList(),
             );
           } else if (state is SubcategoryFailState) {

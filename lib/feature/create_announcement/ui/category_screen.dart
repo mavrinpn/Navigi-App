@@ -8,7 +8,7 @@ import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
-import 'package:smart/widgets/category/category.dart';
+import 'package:smart/widgets/category/category_widget.dart';
 
 import '../bloc/category/category_cubit.dart';
 
@@ -20,20 +20,22 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  void selectCategory(Category e) async {
+  void selectCategory(Category category) async {
     final creatingManager = context.read<CreatingAnnouncementManager>();
 
     BlocProvider.of<SubcategoryCubit>(context)
-        .loadSubCategories(categoryId: e.id);
+        .loadSubCategories(categoryId: category.id);
     creatingManager.clearSpecifications();
 
-    if (e.id == 'home' || e.id == 'job') {
+    if (category.id == 'home' || category.id == 'job') {
       creatingManager.specialOptions
           .add(SpecialAnnouncementOptions.customPlace);
     }
 
     Navigator.pushNamed(
-        context, AppRoutesNames.announcementCreatingSubcategory);
+      context,
+      AppRoutesNames.announcementCreatingSubcategory,
+    );
   }
 
   @override
@@ -53,22 +55,26 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 style: AppTypography.font20black,
               ),
             ),
-            body: GridView.count(
-              crossAxisCount: 3,
-              childAspectRatio: 108 / 120,
-              children: state.categories
-                  .map((e) => CategoryWidget(
-                        category: e,
-                        onTap: () => selectCategory(e),
-                        width: double.infinity,
-                        height: double.infinity,
-                      ))
-                  .toList(),
+            body: Padding(
+              padding: const EdgeInsets.all(15),
+              child: GridView.count(
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                crossAxisCount: 3,
+                addAutomaticKeepAlives: true,
+                childAspectRatio: 10 / 14,
+                children: state.categories
+                    .map((e) => CategoryWidget(
+                          category: e,
+                          onTap: () => selectCategory(e),
+                        ))
+                    .toList(),
+              ),
             ),
           );
         } else if (state is CategoryFailState) {
           return const Center(
-            child: Text('Проблемс'),
+            child: Text('Loadding categories fail'),
           );
         } else {
           return Center(

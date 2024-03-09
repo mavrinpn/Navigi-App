@@ -17,7 +17,7 @@ class DescriptionScreen extends StatefulWidget {
 
 class _DescriptionScreenState extends State<DescriptionScreen> {
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController titleController = TextEditingController();
+  // TextEditingController titleController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +26,12 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
     final repository =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
 
-    titleController.text = repository.creatingData.title!;
+    // titleController.text = repository.creatingData.title!;
 
     descriptionController.selection = TextSelection.fromPosition(
         TextPosition(offset: descriptionController.text.length));
-    titleController.selection = TextSelection.fromPosition(
-        TextPosition(offset: titleController.text.length));
+    // titleController.selection = TextSelection.fromPosition(
+        // TextPosition(offset: titleController.text.length));
 
     return Scaffold(
       appBar: AppBar(
@@ -46,40 +46,40 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      localizations.title,
-                      style: AppTypography.font16black.copyWith(fontSize: 18),
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  OutlineTextField(
-                    hintText: localizations.name,
-                    controller: titleController,
-                    maxLines: 5,
-                    height: 100,
-                    width: double.infinity,
-                    maxLength: 100,
-                    onChange: (value) {
-                      if (value.isNotEmpty) {
-                        repository.setTitle(value);
-                      } else {
-                        repository.setTitle(repository.buildTitle);
-                      }
-                    },
-                  )
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       const SizedBox(
+            //         height: 16,
+            //       ),
+            //       Padding(
+            //         padding: const EdgeInsets.only(left: 8.0),
+            //         child: Text(
+            //           localizations.title,
+            //           style: AppTypography.font16black.copyWith(fontSize: 18),
+            //         ),
+            //       ),
+            //       const SizedBox(height: 5),
+            //       OutlineTextField(
+            //         hintText: localizations.name,
+            //         controller: titleController,
+            //         maxLines: 5,
+            //         height: 100,
+            //         width: double.infinity,
+            //         maxLength: 100,
+            //         onChange: (value) {
+            //           if (value.isNotEmpty) {
+            //             repository.setTitle(value);
+            //           } else {
+            //             repository.setTitle(repository.buildTitle);
+            //           }
+            //         },
+            //       )
+            //     ],
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               child: Column(
@@ -114,13 +114,13 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
         ),
       ),
       floatingActionButton: CustomTextButton.orangeContinue(
-        active: descriptionController.text.isNotEmpty &&
-            titleController.text.isNotEmpty,
+        active: descriptionController.text.isNotEmpty,
+        //  && titleController.text.isNotEmpty,
         width: MediaQuery.of(context).size.width - 30,
         text: localizations.continue_,
         callback: () {
           repository.setDescription(descriptionController.text);
-          repository.setTitle(titleController.text);
+          // repository.setTitle(titleController.text);
           repository.setInfoFormItem();
           BlocProvider.of<CreatingAnnouncementCubit>(context)
               .createAnnouncement();

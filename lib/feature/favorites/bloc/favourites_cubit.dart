@@ -25,11 +25,12 @@ class FavouritesCubit extends Cubit<FavouritesState> {
     try {
       if (isLiked(postId)) {
         await favouritesManager.unlike(postId);
+        emit(LikeSuccessState(changedPostId: postId, value: false));
       } else {
         await favouritesManager.like(postId);
+        emit(LikeSuccessState(changedPostId: postId, value: true));
       }
 
-      emit(LikeSuccessState(changedPostId: postId, value: true));
       await favouritesManager.getFavourites();
       return true;
     } catch (e) {

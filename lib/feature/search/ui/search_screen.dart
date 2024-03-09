@@ -345,8 +345,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     spacing: 6,
                     children: [
                       FilterChipWidget(
-                        isSelected: !(searchCubit.minPrice == 0 &&
-                            searchCubit.maxPrice == 200000),
+                        isSelected: !(searchCubit.minPrice == null &&
+                            searchCubit.maxPrice == null),
                         title: localizations.price,
                         parameterKey: FilterKeys.price,
                       ),

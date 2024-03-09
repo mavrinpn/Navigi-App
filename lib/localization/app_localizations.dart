@@ -1144,6 +1144,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Data saving error'**
   String get dataSavingError;
+
+  /// No description provided for @adSuccessfullyAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'The ad was successfully added'**
+  String get adSuccessfullyAdded;
+
+  /// No description provided for @errorCreatingAd.
+  ///
+  /// In en, this message translates to:
+  /// **'Error creating the ad'**
+  String get errorCreatingAd;
+
+  /// No description provided for @chatBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'The chat is blocked'**
+  String get chatBlocked;
+
+  /// No description provided for @blockUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Block user'**
+  String get blockUser;
+
+  /// No description provided for @unblockUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock user'**
+  String get unblockUser;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -9,6 +9,7 @@ const String subcategoriesCollection = 'sub_categories';
 const String queriesCollection = 'queries';
 const String likesCollection = 'likes';
 const String reviewsCollection = '65e590720e806ee7cc65';
+const String blockedUsersCollection = '65eaede68d1e9c9ae033';
 
 /// [_messages] - сами сообщения
 const String messagesCollection = 'messages';

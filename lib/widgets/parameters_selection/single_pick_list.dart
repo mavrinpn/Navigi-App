@@ -23,21 +23,22 @@ class _CustomSingleCheckBoxesState extends State<CustomSingleCheckBoxes> {
   Widget build(BuildContext context) {
     return Column(
       children: widget.parameters
-          .map((e) => Row(
-                children: [
-                  CustomCheckBox(
+          .map((e) => GestureDetector(
+                onTap: () => widget.onChange(e),
+                child: Row(
+                  children: [
+                    CustomCheckBox(
                       isActive: e.shortName == widget.currentVariable.shortName,
-                      onChanged: () {
-                        widget.onChange(e);
-                        // print(e.name);
-                      }),
-                  Text(
-                    e.name,
-                    maxLines: 1,
-                    overflow: TextOverflow.clip,
-                    style: AppTypography.font14black.copyWith(fontSize: 16),
-                  ),
-                ],
+                      onChanged: () => widget.onChange(e),
+                    ),
+                    Text(
+                      e.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.clip,
+                      style: AppTypography.font14black.copyWith(fontSize: 16),
+                    ),
+                  ],
+                ),
               ))
           .toList(),
     );

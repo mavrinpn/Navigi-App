@@ -3,27 +3,33 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
+import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/managers/blocked_users_manager.dart';
 import 'package:smart/models/messenger/message.dart';
 import 'package:smart/models/messenger/room.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/functions.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 class ChatContainer extends StatefulWidget {
-  const ChatContainer(
-      {super.key,
-      required this.message,
-      required this.chatImageUrl,
-      required this.otherUser,
-      required this.announcementName,
-      required this.userOnline,
-      required this.roomId,
-      required this.refreshStream});
+  const ChatContainer({
+    super.key,
+    required this.message,
+    required this.chatImageUrl,
+    required this.otherUserName,
+    required this.otherUserId,
+    required this.announcementName,
+    required this.userOnline,
+    required this.roomId,
+    required this.refreshStream,
+  });
 
   ChatContainer.fromRoom(Room room, {super.key})
       : message = room.lastMessage,
         chatImageUrl = room.announcement.images[0],
-        otherUser = room.otherUserName,
+        otherUserName = room.otherUserName,
+        otherUserId = room.otherUserId,
         announcementName = room.announcement.title,
         refreshStream = room.onlineRefreshStream,
         roomId = room.id,
@@ -31,7 +37,8 @@ class ChatContainer extends StatefulWidget {
 
   final Message? message;
   final String chatImageUrl;
-  final String otherUser;
+  final String otherUserName;
+  final String otherUserId;
   final String announcementName;
   final bool userOnline;
   final String roomId;
@@ -49,14 +56,28 @@ class _ChatContainerState extends State<ChatContainer> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return SliverPadding(
         padding: const EdgeInsets.fromLTRB(15, 12, 15, 0),
         sliver: SliverToBoxAdapter(
             child: InkWell(
           onTap: () {
-            RepositoryProvider.of<MessengerRepository>(context)
-                .selectChat(id: widget.roomId);
-            Navigator.pushNamed(context, AppRoutesNames.chat);
+            //TODO block
+            final blockedUsersManager =
+                RepositoryProvider.of<BlockedUsersManager>(context);
+
+            blockedUsersManager
+                .isAuthUserBlockedFor(widget.otherUserId)
+                .then((isBlocked) {
+              if (isBlocked) {
+                CustomSnackBar.showSnackBar(context, localizations.chatBlocked);
+              } else {
+                RepositoryProvider.of<MessengerRepository>(context)
+                    .selectChat(id: widget.roomId);
+                Navigator.pushNamed(context, AppRoutesNames.chat);
+              }
+            });
           },
           child: Container(
             decoration: BoxDecoration(
@@ -100,7 +121,7 @@ class _ChatContainerState extends State<ChatContainer> {
                           Row(
                             children: [
                               Text(
-                                widget.otherUser,
+                                widget.otherUserName,
                                 style: AppTypography.font12lightGray,
                               ),
                               StreamBuilder(

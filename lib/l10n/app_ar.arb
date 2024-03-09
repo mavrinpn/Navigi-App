@@ -178,5 +178,10 @@
 "dataDownloadError": "خطأ في تنزيل البيانات",
 "publish": "للنشر",
 "changesSaved": "يتم حفظ التغييرات",
-"dataSavingError": "خطأ في حفظ البيانات"
+"dataSavingError": "خطأ في حفظ البيانات",
+"adSuccessfullyAdded": "تمت إضافة الإعلان بنجاح",
+"errorCreatingAd": "خطأ في إنشاء الإعلان",
+"chatBlocked": "تم حظر الدردشة",
+"blockUser": "حظر المستخدم",
+"unblockUser": "إلغاء حظر المستخدم"
 }

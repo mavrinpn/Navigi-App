@@ -14,6 +14,7 @@ import 'package:smart/feature/create_announcement/data/models/marks_filter.dart'
 import 'package:smart/feature/messenger/data/models/chat_user_info.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/models/announcement_creating_data.dart';
+import 'package:smart/models/blocked_user.dart';
 import 'package:smart/models/category.dart';
 import 'package:smart/models/city.dart';
 import 'package:smart/models/item/item.dart';
@@ -47,3 +48,5 @@ part 'service/notifications.dart';
 part 'service/service.dart';
 
 part 'service/reviews.dart';
+
+part 'service/blocked_users.dart';

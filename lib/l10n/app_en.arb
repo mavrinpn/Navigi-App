@@ -178,5 +178,10 @@
 "dataDownloadError": "Data download error",
 "publish": "Publish",
 "changesSaved": "The changes are saved",
-"dataSavingError": "Data saving error"
+"dataSavingError": "Data saving error",
+"adSuccessfullyAdded": "The ad was successfully added",
+"errorCreatingAd": "Error creating the ad",
+"chatBlocked": "The chat is blocked",
+"blockUser": "Block user",
+"unblockUser": "Unblock user"
 }

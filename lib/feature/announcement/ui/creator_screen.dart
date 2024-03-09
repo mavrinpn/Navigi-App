@@ -4,10 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/announcement/data/creator_repository.dart';
 import 'package:smart/feature/announcement/ui/widgets/tabs.dart';
+import 'package:smart/feature/messenger/chat_function.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/back_button.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../localization/app_localizations.dart';
 import '../../../utils/colors.dart';
@@ -102,30 +102,34 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                       user: RepositoryProvider.of<CreatorRepository>(context)
                           .userData!),
                 ),
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: 26),
-                ),
-                SliverToBoxAdapter(
-                  child: CustomTextButton.withIcon(
-                    callback: () {},
-                    text: localizations.toWrite,
-                    styleText: AppTypography.font14white,
-                    active: true,
-                    icon: const Icon(
-                      Icons.mail_outline,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                  ),
-                ),
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: 10),
-                ),
+                const SliverToBoxAdapter(child: SizedBox(height: 26)),
+                // SliverToBoxAdapter(
+                //   child: CustomTextButton.withIcon(
+                //     callback: () {},
+                //     text: localizations.toWrite,
+                //     styleText: AppTypography.font14white,
+                //     active: true,
+                //     icon: const Icon(
+                //       Icons.mail_outline,
+                //       color: Colors.white,
+                //       size: 24,
+                //     ),
+                //   ),
+                // ),
+                // const SliverToBoxAdapter(child: SizedBox(height: 10)),
                 SliverToBoxAdapter(
                   child: CustomTextButton.withIcon(
                     callback: () {
-                      launchUrl(Uri.parse(
-                          'tel://${context.read<CreatorRepository>().userData!.phone}'));
+                      //TODO block
+                      final userData =
+                          context.read<CreatorRepository>().userData;
+                      if (userData != null) {
+                        checkBlockedAndCall(
+                          context: context,
+                          userId: userData.id,
+                          phone: userData.phone,
+                        );
+                      }
                     },
                     text: localizations.toCall,
                     styleText: AppTypography.font14white,

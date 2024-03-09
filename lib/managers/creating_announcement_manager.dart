@@ -38,8 +38,8 @@ class CreatingAnnouncementManager {
 
   SubcategoryItem? currentItem;
   List<XFile> images = [];
-  List<Uint8List> imagesAsBytes = [];
-  Future? compressingImages;
+  //List<Uint8List> imagesAsBytes = [];
+  //Future? compressingImages;
 
   CityDistrict? cityDistrict;
   LatLng? customPosition;
@@ -53,7 +53,7 @@ class CreatingAnnouncementManager {
 
   List<Parameter> getParametersList() {
     final parameters = <Parameter>[];
-    parameters.addAll(subcategoryFilters!.parameters);
+    parameters.addAll(subcategoryFilters?.parameters ?? []);
 
     if (carFilter != null) {
       parameters.add(carFilter!.dotation);
@@ -72,17 +72,27 @@ class CreatingAnnouncementManager {
 
     images.addAll(resImages);
 
-    compressingImages = _compressImages(resImages);
+    // compressingImages = _compressImages(resImages);
+    // compressingImages = _compressImages();
     return resImages;
   }
 
-  Future<void> _compressImages(List<XFile> images) async {
+  Future<List<Uint8List>> compressImagesToBytes() async {
+    List<Uint8List> imagesAsBytes = [];
     for (var image in images) {
       final bytes = await image.readAsBytes();
       final res = await _compressImage(bytes);
       imagesAsBytes.add(res);
     }
+    return imagesAsBytes;
   }
+  // Future<void> _compressImages(List<XFile> images) async {
+  //   for (var image in images) {
+  //     final bytes = await image.readAsBytes();
+  //     final res = await _compressImage(bytes);
+  //     imagesAsBytes.add(res);
+  //   }
+  // }
 
   Future<Uint8List> _compressImage(Uint8List list) async =>
       await FlutterImageCompress.compressWithList(
@@ -145,7 +155,10 @@ class CreatingAnnouncementManager {
     try {
       final user = await account.get();
       final uid = user.$id;
-      await compressingImages;
+      // await compressingImages;
+      final imagesAsBytes = await compressImagesToBytes();
+
+      //TODO images
       final List<String> urls = await uploadImages(imagesAsBytes);
 
       await dbService.announcements.createAnnouncement(
@@ -170,8 +183,8 @@ class CreatingAnnouncementManager {
   void clearAllData() {
     images.clear();
     creatingData.clear;
-    imagesAsBytes.clear();
-    compressingImages = null;
+    // imagesAsBytes.clear();
+    // compressingImages = null;
     currentItem = null;
 
     customPosition = null;

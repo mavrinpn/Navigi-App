@@ -186,19 +186,25 @@ class MessagesService {
       'message': content,
       'images': images ?? []
     });
-    final res = await _functions.createExecution(
-      functionId: '657f16bf26ccb6ca8093',
-      body: encodedBody,
-    );
+
+    try {
+      //TODO send message
+      final res = await _functions.createExecution(
+        functionId: '657f16bf26ccb6ca8093',
+        body: encodedBody,
+      );
+
+      if (res.responseStatusCode == 500) {
+        throw Exception('Error: ${res.responseStatusCode}');
+      }
+    } catch (err) {
+      throw Exception(err.toString());
+    }
 
     // print('errors: ${res.errors}');
     // print('body: ${res.responseBody}');
     // print('headers: ${res.requestHeaders}');
     // print('status code: ${res.responseStatusCode}');
     // print('logs: ${res.logs}');
-
-    if (res.responseStatusCode == 500) {
-      throw Exception('Функция в канаве');
-    }
   }
 }

@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart/feature/announcement/ui/widgets/settings_bottom_sheet.dart';
 import 'package:smart/feature/messenger/bloc/message_images_cubit.dart';
+import 'package:smart/feature/messenger/chat_function.dart';
 import 'package:smart/feature/messenger/ui/widgets/chat_input.dart';
 import 'package:smart/feature/messenger/ui/widgets/message_group_widget.dart';
+import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/managers/blocked_users_manager.dart';
 import 'package:smart/models/messenger/chat_item.dart';
 import 'package:smart/models/messenger/date_splitter.dart';
 import 'package:smart/models/messenger/messages_group.dart';
@@ -15,7 +19,6 @@ import 'package:smart/utils/fonts.dart';
 import 'package:smart/feature/messenger/ui/widgets/announcement_short_info.dart';
 import 'package:smart/feature/messenger/ui/widgets/date_splitter_widget.dart';
 import 'package:smart/widgets/button/back_button.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../data/messenger_repository.dart';
 
@@ -81,10 +84,23 @@ class _ChatScreenState extends State<ChatScreen> {
             actions: [
               IconButton(
                 onPressed: () {
-                  launchUrl(Uri.parse(
-                      'tel://${repository.currentRoom!.otherUserName}'));
+                  //TODO block
+                  checkBlockedAndCall(
+                    context: context,
+                    userId: repository.currentRoom!.otherUserId,
+                    phone: repository.currentRoom!.otherUserPhone,
+                  );
                 },
                 icon: SvgPicture.asset('Assets/icons/phone.svg'),
+              ),
+              IconButton(
+                onPressed: () {
+                  _showMoreAction(
+                    context: context,
+                    userId: repository.currentRoom!.otherUserId,
+                  );
+                },
+                icon: SvgPicture.asset('Assets/icons/menu_dots_vertical.svg'),
               ),
             ],
             titleSpacing: 6,
@@ -207,5 +223,58 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+  void _showMoreAction({
+    required BuildContext context,
+    required String userId,
+  }) async {
+    final localizations = AppLocalizations.of(context)!;
+    final blockedUsersManager =
+        RepositoryProvider.of<BlockedUsersManager>(context);
+
+    blockedUsersManager.isUserBlockedForAuth(userId).then((isBlocked) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        showDragHandle: true,
+        builder: (ctx) {
+          return SizedBox(
+            height: 300,
+            child: Column(
+              children: [
+                RowSettingsButton(
+                  onTap: () {
+                    if (isBlocked) {
+                      blockedUsersManager.unblock(userId);
+                    } else {
+                      blockedUsersManager.block(userId);
+                    }
+                    Navigator.of(context).pop();
+                  },
+                  children: [
+                    const Icon(
+                      Icons.edit,
+                      color: Colors.black,
+                      size: 24,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      isBlocked
+                          ? localizations.unblockUser
+                          : localizations.blockUser,
+                      style: AppTypography.font18black,
+                    )
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    });
   }
 }

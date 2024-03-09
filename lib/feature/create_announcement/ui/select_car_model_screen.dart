@@ -14,10 +14,12 @@ class SelectCarModelScreen extends StatefulWidget {
     super.key,
     required this.needSelectModel,
     required this.subcategory,
+    this.isBottomSheet = false,
   });
 
   final bool needSelectModel;
   final String subcategory;
+  final bool isBottomSheet;
 
   @override
   State<SelectCarModelScreen> createState() => _SelectCarModelScreenState();
@@ -38,15 +40,45 @@ class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
     final cubit = BlocProvider.of<CarModelsCubit>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: const IconThemeData.fallback(),
-        backgroundColor: AppColors.empty,
-        elevation: 0,
-        title: Text(
-          localizations.choosingCarBrand,
-          style: AppTypography.font20black,
-        ),
-      ),
+      appBar: widget.isBottomSheet
+          ? AppBar(
+              automaticallyImplyLeading: false,
+              toolbarHeight: 70,
+              flexibleSpace: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 12),
+                  Center(
+                    child: Container(
+                      width: 120,
+                      height: 4,
+                      decoration: ShapeDecoration(
+                          color: const Color(0xFFDDE1E7),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(1))),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Text(
+                      localizations.choosingCarBrand,
+                      style: AppTypography.font20black,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                ],
+              ),
+            )
+          : AppBar(
+              iconTheme: const IconThemeData.fallback(),
+              backgroundColor: AppColors.empty,
+              elevation: 0,
+              title: Text(
+                localizations.choosingCarBrand,
+                style: AppTypography.font20black,
+              ),
+            ),
       body: BlocBuilder<CarModelsCubit, CarModelsState>(
         builder: (context, state) {
           if (state is MarksSuccessState || marksPreloaded) {
@@ -55,8 +87,8 @@ class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
             return ListView(
               children: cubit.marks
                   .map(
-                    (e) => CarMarkWidget(
-                      mark: e,
+                    (mark) => CarMarkWidget(
+                      mark: mark,
                       subcategory: widget.subcategory,
                       needSelectModel: widget.needSelectModel,
                     ),

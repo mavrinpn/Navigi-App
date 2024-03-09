@@ -8,7 +8,7 @@ class AppRoutesNames {
   static const String announcementCreatingCategory = '/create_category_screen';
   static const String announcementCreatingSubcategory =
       '/create_sub_category_screen';
-  static const String announcementCreatingItem =
+  static const String announcementCreatingTitle =
       '/create_search_products_screen';
   static const String announcementCreatingPhoto = '/create_pick_photos_screen';
   static const String announcementCreatingType = '/create_by_not_by_screen';

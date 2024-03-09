@@ -107,12 +107,17 @@ class _OptionsScreenState extends State<OptionsScreen> {
                 const SizedBox(height: 16),
                 SingleChildScrollView(
                   child: Column(
-                    children: (repository.currentItem != null
-                                ? repository.getParametersList()
-                                : <Parameter>[])
+                    children: (repository.getParametersList())
                             .map((e) => buildParameter(e))
                             .toList() +
                         [const SizedBox(height: 120)],
+                    //TODO create
+                    // children: (repository.currentItem != null
+                    //             ? repository.getParametersList()
+                    //             : <Parameter>[])
+                    //         .map((e) => buildParameter(e))
+                    //         .toList() +
+                    //     [const SizedBox(height: 120)],
                   ),
                 )
               ],

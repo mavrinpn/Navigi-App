@@ -32,9 +32,9 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
 
     final TextEditingController minPriceController =
-        TextEditingController(text: searchCubit.minPrice.toString());
+        TextEditingController(text: '${searchCubit.minPrice ?? ''}');
     final TextEditingController maxPriceController =
-        TextEditingController(text: searchCubit.maxPrice.toString());
+        TextEditingController(text: '${searchCubit.maxPrice ?? ''}');
 
     return Container(
       // height: MediaQuery.sizeOf(context).height * 0.8,
@@ -60,8 +60,8 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
                 ),
                 const SizedBox(height: 16),
                 PriceWidget(
-                  minPriseController: minPriceController,
-                  maxPriseController: maxPriceController,
+                  minPriceController: minPriceController,
+                  maxPriceController: maxPriceController,
                 ),
                 const SizedBox(height: 16),
                 CustomTextButton.orangeContinue(
@@ -69,9 +69,9 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
                     RepositoryProvider.of<SearchManager>(context)
                         .setSearch(false);
                     searchCubit.minPrice =
-                        double.parse(minPriceController.text);
+                        double.tryParse(minPriceController.text);
                     searchCubit.maxPrice =
-                        double.parse(maxPriceController.text);
+                        double.tryParse(maxPriceController.text);
                     searchCubit.setFilters(
                       parameters: selectCategoryCubit.parameters,
                     );

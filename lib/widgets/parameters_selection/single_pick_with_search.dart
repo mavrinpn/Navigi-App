@@ -60,23 +60,27 @@ class _SinglePickWithSearchState extends State<SinglePickWithSearch> {
               itemBuilder: (context, index) {
                 final e = searchedValues[index];
 
-                return Row(
-                  children: [
-                    CustomCheckBox(
-                        isActive: e == widget.parameter.currentValue,
-                        onChanged: () {
-                          widget.parameter.setVariant(e);
-                          // print(
-                          //     'current variant ${widget.parameter.currentValue}');
-                          setState(() {});
-                        }),
-                    Text(
-                      MyApp.getLocale(context) == 'fr' ? e.nameFr : e.nameAr,
-                      maxLines: 1,
-                      overflow: TextOverflow.clip,
-                      style: AppTypography.font14black.copyWith(fontSize: 16),
-                    ),
-                  ],
+                return GestureDetector(
+                  onTap: () {
+                    widget.parameter.setVariant(e);
+                    setState(() {});
+                  },
+                  child: Row(
+                    children: [
+                      CustomCheckBox(
+                          isActive: e == widget.parameter.currentValue,
+                          onChanged: () {
+                            widget.parameter.setVariant(e);
+                            setState(() {});
+                          }),
+                      Text(
+                        MyApp.getLocale(context) == 'fr' ? e.nameFr : e.nameAr,
+                        maxLines: 1,
+                        overflow: TextOverflow.clip,
+                        style: AppTypography.font14black.copyWith(fontSize: 16),
+                      ),
+                    ],
+                  ),
                 );
               }),
         )

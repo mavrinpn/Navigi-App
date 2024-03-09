@@ -6,6 +6,7 @@ import 'package:smart/feature/create_announcement/ui/select_mark_screen.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
+import 'package:smart/feature/search/ui/bottom_sheets/marks_bottom_sheet_dialog.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/constants.dart';
 
@@ -45,42 +46,62 @@ class _MarkChipWidgetState extends State<MarkChipWidget> {
           ),
           onSelected: (value) async {
             if (selectCategoryCubit.subcategoryId == carSubcategoryId) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => SelectCarModelScreen(
-                    needSelectModel: true,
-                    subcategory: selectCategoryCubit.subcategoryId!,
-                  ),
+              final filter = await showMarksBottomSheet(
+                context: context,
+                screen: SelectCarModelScreen(
+                  needSelectModel: true,
+                  subcategory: selectCategoryCubit.subcategoryId!,
+                  isBottomSheet: true,
                 ),
-              ).then((filter) {
-                if (filter != null) {
-                  searchCubit.setMarksFilter(MarksFilter(
-                    markId: filter.markId,
-                    modelId: filter.modelId,
-                    markTitle: filter.markTitle,
-                    modelTitle: filter.modelTitle,
-                  ));
-                  selectCategoryCubit.setAutoFilter(filter);
+              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (_) => SelectCarModelScreen(
+              //       needSelectModel: true,
+              //       subcategory: selectCategoryCubit.subcategoryId!,
+              //     ),
+              //   ),
+              // ).then((filter) {
 
-                  searchCubit.setFilters(
-                    parameters: selectCategoryCubit.parameters,
-                  );
-                  setState(() {});
-                }
-              });
+              // });
+
+              if (filter != null) {
+                searchCubit.setMarksFilter(MarksFilter(
+                  markId: filter.markId,
+                  modelId: filter.modelId,
+                  markTitle: filter.markTitle,
+                  modelTitle: filter.modelTitle,
+                ));
+                selectCategoryCubit.setAutoFilter(filter);
+
+                searchCubit.setFilters(
+                  parameters: selectCategoryCubit.parameters,
+                );
+                setState(() {});
+              }
             } else {
               final needSelectModel =
                   selectCategoryCubit.subcategoryFilters!.hasModel;
-              final List<MarksFilter>? filter = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => SelectMarkScreen(
-                    needSelectModel: needSelectModel,
-                    subcategory: selectCategoryCubit.subcategoryId!,
-                  ),
+
+              final List<MarksFilter>? filter = await showMarksBottomSheet(
+                context: context,
+                screen: SelectMarkScreen(
+                  needSelectModel: needSelectModel,
+                  subcategory: selectCategoryCubit.subcategoryId!,
+                  isBottomSheet: true,
                 ),
               );
+
+              // final List<MarksFilter>? filter = await Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (_) => SelectMarkScreen(
+              //       needSelectModel: needSelectModel,
+              //       subcategory: selectCategoryCubit.subcategoryId!,
+              //     ),
+              //   ),
+              // );
 
               if (filter != null && filter.isNotEmpty) {
                 setState(() {});
