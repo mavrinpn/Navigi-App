@@ -6,7 +6,10 @@
 "enterPassword": "أدخل كلمة المرور",
 "forgotPassword": "نسيت كلمة السر؟",
 "enterPhone": "أدخل رقم الهاتف المرتبط بحسابك",
-"enterPhone": "أدخل رمز التحقق",
+"enterCode": "أدخل رمز التحقق",
+"checkPhone": "دعنا نتحقق من رقم هاتفك معا.",
+"callMe": "هاتفني",
+"enterFourDigits": "أدخل آخر 4 أرقام من رقم المكالمة الواردة",
 "haventRecieveCode": "لم تتلق الرمز؟",
 "sendAgain": "أعد الإرسال",
 "newPassword": "أدخل كلمة مرور جديدة",
@@ -29,7 +32,7 @@
 "messages": "رسائل",
 "favourites": "مفضل",
 "profile": "ملفي",
-"showAll": "عرض جميع العروض",
+"showAll": "عرض الكل",
 "searchBrand": "البحث العلامة التجارية",
 "done": "كفى",
 "location": "دائرة نصف قطرها",
@@ -183,5 +186,30 @@
 "errorCreatingAd": "خطأ في إنشاء الإعلان",
 "chatBlocked": "تم حظر الدردشة",
 "blockUser": "حظر المستخدم",
-"unblockUser": "إلغاء حظر المستخدم"
+"unblockUser": "إلغاء حظر المستخدم",
+"adAddedToFavorites": "تمت إضافة الإعلان إلى المفضلة",
+"adRemovedFromFavorites": "تمت إزالة الإعلان من المفضلة",
+"marketPrice": "سعر السوق:",
+"detail": "التفاصيل",
+"close": "إغلاق",
+"marketPriceCaption": "تم حساب النطاق السعري خلال آخر 6 أشهر. هنا هو ما تم أخذه في الاعتبار:",
+"markAndModel": "علامة ونموذج",
+"productParameters": "معلمات المنتج",
+"cityAndRegion": "المدينة والمنطقة",
+"userBlockedYou": "قام المستخدم {userName} بحظرك",
+"@userBlockedYou": {
+  "placeholders": {
+    "userName": {
+      "type": "String"
+    }
+  }
+},
+"youBlockedUser": "لقد قمت بحظر المستخدم {userName}",
+"@youBlockedUser": {
+  "placeholders": {
+    "userName": {
+      "type": "String"
+    }
+  }
+}
 }

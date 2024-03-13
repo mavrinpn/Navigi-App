@@ -188,7 +188,6 @@ class MessagesService {
     });
 
     try {
-      //TODO send message
       final res = await _functions.createExecution(
         functionId: '657f16bf26ccb6ca8093',
         body: encodedBody,

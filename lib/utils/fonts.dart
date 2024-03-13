@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'colors.dart';
 
-
 class AppTypography {
   const AppTypography._();
 
@@ -11,7 +10,9 @@ class AppTypography {
   static const _white = Colors.white;
   static const _red = AppColors.red;
   static const _grey = AppColors.dark;
-  static const _font = TextStyle(fontFamily: 'SF Pro Display',);
+  static const _font = TextStyle(
+    fontFamily: 'SF Pro Display',
+  );
 
   static final font14black = _font.copyWith(
     color: _colorBlack,
@@ -54,8 +55,19 @@ class AppTypography {
     fontWeight: FontWeight.w600,
     decoration: TextDecoration.none,
   );
+  static final font14red = _font.copyWith(
+    color: _red,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    decoration: TextDecoration.none,
+  );
   static final font22red = _font.copyWith(
     color: _red,
+    fontSize: 22,
+    fontWeight: FontWeight.w700,
+    decoration: TextDecoration.none,
+  );
+  static final font22black = _font.copyWith(
     fontSize: 22,
     fontWeight: FontWeight.w700,
     decoration: TextDecoration.none,
@@ -89,37 +101,19 @@ class AppTypography {
   );
 
   static final font12dark = _font.copyWith(
-    color: AppColors.dark,
-    fontSize: 12,
-    fontWeight: FontWeight.w600
-  );
+      color: AppColors.dark, fontSize: 12, fontWeight: FontWeight.w600);
   static final font12lightGray = _font.copyWith(
-    color: AppColors.lightGray,
-    fontSize: 12,
-    fontWeight: FontWeight.w600
-  );
+      color: AppColors.lightGray, fontSize: 12, fontWeight: FontWeight.w600);
 
   static final font18lightGray = _font.copyWith(
-    color: AppColors.lightGray,
-    fontSize: 18,
-    fontWeight: FontWeight.w400
-  );
+      color: AppColors.lightGray, fontSize: 18, fontWeight: FontWeight.w400);
 
   static final font16boldRed = _font.copyWith(
-    color: AppColors.red,
-    fontSize: 16,
-    fontWeight: FontWeight.w700
-  );
+      color: AppColors.red, fontSize: 16, fontWeight: FontWeight.w700);
   static final font18black = _font.copyWith(
-    color: _colorBlack,
-    fontSize: 18,
-    fontWeight: FontWeight.w500
-  );
-  static final font18gray = _font.copyWith(
-      color: _grey,
-      fontSize: 18,
-      fontWeight: FontWeight.w600
-  );
+      color: _colorBlack, fontSize: 18, fontWeight: FontWeight.w500);
+  static final font18gray =
+      _font.copyWith(color: _grey, fontSize: 18, fontWeight: FontWeight.w600);
 
   static final font12gray = _font.copyWith(
     color: AppColors.lightGray,

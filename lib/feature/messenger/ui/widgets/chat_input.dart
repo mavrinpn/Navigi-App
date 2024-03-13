@@ -6,6 +6,7 @@ import 'package:smart/feature/create_announcement/ui/widgets/image.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 class ChatInput extends StatefulWidget {
   const ChatInput({
@@ -14,8 +15,10 @@ class ChatInput extends StatefulWidget {
     required this.onChange,
     required this.send,
     required this.images,
+    required this.blocked,
   });
 
+  final bool blocked;
   final TextEditingController messageController;
   final Function(String?) onChange;
   final VoidCallback send;
@@ -31,9 +34,14 @@ class _ChatInputState extends State<ChatInput> {
       borderSide: const BorderSide(color: AppColors.whiteGray));
 
   void pickImages() async {
-    final newImages = await ImagePicker().pickMultiImage();
-    widget.images.addAll(newImages);
-    setState(() {});
+    final localizations = AppLocalizations.of(context)!;
+    if (!widget.blocked) {
+      final newImages = await ImagePicker().pickMultiImage();
+      widget.images.addAll(newImages);
+      setState(() {});
+    } else {
+      CustomSnackBar.showSnackBar(context, localizations.chatBlocked);
+    }
   }
 
   @override
@@ -66,6 +74,7 @@ class _ChatInputState extends State<ChatInput> {
                   child: SizedBox(
                     height: 40,
                     child: TextField(
+                      readOnly: widget.blocked,
                       controller: widget.messageController,
                       autofocus: true,
                       onChanged: widget.onChange,

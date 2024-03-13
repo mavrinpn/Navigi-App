@@ -12,7 +12,6 @@ class PlacesManager {
   String searchPlaceController = '';
   String searchCityController = '';
 
-
   List<City> cities = [];
   List<City> searchedCities = [];
 
@@ -30,7 +29,7 @@ class PlacesManager {
         resList.add(item);
       }
     }
-    searchedCities = resList;
+    searchedCities = resList.take(10).toList();
   }
 
   void searchPlacesByName(String query) {
@@ -40,7 +39,7 @@ class PlacesManager {
         resList.add(item);
       }
     }
-    searchedPlaces = resList;
+    searchedPlaces = resList.take(10).toList();
   }
 
   CityDistrict? searchPlaceIdByName(value) {
@@ -69,6 +68,7 @@ class PlacesManager {
   void setCityController(String value) {
     searchCityController = value;
   }
+
   void setPlaceController(String value) {
     searchPlaceController = value;
   }

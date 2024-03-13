@@ -6,7 +6,10 @@
 "enterPassword": "Enter the password",
 "forgotPassword": "Forgot your password?",
 "enterPhone": "Enter the Telephone number associated with your account",
-"enterPhone": "Enter the verification code",
+"enterCode": "Enter the verification code",
+"checkPhone": "Let's check your phone number together.",
+"callMe": "Call me",
+"enterFourDigits": "Enter the last 4 digits of\nthe incoming call number",
 "haventRecieveCode": "Haven't received the code?",
 "sendAgain": "Send again",
 "newPassword": "Enter a new password",
@@ -29,7 +32,7 @@
 "messages": "Messages",
 "favourites": "Favorite",
 "profile": "My profile",
-"showAll": "Display all offers",
+"showAll": "Show all",
 "searchBrand": "Brand search",
 "done": "That's it",
 "location": "Location",
@@ -183,5 +186,30 @@
 "errorCreatingAd": "Error creating the ad",
 "chatBlocked": "The chat is blocked",
 "blockUser": "Block user",
-"unblockUser": "Unblock user"
+"unblockUser": "Unblock user",
+"adAddedToFavorites": "The ad has been added to favorites",
+"adRemovedFromFavorites": "The ad has been removed from favorites",
+"marketPrice": "Market price:",
+"detail": "Detail",
+"close": "Close",
+"marketPriceCaption": "The price range has been calculated over the last 6 months. Here is what has been taken into account:",
+"markAndModel": "Mark and model",
+"productParameters": "The product parameters",
+"cityAndRegion": "City and region",
+"userBlockedYou": "The user {userName} has blocked you",
+"@userBlockedYou": {
+  "placeholders": {
+    "userName": {
+      "type": "String"
+    }
+  }
+},
+"youBlockedUser": "You have blocked the user {userName}",
+"@youBlockedUser": {
+  "placeholders": {
+    "userName": {
+      "type": "String"
+    }
+  }
+}
 }

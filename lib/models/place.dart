@@ -1,6 +1,9 @@
 part of 'announcement.dart';
 
 class CityDistrict {
+  static const double _defaultLatitude = 36.783;
+  static const double _defaultLongitude = 3.067;
+
   final double latitude;
   final double longitude;
   final String name;
@@ -18,8 +21,8 @@ class CityDistrict {
   CityDistrict.fromJson(Map<String, dynamic> json)
       : id = json['\$id'],
         cityId = json['cityId'],
-        latitude = json['latitude'],
-        longitude = json['longitude'],
+        latitude = json['latitude'] ?? _defaultLatitude,
+        longitude = json['longitude'] ?? _defaultLongitude,
         name = json['name'];
 
   CityDistrict.fish()

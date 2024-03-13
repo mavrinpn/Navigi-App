@@ -25,7 +25,7 @@ class CategoriesSection extends StatelessWidget {
               ],
             ),
           ),
-          const CategoriesScrollView()
+          const CategoriesScrollView(),
         ],
       ),
     );

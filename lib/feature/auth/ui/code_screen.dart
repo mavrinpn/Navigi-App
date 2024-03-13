@@ -87,7 +87,7 @@ class _CodeScreenState extends State<CodeScreen> {
                     SizedBox(
                       width: width * 0.6,
                       child: Text(
-                        localizations.enterPhone,
+                        localizations.enterCode,
                         style: AppTypography.font14lightGray,
                         textAlign: TextAlign.center,
                       ),

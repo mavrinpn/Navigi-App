@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/item_search/item_search_cubit.dart';
 import 'package:smart/feature/create_announcement/data/models/car_filter.dart';
 import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
-import 'package:smart/feature/create_announcement/ui/select_car_model_screen.dart';
+import 'package:smart/feature/create_announcement/ui/select_car_mark_screen.dart';
 import 'package:smart/feature/create_announcement/ui/select_mark_screen.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/managers/creating_announcement_manager.dart';
@@ -54,7 +54,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
       final CarFilter? carFilter = await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => SelectCarModelScreen(
+          builder: (_) => SelectCarMarkScreen(
             needSelectModel: true,
             subcategory: subcategoryId,
           ),
@@ -152,7 +152,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
       ),
       body: BlocBuilder<SubcategoryCubit, SubcategoryState>(
         builder: (context, state) {
-          if (state is SubcategorySuccessState) {
+          if (state is SubcategoriesSuccessState) {
             return ListView(
               children: state.subcategories
                   .map(

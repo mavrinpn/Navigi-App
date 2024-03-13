@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/marks/select_mark_cubit.dart';
+import 'package:smart/feature/create_announcement/ui/widgets/appbar_bottom_searchbar.dart';
 import 'package:smart/feature/create_announcement/ui/widgets/mark_widget.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
@@ -27,6 +28,7 @@ class SelectMarkScreen extends StatefulWidget {
 
 class _SelectMarkScreenState extends State<SelectMarkScreen> {
   bool marksPreloaded = false;
+  String _searchString = '';
 
   @override
   void initState() {
@@ -69,6 +71,7 @@ class _SelectMarkScreenState extends State<SelectMarkScreen> {
                   const SizedBox(height: 12),
                 ],
               ),
+              bottom: AppBarBottomSearchbar(onChange: _onSearchBarChanged),
             )
           : AppBar(
               iconTheme: const IconThemeData.fallback(),
@@ -78,6 +81,7 @@ class _SelectMarkScreenState extends State<SelectMarkScreen> {
                 localizations.choosingMark,
                 style: AppTypography.font20black,
               ),
+              bottom: AppBarBottomSearchbar(onChange: _onSearchBarChanged),
             ),
       body: BlocBuilder<SelectMarkCubit, SelectMarkState>(
         builder: (context, state) {
@@ -86,6 +90,8 @@ class _SelectMarkScreenState extends State<SelectMarkScreen> {
 
             return ListView(
               children: cubit.marks
+                  .where((element) =>
+                      element.name.toLowerCase().startsWith(_searchString))
                   .map((e) => MarkWidget(
                         mark: e,
                         needSelectModel: widget.needSelectModel,
@@ -103,5 +109,11 @@ class _SelectMarkScreenState extends State<SelectMarkScreen> {
         },
       ),
     );
+  }
+
+  void _onSearchBarChanged(String value) {
+    setState(() {
+      _searchString = value;
+    });
   }
 }

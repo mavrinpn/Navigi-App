@@ -46,6 +46,7 @@ class _SearchScreenState extends State<SearchScreen> {
   final searchController = TextEditingController();
   final _controller = ScrollController();
   String? searchQueryString;
+  bool _showFilterChips = true;
 
   @override
   void initState() {
@@ -127,7 +128,9 @@ class _SearchScreenState extends State<SearchScreen> {
       elevation: 0,
       titleSpacing: 0,
       clipBehavior: Clip.none,
-      bottom: !widget.showBackButton ? _buildCategoryAppBarBottom() : null,
+      bottom: !widget.showBackButton
+          ? _buildCategoryAppBarBottom(_showFilterChips)
+          : null,
       title: Column(
         children: [
           Padding(
@@ -135,6 +138,10 @@ class _SearchScreenState extends State<SearchScreen> {
             child: SearchAppBar(
               showBackButton: widget.showBackButton,
               onSubmitted: (String? value) {
+                setState(() {
+                  _showFilterChips = true;
+                });
+
                 searchManager.setSearch(false);
                 searchManager.saveInHistory(value!);
                 setState(() {});
@@ -146,12 +153,17 @@ class _SearchScreenState extends State<SearchScreen> {
                       context.read<SearchSelectSubcategoryCubit>().parameters,
                 );
               },
-              onChange: (String? a) {
+              onChange: (String value) {
                 searchManager.setSearch(true);
                 setState(() {});
-                BlocProvider.of<SearchItemsCubit>(context).search(a ?? '');
+                BlocProvider.of<SearchItemsCubit>(context).search(value);
                 BlocProvider.of<PopularQueriesCubit>(context)
                     .loadPopularQueries();
+              },
+              onTap: () {
+                setState(() {
+                  _showFilterChips = false;
+                });
               },
               searchController: searchController,
             ),
@@ -307,9 +319,9 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  _buildCategoryAppBarBottom() {
+  _buildCategoryAppBarBottom(bool showFilterChips) {
     return PreferredSize(
-      preferredSize: const Size.fromHeight(90),
+      preferredSize: Size.fromHeight(showFilterChips ? 90 : 44),
       child: BlocBuilder<UpdateAppBarFilterCubit, UpdateAppBarFilterState>(
         builder: (context, state) {
           final localizations = AppLocalizations.of(context)!;
@@ -335,51 +347,52 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                child: SingleChildScrollView(
-                  clipBehavior: Clip.none,
-                  scrollDirection: Axis.horizontal,
-                  child: Wrap(
-                    alignment: WrapAlignment.start,
-                    spacing: 6,
-                    children: [
-                      FilterChipWidget(
-                        isSelected: !(searchCubit.minPrice == null &&
-                            searchCubit.maxPrice == null),
-                        title: localizations.price,
-                        parameterKey: FilterKeys.price,
-                      ),
-                      FilterChipWidget(
-                        isSelected: searchCubit.areaId != null ||
-                            searchCubit.cityId != null,
-                        title: localizations.location,
-                        parameterKey: FilterKeys.location,
-                      ),
-                      if (selectCategoryCubit.subcategoryFilters?.hasMark ??
-                          false)
-                        const MarkChipWidget(),
-                      ...selectCategoryCubit.parameters.map((parameter) {
-                        bool isSelected = false;
-                        if (parameter is SelectParameter) {
-                          isSelected = parameter.selectedVariants.isNotEmpty;
-                        } else if (parameter is MinMaxParameter) {
-                          isSelected =
-                              parameter.min != null || parameter.max != null;
-                        }
+              if (showFilterChips)
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: SingleChildScrollView(
+                    clipBehavior: Clip.none,
+                    scrollDirection: Axis.horizontal,
+                    child: Wrap(
+                      alignment: WrapAlignment.start,
+                      spacing: 6,
+                      children: [
+                        FilterChipWidget(
+                          isSelected: !(searchCubit.minPrice == null &&
+                              searchCubit.maxPrice == null),
+                          title: localizations.price,
+                          parameterKey: FilterKeys.price,
+                        ),
+                        FilterChipWidget(
+                          isSelected: searchCubit.areaId != null ||
+                              searchCubit.cityId != null,
+                          title: localizations.location,
+                          parameterKey: FilterKeys.location,
+                        ),
+                        if (selectCategoryCubit.subcategoryFilters?.hasMark ??
+                            false)
+                          const MarkChipWidget(),
+                        ...selectCategoryCubit.parameters.map((parameter) {
+                          bool isSelected = false;
+                          if (parameter is SelectParameter) {
+                            isSelected = parameter.selectedVariants.isNotEmpty;
+                          } else if (parameter is MinMaxParameter) {
+                            isSelected =
+                                parameter.min != null || parameter.max != null;
+                          }
 
-                        return FilterChipWidget(
-                          isSelected: isSelected,
-                          title: MyApp.getLocale(context) == 'fr'
-                              ? parameter.frName
-                              : parameter.arName,
-                          parameterKey: parameter.key,
-                        );
-                      }).toList(),
-                    ],
+                          return FilterChipWidget(
+                            isSelected: isSelected,
+                            title: MyApp.getLocale(context) == 'fr'
+                                ? parameter.frName
+                                : parameter.arName,
+                            parameterKey: parameter.key,
+                          );
+                        }).toList(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
             ],
           );
         },

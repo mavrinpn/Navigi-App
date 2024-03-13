@@ -6,6 +6,7 @@ import 'package:smart/managers/creating_announcement_manager.dart';
 import 'package:smart/models/category.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
+import 'package:smart/utils/constants.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/category/category_widget.dart';
@@ -27,7 +28,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
         .loadSubCategories(categoryId: category.id);
     creatingManager.clearSpecifications();
 
-    if (category.id == 'home' || category.id == 'job') {
+    if (category.id == realEstateCategoryId ||
+        category.id == servicesCategoryId) {
       creatingManager.specialOptions
           .add(SpecialAnnouncementOptions.customPlace);
     }

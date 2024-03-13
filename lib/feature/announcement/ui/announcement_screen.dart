@@ -2,8 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/feature/announcement/ui/dialogs/market_price_bottom_sheet.dart';
 import 'package:smart/feature/announcement/ui/dialogs/offer_price_bottom_sheet.dart';
 import 'package:smart/feature/announcement/ui/widgets/related_announcement_widget.dart';
+import 'package:smart/feature/create_announcement/bloc/creating_blocs.dart';
 import 'package:smart/feature/messenger/chat_function.dart';
 import 'package:smart/main.dart';
 import 'package:smart/feature/announcement/ui/photo_view.dart';
@@ -14,6 +16,7 @@ import 'package:smart/feature/announcement/ui/widgets/settings_bottom_sheet.dart
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:smart/utils/app_icons_icons.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
@@ -65,7 +68,14 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     final width = MediaQuery.of(context).size.width;
     final String currentLocale = MyApp.getLocale(context) ?? 'fr';
 
-    return BlocBuilder<AnnouncementCubit, AnnouncementState>(
+    return BlocConsumer<AnnouncementCubit, AnnouncementState>(
+      listener: (context, state) {
+        if (state is AnnouncementSuccessState) {
+          context
+              .read<SubcategoryCubit>()
+              .loadSubcategory(subcategoryId: state.data.subcategoryId);
+        }
+      },
       builder: (context, state) {
         if (state is AnnouncementSuccessState) {
           incViewsIfNeed(state);
@@ -120,6 +130,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                 physics: const BouncingScrollPhysics(
                     decelerationRate: ScrollDecelerationRate.fast),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
                       width: width,
@@ -238,6 +249,11 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         ],
                       ),
                     ),
+                    _MarketPrice(
+                      onTap: () {
+                        showMarketPriceDialog(context: context);
+                      },
+                    ),
                     Row(
                       children: [
                         CustomTextButton.withIcon(
@@ -295,14 +311,30 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       disableColor: AppColors.backgroundLightGray,
                     ),
                     const SizedBox(height: 26),
+                    BlocBuilder<SubcategoryCubit, SubcategoryState>(
+                        builder: (context, state) {
+                      if (state is SubcategorySuccessState) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Text(
+                            '${state.category.nameFr} / ${state.subcategory.nameFr}',
+                            textAlign: TextAlign.start,
+                            style: AppTypography.font16black
+                                .copyWith(fontWeight: FontWeight.w700),
+                          ),
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    }),
+                    const SizedBox(height: 26),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Row(
                         children: [
                           Text(
                             AppLocalizations.of(context)!.features,
-                            style: AppTypography.font18black
-                                .copyWith(fontSize: 16),
+                            style: AppTypography.font16black
+                                .copyWith(fontWeight: FontWeight.w700),
                           ),
                         ],
                       ),
@@ -328,7 +360,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       width: MediaQuery.of(context).size.width - 30,
                       child: Text(
                         state.data.description,
@@ -359,6 +392,55 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
           );
         }
       },
+    );
+  }
+}
+
+class _MarketPrice extends StatelessWidget {
+  const _MarketPrice({
+    required this.onTap,
+  });
+
+  final Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(15, 0, 2, 5),
+        child: FittedBox(
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Icon(AppIcons.stat),
+              const SizedBox(width: 6),
+              Text(
+                localizations.marketPrice,
+                style: AppTypography.font14black,
+              ),
+              const SizedBox(width: 6),
+              Text(
+                '18 000 - 21 500 DZD',
+                style: AppTypography.font14black.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(width: 2),
+              TextButton(
+                onPressed: onTap,
+                child: Text(
+                  localizations.detail,
+                  style: AppTypography.font14red,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

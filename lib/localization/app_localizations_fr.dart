@@ -23,7 +23,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get forgotPassword => 'Mot de passe oublié?';
 
   @override
-  String get enterPhone => 'Saisissez le code de vérification';
+  String get enterPhone => 'Entrez le numéro télephone associée à votre compte';
+
+  @override
+  String get enterCode => 'Saisissez le code de vérification';
+
+  @override
+  String get checkPhone => 'Vérifions ensemble votre numéro de téléphone';
+
+  @override
+  String get callMe => 'Appelez - moi';
+
+  @override
+  String get enterFourDigits => 'Saisissez les 4 derniers chiffres\ndu numéro d\'appel entrant';
 
   @override
   String get haventRecieveCode => 'Vous n\'avez pas reçu le code? ';
@@ -92,7 +104,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profile => 'Mon profil';
 
   @override
-  String get showAll => 'Afficher toutes les offres ';
+  String get showAll => 'Voir tout';
 
   @override
   String get searchBrand => 'Recherche de marque';
@@ -543,4 +555,41 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get unblockUser => 'Débloquer l\'utilisateur';
+
+  @override
+  String get adAddedToFavorites => 'Annonce ajoutée aux favoris';
+
+  @override
+  String get adRemovedFromFavorites => 'Annonce supprimée des favoris';
+
+  @override
+  String get marketPrice => 'Prix du marché:';
+
+  @override
+  String get detail => 'Détaillé';
+
+  @override
+  String get close => 'Fermer';
+
+  @override
+  String get marketPriceCaption => 'La gamme de prix a été calculée au cours des 6 derniers mois. Voici ce qui a été pris en compte:';
+
+  @override
+  String get markAndModel => 'Marque et model';
+
+  @override
+  String get productParameters => 'Les parametres de produit';
+
+  @override
+  String get cityAndRegion => 'Ville et région';
+
+  @override
+  String userBlockedYou(String userName) {
+    return 'L’utilisateur $userName vous a bloqué';
+  }
+
+  @override
+  String youBlockedUser(String userName) {
+    return 'Vous avez bloqué l’utilisateur $userName';
+  }
 }

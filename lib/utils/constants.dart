@@ -1,4 +1,7 @@
 const String carSubcategoryId = '65d45e64812538dfea60';
+const String animalsSubcategoryId = '65d4455fe5a1a2b3c0bd';
+const String servicesCategoryId = 'job';
+const String realEstateCategoryId = 'immo';
 
 const String mainDatabase = 'annonces';
 

@@ -3,14 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
-import 'package:smart/localization/app_localizations.dart';
-import 'package:smart/managers/blocked_users_manager.dart';
 import 'package:smart/models/messenger/message.dart';
 import 'package:smart/models/messenger/room.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/functions.dart';
 import 'package:smart/utils/routes/route_names.dart';
-import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 class ChatContainer extends StatefulWidget {
   const ChatContainer({
@@ -56,27 +53,33 @@ class _ChatContainerState extends State<ChatContainer> {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
+    // final localizations = AppLocalizations.of(context)!;
 
     return SliverPadding(
         padding: const EdgeInsets.fromLTRB(15, 12, 15, 0),
         sliver: SliverToBoxAdapter(
             child: InkWell(
           onTap: () {
-            final blockedUsersManager =
-                RepositoryProvider.of<BlockedUsersManager>(context);
+            RepositoryProvider.of<MessengerRepository>(context)
+                .selectChat(id: widget.roomId);
+            Navigator.pushNamed(context, AppRoutesNames.chat);
+            // final blockedUsersManager =
+            //     RepositoryProvider.of<BlockedUsersManager>(context);
 
-            blockedUsersManager
-                .isAuthUserBlockedFor(widget.otherUserId)
-                .then((isBlocked) {
-              if (isBlocked) {
-                CustomSnackBar.showSnackBar(context, localizations.chatBlocked);
-              } else {
-                RepositoryProvider.of<MessengerRepository>(context)
-                    .selectChat(id: widget.roomId);
-                Navigator.pushNamed(context, AppRoutesNames.chat);
-              }
-            });
+            // blockedUsersManager
+            //     .isAuthUserBlockedFor(widget.otherUserId)
+            //     .then((isBlocked) {
+            //   if (isBlocked) {
+            //     CustomSnackBar.showSnackBar(context, localizations.chatBlocked);
+            //     RepositoryProvider.of<MessengerRepository>(context)
+            //         .selectChat(id: widget.roomId);
+            //     Navigator.pushNamed(context, AppRoutesNames.chat);
+            //   } else {
+            //     RepositoryProvider.of<MessengerRepository>(context)
+            //         .selectChat(id: widget.roomId);
+            //     Navigator.pushNamed(context, AppRoutesNames.chat);
+            //   }
+            // });
           },
           child: Container(
             decoration: BoxDecoration(

@@ -39,7 +39,7 @@ class AuthRepository {
   }
 
   void _startOnlineTimer() {
-   Timer.periodic(_onlineRefreshDuration, _timerFunction);
+    Timer.periodic(_onlineRefreshDuration, _timerFunction);
   }
 
   static const sessionIdKey = 'sessionID';
@@ -104,8 +104,13 @@ class AuthRepository {
       if (bytes != null) {
         imageUrl = await _fileStorageManager.uploadAvatar(bytes);
       }
+
       await _databaseService.users.editProfile(
-          uid: _user.$id, name: name, phone: phone, imageUrl: imageUrl);
+        uid: _user.$id,
+        name: name,
+        phone: phone,
+        imageUrl: imageUrl,
+      );
     } catch (e) {
       profileState.add(LoadingStateEnum.fail);
       rethrow;

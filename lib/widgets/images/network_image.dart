@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CustomNetworkImage extends StatefulWidget {
-  CustomNetworkImage(
-      {super.key,
-      required this.width,
-      required this.height,
-      this.borderRadius = 14,
-      required String url})
-      : _image = NetworkImage(url);
+  CustomNetworkImage({
+    super.key,
+    required this.width,
+    required this.height,
+    this.borderRadius = 14,
+    required String url,
+  }) : _image = NetworkImage(url);
 
   final NetworkImage _image;
   final double width;

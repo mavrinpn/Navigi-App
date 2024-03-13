@@ -20,32 +20,34 @@ class CategoriesService {
   }
 
   Future<List<Subcategory>> getAllSubcategoriesFromCategoryId(
-      String categoryID) async {
+    String categoryID,
+  ) async {
     List<Subcategory> subcategories = <Subcategory>[];
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
       collectionId: subcategoriesCollection,
-      queries: [Query.equal(categoryId, categoryID), Query.limit(1000)],
+      queries: [
+        Query.equal(categoryId, categoryID),
+        Query.limit(1000),
+      ],
     );
 
     for (var doc in res.documents) {
       subcategories.add(Subcategory.fromJson(doc.data));
     }
+
+    subcategories.sort((a, b) => a.weight.compareTo(b.weight));
     return subcategories;
   }
 
   Future<Map<String, dynamic>> getSubcategoryParameters(
       String subcategory) async {
-    // print(subcategory);
-
     final res = await _databases.getDocument(
         databaseId: mainDatabase,
         collectionId: 'categoryFilters',
         documentId: subcategory);
 
-    // print(res.data);
     final decodedParameters = jsonDecode(res.data['parameters']);
-    // print(decodedParameters);
     return decodedParameters;
   }
 
@@ -64,7 +66,29 @@ class CategoriesService {
     for (var doc in res.documents) {
       subcategories.add(Subcategory.fromJson(doc.data));
     }
+    subcategories.sort((a, b) => a.weight.compareTo(b.weight));
     return subcategories;
+  }
+
+  Future<({Subcategory subcategory, Category category})> getSubcategyById(
+      String subcategoryID) async {
+    final subcategoryDoc = await _databases.getDocument(
+      databaseId: mainDatabase,
+      collectionId: subcategoriesCollection,
+      documentId: subcategoryID,
+    );
+
+    final subcategory = Subcategory.fromJson(subcategoryDoc.data);
+
+    final categoryId = subcategory.categoryId;
+    final categoryDoc = await _databases.getDocument(
+      databaseId: mainDatabase,
+      collectionId: categoriesCollection,
+      documentId: categoryId,
+    );
+    final category = Category.fromJson(categoryDoc.data);
+
+    return (subcategory: subcategory, category: category);
   }
 
   Future<List<SubcategoryItem>> getItemsFromSubcategory(

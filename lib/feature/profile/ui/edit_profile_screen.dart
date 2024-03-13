@@ -192,7 +192,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         CustomTextButton(
                           callback: () {
                             BlocProvider.of<UserCubit>(context).editProfile(
-                                name: changedName, phone: phone, bytes: bytes);
+                              name: changedName,
+                              phone: phone,
+                              bytes: bytes,
+                            );
                           },
                           text: localizations.save,
                           styleText: AppTypography.font14white
@@ -200,9 +203,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           active: true,
                           activeColor: AppColors.black,
                         ),
-                        const SizedBox(
-                          height: 30,
-                        ),
+                        const SizedBox(height: 30),
                       ],
                     )
                   ],

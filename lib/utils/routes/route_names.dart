@@ -2,6 +2,7 @@ class AppRoutesNames {
   static const String root = '/';
   static const String loginFirst = '/login_first_screen';
   static const String authCode = '/login_code_screen';
+  static const String checkCode = '/login_code_helper_screen';
   static const String loginSecond = '/login_second_screen';
   static const String register = '/register_screen';
   static const String home = '/home_screen';

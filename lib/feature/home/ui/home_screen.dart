@@ -176,7 +176,7 @@ class MessengerIcon extends StatelessWidget {
     return StreamBuilder(
       stream: repository.chatsStream.stream,
       builder: (context, snapshot) {
-        int count = repository.notificationsAmount();
+        int notificationsAmount = repository.notificationsAmount();
         double size = 24;
 
         return SizedBox(
@@ -196,14 +196,14 @@ class MessengerIcon extends StatelessWidget {
                   ),
                 ),
               ),
-              if (count > 0) ...[
+              if (notificationsAmount > 0) ...[
                 Align(
                   alignment: Alignment.topRight,
                   child: CircleAvatar(
                     backgroundColor: const Color(0xFFFFB039),
                     radius: 6,
                     child: Text(
-                      count.toString(),
+                      notificationsAmount.toString(),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 8,

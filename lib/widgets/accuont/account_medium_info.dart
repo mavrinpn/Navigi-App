@@ -60,6 +60,7 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width - 162,
                     child: Material(
+                      color: Colors.transparent,
                       clipBehavior: Clip.hardEdge,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12)),

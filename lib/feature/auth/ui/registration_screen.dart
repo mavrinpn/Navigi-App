@@ -16,18 +16,19 @@ import '../../../widgets/textField/custom_text_field.dart';
 import '../../../widgets/textField/mask_text_field.dart';
 
 final maskPhoneFormatter = MaskTextInputFormatter(
-    mask: '+213 (###) ## ## ##',
-    filter: {"#": RegExp(r'[0-9]')},
-    type: MaskAutoCompletionType.lazy);
+  mask: '+213 (###) ## ## ##',
+  filter: {"#": RegExp(r'[0-9]')},
+  type: MaskAutoCompletionType.lazy,
+);
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({Key? key}) : super(key: key);
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<RegistrationScreen> createState() => _RegistrationScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen> {
   final phoneController = TextEditingController();
   final nameController = TextEditingController();
   final firstPasswordController = TextEditingController();
@@ -75,10 +76,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (state is AuthSuccessState) {
           Navigator.pop(context);
         } else if (state is AuthFailState) {
-          CustomSnackBar.showSnackBar(context, 'проблема бд');
+          CustomSnackBar.showSnackBar(context, 'Error with database');
         } else if (state is AlreadyExistState) {
-          CustomSnackBar.showSnackBar(
-              context, 'такой пользователь уже зареган');
+          CustomSnackBar.showSnackBar(context, 'Use was already register');
         }
       },
       child: GestureDetector(
@@ -91,28 +91,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Form(
               key: _formKey,
               child: Column(
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     children: [
-                      SizedBox(
-                        height: height * 0.05,
-                      ),
+                      SizedBox(height: height * 0.05),
                       SvgPicture.asset(
                         'Assets/icons/logo.svg',
                         width: 195,
                         height: 43,
                       ),
-                      const SizedBox(
-                        height: 32,
-                      ),
+                      const SizedBox(height: 32),
                       Text(
                         localizations.registration,
                         style: AppTypography.font24black.copyWith(fontSize: 20),
                       ),
-                      const SizedBox(
-                        height: 30,
-                      ),
+                      const SizedBox(height: 30),
                       CustomTextFormField(
                           controller: nameController,
                           hintText: localizations.yourName,
@@ -238,7 +231,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               name: nameController.text.trim(),
                               password: firstPasswordController.text.trim());
 
-                          Navigator.pushNamed(context, AppRoutesNames.authCode);
+                          Navigator.pushNamed(
+                              context, AppRoutesNames.checkCode);
                         },
                         text: localizations.regg,
                         styleText: AppTypography.font14white,
@@ -248,9 +242,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             horizontal: 15, vertical: 0),
                         activeColor: AppColors.dark,
                       ),
-                      const SizedBox(
-                        height: 16,
-                      ),
+                      const SizedBox(height: 16),
                       InkWell(
                         child: Text(localizations.entrance,
                             style: AppTypography.font16UnderLinePink),

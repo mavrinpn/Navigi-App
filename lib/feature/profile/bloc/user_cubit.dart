@@ -6,7 +6,6 @@ import 'package:meta/meta.dart';
 import '../../../enum/enum.dart';
 import '../../auth/data/auth_repository.dart';
 
-
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {

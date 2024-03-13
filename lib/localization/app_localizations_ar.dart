@@ -23,7 +23,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get forgotPassword => 'نسيت كلمة السر؟';
 
   @override
-  String get enterPhone => 'أدخل رمز التحقق';
+  String get enterPhone => 'أدخل رقم الهاتف المرتبط بحسابك';
+
+  @override
+  String get enterCode => 'أدخل رمز التحقق';
+
+  @override
+  String get checkPhone => 'دعنا نتحقق من رقم هاتفك معا.';
+
+  @override
+  String get callMe => 'هاتفني';
+
+  @override
+  String get enterFourDigits => 'أدخل آخر 4 أرقام من رقم المكالمة الواردة';
 
   @override
   String get haventRecieveCode => 'لم تتلق الرمز؟';
@@ -92,7 +104,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profile => 'ملفي';
 
   @override
-  String get showAll => 'عرض جميع العروض';
+  String get showAll => 'عرض الكل';
 
   @override
   String get searchBrand => 'البحث العلامة التجارية';
@@ -543,4 +555,41 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get unblockUser => 'إلغاء حظر المستخدم';
+
+  @override
+  String get adAddedToFavorites => 'تمت إضافة الإعلان إلى المفضلة';
+
+  @override
+  String get adRemovedFromFavorites => 'تمت إزالة الإعلان من المفضلة';
+
+  @override
+  String get marketPrice => 'سعر السوق:';
+
+  @override
+  String get detail => 'التفاصيل';
+
+  @override
+  String get close => 'إغلاق';
+
+  @override
+  String get marketPriceCaption => 'تم حساب النطاق السعري خلال آخر 6 أشهر. هنا هو ما تم أخذه في الاعتبار:';
+
+  @override
+  String get markAndModel => 'علامة ونموذج';
+
+  @override
+  String get productParameters => 'معلمات المنتج';
+
+  @override
+  String get cityAndRegion => 'المدينة والمنطقة';
+
+  @override
+  String userBlockedYou(String userName) {
+    return 'قام المستخدم $userName بحظرك';
+  }
+
+  @override
+  String youBlockedUser(String userName) {
+    return 'لقد قمت بحظر المستخدم $userName';
+  }
 }

@@ -134,8 +134,32 @@ abstract class AppLocalizations {
   /// No description provided for @enterPhone.
   ///
   /// In en, this message translates to:
-  /// **'Enter the verification code'**
+  /// **'Enter the Telephone number associated with your account'**
   String get enterPhone;
+
+  /// No description provided for @enterCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the verification code'**
+  String get enterCode;
+
+  /// No description provided for @checkPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s check your phone number together.'**
+  String get checkPhone;
+
+  /// No description provided for @callMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Call me'**
+  String get callMe;
+
+  /// No description provided for @enterFourDigits.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the last 4 digits of\nthe incoming call number'**
+  String get enterFourDigits;
 
   /// No description provided for @haventRecieveCode.
   ///
@@ -272,7 +296,7 @@ abstract class AppLocalizations {
   /// No description provided for @showAll.
   ///
   /// In en, this message translates to:
-  /// **'Display all offers'**
+  /// **'Show all'**
   String get showAll;
 
   /// No description provided for @searchBrand.
@@ -1174,6 +1198,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unblock user'**
   String get unblockUser;
+
+  /// No description provided for @adAddedToFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'The ad has been added to favorites'**
+  String get adAddedToFavorites;
+
+  /// No description provided for @adRemovedFromFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'The ad has been removed from favorites'**
+  String get adRemovedFromFavorites;
+
+  /// No description provided for @marketPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Market price:'**
+  String get marketPrice;
+
+  /// No description provided for @detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Detail'**
+  String get detail;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @marketPriceCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'The price range has been calculated over the last 6 months. Here is what has been taken into account:'**
+  String get marketPriceCaption;
+
+  /// No description provided for @markAndModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark and model'**
+  String get markAndModel;
+
+  /// No description provided for @productParameters.
+  ///
+  /// In en, this message translates to:
+  /// **'The product parameters'**
+  String get productParameters;
+
+  /// No description provided for @cityAndRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'City and region'**
+  String get cityAndRegion;
+
+  /// No description provided for @userBlockedYou.
+  ///
+  /// In en, this message translates to:
+  /// **'The user {userName} has blocked you'**
+  String userBlockedYou(String userName);
+
+  /// No description provided for @youBlockedUser.
+  ///
+  /// In en, this message translates to:
+  /// **'You have blocked the user {userName}'**
+  String youBlockedUser(String userName);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/utils/constants.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
 import '../../../managers/creating_announcement_manager.dart';
@@ -20,13 +21,13 @@ class PickPhotosScreen extends StatefulWidget {
 class _PickPhotosScreenState extends State<PickPhotosScreen> {
   @override
   Widget build(BuildContext context) {
-    final repository =
+    final creatingAnnouncementManager =
         RepositoryProvider.of<CreatingAnnouncementManager>(context);
 
     final localizations = AppLocalizations.of(context)!;
 
     Future addImages() async {
-      await repository.pickImages();
+      await creatingAnnouncementManager.pickImages();
       setState(() {});
     }
 
@@ -52,7 +53,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
               const SizedBox(
                 height: 26,
               ),
-              !repository.images.isNotEmpty
+              !creatingAnnouncementManager.images.isNotEmpty
                   ? CustomTextButton.withIcon(
                       active: true,
                       activeColor: AppColors.dark,
@@ -72,7 +73,8 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                       child: GridView.builder(
                         physics: const BouncingScrollPhysics(
                             decelerationRate: ScrollDecelerationRate.fast),
-                        itemCount: repository.images.length + 1,
+                        itemCount:
+                            creatingAnnouncementManager.images.length + 1,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 mainAxisExtent: 113,
@@ -80,11 +82,14 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                                 crossAxisSpacing: 7,
                                 crossAxisCount: 3),
                         itemBuilder: (_, int index) {
-                          if (index != repository.images.length) {
+                          if (index !=
+                              creatingAnnouncementManager.images.length) {
                             return ImageWidget(
-                              path: repository.images[index].path,
+                              path: creatingAnnouncementManager
+                                  .images[index].path,
                               callback: () {
-                                repository.images.removeAt(index);
+                                creatingAnnouncementManager.images
+                                    .removeAt(index);
                                 setState(() {});
                               },
                             );
@@ -98,17 +103,27 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
             ],
           ),
         ),
-        floatingActionButton: repository.images.isNotEmpty
+        floatingActionButton: creatingAnnouncementManager.images.isNotEmpty
             ? CustomTextButton.orangeContinue(
                 active: true,
                 width: MediaQuery.of(context).size.width - 30,
                 text: localizations.continue_,
                 callback: () {
-                  setState(() {
-                    repository.setImages(repository.images);
+                  creatingAnnouncementManager
+                      .setImages(creatingAnnouncementManager.images);
+
+                  if ([servicesCategoryId, realEstateCategoryId].contains(
+                          creatingAnnouncementManager
+                              .creatingData.categoryId) ||
+                      [animalsSubcategoryId].contains(
+                          creatingAnnouncementManager
+                              .creatingData.subcategoryId)) {
+                    Navigator.pushNamed(
+                        context, AppRoutesNames.announcementCreatingOptions);
+                  } else {
                     Navigator.pushNamed(
                         context, AppRoutesNames.announcementCreatingType);
-                  });
+                  }
                 })
             : Container());
   }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
-import 'package:smart/feature/create_announcement/ui/select_car_model_screen.dart';
+import 'package:smart/feature/create_announcement/ui/select_car_mark_screen.dart';
 import 'package:smart/feature/create_announcement/ui/select_mark_screen.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
@@ -301,7 +301,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => SelectCarModelScreen(
+                builder: (_) => SelectCarMarkScreen(
                   needSelectModel: true,
                   subcategory: selectCategoryCubit.subcategoryId!,
                 ),

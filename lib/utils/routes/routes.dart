@@ -5,10 +5,11 @@ import 'package:smart/feature/announcement/bloc/related/related_announcement_cub
 import 'package:smart/feature/announcement/ui/announcement_screen.dart';
 import 'package:smart/feature/announcement/ui/creator_screen.dart';
 import 'package:smart/feature/announcement_editing/ui/editing_announcement.dart';
+import 'package:smart/feature/auth/ui/check_code_screen.dart';
 import 'package:smart/feature/auth/ui/code_screen.dart';
 import 'package:smart/feature/auth/ui/login_first_screen.dart';
 import 'package:smart/feature/auth/ui/login_second_screen.dart';
-import 'package:smart/feature/auth/ui/register_screen.dart';
+import 'package:smart/feature/auth/ui/registration_screen.dart';
 import 'package:smart/feature/home/ui/home_screen.dart';
 import 'package:smart/feature/main/ui/main_screen.dart';
 import 'package:smart/feature/messenger/ui/chat_screen.dart';
@@ -102,8 +103,9 @@ final appRoutes = {
   AppRoutesNames.root: (context) => const HomePage(),
   AppRoutesNames.loginFirst: (context) => const LoginFirstScreen(),
   AppRoutesNames.authCode: (context) => const CodeScreen(),
+  AppRoutesNames.checkCode: (context) => const CheckCodeScreen(),
   AppRoutesNames.loginSecond: (context) => const LoginSecondScreen(),
-  AppRoutesNames.register: (context) => const RegisterScreen(),
+  AppRoutesNames.register: (context) => const RegistrationScreen(),
   AppRoutesNames.home: (context) => const HomeScreen(),
   AppRoutesNames.announcementCreatingCategory: (context) =>
       const CategoryScreen(),

@@ -6,6 +6,7 @@ import 'package:smart/feature/create_announcement/ui/specify_place.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/models/city.dart';
+import 'package:smart/utils/constants.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
 import '../../../managers/creating_announcement_manager.dart';
@@ -31,14 +32,34 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
   bool active = false;
   bool initial = false;
   bool selectingCity = true;
+  bool isCoordinatesSelected = false;
 
   @override
   void initState() {
     BlocProvider.of<PlacesCubit>(context).searchCities('');
+    final creatingManager =
+        RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    if ([servicesCategoryId, realEstateCategoryId]
+        .contains(creatingManager.creatingData.categoryId)) {
+      creatingManager.specialOptions
+          .add(SpecialAnnouncementOptions.customPlace);
+    }
+
     super.initState();
   }
 
-  void setActive(bool value) => active = value;
+  void setActive(bool value) {
+    final creatingManager =
+        RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    if (creatingManager.specialOptions
+        .contains(SpecialAnnouncementOptions.customPlace)) {
+      if (isCoordinatesSelected) {
+        active = value;
+      }
+    } else {
+      active = value;
+    }
+  }
 
   void selectCity(City city) async {
     final placesCubit = BlocProvider.of<PlacesCubit>(context);
@@ -63,9 +84,9 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
     placeController.text = selectedDistrict.name;
 
     district = selectedDistrict;
+
     setActive(true);
     setState(() {
-      // initial = true;
       selectingCity = true;
     });
   }
@@ -210,17 +231,23 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
             if (creatingManager.specialOptions
                 .contains(SpecialAnnouncementOptions.customPlace)) ...[
               CustomTextButton.orangeContinue(
-                activeColor: AppColors.dark,
-                active: active,
+                active: district != null,
                 callback: () async {
-                  if (active) {
-                    final LatLng latLng = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) =>
-                                SpecifyPlaceScreen(placeData: district!)));
-
-                    creatingManager.customPosition = latLng;
+                  if (district != null) {
+                    final LatLng? latLng = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            SpecifyPlaceScreen(placeData: district!),
+                      ),
+                    );
+                    if (latLng != null) {
+                      setState(() {
+                        isCoordinatesSelected = true;
+                        setActive(true);
+                      });
+                      creatingManager.customPosition = latLng;
+                    }
                   }
                 },
                 text: "Indiquer l'emplacement sur la carte",
@@ -236,7 +263,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
           if (active) {
             final place =
                 placeManager.searchPlaceIdByName(placeController.text)!;
-            creatingManager.setPlace(place);            
+            creatingManager.setPlace(place);
             //creatingManager.setTitle(creatingManager.buildTitle);
 
             Navigator.pushNamed(

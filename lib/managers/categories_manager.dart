@@ -20,4 +20,8 @@ class CategoriesManager {
 
   Future getFilters(String subcategoryId) async =>
       databaseService.categories.getSubcategoryParameters(subcategoryId);
+
+  Future<({Subcategory subcategory, Category category})> getSubcategory(
+          String subcategoryId) async =>
+      databaseService.categories.getSubcategyById(subcategoryId);
 }

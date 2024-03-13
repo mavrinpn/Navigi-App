@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:smart/models/category.dart';
 import '../../../../managers/categories_manager.dart';
 import '../../../../managers/creating_announcement_manager.dart';
 import '../../../../models/subcategory.dart';
@@ -9,9 +10,10 @@ class SubcategoryCubit extends Cubit<SubcategoryState> {
   final CreatingAnnouncementManager creatingManager;
   final CategoriesManager categoriesManager;
 
-  SubcategoryCubit(
-      {required this.creatingManager, required this.categoriesManager})
-      : super(SubcategoryInitial());
+  SubcategoryCubit({
+    required this.creatingManager,
+    required this.categoriesManager,
+  }) : super(SubcategoryInitial());
 
   void loadSubCategories({String? categoryId, String? subcategoryId}) async {
     emit(SubcategoryLoadingState());
@@ -27,7 +29,20 @@ class SubcategoryCubit extends Cubit<SubcategoryState> {
             .tryToLoadSubcategoriesBuSubcategory(subcategoryId!);
       }
 
-      emit(SubcategorySuccessState(subcategories: subcategories));
+      emit(SubcategoriesSuccessState(subcategories: subcategories));
+    } catch (e) {
+      emit(SubcategoryFailState());
+      rethrow;
+    }
+  }
+
+  void loadSubcategory({required String subcategoryId}) async {
+    emit(SubcategoryLoadingState());
+    try {
+      final result = await categoriesManager.getSubcategory(subcategoryId);
+
+      emit(SubcategorySuccessState(
+          subcategory: result.subcategory, category: result.category));
     } catch (e) {
       emit(SubcategoryFailState());
       rethrow;

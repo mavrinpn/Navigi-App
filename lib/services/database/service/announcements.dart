@@ -177,13 +177,17 @@ class AnnouncementsService {
 
   Future<void> incTotalViewsById(String id) async {
     final res = await _databases.getDocument(
-        databaseId: mainDatabase, collectionId: postCollection, documentId: id);
+      databaseId: mainDatabase,
+      collectionId: postCollection,
+      documentId: id,
+    );
 
     await _databases.updateDocument(
-        databaseId: mainDatabase,
-        collectionId: postCollection,
-        documentId: id,
-        data: {totalViews: res.data[totalViews] + 1});
+      databaseId: mainDatabase,
+      collectionId: postCollection,
+      documentId: id,
+      data: {totalViews: res.data[totalViews] + 1},
+    );
   }
 
   Future<void> createAnnouncement(

@@ -4,11 +4,14 @@ import 'package:smart/models/models.dart';
 import 'package:smart/utils/fonts.dart';
 
 class SubCategoryWidget extends StatelessWidget {
-  const SubCategoryWidget({super.key, required this.subcategory, required this.onTap});
+  const SubCategoryWidget({
+    super.key,
+    required this.subcategory,
+    required this.onTap,
+  });
 
   final Subcategory subcategory;
   final VoidCallback onTap;
-
 
   @override
   Widget build(BuildContext context) {

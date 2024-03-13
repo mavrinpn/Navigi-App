@@ -32,6 +32,7 @@ class MessengerRepository {
   MessagesList? _currentChatMessages;
   StreamSubscription? _listener;
 
+  String get userId => _userId ?? '';
   set userId(String newUserId) => _userId = newUserId;
 
   BehaviorSubject<List<Room>> chatsStream = BehaviorSubject.seeded([]);
@@ -85,11 +86,10 @@ class MessengerRepository {
 
     for (var i in urls) {
       await _databaseService.messages.sendMessage(
-        roomId: currentRoom!.id,
-        content: '',
-        senderId: _userId!,
-        images: [i]
-      );
+          roomId: currentRoom!.id,
+          content: '',
+          senderId: _userId!,
+          images: [i]);
     }
   }
 
@@ -116,13 +116,13 @@ class MessengerRepository {
   }
 
   int notificationsAmount() {
-    int c = 0;
+    int count = 0;
     for (var i in _chats) {
       if (i.lastMessage == null) continue;
-      if (i.lastMessage?.wasRead == null && !i.lastMessage!.owned) c++;
+      if (i.lastMessage?.wasRead == null && !i.lastMessage!.owned) count++;
     }
 
-    return c;
+    return count;
   }
 
   void refreshSubscription() async {

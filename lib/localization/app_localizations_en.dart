@@ -23,7 +23,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forgotPassword => 'Forgot your password?';
 
   @override
-  String get enterPhone => 'Enter the verification code';
+  String get enterPhone => 'Enter the Telephone number associated with your account';
+
+  @override
+  String get enterCode => 'Enter the verification code';
+
+  @override
+  String get checkPhone => 'Let\'s check your phone number together.';
+
+  @override
+  String get callMe => 'Call me';
+
+  @override
+  String get enterFourDigits => 'Enter the last 4 digits of\nthe incoming call number';
 
   @override
   String get haventRecieveCode => 'Haven\'t received the code?';
@@ -92,7 +104,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile => 'My profile';
 
   @override
-  String get showAll => 'Display all offers';
+  String get showAll => 'Show all';
 
   @override
   String get searchBrand => 'Brand search';
@@ -543,4 +555,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unblockUser => 'Unblock user';
+
+  @override
+  String get adAddedToFavorites => 'The ad has been added to favorites';
+
+  @override
+  String get adRemovedFromFavorites => 'The ad has been removed from favorites';
+
+  @override
+  String get marketPrice => 'Market price:';
+
+  @override
+  String get detail => 'Detail';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get marketPriceCaption => 'The price range has been calculated over the last 6 months. Here is what has been taken into account:';
+
+  @override
+  String get markAndModel => 'Mark and model';
+
+  @override
+  String get productParameters => 'The product parameters';
+
+  @override
+  String get cityAndRegion => 'City and region';
+
+  @override
+  String userBlockedYou(String userName) {
+    return 'The user $userName has blocked you';
+  }
+
+  @override
+  String youBlockedUser(String userName) {
+    return 'You have blocked the user $userName';
+  }
 }

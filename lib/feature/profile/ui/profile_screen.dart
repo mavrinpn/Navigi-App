@@ -30,6 +30,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  bool _showAll = false;
 
   final controller = ScrollController();
 
@@ -89,6 +90,22 @@ class _ProfileScreenState extends State<ProfileScreen>
               ),
             ),
           ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: CustomTextButton.withIcon(
+        callback: () {
+          Navigator.pushNamed(
+              context, AppRoutesNames.announcementCreatingCategory);
+        },
+        width: MediaQuery.of(context).size.width - 30,
+        text: AppLocalizations.of(context)!.addAnAd,
+        styleText: AppTypography.font14white,
+        active: true,
+        icon: const Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 24,
         ),
       ),
       body: BlocBuilder<UserCubit, UserState>(
@@ -175,8 +192,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                             )
                           : SliverList.separated(
                               itemCount: _tabController.index == 0
-                                  ? min(creatorState.available.length, 4)
-                                  : min(creatorState.sold.length, 4),
+                                  ? _showAll
+                                      ? creatorState.available.length
+                                      : min(creatorState.available.length, 4)
+                                  : _showAll
+                                      ? creatorState.sold.length
+                                      : min(creatorState.sold.length, 4),
                               itemBuilder: (BuildContext context, int index) {
                                 return AnnouncementContainerHorizontal(
                                     announcement: _tabController.index == 0
@@ -185,9 +206,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     likeCount: '13');
                               },
                               separatorBuilder: (context, index) =>
-                                  const SizedBox(
-                                height: 12,
-                              ),
+                                  const SizedBox(height: 12),
                             )
                     ] else ...[
                       SliverToBoxAdapter(
@@ -198,31 +217,46 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ),
                       )
                     ],
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 14),
-                    ),
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      sliver: SliverToBoxAdapter(
-                        child: CustomTextButton.withIcon(
-                          callback: () {
-                            Navigator.pushNamed(context,
-                                AppRoutesNames.announcementCreatingCategory);
-                          },
-                          text: AppLocalizations.of(context)!.addAnAd,
-                          styleText: AppTypography.font14white,
-                          active: true,
-                          icon: const Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 24,
+
+                    if (!_showAll)
+                      SliverPadding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 14),
+                        sliver: SliverToBoxAdapter(
+                          child: CustomTextButton.orangeContinue(
+                            callback: () {
+                              setState(() {
+                                _showAll = true;
+                              });
+                            },
+                            text: AppLocalizations.of(context)!.showAll,
+                            styleText: AppTypography.font14black,
+                            active: true,
+                            activeColor: AppColors.backgroundLightGray,
                           ),
                         ),
                       ),
-                    ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 30),
-                    ),
+
+                    // SliverPadding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 15),
+                    //   sliver: SliverToBoxAdapter(
+                    //     child: CustomTextButton.withIcon(
+                    //       callback: () {
+                    //         Navigator.pushNamed(context,
+                    //             AppRoutesNames.announcementCreatingCategory);
+                    //       },
+                    //       text: AppLocalizations.of(context)!.addAnAd,
+                    //       styleText: AppTypography.font14white,
+                    //       active: true,
+                    //       icon: const Icon(
+                    //         Icons.add,
+                    //         color: Colors.white,
+                    //         size: 24,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 15)),
                     SliverPadding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       sliver: SliverToBoxAdapter(
@@ -294,9 +328,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             width: double.infinity),
                       ),
                     ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 20),
-                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 90)),
                   ],
                 );
               },

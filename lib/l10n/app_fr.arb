@@ -6,7 +6,10 @@
 "enterPassword": "Entrez le mot de passe",
 "forgotPassword": "Mot de passe oublié?",
 "enterPhone": "Entrez le numéro télephone associée à votre compte",
-"enterPhone": "Saisissez le code de vérification",
+"enterCode": "Saisissez le code de vérification",
+"checkPhone": "Vérifions ensemble votre numéro de téléphone",
+"callMe": "Appelez - moi",
+"enterFourDigits": "Saisissez les 4 derniers chiffres\ndu numéro d'appel entrant",
 "haventRecieveCode": "Vous n'avez pas reçu le code? ",
 "sendAgain": "Envoyer à nouveau",
 "newPassword": "Saisissez un nouveau mot de passe",
@@ -29,7 +32,7 @@
 "messages": "Messages",
 "favourites": "Favoris",
 "profile": "Mon profil",
-"showAll": "Afficher toutes les offres ",
+"showAll": "Voir tout",
 "searchBrand": "Recherche de marque",
 "done": "Ça y est",
 "location": "Rayon",
@@ -183,5 +186,30 @@
 "errorCreatingAd": "Erreur lors de la création de l'annonce",
 "chatBlocked": "Chat bloqué",
 "blockUser": "Bloquer l'utilisateur",
-"unblockUser": "Débloquer l'utilisateur"
+"unblockUser": "Débloquer l'utilisateur",
+"adAddedToFavorites": "Annonce ajoutée aux favoris",
+"adRemovedFromFavorites": "Annonce supprimée des favoris",
+"marketPrice": "Prix du marché:",
+"detail": "Détaillé",
+"close": "Fermer",
+"marketPriceCaption": "La gamme de prix a été calculée au cours des 6 derniers mois. Voici ce qui a été pris en compte:",
+"markAndModel": "Marque et model",
+"productParameters": "Les parametres de produit",
+"cityAndRegion": "Ville et région",
+"userBlockedYou": "L’utilisateur {userName} vous a bloqué",
+"@userBlockedYou": {
+  "placeholders": {
+    "userName": {
+      "type": "String"
+    }
+  }
+},
+"youBlockedUser": "Vous avez bloqué l’utilisateur {userName}",
+"@youBlockedUser": {
+  "placeholders": {
+    "userName": {
+      "type": "String"
+    }
+  }
+}
 }

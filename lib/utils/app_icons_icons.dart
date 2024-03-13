@@ -22,4 +22,6 @@ class AppIcons {
   static const String? _kFontPkg = null;
 
   static const IconData arrowleft = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData stat = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData block = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

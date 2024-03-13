@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/images/announcement_image.dart';
+import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 import '../../utils/colors.dart';
 
@@ -36,9 +38,16 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
   }
 
   void onLikeTapped() {
+    final localizations = AppLocalizations.of(context)!;
     BlocProvider.of<FavouritesCubit>(context)
         .likeUnlike(widget.announcement.id);
     setState(() {
+      CustomSnackBar.showSnackBar(
+        context,
+        liked
+            ? localizations.adRemovedFromFavorites
+            : localizations.adAddedToFavorites,
+      );
       liked = !liked;
     });
   }

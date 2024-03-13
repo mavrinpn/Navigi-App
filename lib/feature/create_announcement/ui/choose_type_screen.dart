@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/checkBox/custom_check_box.dart';
 import '../../../managers/creating_announcement_manager.dart';
 import '../../../utils/colors.dart';
@@ -99,7 +100,8 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
         text: localizations.continue_,
         callback: () {
           repository.setType(!isBy);
-          Navigator.pushNamed(context, '/create_options_screen');
+          Navigator.pushNamed(
+              context, AppRoutesNames.announcementCreatingOptions);
         },
         active: true,
       ),

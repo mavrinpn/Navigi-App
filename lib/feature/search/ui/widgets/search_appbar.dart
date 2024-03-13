@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
 import 'package:smart/widgets/button/back_button.dart';
@@ -10,10 +11,12 @@ class SearchAppBar extends StatefulWidget {
     required this.onSubmitted,
     required this.onChange,
     required this.searchController,
+    required this.onTap,
     required this.showBackButton,
   });
-  final Function(String?) onSubmitted;
-  final Function(String?) onChange;
+  final Function(String) onSubmitted;
+  final Function(String) onChange;
+  final Function() onTap;
   final TextEditingController searchController;
   final bool showBackButton;
 
@@ -37,7 +40,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
             hintText: 'Recherche a Alger',
             controller: widget.searchController,
             icon: "Assets/icons/only_search.svg",
-            onTap: () {},
+            onTap: widget.onTap,
           ),
         ),
         const SizedBox(width: 10),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/car_model/car_models_cubit.dart';
+import 'package:smart/feature/create_announcement/ui/widgets/appbar_bottom_searchbar.dart';
 import 'package:smart/feature/create_announcement/ui/widgets/car_mark_widget.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
@@ -9,8 +10,8 @@ import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../bloc/subcategory/subcategory_cubit.dart';
 
-class SelectCarModelScreen extends StatefulWidget {
-  const SelectCarModelScreen({
+class SelectCarMarkScreen extends StatefulWidget {
+  const SelectCarMarkScreen({
     super.key,
     required this.needSelectModel,
     required this.subcategory,
@@ -22,11 +23,12 @@ class SelectCarModelScreen extends StatefulWidget {
   final bool isBottomSheet;
 
   @override
-  State<SelectCarModelScreen> createState() => _SelectCarModelScreenState();
+  State<SelectCarMarkScreen> createState() => _SelectCarMarkScreenState();
 }
 
-class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
+class _SelectCarMarkScreenState extends State<SelectCarMarkScreen> {
   bool marksPreloaded = false;
+  String _searchString = '';
 
   @override
   void initState() {
@@ -69,6 +71,7 @@ class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
                   const SizedBox(height: 12),
                 ],
               ),
+              bottom: AppBarBottomSearchbar(onChange: _onSearchBarChanged),
             )
           : AppBar(
               iconTheme: const IconThemeData.fallback(),
@@ -78,6 +81,7 @@ class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
                 localizations.choosingCarBrand,
                 style: AppTypography.font20black,
               ),
+              bottom: AppBarBottomSearchbar(onChange: _onSearchBarChanged),
             ),
       body: BlocBuilder<CarModelsCubit, CarModelsState>(
         builder: (context, state) {
@@ -86,6 +90,8 @@ class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
 
             return ListView(
               children: cubit.marks
+                  .where((element) =>
+                      element.name.toLowerCase().startsWith(_searchString))
                   .map(
                     (mark) => CarMarkWidget(
                       mark: mark,
@@ -105,5 +111,11 @@ class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
         },
       ),
     );
+  }
+
+  void _onSearchBarChanged(String value) {
+    setState(() {
+      _searchString = value;
+    });
   }
 }
