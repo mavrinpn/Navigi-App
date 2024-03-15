@@ -8,6 +8,7 @@ import 'package:smart/models/announcement.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/storage_service.dart';
 import 'package:smart/utils/constants.dart';
+import 'package:smart/utils/price_type.dart';
 
 class AnnouncementEditingRepository {
   final DatabaseService _databaseService;
@@ -52,6 +53,7 @@ class AnnouncementEditingRepository {
   void setDescription(String newValue) => editData!.description = newValue;
 
   void setPrice(double newValue) => editData!.price = newValue;
+  void setPriceType(PriceType newValue) => editData!.priceType = newValue;
 
   Future<void> pickImages() async {
     final resImages = await _picker.pickMultiImage();

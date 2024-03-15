@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/utils/price_type.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/parameters_selection/input_parameter_widget.dart';
 import 'package:smart/widgets/parameters_selection/select_parameter_widget.dart';
@@ -23,12 +24,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
   final priceController = TextEditingController(text: '0');
   final _formKey = GlobalKey<FormState>();
   bool buttonActive = true;
-
-  @override
-  void initState() {
-    // print(context.read<CreatingAnnouncementManager>().getParametersList());
-    super.initState();
-  }
+  PriceType _priceType = PriceType.dzd;
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +65,12 @@ class _OptionsScreenState extends State<OptionsScreen> {
                   hintText: '',
                   controller: priceController,
                   keyBoardType: TextInputType.number,
+                  priceType: _priceType,
+                  onChangePriceType: (priceType) {
+                    setState(() {
+                      _priceType = priceType;
+                    });
+                  },
                   validator: (value) {
                     double? n;
                     try {
@@ -76,7 +78,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                     } catch (e) {
                       n = -1;
                     }
-                    if (n < 0 || n > 20000000) {
+                    if (n < 0) {
                       buttonActive = false;
                       return localizations.errorReviewOrEnterOther;
                     }
@@ -102,7 +104,6 @@ class _OptionsScreenState extends State<OptionsScreen> {
                     });
                     FocusScope.of(context).requestFocus(FocusNode());
                   },
-                  suffixIcon: 'DZD',
                 ),
                 const SizedBox(height: 16),
                 SingleChildScrollView(
@@ -128,7 +129,10 @@ class _OptionsScreenState extends State<OptionsScreen> {
           text: localizations.continue_,
           callback: () {
             if (buttonActive) {
-              repository.setPrice(priceController.text);
+              repository.setPrice(
+                  _priceType.fromPriceString(priceController.text) ?? 0);
+
+              repository.setPriceType(_priceType);
               repository.setInfoFormItem();
               BlocProvider.of<PlacesCubit>(context).initialLoad();
               Navigator.pushNamed(

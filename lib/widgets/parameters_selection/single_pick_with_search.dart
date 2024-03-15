@@ -45,11 +45,11 @@ class _SinglePickWithSearchState extends State<SinglePickWithSearch> {
     return Column(
       children: [
         UnderLineTextField(
-            hintText: 'search...',
-            controller: searchController,
-            onChange: searchValues,
-            keyBoardType: TextInputType.text,
-            suffixIcon: ''),
+          hintText: 'search...',
+          controller: searchController,
+          onChange: searchValues,
+          keyBoardType: TextInputType.text,
+        ),
         const SizedBox(
           height: 8,
         ),

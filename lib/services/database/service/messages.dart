@@ -175,11 +175,12 @@ class MessagesService {
     return {'room': room.$id};
   }
 
-  Future<void> sendMessage(
-      {required String roomId,
-      required String content,
-      required String senderId,
-      List<String>? images}) async {
+  Future<void> sendMessage({
+    required String roomId,
+    required String content,
+    required String senderId,
+    List<String>? images,
+  }) async {
     final encodedBody = jsonEncode({
       'roomId': roomId,
       'senderId': senderId,

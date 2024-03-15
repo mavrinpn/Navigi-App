@@ -13,7 +13,7 @@ class MarkModel {
       parameters = null;
     } else {
       try {
-        //TODO remove replaceAll
+        //* remove replaceAll
         final result =
             jsonDecode(encodedParameters.replaceAll("'", '"')) as List;
         parameters = ParametersParser(result).decodedParameters;

@@ -13,9 +13,10 @@ class CustomBackButton extends StatelessWidget {
         if (callback != null) callback!();
         Navigator.pop(context);
       },
-      icon: const Icon(
+      icon: Icon(
         AppIcons.arrowleft,
         size: 18,
+        color: color ?? Colors.black,
       ),
     );
     // return InkWell(

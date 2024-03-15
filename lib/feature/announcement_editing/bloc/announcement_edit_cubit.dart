@@ -7,6 +7,7 @@ import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/services/parameters_parser.dart';
+import 'package:smart/utils/price_type.dart';
 
 part 'announcement_edit_state.dart';
 
@@ -55,9 +56,15 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
     }
   }
 
-  void onPriceChanged(String? newPrice) {
-    if (newPrice != null && double.tryParse(newPrice) != null) {
-      repository.setPrice(double.parse(newPrice));
+  void onPriceChanged(double? newPrice) {
+    if (newPrice != null) {
+      repository.setPrice(newPrice);
+    }
+  }
+
+  void onPriceTypeChanged(PriceType? newPriceType) {
+    if (newPriceType != null) {
+      repository.setPriceType(newPriceType);
     }
   }
 

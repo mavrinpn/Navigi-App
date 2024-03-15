@@ -5,13 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/announcement_editing/bloc/announcement_edit_cubit.dart';
 import 'package:smart/feature/announcement_editing/ui/widgets/description.dart';
 import 'package:smart/feature/announcement_editing/ui/widgets/parameters.dart';
-import 'package:smart/feature/announcement_editing/ui/widgets/price.dart';
+import 'package:smart/feature/announcement_editing/ui/widgets/price_section.dart';
 import 'package:smart/feature/announcement_editing/ui/widgets/title.dart';
 import 'package:smart/feature/create_announcement/ui/widgets/add_image.dart';
 import 'package:smart/feature/create_announcement/ui/widgets/image.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/dialogs.dart';
+import 'package:smart/utils/price_type.dart';
 import 'package:smart/widgets/button/back_button.dart';
 
 import '../../../models/custom_locate.dart';
@@ -35,6 +36,7 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   TextEditingController priceController = TextEditingController();
+  PriceType _priceType = PriceType.dzd;
 
   @override
   void initState() {
@@ -50,7 +52,7 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
     final cubit = BlocProvider.of<AnnouncementEditCubit>(context);
     double? n;
     n = double.tryParse(priceController.text) ?? -1;
-    if (n < 0 || n > 20000000) {
+    if (n < 0) {
       buttonActive = false;
       return localizations.errorReviewOrEnterOther;
     }
@@ -87,7 +89,9 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
     final cubit = RepositoryProvider.of<AnnouncementEditCubit>(context);
     titleController.text = cubit.data.title;
     descriptionController.text = cubit.data.description;
-    priceController.text = cubit.data.price.toString();
+    _priceType = cubit.data.priceType;
+    priceController.text =
+        _priceType.convertDzdToCurrencyString(cubit.data.price);
   }
 
   @override
@@ -98,12 +102,12 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
   @override
   Widget build(BuildContext context) {
     updateTextSelection();
-    final cubit = context.read<AnnouncementEditCubit>();
+    final announcementEditCubit = context.read<AnnouncementEditCubit>();
     final localizations = AppLocalizations.of(context)!;
     return PopScope(
         canPop: true,
         onPopInvoked: (v) {
-          cubit.closeEdit();
+          announcementEditCubit.closeEdit();
         },
         child: BlocConsumer<AnnouncementEditCubit, AnnouncementEditState>(
           listener: (context, state) {
@@ -118,11 +122,11 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
             }
 
             if (state is AnnouncementEditSuccess) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar( SnackBar(content: Text(localizations.changesSaved)));
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(localizations.changesSaved)));
             } else if (state is AnnouncementEditFail) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar( SnackBar(content: Text(localizations.dataSavingError)));
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(localizations.dataSavingError)));
             }
           },
           builder: (context, state) {
@@ -138,7 +142,7 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomBackButton(callback: () {
-                      cubit.closeEdit();
+                      announcementEditCubit.closeEdit();
                     }),
                     Expanded(
                       child: Row(
@@ -163,14 +167,25 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
                   slivers: [
                     PriceSection(
                       onChange: (String value) {
-                        cubit.onPriceChanged(value);
+                        final price = _priceType.fromPriceString(value);
+                        announcementEditCubit.onPriceChanged(price);
+                      },
+                      priceType: _priceType,
+                      onChangePriceType: (priceType) {
+                        setState(() {
+                          _priceType = priceType;
+                        });
+                        final price =
+                            _priceType.fromPriceString(priceController.text);
+                        announcementEditCubit.onPriceChanged(price);
+                        announcementEditCubit.onPriceTypeChanged(priceType);
                       },
                       priceController: priceController,
                       priceValidator: priceValidator,
                       localizations: localizations,
                       savePrice: savePrice,
                     ),
-                    ParametersSection(cubit: cubit),
+                    ParametersSection(cubit: announcementEditCubit),
                     TitleSection(
                       titleController: titleController,
                       onChange: (v) {
@@ -179,7 +194,7 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
                             buttonActive = false;
                           });
                         } else {
-                          cubit.onTitleChange(v);
+                          announcementEditCubit.onTitleChange(v);
                         }
                       },
                       localizations: localizations,
@@ -193,7 +208,7 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
                               buttonActive = false;
                             });
                           } else {
-                            cubit.onDescriptionChanged(v);
+                            announcementEditCubit.onDescriptionChanged(v);
                           }
                         }),
                     const SliverToBoxAdapter(
@@ -220,7 +235,7 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
                           active: buttonActive,
                           callback: () {
                             if (buttonActive) {
-                              cubit.saveChanges();
+                              announcementEditCubit.saveChanges();
                             }
                           },
                           text: localizations.save),
@@ -253,26 +268,30 @@ class _EditingAnnouncementState extends State<EditingAnnouncement> {
           )
         : SliverGrid(
             delegate: SliverChildBuilderDelegate(
-                childCount: cubit.images.length + 1, (_, int index) {
-              final images = cubit.images;
-              if (index != images.length) {
-                return ImageWidget(
-                  bytes: images[index].bytes,
-                  callback: () {
-                    cubit.deleteImage(images[index]);
-                  },
-                );
-              } else {
-                return AddImageWidget(
-                  callback: cubit.pickImages,
-                );
-              }
-            }),
+              childCount: cubit.images.length + 1,
+              (_, int index) {
+                final images = cubit.images;
+                if (index != images.length) {
+                  return ImageWidget(
+                    bytes: images[index].bytes,
+                    callback: () {
+                      cubit.deleteImage(images[index]);
+                    },
+                  );
+                } else {
+                  return AddImageWidget(
+                    callback: cubit.pickImages,
+                  );
+                }
+              },
+            ),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                mainAxisExtent: 106,
-                childAspectRatio: 0.938,
-                mainAxisSpacing: 7,
-                crossAxisSpacing: 7,
-                crossAxisCount: 3));
+              mainAxisExtent: 106,
+              childAspectRatio: 0.938,
+              mainAxisSpacing: 7,
+              crossAxisSpacing: 7,
+              crossAxisCount: 3,
+            ),
+          );
   }
 }

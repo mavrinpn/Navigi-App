@@ -323,6 +323,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get category => 'Category';
 
   @override
+  String get subcategory => 'Subcategory';
+
+  @override
   String get onlyAhighClassification => 'Only a high classification';
 
   @override
@@ -592,4 +595,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String youBlockedUser(String userName) {
     return 'You have blocked the user $userName';
   }
+
+  @override
+  String get dzd => 'Algerian Dinar';
+
+  @override
+  String get mln => 'Millions';
+
+  @override
+  String get mlrd => 'Billions';
 }

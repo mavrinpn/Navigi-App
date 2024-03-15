@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/car_model/car_models_cubit.dart';
@@ -27,6 +26,9 @@ class _CarMarkWidgetState extends State<CarMarkWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final url =
+        widget.mark.image?.trim().replaceAll('\r', '').replaceAll('\n', '');
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,10 +59,20 @@ class _CarMarkWidgetState extends State<CarMarkWidget> {
                 SizedBox(
                   height: 24,
                   width: 28,
-                  child: widget.mark.image != null
-                      ? CachedNetworkImage(
-                          imageUrl: widget.mark.image!,
+                  child: url != null
+                      ? Image.network(
+                          url,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container();
+                          },
                         )
+                      // ? CachedNetworkImage( //TODO CachedNetworkImage
+                      //     imageUrl:
+                      //         widget.mark.image!.trim().replaceAll('\r', ''),
+                      //     errorWidget: (context, error, stackTrace) {
+                      //       return Container();
+                      //     },
+                      //   )
                       : Container(),
                 ),
                 const SizedBox(width: 6),

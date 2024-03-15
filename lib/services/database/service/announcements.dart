@@ -130,15 +130,16 @@ class AnnouncementsService {
     return newAnnounces;
   }
 
-  Future<void> writeAnnouncementSubcategoryParameters(
-    String announcement,
-    AnnouncementCreatingData creatingData,
-    List<Parameter> parameters,
-    double lat,
-    double lng,
-    MarksFilter? marksFilter,
-    CarFilter? carFilter,
-  ) async {
+  Future<void> writeAnnouncementSubcategoryParameters({
+    required String id,
+    required String announcement,
+    required AnnouncementCreatingData creatingData,
+    required List<Parameter> parameters,
+    required double lat,
+    required double lng,
+    required MarksFilter? marksFilter,
+    required CarFilter? carFilter,
+  }) async {
     final data = <String, dynamic>{
       'announcements': announcement,
       'latitude': lat,
@@ -146,6 +147,7 @@ class AnnouncementsService {
       'area_id': creatingData.areaId,
       'city_id': creatingData.cityId,
       'price': creatingData.price,
+      'price_type': creatingData.priceType?.name ?? 'dzd',
       'title': creatingData.title,
       'active': true,
     };
@@ -170,7 +172,7 @@ class AnnouncementsService {
     await _databases.createDocument(
       databaseId: mainDatabase,
       collectionId: creatingData.subcategoryId!,
-      documentId: ID.unique(),
+      documentId: id,
       data: data,
     );
   }
@@ -221,13 +223,14 @@ class AnnouncementsService {
     );
 
     await writeAnnouncementSubcategoryParameters(
-      doc.$id,
-      creatingData,
-      subcategoryParameters,
-      lat,
-      lng,
-      marksFilter,
-      carFilter,
+      id: doc.$id,
+      announcement: doc.$id,
+      creatingData: creatingData,
+      parameters: subcategoryParameters,
+      lat: lat,
+      lng: lng,
+      marksFilter: marksFilter,
+      carFilter: carFilter,
     );
   }
 
@@ -269,9 +272,10 @@ class AnnouncementsService {
 
   Future<Announcement> getAnnouncementById(String announcementId) async {
     final res = await _databases.getDocument(
-        databaseId: mainDatabase,
-        collectionId: postCollection,
-        documentId: announcementId);
+      databaseId: mainDatabase,
+      collectionId: postCollection,
+      documentId: announcementId,
+    );
 
     final futureBytes = getAnnouncementImage(res.data['images'][0]);
 
@@ -280,14 +284,41 @@ class AnnouncementsService {
 
   Future<void> editAnnouncement(AnnouncementEditData editData) async {
     await _databases.updateDocument(
-        databaseId: mainDatabase,
-        collectionId: postCollection,
-        documentId: editData.id,
-        data: editData.toJson());
+      databaseId: mainDatabase,
+      collectionId: postCollection,
+      documentId: editData.id,
+      data: editData.toJson(),
+    );
+
+    await _databases.updateDocument(
+      databaseId: mainDatabase,
+      collectionId: editData.subcollectionId,
+      documentId: editData.id,
+      data: {
+        'price': editData.price,
+        'price_type': editData.priceType.name,
+        'title': editData.title,
+      },
+    );
   }
 
   Future<void> deleteAnnouncement(String id) async {
+    final res = await _databases.getDocument(
+      databaseId: mainDatabase,
+      collectionId: postCollection,
+      documentId: id,
+    );
+
     await _databases.deleteDocument(
-        databaseId: mainDatabase, collectionId: postCollection, documentId: id);
+      databaseId: mainDatabase,
+      collectionId: postCollection,
+      documentId: id,
+    );
+
+    await _databases.deleteDocument(
+      databaseId: mainDatabase,
+      collectionId: res.data['subcategoryId'],
+      documentId: id,
+    );
   }
 }

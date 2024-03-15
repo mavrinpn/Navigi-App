@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/bloc/app/app_cubit.dart';
-import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
-import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/favorites/favorites_screen.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/feature/messenger/ui/all_chats_screen.dart';
@@ -44,14 +42,17 @@ class _HomeScreenState extends State<HomeScreen> {
       final isUserAith = context.read<AppCubit>().state is AppAuthState;
       if (index != 0 && !isUserAith) {
         _targetTab = index;
-        Navigator.of(context).pushNamed(AppRoutesNames.loginFirst);
+        Navigator.of(context).pushNamed(
+          AppRoutesNames.loginFirst,
+          arguments: {'showBackButton': true},
+        );
         return;
       }
 
-      if (index == 3) {
-        BlocProvider.of<CreatorCubit>(context)
-            .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
-      }
+      // if (index == 3) {
+      // BlocProvider.of<CreatorCubit>(context)
+      //     .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
+      // }
       setState(() {
         _selectedTab = index;
       });
@@ -68,7 +69,11 @@ class _HomeScreenState extends State<HomeScreen> {
               _showMainScreenOnLogout();
             }
           },
-          child: widgetOptions[_selectedTab],
+          child: IndexedStack(
+            index: _selectedTab,
+            children: widgetOptions,
+          ),
+          // child: widgetOptions[_selectedTab],
         ),
         bottomNavigationBar: Container(
           decoration: const BoxDecoration(

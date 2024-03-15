@@ -731,6 +731,12 @@ abstract class AppLocalizations {
   /// **'Category'**
   String get category;
 
+  /// No description provided for @subcategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Subcategory'**
+  String get subcategory;
+
   /// No description provided for @onlyAhighClassification.
   ///
   /// In en, this message translates to:
@@ -1264,6 +1270,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You have blocked the user {userName}'**
   String youBlockedUser(String userName);
+
+  /// No description provided for @dzd.
+  ///
+  /// In en, this message translates to:
+  /// **'Algerian Dinar'**
+  String get dzd;
+
+  /// No description provided for @mln.
+  ///
+  /// In en, this message translates to:
+  /// **'Millions'**
+  String get mln;
+
+  /// No description provided for @mlrd.
+  ///
+  /// In en, this message translates to:
+  /// **'Billions'**
+  String get mlrd;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

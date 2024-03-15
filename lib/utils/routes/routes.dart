@@ -27,7 +27,18 @@ import 'package:smart/utils/routes/route_names.dart';
 import '../../feature/create_announcement/ui/creating_screens.dart';
 
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
-  if (settings.name == AppRoutesNames.search) {
+  if (settings.name == AppRoutesNames.loginFirst) {
+    final arguments = settings.arguments as Map<String, dynamic>;
+    final showBackButton = arguments['showBackButton'] as bool?;
+
+    return MaterialPageRoute(
+      builder: (context) {
+        return LoginFirstScreen(
+          showBackButton: showBackButton ?? false,
+        );
+      },
+    );
+  } else if (settings.name == AppRoutesNames.search) {
     final arguments = settings.arguments as Map<String, dynamic>;
     final query = arguments['query'] as String?;
     final title = arguments['title'] as String?;
@@ -101,7 +112,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
 
 final appRoutes = {
   AppRoutesNames.root: (context) => const HomePage(),
-  AppRoutesNames.loginFirst: (context) => const LoginFirstScreen(),
+  // AppRoutesNames.loginFirst: (context) => const LoginFirstScreen(),
   AppRoutesNames.authCode: (context) => const CodeScreen(),
   AppRoutesNames.checkCode: (context) => const CheckCodeScreen(),
   AppRoutesNames.loginSecond: (context) => const LoginSecondScreen(),

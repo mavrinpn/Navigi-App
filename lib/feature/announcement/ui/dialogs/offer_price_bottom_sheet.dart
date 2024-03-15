@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/price_type.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:smart/widgets/textField/under_line_text_field.dart';
 
-Future<double?> showOfferPriceDialog({
+Future<String?> showOfferPriceDialog({
   required BuildContext context,
-  required String announcementId,
+  required Announcement announcement,
 }) {
-  return showModalBottomSheet<double>(
+  return showModalBottomSheet<String>(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(20),
@@ -21,14 +23,18 @@ Future<double?> showOfferPriceDialog({
       return Padding(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: const OfferPriceBottomSheet(),
+        child: OfferPriceBottomSheet(priceType: announcement.priceType),
       );
     },
   );
 }
 
 class OfferPriceBottomSheet extends StatefulWidget {
-  const OfferPriceBottomSheet({super.key});
+  const OfferPriceBottomSheet({
+    super.key,
+    required this.priceType,
+  });
+  final PriceType priceType;
 
   @override
   State<OfferPriceBottomSheet> createState() => _FiltersBottomSheetState();
@@ -36,6 +42,13 @@ class OfferPriceBottomSheet extends StatefulWidget {
 
 class _FiltersBottomSheetState extends State<OfferPriceBottomSheet> {
   final TextEditingController offerPriceController = TextEditingController();
+  PriceType _priceType = PriceType.dzd;
+
+  @override
+  void initState() {
+    super.initState();
+    _priceType = widget.priceType;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +89,12 @@ class _FiltersBottomSheetState extends State<OfferPriceBottomSheet> {
                     signed: true,
                     decimal: true,
                   ),
-                  suffixIcon: 'DZD',
+                  priceType: _priceType,
+                  onChangePriceType: (priceType) {
+                    setState(() {
+                      _priceType = priceType;
+                    });
+                  },
                   controller: offerPriceController,
                   onChange: (String value) {
                     setState(() {});
@@ -85,8 +103,11 @@ class _FiltersBottomSheetState extends State<OfferPriceBottomSheet> {
                 const SizedBox(height: 16),
                 CustomTextButton.orangeContinue(
                   callback: () {
-                    return Navigator.of(context)
-                        .pop(double.tryParse(offerPriceController.text));
+                    final price = double.tryParse(offerPriceController.text);
+                    if (price != null) {
+                      return Navigator.of(context).pop(
+                          _priceType.convertCurrencyToCurrencyString(price));
+                    }
                   },
                   text: localizations.send,
                   active: double.tryParse(offerPriceController.text) != null,

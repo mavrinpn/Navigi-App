@@ -113,33 +113,35 @@ class _CustomDropDownSingleCheckBoxState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ...(widget.parameter.variants.sublist(0, maximum))
-              .map((parametrOption) => InkWell(
-                    onTap: () => widget.onChange(parametrOption),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2),
-                      child: GestureDetector(
-                        onTap: () => widget.onChange(parametrOption),
-                        child: Row(
-                          children: [
-                            CustomCheckBox(
-                              isActive: parametrOption.key.toString() ==
-                                  widget.currentKey,
-                              onChanged: () => widget.onChange(parametrOption),
-                            ),
-                            Text(
-                              MyApp.getLocale(context) == 'fr'
-                                  ? parametrOption.nameFr
-                                  : parametrOption.nameAr,
-                              maxLines: 1,
-                              overflow: TextOverflow.clip,
-                              style: AppTypography.font14black
-                                  .copyWith(fontSize: 16),
-                            ),
-                          ],
-                        ),
+              .map(
+                (parametrOption) => InkWell(
+                  onTap: () => widget.onChange(parametrOption),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2),
+                    child: GestureDetector(
+                      onTap: () => widget.onChange(parametrOption),
+                      child: Row(
+                        children: [
+                          CustomCheckBox(
+                            isActive: parametrOption.key.toString() ==
+                                widget.currentKey,
+                            onChanged: () => widget.onChange(parametrOption),
+                          ),
+                          Text(
+                            MyApp.getLocale(context) == 'fr'
+                                ? parametrOption.nameFr
+                                : parametrOption.nameAr,
+                            maxLines: 1,
+                            overflow: TextOverflow.clip,
+                            style: AppTypography.font14black
+                                .copyWith(fontSize: 16),
+                          ),
+                        ],
                       ),
                     ),
-                  ))
+                  ),
+                ),
+              )
               .toList(),
           if (widget.parameter.variants.length > 7) ...[
             GestureDetector(

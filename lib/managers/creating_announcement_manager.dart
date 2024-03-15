@@ -10,6 +10,7 @@ import 'package:smart/feature/create_announcement/data/models/marks_filter.dart'
 import 'package:smart/models/announcement.dart';
 import 'package:smart/models/item/subcategory_filters.dart';
 import 'package:smart/services/database/database_service.dart';
+import 'package:smart/utils/price_type.dart';
 
 import '../../models/announcement_creating_data.dart';
 import '../../models/models.dart';
@@ -137,7 +138,8 @@ class CreatingAnnouncementManager {
   void setDescription(String description) =>
       creatingData.description = description;
 
-  void setPrice(String price) => creatingData.price = double.parse(price);
+  void setPrice(double price) => creatingData.price = price;
+  void setPriceType(PriceType type) => creatingData.priceType = type;
 
   void _setParameters() => creatingData.parameters = ItemParameters()
       .buildJsonFormatParameters(addParameters: subcategoryFilters!.parameters);

@@ -13,6 +13,7 @@ import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/utils/constants.dart';
+import 'package:smart/utils/price_type.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/utils/utils.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
@@ -39,12 +40,27 @@ class CommonFiltersBottomSheet extends StatefulWidget {
 class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
   bool radiusOptionShown = false;
   double sliderValue = 0;
+  PriceType _priceType = PriceType.dzd;
+  late final TextEditingController _minPriceController;
+  late final TextEditingController _maxPriceController;
 
   String? selectedCityId;
   String? selectedAreaId;
   String? selectedCityTitle;
   String? selectedAreaTitle;
   double kilometerRatio = 100;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+    _priceType = searchCubit.priceType;
+    _minPriceController =
+        TextEditingController(text: _priceType.convertDzdToCurrencyString(searchCubit.minPrice));
+    _maxPriceController =
+        TextEditingController(text: _priceType.convertDzdToCurrencyString(searchCubit.maxPrice));
+  }
 
   void requestLocation() async {
     await Geolocator.requestPermission();
@@ -87,11 +103,6 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
 
     choosedMarksFilter = searchCubit.marksFilter;
     choosedCarFilter = selectCategoryCubit.autoFilter;
-
-    final TextEditingController minPriceController =
-        TextEditingController(text: '${searchCubit.minPrice ?? ''}');
-    final TextEditingController maxPriceController =
-        TextEditingController(text: '${searchCubit.maxPrice ?? ''}');
 
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.9,
@@ -160,8 +171,14 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       PriceWidget(
-                        minPriceController: minPriceController,
-                        maxPriceController: maxPriceController,
+                        minPriceController: _minPriceController,
+                        maxPriceController: _maxPriceController,
+                        priceType: _priceType,
+                        onChangePriceType: (priceType) {
+                          setState(() {
+                            _priceType = priceType;
+                          });
+                        },
                       ),
                       CustomDropDownSingleCheckBox(
                         icon: 'Assets/icons/tirage.svg',
@@ -209,10 +226,13 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                         callback: () {
                           RepositoryProvider.of<SearchManager>(context)
                               .setSearch(false);
+
+                          searchCubit.priceType = _priceType;
                           searchCubit.minPrice =
-                              double.tryParse(minPriceController.text);
+                              _priceType.fromPriceString(_minPriceController.text);
                           searchCubit.maxPrice =
-                              double.tryParse(maxPriceController.text);
+                              _priceType.fromPriceString(_maxPriceController.text);
+
                           searchCubit.setFilters(
                             parameters: selectCategoryCubit.parameters,
                             cityId: selectedCityId,

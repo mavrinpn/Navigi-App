@@ -128,7 +128,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
               ),
               body: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(
-                    decelerationRate: ScrollDecelerationRate.fast),
+                  decelerationRate: ScrollDecelerationRate.fast,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -137,10 +138,13 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       height: 260,
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => const PhotoViews()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  PhotoViews(images: state.data.images),
+                            ),
+                          );
                         },
                         child: PageView.builder(
                             itemCount: state.data.images.length,
@@ -293,14 +297,14 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       callback: () {
                         showOfferPriceDialog(
                           context: context,
-                          announcementId: state.data.id,
-                        ).then((offerPrice) {
-                          if (offerPrice != null) {
+                          announcement: state.data,
+                        ).then((offerPriceString) {
+                          if (offerPriceString != null) {
                             checkBlockedAndPushChat(
                               context: context,
                               data: state.data,
                               message:
-                                  '${localizations.offerMessage} ${offerPrice.round()}',
+                                  '${localizations.offerMessage} $offerPriceString',
                             );
                           }
                         });
@@ -310,22 +314,6 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       icon: SvgPicture.asset('Assets/icons/dzd.svg'),
                       disableColor: AppColors.backgroundLightGray,
                     ),
-                    const SizedBox(height: 26),
-                    BlocBuilder<SubcategoryCubit, SubcategoryState>(
-                        builder: (context, state) {
-                      if (state is SubcategorySuccessState) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Text(
-                            '${state.category.nameFr} / ${state.subcategory.nameFr}',
-                            textAlign: TextAlign.start,
-                            style: AppTypography.font16black
-                                .copyWith(fontWeight: FontWeight.w700),
-                          ),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    }),
                     const SizedBox(height: 26),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -340,11 +328,37 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
+                    BlocBuilder<SubcategoryCubit, SubcategoryState>(
+                      builder: (context, state) {
+                        if (state is SubcategorySuccessState) {
+                          return Column(
+                            children: [
+                              ItemParameterWidget(
+                                name: localizations.category,
+                                currentValue: currentLocale == 'fr'
+                                    ? state.category.nameFr
+                                    : state.category.nameAr,
+                              ),
+                              ItemParameterWidget(
+                                name: localizations.subcategory,
+                                currentValue: currentLocale == 'fr'
+                                    ? state.subcategory.nameFr
+                                    : state.subcategory.nameAr,
+                              ),
+                            ],
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
                     ...state.data.staticParameters.parameters
-                        .map((e) => ItemParameterWidget(
+                        .map(
+                          (e) => ItemParameterWidget(
                             name: currentLocale == 'fr' ? e.nameFr : e.nameAr,
                             currentValue:
-                                currentLocale == 'fr' ? e.valueFr : e.valueAr))
+                                currentLocale == 'fr' ? e.valueFr : e.valueAr,
+                          ),
+                        )
                         .toList(),
                     Padding(
                       padding: const EdgeInsets.symmetric(

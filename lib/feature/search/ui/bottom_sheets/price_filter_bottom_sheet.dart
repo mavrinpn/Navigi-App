@@ -5,6 +5,7 @@ import 'package:smart/feature/search/bloc/select_subcategory/search_select_subca
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
+import 'package:smart/utils/price_type.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:smart/widgets/textField/price_widget.dart';
@@ -24,6 +25,22 @@ class PriceFilterBottomSheet extends StatefulWidget {
 class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
   String locale() => MyApp.getLocale(context) ?? 'fr';
 
+  PriceType _priceType = PriceType.dzd;
+  late final TextEditingController _minPriceController;
+  late final TextEditingController _maxPriceController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+    _priceType = searchCubit.priceType;
+    _minPriceController =
+        TextEditingController(text: _priceType.convertDzdToCurrencyString(searchCubit.minPrice));
+    _maxPriceController =
+        TextEditingController(text: _priceType.convertDzdToCurrencyString(searchCubit.maxPrice));
+  }
+
   @override
   Widget build(BuildContext context) {
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
@@ -31,10 +48,6 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
         BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
 
-    final TextEditingController minPriceController =
-        TextEditingController(text: '${searchCubit.minPrice ?? ''}');
-    final TextEditingController maxPriceController =
-        TextEditingController(text: '${searchCubit.maxPrice ?? ''}');
 
     return Container(
       // height: MediaQuery.sizeOf(context).height * 0.8,
@@ -60,18 +73,27 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
                 ),
                 const SizedBox(height: 16),
                 PriceWidget(
-                  minPriceController: minPriceController,
-                  maxPriceController: maxPriceController,
+                  minPriceController: _minPriceController,
+                  maxPriceController: _maxPriceController,
+                  priceType: _priceType,
+                  onChangePriceType: (priceType) {
+                    setState(() {
+                      _priceType = priceType;
+                    });
+                  },
                 ),
                 const SizedBox(height: 16),
                 CustomTextButton.orangeContinue(
                   callback: () {
                     RepositoryProvider.of<SearchManager>(context)
                         .setSearch(false);
+
+                    searchCubit.priceType = _priceType;
                     searchCubit.minPrice =
-                        double.tryParse(minPriceController.text);
+                        _priceType.fromPriceString(_minPriceController.text);
                     searchCubit.maxPrice =
-                        double.tryParse(maxPriceController.text);
+                        _priceType.fromPriceString(_maxPriceController.text);
+
                     searchCubit.setFilters(
                       parameters: selectCategoryCubit.parameters,
                     );

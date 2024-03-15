@@ -4,10 +4,25 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
 import 'package:smart/utils/utils.dart';
 
-class FavouriteIndicator extends StatelessWidget {
+class FavouriteIndicator extends StatefulWidget {
   const FavouriteIndicator({super.key, required this.postId});
 
   final String postId;
+
+  @override
+  State<FavouriteIndicator> createState() => _FavouriteIndicatorState();
+}
+
+class _FavouriteIndicatorState extends State<FavouriteIndicator> {
+  bool _liked = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final cubit = context.read<FavouritesCubit>();
+    _liked = cubit.isLiked(widget.postId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +30,12 @@ class FavouriteIndicator extends StatelessWidget {
 
     return BlocBuilder<FavouritesCubit, FavouritesState>(
       builder: (context, state1) {
-        bool liked = cubit.isLiked(postId);
         return GestureDetector(
           onTap: () {
-            cubit.likeUnlike(postId);
+            cubit.likeUnlike(widget.postId);
+            setState(() {
+              _liked = !_liked;
+            });
           },
           child: SizedBox(
             width: 40,
@@ -29,7 +46,7 @@ class FavouriteIndicator extends StatelessWidget {
                 width: 24,
                 height: 24,
                 colorFilter: ColorFilter.mode(
-                  liked ? AppColors.red : AppColors.whiteGray,
+                  _liked ? AppColors.red : AppColors.whiteGray,
                   BlendMode.srcIn,
                 ),
               ),

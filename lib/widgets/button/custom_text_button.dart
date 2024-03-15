@@ -1,4 +1,4 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:smart/utils/fonts.dart';
 
 import '../../utils/colors.dart';
@@ -41,21 +41,36 @@ class CustomTextButton extends StatelessWidget {
     this.activeColor = AppColors.red,
     this.disableColor = AppColors.disable,
     required Widget icon,
-  }) : child = Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      icon,
-      const SizedBox(
-        width: 10,
-      ),
-      Text(
-        text,
-        style: styleText,
-      )
-    ],
-  ), super(key: key);
+  })  : child = Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            icon,
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              text,
+              style: styleText,
+            )
+          ],
+        ),
+        super(key: key);
 
   const CustomTextButton.orangeContinue({
+    Key? key,
+    required this.callback,
+    required this.text,
+    this.styleText = AppTypography.font14white,
+    this.width = double.infinity,
+    this.height = 52,
+    this.padding = const EdgeInsets.all(0),
+    this.active = false,
+    this.child,
+    this.activeColor = AppColors.red,
+    this.disableColor = AppColors.disable,
+  }) : super(key: key);
+
+  const CustomTextButton.shadow({
     Key? key,
     required this.callback,
     required this.text,
@@ -76,18 +91,31 @@ class CustomTextButton extends StatelessWidget {
       height: height,
       padding: padding,
       decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(14))),
+        borderRadius: BorderRadius.all(
+          Radius.circular(14),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x19000000),
+            blurRadius: 18,
+            offset: Offset(0, 0),
+            spreadRadius: 0,
+          )
+        ],
+      ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
+            surfaceTintColor: Colors.transparent,
             elevation: 0,
             backgroundColor: active ? activeColor : disableColor,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(14)))),
         onPressed: callback,
-        child: child ?? Text(
-          text,
-          style: styleText,
-        ),
+        child: child ??
+            Text(
+              text,
+              style: styleText,
+            ),
       ),
     );
   }

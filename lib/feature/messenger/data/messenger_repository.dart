@@ -86,10 +86,11 @@ class MessengerRepository {
 
     for (var i in urls) {
       await _databaseService.messages.sendMessage(
-          roomId: currentRoom!.id,
-          content: '',
-          senderId: _userId!,
-          images: [i]);
+        roomId: currentRoom!.id,
+        content: '',
+        senderId: _userId!,
+        images: [i],
+      );
     }
   }
 

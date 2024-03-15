@@ -231,13 +231,15 @@ class CategoriesService {
 
     List<Mark> marks = <Mark>[];
     for (var i in res.documents) {
-      marks.add(
-        Mark(
-          id: i.data['manufacturers']['\$id'],
-          name: i.data['manufacturers']['name'],
-          image: i.data['manufacturers']['image'],
-        ),
-      );
+      if (i.data['manufacturers'] != null) {
+        marks.add(
+          Mark(
+            id: i.data['manufacturers']['\$id'],
+            name: i.data['manufacturers']['name'],
+            image: i.data['manufacturers']['image'],
+          ),
+        );
+      }
     }
 
     marks.sort((a, b) => a.name.compareTo(b.name));
@@ -290,7 +292,7 @@ class CategoriesService {
     List<CarModel> models = <CarModel>[];
     for (var doc in res.documents) {
       String paramsString = doc.data['parameters'] as String;
-      //TODO remove replaceAll
+      //* remove replaceAll
       paramsString = paramsString.replaceAll("'", '"');
       final params = jsonDecode(paramsString) as List;
 

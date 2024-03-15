@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/models/sort_types.dart';
+import 'package:smart/utils/price_type.dart';
 
 import '../../../managers/announcement_manager.dart';
 
@@ -22,6 +23,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
   String? _sortBy;
   double? _minPrice;
   double? _maxPrice;
+  PriceType _priceType = PriceType.dzd;
 
   String? _cityId;
   String? _areaId;
@@ -37,16 +39,21 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
   String get sortBy => _sortBy ?? SortTypes.dateDESC;
 
   // ignore: unnecessary_getters_setters
-  double? get minPrice => _minPrice;// ?? 0;
+  double? get minPrice => _minPrice; // ?? 0;
 
   // ignore: unnecessary_getters_setters
-  double? get maxPrice => _maxPrice;// ?? 200000;
+  double? get maxPrice => _maxPrice; // ?? 200000;
+
+  // ignore: unnecessary_getters_setters
+  PriceType get priceType => _priceType;
 
   set sortType(String? searchType) => _sortBy = searchType;
 
   set minPrice(double? price) => _minPrice = price;
 
   set maxPrice(double? price) => _maxPrice = price;
+
+  set priceType(PriceType priceType) => _priceType = priceType;
 
   double radius = 0;
 

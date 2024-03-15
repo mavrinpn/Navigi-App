@@ -107,6 +107,7 @@
 "price": "سعر",
 "resetEverything": "أعد ضبط كل شيء",
 "category": "فئة",
+"subcategory": "الفئة الفرعية",
 "onlyAhighClassification": "فقط تصنيف عالي",
 "onlyWithReduction": "فقط مع التخفيض",
 "tacitly": "ضمنيا",
@@ -211,5 +212,8 @@
       "type": "String"
     }
   }
-}
+},
+"dzd": "الدينار الجزائري",
+"mln": "الملايين",
+"mlrd": "المليارات"
 }

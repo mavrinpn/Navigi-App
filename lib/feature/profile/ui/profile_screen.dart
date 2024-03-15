@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/profile/ui/widgets/row_button.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/conatainers/announcement_horizontal.dart';
@@ -31,11 +32,15 @@ class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   bool _showAll = false;
+  List<Announcement> _available = [];
+  List<Announcement> _sold = [];
 
   final controller = ScrollController();
 
   @override
   void initState() {
+    BlocProvider.of<CreatorCubit>(context)
+        .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
     _tabController = TabController(length: 2, vsync: this);
 
     super.initState();
@@ -115,11 +120,14 @@ class _ProfileScreenState extends State<ProfileScreen>
               state is EditFailState) {
             return BlocBuilder<CreatorCubit, CreatorState>(
               builder: (context, creatorState) {
+                if (creatorState is CreatorSuccessState) {
+                  _available = [...creatorState.available];
+                  _sold = [...creatorState.sold];
+                }
+
                 return CustomScrollView(
                   slivers: [
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 8),
-                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 8)),
                     SliverPadding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       sliver: SliverToBoxAdapter(
@@ -129,9 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ),
                       ),
                     ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 20),
-                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 20)),
                     SliverToBoxAdapter(
                       child: TabBar(
                         isScrollable: true,
@@ -171,7 +177,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                     ),
                     const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                    if (creatorState is CreatorSuccessState) ...[
+                    if (_available.isNotEmpty) ...[
                       getGridHeight() == 100
                           ? SliverPadding(
                               padding: const EdgeInsets.symmetric(vertical: 40),
@@ -193,16 +199,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                           : SliverList.separated(
                               itemCount: _tabController.index == 0
                                   ? _showAll
-                                      ? creatorState.available.length
-                                      : min(creatorState.available.length, 4)
+                                      ? _available.length
+                                      : min(_available.length, 4)
                                   : _showAll
-                                      ? creatorState.sold.length
-                                      : min(creatorState.sold.length, 4),
+                                      ? _sold.length
+                                      : min(_sold.length, 4),
                               itemBuilder: (BuildContext context, int index) {
                                 return AnnouncementContainerHorizontal(
                                     announcement: _tabController.index == 0
-                                        ? creatorState.available[index]
-                                        : creatorState.sold[index],
+                                        ? _available[index]
+                                        : _sold[index],
                                     likeCount: '13');
                               },
                               separatorBuilder: (context, index) =>
@@ -217,7 +223,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ),
                       )
                     ],
-
                     if (!_showAll)
                       SliverPadding(
                         padding: const EdgeInsets.symmetric(
@@ -236,26 +241,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                           ),
                         ),
                       ),
-
-                    // SliverPadding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 15),
-                    //   sliver: SliverToBoxAdapter(
-                    //     child: CustomTextButton.withIcon(
-                    //       callback: () {
-                    //         Navigator.pushNamed(context,
-                    //             AppRoutesNames.announcementCreatingCategory);
-                    //       },
-                    //       text: AppLocalizations.of(context)!.addAnAd,
-                    //       styleText: AppTypography.font14white,
-                    //       active: true,
-                    //       icon: const Icon(
-                    //         Icons.add,
-                    //         color: Colors.white,
-                    //         size: 24,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     const SliverToBoxAdapter(child: SizedBox(height: 15)),
                     SliverPadding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -319,13 +304,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       sliver: SliverToBoxAdapter(
                         child: CustomElevatedButton(
-                            icon: "Assets/icons/exit.svg",
-                            title: localizations.disconnectFromTheAccount,
-                            onPress: () {
-                              BlocProvider.of<AuthCubit>(context).logout();
-                            },
-                            height: 52,
-                            width: double.infinity),
+                          icon: "Assets/icons/exit.svg",
+                          title: localizations.disconnectFromTheAccount,
+                          onPress: () => _logoutButton(),
+                          height: 52,
+                          width: double.infinity,
+                        ),
                       ),
                     ),
                     const SliverToBoxAdapter(child: SizedBox(height: 90)),
@@ -338,6 +322,57 @@ class _ProfileScreenState extends State<ProfileScreen>
           }
         },
       ),
+    );
+  }
+
+  void _logoutButton() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.transparent,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          title: Center(
+              child: Text(
+            'Vous voulez sortir?',
+            style: AppTypography.font16black,
+          )),
+          content: Text(
+            'Pharetra ultricies ullamcorper a et magna convallis condimentum. Proin mi orci dignissim lectus nulla neque elitInt',
+            textAlign: TextAlign.center,
+            style: AppTypography.font14lightGray,
+          ),
+          actions: [
+            CustomTextButton.orangeContinue(
+              callback: () {
+                BlocProvider.of<AuthCubit>(context).logout();
+                Navigator.of(context).pop();
+              },
+              styleText: AppTypography.font14black.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              text: 'Oui',
+              active: true,
+              activeColor: AppColors.black,
+            ),
+            const SizedBox(height: 10),
+            CustomTextButton.shadow(
+              callback: () {
+                Navigator.of(context).pop();
+              },
+              styleText: AppTypography.font14black
+                  .copyWith(fontWeight: FontWeight.bold),
+              text: 'Non',
+              active: true,
+              activeColor: Colors.white,
+            )
+          ],
+        );
+      },
     );
   }
 }

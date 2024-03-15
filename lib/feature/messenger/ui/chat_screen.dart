@@ -311,6 +311,8 @@ class _ChatScreenState extends State<ChatScreen> {
           messageController.text = '';
           preparing = false;
         });
+      }).catchError((err) {
+        CustomSnackBar.showSnackBar(context, err.toString());
       });
     }
   }

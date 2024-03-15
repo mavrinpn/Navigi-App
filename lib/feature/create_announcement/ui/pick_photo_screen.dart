@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/localization/app_localizations.dart';
-import 'package:smart/utils/constants.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
 import '../../../managers/creating_announcement_manager.dart';
@@ -112,18 +111,21 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                   creatingAnnouncementManager
                       .setImages(creatingAnnouncementManager.images);
 
-                  if ([servicesCategoryId, realEstateCategoryId].contains(
-                          creatingAnnouncementManager
-                              .creatingData.categoryId) ||
-                      [animalsSubcategoryId].contains(
-                          creatingAnnouncementManager
-                              .creatingData.subcategoryId)) {
-                    Navigator.pushNamed(
-                        context, AppRoutesNames.announcementCreatingOptions);
-                  } else {
-                    Navigator.pushNamed(
-                        context, AppRoutesNames.announcementCreatingType);
-                  }
+                  Navigator.pushNamed(
+                      context, AppRoutesNames.announcementCreatingOptions);
+
+                  // if ([servicesCategoryId, realEstateCategoryId].contains(
+                  //         creatingAnnouncementManager
+                  //             .creatingData.categoryId) ||
+                  //     [animalsSubcategoryId].contains(
+                  //         creatingAnnouncementManager
+                  //             .creatingData.subcategoryId)) {
+                  // Navigator.pushNamed(
+                  //     context, AppRoutesNames.announcementCreatingOptions);
+                  // } else {
+                  //   Navigator.pushNamed(
+                  //       context, AppRoutesNames.announcementCreatingType);
+                  // }
                 })
             : Container());
   }

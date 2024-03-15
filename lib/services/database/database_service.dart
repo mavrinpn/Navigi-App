@@ -25,6 +25,7 @@ import 'package:smart/models/user.dart';
 import 'package:smart/services/filters/filter_dto.dart';
 import 'package:smart/services/filters/location_filter.dart';
 import 'package:smart/services/filters/parameters_filter_builder.dart';
+import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 import '../../models/messenger/room.dart';
 import '../../utils/constants.dart';

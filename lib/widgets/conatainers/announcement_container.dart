@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -60,7 +59,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
     final double imageHeight = widget.height ?? (width / 2 - 25) * 1.032;
 
     return GestureDetector(
-        onTap: () async {
+        onTap: () {
           Navigator.pushNamed(
             context,
             AppRoutesNames.announcement,
@@ -124,7 +123,10 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                         'Assets/icons/follow.svg',
                         width: 24,
                         height: 24,
-                        color: liked ? AppColors.red : AppColors.whiteGray,
+                        colorFilter: ColorFilter.mode(
+                          liked ? AppColors.red : AppColors.whiteGray,
+                          BlendMode.srcIn,
+                        ),
                       ),
                     ),
                   ),
@@ -159,17 +161,15 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SvgPicture.asset('Assets/icons/point.svg'),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  child: RichText(
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      text: TextSpan(children: [
-                        TextSpan(
-                            text: ' ${widget.announcement.placeData.name}',
-                            style: AppTypography.font14black),
-                      ])),
-                )
+                const SizedBox(width: 2),
+                Expanded(
+                  child: Text(
+                    widget.announcement.placeData.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTypography.font14black,
+                  ),
+                ),
               ],
             ),
           ],

@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:smart/models/item/static_parameters.dart';
 import 'package:smart/models/user.dart';
+import 'package:smart/utils/price_type.dart';
 
 part 'creator_data.dart';
 
@@ -14,6 +16,7 @@ class Announcement {
   final String description;
   final int totalViews;
   final double price;
+  final PriceType priceType;
   final bool active;
   List images;
   final String id;
@@ -36,6 +39,7 @@ class Announcement {
         description = json['description'],
         creatorData = CreatorData.fromJson(data: json['creator']),
         price = double.parse(json['price'].toString()),
+        priceType = PriceTypeExtendion.fromString(json['price_type']),
         images = json['images'],
         staticParameters = json['parametrs'] is String
             ? StaticParameters(encodedParameters: '${json['parametrs']}')
@@ -75,15 +79,30 @@ class Announcement {
       num.toString().length > 1 ? num.toString() : '0$num';
 
   String get stringPrice {
-    String reversed = price.toString().split('.')[0].split('').reversed.join();
+    final convertedPrice = priceType.convertDzdToCurrency(price);
+    final priceTypeString = priceType.name.toUpperCase();
 
-    for (int i = 0; i < reversed.length; i += 4) {
-      try {
-        reversed = '${reversed.substring(0, i)} ${reversed.substring(i)}';
-        // ignore: empty_catches
-      } catch (e) {}
+    if (priceType == PriceType.mlrd) {
+      final oCcy = NumberFormat("#,##0.00", "en_US");
+      final priceString = oCcy.format(convertedPrice).replaceAll(',', ' ');
+      return '$priceString $priceTypeString';
+    } else {
+      final oCcy = NumberFormat("#,##0", "en_US");
+      final priceString = oCcy.format(convertedPrice).replaceAll(',', ' ');
+      return '$priceString $priceTypeString';
     }
-
-    return '${reversed.split('').reversed.join()}DZD';
   }
+
+  // String get stringDZDPrice {
+  //   String reversed = price.toString().split('.')[0].split('').reversed.join();
+
+  //   for (int i = 0; i < reversed.length; i += 4) {
+  //     try {
+  //       reversed = '${reversed.substring(0, i)} ${reversed.substring(i)}';
+  //       // ignore: empty_catches
+  //     } catch (e) {}
+  //   }
+
+  //   return '${reversed.split('').reversed.join()}DZD';
+  // }
 }

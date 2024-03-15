@@ -39,7 +39,7 @@ class _AnnouncementContainerHorizontalState
     final double imageHeight = widget.height ?? (width / 2 - 25) * 1.032;
 
     return GestureDetector(
-      onTap: () async {
+      onTap: () {
         Navigator.pushNamed(
           context,
           AppRoutesNames.announcement,

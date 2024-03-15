@@ -7,6 +7,7 @@ import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/button/back_button.dart';
 
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/mask_text_field.dart';
@@ -17,7 +18,12 @@ final maskPhoneFormatter = MaskTextInputFormatter(
     type: MaskAutoCompletionType.lazy);
 
 class LoginFirstScreen extends StatefulWidget {
-  const LoginFirstScreen({Key? key}) : super(key: key);
+  const LoginFirstScreen({
+    Key? key,
+    required this.showBackButton,
+  }) : super(key: key);
+
+  final bool showBackButton;
 
   @override
   State<LoginFirstScreen> createState() => _LoginFirstScreenState();
@@ -45,6 +51,13 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
+
+        appBar: widget.showBackButton
+            ? AppBar(
+                automaticallyImplyLeading: true,
+                leading: const CustomBackButton(),
+              )
+            : null,
         body: SafeArea(
           child: Center(
             child: Column(

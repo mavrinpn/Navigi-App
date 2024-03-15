@@ -107,6 +107,7 @@
 "price": "Prix",
 "resetEverything": "Réinitialiser tout",
 "category": "Catégorie",
+"subcategory": "Sous-catégorie",
 "onlyAhighClassification": "Seul un classement élevé",
 "onlyWithReduction": "Seulement avec réduction",
 "tacitly": "Tacitement",
@@ -211,5 +212,8 @@
       "type": "String"
     }
   }
-}
+},
+"dzd": "Dinar Algerien",
+"mln": "Millions",
+"mlrd": "Milliards"
 }

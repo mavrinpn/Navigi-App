@@ -1,3 +1,5 @@
+import 'package:smart/utils/price_type.dart';
+
 class AnnouncementCreatingData {
   String? categoryId;
   String? subcategoryId;
@@ -6,6 +8,7 @@ class AnnouncementCreatingData {
   List<String>? images;
   bool? type;
   double? price;
+  PriceType? priceType;
   String? itemName;
   String? itemId;
   String? parameters;
@@ -23,6 +26,7 @@ class AnnouncementCreatingData {
         'description': description,
         'type': type,
         'price': price,
+        'price_type': priceType?.name ?? 'dzd',
         'item_name': itemName,
         'parametrs': parameters,
         'creator_id': creatorId,
@@ -43,6 +47,7 @@ class AnnouncementCreatingData {
     images = null;
     type = null;
     price = null;
+    priceType = null;
     itemName = null;
     parameters = null;
     placeId = null;
