@@ -2,7 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
+import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
@@ -47,6 +49,8 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
           Dialogs.hide(context);
         }
         if (state is AuthSuccessState) {
+          BlocProvider.of<CreatorCubit>(context)
+              .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
           Navigator.pop(context);
         } else if (state is AuthFailState) {
           CustomSnackBar.showSnackBar(context,

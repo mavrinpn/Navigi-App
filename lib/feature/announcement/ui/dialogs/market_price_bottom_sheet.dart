@@ -7,6 +7,7 @@ import 'package:smart/widgets/button/custom_text_button.dart';
 
 void showMarketPriceDialog({
   required BuildContext context,
+  required String price,
 }) {
   showModalBottomSheet(
     shape: const RoundedRectangleBorder(
@@ -15,20 +16,24 @@ void showMarketPriceDialog({
       ),
     ),
     clipBehavior: Clip.antiAliasWithSaveLayer,
-    // isScrollControlled: true,
     context: context,
     builder: (BuildContext context) {
       return Padding(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: const MarketPriceBottomSheet(),
+        child: MarketPriceBottomSheet(price: price),
       );
     },
   );
 }
 
 class MarketPriceBottomSheet extends StatefulWidget {
-  const MarketPriceBottomSheet({super.key});
+  const MarketPriceBottomSheet({
+    super.key,
+    required this.price,
+  });
+
+  final String price;
 
   @override
   State<MarketPriceBottomSheet> createState() => _FiltersBottomSheetState();
@@ -74,7 +79,7 @@ class _FiltersBottomSheetState extends State<MarketPriceBottomSheet> {
               ),
               const SizedBox(height: 16),
               Text(
-                '18 000 - 21 500 DZD',
+                widget.price,
                 style: AppTypography.font22black,
               ),
               const SizedBox(height: 24),

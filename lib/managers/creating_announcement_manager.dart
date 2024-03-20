@@ -35,17 +35,15 @@ class CreatingAnnouncementManager {
 
   AnnouncementCreatingData creatingData = AnnouncementCreatingData();
   SubcategoryFilters? subcategoryFilters;
+
   MarksFilter? marksFilter;
+  CarFilter? carFilter;
 
   SubcategoryItem? currentItem;
   List<XFile> images = [];
-  //List<Uint8List> imagesAsBytes = [];
-  //Future? compressingImages;
 
   CityDistrict? cityDistrict;
   LatLng? customPosition;
-
-  CarFilter? carFilter;
 
   BehaviorSubject<LoadingStateEnum> creatingState =
       BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
@@ -119,7 +117,7 @@ class CreatingAnnouncementManager {
   }
 
   void setPlace(CityDistrict district) {
-    creatingData.placeId = district.id;
+    // creatingData.placeId = district.id;
     creatingData.cityId = district.cityId;
     creatingData.areaId = district.id;
     cityDistrict = district;
@@ -141,8 +139,62 @@ class CreatingAnnouncementManager {
   void setPrice(double price) => creatingData.price = price;
   void setPriceType(PriceType type) => creatingData.priceType = type;
 
-  void _setParameters() => creatingData.parameters = ItemParameters()
-      .buildJsonFormatParameters(addParameters: subcategoryFilters!.parameters);
+  void _setParameters() {
+    if (subcategoryFilters != null) {
+      final List<Parameter> parameters = [];
+      if (carFilter != null) {
+        if (subcategoryFilters!.hasMark) {
+          parameters.add(
+            TextParameter(
+              key: 'car_mark',
+              arName: 'العلامة التجارية',
+              frName: 'Marque',
+              value: carFilter!.markTitle,
+            ),
+          );
+        }
+        if (subcategoryFilters!.hasModel) {
+          parameters.add(
+            TextParameter(
+              key: 'car_model',
+              arName: 'نموذج',
+              frName: 'Modèle',
+              value: carFilter!.modelTitle,
+            ),
+          );
+        }
+        parameters.add(carFilter!.dotation);
+        parameters.add(carFilter!.engine);
+      }
+
+      if (marksFilter != null) {
+        if (subcategoryFilters!.hasMark) {
+          parameters.add(
+            TextParameter(
+              key: 'mark',
+              arName: 'العلامة التجارية',
+              frName: 'Marque',
+              value: marksFilter!.markTitle,
+            ),
+          );
+        }
+        if (subcategoryFilters!.hasModel) {
+          parameters.add(
+            TextParameter(
+              key: 'model',
+              arName: 'نموذج',
+              frName: 'Modèle',
+              value: marksFilter!.modelTitle,
+            ),
+          );
+        }
+        //parameters.addAll(marksFilter!.modelParameters!);
+      }
+      parameters.addAll(subcategoryFilters!.parameters);
+      creatingData.parameters =
+          ItemParameters().buildJsonFormatParameters(addParameters: parameters);
+    }
+  }
 
   String get buildTitle => currentItem!.title;
 

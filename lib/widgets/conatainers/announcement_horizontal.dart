@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,7 +7,6 @@ import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
-import 'package:smart/widgets/images/announcement_image.dart';
 
 import '../../utils/colors.dart';
 
@@ -36,7 +36,7 @@ class _AnnouncementContainerHorizontalState
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final double imageWidth = widget.width ?? width / 2 - 25;
-    final double imageHeight = widget.height ?? (width / 2 - 25) * 1.032;
+    // final double imageHeight = widget.height ?? (width / 2 - 25) * 1.032;
 
     return GestureDetector(
       onTap: () {
@@ -65,13 +65,18 @@ class _AnnouncementContainerHorizontalState
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                SizedBox(
+                Container(
                   width: 100,
                   height: 100,
-                  child: AnnouncementImage(
-                    announcement: widget.announcement,
-                    width: imageWidth,
-                    height: imageHeight,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(6),
+                    ),
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl: widget.announcement.images.firstOrNull,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 const SizedBox(width: 10),

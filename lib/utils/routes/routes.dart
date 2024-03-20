@@ -140,7 +140,7 @@ final appRoutes = {
   AppRoutesNames.editProfile: (context) => const EditProfileScreen(),
   AppRoutesNames.settings: (context) => const SettingsScreen(),
   AppRoutesNames.announcementCreator: (context) => const CreatorProfileScreen(),
-  AppRoutesNames.editingAnnouncement: (context) => const EditingAnnouncement(),
+  AppRoutesNames.editingAnnouncement: (context) => const EditingAnnouncementScreen(),
   AppRoutesNames.searchSelectSubcategory: (context) =>
       const SearchSubcategoryScreen(),
 };

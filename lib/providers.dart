@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/bloc/app/app_cubit.dart';
+import 'package:smart/feature/announcement/bloc/medium_price/medium_price_cubit.dart';
 import 'package:smart/feature/announcement/data/creator_repository.dart';
 import 'package:smart/feature/announcement_editing/bloc/announcement_edit_cubit.dart';
 import 'package:smart/feature/announcement_editing/data/announcement_editing_repository.dart';
@@ -23,6 +24,7 @@ import 'package:smart/feature/search/bloc/select_subcategory/search_select_subca
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/managers/blocked_users_manager.dart';
 import 'package:smart/managers/favourites_manager.dart';
+import 'package:smart/managers/meduim_price_manager.dart';
 import 'package:smart/managers/reviews_manager.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/messaging_service.dart';
@@ -84,6 +86,12 @@ class MyRepositoryProviders extends StatelessWidget {
       ),
       RepositoryProvider(
         create: (_) => ReviewsManager(
+          databaseService: databaseService,
+          client: client,
+        ),
+      ),
+      RepositoryProvider(
+        create: (_) => MediumPriceManager(
           databaseService: databaseService,
           client: client,
         ),
@@ -208,6 +216,13 @@ class MyBlocProviders extends StatelessWidget {
       BlocProvider(
         create: (_) => ReviewsCubit(
           reviewsManager: RepositoryProvider.of<ReviewsManager>(context),
+        ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => MediumPriceCubit(
+          mediumPriceManager:
+              RepositoryProvider.of<MediumPriceManager>(context),
         ),
         lazy: false,
       ),

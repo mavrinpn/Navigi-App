@@ -164,7 +164,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                 const SizedBox(width: 2),
                 Expanded(
                   child: Text(
-                    widget.announcement.placeData.name,
+                    widget.announcement.area.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: AppTypography.font14black,

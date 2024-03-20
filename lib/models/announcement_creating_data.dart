@@ -12,7 +12,7 @@ class AnnouncementCreatingData {
   String? itemName;
   String? itemId;
   String? parameters;
-  String? placeId;
+  // String? placeId;
   String? cityId;
   String? areaId;
 
@@ -32,7 +32,8 @@ class AnnouncementCreatingData {
         'creator_id': creatorId,
         'images': urls,
         'creator': creatorId,
-        'place': placeId,
+        //'place': placeId,
+        'area': areaId,
         'city_id': cityId,
         'area_id': areaId,
         if (subcategoryId != null) 'subcategoryId': subcategoryId,
@@ -50,7 +51,7 @@ class AnnouncementCreatingData {
     priceType = null;
     itemName = null;
     parameters = null;
-    placeId = null;
+    // placeId = null;
     cityId = null;
     areaId = null;
   }

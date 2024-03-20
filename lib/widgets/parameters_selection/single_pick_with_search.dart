@@ -50,9 +50,7 @@ class _SinglePickWithSearchState extends State<SinglePickWithSearch> {
           onChange: searchValues,
           keyBoardType: TextInputType.text,
         ),
-        const SizedBox(
-          height: 8,
-        ),
+        const SizedBox(height: 8),
         SizedBox(
           height: 400,
           child: ListView.builder(

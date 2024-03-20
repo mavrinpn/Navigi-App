@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/price_type.dart';
 import 'package:smart/utils/routes/route_names.dart';
@@ -24,7 +23,19 @@ class _OptionsScreenState extends State<OptionsScreen> {
   final priceController = TextEditingController(text: '0');
   final _formKey = GlobalKey<FormState>();
   bool buttonActive = true;
-  PriceType _priceType = PriceType.dzd;
+
+  late final List<PriceType> _availableTypes;
+  late PriceType _priceType;
+
+  @override
+  void initState() {
+    super.initState();
+    final repository =
+        RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    _availableTypes = PriceTypeExtendion.availableTypesFor(
+        repository.creatingData.subcategoryId ?? '');
+    _priceType = _availableTypes.first;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +77,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                   controller: priceController,
                   keyBoardType: TextInputType.number,
                   priceType: _priceType,
+                  availableTypes: _availableTypes,
                   onChangePriceType: (priceType) {
                     setState(() {
                       _priceType = priceType;
@@ -134,7 +146,6 @@ class _OptionsScreenState extends State<OptionsScreen> {
 
               repository.setPriceType(_priceType);
               repository.setInfoFormItem();
-              BlocProvider.of<PlacesCubit>(context).initialLoad();
               Navigator.pushNamed(
                 context,
                 AppRoutesNames.announcementCreatingPlace,
@@ -150,11 +161,13 @@ class _OptionsScreenState extends State<OptionsScreen> {
   Widget buildParameter(Parameter parameter) {
     if (parameter is SelectParameter) {
       return SelectParameterWidget(parameter: parameter);
-    } else {
+    } else if (parameter is InputParameter) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 16.0),
-        child: InputParameterWidget(parameter: parameter as InputParameter),
+        child: InputParameterWidget(parameter: parameter),
       );
+    } else {
+      return Container();
     }
   }
 }

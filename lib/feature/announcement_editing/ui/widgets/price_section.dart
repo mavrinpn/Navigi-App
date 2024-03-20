@@ -14,6 +14,7 @@ class PriceSection extends StatefulWidget {
     required this.onChange,
     required this.onChangePriceType,
     required this.priceType,
+    required this.subCategoryId,
   });
 
   final Function(PriceType) onChangePriceType;
@@ -23,17 +24,21 @@ class PriceSection extends StatefulWidget {
   final String? Function(String?) priceValidator;
   final VoidCallback savePrice;
   final Function(String) onChange;
+  final String subCategoryId;
 
   @override
   State<PriceSection> createState() => _PriceSectionState();
 }
 
 class _PriceSectionState extends State<PriceSection> {
-  PriceType _priceType = PriceType.dzd;
+  late final List<PriceType> _availableTypes;
+  late PriceType _priceType;
 
   @override
   void initState() {
     super.initState();
+    _availableTypes =
+        PriceTypeExtendion.availableTypesFor(widget.subCategoryId);
     _priceType = widget.priceType;
   }
 
@@ -60,6 +65,7 @@ class _PriceSectionState extends State<PriceSection> {
               widget.savePrice();
             },
             priceType: _priceType,
+            availableTypes: _availableTypes,
             onChangePriceType: (priceType) {
               setState(() {
                 _priceType = priceType;

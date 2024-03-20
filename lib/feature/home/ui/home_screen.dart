@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/bloc/app/app_cubit.dart';
+import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
+import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/favorites/favorites_screen.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/feature/messenger/ui/all_chats_screen.dart';
@@ -49,10 +51,19 @@ class _HomeScreenState extends State<HomeScreen> {
         return;
       }
 
-      // if (index == 3) {
-      // BlocProvider.of<CreatorCubit>(context)
-      //     .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
-      // }
+      if (index == 1 && isUserAith) {
+        final messengerRepository =
+            RepositoryProvider.of<MessengerRepository>(context);
+        //TODO preloadChats
+        messengerRepository.preloadChats();
+        messengerRepository.refreshSubscription();
+      }
+
+      if (index == 3) {
+        BlocProvider.of<CreatorCubit>(context)
+            .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
+      }
+
       setState(() {
         _selectedTab = index;
       });

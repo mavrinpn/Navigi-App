@@ -100,3 +100,26 @@ class MinMaxParameter implements Parameter {
   @override
   final String frName;
 }
+
+class TextParameter implements Parameter {
+  @override
+  final String key;
+  @override
+  final String arName;
+  @override
+  final String frName;
+
+  String value;
+  @override
+  String get currentValue => value;
+
+  Map<String, dynamic> toJson() =>
+      {'id': key, 'nameAr': arName, 'nameFr': frName, 'value': currentValue};
+
+  TextParameter({
+    required this.key,
+    required this.arName,
+    required this.frName,
+    required this.value,
+  });
+}

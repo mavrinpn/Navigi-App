@@ -56,10 +56,10 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
 
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
     _priceType = searchCubit.priceType;
-    _minPriceController =
-        TextEditingController(text: _priceType.convertDzdToCurrencyString(searchCubit.minPrice));
-    _maxPriceController =
-        TextEditingController(text: _priceType.convertDzdToCurrencyString(searchCubit.maxPrice));
+    _minPriceController = TextEditingController(
+        text: _priceType.convertDzdToCurrencyString(searchCubit.minPrice));
+    _maxPriceController = TextEditingController(
+        text: _priceType.convertDzdToCurrencyString(searchCubit.maxPrice));
   }
 
   void requestLocation() async {
@@ -174,6 +174,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                         minPriceController: _minPriceController,
                         maxPriceController: _maxPriceController,
                         priceType: _priceType,
+                        subcategoryId: selectCategoryCubit.subcategoryId ?? '',
                         onChangePriceType: (priceType) {
                           setState(() {
                             _priceType = priceType;
@@ -228,10 +229,10 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                               .setSearch(false);
 
                           searchCubit.priceType = _priceType;
-                          searchCubit.minPrice =
-                              _priceType.fromPriceString(_minPriceController.text);
-                          searchCubit.maxPrice =
-                              _priceType.fromPriceString(_maxPriceController.text);
+                          searchCubit.minPrice = _priceType
+                              .fromPriceString(_minPriceController.text);
+                          searchCubit.maxPrice = _priceType
+                              .fromPriceString(_maxPriceController.text);
 
                           searchCubit.setFilters(
                             parameters: selectCategoryCubit.parameters,
@@ -400,7 +401,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
           onTap: () async {
             final needSelectModel =
                 selectCategoryCubit.subcategoryFilters!.hasModel;
-            final List<MarksFilter>? filter = await Navigator.push(
+            final List<MarksFilter?> filter = await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => SelectMarkScreen(
@@ -410,7 +411,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
               ),
             );
 
-            if (filter != null && filter.isNotEmpty) {
+            if (filter.isNotEmpty) {
               setState(() {
                 choosedMarksFilter = filter.first;
               });

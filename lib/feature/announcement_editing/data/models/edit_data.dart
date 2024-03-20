@@ -7,6 +7,9 @@ class AnnouncementEditData {
   final String id;
   final String subcollectionId;
   String title;
+  String cityId;
+  String areaId;
+  CityDistrict area;
   String description;
   double price;
   PriceType priceType;
@@ -18,6 +21,9 @@ class AnnouncementEditData {
         subcollectionId = announcement.subcategoryId,
         title = announcement.title,
         description = announcement.description,
+        cityId = announcement.area.cityId,
+        areaId = announcement.area.id,
+        area = announcement.area,
         images = announcement.images,
         price = announcement.price,
         priceType = announcement.priceType;
@@ -35,11 +41,15 @@ class AnnouncementEditData {
   Map<String, dynamic> toJson() => {
         'name': title,
         'description': description,
+        'city_id': cityId,
+        'area_id': areaId,
+        'area': areaId,
         'price': price,
         'price_type': priceType.name,
-        'parametrs': parameters != null
-            ? parameters!.buildJsonFormatParameters(addParameters: [])
-            : "{}",
+        //TODO
+        // 'parametrs': parameters != null
+        //     ? parameters!.buildJsonFormatParameters(addParameters: [])
+        //     : "[]",
         'images': images,
       };
 }

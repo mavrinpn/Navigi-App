@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/car_model/car_models_cubit.dart';
+import 'package:smart/feature/create_announcement/data/models/car_filter.dart';
 import 'package:smart/feature/create_announcement/ui/widgets/appbar_bottom_searchbar.dart';
 import 'package:smart/feature/create_announcement/ui/widgets/car_mark_widget.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:smart/widgets/button/custom_text_button.dart';
 
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
@@ -29,6 +31,7 @@ class SelectCarMarkScreen extends StatefulWidget {
 class _SelectCarMarkScreenState extends State<SelectCarMarkScreen> {
   bool marksPreloaded = false;
   String _searchString = '';
+  CarFilter? _carFilter;
 
   @override
   void initState() {
@@ -89,6 +92,7 @@ class _SelectCarMarkScreenState extends State<SelectCarMarkScreen> {
             if (state is MarksSuccessState) marksPreloaded = true;
 
             return ListView(
+              padding: const EdgeInsets.only(bottom: 120),
               children: cubit.marks
                   .where((element) =>
                       element.name.toLowerCase().startsWith(_searchString))
@@ -97,6 +101,17 @@ class _SelectCarMarkScreenState extends State<SelectCarMarkScreen> {
                       mark: mark,
                       subcategory: widget.subcategory,
                       needSelectModel: widget.needSelectModel,
+                      onModelSelected: (model) {
+                        _carFilter = CarFilter(
+                          markId: mark.id,
+                          modelId: model.id,
+                          markTitle: mark.name,
+                          modelTitle: model.name,
+                          stringDotations: model.variants,
+                          stringEngines: model.engines,
+                        );
+                        setState(() {});
+                      },
                     ),
                   )
                   .toList(),
@@ -110,6 +125,16 @@ class _SelectCarMarkScreenState extends State<SelectCarMarkScreen> {
           }
         },
       ),
+      floatingActionButton: _carFilter != null
+          ? CustomTextButton.orangeContinue(
+              width: MediaQuery.of(context).size.width - 30,
+              text: localizations.done,
+              callback: () {
+                Navigator.pop(context, _carFilter);
+              },
+              active: true,
+            )
+          : null,
     );
   }
 

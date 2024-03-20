@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:smart/models/announcement.dart';
 
 class AnnouncementImage extends StatelessWidget {
-  const AnnouncementImage(
-      {super.key,
-      required this.announcement,
-      required this.width,
-      required this.height});
+  const AnnouncementImage({
+    super.key,
+    required this.announcement,
+    required this.width,
+    required this.height,
+  });
 
   final Announcement announcement;
   final double width;

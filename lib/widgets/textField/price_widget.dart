@@ -12,18 +12,35 @@ class PriceWidget extends StatefulWidget {
     required this.minPriceController,
     required this.onChangePriceType,
     required this.priceType,
+    required this.subcategoryId,
   });
 
   final Function(PriceType) onChangePriceType;
   final TextEditingController minPriceController;
   final TextEditingController maxPriceController;
   final PriceType priceType;
+  final String subcategoryId;
 
   @override
   State<PriceWidget> createState() => _PriceWidgetState();
 }
 
 class _PriceWidgetState extends State<PriceWidget> {
+  late final List<PriceType> _availableTypes;
+  late PriceType _priceType;
+
+  @override
+  void initState() {
+    super.initState();
+    _availableTypes =
+        PriceTypeExtendion.availableTypesFor(widget.subcategoryId);
+    if (_availableTypes.contains(widget.priceType)) {
+      _priceType = widget.priceType;
+    } else {
+      _priceType = _availableTypes.first;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -56,7 +73,8 @@ class _PriceWidgetState extends State<PriceWidget> {
                         signed: true,
                         decimal: true,
                       ),
-                      priceType: widget.priceType,
+                      priceType: _priceType,
+                      availableTypes: _availableTypes,
                       onChangePriceType: (priceType) {
                         widget.onChangePriceType(priceType);
                       },
@@ -83,6 +101,7 @@ class _PriceWidgetState extends State<PriceWidget> {
                       hintText: '',
                       keyBoardType: TextInputType.number,
                       priceType: widget.priceType,
+                      availableTypes: _availableTypes,
                       onChangePriceType: (priceType) {
                         widget.onChangePriceType(priceType);
                       },

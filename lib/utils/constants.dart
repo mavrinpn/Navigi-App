@@ -1,5 +1,16 @@
 const String carSubcategoryId = '65d45e64812538dfea60';
+
+const String immo1SubcategoryId = '65d45b996a6f6f196d83';
+const String immo2SubcategoryId = '65d45b8ab495cfe702ee';
+const String immo3SubcategoryId = '65d45b81a1a29940bba8';
+const String immo4SubcategoryId = '65d45b77aaa56e835261';
+const String immo5SubcategoryId = '65d45b6e982863c0ed55';
+const String immo6SubcategoryId = '65d45b61f214dc789d46';
+const String immo7SubcategoryId = '65d45b537ae36ed1eb9e';
+const String immo8SubcategoryId = '65d45b47006d9408b9ff';
+
 const String animalsSubcategoryId = '65d4455fe5a1a2b3c0bd';
+
 const String servicesCategoryId = 'job';
 const String realEstateCategoryId = 'immo';
 
@@ -12,6 +23,7 @@ const String subcategoriesCollection = 'sub_categories';
 const String queriesCollection = 'queries';
 const String likesCollection = 'likes';
 const String reviewsCollection = '65e590720e806ee7cc65';
+const String mediumPriceCollection = '65f30f779d8530917550';
 const String blockedUsersCollection = '65eaede68d1e9c9ae033';
 
 /// [_messages] - сами сообщения

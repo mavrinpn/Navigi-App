@@ -7,8 +7,8 @@ import 'package:smart/models/announcement.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 
-class Aboba extends StatelessWidget {
-  const Aboba({super.key, required this.placeData});
+class MapScreen extends StatelessWidget {
+  const MapScreen({super.key, required this.placeData});
 
   final CityDistrict placeData;
 

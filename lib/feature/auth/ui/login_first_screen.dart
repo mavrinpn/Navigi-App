@@ -51,7 +51,6 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-
         appBar: widget.showBackButton
             ? AppBar(
                 automaticallyImplyLeading: true,
@@ -142,9 +141,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                         ),
                       ],
                     )),
-                const SizedBox(
-                  height: 16,
-                ),
+                const SizedBox(height: 16),
                 RichText(
                   text: TextSpan(
                     children: <TextSpan>[

@@ -47,11 +47,6 @@ class ChatContainer extends StatefulWidget {
 
 class _ChatContainerState extends State<ChatContainer> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     // final localizations = AppLocalizations.of(context)!;
 

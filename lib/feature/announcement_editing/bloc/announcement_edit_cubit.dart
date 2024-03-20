@@ -19,7 +19,7 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
       : super(AnnouncementEditInitial());
 
   /// всю информацию на экране брать отсюда
-  AnnouncementEditData get data => repository.editData!;
+  AnnouncementEditData? get data => repository.editData;
 
   List<ImageData> get images => repository.images.currentImages;
 
@@ -35,9 +35,14 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
     // print('announcement setted');
   }
 
-  /// функция для onChange филда названия
   void onTitleChange(String? newTitle) {
     if (newTitle != null) repository.setTitle(newTitle);
+  }
+
+  void onPlaceChange(CityDistrict? newPlace) {
+    if (newPlace != null) {
+      repository.setPlace(newPlace);
+    }
   }
 
   void setParameterValue(String parameterKey, ParameterOption value) {
@@ -68,19 +73,16 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
     }
   }
 
-  /// вызывать на ту хуйню которая полу изображений
   void pickImages() async {
     await repository.pickImages();
     emit(AnnouncementChangeImages());
   }
 
-  /// ну крестик на фотке
   void deleteImage(ImageData image) {
     repository.deleteImage(image);
     emit(AnnouncementChangeImages());
   }
 
-  /// надеюсь понятно куда
   void saveChanges() async {
     emit(AnnouncementEditLoading());
     try {

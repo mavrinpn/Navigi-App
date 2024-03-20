@@ -23,7 +23,10 @@ Future<String?> showOfferPriceDialog({
       return Padding(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: OfferPriceBottomSheet(priceType: announcement.priceType),
+        child: OfferPriceBottomSheet(
+          priceType: announcement.priceType,
+          subCategoryId: announcement.subcategoryId,
+        ),
       );
     },
   );
@@ -33,8 +36,10 @@ class OfferPriceBottomSheet extends StatefulWidget {
   const OfferPriceBottomSheet({
     super.key,
     required this.priceType,
+    required this.subCategoryId,
   });
   final PriceType priceType;
+  final String subCategoryId;
 
   @override
   State<OfferPriceBottomSheet> createState() => _FiltersBottomSheetState();
@@ -42,11 +47,15 @@ class OfferPriceBottomSheet extends StatefulWidget {
 
 class _FiltersBottomSheetState extends State<OfferPriceBottomSheet> {
   final TextEditingController offerPriceController = TextEditingController();
-  PriceType _priceType = PriceType.dzd;
+
+  late final List<PriceType> _availableTypes;
+  late PriceType _priceType;
 
   @override
   void initState() {
     super.initState();
+    _availableTypes =
+        PriceTypeExtendion.availableTypesFor(widget.subCategoryId);
     _priceType = widget.priceType;
   }
 
@@ -90,6 +99,7 @@ class _FiltersBottomSheetState extends State<OfferPriceBottomSheet> {
                     decimal: true,
                   ),
                   priceType: _priceType,
+                  availableTypes: _availableTypes,
                   onChangePriceType: (priceType) {
                     setState(() {
                       _priceType = priceType;

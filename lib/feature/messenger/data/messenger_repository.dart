@@ -70,7 +70,7 @@ class MessengerRepository {
 
   void preloadChats() async {
     _chats = await _databaseService.messages.getUserChats(_userId!);
-    chatsStream.add(_chats);
+    // chatsStream.add(_chats);
     _loadChatsPreviewMessages();
   }
 
@@ -127,26 +127,27 @@ class MessengerRepository {
   }
 
   void refreshSubscription() async {
-    _listener?.cancel();
-    _messageListener?.close();
+    await _listener?.cancel();
+    //   await _messageListener?.close();
     _messageListener = _databaseService.messages.getMessagesSubscription();
     _listener = _messageListener?.stream.listen(_listenMessages);
     log('subscription refreshed');
   }
 
-  // -------------------------------------------------------------
-
   Future<void> _createRoom() async {
     final roomData = await _databaseService.messages.createRoom(
-        [_userId!, currentRoom!.announcement.creatorData.uid],
-        currentRoom!.announcement.id);
+      [_userId!, currentRoom!.announcement.creatorData.uid],
+      currentRoom!.announcement.id,
+    );
 
     currentRoom =
         await _databaseService.messages.getRoom(roomData['room'], _userId!);
 
     _chats.add(currentRoom!);
     chatsStream.add(_chats);
-    // refreshSubscription();
+
+    //TODO refreshSubscription
+    refreshSubscription();
   }
 
   void _selectRoomById(String id) {
@@ -169,10 +170,10 @@ class MessengerRepository {
       }
     }
 
-    createEmptyRoom(announcement);
+    _createEmptyRoom(announcement);
   }
 
-  void createEmptyRoom(Announcement announcement) {
+  void _createEmptyRoom(Announcement announcement) {
     currentRoom = Room(
         id: _needCreateRoomId,
         chatName: '',

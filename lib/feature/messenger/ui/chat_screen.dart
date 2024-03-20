@@ -187,10 +187,11 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Column(
               children: [
                 Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: AnnouncementShortInfo(
-                        announcement:
-                            messengerRepository.currentRoom!.announcement)),
+                  padding: const EdgeInsets.all(15),
+                  child: AnnouncementShortInfo(
+                    announcement: messengerRepository.currentRoom!.announcement,
+                  ),
+                ),
                 Expanded(
                   child: Padding(
                     padding:
@@ -313,7 +314,8 @@ class _ChatScreenState extends State<ChatScreen> {
         });
       }).catchError((err) {
         CustomSnackBar.showSnackBar(context, err.toString());
-      });
+        //TODO timeout
+      }).timeout(const Duration(seconds: 2));
     }
   }
 

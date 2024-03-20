@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/marks/select_mark_cubit.dart';
 import 'package:smart/feature/create_announcement/data/models/mark.dart';
+import 'package:smart/feature/create_announcement/data/models/mark_model.dart';
 import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
 import 'package:smart/utils/utils.dart';
+import 'package:smart/widgets/checkBox/custom_check_box.dart';
 
 class MarkWidget extends StatefulWidget {
   const MarkWidget({
@@ -12,11 +14,13 @@ class MarkWidget extends StatefulWidget {
     required this.mark,
     required this.needSelectModel,
     required this.subcategory,
+    required this.onModelSelected,
   });
 
   final Mark mark;
   final bool needSelectModel;
   final String subcategory;
+  final Function(MarkModel) onModelSelected;
 
   @override
   State<MarkWidget> createState() => _MarkWidgetState();
@@ -24,9 +28,12 @@ class MarkWidget extends StatefulWidget {
 
 class _MarkWidgetState extends State<MarkWidget> {
   bool opened = false;
+  String _selectedModelId = '';
 
   @override
   Widget build(BuildContext context) {
+    final url =
+        widget.mark.image?.trim().replaceAll('\r', '').replaceAll('\n', '');
     // final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
 
     return Column(
@@ -69,9 +76,13 @@ class _MarkWidgetState extends State<MarkWidget> {
                 SizedBox(
                   height: 24,
                   width: 28,
-                  child: widget.mark.image != null
+                  child: url != null
                       ? CachedNetworkImage(
-                          imageUrl: widget.mark.image!,
+                          imageUrl: url,
+                          fadeInDuration: Duration.zero,
+                          errorWidget: (context, error, stackTrace) {
+                            return Container();
+                          },
                         )
                       : Container(),
                 ),
@@ -106,22 +117,29 @@ class _MarkWidgetState extends State<MarkWidget> {
                     children: List.generate(
                   state.models.length,
                   (index) => InkWell(
-                    onTap: () {
-                      // updateAppBarFilterCubit.needUpdateAppBarFilters();
-                      Navigator.pop(context, [
-                        MarksFilter(
-                          markId: widget.mark.id,
-                          modelId: state.models[index].id,
-                          markTitle: widget.mark.name,
-                          modelTitle: state.models[index].name,
-                        ),
-                      ]);
-                    },
+                    onTap: () => _onModelSelected(state.models[index]),
+                    // onTap: () {
+                    //   // updateAppBarFilterCubit.needUpdateAppBarFilters();
+                    //   Navigator.pop(context, [
+                    //     MarksFilter(
+                    //       markId: widget.mark.id,
+                    //       modelId: state.models[index].id,
+                    //       markTitle: widget.mark.name,
+                    //       modelTitle: state.models[index].name,
+                    //     ),
+                    //   ]);
+                    // },
                     child: Padding(
                       padding: const EdgeInsets.only(left: 28.0, right: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          CustomCheckBox(
+                            isActive:
+                                state.models[index].id == _selectedModelId,
+                            onChanged: () =>
+                                _onModelSelected(state.models[index]),
+                          ),
                           Expanded(
                             child: Text(
                               state.models[index].name,
@@ -155,5 +173,12 @@ class _MarkWidgetState extends State<MarkWidget> {
         ]
       ],
     );
+  }
+
+  void _onModelSelected(MarkModel model) {
+    widget.onModelSelected(model);
+    setState(() {
+      _selectedModelId = model.id;
+    });
   }
 }

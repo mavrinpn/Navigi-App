@@ -44,8 +44,10 @@ class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
     context
         .read<AnnouncementEditCubit>()
         .setAnnouncement(widget.announcement)
-        .then((value) =>
-            Navigator.pushNamed(context, AppRoutesNames.editingAnnouncement));
+        .then((value) => Navigator.pushReplacementNamed(
+              context,
+              AppRoutesNames.editingAnnouncement,
+            ));
   }
 
   void deleteAnnouncement() {

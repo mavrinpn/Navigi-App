@@ -40,9 +40,7 @@ class AnnouncementShortInfo extends StatelessWidget {
           children: [
             AnnouncementImage(
                 announcement: announcement, width: 65, height: 55),
-            const SizedBox(
-              width: 10,
-            ),
+            const SizedBox(width: 10),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,

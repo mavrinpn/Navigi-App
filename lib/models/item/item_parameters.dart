@@ -22,6 +22,15 @@ class ItemParameters {
       };
       return jsonEncode(map);
     }
+    if (parameter is TextParameter) {
+      final Map map = {
+        'nameAr': parameter.arName,
+        'nameFr': parameter.frName,
+        'id': parameter.key,
+        'currentValue': parameter.currentValue
+      };
+      return jsonEncode(map);
+    }
     return '';
   }
 

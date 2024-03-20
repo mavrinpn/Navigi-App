@@ -8,20 +8,18 @@ class ParametersSection extends StatelessWidget {
   final AnnouncementEditCubit cubit;
 
   Widget getParameters() {
+    print('getParameters');
     try {
       return Column(
         mainAxisSize: MainAxisSize.min,
-        children: (cubit.data.parameters != null
-            ? []
-            : [])
-            .map((e) =>
-            CustomDropDownSingleCheckBox(
-              parameter: e,
-              onChange: (value) {
-                cubit.setParameterValue(e.key, value);
-              },
-              currentKey: e.currentValue,
-            ))
+        children: (cubit.data?.parameters != null ? [] : [])
+            .map((e) => CustomDropDownSingleCheckBox(
+                  parameter: e,
+                  onChange: (value) {
+                    cubit.setParameterValue(e.key, value);
+                  },
+                  currentKey: e.currentValue,
+                ))
             .toList(),
       );
     } catch (e) {
@@ -31,8 +29,6 @@ class ParametersSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-        child: getParameters()
-    );
+    return SliverToBoxAdapter(child: getParameters());
   }
 }

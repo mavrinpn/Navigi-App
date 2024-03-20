@@ -31,7 +31,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
     required String subcategoryId,
   }) async {
     if (parameters.hasMark) {
-      final List<MarksFilter>? marksFilters = await Navigator.push(
+      final List<MarksFilter?> marksFilters = await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (_) => SelectMarkScreen(
@@ -40,7 +40,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
           ),
         ),
       );
-      return marksFilters?.firstOrNull;
+      return marksFilters.firstOrNull;
     } else {
       return null;
     }

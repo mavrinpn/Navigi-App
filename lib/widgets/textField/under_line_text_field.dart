@@ -6,8 +6,6 @@ import 'package:smart/widgets/checkBox/custom_check_box.dart';
 
 import '../../utils/fonts.dart';
 
-
-
 class UnderLineTextField extends StatelessWidget {
   final double width;
   final double height;
@@ -21,6 +19,7 @@ class UnderLineTextField extends StatelessWidget {
   final Function(dynamic)? onTapOutside;
   // final String suffixIcon;
   final PriceType? priceType;
+  final List<PriceType> availableTypes;
   final Function(PriceType)? onChangePriceType;
   final String? Function(String?)? validator;
   final bool error;
@@ -40,6 +39,7 @@ class UnderLineTextField extends StatelessWidget {
     this.validator,
     //required this.suffixIcon,
     this.onChangePriceType,
+    this.availableTypes = const [],
     this.priceType,
     this.error = false,
   }) : super(key: key);
@@ -83,7 +83,8 @@ class UnderLineTextField extends StatelessWidget {
                   onTap: () {
                     _showPriceTypeModal(
                       context: context,
-                      priceType: priceType ?? PriceType.dzd,
+                      priceType: priceType ?? availableTypes.first,
+                      availableTypes: availableTypes,
                     ).then((value) {
                       if (value != null) {
                         onChangePriceType!(value);
@@ -112,6 +113,7 @@ class UnderLineTextField extends StatelessWidget {
   Future<PriceType?> _showPriceTypeModal({
     required BuildContext context,
     required PriceType priceType,
+    required List<PriceType> availableTypes,
   }) {
     final localizations = AppLocalizations.of(context)!;
 
@@ -140,54 +142,60 @@ class UnderLineTextField extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                GestureDetector(
-                  onTap: () => Navigator.of(contex).pop(PriceType.dzd),
-                  child: Row(
-                    children: [
-                      CustomCheckBox(
-                        isActive: priceType == PriceType.dzd,
-                        onChanged: () =>
-                            Navigator.of(contex).pop(PriceType.dzd),
-                      ),
-                      Text(
-                        localizations.dzd,
-                        style: AppTypography.font14black.copyWith(fontSize: 16),
-                      ),
-                    ],
+                if (availableTypes.contains(PriceType.dzd))
+                  GestureDetector(
+                    onTap: () => Navigator.of(contex).pop(PriceType.dzd),
+                    child: Row(
+                      children: [
+                        CustomCheckBox(
+                          isActive: priceType == PriceType.dzd,
+                          onChanged: () =>
+                              Navigator.of(contex).pop(PriceType.dzd),
+                        ),
+                        Text(
+                          localizations.dzd,
+                          style:
+                              AppTypography.font14black.copyWith(fontSize: 16),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () => Navigator.of(contex).pop(PriceType.mln),
-                  child: Row(
-                    children: [
-                      CustomCheckBox(
-                        isActive: priceType == PriceType.mln,
-                        onChanged: () =>
-                            Navigator.of(contex).pop(PriceType.mln),
-                      ),
-                      Text(
-                        localizations.mln,
-                        style: AppTypography.font14black.copyWith(fontSize: 16),
-                      ),
-                    ],
+                if (availableTypes.contains(PriceType.mln))
+                  GestureDetector(
+                    onTap: () => Navigator.of(contex).pop(PriceType.mln),
+                    child: Row(
+                      children: [
+                        CustomCheckBox(
+                          isActive: priceType == PriceType.mln,
+                          onChanged: () =>
+                              Navigator.of(contex).pop(PriceType.mln),
+                        ),
+                        Text(
+                          localizations.mln,
+                          style:
+                              AppTypography.font14black.copyWith(fontSize: 16),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () => Navigator.of(contex).pop(PriceType.mlrd),
-                  child: Row(
-                    children: [
-                      CustomCheckBox(
-                        isActive: priceType == PriceType.mlrd,
-                        onChanged: () =>
-                            Navigator.of(contex).pop(PriceType.mlrd),
-                      ),
-                      Text(
-                        localizations.mlrd,
-                        style: AppTypography.font14black.copyWith(fontSize: 16),
-                      ),
-                    ],
+                if (availableTypes.contains(PriceType.mlrd))
+                  GestureDetector(
+                    onTap: () => Navigator.of(contex).pop(PriceType.mlrd),
+                    child: Row(
+                      children: [
+                        CustomCheckBox(
+                          isActive: priceType == PriceType.mlrd,
+                          onChanged: () =>
+                              Navigator.of(contex).pop(PriceType.mlrd),
+                        ),
+                        Text(
+                          localizations.mlrd,
+                          style:
+                              AppTypography.font14black.copyWith(fontSize: 16),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           ),

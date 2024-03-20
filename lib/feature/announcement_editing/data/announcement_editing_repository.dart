@@ -50,6 +50,11 @@ class AnnouncementEditingRepository {
 
   void setTitle(String newValue) => editData!.title = newValue;
 
+  void setPlace(CityDistrict newPlace) {
+    editData!.cityId = newPlace.cityId;
+    editData!.areaId = newPlace.id;
+  }
+
   void setDescription(String newValue) => editData!.description = newValue;
 
   void setPrice(double newValue) => editData!.price = newValue;

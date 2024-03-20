@@ -35,10 +35,10 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
 
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
     _priceType = searchCubit.priceType;
-    _minPriceController =
-        TextEditingController(text: _priceType.convertDzdToCurrencyString(searchCubit.minPrice));
-    _maxPriceController =
-        TextEditingController(text: _priceType.convertDzdToCurrencyString(searchCubit.maxPrice));
+    _minPriceController = TextEditingController(
+        text: _priceType.convertDzdToCurrencyString(searchCubit.minPrice));
+    _maxPriceController = TextEditingController(
+        text: _priceType.convertDzdToCurrencyString(searchCubit.maxPrice));
   }
 
   @override
@@ -47,7 +47,6 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
     final selectCategoryCubit =
         BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
-
 
     return Container(
       // height: MediaQuery.sizeOf(context).height * 0.8,
@@ -76,6 +75,7 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
                   minPriceController: _minPriceController,
                   maxPriceController: _maxPriceController,
                   priceType: _priceType,
+                  subcategoryId: selectCategoryCubit.subcategoryId ?? '',
                   onChangePriceType: (priceType) {
                     setState(() {
                       _priceType = priceType;

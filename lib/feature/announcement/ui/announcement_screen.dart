@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:smart/feature/announcement/ui/dialogs/market_price_bottom_sheet.dart';
 import 'package:smart/feature/announcement/ui/dialogs/offer_price_bottom_sheet.dart';
+import 'package:smart/feature/announcement/ui/widgets/market_price_widget.dart';
 import 'package:smart/feature/announcement/ui/widgets/related_announcement_widget.dart';
 import 'package:smart/feature/create_announcement/bloc/creating_blocs.dart';
 import 'package:smart/feature/messenger/chat_function.dart';
@@ -16,7 +16,7 @@ import 'package:smart/feature/announcement/ui/widgets/settings_bottom_sheet.dart
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
-import 'package:smart/utils/app_icons_icons.dart';
+import 'package:smart/utils/constants.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
@@ -221,8 +221,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => Aboba(
-                                        placeData: state.data.placeData,
+                                  builder: (_) => MapScreen(
+                                        placeData: state.data.area,
                                       )));
                         },
                         child: Row(
@@ -232,7 +232,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             RichText(
                                 text: TextSpan(children: [
                               TextSpan(
-                                  text: ' ${state.data.placeData.name}',
+                                  text: ' ${state.data.area.name}',
                                   style: AppTypography.font14black),
                             ]))
                           ],
@@ -253,11 +253,13 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         ],
                       ),
                     ),
-                    _MarketPrice(
-                      onTap: () {
-                        showMarketPriceDialog(context: context);
-                      },
-                    ),
+                    if (state.data.subcategoryId == carSubcategoryId)
+                      MarketPriceWidget(
+                        announcement: state.data,
+                        // onTap: () {
+                        //   showMarketPriceDialog(context: context);
+                        // },
+                      ),
                     Row(
                       children: [
                         CustomTextButton.withIcon(
@@ -406,55 +408,6 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
           );
         }
       },
-    );
-  }
-}
-
-class _MarketPrice extends StatelessWidget {
-  const _MarketPrice({
-    required this.onTap,
-  });
-
-  final Function() onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-
-    return GestureDetector(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(15, 0, 2, 5),
-        child: FittedBox(
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Icon(AppIcons.stat),
-              const SizedBox(width: 6),
-              Text(
-                localizations.marketPrice,
-                style: AppTypography.font14black,
-              ),
-              const SizedBox(width: 6),
-              Text(
-                '18 000 - 21 500 DZD',
-                style: AppTypography.font14black.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(width: 2),
-              TextButton(
-                onPressed: onTap,
-                child: Text(
-                  localizations.detail,
-                  style: AppTypography.font14red,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

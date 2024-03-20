@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/marks/select_mark_cubit.dart';
+import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
 import 'package:smart/feature/create_announcement/ui/widgets/appbar_bottom_searchbar.dart';
 import 'package:smart/feature/create_announcement/ui/widgets/mark_widget.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:smart/widgets/button/custom_text_button.dart';
 
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
@@ -29,6 +31,7 @@ class SelectMarkScreen extends StatefulWidget {
 class _SelectMarkScreenState extends State<SelectMarkScreen> {
   bool marksPreloaded = false;
   String _searchString = '';
+  MarksFilter? _marksFilter;
 
   @override
   void initState() {
@@ -92,10 +95,19 @@ class _SelectMarkScreenState extends State<SelectMarkScreen> {
               children: cubit.marks
                   .where((element) =>
                       element.name.toLowerCase().startsWith(_searchString))
-                  .map((e) => MarkWidget(
-                        mark: e,
+                  .map((mark) => MarkWidget(
+                        mark: mark,
                         needSelectModel: widget.needSelectModel,
                         subcategory: widget.subcategory,
+                        onModelSelected: (model) {
+                          _marksFilter = MarksFilter(
+                            markId: mark.id,
+                            modelId: model.id,
+                            markTitle: mark.name,
+                            modelTitle: model.name,
+                          );
+                          setState(() {});
+                        },
                       ))
                   .toList(),
             );
@@ -108,6 +120,16 @@ class _SelectMarkScreenState extends State<SelectMarkScreen> {
           }
         },
       ),
+      floatingActionButton: _marksFilter != null
+          ? CustomTextButton.orangeContinue(
+              width: MediaQuery.of(context).size.width - 30,
+              text: localizations.done,
+              callback: () {
+                Navigator.pop(context, [_marksFilter]);
+              },
+              active: true,
+            )
+          : null,
     );
   }
 

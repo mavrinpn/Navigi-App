@@ -28,8 +28,11 @@ class AppCubit extends Cubit<AppState> {
         favouritesManager.userId = appRepository.userId;
         favouritesManager.getFavourites();
         messengerRepository.userId = appRepository.userId;
+
+        //TODO preloadChats
         messengerRepository.preloadChats();
         messengerRepository.refreshSubscription();
+
         emit(AppAuthState());
       }
       if (event == AuthStateEnum.unAuth) {

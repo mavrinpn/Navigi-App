@@ -25,10 +25,10 @@ class CityDistrict {
         longitude = json['longitude'] ?? _defaultLongitude,
         name = json['name'];
 
-  CityDistrict.fish()
-      : latitude = 37.570802,
-        longitude = 126.975959,
-        name = 'Séoul',
-        cityId = 'asdasdawfe',
-        id = '64a69ed363ce7489b87c';
+  CityDistrict.none()
+      : latitude = _defaultLatitude,
+        longitude = _defaultLongitude,
+        name = 'Not specified',
+        cityId = 'Not specified',
+        id = '0';
 }

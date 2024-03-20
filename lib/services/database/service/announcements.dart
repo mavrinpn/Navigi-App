@@ -298,6 +298,8 @@ class AnnouncementsService {
         'price': editData.price,
         'price_type': editData.priceType.name,
         'title': editData.title,
+        'city_id': editData.cityId,
+        'area_id': editData.areaId,
       },
     );
   }

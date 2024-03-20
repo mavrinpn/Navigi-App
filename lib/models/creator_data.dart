@@ -19,11 +19,11 @@ class CreatorData {
     this.verified = false,
   })  : _distance = d,
         imageUrl = '',
-        place = CityDistrict.fish();
+        place = CityDistrict.none();
 
   CreatorData.fromJson({required Map<String, dynamic> data})
       : _distance = 4,
-        place = CityDistrict.fish(),
+        place = CityDistrict.none(),
         name = data['name'] ?? '',
         phone = data['phone'] ?? '',
         score = data['score'] != null

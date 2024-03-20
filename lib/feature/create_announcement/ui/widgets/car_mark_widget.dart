@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/car_model/car_models_cubit.dart';
-import 'package:smart/feature/create_announcement/data/models/car_filter.dart';
+import 'package:smart/feature/create_announcement/data/models/car_model.dart';
 import 'package:smart/feature/create_announcement/data/models/mark.dart';
 import 'package:smart/utils/utils.dart';
+import 'package:smart/widgets/checkBox/custom_check_box.dart';
 
 class CarMarkWidget extends StatefulWidget {
   const CarMarkWidget({
@@ -11,11 +13,13 @@ class CarMarkWidget extends StatefulWidget {
     required this.mark,
     required this.subcategory,
     required this.needSelectModel,
+    required this.onModelSelected,
   });
 
   final Mark mark;
   final String subcategory;
   final bool needSelectModel;
+  final Function(CarModel) onModelSelected;
 
   @override
   State<CarMarkWidget> createState() => _CarMarkWidgetState();
@@ -23,6 +27,7 @@ class CarMarkWidget extends StatefulWidget {
 
 class _CarMarkWidgetState extends State<CarMarkWidget> {
   bool opened = false;
+  String _selectedModelId = '';
 
   @override
   Widget build(BuildContext context) {
@@ -60,19 +65,13 @@ class _CarMarkWidgetState extends State<CarMarkWidget> {
                   height: 24,
                   width: 28,
                   child: url != null
-                      ? Image.network(
-                          url,
-                          errorBuilder: (context, error, stackTrace) {
+                      ? CachedNetworkImage(
+                          imageUrl: url,
+                          fadeInDuration: Duration.zero,
+                          errorWidget: (context, error, stackTrace) {
                             return Container();
                           },
                         )
-                      // ? CachedNetworkImage( //TODO CachedNetworkImage
-                      //     imageUrl:
-                      //         widget.mark.image!.trim().replaceAll('\r', ''),
-                      //     errorWidget: (context, error, stackTrace) {
-                      //       return Container();
-                      //     },
-                      //   )
                       : Container(),
                 ),
                 const SizedBox(width: 6),
@@ -83,68 +82,71 @@ class _CarMarkWidgetState extends State<CarMarkWidget> {
                     style: AppTypography.font16black,
                   ),
                 ),
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
-                ),
+                RotatedBox(
+                  quarterTurns: opened ? 1 : 0,
+                  child: const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                  ),
+                )
               ],
             ),
           ),
         ),
         if (opened) ...[
           BlocBuilder<CarModelsCubit, CarModelsState>(
-              builder: (context, state) {
-            if (state is ModelsLoadingState) {
-              if (state.markId != widget.mark.id) {
-                opened = false;
+            builder: (context, state) {
+              if (state is ModelsLoadingState) {
+                if (state.markId != widget.mark.id) {
+                  opened = false;
+                }
               }
-            }
-            if (state is ModelsSuccessState) {
-              return Column(
-                  children: List.generate(
-                state.models.length,
-                (index) => InkWell(
-                  onTap: () {
-                    final filter = CarFilter(
-                      markId: widget.mark.id,
-                      modelId: state.models[index].id,
-                      markTitle: widget.mark.name,
-                      modelTitle: state.models[index].name,
-                      stringDotations: state.models[index].variants,
-                      stringEngines: state.models[index].engines,
-                    );
-                    Navigator.pop(context, filter);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 28.0, right: 16),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              state.models[index].name,
-                              overflow: TextOverflow.ellipsis,
-                              style: AppTypography.font16black
-                                  .copyWith(fontWeight: FontWeight.w400),
+              if (state is ModelsSuccessState) {
+                return Column(
+                    children: List.generate(
+                  state.models.length,
+                  (index) => InkWell(
+                    onTap: () => _onModelSelected(state.models[index]),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 28.0, right: 16),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomCheckBox(
+                              isActive:
+                                  state.models[index].id == _selectedModelId,
+                              onChanged: () =>
+                                  _onModelSelected(state.models[index]),
                             ),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            size: 16,
-                          ),
-                        ]),
+                            Expanded(
+                              child: Text(
+                                state.models[index].name,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTypography.font16black
+                                    .copyWith(fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ]),
+                    ),
                   ),
-                ),
-              ));
-            } else {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [AppAnimations.bouncingLine],
-              );
-            }
-          })
+                ));
+              } else {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [AppAnimations.bouncingLine],
+                );
+              }
+            },
+          ),
         ]
       ],
     );
+  }
+
+  void _onModelSelected(CarModel model) {
+    widget.onModelSelected(model);
+    setState(() {
+      _selectedModelId = model.id;
+    });
   }
 }

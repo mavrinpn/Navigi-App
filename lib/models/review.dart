@@ -20,6 +20,7 @@ class Review {
     required this.score,
     required this.createdAt,
   });
+
   Review.fromJson(Map<String, dynamic> json)
       : id = json['\$id'],
         creator = UserData.fromJson(json['creator']),

@@ -21,7 +21,7 @@ class Announcement {
   List images;
   final String id;
   final StaticParameters staticParameters;
-  final CityDistrict placeData;
+  final CityDistrict area;
   final CreatorData creatorData;
   late final Widget previewImage;
   final String _createdAt;
@@ -49,7 +49,9 @@ class Announcement {
         id = json['\$id'],
         active = json['active'],
         itemId = json['itemId'],
-        placeData = CityDistrict.fromJson(json['place']) {
+        area = json['area'] != null
+            ? CityDistrict.fromJson(json['area'])
+            : CityDistrict.none() {
     var l = [];
     for (String i in images) {
       i.replaceAll('89.253.237.166', '143.244.206.96'); //admin.navigidz.online

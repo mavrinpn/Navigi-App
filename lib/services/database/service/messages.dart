@@ -76,9 +76,10 @@ class MessagesService {
 
   Future<Room> getRoom(String id, String userId) async {
     final doc = await _databases.getDocument(
-        databaseId: mainDatabase,
-        collectionId: roomsCollection,
-        documentId: id);
+      databaseId: mainDatabase,
+      collectionId: roomsCollection,
+      documentId: id,
+    );
 
     return _roomFromDoc(doc, userId);
   }
@@ -160,6 +161,20 @@ class MessagesService {
 
   Future<Map<String, dynamic>> createRoom(
       List<String> userIds, String announcementId) async {
+    final existRoom = await _databases.listDocuments(
+      databaseId: mainDatabase,
+      collectionId: roomsCollection,
+      queries: [
+        Query.equal('user1', userIds[0]),
+        Query.equal('user2', userIds[1]),
+        Query.equal('announcement', announcementId),
+      ],
+    );
+
+    if (existRoom.documents.isNotEmpty) {
+      return {'room': existRoom.documents.first.$id};
+    }
+
     final room = await _databases.createDocument(
       databaseId: mainDatabase,
       collectionId: roomsCollection,
@@ -198,7 +213,9 @@ class MessagesService {
         throw Exception('Error: ${res.responseStatusCode}');
       }
     } catch (err) {
-      throw Exception(err.toString());
+      // ignore: avoid_print
+      print(err);
+      // throw Exception(err.toString());
     }
 
     // print('errors: ${res.errors}');

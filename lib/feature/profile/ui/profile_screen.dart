@@ -30,6 +30,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
+  // String _loggedUserId = '';
   late TabController _tabController;
   bool _showAll = false;
   List<Announcement> _available = [];
@@ -39,11 +40,8 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   void initState() {
-    BlocProvider.of<CreatorCubit>(context)
-        .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
-    _tabController = TabController(length: 2, vsync: this);
-
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -177,7 +175,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                     ),
                     const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                    if (_available.isNotEmpty) ...[
+                    if (creatorState is CreatorSuccessState ||
+                        (_available.isNotEmpty)) ...[
+                      // if (_available.isNotEmpty) ...[
                       getGridHeight() == 100
                           ? SliverPadding(
                               padding: const EdgeInsets.symmetric(vertical: 40),
@@ -214,16 +214,20 @@ class _ProfileScreenState extends State<ProfileScreen>
                               separatorBuilder: (context, index) =>
                                   const SizedBox(height: 12),
                             )
-                    ] else ...[
+                    ],
+                    if (creatorState is CreatorLoadingState &&
+                        (_available.isEmpty)) ...[
                       SliverToBoxAdapter(
                         child: SizedBox(
-                          height: 50,
+                          height: 100,
                           width: 50,
                           child: AppAnimations.circleFadingAnimation,
                         ),
                       )
                     ],
-                    if (!_showAll)
+                    if (!_showAll &&
+                        (creatorState is CreatorSuccessState &&
+                            creatorState.available.length > 4))
                       SliverPadding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 14),
@@ -296,9 +300,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                     ),
                     const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 20,
-                      ),
+                      child: SizedBox(height: 20),
                     ),
                     SliverPadding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -348,6 +350,12 @@ class _ProfileScreenState extends State<ProfileScreen>
           actions: [
             CustomTextButton.orangeContinue(
               callback: () {
+                BlocProvider.of<CreatorCubit>(context).setUserId('');
+                setState(() {
+                  _available = [];
+                  _sold = [];
+                });
+
                 BlocProvider.of<AuthCubit>(context).logout();
                 Navigator.of(context).pop();
               },
