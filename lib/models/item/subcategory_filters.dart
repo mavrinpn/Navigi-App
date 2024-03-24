@@ -5,6 +5,9 @@ class SubcategoryFilters {
   final bool hasModel;
   final List<Parameter> parameters;
 
-  SubcategoryFilters(this.parameters,
-      {required this.hasMark, required this.hasModel});
+  SubcategoryFilters(
+    this.parameters, {
+    required this.hasMark,
+    required this.hasModel,
+  });
 }

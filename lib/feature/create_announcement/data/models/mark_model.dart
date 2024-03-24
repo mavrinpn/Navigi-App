@@ -8,7 +8,11 @@ class MarkModel {
   final String name;
   late final List<Parameter>? parameters;
 
-  MarkModel(this.id, this.name, String? encodedParameters) {
+  MarkModel(
+    this.id,
+    this.name,
+    String? encodedParameters,
+  ) {
     if (encodedParameters == null) {
       parameters = null;
     } else {

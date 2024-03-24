@@ -6,6 +6,7 @@ import 'package:smart/feature/announcement/ui/dialogs/offer_price_bottom_sheet.d
 import 'package:smart/feature/announcement/ui/widgets/market_price_widget.dart';
 import 'package:smart/feature/announcement/ui/widgets/related_announcement_widget.dart';
 import 'package:smart/feature/create_announcement/bloc/creating_blocs.dart';
+import 'package:smart/feature/create_announcement/bloc/mark_model/mark_model_cubit.dart';
 import 'package:smart/feature/messenger/chat_function.dart';
 import 'package:smart/main.dart';
 import 'package:smart/feature/announcement/ui/photo_view.dart';
@@ -59,6 +60,14 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     }
   }
 
+  void incContactsIfNeed(AnnouncementSuccessState state) {
+    final userId = RepositoryProvider.of<AuthRepository>(context).userId;
+    if (userId != state.data.creatorData.uid) {
+      RepositoryProvider.of<AnnouncementManager>(context)
+          .incContactsViews(state.data.id);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
@@ -74,6 +83,10 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
           context
               .read<SubcategoryCubit>()
               .loadSubcategory(subcategoryId: state.data.subcategoryId);
+          context.read<MarkModelCubit>().load(
+                markId: state.data.mark,
+                modelId: state.data.model,
+              );
         }
       },
       builder: (context, state) {
@@ -267,6 +280,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           disableColor: AppColors.red,
                           width: MediaQuery.of(context).size.width - 62,
                           callback: () {
+                            incContactsIfNeed(state);
                             checkBlockedAndPushChat(
                               context: context,
                               data: state.data,
@@ -283,6 +297,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         ),
                         CustomIconButton(
                           callback: () {
+                            incContactsIfNeed(state);
                             checkBlockedAndCall(
                               context: context,
                               userId: state.data.creatorData.uid,
@@ -302,6 +317,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           announcement: state.data,
                         ).then((offerPriceString) {
                           if (offerPriceString != null) {
+                            incContactsIfNeed(state);
                             checkBlockedAndPushChat(
                               context: context,
                               data: state.data,
@@ -347,6 +363,27 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                                     ? state.subcategory.nameFr
                                     : state.subcategory.nameAr,
                               ),
+                            ],
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                    BlocBuilder<MarkModelCubit, MarkModelState>(
+                      builder: (context, state) {
+                        if (state is MarkModelSuccessState) {
+                          return Column(
+                            children: [
+                              if (state.markName != null)
+                                ItemParameterWidget(
+                                  name: localizations.mark,
+                                  currentValue: state.markName!,
+                                ),
+                              if (state.modelName != null)
+                                ItemParameterWidget(
+                                  name: localizations.model,
+                                  currentValue: state.modelName!,
+                                ),
                             ],
                           );
                         }

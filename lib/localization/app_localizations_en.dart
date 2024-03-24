@@ -506,6 +506,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mark => 'Mark';
 
   @override
+  String get model => 'Model';
+
+  @override
   String get choosingCarBrand => 'Choosing a car brand';
 
   @override

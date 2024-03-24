@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (index == 1 && isUserAith) {
         final messengerRepository =
             RepositoryProvider.of<MessengerRepository>(context);
-        //TODO preloadChats
+        //* preloadChats
         messengerRepository.preloadChats();
         messengerRepository.refreshSubscription();
       }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/announcement/ui/widgets/settings_bottom_sheet.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
+import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
@@ -31,6 +32,18 @@ class AnnouncementContainerHorizontal extends StatefulWidget {
 class _AnnouncementContainerHorizontalState
     extends State<AnnouncementContainerHorizontal> {
   bool liked = false;
+  int? _likeCount;
+
+  @override
+  void initState() {
+    super.initState();
+    final favouritesManager = context.read<FavouritesCubit>().favouritesManager;
+    favouritesManager.count(widget.announcement.id).then((value) {
+      setState(() {
+        _likeCount = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +122,30 @@ class _AnnouncementContainerHorizontalState
                             const SizedBox(width: 4),
                             Text(
                               widget.announcement.totalViews.toString(),
+                              style: AppTypography.font12gray
+                                  .copyWith(color: AppColors.lightGray),
+                            ),
+                            const SizedBox(width: 20),
+                            SvgPicture.asset(
+                              'Assets/icons/person.svg',
+                              width: 12,
+                              fit: BoxFit.fitWidth,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              widget.announcement.contactsViews.toString(),
+                              style: AppTypography.font12gray
+                                  .copyWith(color: AppColors.lightGray),
+                            ),
+                            const SizedBox(width: 20),
+                            SvgPicture.asset(
+                              'Assets/icons/follow.svg',
+                              width: 16,
+                              fit: BoxFit.fitWidth,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              _likeCount != null ? _likeCount.toString() : '',
                               style: AppTypography.font12gray
                                   .copyWith(color: AppColors.lightGray),
                             ),

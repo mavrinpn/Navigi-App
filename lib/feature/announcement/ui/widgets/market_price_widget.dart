@@ -38,7 +38,8 @@ class _MarketPriceWidgetState extends State<MarketPriceWidget> {
         if (state is MediumPriceSuccessState) {
           final startPrice = state.mediumPrice * 0.9 / 10000;
           final endPrice = state.mediumPrice * 1.1 / 10000;
-          final price = '$startPrice - $endPrice MLN';
+          final price =
+              '${startPrice.toStringAsFixed(2)} - ${endPrice.toStringAsFixed(2)} MLN';
 
           return GestureDetector(
             onTap: () => showMarketPriceDialog(

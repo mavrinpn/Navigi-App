@@ -1097,6 +1097,12 @@ abstract class AppLocalizations {
   /// **'Mark'**
   String get mark;
 
+  /// No description provided for @model.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get model;
+
   /// No description provided for @choosingCarBrand.
   ///
   /// In en, this message translates to:

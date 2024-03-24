@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/announcement_editing/bloc/announcement_edit_cubit.dart';
+import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/models/announcement.dart';
@@ -58,6 +59,8 @@ class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
           .deleteAnnouncement(widget.announcement)
           .then((value) {
         Dialogs.hide(context);
+        BlocProvider.of<CreatorCubit>(context)
+            .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
         Navigator.popUntil(context, ModalRoute.withName(AppRoutesNames.root));
       });
     } catch (e) {

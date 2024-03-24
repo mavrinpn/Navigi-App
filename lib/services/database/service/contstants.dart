@@ -10,6 +10,7 @@ const String categoryId = 'categoryId';
 const String subcategoryId = 'subcategory';
 
 const String totalViews = 'total_views';
+const String contactsViews = 'contacts_views';
 
 const String userName = 'name';
 const String userPhone = 'phone';

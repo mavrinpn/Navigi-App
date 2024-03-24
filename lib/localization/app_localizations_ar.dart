@@ -506,6 +506,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mark => 'مارك';
 
   @override
+  String get model => 'نموذج';
+
+  @override
   String get choosingCarBrand => 'اختيار ماركة السيارة';
 
   @override

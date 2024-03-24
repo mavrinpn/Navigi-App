@@ -13,8 +13,13 @@ class AnnouncementEditData {
   String description;
   double price;
   PriceType priceType;
-  ItemParameters? parameters;
+  StaticParameters staticParameters;
+  List<Parameter> parameters;
   List<dynamic> images;
+  String modelId;
+  String markId;
+  double longitude;
+  double latitude;
 
   AnnouncementEditData.fromAnnouncement(Announcement announcement)
       : id = announcement.id,
@@ -26,19 +31,31 @@ class AnnouncementEditData {
         area = announcement.area,
         images = announcement.images,
         price = announcement.price,
-        priceType = announcement.priceType;
+        priceType = announcement.priceType,
+        staticParameters = announcement.staticParameters,
+        modelId = announcement.model,
+        markId = announcement.mark,
+        longitude = announcement.longitude,
+        latitude = announcement.latitude,
+        parameters = [];
 
-  mergeParameters(StaticParameters staticParameters) {
-    for (var parameter in []) {
-      for (var staticParameter in staticParameters.parameters) {
-        if (parameter.key == staticParameter.key) {
-          // parameter.setVariant(staticParameter.currentValue);
-        }
-      }
-    }
-  }
+  // mergeParameters(StaticParameters staticParameters) {
+  //   for (var parameter in []) {
+  //     for (var staticParameter in staticParameters.parameters) {
+  //       if (parameter.key == staticParameter.key) {
+  //         // parameter.setVariant(staticParameter.currentValue);
+  //       }
+  //     }
+  //   }
+  // }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson(
+    String newSubcollectionId,
+    String? newMarkId,
+    String? newModelId,
+    List<Parameter> parametersWithMarkAndModel,
+  ) =>
+      {
         'name': title,
         'description': description,
         'city_id': cityId,
@@ -46,10 +63,13 @@ class AnnouncementEditData {
         'area': areaId,
         'price': price,
         'price_type': priceType.name,
-        //TODO
-        // 'parametrs': parameters != null
-        //     ? parameters!.buildJsonFormatParameters(addParameters: [])
-        //     : "[]",
+        'parametrs': ItemParameters().buildJsonFormatParameters(
+            addParameters: parametersWithMarkAndModel),
         'images': images,
+        'mark': newMarkId ?? markId,
+        'model': newModelId ?? modelId,
+        'subcategoryId': newSubcollectionId,
+        'longitude': longitude,
+        'latitude': latitude,
       };
 }

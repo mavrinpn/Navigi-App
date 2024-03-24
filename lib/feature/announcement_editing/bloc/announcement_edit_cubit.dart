@@ -3,9 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:smart/feature/announcement_editing/data/announcement_editing_repository.dart';
 import 'package:smart/feature/announcement_editing/data/models/edit_data.dart';
 import 'package:smart/feature/announcement_editing/data/models/image_data.dart';
+import 'package:smart/feature/create_announcement/data/models/car_filter.dart';
+import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
 import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/models/item/item.dart';
+import 'package:smart/models/item/subcategory_filters.dart';
 import 'package:smart/services/parameters_parser.dart';
 import 'package:smart/utils/price_type.dart';
 
@@ -43,6 +46,19 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
     if (newPlace != null) {
       repository.setPlace(newPlace);
     }
+  }
+
+  void onParametersChanged(
+      {required List<Parameter> newParamaters,
+      required CarFilter? newCarFilter,
+      required MarksFilter? newMarksFilter,
+      required SubcategoryFilters? newSubcategoryFilters}) {
+    repository.setParameters(
+      newParameters: newParamaters,
+      carFilter: newCarFilter,
+      marksFilter: newMarksFilter,
+      subcategoryFilters: newSubcategoryFilters,
+    );
   }
 
   void setParameterValue(String parameterKey, ParameterOption value) {
@@ -83,10 +99,18 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
     emit(AnnouncementChangeImages());
   }
 
-  void saveChanges() async {
+  void saveChanges(
+    String? newSubcategiryid,
+    String? newMarkId,
+    String? newModelId,
+  ) async {
     emit(AnnouncementEditLoading());
     try {
-      await repository.saveChanges();
+      await repository.saveChanges(
+        newSubcategiryid,
+        newMarkId,
+        newModelId,
+      );
       emit(AnnouncementEditSuccess());
     } catch (e) {
       emit(AnnouncementEditFail());

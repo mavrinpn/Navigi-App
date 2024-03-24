@@ -10,6 +10,7 @@ import 'package:smart/feature/create_announcement/bloc/car_model/car_models_cubi
 import 'package:smart/feature/create_announcement/bloc/category/category_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/creating/creating_announcement_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/item_search/item_search_cubit.dart';
+import 'package:smart/feature/create_announcement/bloc/mark_model/mark_model_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/marks/select_mark_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/subcategory/subcategory_cubit.dart';
@@ -24,6 +25,7 @@ import 'package:smart/feature/search/bloc/select_subcategory/search_select_subca
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/managers/blocked_users_manager.dart';
 import 'package:smart/managers/favourites_manager.dart';
+import 'package:smart/managers/mark_model_manager.dart';
 import 'package:smart/managers/meduim_price_manager.dart';
 import 'package:smart/managers/reviews_manager.dart';
 import 'package:smart/services/database/database_service.dart';
@@ -88,6 +90,11 @@ class MyRepositoryProviders extends StatelessWidget {
         create: (_) => ReviewsManager(
           databaseService: databaseService,
           client: client,
+        ),
+      ),
+      RepositoryProvider(
+        create: (_) => MarkModelManager(
+          databaseService: databaseService,
         ),
       ),
       RepositoryProvider(
@@ -166,6 +173,12 @@ class MyBlocProviders extends StatelessWidget {
                 RepositoryProvider.of<CreatingAnnouncementManager>(context),
             categoriesManager:
                 RepositoryProvider.of<CategoriesManager>(context)),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => MarkModelCubit(
+          markModelManager: RepositoryProvider.of<MarkModelManager>(context),
+        ),
         lazy: false,
       ),
       BlocProvider(

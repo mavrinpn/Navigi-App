@@ -4,7 +4,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:smart/feature/announcement_editing/data/models/edit_data.dart';
 import 'package:smart/feature/announcement_editing/data/models/image_data.dart';
 import 'package:smart/feature/announcement_editing/data/images.dart';
+import 'package:smart/feature/create_announcement/data/models/car_filter.dart';
+import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
 import 'package:smart/models/announcement.dart';
+import 'package:smart/models/item/item.dart';
+import 'package:smart/models/item/subcategory_filters.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/storage_service.dart';
 import 'package:smart/utils/constants.dart';
@@ -55,6 +59,63 @@ class AnnouncementEditingRepository {
     editData!.areaId = newPlace.id;
   }
 
+  void setParameters({
+    required List<Parameter> newParameters,
+    required CarFilter? carFilter,
+    required MarksFilter? marksFilter,
+    required SubcategoryFilters? subcategoryFilters,
+  }) {
+    final List<Parameter> parameters = [];
+
+    // if (carFilter != null) {
+    //   if (subcategoryFilters?.hasMark ?? false) {
+    //     parameters.add(
+    //       TextParameter(
+    //         key: 'car_mark',
+    //         arName: 'العلامة التجارية',
+    //         frName: 'Marque',
+    //         value: carFilter.markTitle,
+    //       ),
+    //     );
+    //   }
+    //   if (subcategoryFilters?.hasModel ?? false) {
+    //     parameters.add(
+    //       TextParameter(
+    //         key: 'car_model',
+    //         arName: 'نموذج',
+    //         frName: 'Modèle',
+    //         value: carFilter.modelTitle,
+    //       ),
+    //     );
+    //   }
+    // }
+
+    // if (marksFilter != null) {
+    //   if (subcategoryFilters?.hasMark ?? false) {
+    //     parameters.add(
+    //       TextParameter(
+    //         key: 'mark',
+    //         arName: 'العلامة التجارية',
+    //         frName: 'Marque',
+    //         value: marksFilter.markTitle,
+    //       ),
+    //     );
+    //   }
+    //   if (subcategoryFilters?.hasModel ?? false) {
+    //     parameters.add(
+    //       TextParameter(
+    //         key: 'model',
+    //         arName: 'نموذج',
+    //         frName: 'Modèle',
+    //         value: marksFilter.modelTitle,
+    //       ),
+    //     );
+    //   }
+    // }
+    parameters.addAll(newParameters);
+    editData!.parameters = parameters;
+  }
+
   void setDescription(String newValue) => editData!.description = newValue;
 
   void setPrice(double newValue) => editData!.price = newValue;
@@ -67,9 +128,18 @@ class AnnouncementEditingRepository {
     }
   }
 
-  Future saveChanges() async {
+  Future saveChanges(
+    String? newSubcategiryid,
+    String? newMarkId,
+    String? newModelId,
+  ) async {
     await _saveImagesChanges();
-    await _databaseService.announcements.editAnnouncement(editData!);
+    await _databaseService.announcements.editAnnouncement(
+      editData: editData!,
+      newSubcategoryid: newSubcategiryid,
+      newMarkId: newMarkId,
+      newModelId: newModelId,
+    );
   }
 
   Future _saveImagesChanges() async {

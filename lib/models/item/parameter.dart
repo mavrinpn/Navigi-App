@@ -48,7 +48,9 @@ class SelectParameter implements Parameter {
   @override
   String toString() => '"$key": "$currentValue"';
 
-  void setVariant(dynamic value) => currentValue = value;
+  void setVariant(dynamic value) {
+    currentValue = value;
+  }
 }
 
 class InputParameter implements Parameter {

@@ -8,6 +8,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:smart/feature/create_announcement/data/models/car_filter.dart';
 import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
 import 'package:smart/models/announcement.dart';
+import 'package:smart/models/item/item.dart';
 import 'package:smart/models/item/subcategory_filters.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/utils/price_type.dart';
@@ -27,6 +28,8 @@ class CreatingAnnouncementManager {
   final _picker = ImagePicker();
 
   final List<SpecialAnnouncementOptions> specialOptions = [];
+
+  bool isCreating = false;
 
   CreatingAnnouncementManager({required this.client})
       : dbService = DatabaseService(client: client),
@@ -55,8 +58,8 @@ class CreatingAnnouncementManager {
     parameters.addAll(subcategoryFilters?.parameters ?? []);
 
     if (carFilter != null) {
-      parameters.add(carFilter!.dotation);
-      parameters.add(carFilter!.engine);
+      parameters.addAll([carFilter!.dotation]);
+      parameters.addAll([carFilter!.engine]);
     }
 
     if (marksFilter?.modelParameters != null) {
@@ -143,51 +146,51 @@ class CreatingAnnouncementManager {
     if (subcategoryFilters != null) {
       final List<Parameter> parameters = [];
       if (carFilter != null) {
-        if (subcategoryFilters!.hasMark) {
-          parameters.add(
-            TextParameter(
-              key: 'car_mark',
-              arName: 'العلامة التجارية',
-              frName: 'Marque',
-              value: carFilter!.markTitle,
-            ),
-          );
-        }
-        if (subcategoryFilters!.hasModel) {
-          parameters.add(
-            TextParameter(
-              key: 'car_model',
-              arName: 'نموذج',
-              frName: 'Modèle',
-              value: carFilter!.modelTitle,
-            ),
-          );
-        }
+        // if (subcategoryFilters!.hasMark) {
+        //   parameters.add(
+        //     TextParameter(
+        //       key: 'car_mark',
+        //       arName: 'العلامة التجارية',
+        //       frName: 'Marque',
+        //       value: carFilter!.markTitle,
+        //     ),
+        //   );
+        // }
+        // if (subcategoryFilters!.hasModel) {
+        //   parameters.add(
+        //     TextParameter(
+        //       key: 'car_model',
+        //       arName: 'نموذج',
+        //       frName: 'Modèle',
+        //       value: carFilter!.modelTitle,
+        //     ),
+        //   );
+        // }
         parameters.add(carFilter!.dotation);
         parameters.add(carFilter!.engine);
       }
 
       if (marksFilter != null) {
-        if (subcategoryFilters!.hasMark) {
-          parameters.add(
-            TextParameter(
-              key: 'mark',
-              arName: 'العلامة التجارية',
-              frName: 'Marque',
-              value: marksFilter!.markTitle,
-            ),
-          );
-        }
-        if (subcategoryFilters!.hasModel) {
-          parameters.add(
-            TextParameter(
-              key: 'model',
-              arName: 'نموذج',
-              frName: 'Modèle',
-              value: marksFilter!.modelTitle,
-            ),
-          );
-        }
+        // if (subcategoryFilters!.hasMark) {
+        //   parameters.add(
+        //     TextParameter(
+        //       key: 'mark',
+        //       arName: 'العلامة التجارية',
+        //       frName: 'Marque',
+        //       value: marksFilter!.markTitle,
+        //     ),
+        //   );
+        // }
+        // if (subcategoryFilters!.hasModel) {
+        //   parameters.add(
+        //     TextParameter(
+        //       key: 'model',
+        //       arName: 'نموذج',
+        //       frName: 'Modèle',
+        //       value: marksFilter!.modelTitle,
+        //     ),
+        //   );
+        // }
         //parameters.addAll(marksFilter!.modelParameters!);
       }
       parameters.addAll(subcategoryFilters!.parameters);

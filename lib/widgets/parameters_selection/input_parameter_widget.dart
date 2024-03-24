@@ -13,9 +13,14 @@ class InputParameterWidget extends StatefulWidget {
 }
 
 class _InputParameterWidgetState extends State<InputParameterWidget> {
-  final controller = TextEditingController();
-
+  late final controller = TextEditingController();
   bool error = false;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.text = '${widget.parameter.value ?? ''}';
+  }
 
   @override
   Widget build(BuildContext context) {

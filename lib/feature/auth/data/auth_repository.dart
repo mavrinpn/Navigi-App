@@ -207,14 +207,16 @@ class AuthRepository {
         email: email ?? _tempMail, password: password);
   }
 
-  Future<void> _authorizeWithCredentials(UserCredentials credentials,
-      {String? registrationName, bool needRegister = false}) async {
+  Future<void> _authorizeWithCredentials(
+    UserCredentials credentials, {
+    String? registrationName,
+    bool needRegister = false,
+  }) async {
     assert(!needRegister || needRegister && registrationName != null,
         'for registration required name');
     final promise = await _account.createEmailSession(
         email: credentials.mail, password: credentials.password);
     _user = await _account.get();
-
     await _saveSessionId(promise.$id);
     if (needRegister) {
       await _createUserData(credentials.mail, registrationName!);

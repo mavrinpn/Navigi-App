@@ -52,4 +52,6 @@ part 'service/reviews.dart';
 
 part 'service/medium_prices.dart';
 
+part 'service/models.dart';
+
 part 'service/blocked_users.dart';

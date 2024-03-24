@@ -86,4 +86,13 @@ class FavouritesService {
     }
     return announcements;
   }
+
+  Future<int> countLikes({required String postId}) async {
+    final docs = await _databases.listDocuments(
+        databaseId: mainDatabase,
+        collectionId: likesCollection,
+        queries: [Query.equal('postCollection', postId)]);
+
+    return docs.documents.length;
+  }
 }

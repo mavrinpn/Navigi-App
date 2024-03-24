@@ -192,6 +192,21 @@ class AnnouncementsService {
     );
   }
 
+  Future<void> incContactsViewsById(String id) async {
+    final res = await _databases.getDocument(
+      databaseId: mainDatabase,
+      collectionId: postCollection,
+      documentId: id,
+    );
+
+    await _databases.updateDocument(
+      databaseId: mainDatabase,
+      collectionId: postCollection,
+      documentId: id,
+      data: {contactsViews: res.data[contactsViews] + 1},
+    );
+  }
+
   Future<void> createAnnouncement(
     String uid,
     List<String> urls,
@@ -214,6 +229,18 @@ class AnnouncementsService {
       'latitude': lat,
       'longitude': lng,
     });
+
+    if (carFilter != null) {
+      data.addAll({'mark': carFilter.markId});
+      data.addAll({'model': carFilter.modelId});
+    }
+
+    if (marksFilter != null) {
+      data.addAll({'mark': marksFilter.markId});
+      if (marksFilter.modelId != null) {
+        data.addAll({'model': marksFilter.modelId});
+      }
+    }
 
     final doc = await _databases.createDocument(
       databaseId: mainDatabase,
@@ -282,26 +309,81 @@ class AnnouncementsService {
     return Announcement.fromJson(json: res.data, futureBytes: futureBytes);
   }
 
-  Future<void> editAnnouncement(AnnouncementEditData editData) async {
-    await _databases.updateDocument(
-      databaseId: mainDatabase,
-      collectionId: postCollection,
-      documentId: editData.id,
-      data: editData.toJson(),
+  Future<void> editAnnouncement({
+    required AnnouncementEditData editData,
+    required String? newSubcategoryid,
+    required String? newMarkId,
+    required String? newModelId,
+  }) async {
+    final subcollectionUpdateData = _subcollectionUpdateData(editData);
+
+    final postCollectionUpdateData = await _postCollectionUpdateData(
+      editData,
+      newSubcategoryid,
+      newMarkId,
+      newModelId,
     );
 
     await _databases.updateDocument(
       databaseId: mainDatabase,
-      collectionId: editData.subcollectionId,
+      collectionId: postCollection,
       documentId: editData.id,
-      data: {
-        'price': editData.price,
-        'price_type': editData.priceType.name,
-        'title': editData.title,
-        'city_id': editData.cityId,
-        'area_id': editData.areaId,
-      },
+      data: postCollectionUpdateData,
     );
+
+    if (newSubcategoryid != null &&
+        editData.subcollectionId != newSubcategoryid) {
+      final subcollectionCreateData = _subcollectionCreateData(editData);
+
+      // final existsDocument = await _databases.listDocuments(
+      //   databaseId: mainDatabase,
+      //   collectionId: newSubcategoryid,
+      //   queries: [Query.equal('\$id', editData.id)],
+      // );
+
+      // if (existsDocument.documents.isEmpty) {
+      //   await _databases.createDocument(
+      //     databaseId: mainDatabase,
+      //     collectionId: newSubcategoryid,
+      //     documentId: editData.id,
+      //     data: subcollectionCreateData,
+      //   );
+      // } else {
+      //   await _databases.updateDocument(
+      //     databaseId: mainDatabase,
+      //     collectionId: newSubcategoryid,
+      //     documentId: editData.id,
+      //     data: subcollectionCreateData,
+      //   );
+      // }
+
+      await _databases.createDocument(
+        databaseId: mainDatabase,
+        collectionId: newSubcategoryid,
+        documentId: editData.id,
+        data: subcollectionCreateData,
+      );
+
+      //* deleteDocument
+      await _databases.updateDocument(
+        databaseId: mainDatabase,
+        collectionId: editData.subcollectionId,
+        documentId: editData.id,
+        data: {'announcements': null},
+      );
+      await _databases.deleteDocument(
+        databaseId: mainDatabase,
+        collectionId: editData.subcollectionId,
+        documentId: editData.id,
+      );
+    } else {
+      await _databases.updateDocument(
+        databaseId: mainDatabase,
+        collectionId: editData.subcollectionId,
+        documentId: editData.id,
+        data: subcollectionUpdateData,
+      );
+    }
   }
 
   Future<void> deleteAnnouncement(String id) async {
@@ -322,5 +404,96 @@ class AnnouncementsService {
       collectionId: res.data['subcategoryId'],
       documentId: id,
     );
+  }
+
+  _subcollectionUpdateData(AnnouncementEditData editData) {
+    final subcollectionUpdateData = <String, dynamic>{
+      'price': editData.price,
+      'price_type': editData.priceType.name,
+      'title': editData.title,
+      'city_id': editData.cityId,
+      'area_id': editData.areaId,
+    };
+    for (var i in editData.parameters) {
+      subcollectionUpdateData.addAll(
+          {i.key: i is SelectParameter ? i.currentValue.key : i.currentValue});
+    }
+
+    return subcollectionUpdateData;
+  }
+
+  _postCollectionUpdateData(AnnouncementEditData editData,
+      String? newSubcategoryid, String? newMarkId, String? newModelId) async {
+    List<Parameter> parametersWithMarkAndModel = [];
+
+    // final mark = await _databases.getDocument(
+    //   databaseId: mainDatabase,
+    //   collectionId: marksCollection,
+    //   documentId: editData.markId,
+    // );
+    // if (mark.data['name'] != null) {
+    //   parametersWithMarkAndModel.add(
+    //     TextParameter(
+    //       key: 'car_mark',
+    //       arName: 'العلامة التجارية',
+    //       frName: 'Marque',
+    //       value: mark.data['name'],
+    //     ),
+    //   );
+    // }
+
+    // final model = await _databases.getDocument(
+    //   databaseId: mainDatabase,
+    //   collectionId: modelsCollection,
+    //   documentId: editData.modelId,
+    // );
+    // if (model.data['name'] != null) {
+    //   parametersWithMarkAndModel.add(
+    //     TextParameter(
+    //       key: 'car_model',
+    //       arName: 'نموذج',
+    //       frName: 'Modèle',
+    //       value: model.data['name'],
+    //     ),
+    //   );
+    // }
+
+    parametersWithMarkAndModel.addAll(editData.parameters);
+    final postCollectionUpdateData = editData.toJson(
+      newSubcategoryid ?? editData.subcollectionId,
+      newMarkId,
+      newModelId,
+      parametersWithMarkAndModel,
+    );
+    return postCollectionUpdateData;
+  }
+
+  _subcollectionCreateData(AnnouncementEditData editData) {
+    final subcollectionCreateData = <String, dynamic>{
+      'announcements': editData.id,
+      'latitude': editData.latitude,
+      'longitude': editData.longitude,
+      'price': editData.price,
+      'price_type': editData.priceType.name,
+      'title': editData.title,
+      'city_id': editData.cityId,
+      'area_id': editData.areaId,
+      'active': true,
+    };
+
+    if (editData.markId != '') {
+      subcollectionCreateData.addAll({'mark': editData.markId});
+    }
+
+    if (editData.modelId != '') {
+      subcollectionCreateData.addAll({'model': editData.modelId});
+    }
+
+    for (var i in editData.parameters) {
+      subcollectionCreateData.addAll(
+          {i.key: i is SelectParameter ? i.currentValue.key : i.currentValue});
+    }
+
+    return subcollectionCreateData;
   }
 }

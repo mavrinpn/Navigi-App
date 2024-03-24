@@ -3,8 +3,12 @@ import 'package:smart/models/item/item.dart';
 import 'package:smart/widgets/parameters_selection/custom_dropdown_single_pick.dart';
 
 class SelectParameterWidget extends StatefulWidget {
-  const SelectParameterWidget({super.key, required this.parameter});
+  const SelectParameterWidget({
+    super.key,
+    required this.parameter,
+  });
   final SelectParameter parameter;
+
   @override
   State<SelectParameterWidget> createState() => _SelectParameterWidgetState();
 }

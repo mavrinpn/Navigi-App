@@ -13,7 +13,8 @@ import '../../localization/app_localizations.dart';
 import '../../models/announcement.dart';
 
 class AccountSmallInfo extends StatefulWidget {
-  const AccountSmallInfo({super.key, required this.creatorData, required this.clickable});
+  const AccountSmallInfo(
+      {super.key, required this.creatorData, required this.clickable});
 
   final CreatorData creatorData;
   final bool clickable;
@@ -25,19 +26,22 @@ class AccountSmallInfo extends StatefulWidget {
 class _AccountSmallInfoState extends State<AccountSmallInfo> {
   @override
   Widget build(BuildContext context) {
-
     final localizations = AppLocalizations.of(context)!;
 
-    void onClick(){
-      BlocProvider.of<CreatorCubit>(context).setUserId(widget.creatorData.uid);
-      BlocProvider.of<CreatorCubit>(context).setUserData(widget.creatorData.toUserData());
+    void onClick() {
+      BlocProvider.of<CreatorCubit>(context).setUser(
+        creatorId: widget.creatorData.uid,
+        userData: widget.creatorData.toUserData(),
+      );
+      // BlocProvider.of<CreatorCubit>(context).setUserId(widget.creatorData.uid);
+      // BlocProvider.of<CreatorCubit>(context).setUserData(widget.creatorData.toUserData());
       Navigator.pushNamed(context, AppRoutesNames.announcementCreator);
     }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: InkWell(
-        onTap: widget.clickable? onClick : null,
+        onTap: widget.clickable ? onClick : null,
         child: Container(
           width: double.infinity,
           padding: const EdgeInsets.all(14),
@@ -85,8 +89,8 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                     children: [
                       Text(
                         localizations.seller,
-                        style:
-                            AppTypography.font14lightGray.copyWith(fontSize: 12),
+                        style: AppTypography.font14lightGray
+                            .copyWith(fontSize: 12),
                       ),
                       const SizedBox(
                         height: 5,

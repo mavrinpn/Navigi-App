@@ -506,6 +506,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get mark => 'Marque';
 
   @override
+  String get model => 'Model';
+
+  @override
   String get choosingCarBrand => 'La marque de voiture';
 
   @override

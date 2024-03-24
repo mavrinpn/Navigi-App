@@ -100,7 +100,7 @@ class _PriceWidgetState extends State<PriceWidget> {
                       width: MediaQuery.of(context).size.width * 0.4,
                       hintText: '',
                       keyBoardType: TextInputType.number,
-                      priceType: widget.priceType,
+                      priceType: _priceType,
                       availableTypes: _availableTypes,
                       onChangePriceType: (priceType) {
                         widget.onChangePriceType(priceType);

@@ -20,6 +20,7 @@ class AnnouncementManager {
   bool _canGetMoreAnnouncement = true;
 
   List<String> viewsAnnouncements = [];
+  List<String> contactsAnnouncements = [];
   List<Announcement> announcements = [];
   List<Announcement> searchAnnouncements = [];
   Announcement? lastAnnouncement;
@@ -102,6 +103,13 @@ class AnnouncementManager {
     if (!viewsAnnouncements.contains(id)) {
       dbService.announcements.incTotalViewsById(id);
       viewsAnnouncements.add(id);
+    }
+  }
+
+  void incContactsViews(String id) async {
+    if (!contactsAnnouncements.contains(id)) {
+      dbService.announcements.incContactsViewsById(id);
+      contactsAnnouncements.add(id);
     }
   }
 

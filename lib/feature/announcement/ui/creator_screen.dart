@@ -142,9 +142,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                   ),
                 ),
                 const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 25,
-                  ),
+                  child: SizedBox(height: 25),
                 ),
                 AnnouncementTypeTabs(
                     tabController: _tabController,

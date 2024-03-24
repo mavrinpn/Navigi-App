@@ -28,6 +28,9 @@ class FavouritesManager {
   Future<void> unlike(String postId) async => await databaseService.favourites
       .unlikePost(postId: postId, userId: userId!);
 
+  Future<int> count(String postId) async =>
+      await databaseService.favourites.countLikes(postId: postId);
+
   Future<void> getFavourites() async {
     loadingState.add(LoadingStateEnum.loading);
     try {

@@ -4,22 +4,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/announcement_editing/bloc/announcement_edit_cubit.dart';
+import 'package:smart/feature/announcement_editing/ui/widgets/change_category_button.dart';
 import 'package:smart/feature/announcement_editing/ui/widgets/description.dart';
 import 'package:smart/feature/announcement_editing/ui/widgets/parameters.dart';
 import 'package:smart/feature/announcement_editing/ui/widgets/price_section.dart';
 import 'package:smart/feature/announcement_editing/ui/widgets/title.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
+import 'package:smart/feature/create_announcement/bloc/item_search/item_search_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
+import 'package:smart/feature/create_announcement/data/models/car_filter.dart';
+import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
 import 'package:smart/feature/create_announcement/ui/widgets/add_image.dart';
 import 'package:smart/feature/create_announcement/ui/widgets/image.dart';
 import 'package:smart/feature/create_announcement/ui/widgets/select_location_widget.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/managers/creating_announcement_manager.dart';
 import 'package:smart/managers/places_manager.dart';
+import 'package:smart/models/item/item.dart';
+import 'package:smart/models/item/subcategory_filters.dart';
 import 'package:smart/utils/animations.dart';
-import 'package:smart/utils/constants.dart';
 import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/price_type.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/back_button.dart';
 
 import '../../../models/custom_locate.dart';
@@ -47,6 +53,11 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
   PriceType _priceType = PriceType.dzd;
   String _place = '';
   bool _areaSelected = true;
+  List<Parameter> _paramaters = [];
+  String? _newSubcategoryId;
+  CarFilter? _newCarFilter;
+  MarksFilter? _newMarksFilter;
+  SubcategoryFilters? _newSubcategoryFilters;
 
   @override
   void initState() {
@@ -54,13 +65,30 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
     initialTextFields();
 
     BlocProvider.of<PlacesCubit>(context).searchCities('');
-    final creatingManager =
-        RepositoryProvider.of<CreatingAnnouncementManager>(context);
-    if ([servicesCategoryId, realEstateCategoryId]
-        .contains(creatingManager.creatingData.categoryId)) {
-      creatingManager.specialOptions
-          .add(SpecialAnnouncementOptions.customPlace);
-    }
+
+    final announcementEditCubit =
+        BlocProvider.of<AnnouncementEditCubit>(context);
+    setParameretres(
+      announcementEditCubit.data?.subcollectionId ?? '',
+      announcementEditCubit.data?.modelId ?? '',
+    );
+  }
+
+  void setParameretres(
+    String subcategory,
+    String modelId,
+  ) {
+    context
+        .read<ItemSearchCubit>()
+        .getSubcategoryAndModelParameters(
+          subcategory: subcategory,
+          modelId: modelId,
+        )
+        .then((result) {
+      _paramaters = result.$1;
+      _newSubcategoryFilters = result.$2;
+      setState(() {});
+    });
   }
 
   CustomLocate? customLocate;
@@ -192,6 +220,26 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                   padding: const EdgeInsets.all(20.0),
                   child: CustomScrollView(
                     slivers: [
+                      ChangeCategoryButton(
+                        onTap: () async {
+                          final creatingManager =
+                              context.read<CreatingAnnouncementManager>();
+                          creatingManager.isCreating = false;
+                          await Navigator.pushNamed(context,
+                              AppRoutesNames.announcementCreatingCategory);
+                          final subcategoryId =
+                              creatingManager.creatingData.subcategoryId ?? '';
+                          final carModelId = creatingManager.carFilter?.modelId;
+                          final markModelId =
+                              creatingManager.marksFilter?.modelId;
+                          setParameretres(
+                              subcategoryId, carModelId ?? markModelId ?? '');
+                          _newSubcategoryId = subcategoryId;
+                          _newCarFilter = creatingManager.carFilter;
+                          _newMarksFilter = creatingManager.marksFilter;
+                        },
+                      ),
+                      const SliverToBoxAdapter(child: SizedBox(height: 10)),
                       PriceSection(
                         onChange: (String value) {
                           final price = _priceType.fromPriceString(value);
@@ -214,7 +262,6 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                         localizations: localizations,
                         savePrice: savePrice,
                       ),
-                      ParametersSection(cubit: announcementEditCubit),
                       TitleSection(
                         titleController: titleController,
                         onChange: (v) {
@@ -240,15 +287,11 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                               announcementEditCubit.onDescriptionChanged(v);
                             }
                           }),
-                      const SliverToBoxAdapter(
-                        child: SizedBox(height: 26),
-                      ),
+                      const SliverToBoxAdapter(child: SizedBox(height: 26)),
                       SliverToBoxAdapter(
                           child: Text(localizations.location,
                               style: AppTypography.font18black)),
-                      const SliverToBoxAdapter(
-                        child: SizedBox(height: 26),
-                      ),
+                      const SliverToBoxAdapter(child: SizedBox(height: 26)),
                       SliverToBoxAdapter(
                         child: SelectLocationWidget(
                           cityDistrict: announcementEditCubit.data?.area,
@@ -262,9 +305,12 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                           },
                         ),
                       ),
-                      const SliverToBoxAdapter(
-                        child: SizedBox(height: 26),
+                      ParametersSection(
+                        paramaters: _paramaters,
+                        staticParameters:
+                            announcementEditCubit.data?.staticParameters,
                       ),
+                      const SliverToBoxAdapter(child: SizedBox(height: 26)),
                       SliverToBoxAdapter(
                           child: Text(localizations.photo,
                               style: AppTypography.font18black)),
@@ -283,8 +329,23 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                                 final place =
                                     placeManager.searchPlaceIdByName(_place);
                                 announcementEditCubit.onPlaceChange(place);
+                                announcementEditCubit.onParametersChanged(
+                                  newParamaters: _paramaters,
+                                  newCarFilter: _newCarFilter,
+                                  newMarksFilter: _newMarksFilter,
+                                  newSubcategoryFilters: _newSubcategoryFilters,
+                                );
 
-                                announcementEditCubit.saveChanges();
+                                final newCarMarkId = _newCarFilter?.markId;
+                                final newCarModelId = _newCarFilter?.modelId;
+                                final newMarkMarkId = _newMarksFilter?.markId;
+                                final newMarkModelId = _newMarksFilter?.modelId;
+
+                                announcementEditCubit.saveChanges(
+                                  _newSubcategoryId,
+                                  newCarMarkId ?? newMarkMarkId,
+                                  newCarModelId ?? newMarkModelId,
+                                );
                               }
                             },
                             text: localizations.save),

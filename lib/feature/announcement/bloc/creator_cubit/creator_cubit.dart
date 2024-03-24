@@ -11,6 +11,24 @@ class CreatorCubit extends Cubit<CreatorState> {
 
   CreatorCubit({required this.creatorRepository}) : super(CreatorInitial());
 
+  void setUser({
+    required String creatorId,
+    required UserData userData,
+  }) async {
+    emit(CreatorLoadingState());
+    try {
+      creatorRepository.setUserData(userData);
+      await creatorRepository.setCreator(creatorId);
+      emit(CreatorSuccessState(
+        available: creatorRepository.availableAnnouncements,
+        sold: creatorRepository.soldAnnouncements,
+      ));
+    } catch (e) {
+      emit(CreatorFailState());
+      rethrow;
+    }
+  }
+
   void setUserId(String creatorId) async {
     emit(CreatorLoadingState());
     try {
@@ -25,16 +43,16 @@ class CreatorCubit extends Cubit<CreatorState> {
     }
   }
 
-  void setUserData(UserData userData) async {
-    emit(CreatorLoadingState());
-    try {
-      creatorRepository.setUserData(userData);
-      emit((CreatorSuccessState(
-          available: creatorRepository.availableAnnouncements,
-          sold: creatorRepository.soldAnnouncements)));
-    } catch (e) {
-      emit(CreatorFailState());
-      rethrow;
-    }
-  }
+  // void setUserData(UserData userData) async {
+  //   emit(CreatorLoadingState());
+  //   try {
+  //     creatorRepository.setUserData(userData);
+  //     emit((CreatorSuccessState(
+  //         available: creatorRepository.availableAnnouncements,
+  //         sold: creatorRepository.soldAnnouncements)));
+  //   } catch (e) {
+  //     emit(CreatorFailState());
+  //     rethrow;
+  //   }
+  // }
 }

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:smart/enum/enum.dart';
 
@@ -35,6 +36,19 @@ class FavouritesCubit extends Cubit<FavouritesState> {
       return true;
     } catch (e) {
       emit(LikeFailState());
+      rethrow;
+    }
+  }
+
+  void count(String postId) async {
+    try {
+      final result = await favouritesManager.count(postId);
+      emit(LikesCountSuccessState(
+        count: result,
+        postId: postId,
+      ));
+    } catch (e) {
+      emit(LikesCountFailState());
       rethrow;
     }
   }

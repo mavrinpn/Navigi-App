@@ -26,6 +26,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
 
   late final List<PriceType> _availableTypes;
   late PriceType _priceType;
+  List<Parameter> _parametersList = [];
 
   @override
   void initState() {
@@ -35,6 +36,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
     _availableTypes = PriceTypeExtendion.availableTypesFor(
         repository.creatingData.subcategoryId ?? '');
     _priceType = _availableTypes.first;
+    _parametersList = repository.getParametersList();
   }
 
   @override
@@ -120,10 +122,9 @@ class _OptionsScreenState extends State<OptionsScreen> {
                 const SizedBox(height: 16),
                 SingleChildScrollView(
                   child: Column(
-                    children: (repository.getParametersList())
-                            .map((e) => buildParameter(e))
-                            .toList() +
-                        [const SizedBox(height: 120)],
+                    children:
+                        _parametersList.map((e) => buildParameter(e)).toList() +
+                            [const SizedBox(height: 120)],
                     // children: (repository.currentItem != null
                     //             ? repository.getParametersList()
                     //             : <Parameter>[])

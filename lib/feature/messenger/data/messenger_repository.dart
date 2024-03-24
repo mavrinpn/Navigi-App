@@ -146,7 +146,7 @@ class MessengerRepository {
     _chats.add(currentRoom!);
     chatsStream.add(_chats);
 
-    //TODO refreshSubscription
+    //* refreshSubscription
     refreshSubscription();
   }
 

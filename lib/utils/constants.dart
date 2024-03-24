@@ -24,6 +24,8 @@ const String queriesCollection = 'queries';
 const String likesCollection = 'likes';
 const String reviewsCollection = '65e590720e806ee7cc65';
 const String mediumPriceCollection = '65f30f779d8530917550';
+const String modelsCollection = 'models';
+const String marksCollection = 'manufacturers';
 const String blockedUsersCollection = '65eaede68d1e9c9ae033';
 
 /// [_messages] - сами сообщения

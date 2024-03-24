@@ -31,7 +31,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
     required String subcategoryId,
   }) async {
     if (parameters.hasMark) {
-      final List<MarksFilter?> marksFilters = await Navigator.push(
+      final List<MarksFilter?>? marksFilters = await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (_) => SelectMarkScreen(
@@ -40,7 +40,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
           ),
         ),
       );
-      return marksFilters.firstOrNull;
+      return marksFilters?.firstOrNull;
     } else {
       return null;
     }
@@ -74,16 +74,12 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
     if (marksFilter == null && parameters.hasMark) return;
 
     final creatingManager = context.read<CreatingAnnouncementManager>();
-
     creatingManager.clearAllData();
 
     creatingManager.subcategoryFilters = parameters;
     creatingManager.marksFilter = marksFilter;
 
-    Navigator.pushNamed(
-      context,
-      AppRoutesNames.announcementCreatingPhoto,
-    );
+    creatingManagerDone();
   }
 
   void setParametersCarToManagerAndPushNext(
@@ -93,16 +89,27 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
     if (carFilter == null && parameters.hasMark) return;
 
     final creatingManager = context.read<CreatingAnnouncementManager>();
-
     creatingManager.clearAllData();
 
     creatingManager.subcategoryFilters = parameters;
-    creatingManager.carFilter = carFilter;
+    creatingManager.carFilter = carFilter!;
 
-    Navigator.pushNamed(
-      context,
-      AppRoutesNames.announcementCreatingPhoto,
-    );
+    creatingManagerDone();
+  }
+
+  void creatingManagerDone() {
+    final creatingManager = context.read<CreatingAnnouncementManager>();
+    if (creatingManager.isCreating) {
+      Navigator.pushNamed(
+        context,
+        AppRoutesNames.announcementCreatingPhoto,
+      );
+    } else {
+      Navigator.popUntil(
+        context,
+        ModalRoute.withName(AppRoutesNames.editingAnnouncement),
+      );
+    }
   }
 
   void getSubcategoryParameters(Subcategory subcategory) async {

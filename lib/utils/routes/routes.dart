@@ -4,7 +4,7 @@ import 'package:smart/feature/announcement/bloc/announcement/announcement_cubit.
 import 'package:smart/feature/announcement/bloc/related/related_announcement_cubit.dart';
 import 'package:smart/feature/announcement/ui/announcement_screen.dart';
 import 'package:smart/feature/announcement/ui/creator_screen.dart';
-import 'package:smart/feature/announcement_editing/ui/editing_announcement.dart';
+import 'package:smart/feature/announcement_editing/ui/editing_announcement_screen.dart';
 import 'package:smart/feature/auth/ui/check_code_screen.dart';
 import 'package:smart/feature/auth/ui/code_screen.dart';
 import 'package:smart/feature/auth/ui/login_first_screen.dart';
@@ -140,7 +140,8 @@ final appRoutes = {
   AppRoutesNames.editProfile: (context) => const EditProfileScreen(),
   AppRoutesNames.settings: (context) => const SettingsScreen(),
   AppRoutesNames.announcementCreator: (context) => const CreatorProfileScreen(),
-  AppRoutesNames.editingAnnouncement: (context) => const EditingAnnouncementScreen(),
+  AppRoutesNames.editingAnnouncement: (context) =>
+      const EditingAnnouncementScreen(),
   AppRoutesNames.searchSelectSubcategory: (context) =>
       const SearchSubcategoryScreen(),
 };

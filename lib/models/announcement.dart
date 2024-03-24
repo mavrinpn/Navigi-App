@@ -15,6 +15,7 @@ class Announcement {
   final String subcategoryId;
   final String description;
   final int totalViews;
+  final int contactsViews;
   final double price;
   final PriceType priceType;
   final bool active;
@@ -29,6 +30,10 @@ class Announcement {
   final Future<Uint8List> futureBytes;
   bool liked;
   final String? itemId;
+  final String model;
+  final String mark;
+  final double latitude;
+  final double longitude;
 
   Announcement.fromJson({
     required Map<String, dynamic> json,
@@ -45,10 +50,15 @@ class Announcement {
             ? StaticParameters(encodedParameters: '${json['parametrs']}')
             : StaticParameters(encodedParameters: '[]'),
         totalViews = json['total_views'] ?? 0,
+        contactsViews = json['contacts_views'] ?? 0,
         _createdAt = json['\$createdAt'],
         id = json['\$id'],
         active = json['active'],
         itemId = json['itemId'],
+        model = json['model'] ?? '',
+        mark = json['mark'] ?? '',
+        longitude = double.tryParse('${json['longitude']}') ?? 0,
+        latitude = double.tryParse('${json['latitude']}') ?? 0,
         area = json['area'] != null
             ? CityDistrict.fromJson(json['area'])
             : CityDistrict.none() {

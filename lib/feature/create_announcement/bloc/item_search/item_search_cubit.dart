@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:smart/models/item/subcategory_filters.dart';
+import 'package:smart/utils/constants.dart';
 
 import '../../../../managers/creating_announcement_manager.dart';
 import '../../../../managers/item_manager.dart';
@@ -20,6 +21,31 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
     final parameters = await itemManager.getSubcategoryFilters(subcategory);
     creatingManager.subcategoryFilters = parameters;
     return parameters;
+  }
+
+  Future<(List<Parameter>, SubcategoryFilters)>
+      getSubcategoryAndModelParameters({
+    required String subcategory,
+    required String modelId,
+  }) async {
+    final List<Parameter> parameters = [];
+
+    if (subcategory == carSubcategoryId) {
+      final carFilter = await itemManager.getCarFilters(modelId);
+      parameters.add(carFilter.dotation);
+      parameters.add(carFilter.engine);
+    } else {
+      final marksFilter = await itemManager.getMarksFilters(modelId);
+      if (marksFilter.modelParameters != null) {
+        parameters.addAll(marksFilter.modelParameters!);
+      }
+    }
+
+    final subcategoryFilters =
+        await itemManager.getSubcategoryFilters(subcategory);
+    parameters.addAll(subcategoryFilters.parameters);
+
+    return (parameters, subcategoryFilters);
   }
 
   void setSubcategory(String subcategory) async {

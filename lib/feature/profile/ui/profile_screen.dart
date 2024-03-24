@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/profile/ui/widgets/row_button.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/managers/creating_announcement_manager.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/routes/route_names.dart';
@@ -30,11 +31,11 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
-  // String _loggedUserId = '';
   late TabController _tabController;
   bool _showAll = false;
   List<Announcement> _available = [];
   List<Announcement> _sold = [];
+  String _loggedUserId = '';
 
   final controller = ScrollController();
 
@@ -98,6 +99,8 @@ class _ProfileScreenState extends State<ProfileScreen>
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: CustomTextButton.withIcon(
         callback: () {
+          final creatingManager = context.read<CreatingAnnouncementManager>();
+          creatingManager.isCreating = true;
           Navigator.pushNamed(
               context, AppRoutesNames.announcementCreatingCategory);
         },
@@ -118,9 +121,15 @@ class _ProfileScreenState extends State<ProfileScreen>
               state is EditFailState) {
             return BlocBuilder<CreatorCubit, CreatorState>(
               builder: (context, creatorState) {
+                _loggedUserId =
+                    RepositoryProvider.of<AuthRepository>(context).userData.id;
+
                 if (creatorState is CreatorSuccessState) {
-                  _available = [...creatorState.available];
-                  _sold = [...creatorState.sold];
+                  if (creatorState.available.firstOrNull?.creatorData.uid ==
+                      _loggedUserId) {
+                    _available = [...creatorState.available];
+                    _sold = [...creatorState.sold];
+                  }
                 }
 
                 return CustomScrollView(
@@ -177,7 +186,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                     const SliverToBoxAdapter(child: SizedBox(height: 15)),
                     if (creatorState is CreatorSuccessState ||
                         (_available.isNotEmpty)) ...[
-                      // if (_available.isNotEmpty) ...[
                       getGridHeight() == 100
                           ? SliverPadding(
                               padding: const EdgeInsets.symmetric(vertical: 40),

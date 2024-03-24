@@ -314,7 +314,7 @@ class _ChatScreenState extends State<ChatScreen> {
         });
       }).catchError((err) {
         CustomSnackBar.showSnackBar(context, err.toString());
-        //TODO timeout
+        //* timeout
       }).timeout(const Duration(seconds: 2));
     }
   }
