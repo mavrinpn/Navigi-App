@@ -36,7 +36,7 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
       parameters.add(carFilter.engine);
     } else {
       final marksFilter = await itemManager.getMarksFilters(modelId);
-      if (marksFilter.modelParameters != null) {
+      if (marksFilter != null && marksFilter.modelParameters != null) {
         parameters.addAll(marksFilter.modelParameters!);
       }
     }

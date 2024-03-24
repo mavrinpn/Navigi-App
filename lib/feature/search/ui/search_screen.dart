@@ -376,6 +376,8 @@ class _SearchScreenState extends State<SearchScreen> {
                           bool isSelected = false;
                           if (parameter is SelectParameter) {
                             isSelected = parameter.selectedVariants.isNotEmpty;
+                          } else if (parameter is MultiSelectParameter) {
+                            isSelected = parameter.selectedVariants.isNotEmpty;
                           } else if (parameter is MinMaxParameter) {
                             isSelected =
                                 parameter.min != null || parameter.max != null;

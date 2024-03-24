@@ -5,17 +5,6 @@ class ModelsService {
 
   ModelsService(Databases databases) : _databases = databases;
 
-  //TODO
-  Future<void> test() async {
-    final res = await _databases.listDocuments(
-      databaseId: mainDatabase,
-      collectionId: 'testCollection',
-      // queries: [Query.contains('test_array', 'qwe')],
-    );
-
-    print(res.documents);
-  }
-
   Future<String?> getModelNameById({
     required String modelId,
   }) async {
@@ -40,7 +29,7 @@ class ModelsService {
     return res.data['name'];
   }
 
-  Future<MarkModel> getMarkModelById({
+  Future<MarkModel?> getMarkModelById({
     required String modelId,
   }) async {
     final res = await _databases.getDocument(
@@ -49,11 +38,14 @@ class ModelsService {
       collectionId: modelsCollection,
     );
 
-    return MarkModel(
-      res.data['\$id'],
-      res.data['name'] ?? '',
-      res.data['parameters'],
-    );
+    if (res.data['\$id'] != null) {
+      return MarkModel(
+        res.data['\$id'],
+        res.data['name'] ?? '',
+        res.data['parameters'],
+      );
+    }
+    return null;
   }
 
   Future<CarModel> getCarModelById({

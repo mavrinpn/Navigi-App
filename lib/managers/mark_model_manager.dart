@@ -10,9 +10,5 @@ class MarkModelManager {
 
   Future<String?> getModelNameById(String modelId) async {
     return databaseService.models.getModelNameById(modelId: modelId);
-
-    //TODO
-    // databaseService.models.test();
   }
-      
 }

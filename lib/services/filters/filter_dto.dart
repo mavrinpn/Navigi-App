@@ -86,6 +86,10 @@ class SubcategoryFilterDTO {
           parameter.selectedVariants.isNotEmpty) {
         queries.add(Query.equal(parameter.key,
             convertSelectedParametersToStringList(parameter.selectedVariants)));
+      } else if (parameter is MultiSelectParameter &&
+          parameter.selectedVariants.isNotEmpty) {
+        queries.add(Query.contains(parameter.key,
+            convertSelectedParametersToStringList(parameter.selectedVariants)));
       }
       if (parameter is MinMaxParameter) {
         if (parameter.min != null) {

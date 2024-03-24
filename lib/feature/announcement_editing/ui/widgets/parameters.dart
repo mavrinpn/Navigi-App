@@ -4,6 +4,7 @@ import 'package:smart/models/item/static_localized_parameter.dart';
 import 'package:smart/models/item/static_parameters.dart';
 import 'package:smart/services/parameters_parser.dart';
 import 'package:smart/widgets/parameters_selection/input_parameter_widget.dart';
+import 'package:smart/widgets/parameters_selection/multiple_chekbox.dart';
 import 'package:smart/widgets/parameters_selection/select_parameter_widget.dart';
 
 class ParametersSection extends StatefulWidget {
@@ -26,6 +27,7 @@ class _ParametersSectionState extends State<ParametersSection> {
     return SliverToBoxAdapter(
         child: Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: widget.paramaters.map((e) => buildParameter(e)).toList(),
     ));
   }
@@ -44,6 +46,27 @@ class _ParametersSectionState extends State<ParametersSection> {
         parameter.currentValue = parameterOption;
       }
       return SelectParameterWidget(parameter: parameter);
+    } else if (parameter is MultiSelectParameter) {
+      final MultiSelectStaticParameter? current = widget
+          .staticParameters?.parameters
+          .where((param) => param.key == parameter.key)
+          .firstOrNull as MultiSelectStaticParameter?;
+
+      if (current != null) {
+        for (final selectedOption in current.currentOption) {
+          final parameterOption = ParameterOption(
+            selectedOption.key,
+            nameAr: selectedOption.nameAr,
+            nameFr: selectedOption.nameFr,
+          );
+          parameter.addSelectedValue(parameterOption);
+        }
+      }
+
+      return MultipleCheckboxPicker(
+        parameter: parameter,
+        wrapDirection: Axis.vertical,
+      );
     } else if (parameter is InputParameter) {
       final InputStaticParameter? current = widget.staticParameters?.parameters
           .where((param) => param.key == parameter.key)

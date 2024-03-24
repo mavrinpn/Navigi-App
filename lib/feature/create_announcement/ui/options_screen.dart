@@ -4,6 +4,7 @@ import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/price_type.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/parameters_selection/input_parameter_widget.dart';
+import 'package:smart/widgets/parameters_selection/multiple_chekbox.dart';
 import 'package:smart/widgets/parameters_selection/select_parameter_widget.dart';
 import '../../../managers/creating_announcement_manager.dart';
 import '../../../models/item/item.dart';
@@ -122,15 +123,10 @@ class _OptionsScreenState extends State<OptionsScreen> {
                 const SizedBox(height: 16),
                 SingleChildScrollView(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children:
                         _parametersList.map((e) => buildParameter(e)).toList() +
                             [const SizedBox(height: 120)],
-                    // children: (repository.currentItem != null
-                    //             ? repository.getParametersList()
-                    //             : <Parameter>[])
-                    //         .map((e) => buildParameter(e))
-                    //         .toList() +
-                    //     [const SizedBox(height: 120)],
                   ),
                 )
               ],
@@ -162,6 +158,11 @@ class _OptionsScreenState extends State<OptionsScreen> {
   Widget buildParameter(Parameter parameter) {
     if (parameter is SelectParameter) {
       return SelectParameterWidget(parameter: parameter);
+    } else if (parameter is MultiSelectParameter) {
+      return MultipleCheckboxPicker(
+        parameter: parameter,
+        wrapDirection: Axis.vertical,
+      );
     } else if (parameter is InputParameter) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 16.0),

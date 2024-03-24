@@ -203,7 +203,9 @@ class AuthRepository {
           userId: ID.unique(), email: email, password: password, name: 'Guest');
       // print('create account $email $password');
     }
-    await _account.createEmailSession(
+    // await _account.createEmailSession(
+    //     email: email ?? _tempMail, password: password);
+    await _account.createEmailPasswordSession(
         email: email ?? _tempMail, password: password);
   }
 
@@ -214,7 +216,9 @@ class AuthRepository {
   }) async {
     assert(!needRegister || needRegister && registrationName != null,
         'for registration required name');
-    final promise = await _account.createEmailSession(
+    // final promise = await _account.createEmailSession(
+    //     email: credentials.mail, password: credentials.password);
+    final promise = await _account.createEmailPasswordSession(
         email: credentials.mail, password: credentials.password);
     _user = await _account.get();
     await _saveSessionId(promise.$id);

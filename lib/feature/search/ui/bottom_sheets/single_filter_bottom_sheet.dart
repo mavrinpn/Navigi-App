@@ -126,6 +126,11 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
             parameter: i,
             wrapDirection: Axis.vertical,
           ));
+        } else if (i is MultiSelectParameter) {
+          children.add(MultipleCheckboxPicker(
+            parameter: i,
+            wrapDirection: Axis.vertical,
+          ));
         } else if (i is MinMaxParameter) {
           children.add(MinMaxParameterWidget(parameter: i));
         }

@@ -43,6 +43,45 @@ class SelectStaticParameter implements StaticLocalizedParameter {
   String get valueAr => currentOption.nameAr;
 }
 
+List<ParameterOption> _parameterOption(List<dynamic> jsonList) {
+  List<ParameterOption> result = [];
+  for (final json in jsonList) {
+    result.add(ParameterOption(json['id'],
+        nameAr: json['nameAr'], nameFr: json['nameFr']));
+  }
+  return result;
+}
+
+class MultiSelectStaticParameter implements StaticLocalizedParameter {
+  @override
+  final String key;
+  @override
+  final String nameAr;
+  @override
+  final String nameFr;
+
+  final List<ParameterOption> currentOption;
+
+  MultiSelectStaticParameter({
+    required this.key,
+    required this.nameFr,
+    required this.nameAr,
+    required this.currentOption,
+  });
+
+  MultiSelectStaticParameter.fromJson(Map<String, dynamic> json)
+      : key = json['id'],
+        nameAr = json['nameAr'],
+        nameFr = json['nameFr'],
+        currentOption = _parameterOption(json['currentValue']);
+
+  @override
+  String get valueFr => currentOption.map((e) => e.nameFr).join(', ');
+
+  @override
+  String get valueAr => currentOption.map((e) => e.nameAr).join(', ');
+}
+
 class InputStaticParameter implements StaticLocalizedParameter {
   @override
   final String key;

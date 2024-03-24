@@ -66,7 +66,7 @@ class MessagesService {
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: roomsCollection,
-        queries: [Query.search('members', userId)]);
+        queries: [Query.contains('members', userId)]);
     List<Room> chats = [];
     for (var doc in res.documents) {
       chats.add(_roomFromDoc(doc, userId));

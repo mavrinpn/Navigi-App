@@ -164,9 +164,15 @@ class AnnouncementsService {
       }
     }
 
-    for (var i in parameters) {
-      data.addAll(
-          {i.key: i is SelectParameter ? i.currentValue.key : i.currentValue});
+    for (var parameter in parameters) {
+      if (parameter is SelectParameter) {
+        data.addAll({parameter.key: parameter.currentValue.key});
+      } else if (parameter is MultiSelectParameter) {
+        final value = parameter.selectedVariants.map((e) => e.key).toList();
+        data.addAll({parameter.key: value});
+      } else {
+        data.addAll({parameter.key: parameter.currentValue});
+      }
     }
 
     await _databases.createDocument(
@@ -414,9 +420,17 @@ class AnnouncementsService {
       'city_id': editData.cityId,
       'area_id': editData.areaId,
     };
-    for (var i in editData.parameters) {
-      subcollectionUpdateData.addAll(
-          {i.key: i is SelectParameter ? i.currentValue.key : i.currentValue});
+
+    for (var parameter in editData.parameters) {
+      if (parameter is SelectParameter) {
+        subcollectionUpdateData
+            .addAll({parameter.key: parameter.currentValue.key});
+      } else if (parameter is MultiSelectParameter) {
+        final value = parameter.selectedVariants.map((e) => e.key).toList();
+        subcollectionUpdateData.addAll({parameter.key: value});
+      } else {
+        subcollectionUpdateData.addAll({parameter.key: parameter.currentValue});
+      }
     }
 
     return subcollectionUpdateData;
@@ -489,9 +503,16 @@ class AnnouncementsService {
       subcollectionCreateData.addAll({'model': editData.modelId});
     }
 
-    for (var i in editData.parameters) {
-      subcollectionCreateData.addAll(
-          {i.key: i is SelectParameter ? i.currentValue.key : i.currentValue});
+    for (var parameter in editData.parameters) {
+      if (parameter is SelectParameter) {
+        subcollectionCreateData
+            .addAll({parameter.key: parameter.currentValue.key});
+      } else if (parameter is MultiSelectParameter) {
+        final value = parameter.selectedVariants.map((e) => e.key).toList();
+        subcollectionCreateData.addAll({parameter.key: value});
+      } else {
+        subcollectionCreateData.addAll({parameter.key: parameter.currentValue});
+      }
     }
 
     return subcollectionCreateData;

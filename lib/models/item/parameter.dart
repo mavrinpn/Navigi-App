@@ -53,6 +53,49 @@ class SelectParameter implements Parameter {
   }
 }
 
+class MultiSelectParameter implements Parameter {
+  @override
+  final String key;
+  @override
+  final String arName;
+  @override
+  final String frName;
+
+  @override
+  ParameterOption currentValue;
+
+  List<ParameterOption> variants;
+
+  List<ParameterOption> selectedVariants = [];
+
+  void addSelectedValue(dynamic value) => selectedVariants.add(value);
+
+  void removeSelectedValue(dynamic value) => selectedVariants.remove(value);
+
+  bool isSelected(ParameterOption value) => selectedVariants.contains(value);
+
+  MultiSelectParameter({
+    required this.key,
+    required this.variants,
+    ParameterOption? current,
+    required this.arName,
+    required this.frName,
+  }) : currentValue = current ??
+            variants.firstOrNull ??
+            ParameterOption(
+              'key',
+              nameAr: 'nameAr',
+              nameFr: 'nameFr',
+            );
+
+  @override
+  String toString() => '"$key": "$currentValue"';
+
+  void setVariant(dynamic value) {
+    currentValue = value;
+  }
+}
+
 class InputParameter implements Parameter {
   @override
   final String key;

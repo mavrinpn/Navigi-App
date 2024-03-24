@@ -93,10 +93,13 @@ class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
     _parameters =
         ParametersParser(res['parameters'], useMinMax: true).decodedParameters;
 
-    subcategoryFilters = SubcategoryFilters(_parameters,
-        hasMark: res['hasMark'], hasModel: res['hasModel']);
+    subcategoryFilters = SubcategoryFilters(
+      _parameters,
+      hasMark: res['hasMark'],
+      hasModel: res['hasModel'],
+    );
     subcategoryId = selectedSubcategoryId;
-    // print('got parameters: $_parameters');
+
     emit(FiltersGotState(_parameters));
     return parameters;
   }

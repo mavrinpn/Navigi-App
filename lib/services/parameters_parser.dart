@@ -13,7 +13,12 @@ class ParametersParser {
     final List decode = encodedString;
 
     for (var json in decode) {
-      if (json['type'] == 'option') parseOptionParameter(json);
+      if (json['type'] == 'option') {
+        parseOptionParameter(json);
+      }
+      if (json['type'] == 'multioption') {
+        parseMultiOptionParameter(json);
+      }
       if (json['type'] == 'number') {
         if (useMinMax) {
           parseMinMaxParameter(json);
@@ -37,10 +42,23 @@ class ParametersParser {
         arName: json['nameAr'],
         frName: json['nameFr']);
 
-    // print('fr: ${parameter.frName} ar: ${parameter.arName}');
+    decodedParameters.add(parameter);
+  }
+
+  void parseMultiOptionParameter(Map json) {
+    final List<ParameterOption> options = [];
+
+    for (var optionJson in json['options']) {
+      options.add(ParameterOption.fromJson(optionJson));
+    }
+
+    final parameter = MultiSelectParameter(
+        key: json['id'],
+        variants: options,
+        arName: json['nameAr'],
+        frName: json['nameFr']);
 
     decodedParameters.add(parameter);
-    // print('decoded parameters length: ${decodedParameters.length}');
   }
 
   void parseInputParameter(Map json) {
@@ -77,11 +95,14 @@ class ParameterOption {
   Map<String, dynamic> toJson() =>
       {'id': key, 'nameAr': nameAr, 'nameFr': nameFr};
 
-  // @override
-  // bool operator ==(Object other) {
-  //   if (other is ParameterOption) {
-  //     return key == other.key;
-  //   }
-  //   return super == other;
-  // }
+  @override
+  bool operator ==(Object other) {
+    if (other is ParameterOption) {
+      return key == other.key;
+    }
+    return super == other;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ nameAr.hashCode ^ nameFr.hashCode;
 }

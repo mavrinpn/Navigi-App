@@ -1,13 +1,12 @@
 name: smart
 description: A new Flutter project.
 
-publish_to: 'none'
+publish_to: "none"
 
-version: 1.0.0+50
+version: 1.0.0+51
 
 environment:
-  sdk: '>=3.0.5 <4.0.0'
-
+  sdk: ">=3.0.5 <4.0.0"
 
 dependencies:
   flutter:
@@ -30,8 +29,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   mask_text_input_formatter: ^2.4.0
 
-  appwrite: ^11.0.1
-  # appwrite: ^12.0.1
+  appwrite: ^12.0.1
   firebase_core: ^2.24.2
   firebase_messaging: ^14.7.9
 
@@ -74,12 +72,9 @@ flutter_launcher_icons:
   image_path: "Assets/app_icon/icon.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
 
-
-
-
 flutter:
   fonts:
-    - family:  AppIcons
+    - family: AppIcons
       fonts:
         - asset: Assets/fonts/AppIcons.ttf
 
@@ -91,4 +86,3 @@ flutter:
     - Assets/icons/
     - Assets/fonts/
     - .env
-

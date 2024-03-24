@@ -142,6 +142,8 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                             for (var param in selectCategoryCubit.parameters) {
                               if (param is SelectParameter) {
                                 param.selectedVariants = [];
+                              } else if (param is MultiSelectParameter) {
+                                param.selectedVariants = [];
                               } else if (param is MinMaxParameter) {
                                 param.min = null;
                                 param.max = null;
@@ -280,6 +282,11 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
           parameter: i,
           wrapDirection: Axis.horizontal,
         ));
+      } else if (i is MultiSelectParameter) {
+        children.add(MultipleCheckboxPicker(
+          parameter: i,
+          wrapDirection: Axis.horizontal,
+        ));
       } else if (i is MinMaxParameter) {
         children.add(MinMaxParameterWidget(parameter: i));
       }
@@ -294,6 +301,11 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
     final children = <Widget>[];
     for (var i in parameters) {
       if (i is SelectParameter) {
+        children.add(MultipleCheckboxPicker(
+          parameter: i,
+          wrapDirection: Axis.horizontal,
+        ));
+      } else if (i is MultiSelectParameter) {
         children.add(MultipleCheckboxPicker(
           parameter: i,
           wrapDirection: Axis.horizontal,

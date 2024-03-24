@@ -14,6 +14,8 @@ class StaticParameters {
     for (var i in decode) {
       if (i['type'] == 'option') {
         parameters.add(SelectStaticParameter.fromJson(i));
+      } else if (i['type'] == 'multioption') {
+        parameters.add(MultiSelectStaticParameter.fromJson(i));
       } else {
         parameters.add(InputStaticParameter.fromJson(i));
       }

@@ -27,15 +27,18 @@ class ItemManager {
     );
   }
 
-  Future<MarksFilter> getMarksFilters(String modelId) async {
+  Future<MarksFilter?> getMarksFilters(String modelId) async {
     final result =
         await databaseService.models.getMarkModelById(modelId: modelId);
-    return MarksFilter(
-      markId: '',
-      markTitle: '',
-      modelTitle: result.name,
-      modelParameters: result.parameters,
-    );
+    if (result != null) {
+      return MarksFilter(
+        markId: '',
+        markTitle: '',
+        modelTitle: result.name,
+        modelParameters: result.parameters,
+      );
+    }
+    return null;
   }
 
   Future<CarFilter> getCarFilters(String modelId) async {

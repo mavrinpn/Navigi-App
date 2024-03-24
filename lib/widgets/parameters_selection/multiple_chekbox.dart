@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/main.dart';
-import 'package:smart/models/item/item.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 
@@ -13,7 +12,7 @@ class MultipleCheckboxPicker extends StatefulWidget {
     required this.wrapDirection,
   });
 
-  final SelectParameter parameter;
+  final dynamic parameter;
   final Axis wrapDirection;
 
   @override
@@ -21,6 +20,7 @@ class MultipleCheckboxPicker extends StatefulWidget {
 }
 
 class _MultipleCheckboxPickerState extends State<MultipleCheckboxPicker> {
+  
   @override
   Widget build(BuildContext context) {
     final variants = widget.parameter.variants;

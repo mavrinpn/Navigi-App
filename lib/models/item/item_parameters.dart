@@ -12,6 +12,17 @@ class ItemParameters {
       };
       return jsonEncode(map);
     }
+    if (parameter is MultiSelectParameter) {
+      final Map map = {
+        'nameAr': parameter.arName,
+        'nameFr': parameter.frName,
+        'id': parameter.key,
+        'type': 'multioption',
+        'currentValue':
+            parameter.selectedVariants.map((e) => e.toJson()).toList(),
+      };
+      return jsonEncode(map);
+    }
     if (parameter is InputParameter) {
       final Map map = {
         'nameAr': parameter.arName,
