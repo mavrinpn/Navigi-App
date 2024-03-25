@@ -43,7 +43,7 @@ PODS:
     - Flutter
   - flutter_native_splash (0.0.1):
     - Flutter
-  - flutter_web_auth_2 (1.1.1):
+  - flutter_web_auth_2 (3.0.0):
     - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
@@ -218,7 +218,7 @@ SPEC CHECKSUMS:
   flutter_image_compress_common: ec1d45c362c9d30a3f6a0426c297f47c52007e3e
   flutter_localization: f43b18844a2b3d2c71fd64f04ffd6b1e64dd54d4
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
-  flutter_web_auth_2: a1bc00762c408a8f80b72a538cd7ff5b601c3e71
+  flutter_web_auth_2: 051cf9f5dc366f31b5dcc4e2952c2b954767be8a
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geolocator_apple: 9157311f654584b9bb72686c55fc02a97b73f461
   google_maps_flutter_ios: f135b968a67c05679e0a53538e900b5c174b0d99

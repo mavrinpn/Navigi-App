@@ -19,11 +19,15 @@ class ParametersFilterBuilder {
 
     queries.add(Query.equal(activeAttribute, true));
 
-    if ((filterData.lastId ?? '' ) != '') {
+    if ((filterData.lastId ?? '') != '') {
       queries.add(Query.cursorAfter(filterData.lastId!));
     }
-    if ((filterData.text ?? '') != '') {
-      queries.add(Query.search(subcategory ? 'title' : 'name', filterData.text!));
+
+    if (filterData.text != null && filterData.text != '') {
+      // queries.add(Query.search(subcategory ? 'title' : 'name', filterData.text!));
+      for (final text in filterData.text!.split(' ')) {
+        queries.add(Query.contains(subcategory ? 'title' : 'name', text));
+      }
     }
     if (filterData.sortBy != null) {
       queries.add(SortTypes.toQuery(filterData.sortBy!)!);
