@@ -167,6 +167,8 @@ class AnnouncementsService {
     for (var parameter in parameters) {
       if (parameter is SelectParameter) {
         data.addAll({parameter.key: parameter.currentValue.key});
+      } else if (parameter is SingleSelectParameter) {
+        data.addAll({parameter.key: parameter.currentValue.key});
       } else if (parameter is MultiSelectParameter) {
         final value = parameter.selectedVariants.map((e) => e.key).toList();
         data.addAll({parameter.key: value});
@@ -204,12 +206,12 @@ class AnnouncementsService {
       collectionId: postCollection,
       documentId: id,
     );
-
+    final count = res.data[contactsViews] ?? 0;
     await _databases.updateDocument(
       databaseId: mainDatabase,
       collectionId: postCollection,
       documentId: id,
-      data: {contactsViews: res.data[contactsViews] + 1},
+      data: {contactsViews: count + 1},
     );
   }
 
@@ -425,6 +427,9 @@ class AnnouncementsService {
       if (parameter is SelectParameter) {
         subcollectionUpdateData
             .addAll({parameter.key: parameter.currentValue.key});
+      } else if (parameter is SingleSelectParameter) {
+        subcollectionUpdateData
+            .addAll({parameter.key: parameter.currentValue.key});
       } else if (parameter is MultiSelectParameter) {
         final value = parameter.selectedVariants.map((e) => e.key).toList();
         subcollectionUpdateData.addAll({parameter.key: value});
@@ -505,6 +510,9 @@ class AnnouncementsService {
 
     for (var parameter in editData.parameters) {
       if (parameter is SelectParameter) {
+        subcollectionCreateData
+            .addAll({parameter.key: parameter.currentValue.key});
+      } else if (parameter is SingleSelectParameter) {
         subcollectionCreateData
             .addAll({parameter.key: parameter.currentValue.key});
       } else if (parameter is MultiSelectParameter) {

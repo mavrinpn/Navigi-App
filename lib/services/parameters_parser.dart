@@ -19,6 +19,9 @@ class ParametersParser {
       if (json['type'] == 'multioption') {
         parseMultiOptionParameter(json);
       }
+      if (json['type'] == 'singleoption') {
+        parseSingleOptionParameter(json);
+      }
       if (json['type'] == 'number') {
         if (useMinMax) {
           parseMinMaxParameter(json);
@@ -53,6 +56,22 @@ class ParametersParser {
     }
 
     final parameter = MultiSelectParameter(
+        key: json['id'],
+        variants: options,
+        arName: json['nameAr'],
+        frName: json['nameFr']);
+
+    decodedParameters.add(parameter);
+  }
+
+  void parseSingleOptionParameter(Map json) {
+    final List<ParameterOption> options = [];
+
+    for (var optionJson in json['options']) {
+      options.add(ParameterOption.fromJson(optionJson));
+    }
+
+    final parameter = SingleSelectParameter(
         key: json['id'],
         variants: options,
         arName: json['nameAr'],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart/models/item/item.dart';
 import 'package:smart/widgets/parameters_selection/custom_dropdown_single_pick.dart';
 
 class SelectParameterWidget extends StatefulWidget {
@@ -7,7 +6,7 @@ class SelectParameterWidget extends StatefulWidget {
     super.key,
     required this.parameter,
   });
-  final SelectParameter parameter;
+  final dynamic parameter;
 
   @override
   State<SelectParameterWidget> createState() => _SelectParameterWidgetState();

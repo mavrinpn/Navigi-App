@@ -6,7 +6,6 @@ import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/checkBox/custom_check_box.dart';
 import 'package:smart/widgets/parameters_selection/single_pick_with_search.dart';
 
-import '../../models/item/item.dart';
 import '../../utils/colors.dart';
 
 class CustomDropDownSingleCheckBox extends StatefulWidget {
@@ -20,7 +19,7 @@ class CustomDropDownSingleCheckBox extends StatefulWidget {
   });
 
   final Function(ParameterOption) onChange;
-  final SelectParameter parameter;
+  final dynamic parameter;
   final String currentKey;
   final String? icon;
 

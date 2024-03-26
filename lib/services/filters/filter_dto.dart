@@ -86,6 +86,12 @@ class SubcategoryFilterDTO {
           parameter.selectedVariants.isNotEmpty) {
         queries.add(Query.equal(parameter.key,
             convertSelectedParametersToStringList(parameter.selectedVariants)));
+      } else if (parameter is SingleSelectParameter) {
+        queries.add(Query.equal(parameter.key, parameter.currentValue.key));
+        // } else if (parameter is SingleSelectParameter &&
+        //     parameter.selectedVariants.isNotEmpty) {
+        //   queries.add(Query.equal(parameter.key,
+        //       convertSelectedParametersToStringList(parameter.selectedVariants)));
       } else if (parameter is MultiSelectParameter &&
           parameter.selectedVariants.isNotEmpty) {
         queries.add(Query.contains(parameter.key,

@@ -3,7 +3,6 @@ import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
-import 'package:smart/widgets/images/announcement_image.dart';
 
 class AnnouncementShortInfo extends StatelessWidget {
   const AnnouncementShortInfo({super.key, required this.announcement});
@@ -38,8 +37,24 @@ class AnnouncementShortInfo extends StatelessWidget {
         ),
         child: Row(
           children: [
-            AnnouncementImage(
-                announcement: announcement, width: 65, height: 55),
+            if (announcement.images.firstOrNull != null)
+              Container(
+                clipBehavior: Clip.hardEdge,
+                width: 65,
+                height: 55,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Image.network(
+                  announcement.images.first,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            // AnnouncementImage(
+            //   announcement: announcement,
+            //   width: 65,
+            //   height: 55,
+            // ),
             const SizedBox(width: 10),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

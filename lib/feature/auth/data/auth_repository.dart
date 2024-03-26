@@ -218,6 +218,8 @@ class AuthRepository {
         'for registration required name');
     // final promise = await _account.createEmailSession(
     //     email: credentials.mail, password: credentials.password);
+    await _account.deleteSession(sessionId: 'current');
+
     final promise = await _account.createEmailPasswordSession(
         email: credentials.mail, password: credentials.password);
     _user = await _account.get();

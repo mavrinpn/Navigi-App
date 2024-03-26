@@ -20,7 +20,7 @@ class CityDistrict {
 
   CityDistrict.fromJson(Map<String, dynamic> json)
       : id = json['\$id'],
-        cityId = json['cityId'],
+        cityId = json['city_id'],
         latitude = json['latitude'] ?? _defaultLatitude,
         longitude = json['longitude'] ?? _defaultLongitude,
         name = json['name'];

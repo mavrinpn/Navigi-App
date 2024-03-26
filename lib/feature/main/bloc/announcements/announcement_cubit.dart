@@ -4,7 +4,6 @@ import 'package:smart/enum/enum.dart';
 
 import '../../../../managers/announcement_manager.dart';
 
-
 part 'announcement_state.dart';
 
 class AnnouncementsCubit extends Cubit<AnnouncementsState> {

@@ -10,6 +10,7 @@ import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:smart/widgets/parameters_selection/min_max_parameter.dart';
 import 'package:smart/widgets/parameters_selection/multiple_chekbox.dart';
+import 'package:smart/widgets/parameters_selection/select_parameter_widget.dart';
 
 class SingleFilterBottomSheet extends StatefulWidget {
   const SingleFilterBottomSheet({
@@ -125,6 +126,10 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
           children.add(MultipleCheckboxPicker(
             parameter: i,
             wrapDirection: Axis.vertical,
+          ));
+        } else if (i is SingleSelectParameter) {
+          children.add(SelectParameterWidget(
+            parameter: i,
           ));
         } else if (i is MultiSelectParameter) {
           children.add(MultipleCheckboxPicker(

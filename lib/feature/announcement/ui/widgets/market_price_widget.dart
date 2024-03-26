@@ -41,49 +41,58 @@ class _MarketPriceWidgetState extends State<MarketPriceWidget> {
           final price =
               '${startPrice.toStringAsFixed(2)} - ${endPrice.toStringAsFixed(2)} MLN';
 
-          return GestureDetector(
-            onTap: () => showMarketPriceDialog(
-              context: context,
-              price: price,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 2, 5),
-              child: FittedBox(
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Icon(AppIcons.stat),
-                    const SizedBox(width: 6),
-                    Text(
-                      localizations.marketPrice,
-                      style: AppTypography.font14black,
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      price,
-                      style: AppTypography.font14black.copyWith(
-                        fontWeight: FontWeight.w700,
+          return AnimatedContainer(
+            key: const ValueKey('AnimatedContainer'),
+            duration: Durations.medium1,
+            height: 54,
+            child: GestureDetector(
+              onTap: () => showMarketPriceDialog(
+                context: context,
+                price: price,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 2, 5),
+                child: FittedBox(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(AppIcons.stat),
+                      const SizedBox(width: 6),
+                      Text(
+                        localizations.marketPrice,
+                        style: AppTypography.font14black,
                       ),
-                    ),
-                    const SizedBox(width: 2),
-                    TextButton(
-                      onPressed: () => showMarketPriceDialog(
-                        context: context,
-                        price: price,
+                      const SizedBox(width: 6),
+                      Text(
+                        price,
+                        style: AppTypography.font14black.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                      child: Text(
-                        localizations.detail,
-                        style: AppTypography.font14red,
+                      const SizedBox(width: 2),
+                      TextButton(
+                        onPressed: () => showMarketPriceDialog(
+                          context: context,
+                          price: price,
+                        ),
+                        child: Text(
+                          localizations.detail,
+                          style: AppTypography.font14red,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
           );
         } else {
-          return Container();
+          return AnimatedContainer(
+            key: const ValueKey('AnimatedContainer'),
+            duration: Durations.long1,
+            height: 0,
+          );
         }
       },
     );

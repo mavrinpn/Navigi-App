@@ -59,8 +59,8 @@ class Announcement {
         mark = json['mark'] ?? '',
         longitude = double.tryParse('${json['longitude']}') ?? 0,
         latitude = double.tryParse('${json['latitude']}') ?? 0,
-        area = json['area'] != null
-            ? CityDistrict.fromJson(json['area'])
+        area = json['area2'] != null
+            ? CityDistrict.fromJson(json['area2']) //TODO area
             : CityDistrict.none() {
     var l = [];
     for (String i in images) {

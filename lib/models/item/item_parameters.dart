@@ -23,6 +23,16 @@ class ItemParameters {
       };
       return jsonEncode(map);
     }
+    if (parameter is SingleSelectParameter) {
+      final Map map = {
+        'nameAr': parameter.arName,
+        'nameFr': parameter.frName,
+        'id': parameter.key,
+        'type': 'singleoption',
+        'currentValue': parameter.currentValue.toJson(),
+      };
+      return jsonEncode(map);
+    }
     if (parameter is InputParameter) {
       final Map map = {
         'nameAr': parameter.arName,

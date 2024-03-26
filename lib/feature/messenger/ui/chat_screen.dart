@@ -53,6 +53,12 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     messageController = TextEditingController(text: widget.message ?? '');
+    final messengerRepository =
+        RepositoryProvider.of<MessengerRepository>(context);
+    //* preloadChats
+    messengerRepository.preloadChats();
+    messengerRepository.refreshSubscription();
+
     super.initState();
   }
 
@@ -307,15 +313,19 @@ class _ChatScreenState extends State<ChatScreen> {
         preparing = true;
       });
 
-      messengerRepository.sendMessage(messageController.text).then((value) {
-        setState(() {
-          messageController.text = '';
-          preparing = false;
-        });
-      }).catchError((err) {
-        CustomSnackBar.showSnackBar(context, err.toString());
-        //* timeout
-      }).timeout(const Duration(seconds: 2));
+      messengerRepository
+          .sendMessage(messageController.text)
+          .catchError((err) {
+            CustomSnackBar.showSnackBar(context, err.toString());
+            //* timeout
+          })
+          .timeout(const Duration(seconds: 2))
+          .whenComplete(() {
+            setState(() {
+              messageController.text = '';
+              preparing = false;
+            });
+          });
     }
   }
 

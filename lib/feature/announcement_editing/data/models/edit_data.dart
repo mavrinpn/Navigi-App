@@ -60,7 +60,7 @@ class AnnouncementEditData {
         'description': description,
         'city_id': cityId,
         'area_id': areaId,
-        'area': areaId,
+        'area2': areaId, //TODO area
         'price': price,
         'price_type': priceType.name,
         'parametrs': ItemParameters().buildJsonFormatParameters(

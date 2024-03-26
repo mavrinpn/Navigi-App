@@ -19,13 +19,12 @@ class MessageContainer extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: !isCurrentUser
-              ? AppColors.backgroundLightGray
-              : AppColors.red,
+          color: !isCurrentUser ? AppColors.backgroundLightGray : AppColors.red,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
           text,
+          maxLines: 10,
           style: AppTypography.font12dark.copyWith(
               color: !isCurrentUser ? Colors.black87 : Colors.white,
               fontWeight: FontWeight.w400),

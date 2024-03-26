@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smart/feature/announcement/ui/dialogs/offer_price_bottom_sheet.dart';
 import 'package:smart/feature/announcement/ui/widgets/market_price_widget.dart';
 import 'package:smart/feature/announcement/ui/widgets/related_announcement_widget.dart';
@@ -269,9 +270,6 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     if (state.data.subcategoryId == carSubcategoryId)
                       MarketPriceWidget(
                         announcement: state.data,
-                        // onTap: () {
-                        //   showMarketPriceDialog(context: context);
-                        // },
                       ),
                     Row(
                       children: [
@@ -346,50 +344,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    BlocBuilder<SubcategoryCubit, SubcategoryState>(
-                      builder: (context, state) {
-                        if (state is SubcategorySuccessState) {
-                          return Column(
-                            children: [
-                              ItemParameterWidget(
-                                name: localizations.category,
-                                currentValue: currentLocale == 'fr'
-                                    ? state.category.nameFr
-                                    : state.category.nameAr,
-                              ),
-                              ItemParameterWidget(
-                                name: localizations.subcategory,
-                                currentValue: currentLocale == 'fr'
-                                    ? state.subcategory.nameFr
-                                    : state.subcategory.nameAr,
-                              ),
-                            ],
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
-                    ),
-                    BlocBuilder<MarkModelCubit, MarkModelState>(
-                      builder: (context, state) {
-                        if (state is MarkModelSuccessState) {
-                          return Column(
-                            children: [
-                              if (state.markName != null)
-                                ItemParameterWidget(
-                                  name: localizations.mark,
-                                  currentValue: state.markName!,
-                                ),
-                              if (state.modelName != null)
-                                ItemParameterWidget(
-                                  name: localizations.model,
-                                  currentValue: state.modelName!,
-                                ),
-                            ],
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
-                    ),
+                    _categoryWidget(),
+                    _markModelWidget(),
                     ...state.data.staticParameters.parameters
                         .map(
                           (e) => ItemParameterWidget(
@@ -441,6 +397,93 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
           return Scaffold(
             body: Center(
               child: AppAnimations.circleFadingAnimation,
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  BlocBuilder<MarkModelCubit, MarkModelState> _markModelWidget() {
+    final localizations = AppLocalizations.of(context)!;
+
+    return BlocBuilder<MarkModelCubit, MarkModelState>(
+      builder: (context, state) {
+        if (state is MarkModelSuccessState) {
+          return Column(
+            children: [
+              if (state.markName != null)
+                ItemParameterWidget(
+                  name: localizations.mark,
+                  currentValue: state.markName!,
+                ),
+              if (state.modelName != null)
+                ItemParameterWidget(
+                  name: localizations.model,
+                  currentValue: state.modelName!,
+                ),
+            ],
+          );
+        } else {
+          return Shimmer.fromColors(
+            baseColor: Colors.grey[700]!,
+            highlightColor: Colors.grey[300]!,
+            child: Column(
+              children: [
+                ItemParameterWidget(
+                  name: localizations.mark,
+                  currentValue: '',
+                ),
+                ItemParameterWidget(
+                  name: localizations.model,
+                  currentValue: '',
+                ),
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  BlocBuilder<SubcategoryCubit, SubcategoryState> _categoryWidget() {
+    final localizations = AppLocalizations.of(context)!;
+    final String currentLocale = MyApp.getLocale(context) ?? 'fr';
+
+    return BlocBuilder<SubcategoryCubit, SubcategoryState>(
+      builder: (context, state) {
+        if (state is SubcategorySuccessState) {
+          return Column(
+            children: [
+              ItemParameterWidget(
+                name: localizations.category,
+                currentValue: currentLocale == 'fr'
+                    ? state.category.nameFr
+                    : state.category.nameAr,
+              ),
+              ItemParameterWidget(
+                name: localizations.subcategory,
+                currentValue: currentLocale == 'fr'
+                    ? state.subcategory.nameFr
+                    : state.subcategory.nameAr,
+              ),
+            ],
+          );
+        } else {
+          return Shimmer.fromColors(
+            baseColor: Colors.grey[700]!,
+            highlightColor: Colors.grey[300]!,
+            child: Column(
+              children: [
+                ItemParameterWidget(
+                  name: localizations.category,
+                  currentValue: '',
+                ),
+                ItemParameterWidget(
+                  name: localizations.subcategory,
+                  currentValue: '',
+                ),
+              ],
             ),
           );
         }

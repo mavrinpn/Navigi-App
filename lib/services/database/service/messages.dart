@@ -209,8 +209,10 @@ class MessagesService {
         body: encodedBody,
       );
 
+      // ignore: avoid_print
+      print('${res.responseStatusCode}');
       if (res.responseStatusCode == 500) {
-        throw Exception('Error: ${res.responseStatusCode}');
+        // throw Exception('Error: ${res.responseStatusCode}');
       }
     } catch (err) {
       // ignore: avoid_print

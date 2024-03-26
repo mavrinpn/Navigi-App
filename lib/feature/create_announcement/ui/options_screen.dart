@@ -158,6 +158,8 @@ class _OptionsScreenState extends State<OptionsScreen> {
   Widget buildParameter(Parameter parameter) {
     if (parameter is SelectParameter) {
       return SelectParameterWidget(parameter: parameter);
+    } else if (parameter is SingleSelectParameter) {
+      return SelectParameterWidget(parameter: parameter);
     } else if (parameter is MultiSelectParameter) {
       return MultipleCheckboxPicker(
         parameter: parameter,

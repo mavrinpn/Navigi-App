@@ -43,6 +43,7 @@ class MessageGroupWidget extends StatelessWidget {
 
     items.add(Row(
       mainAxisAlignment: alignment,
+      mainAxisSize: MainAxisSize.min,
       children: [
         if (data.owned && data.wasRead) ...[
           SvgPicture.asset(
@@ -78,14 +79,17 @@ class MessageGroupWidget extends StatelessWidget {
               ),
             ),
           ],
-          Column(
-            crossAxisAlignment:
-                data.owned ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-            children: generateMessages()
-              ..add(SizedBox(
-                width:
-                    MediaQuery.sizeOf(context).width - (data.owned ? 30 : 78),
-              )),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: data.owned
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
+              children: generateMessages()
+                ..add(SizedBox(
+                  width:
+                      MediaQuery.sizeOf(context).width - (data.owned ? 30 : 78),
+                )),
+            ),
           ),
         ],
       ),

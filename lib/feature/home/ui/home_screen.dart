@@ -51,13 +51,13 @@ class _HomeScreenState extends State<HomeScreen> {
         return;
       }
 
-      if (index == 1 && isUserAith) {
-        final messengerRepository =
-            RepositoryProvider.of<MessengerRepository>(context);
-        //* preloadChats
-        messengerRepository.preloadChats();
-        messengerRepository.refreshSubscription();
-      }
+      // if (index == 1 && isUserAith) {
+      //   final messengerRepository =
+      //       RepositoryProvider.of<MessengerRepository>(context);
+      //   //* preloadChats
+      //   messengerRepository.preloadChats();
+      //   messengerRepository.refreshSubscription();
+      // }
 
       if (index == 3) {
         BlocProvider.of<CreatorCubit>(context)

@@ -129,8 +129,8 @@ class CategoriesService {
   Future<List<CityDistrict>> getCityDistricts(String cityId) async {
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
-        collectionId: cityDistrictsCollection,
-        queries: [Query.equal('cityId', cityId)]);
+        collectionId: areaCollection,
+        queries: [Query.equal('city_id', cityId)]);
 
     List<CityDistrict> places = [];
     for (var doc in res.documents) {

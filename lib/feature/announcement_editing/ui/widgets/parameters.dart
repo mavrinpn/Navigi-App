@@ -46,6 +46,20 @@ class _ParametersSectionState extends State<ParametersSection> {
         parameter.currentValue = parameterOption;
       }
       return SelectParameterWidget(parameter: parameter);
+    } else if (parameter is SingleSelectParameter) {
+      final SingleSelectStaticParameter? current = widget
+          .staticParameters?.parameters
+          .where((param) => param.key == parameter.key)
+          .firstOrNull as SingleSelectStaticParameter?;
+      if (current != null) {
+        final parameterOption = ParameterOption(
+          current.currentOption.key,
+          nameAr: current.currentOption.nameAr,
+          nameFr: current.currentOption.nameFr,
+        );
+        parameter.currentValue = parameterOption;
+      }
+      return SelectParameterWidget(parameter: parameter);
     } else if (parameter is MultiSelectParameter) {
       final MultiSelectStaticParameter? current = widget
           .staticParameters?.parameters

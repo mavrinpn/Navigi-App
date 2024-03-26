@@ -33,17 +33,19 @@ class AnnouncementManager {
     if (_canGetMoreAnnouncement) {
       try {
         if (isNew) {
-          announcements = [];
+          announcements.clear();
           _lastId = '';
         }
 
         final user = await account.get();
         final uid = user.$id;
 
-        announcements.addAll(await dbService.announcements.getAnnouncements(
+        final newAnnouncements = await dbService.announcements.getAnnouncements(
           lastId: _lastId,
           excudeUserId: uid,
-        ));
+        );
+
+        announcements.addAll(newAnnouncements);
         _lastId = announcements.last.id;
       } catch (e) {
         if (e.toString() != 'Bad state: No element') {

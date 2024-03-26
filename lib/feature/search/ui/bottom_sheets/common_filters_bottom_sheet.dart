@@ -20,6 +20,7 @@ import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:smart/widgets/parameters_selection/custom_dropdown_single_pick.dart';
 import 'package:smart/widgets/parameters_selection/min_max_parameter.dart';
 import 'package:smart/widgets/parameters_selection/multiple_chekbox.dart';
+import 'package:smart/widgets/parameters_selection/select_parameter_widget.dart';
 import 'package:smart/widgets/textField/price_widget.dart';
 
 import '../../../../localization/app_localizations.dart';
@@ -141,6 +142,8 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                             selectCategoryCubit.clearFilters();
                             for (var param in selectCategoryCubit.parameters) {
                               if (param is SelectParameter) {
+                                param.selectedVariants = [];
+                              } else if (param is SingleSelectParameter) {
                                 param.selectedVariants = [];
                               } else if (param is MultiSelectParameter) {
                                 param.selectedVariants = [];
@@ -282,6 +285,10 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
           parameter: i,
           wrapDirection: Axis.horizontal,
         ));
+      } else if (i is SingleSelectParameter) {
+        children.add(SelectParameterWidget(
+          parameter: i,
+        ));
       } else if (i is MultiSelectParameter) {
         children.add(MultipleCheckboxPicker(
           parameter: i,
@@ -304,6 +311,10 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
         children.add(MultipleCheckboxPicker(
           parameter: i,
           wrapDirection: Axis.horizontal,
+        ));
+      } else if (i is SingleSelectParameter) {
+        children.add(SelectParameterWidget(
+          parameter: i,
         ));
       } else if (i is MultiSelectParameter) {
         children.add(MultipleCheckboxPicker(

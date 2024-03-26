@@ -4,11 +4,12 @@ import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/checkBox/custom_check_box.dart';
 
 class CustomSingleCheckBoxes extends StatefulWidget {
-  const CustomSingleCheckBoxes(
-      {super.key,
-      required this.parameters,
-      required this.onChange,
-      required this.currentVariable});
+  const CustomSingleCheckBoxes({
+    super.key,
+    required this.parameters,
+    required this.onChange,
+    required this.currentVariable,
+  });
 
   final Function(CustomLocate?) onChange;
   final List<CustomLocate> parameters;

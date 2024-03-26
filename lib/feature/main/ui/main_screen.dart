@@ -34,13 +34,20 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
 
     BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
+    _initScrollListener();
+  }
 
+  void _initScrollListener() {
     _controller.addListener(() async {
-      if (_controller.position.atEdge) {
-        double maxScroll = _controller.position.maxScrollExtent;
-        double currentScroll = _controller.position.pixels;
-        if (currentScroll >= maxScroll * 0.8) {
-          BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(false);
+      final announcementRepository =
+          RepositoryProvider.of<AnnouncementManager>(context);
+      if (announcementRepository.announcements.isNotEmpty) {
+        if (_controller.position.atEdge) {
+          double maxScroll = _controller.position.maxScrollExtent;
+          double currentScroll = _controller.position.pixels;
+          if (currentScroll >= maxScroll * 0.8) {
+            BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(false);
+          }
         }
       }
     });
