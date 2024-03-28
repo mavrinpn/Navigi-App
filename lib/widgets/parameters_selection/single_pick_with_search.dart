@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smart/main.dart';
-import 'package:smart/models/item/item.dart';
 import 'package:smart/services/parameters_parser.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/checkBox/custom_check_box.dart';
@@ -9,7 +8,7 @@ import 'package:smart/widgets/textField/under_line_text_field.dart';
 class SinglePickWithSearch extends StatefulWidget {
   const SinglePickWithSearch({super.key, required this.parameter});
 
-  final SelectParameter parameter;
+  final dynamic parameter;
 
   @override
   State<SinglePickWithSearch> createState() => _SinglePickWithSearchState();

@@ -43,8 +43,11 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   void confirmCode(String code) async {
-    await authRepository.confirmCode(code,
-        password: _passwordForRegistration, name: _nameForRegistration);
+    await authRepository.confirmCode(
+      code,
+      password: _passwordForRegistration,
+      name: _nameForRegistration,
+    );
   }
 
   logout() => authRepository.logout();

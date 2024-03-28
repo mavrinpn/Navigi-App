@@ -82,7 +82,8 @@ class SpecifyPlaceScreenState extends State<SpecifyPlaceScreen> {
                   );
                 });
               },
-              markers: {marker}),
+              markers: {marker},
+            ),
       floatingActionButton: CustomTextButton.orangeContinue(
         callback: () {
           Navigator.pop(context, markerPosition.target);

@@ -148,7 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _selectedTab = _targetTab;
     });
-    Navigator.of(context).pop();
+    //Navigator.of(context).pop();
+    Navigator.popUntil(context, ModalRoute.withName(AppRoutesNames.root));
   }
 
   void _showMainScreenOnLogout() {

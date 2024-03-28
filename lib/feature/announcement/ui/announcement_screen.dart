@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smart/feature/announcement/ui/dialogs/offer_price_bottom_sheet.dart';
+import 'package:smart/feature/announcement/ui/widgets/announcement_mini_map.dart';
 import 'package:smart/feature/announcement/ui/widgets/market_price_widget.dart';
 import 'package:smart/feature/announcement/ui/widgets/related_announcement_widget.dart';
 import 'package:smart/feature/create_announcement/bloc/creating_blocs.dart';
@@ -233,11 +234,13 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       child: InkWell(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => MapScreen(
-                                        placeData: state.data.area,
-                                      )));
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => MapScreen(
+                                placeData: state.data.area,
+                              ),
+                            ),
+                          );
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -383,6 +386,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       creatorData: state.data.creatorData,
                       clickable: true,
                     ),
+                    AnnouncementMiniMap(cityDistrict: state.data.area),
                     RelatedAnnouncementWidget(
                       price: state.data.price,
                       subcategoryId: state.data.subcategoryId,

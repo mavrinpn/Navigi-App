@@ -1,8 +1,8 @@
 part of 'announcement.dart';
 
 class CityDistrict {
-  static const double _defaultLatitude = 36.783;
-  static const double _defaultLongitude = 3.067;
+  static const double _defaultLatitude = 0;
+  static const double _defaultLongitude = 0;
 
   final double latitude;
   final double longitude;

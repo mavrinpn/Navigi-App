@@ -119,8 +119,8 @@ class AuthRepository {
 
   void logout() async {
     try {
+      await _account.deleteSession(sessionId: sessionID ?? '');
       sessionID = null;
-      await _account.deleteSession(sessionId: sessionID!);
     } catch (e) {
       log('session already deleted');
     }
@@ -142,7 +142,7 @@ class AuthRepository {
       appState.add(AuthStateEnum.auth);
     } catch (e) {
       authState.add(EntranceStateEnum.fail);
-      rethrow;
+      // rethrow; //*
     }
   }
 
@@ -151,14 +151,20 @@ class AuthRepository {
     await _databaseService.users.sendSms();
   }
 
-  Future<void> confirmCode(String code,
-      {required String password, required String name}) async {
+  Future<void> confirmCode(
+    String code, {
+    required String password,
+    required String name,
+  }) async {
     authState.add(EntranceStateEnum.loading);
 
     final res = await _databaseService.users.confirmSms(code, password);
     if (res != null) {
-      await _authorizeWithCredentials(res,
-          registrationName: name, needRegister: true);
+      await _authorizeWithCredentials(
+        res,
+        registrationName: name,
+        needRegister: true,
+      );
       authState.add(EntranceStateEnum.success);
       appState.add(AuthStateEnum.auth);
     } else {
@@ -200,7 +206,11 @@ class AuthRepository {
     final String? email = await _getEmailByPhone(phone);
     if (email != null) {
       await _account.create(
-          userId: ID.unique(), email: email, password: password, name: 'Guest');
+        userId: ID.unique(),
+        email: email,
+        password: password,
+        name: 'Guest',
+      );
       // print('create account $email $password');
     }
     // await _account.createEmailSession(
@@ -216,12 +226,18 @@ class AuthRepository {
   }) async {
     assert(!needRegister || needRegister && registrationName != null,
         'for registration required name');
-    // final promise = await _account.createEmailSession(
-    //     email: credentials.mail, password: credentials.password);
-    await _account.deleteSession(sessionId: 'current');
+
+    //*
+    // final sessions = await _account.listSessions();
+    // if (sessions.sessions.isNotEmpty) {
+    // await _account.deleteSession(sessionId: 'current');
+    // await _account.deleteSessions();
+    // }
 
     final promise = await _account.createEmailPasswordSession(
-        email: credentials.mail, password: credentials.password);
+      email: credentials.mail,
+      password: credentials.password,
+    );
     _user = await _account.get();
     await _saveSessionId(promise.$id);
     if (needRegister) {

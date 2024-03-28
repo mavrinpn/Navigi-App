@@ -60,7 +60,7 @@ class Announcement {
         longitude = double.tryParse('${json['longitude']}') ?? 0,
         latitude = double.tryParse('${json['latitude']}') ?? 0,
         area = json['area2'] != null
-            ? CityDistrict.fromJson(json['area2']) //TODO area
+            ? CityDistrict.fromJson(json['area2'])
             : CityDistrict.none() {
     var l = [];
     for (String i in images) {
