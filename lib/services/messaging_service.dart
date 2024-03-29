@@ -44,14 +44,25 @@ class MessagingService {
 
   Future<void> saveTokenToDatabase(String? token) async {
     if (userId != null && token != null) {
-      bool userExists =
+      final tokenExists =
           await _databaseService.notifications.userExists(userId!);
 
-      userExists
-          ? await _databaseService.notifications
-              .updateNotificationToken(userId!, token)
-          : await _databaseService.notifications
-              .createNotificationToken(userId!, token);
+      final userExists = await _databaseService.users.userExists(userId!);
+      if (!userExists) {
+        await _databaseService.users.createUser(
+          name: '',
+          uid: userId!,
+          phone: '',
+        );
+      }
+
+      if (tokenExists) {
+        await _databaseService.notifications
+            .updateNotificationToken(userId!, token);
+      } else {
+        await _databaseService.notifications
+            .createNotificationToken(userId!, token);
+      }
     }
   }
 

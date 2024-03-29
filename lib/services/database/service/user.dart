@@ -59,7 +59,9 @@ class UserService {
   Future<void> sendSms() async {
     final jwt = await getJwt();
     await _functions.createExecution(
-        functionId: '658d94ecc79d136f5fec', body: jsonEncode({'jwt': jwt}));
+      functionId: '658d94ecc79d136f5fec',
+      body: jsonEncode({'jwt': jwt}),
+    );
     log('sms sent');
   }
 
@@ -89,12 +91,29 @@ class UserService {
   }
 
   Future<DateTime> getLastUserOnline(String userId) async {
-    final res = await _databases.getDocument(
-        databaseId: mainDatabase,
-        collectionId: usersCollection,
-        documentId: userId);
+    try {
+      final res = await _databases.getDocument(
+          databaseId: mainDatabase,
+          collectionId: usersCollection,
+          documentId: userId);
 
-    return DateTime.fromMillisecondsSinceEpoch(res.data[lastSeen] ?? 0);
+      return DateTime.fromMillisecondsSinceEpoch(res.data[lastSeen] ?? 0);
+    } catch (err) {
+      print(err);
+      return DateTime.now();
+    }
+  }
+
+  Future<bool> userExists(String userId) async {
+    try {
+      await _databases.getDocument(
+          databaseId: mainDatabase,
+          collectionId: usersCollection,
+          documentId: userId);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
 

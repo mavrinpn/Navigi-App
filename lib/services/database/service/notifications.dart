@@ -22,7 +22,10 @@ class NotificationsDatabaseService {
           databaseId: mainDatabase,
           collectionId: collection,
           documentId: userId,
-          data: {'token': token});
+          data: {
+            'user': userId,
+            'token': token,
+          });
 
   Future<bool> userExists(String userId) async {
     try {

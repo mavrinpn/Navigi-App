@@ -31,8 +31,9 @@ class UserData {
   UserData.fromJson(Map<String, dynamic> json)
       : id = json['\$id'],
         name = json['name'],
-        score =
-            json['score'] != null ? (double.tryParse('${json['score']}') ?? -1) : -1,
+        score = json['score'] != null
+            ? (double.tryParse('${json['score']}') ?? -1)
+            : -1,
         verified = json['verified'],
         imageUrl = json['image_url'] ?? '',
         _atService = json['\$createdAt'],
@@ -56,7 +57,11 @@ class UserData {
 
       n = '${first[0].toUpperCase() + first.substring(1).toLowerCase()} ${last[0].toUpperCase()}.';
     } else {
-      n = name[0].toUpperCase() + name.substring(1).toLowerCase();
+      if (name.length > 1) {
+        n = name[0].toUpperCase() + name.substring(1).toLowerCase();
+      } else {
+        n = '';
+      }
     }
     return n;
   }

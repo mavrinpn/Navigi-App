@@ -135,8 +135,10 @@ class AuthRepository {
   Future<void> login(String email, String password) async {
     authState.add(EntranceStateEnum.loading);
     try {
-      await _authorizeWithCredentials(
-          UserCredentials(mail: email, password: password));
+      await _authorizeWithCredentials(UserCredentials(
+        mail: email,
+        password: password,
+      ));
 
       authState.add(EntranceStateEnum.success);
       appState.add(AuthStateEnum.auth);
@@ -204,19 +206,35 @@ class AuthRepository {
   Future _createTempAccount(String phone) async {
     const String password = 'temppassword123';
     final String? email = await _getEmailByPhone(phone);
-    if (email != null) {
-      await _account.create(
-        userId: ID.unique(),
-        email: email,
-        password: password,
-        name: 'Guest',
-      );
-      // print('create account $email $password');
+
+    try {
+      print('deleteSessions 2');
+      await _account.deleteSessions();
+    } catch (err) {
+      print(err);
     }
-    // await _account.createEmailSession(
-    //     email: email ?? _tempMail, password: password);
-    await _account.createEmailPasswordSession(
-        email: email ?? _tempMail, password: password);
+
+    if (email != null) {
+      try {
+        await _account.create(
+          userId: ID.unique(),
+          email: email,
+          password: password,
+          name: 'Guest',
+        );
+        print('create account $email $password');
+      } catch (err) {
+        print(err);
+      }
+    }
+
+    print('createEmailPasswordSession 2');
+    try {
+      await _account.createEmailPasswordSession(
+          email: email ?? _tempMail, password: password);
+    } catch (err) {
+      print(err);
+    }
   }
 
   Future<void> _authorizeWithCredentials(
@@ -227,19 +245,32 @@ class AuthRepository {
     assert(!needRegister || needRegister && registrationName != null,
         'for registration required name');
 
-    //*
-    // final sessions = await _account.listSessions();
-    // if (sessions.sessions.isNotEmpty) {
-    // await _account.deleteSession(sessionId: 'current');
-    // await _account.deleteSessions();
-    // }
+    print(
+        'authorizeWithCredentials ${credentials.mail} ${credentials.password}');
 
-    final promise = await _account.createEmailPasswordSession(
-      email: credentials.mail,
-      password: credentials.password,
-    );
-    _user = await _account.get();
-    await _saveSessionId(promise.$id);
+    try {
+      final sessions = await _account.listSessions();
+      if (sessions.sessions.isNotEmpty) {
+        // await _account.deleteSession(sessionId: 'current');
+        print('deleteSessions 1');
+        await _account.deleteSessions();
+      }
+    } catch (err) {
+      print(err);
+    }
+
+    print('createEmailPasswordSession 1');
+    try {
+      final promise = await _account.createEmailPasswordSession(
+        email: credentials.mail,
+        password: credentials.password,
+      );
+      _user = await _account.get();
+      await _saveSessionId(promise.$id);
+    } catch (err) {
+      print(err);
+    }
+
     if (needRegister) {
       await _createUserData(credentials.mail, registrationName!);
     }
@@ -258,7 +289,10 @@ class AuthRepository {
   Future _createUserData(String email, String name) async {
     final phone = email.split('@')[0];
 
-    await _databaseService.users
-        .createUser(name: name, uid: userId, phone: phone);
+    await _databaseService.users.createUser(
+      name: name,
+      uid: userId,
+      phone: phone,
+    );
   }
 }
