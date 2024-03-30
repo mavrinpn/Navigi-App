@@ -12,7 +12,25 @@ const String immo8SubcategoryId = '65d45b47006d9408b9ff';
 const String animalsSubcategoryId = '65d4455fe5a1a2b3c0bd';
 
 const String servicesCategoryId = 'job';
+const List<String> servicesSubcategories = [
+  '65d448b87d864860adfc',
+  '65d4489eaaf6eaa96d6d',
+  '65d4487bc5ac3e034477',
+  '65d44825ed168cdccb43',
+  '65d447f3f1b59d8d1b79',
+];
+
 const String realEstateCategoryId = 'immo';
+const List<String> realEstateSubcategories = [
+  '65d45b996a6f6f196d83',
+  '65d45b8ab495cfe702ee',
+  '65d45b81a1a29940bba8',
+  '65d45b77aaa56e835261',
+  '65d45b6e982863c0ed55',
+  '65d45b61f214dc789d46',
+  '65d45b537ae36ed1eb9e',
+  '65d45b47006d9408b9ff',
+];
 
 const String mainDatabase = 'annonces';
 

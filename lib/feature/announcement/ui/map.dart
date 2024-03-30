@@ -6,9 +6,16 @@ import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 
 class MapScreen extends StatelessWidget {
-  const MapScreen({super.key, required this.placeData});
+  const MapScreen({
+    super.key,
+    required this.placeData,
+    required this.latitude,
+    required this.longitude,
+  });
 
   final CityDistrict placeData;
+  final double latitude;
+  final double longitude;
 
   @override
   Widget build(BuildContext context) {
@@ -16,15 +23,24 @@ class MapScreen extends StatelessWidget {
       appBar: AppBar(),
       body: MapSample(
         placeData: placeData,
+        latitude: latitude,
+        longitude: longitude,
       ),
     );
   }
 }
 
 class MapSample extends StatefulWidget {
-  const MapSample({super.key, required this.placeData});
+  const MapSample({
+    super.key,
+    required this.placeData,
+    required this.latitude,
+    required this.longitude,
+  });
 
   final CityDistrict placeData;
+  final double latitude;
+  final double longitude;
 
   @override
   State<MapSample> createState() => MapSampleState();
@@ -98,7 +114,7 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     CameraPosition center = CameraPosition(
-      target: LatLng(widget.placeData.latitude, widget.placeData.longitude),
+      target: LatLng(widget.latitude, widget.longitude),
       zoom: 14.4746,
     );
 
@@ -119,9 +135,9 @@ class MapSampleState extends State<MapSample> {
               markers: {
                   Marker(
                     icon: customMarker,
-                    markerId: MarkerId(widget.placeData.name),
-                    position: LatLng(
-                        widget.placeData.latitude, widget.placeData.longitude),
+                    //markerId: MarkerId(widget.placeData.name),
+                    markerId: const MarkerId(''),
+                    position: LatLng(widget.latitude, widget.longitude),
                   )
                 }),
       floatingActionButton: Row(

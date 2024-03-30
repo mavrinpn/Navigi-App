@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart/feature/announcement_editing/data/announcement_editing_repository.dart';
 import 'package:smart/feature/announcement_editing/data/models/edit_data.dart';
 import 'package:smart/feature/announcement_editing/data/models/image_data.dart';
@@ -48,11 +49,18 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
     }
   }
 
-  void onParametersChanged(
-      {required List<Parameter> newParamaters,
-      required CarFilter? newCarFilter,
-      required MarksFilter? newMarksFilter,
-      required SubcategoryFilters? newSubcategoryFilters}) {
+  void onCustomCoordinateChange(LatLng? newCoordinate) {
+    if (newCoordinate != null) {
+      repository.setCustomCoordinate(newCoordinate);
+    }
+  }
+
+  void onParametersChanged({
+    required List<Parameter> newParamaters,
+    required CarFilter? newCarFilter,
+    required MarksFilter? newMarksFilter,
+    required SubcategoryFilters? newSubcategoryFilters,
+  }) {
     repository.setParameters(
       newParameters: newParamaters,
       carFilter: newCarFilter,

@@ -7,9 +7,13 @@ class AnnouncementMiniMap extends StatefulWidget {
   const AnnouncementMiniMap({
     super.key,
     required this.cityDistrict,
+    required this.latitude,
+    required this.longitude,
   });
 
   final CityDistrict cityDistrict;
+  final double latitude;
+  final double longitude;
 
   @override
   State<AnnouncementMiniMap> createState() => _AnnouncementMiniMapState();
@@ -26,8 +30,8 @@ class _AnnouncementMiniMapState extends State<AnnouncementMiniMap> {
 
     cameraPosition = CameraPosition(
       target: LatLng(
-        widget.cityDistrict.latitude,
-        widget.cityDistrict.longitude,
+        widget.latitude,
+        widget.longitude,
       ),
       zoom: 14,
     );
@@ -37,7 +41,8 @@ class _AnnouncementMiniMapState extends State<AnnouncementMiniMap> {
         .then((icon) {
       markers.add(Marker(
         icon: icon,
-        markerId: MarkerId(widget.cityDistrict.name),
+        // markerId: MarkerId(widget.cityDistrict.name),
+        markerId: const MarkerId(''),
         position: cameraPosition.target,
       ));
       setState(() {});
@@ -46,10 +51,10 @@ class _AnnouncementMiniMapState extends State<AnnouncementMiniMap> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.cityDistrict.latitude == 0 &&
-        widget.cityDistrict.longitude == 0) {
+    if (widget.latitude == 0 &&
+        widget.longitude == 0) {
       return const SizedBox.shrink();
-    }
+    } 
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -57,6 +62,8 @@ class _AnnouncementMiniMapState extends State<AnnouncementMiniMap> {
           MaterialPageRoute(
             builder: (_) => MapScreen(
               placeData: widget.cityDistrict,
+              latitude: widget.latitude,
+              longitude: widget.longitude,
             ),
           ),
         );

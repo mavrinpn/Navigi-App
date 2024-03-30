@@ -7,9 +7,16 @@ import 'package:smart/models/announcement.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 
 class SpecifyPlaceScreen extends StatefulWidget {
-  const SpecifyPlaceScreen({super.key, required this.placeData});
+  const SpecifyPlaceScreen({
+    super.key,
+    required this.placeData,
+    required this.longitude,
+    required this.latitude,
+  });
 
   final CityDistrict placeData;
+  final double longitude;
+  final double latitude;
 
   @override
   State<SpecifyPlaceScreen> createState() => SpecifyPlaceScreenState();
@@ -30,7 +37,7 @@ class SpecifyPlaceScreenState extends State<SpecifyPlaceScreen> {
   void initState() {
     loadMarker();
     initialCenter = CameraPosition(
-      target: LatLng(widget.placeData.latitude, widget.placeData.longitude),
+      target: LatLng(widget.latitude, widget.longitude),
       zoom: 14.4746,
     );
     markerPosition = initialCenter;

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart/feature/announcement_editing/data/models/edit_data.dart';
 import 'package:smart/feature/announcement_editing/data/models/image_data.dart';
@@ -57,6 +58,11 @@ class AnnouncementEditingRepository {
   void setPlace(CityDistrict newPlace) {
     editData!.cityId = newPlace.cityId;
     editData!.areaId = newPlace.id;
+  }
+
+  void setCustomCoordinate(LatLng newLatLng) {
+    editData!.longitude = newLatLng.longitude;
+    editData!.latitude = newLatLng.latitude;
   }
 
   void setParameters({

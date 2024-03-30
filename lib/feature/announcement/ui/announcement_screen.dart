@@ -238,6 +238,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             MaterialPageRoute(
                               builder: (_) => MapScreen(
                                 placeData: state.data.area,
+                                latitude: state.data.latitude,
+                                longitude: state.data.longitude,
                               ),
                             ),
                           );
@@ -386,7 +388,11 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       creatorData: state.data.creatorData,
                       clickable: true,
                     ),
-                    AnnouncementMiniMap(cityDistrict: state.data.area),
+                    AnnouncementMiniMap(
+                      cityDistrict: state.data.area,
+                      latitude: state.data.latitude,
+                      longitude: state.data.longitude,
+                    ),
                     RelatedAnnouncementWidget(
                       price: state.data.price,
                       subcategoryId: state.data.subcategoryId,

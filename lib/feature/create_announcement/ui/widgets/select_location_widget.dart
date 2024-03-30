@@ -19,9 +19,13 @@ class SelectLocationWidget extends StatefulWidget {
     required this.onSetActive,
     required this.onChangePlace,
     this.cityDistrict,
+    this.longitude,
+    this.latitude,
   });
 
   final CityDistrict? cityDistrict;
+  final double? longitude;
+  final double? latitude;
   final Function(bool active) onSetActive;
   final Function(String place) onChangePlace;
 
@@ -42,6 +46,7 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
   @override
   void initState() {
     super.initState();
+
     if (widget.cityDistrict != null) {
       _cityDistrict = widget.cityDistrict;
       placeController.text = _cityDistrict!.name;
@@ -133,8 +138,7 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
         if (selectingCity && !initial) ...[
           BlocBuilder<PlacesCubit, PlacesState>(
             builder: (context, state) {
-              if (state is PlacesSuccessState ||
-                  state is PlacesLoadingState) {
+              if (state is PlacesSuccessState || state is PlacesLoadingState) {
                 return Wrap(
                   children: placesCubit
                       .getCities()
@@ -187,8 +191,7 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
         if (!selectingCity) ...[
           BlocBuilder<PlacesCubit, PlacesState>(
             builder: (context, state) {
-              if (state is PlacesSuccessState ||
-                  state is PlacesLoadingState) {
+              if (state is PlacesSuccessState || state is PlacesLoadingState) {
                 return Wrap(
                   children: placesCubit
                       .getPlaces()
@@ -227,7 +230,11 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
                 final LatLng? latLng = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => SpecifyPlaceScreen(placeData: _cityDistrict!),
+                    builder: (_) => SpecifyPlaceScreen(
+                      placeData: _cityDistrict!,
+                      longitude: widget.longitude ?? _cityDistrict!.longitude,
+                      latitude: widget.latitude ?? _cityDistrict!.latitude,
+                    ),
                   ),
                 );
                 if (latLng != null) {

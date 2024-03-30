@@ -99,7 +99,6 @@ class UserService {
 
       return DateTime.fromMillisecondsSinceEpoch(res.data[lastSeen] ?? 0);
     } catch (err) {
-      print(err);
       return DateTime.now();
     }
   }

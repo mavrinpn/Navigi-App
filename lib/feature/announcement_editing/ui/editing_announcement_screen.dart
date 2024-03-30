@@ -23,6 +23,7 @@ import 'package:smart/managers/places_manager.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/models/item/subcategory_filters.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:smart/utils/constants.dart';
 import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/price_type.dart';
 import 'package:smart/utils/routes/route_names.dart';
@@ -72,6 +73,14 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
       announcementEditCubit.data?.subcollectionId ?? '',
       announcementEditCubit.data?.modelId ?? '',
     );
+    final subcategoryId = announcementEditCubit.data?.subcollectionId ?? '';
+    final creatingManager = context.read<CreatingAnnouncementManager>();
+
+    if (realEstateSubcategories.contains(subcategoryId) ||
+        servicesSubcategories.contains(subcategoryId)) {
+      creatingManager.specialOptions
+          .add(SpecialAnnouncementOptions.customPlace);
+    }
   }
 
   void setParameretres(
@@ -295,6 +304,8 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                       SliverToBoxAdapter(
                         child: SelectLocationWidget(
                           cityDistrict: announcementEditCubit.data?.area,
+                          longitude: announcementEditCubit.data?.longitude,
+                          latitude: announcementEditCubit.data?.latitude,
                           onSetActive: (active) {
                             setState(() {
                               _areaSelected = active;
@@ -326,9 +337,13 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                             active: buttonActive,
                             callback: () {
                               if (buttonActive) {
+                                final creatingManager =
+                                    context.read<CreatingAnnouncementManager>();
                                 final place =
                                     placeManager.searchPlaceIdByName(_place);
                                 announcementEditCubit.onPlaceChange(place);
+                                announcementEditCubit.onCustomCoordinateChange(
+                                    creatingManager.customPosition);
                                 announcementEditCubit.onParametersChanged(
                                   newParamaters: _paramaters,
                                   newCarFilter: _newCarFilter,

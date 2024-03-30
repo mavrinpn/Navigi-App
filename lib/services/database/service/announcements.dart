@@ -421,6 +421,8 @@ class AnnouncementsService {
       'title': editData.title,
       'city_id': editData.cityId,
       'area_id': editData.areaId,
+      'latitude': editData.latitude,
+      'longitude': editData.longitude,
     };
 
     for (var parameter in editData.parameters) {
