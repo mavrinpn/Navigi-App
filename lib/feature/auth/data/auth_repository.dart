@@ -208,9 +208,9 @@ class AuthRepository {
     final String? email = await _getEmailByPhone(phone);
 
     try {
-      print('deleteSessions 2');
       await _account.deleteSessions();
     } catch (err) {
+      // ignore: avoid_print
       print(err);
     }
 
@@ -222,17 +222,17 @@ class AuthRepository {
           password: password,
           name: 'Guest',
         );
-        print('create account $email $password');
       } catch (err) {
+        // ignore: avoid_print
         print(err);
       }
     }
 
-    print('createEmailPasswordSession 2');
     try {
       await _account.createEmailPasswordSession(
           email: email ?? _tempMail, password: password);
     } catch (err) {
+      // ignore: avoid_print
       print(err);
     }
   }
@@ -245,21 +245,17 @@ class AuthRepository {
     assert(!needRegister || needRegister && registrationName != null,
         'for registration required name');
 
-    print(
-        'authorizeWithCredentials ${credentials.mail} ${credentials.password}');
-
     try {
       final sessions = await _account.listSessions();
       if (sessions.sessions.isNotEmpty) {
         // await _account.deleteSession(sessionId: 'current');
-        print('deleteSessions 1');
         await _account.deleteSessions();
       }
     } catch (err) {
+      // ignore: avoid_print
       print(err);
     }
 
-    print('createEmailPasswordSession 1');
     try {
       final promise = await _account.createEmailPasswordSession(
         email: credentials.mail,
@@ -268,6 +264,7 @@ class AuthRepository {
       _user = await _account.get();
       await _saveSessionId(promise.$id);
     } catch (err) {
+      // ignore: avoid_print
       print(err);
     }
 
