@@ -18,6 +18,7 @@ import 'package:smart/models/blocked_user.dart';
 import 'package:smart/models/category.dart';
 import 'package:smart/models/city.dart';
 import 'package:smart/models/item/item.dart';
+import 'package:smart/models/key_word.dart';
 import 'package:smart/models/medium_price.dart';
 import 'package:smart/models/messenger/message.dart';
 import 'package:smart/models/review.dart';

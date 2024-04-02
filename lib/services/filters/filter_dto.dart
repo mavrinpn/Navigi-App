@@ -11,6 +11,8 @@ class DefaultFilterDto {
   double? radius;
   String? cityId;
   String? areaId;
+  String? model;
+  String? type;
 
   DefaultFilterDto({
     this.text = '',
@@ -21,6 +23,8 @@ class DefaultFilterDto {
     this.radius,
     this.cityId,
     this.areaId,
+    this.model,
+    this.type,
   });
 }
 
@@ -29,6 +33,7 @@ class SubcategoryFilterDTO {
   String? lastId;
   String? mark;
   String? model;
+  String? type;
   String? sortBy;
   double? minPrice;
   double? maxPrice;
@@ -49,6 +54,7 @@ class SubcategoryFilterDTO {
     this.radius,
     this.mark,
     this.model,
+    this.type,
     this.cityId,
     this.areaId,
     this.limit,

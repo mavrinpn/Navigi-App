@@ -122,6 +122,7 @@ class AnnouncementManager {
     required List<Parameter> parameters,
     String? mark,
     String? model,
+    String? type,
     String? sortBy,
     double? minPrice,
     double? maxPrice,
@@ -145,6 +146,7 @@ class AnnouncementManager {
         parameters: parameters,
         mark: mark,
         model: model,
+        type: type,
         cityId: cityId,
         areaId: areaId,
       );
@@ -169,6 +171,8 @@ class AnnouncementManager {
     double? radius,
     String? cityId,
     String? areaId,
+    String? model,
+    String? type,
   }) async {
     try {
       if (isNew) {
@@ -185,6 +189,8 @@ class AnnouncementManager {
         radius: radius,
         cityId: cityId,
         areaId: areaId,
+        model: model,
+        type: type,
       );
 
       searchAnnouncements.addAll(

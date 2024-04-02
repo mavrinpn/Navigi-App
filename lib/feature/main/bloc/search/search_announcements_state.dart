@@ -5,7 +5,7 @@ abstract class SearchItemsState {}
 class SearchItemsInitial extends SearchItemsState {}
 
 class SearchItemsSuccess extends SearchItemsState {
-  List<SubcategoryItem> result;
+  List<KeyWord> result;
 
   SearchItemsSuccess({required this.result});
 }

@@ -36,6 +36,7 @@ const String mainDatabase = 'annonces';
 
 const String postCollection = 'anounces';
 const String itemsCollection = 'items';
+const String keyWordsCollection = 'key_words';
 const String categoriesCollection = 'categories';
 const String subcategoriesCollection = 'sub_categories';
 const String queriesCollection = 'queries';

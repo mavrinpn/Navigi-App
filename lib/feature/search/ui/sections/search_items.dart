@@ -1,31 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
-import 'package:smart/managers/search_manager.dart';
+import 'package:smart/main.dart';
+import 'package:smart/models/key_word.dart';
 import 'package:smart/utils/utils.dart';
 
 class SearchItemsWidget extends StatelessWidget {
   const SearchItemsWidget({
     super.key,
     required this.state,
-    required this.setSearch,
+    required this.onKeywordTap,
   });
 
-  final Function(String, SearchManager?) setSearch;
+  final Function(KeyWord) onKeywordTap;
   final SearchItemsSuccess state;
 
   @override
   Widget build(BuildContext context) {
+    final String currentLocale = MyApp.getLocale(context) ?? 'fr';
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: state.result
-          .map((e) => Padding(
+          .map((keyword) => Padding(
                 padding: const EdgeInsets.all(15),
                 child: InkWell(
                   onTap: () {
-                    setSearch(e.name, null);
+                    onKeywordTap(keyword);
                   },
                   child: Text(
-                    e.name,
+                    currentLocale == 'fr' ? keyword.nameFr : keyword.nameAr,
                     style: AppTypography.font14black,
                   ),
                 ),

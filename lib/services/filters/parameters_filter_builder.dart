@@ -38,6 +38,12 @@ class ParametersFilterBuilder {
     if (filterData.maxPrice != null) {
       queries.add(Query.lessThanEqual('price', filterData.maxPrice));
     }
+    if (filterData.model != null) {
+      queries.add(Query.equal('model', filterData.model));
+    }
+    if (filterData.type != null) {
+      queries.add(Query.equal('type', filterData.type));
+    }
 
     return queries;
   }

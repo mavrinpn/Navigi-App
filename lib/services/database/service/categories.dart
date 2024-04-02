@@ -91,6 +91,7 @@ class CategoriesService {
     return (subcategory: subcategory, category: category);
   }
 
+  //TODO announcement creating
   Future<List<SubcategoryItem>> getItemsFromSubcategory(
       String subcategory) async {
     final res = await _databases.listDocuments(
@@ -139,18 +140,46 @@ class CategoriesService {
     return places;
   }
 
-  Future searchItemsByQuery(String query) async {
-    final List<String> queries = [
-      Query.search('name', query),
+  // Future searchItemsByQuery(String query) async {
+  //   final List<String> queries = [
+  //     Query.search('name', query),
+  //     Query.limit(40),
+  //   ];
+  //   final res = await _databases.listDocuments(
+  //       databaseId: mainDatabase,
+  //       collectionId: itemsCollection,
+  //       queries: queries);
+  //   List<SubcategoryItem> items = [];
+  //   for (var doc in res.documents) {
+  //     items.add(SubcategoryItem.fromJson(doc.data));
+  //   }
+  //   return items;
+  // }
+
+  Future getKeyWords({
+    required String name,
+    required String? subcategoryId,
+  }) async {
+    List<String> queries = [
+      Query.or([
+        Query.search('nameAr', name),
+        Query.search('nameFr', name),
+      ]),
       Query.limit(40),
     ];
+    if (subcategoryId != null) {
+      queries.add(
+        Query.equal('subcategory_id', subcategoryId),
+      );
+    }
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: itemsCollection,
-        queries: queries);
-    List<SubcategoryItem> items = [];
+      databaseId: mainDatabase,
+      collectionId: keyWordsCollection,
+      queries: queries,
+    );
+    List<KeyWord> items = [];
     for (var doc in res.documents) {
-      items.add(SubcategoryItem.fromJson(doc.data));
+      items.add(KeyWord.fromJson(doc.data));
     }
     return items;
   }
@@ -162,17 +191,17 @@ class CategoriesService {
     return res.documents.map((e) => e.data['name'].toString()).toList();
   }
 
-  Future<SubcategoryItem?> getItem(String itemId) async {
-    final res = await _databases.getDocument(
-        databaseId: mainDatabase,
-        collectionId: itemsCollection,
-        documentId: itemId);
+  // Future<SubcategoryItem?> getItem(String itemId) async {
+  //   final res = await _databases.getDocument(
+  //       databaseId: mainDatabase,
+  //       collectionId: itemsCollection,
+  //       documentId: itemId);
 
-    return SubcategoryItem(
-        name: res.data['name'],
-        id: res.$id,
-        subcategoryId: res.data['subcategory']);
-  }
+  //   return SubcategoryItem(
+  //       name: res.data['name'],
+  //       id: res.$id,
+  //       subcategoryId: res.data['subcategory']);
+  // }
 
   Future<List<Mark>> getCarMarks(String subcategory) async {
     final res = await _databases.listDocuments(

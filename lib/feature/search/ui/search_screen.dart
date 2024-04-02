@@ -85,6 +85,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void setSearch(String query, SearchManager? searchManager) {
+    searchManager?.saveInHistory(query);
     BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
       searchText: query,
       isNew: true,
@@ -156,7 +157,15 @@ class _SearchScreenState extends State<SearchScreen> {
               onChange: (String value) {
                 searchManager.setSearch(true);
                 setState(() {});
-                BlocProvider.of<SearchItemsCubit>(context).search(value);
+                final selectCategoryCubit =
+                    BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+
+                BlocProvider.of<SearchItemsCubit>(context).search(
+                  query: value,
+                  subcategoryId: widget.showBackButton
+                      ? null
+                      : selectCategoryCubit.subcategoryId,
+                );
                 BlocProvider.of<PopularQueriesCubit>(context)
                     .loadPopularQueries();
               },
@@ -176,7 +185,23 @@ class _SearchScreenState extends State<SearchScreen> {
       if (state is SearchItemsSuccess &&
           searchController.text.isNotEmpty &&
           state.result.isNotEmpty) {
-        return SearchItemsWidget(state: state, setSearch: setSearch);
+        return SearchItemsWidget(
+          state: state,
+          onKeywordTap: (keyword) {
+            final String currentLocale = MyApp.getLocale(context) ?? 'fr';
+            final query =
+                currentLocale == 'fr' ? keyword.nameFr : keyword.nameAr;
+
+            BlocProvider.of<SearchAnnouncementCubit>(context)
+                .searchAnnouncesByKeyword(
+              keyword: keyword,
+              isNew: true,
+            );
+            searchManager.setSearch(false);
+            setSearchText(query);
+            setState(() {});
+          },
+        );
       } else if (state is SearchItemsLoading) {
         return Center(child: AppAnimations.bouncingLine);
       }
@@ -194,7 +219,6 @@ class _SearchScreenState extends State<SearchScreen> {
           PopularQueriesWidget(
             onSearch: (e) {
               setSearch(e, searchManager);
-              searchManager.saveInHistory(e);
             },
           ),
           const SizedBox(height: 32),

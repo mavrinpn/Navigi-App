@@ -2,9 +2,8 @@ import 'package:appwrite/appwrite.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/models/announcement.dart';
+import 'package:smart/models/key_word.dart';
 import 'package:smart/services/database/database_service.dart';
-
-import '../models/item/item.dart';
 
 const String _historyKey = 'history';
 
@@ -23,8 +22,17 @@ class SearchManager {
 
   BehaviorSubject<String> searchTextStream = BehaviorSubject<String>.seeded('');
 
-  Future<List<SubcategoryItem>> searchItemsByName(String query) async =>
-      await dbService.categories.searchItemsByQuery(query);
+  // Future<List<SubcategoryItem>> searchItemsByName(String query) async =>
+  //     await dbService.categories.searchItemsByQuery(query);
+
+  Future<List<KeyWord>> getKeyWords({
+    required String name,
+    required String? subcategoryId,
+  }) async =>
+      await dbService.categories.getKeyWords(
+        name: name,
+        subcategoryId: subcategoryId,
+      );
 
   Future<void> loadPopularQueries() async {
     if (popularQueries.isEmpty) {

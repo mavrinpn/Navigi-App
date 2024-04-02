@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
 import 'package:smart/models/item/item.dart';
+import 'package:smart/models/key_word.dart';
 import 'package:smart/models/sort_types.dart';
 import 'package:smart/utils/price_type.dart';
 
@@ -163,6 +164,39 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
       //     minPrice: _minPrice,
       //     maxPrice: _maxPrice);
       _lastText = searchText;
+      emit(SearchAnnouncementsSuccessState());
+    } catch (e) {
+      emit(SearchAnnouncementsFailState());
+      rethrow;
+    }
+  }
+
+  void searchAnnouncesByKeyword({
+    required KeyWord keyword,
+    required bool isNew,
+  }) async {
+    emit(SearchAnnouncementsLoadingState());
+    try {
+      if (searchMode == SearchModeEnum.simple) {
+        await _announcementManager.loadSearchAnnouncement(
+          searchText: keyword.query,
+          isNew: true,
+          sortBy: _sortBy,
+          model: keyword.model, //TODO
+          type: keyword.type, //TODO
+        );
+      } else {
+        await _announcementManager.searchWithSubcategory(
+          subcategoryId: _subcategoryId!,
+          parameters: const <Parameter>[],
+          searchText: keyword.query,
+          isNew: true,
+          sortBy: _sortBy,
+          model: keyword.model, //TODO
+          type: keyword.type, //TODO
+        );
+      }
+      _lastText = keyword.query;
       emit(SearchAnnouncementsSuccessState());
     } catch (e) {
       emit(SearchAnnouncementsFailState());

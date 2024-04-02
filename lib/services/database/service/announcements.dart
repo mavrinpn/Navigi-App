@@ -83,6 +83,10 @@ class AnnouncementsService {
       queries.add(Query.equal('model', filterData.model));
     }
 
+    if (filterData.type != null) {
+      queries.add(Query.equal('type', filterData.type));
+    }
+
     if (filterData.cityId != null) {
       queries.add(Query.equal('city_id', filterData.cityId));
     }
@@ -98,6 +102,8 @@ class AnnouncementsService {
     if (filterData.excludeId != null) {
       queries.add(Query.notEqual('announcements', filterData.excludeId));
     }
+
+    queries.add(Query.limit(40)); //TODO
 
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
