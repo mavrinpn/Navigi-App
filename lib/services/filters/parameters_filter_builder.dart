@@ -13,8 +13,7 @@ class ParametersFilterBuilder {
     return Query.search(attribute, '"${parameter.key}": "${parameter.value}"');
   }
 
-  static List<String> getSearchQueries(DefaultFilterDto filterData,
-      {bool subcategory = false}) {
+  static List<String> getSearchQueries(DefaultFilterDto filterData, {bool subcategory = false}) {
     List<String> queries = [];
 
     queries.add(Query.equal(activeAttribute, true));
@@ -23,12 +22,40 @@ class ParametersFilterBuilder {
       queries.add(Query.cursorAfter(filterData.lastId!));
     }
 
-    if (filterData.text != null && filterData.text != '') {
-      // queries.add(Query.search(subcategory ? 'title' : 'name', filterData.text!));
-      for (final text in filterData.text!.split(' ')) {
-        queries.add(Query.contains(subcategory ? 'title' : 'name', text));
+    //TODO keyword search
+    if (filterData.keyword != null) {
+      List<String> frAndQueries = [];
+      for (final textRow in filterData.keyword!.nameFr.split(' ')) {
+        frAndQueries.add(Query.contains('keywords', textRow.toLowerCase()));
+      }
+
+      List<String> arAndQueries = [];
+      for (final textRow in filterData.keyword!.nameAr.split(' ')) {
+        arAndQueries.add(Query.contains('keywords', textRow.toLowerCase()));
+      }
+
+      List<String> orQueries = [Query.and(frAndQueries), Query.and(arAndQueries)];
+
+      if (orQueries.length > 1) {
+        queries.add(Query.or(orQueries));
+      } else if (orQueries.isNotEmpty) {
+        queries.add(orQueries.first);
       }
     }
+
+    //TODO text search
+    if (filterData.text != null && filterData.text != '') {
+      List<String> orQueries = [];
+      for (final textRow in filterData.text!.split(' ')) {
+        orQueries.add(Query.contains('keywords', textRow.toLowerCase())); 
+      }
+      if (orQueries.length > 1) {
+        queries.add(Query.or(orQueries));
+      } else {
+        queries.add(Query.contains('keywords', filterData.text!.toLowerCase()));
+      }
+    }
+
     if (filterData.sortBy != null) {
       queries.add(SortTypes.toQuery(filterData.sortBy!)!);
     }
@@ -37,6 +64,9 @@ class ParametersFilterBuilder {
     }
     if (filterData.maxPrice != null) {
       queries.add(Query.lessThanEqual('price', filterData.maxPrice));
+    }
+    if (filterData.mark != null) {
+      queries.add(Query.equal('mark', filterData.mark));
     }
     if (filterData.model != null) {
       queries.add(Query.equal('model', filterData.model));

@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/firebase_options.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/providers.dart';
+import 'package:smart/restart_controller.dart';
 import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/services.dart';
 import 'package:smart/utils/app_theme.dart';
@@ -16,8 +18,13 @@ import 'package:smart/widgets/splash.dart';
 import 'bloc/app/app_cubit.dart';
 import 'feature/home/ui/home_screen.dart';
 
+final ValueNotifier<String> currentLocaleShortName = ValueNotifier<String>('fr');
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  currentLocaleShortName.value = prefs.getString('lang') ?? 'fr';
 
   PaintingBinding.instance.imageCache.maximumSizeBytes = 1024 * 1024 * 50;
 
@@ -29,7 +36,9 @@ Future<void> main() async {
 
   FirebaseMessaging.onBackgroundMessage(MessagingService.onBackgroundMessage);
 
-  runApp(MyRepositoryProviders());
+  runApp(HotRestartController(
+    child: MyRepositoryProviders(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -54,8 +63,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    RepositoryProvider.of<AuthRepository>(context).appMounted =
-        state == AppLifecycleState.resumed;
+    RepositoryProvider.of<AuthRepository>(context).appMounted = state == AppLifecycleState.resumed;
   }
 
   @override
@@ -80,7 +88,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       DeviceOrientation.portraitDown,
     ]);
 
-    setLocale(const Locale('fr'));
+    setLocale(Locale(currentLocaleShortName.value));
   }
 
   @override

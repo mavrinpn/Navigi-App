@@ -8,6 +8,7 @@ import 'package:smart/feature/profile/ui/widgets/row_button.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/managers/creating_announcement_manager.dart';
 import 'package:smart/models/announcement.dart';
+import 'package:smart/restart_controller.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/conatainers/announcement_horizontal.dart';
@@ -29,8 +30,7 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen>
-    with SingleTickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   bool _showAll = false;
   List<Announcement> _available = [];
@@ -76,8 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           children: [
             const SizedBox(width: 15),
             Expanded(
-              child:
-                  Text(localizations.profile, style: AppTypography.font20black),
+              child: Text(localizations.profile, style: AppTypography.font20black),
             ),
             IconButton(
               onPressed: () {
@@ -101,8 +100,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         callback: () {
           final creatingManager = context.read<CreatingAnnouncementManager>();
           creatingManager.isCreating = true;
-          Navigator.pushNamed(
-              context, AppRoutesNames.announcementCreatingCategory);
+          Navigator.pushNamed(context, AppRoutesNames.announcementCreatingCategory);
         },
         width: MediaQuery.of(context).size.width - 30,
         text: AppLocalizations.of(context)!.addAnAd,
@@ -116,17 +114,13 @@ class _ProfileScreenState extends State<ProfileScreen>
       ),
       body: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
-          if (state is ProfileSuccessState ||
-              state is EditSuccessState ||
-              state is EditFailState) {
+          if (state is ProfileSuccessState || state is EditSuccessState || state is EditFailState) {
             return BlocBuilder<CreatorCubit, CreatorState>(
               builder: (context, creatorState) {
-                _loggedUserId =
-                    RepositoryProvider.of<AuthRepository>(context).userData.id;
+                _loggedUserId = RepositoryProvider.of<AuthRepository>(context).userData?.id ?? '';
 
                 if (creatorState is CreatorSuccessState) {
-                  if (creatorState.available.firstOrNull?.creatorData.uid ==
-                      _loggedUserId) {
+                  if (creatorState.available.firstOrNull?.creatorData.uid == _loggedUserId) {
                     _available = [...creatorState.available];
                     _sold = [...creatorState.sold];
                   }
@@ -138,10 +132,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                     SliverPadding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       sliver: SliverToBoxAdapter(
-                        child: AccountMediumInfo(
-                          user: RepositoryProvider.of<AuthRepository>(context)
-                              .userData,
-                        ),
+                        child: RepositoryProvider.of<AuthRepository>(context).userData != null
+                            ? AccountMediumInfo(
+                                user: RepositoryProvider.of<AuthRepository>(context).userData!,
+                              )
+                            : const SizedBox.shrink(),
                       ),
                     ),
                     const SliverToBoxAdapter(child: SizedBox(height: 20)),
@@ -156,8 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         unselectedLabelColor: AppColors.lightGray,
                         splashBorderRadius: BorderRadius.circular(12),
                         indicator: const UnderlineTabIndicator(
-                            borderSide:
-                                BorderSide(color: AppColors.red, width: 4),
+                            borderSide: BorderSide(color: AppColors.red, width: 4),
                             insets: EdgeInsets.symmetric(horizontal: 60)),
                         onTap: (int val) => setState(() {}),
                         controller: _tabController,
@@ -166,26 +160,19 @@ class _ProfileScreenState extends State<ProfileScreen>
                             child: Text(
                                 '${localizations.active} (${creatorState is CreatorSuccessState ? creatorState.available.length : 0})',
                                 style: AppTypography.font24black.copyWith(
-                                    fontSize: 14,
-                                    color: _tabController.index == 0
-                                        ? Colors.black
-                                        : Colors.grey)),
+                                    fontSize: 14, color: _tabController.index == 0 ? Colors.black : Colors.grey)),
                           ),
                           Tab(
                             child: Text(
                                 '${localizations.sold} (${creatorState is CreatorSuccessState ? creatorState.sold.length : 0})',
                                 style: AppTypography.font24black.copyWith(
-                                    fontSize: 14,
-                                    color: _tabController.index == 1
-                                        ? Colors.black
-                                        : Colors.grey)),
+                                    fontSize: 14, color: _tabController.index == 1 ? Colors.black : Colors.grey)),
                           ),
                         ],
                       ),
                     ),
                     const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                    if (creatorState is CreatorSuccessState ||
-                        (_available.isNotEmpty)) ...[
+                    if (creatorState is CreatorSuccessState || (_available.isNotEmpty)) ...[
                       getGridHeight() == 100
                           ? SliverPadding(
                               padding: const EdgeInsets.symmetric(vertical: 40),
@@ -214,17 +201,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       : min(_sold.length, 4),
                               itemBuilder: (BuildContext context, int index) {
                                 return AnnouncementContainerHorizontal(
-                                    announcement: _tabController.index == 0
-                                        ? _available[index]
-                                        : _sold[index],
+                                    announcement: _tabController.index == 0 ? _available[index] : _sold[index],
                                     likeCount: '13');
                               },
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(height: 12),
+                              separatorBuilder: (context, index) => const SizedBox(height: 12),
                             )
                     ],
-                    if (creatorState is CreatorLoadingState &&
-                        (_available.isEmpty)) ...[
+                    if (creatorState is CreatorLoadingState && (_available.isEmpty)) ...[
                       SliverToBoxAdapter(
                         child: SizedBox(
                           height: 100,
@@ -233,12 +216,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ),
                       )
                     ],
-                    if (!_showAll &&
-                        (creatorState is CreatorSuccessState &&
-                            creatorState.available.length > 4))
+                    if (!_showAll && (creatorState is CreatorSuccessState && creatorState.available.length > 4))
                       SliverPadding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 14),
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
                         sliver: SliverToBoxAdapter(
                           child: CustomTextButton.orangeContinue(
                             callback: () {
@@ -262,7 +242,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                           icon: 'Assets/icons/profile_settings.svg',
                           onTap: () {
                             Navigator.pushNamed(
-                                context, AppRoutesNames.editProfile);
+                              context,
+                              AppRoutesNames.editProfile,
+                            );
                           },
                         ),
                       ),
@@ -343,8 +325,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         return AlertDialog(
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.transparent,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           title: Center(
               child: Text(
             'Vous voulez sortir?',
@@ -364,7 +345,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                   _sold = [];
                 });
 
-                BlocProvider.of<AuthCubit>(context).logout();
+                BlocProvider.of<AuthCubit>(context).logout().then((value) {
+                  //TODO logout
+                  HotRestartController.performHotRestart(context);
+                });
                 Navigator.of(context).pop();
               },
               styleText: AppTypography.font14black.copyWith(
@@ -380,8 +364,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               callback: () {
                 Navigator.of(context).pop();
               },
-              styleText: AppTypography.font14black
-                  .copyWith(fontWeight: FontWeight.bold),
+              styleText: AppTypography.font14black.copyWith(fontWeight: FontWeight.bold),
               text: 'Non',
               active: true,
               activeColor: Colors.white,

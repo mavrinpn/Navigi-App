@@ -68,8 +68,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     final user = RepositoryProvider.of<AuthRepository>(context).userData;
 
-    nameController.text = user.name;
-    phoneController.text = user.phone;
+    nameController.text = user?.name ?? '';
+    phoneController.text = user?.phone ?? '';
 
     final localizations = AppLocalizations.of(context)!;
 
@@ -135,7 +135,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     ? CustomNetworkImage(
                                         width: 100,
                                         height: 100,
-                                        url: user.imageUrl,
+                                        url: user?.imageUrl ?? '',
                                         borderRadius: 50,
                                       )
                                     : ClipOval(
@@ -162,7 +162,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           keyboardType: TextInputType.text,
                           prefIcon: 'Assets/icons/profile.svg',
                           onChanged: (String? o) {
-                            changedName = o != user.name ? o : null;
+                            changedName = o != user?.name ? o : null;
                           },
                         ),
                         CustomTextFormField(
@@ -170,7 +170,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           keyboardType: TextInputType.text,
                           prefIcon: 'Assets/icons/phone.svg',
                           onChanged: (String? o) {
-                            phone = o != user.phone ? o : null;
+                            phone = o != user?.phone ? o : null;
                           },
                         ),
                         CustomTextFormField(

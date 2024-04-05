@@ -39,8 +39,7 @@ class _MainScreenState extends State<MainScreen> {
 
   void _initScrollListener() {
     _controller.addListener(() async {
-      final announcementRepository =
-          RepositoryProvider.of<AnnouncementManager>(context);
+      final announcementRepository = RepositoryProvider.of<AnnouncementManager>(context);
       if (announcementRepository.announcements.isNotEmpty) {
         if (_controller.position.atEdge) {
           double maxScroll = _controller.position.maxScrollExtent;
@@ -63,8 +62,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final announcementRepository =
-        RepositoryProvider.of<AnnouncementManager>(context);
+    final announcementRepository = RepositoryProvider.of<AnnouncementManager>(context);
 
     Widget getAnnouncementsGrid() {
       return SliverGrid(
@@ -74,17 +72,14 @@ class _MainScreenState extends State<MainScreen> {
             maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
             childAspectRatio: 160 / 272),
         delegate: SliverChildBuilderDelegate(
-          (context, index) => AnnouncementContainer(
-              announcement: announcementRepository.announcements[index]),
+          (context, index) => AnnouncementContainer(announcement: announcementRepository.announcements[index]),
           childCount: announcementRepository.announcements.length,
         ),
       );
     }
 
     void openSearchScreen(String? query) {
-      context
-          .read<SearchAnnouncementCubit>()
-          .setSearchMode(SearchModeEnum.simple);
+      context.read<SearchAnnouncementCubit>().setSearchMode(SearchModeEnum.simple);
       BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
       BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
         searchText: '',
@@ -98,9 +93,7 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     void openFilters() {
-      context
-          .read<SearchAnnouncementCubit>()
-          .setSearchMode(SearchModeEnum.simple);
+      context.read<SearchAnnouncementCubit>().setSearchMode(SearchModeEnum.simple);
       showFilterBottomSheet(context: context);
     }
 
@@ -141,7 +134,7 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                 ),
-                const CategoriesSection(),
+                CategoriesSection(key: UniqueKey()),
                 const SliverToBoxAdapter(
                   child: SizedBox(height: 8),
                 ),
@@ -159,8 +152,7 @@ class _MainScreenState extends State<MainScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(AppLocalizations.of(context)!.recommendations,
-                            textAlign: TextAlign.center,
-                            style: AppTypography.font20black),
+                            textAlign: TextAlign.center, style: AppTypography.font20black),
                         // Text(AppLocalizations.of(context)!.viewAll,
                         //     style: AppTypography.font14lightGray
                         //         .copyWith(fontSize: 12)),
@@ -168,9 +160,7 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                 ),
-                SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    sliver: getAnnouncementsGrid()),
+                SliverPadding(padding: const EdgeInsets.symmetric(horizontal: 15), sliver: getAnnouncementsGrid()),
                 if (state is AnnouncementsLoadingState) ...[
                   SliverToBoxAdapter(
                     child: Center(child: AppAnimations.bouncingLine),

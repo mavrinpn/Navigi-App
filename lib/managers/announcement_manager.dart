@@ -2,6 +2,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smart/enum/enum.dart';
 import 'package:smart/models/item/item.dart';
+import 'package:smart/models/key_word.dart';
 import 'package:smart/services/filters/filter_dto.dart';
 
 import '../../models/announcement.dart';
@@ -25,8 +26,7 @@ class AnnouncementManager {
   List<Announcement> searchAnnouncements = [];
   Announcement? lastAnnouncement;
 
-  BehaviorSubject<LoadingStateEnum> announcementsLoadingState =
-      BehaviorSubject.seeded(LoadingStateEnum.loading);
+  BehaviorSubject<LoadingStateEnum> announcementsLoadingState = BehaviorSubject.seeded(LoadingStateEnum.loading);
 
   Future<void> addLimitAnnouncements(bool isNew) async {
     announcementsLoadingState.add(LoadingStateEnum.loading);
@@ -117,6 +117,7 @@ class AnnouncementManager {
 
   Future<void> searchWithSubcategory({
     String? searchText,
+    KeyWord? keyword,
     required bool isNew,
     required String subcategoryId,
     required List<Parameter> parameters,
@@ -138,6 +139,7 @@ class AnnouncementManager {
       final filter = SubcategoryFilterDTO(
         lastId: _searchLastId,
         text: searchText,
+        keyword: keyword,
         sortBy: sortBy,
         minPrice: minPrice,
         maxPrice: maxPrice,
@@ -151,8 +153,7 @@ class AnnouncementManager {
         areaId: areaId,
       );
 
-      searchAnnouncements.addAll(await dbService.announcements
-          .searchAnnouncementsInSubcategory(filter));
+      searchAnnouncements.addAll(await dbService.announcements.searchAnnouncementsInSubcategory(filter));
 
       _searchLastId = searchAnnouncements.last.id;
     } catch (e) {
@@ -164,6 +165,7 @@ class AnnouncementManager {
 
   Future<void> loadSearchAnnouncement({
     String? searchText,
+    KeyWord? keyword,
     required bool isNew,
     String? sortBy,
     double? minPrice,
@@ -171,6 +173,7 @@ class AnnouncementManager {
     double? radius,
     String? cityId,
     String? areaId,
+    String? mark,
     String? model,
     String? type,
   }) async {
@@ -183,18 +186,19 @@ class AnnouncementManager {
       final filter = DefaultFilterDto(
         lastId: _searchLastId,
         text: searchText,
+        keyword: keyword,
         sortBy: sortBy,
         minPrice: minPrice,
         maxPrice: maxPrice,
         radius: radius,
         cityId: cityId,
         areaId: areaId,
+        mark: mark,
         model: model,
         type: type,
       );
 
-      searchAnnouncements.addAll(
-          await dbService.announcements.searchLimitAnnouncements(filter));
+      searchAnnouncements.addAll(await dbService.announcements.searchLimitAnnouncements(filter));
 
       _searchLastId = searchAnnouncements.last.id;
     } catch (e) {

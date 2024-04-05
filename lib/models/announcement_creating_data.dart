@@ -12,7 +12,7 @@ class AnnouncementCreatingData {
   String? itemName;
   String? itemId;
   String? parameters;
-  // String? placeId;
+  String? keywords;
   String? cityId;
   String? areaId;
 
@@ -22,18 +22,19 @@ class AnnouncementCreatingData {
   }
 
   Map<String, dynamic> toJson(String creatorId, List<String> urls) => {
-        'name': itemName,//title,
+        'name': itemName, //title,
         'description': description,
         'type': type,
         'price': price,
         'price_type': priceType?.name ?? 'dzd',
         'item_name': itemName,
         'parametrs': parameters,
+        'keywords': keywords,
         'creator_id': creatorId,
         'images': urls,
         'creator': creatorId,
-        //'place': placeId,
         'area2': areaId,
+        'city': cityId,
         'city_id': cityId,
         'area_id': areaId,
         if (subcategoryId != null) 'subcategoryId': subcategoryId,
@@ -51,7 +52,6 @@ class AnnouncementCreatingData {
     priceType = null;
     itemName = null;
     parameters = null;
-    // placeId = null;
     cityId = null;
     areaId = null;
   }

@@ -50,5 +50,5 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  logout() => authRepository.logout();
+  Future<void> logout() => authRepository.logout();
 }

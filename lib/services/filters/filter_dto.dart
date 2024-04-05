@@ -1,9 +1,11 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:smart/models/item/item.dart';
+import 'package:smart/models/key_word.dart';
 import 'package:smart/services/parameters_parser.dart';
 
 class DefaultFilterDto {
   String? text;
+  KeyWord? keyword;
   String? lastId;
   String? sortBy;
   double? minPrice;
@@ -11,11 +13,13 @@ class DefaultFilterDto {
   double? radius;
   String? cityId;
   String? areaId;
+  String? mark;
   String? model;
   String? type;
 
   DefaultFilterDto({
     this.text = '',
+    this.keyword,
     this.lastId,
     this.sortBy,
     this.minPrice,
@@ -23,6 +27,7 @@ class DefaultFilterDto {
     this.radius,
     this.cityId,
     this.areaId,
+    this.mark,
     this.model,
     this.type,
   });
@@ -30,6 +35,7 @@ class DefaultFilterDto {
 
 class SubcategoryFilterDTO {
   String? text;
+  KeyWord? keyword;
   String? lastId;
   String? mark;
   String? model;
@@ -47,6 +53,7 @@ class SubcategoryFilterDTO {
 
   SubcategoryFilterDTO({
     this.text,
+    this.keyword,
     this.lastId,
     this.sortBy,
     this.minPrice,
@@ -65,6 +72,7 @@ class SubcategoryFilterDTO {
 
   DefaultFilterDto toDefaultFilter() => DefaultFilterDto(
         text: text,
+        keyword: keyword,
         lastId: lastId,
         sortBy: sortBy,
         minPrice: minPrice,

@@ -46,6 +46,7 @@ abstract class CustomSnackBar {
 
   static void showSnackBar(BuildContext context, String text) {
     final snackBar = SnackBar(
+      duration: const Duration(seconds: 2),
       content: Text(text,
           textAlign: TextAlign.start, style: AppTypography.font14white),
       backgroundColor: AppColors.dark,

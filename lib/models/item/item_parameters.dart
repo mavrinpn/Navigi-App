@@ -55,6 +55,36 @@ class ItemParameters {
     return '';
   }
 
+  List<String> parameterToList(Parameter parameter) {
+    if (parameter is SelectParameter) {
+      return [
+        parameter.currentValue.nameAr,
+        parameter.currentValue.nameFr,
+      ];
+    }
+    if (parameter is MultiSelectParameter) {
+      return [
+        ...parameter.selectedVariants.map((e) => e.nameAr),
+        ...parameter.selectedVariants.map((e) => e.nameFr),
+      ];
+    }
+    if (parameter is SingleSelectParameter) {
+      return [
+        parameter.currentValue.nameAr,
+        parameter.currentValue.nameFr,
+      ];
+    }
+    if (parameter is InputParameter) {
+      if (parameter.currentValue != null) {
+        return [parameter.currentValue];
+      }
+    }
+    if (parameter is TextParameter) {
+      return [parameter.currentValue];
+    }
+    return [];
+  }
+
   String buildJsonFormatParameters({required List<Parameter> addParameters}) {
     String str = '[';
     for (int i = 0; i < addParameters.length; i++) {
@@ -66,5 +96,23 @@ class ItemParameters {
     str += ']';
 
     return str;
+  }
+
+  String buildListFormatParameters({
+    required List<Parameter> addParameters,
+    required String? title,
+  }) {
+    List<String> params = [];
+    if (title != null) {
+      params.addAll(title.split(' '));
+    }
+    for (var element in addParameters) {
+      params.addAll(parameterToList(element));
+    }
+
+    params = params.map((e) => e.toLowerCase()).toList();
+    params = params.toSet().toList();
+
+    return params.join(' ');
   }
 }

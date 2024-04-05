@@ -23,6 +23,7 @@ class Announcement {
   final String id;
   final StaticParameters staticParameters;
   final CityDistrict area;
+  final String cityName;
   final CreatorData creatorData;
   late final Widget previewImage;
   final String _createdAt;
@@ -59,9 +60,8 @@ class Announcement {
         mark = json['mark'] ?? '',
         longitude = double.tryParse('${json['longitude']}') ?? 0,
         latitude = double.tryParse('${json['latitude']}') ?? 0,
-        area = json['area2'] != null
-            ? CityDistrict.fromJson(json['area2'])
-            : CityDistrict.none() {
+        cityName = json['city'] != null ? json['city']['name'] : '',
+        area = json['area2'] != null ? CityDistrict.fromJson(json['area2']) : CityDistrict.none() {
     var l = [];
     for (String i in images) {
       i.replaceAll('89.253.237.166', '143.244.206.96'); //admin.navigidz.online
@@ -87,8 +87,7 @@ class Announcement {
     return '$month.$day $hour:$minutes';
   }
 
-  String _addZeroInStart(int num) =>
-      num.toString().length > 1 ? num.toString() : '0$num';
+  String _addZeroInStart(int num) => num.toString().length > 1 ? num.toString() : '0$num';
 
   String get stringPrice {
     final convertedPrice = priceType.convertDzdToCurrency(price);

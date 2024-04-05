@@ -3,18 +3,18 @@ class KeyWord {
   final String subcategoryId;
   final String nameAr;
   final String nameFr;
-  final String? type;
+  final String? mark;
   final String? model;
-  final String query;
+  final String? type;
 
   KeyWord({
     required this.id,
     required this.subcategoryId,
     required this.nameAr,
     required this.nameFr,
-    required this.type,
+    required this.mark,
     required this.model,
-    required this.query,
+    required this.type,
   });
 
   factory KeyWord.fromJson(Map<String, dynamic> json) {
@@ -23,9 +23,9 @@ class KeyWord {
       subcategoryId: json['subcategory_id'] ?? '',
       nameAr: json['nameAr'] ?? '',
       nameFr: json['nameFr'] ?? '',
-      type: json['type'],
+      mark: json['mark'],
       model: json['model'],
-      query: json['query'] ?? '',
+      type: json['type'],
     );
   }
 }

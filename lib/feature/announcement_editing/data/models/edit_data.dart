@@ -60,11 +60,16 @@ class AnnouncementEditData {
         'description': description,
         'city_id': cityId,
         'area_id': areaId,
+        'city': cityId,
         'area2': areaId,
         'price': price,
         'price_type': priceType.name,
         'parametrs': ItemParameters().buildJsonFormatParameters(
             addParameters: parametersWithMarkAndModel),
+        'keywords': ItemParameters().buildListFormatParameters(
+          addParameters: parametersWithMarkAndModel,
+          title: title,
+        ),
         'images': images,
         'mark': newMarkId ?? markId,
         'model': newModelId ?? modelId,

@@ -10,6 +10,7 @@ import 'package:smart/feature/create_announcement/bloc/car_model/car_models_cubi
 import 'package:smart/feature/create_announcement/bloc/category/category_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/creating/creating_announcement_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/item_search/item_search_cubit.dart';
+import 'package:smart/feature/create_announcement/bloc/keywords/keywords_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/mark_model/mark_model_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/marks/select_mark_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
@@ -25,6 +26,7 @@ import 'package:smart/feature/search/bloc/select_subcategory/search_select_subca
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/managers/blocked_users_manager.dart';
 import 'package:smart/managers/favourites_manager.dart';
+import 'package:smart/managers/keywords_manager.dart';
 import 'package:smart/managers/mark_model_manager.dart';
 import 'package:smart/managers/meduim_price_manager.dart';
 import 'package:smart/managers/reviews_manager.dart';
@@ -54,17 +56,14 @@ import 'package:appwrite/appwrite.dart' as a;
 class MyRepositoryProviders extends StatelessWidget {
   MyRepositoryProviders({Key? key}) : super(key: key);
 
-  final client = a.Client()
-      .setEndpoint('http://143.244.206.96/v1')
-      .setProject('65d8fa703a95c4ef256b');
+  final client = a.Client().setEndpoint('http://143.244.206.96/v1').setProject('65d8fa703a95c4ef256b');
 
   @override
   Widget build(BuildContext context) {
     DatabaseService databaseService = DatabaseService(client: client);
     FileStorageManager storageManager = FileStorageManager(client: client);
 
-    MessagingService messagingService =
-        MessagingService(databaseService: databaseService);
+    MessagingService messagingService = MessagingService(databaseService: databaseService);
 
     return MultiRepositoryProvider(providers: [
       RepositoryProvider(
@@ -79,6 +78,12 @@ class MyRepositoryProviders extends StatelessWidget {
       ),
       RepositoryProvider(
         create: (_) => ItemManager(databaseService: databaseService),
+      ),
+      RepositoryProvider(
+        create: (_) => KeyWordsManager(
+          client: client,
+          databaseService: databaseService,
+        ),
       ),
       RepositoryProvider(
         create: (_) => CategoriesManager(databaseService: databaseService),
@@ -113,21 +118,16 @@ class MyRepositoryProviders extends StatelessWidget {
         create: (_) => PlacesManager(databaseService: databaseService),
       ),
       RepositoryProvider(
-        create: (_) => MessengerRepository(
-            databaseService: databaseService, storage: storageManager),
+        create: (_) => MessengerRepository(databaseService: databaseService, storage: storageManager),
       ),
       RepositoryProvider(
         create: (_) => SearchManager(client: client),
       ),
-      RepositoryProvider(
-          create: (_) => CreatorRepository(databaseService: databaseService)),
-      RepositoryProvider(
-          create: (_) => FavouritesManager(databaseService: databaseService)),
+      RepositoryProvider(create: (_) => CreatorRepository(databaseService: databaseService)),
+      RepositoryProvider(create: (_) => FavouritesManager(databaseService: databaseService)),
       RepositoryProvider(create: (_) => CarMarksRepository(databaseService)),
       RepositoryProvider(create: (_) => MarksRepository(databaseService)),
-      RepositoryProvider(
-          create: (_) =>
-              AnnouncementEditingRepository(databaseService, storageManager))
+      RepositoryProvider(create: (_) => AnnouncementEditingRepository(databaseService, storageManager))
     ], child: const MyBlocProviders());
   }
 }
@@ -137,164 +137,155 @@ class MyBlocProviders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-      BlocProvider(
-        create: (_) => AuthCubit(
-            authRepository: RepositoryProvider.of<AuthRepository>(context)),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => AppCubit(
-            appRepository: RepositoryProvider.of<AuthRepository>(context),
-            messengerRepository:
-                RepositoryProvider.of<MessengerRepository>(context),
-            announcementManager:
-                RepositoryProvider.of<AnnouncementManager>(context),
-            favouritesManager:
-                RepositoryProvider.of<FavouritesManager>(context)),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => CategoryCubit(
-            categoriesManager:
-                RepositoryProvider.of<CategoriesManager>(context))
-          ..loadCategories(),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => AnnouncementEditCubit(
-            RepositoryProvider.of<AnnouncementEditingRepository>(context),
-            RepositoryProvider.of<AnnouncementManager>(context)),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => SubcategoryCubit(
-            creatingManager:
-                RepositoryProvider.of<CreatingAnnouncementManager>(context),
-            categoriesManager:
-                RepositoryProvider.of<CategoriesManager>(context)),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => MarkModelCubit(
-          markModelManager: RepositoryProvider.of<MarkModelManager>(context),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => AuthCubit(authRepository: RepositoryProvider.of<AuthRepository>(context)),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => ItemSearchCubit(
-            creatingManager:
-                RepositoryProvider.of<CreatingAnnouncementManager>(context),
-            itemManager: RepositoryProvider.of<ItemManager>(context)),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => CreatingAnnouncementCubit(
-          creatingAnnouncementManager:
-              RepositoryProvider.of<CreatingAnnouncementManager>(context),
+        BlocProvider(
+          create: (_) => AppCubit(
+              appRepository: RepositoryProvider.of<AuthRepository>(context),
+              messengerRepository: RepositoryProvider.of<MessengerRepository>(context),
+              announcementManager: RepositoryProvider.of<AnnouncementManager>(context),
+              favouritesManager: RepositoryProvider.of<FavouritesManager>(context)),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => AnnouncementsCubit(
-          announcementManager:
-              RepositoryProvider.of<AnnouncementManager>(context),
+        BlocProvider(
+          create: (_) =>
+              CategoryCubit(categoriesManager: RepositoryProvider.of<CategoriesManager>(context))..loadCategories(),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => SearchSelectSubcategoryCubit(
-            RepositoryProvider.of<CategoriesManager>(context)),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) =>
-            UpdateAppBarFilterCubit(UpdateAppBarFilterState(needUpdate: false)),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => PlacesCubit(
-          creatingManager:
-              RepositoryProvider.of<CreatingAnnouncementManager>(context),
-          placesManager: RepositoryProvider.of<PlacesManager>(context),
+        BlocProvider(
+          create: (_) => AnnouncementEditCubit(RepositoryProvider.of<AnnouncementEditingRepository>(context),
+              RepositoryProvider.of<AnnouncementManager>(context)),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => UserCubit(
-          authRepository: RepositoryProvider.of<AuthRepository>(context),
+        BlocProvider(
+          create: (_) => SubcategoryCubit(
+              creatingManager: RepositoryProvider.of<CreatingAnnouncementManager>(context),
+              categoriesManager: RepositoryProvider.of<CategoriesManager>(context)),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => ReviewsCubit(
-          reviewsManager: RepositoryProvider.of<ReviewsManager>(context),
+        BlocProvider(
+          create: (_) => MarkModelCubit(
+            markModelManager: RepositoryProvider.of<MarkModelManager>(context),
+          ),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => MediumPriceCubit(
-          mediumPriceManager:
-              RepositoryProvider.of<MediumPriceManager>(context),
+        BlocProvider(
+          create: (_) => ItemSearchCubit(
+              creatingManager: RepositoryProvider.of<CreatingAnnouncementManager>(context),
+              itemManager: RepositoryProvider.of<ItemManager>(context)),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => BlockedUsersCubit(
-          blockedUsersManager:
-              RepositoryProvider.of<BlockedUsersManager>(context),
+        BlocProvider(
+          create: (_) => KeyWordsCubit(
+            keyWordsManager: RepositoryProvider.of<KeyWordsManager>(context),
+          ),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => PopularQueriesCubit(
-          searchManager: RepositoryProvider.of<SearchManager>(context),
+        BlocProvider(
+          create: (_) => CreatingAnnouncementCubit(
+            creatingAnnouncementManager: RepositoryProvider.of<CreatingAnnouncementManager>(context),
+          ),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => SearchItemsCubit(
-          searchManager: RepositoryProvider.of<SearchManager>(context),
+        BlocProvider(
+          create: (_) => AnnouncementsCubit(
+            announcementManager: RepositoryProvider.of<AnnouncementManager>(context),
+          ),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => SearchAnnouncementCubit(
-          announcementManager:
-              RepositoryProvider.of<AnnouncementManager>(context),
+        BlocProvider(
+          create: (_) => SearchSelectSubcategoryCubit(RepositoryProvider.of<CategoriesManager>(context)),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => FavouritesCubit(
-          favouritesManager: RepositoryProvider.of<FavouritesManager>(context),
+        BlocProvider(
+          create: (_) => UpdateAppBarFilterCubit(UpdateAppBarFilterState(needUpdate: false)),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => CreatorCubit(
-          creatorRepository: RepositoryProvider.of<CreatorRepository>(context),
+        BlocProvider(
+          create: (_) => PlacesCubit(
+            creatingManager: RepositoryProvider.of<CreatingAnnouncementManager>(context),
+            placesManager: RepositoryProvider.of<PlacesManager>(context),
+          ),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => MessageImagesCubit(
-          RepositoryProvider.of<MessengerRepository>(context),
+        BlocProvider(
+          create: (_) => UserCubit(
+            authRepository: RepositoryProvider.of<AuthRepository>(context),
+          ),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => CarModelsCubit(
-          RepositoryProvider.of<CarMarksRepository>(context),
+        BlocProvider(
+          create: (_) => ReviewsCubit(
+            reviewsManager: RepositoryProvider.of<ReviewsManager>(context),
+          ),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-      BlocProvider(
-        create: (_) => SelectMarkCubit(
-          RepositoryProvider.of<MarksRepository>(context),
+        BlocProvider(
+          create: (_) => MediumPriceCubit(
+            mediumPriceManager: RepositoryProvider.of<MediumPriceManager>(context),
+          ),
+          lazy: false,
         ),
-        lazy: false,
-      ),
-    ], child: const MyApp());
+        BlocProvider(
+          create: (_) => BlockedUsersCubit(
+            blockedUsersManager: RepositoryProvider.of<BlockedUsersManager>(context),
+          ),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (_) => PopularQueriesCubit(
+            searchManager: RepositoryProvider.of<SearchManager>(context),
+          ),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (_) => SearchItemsCubit(
+            searchManager: RepositoryProvider.of<SearchManager>(context),
+          ),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (_) => SearchAnnouncementCubit(
+            announcementManager: RepositoryProvider.of<AnnouncementManager>(context),
+          ),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (_) => FavouritesCubit(
+            favouritesManager: RepositoryProvider.of<FavouritesManager>(context),
+          ),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (_) => CreatorCubit(
+            creatorRepository: RepositoryProvider.of<CreatorRepository>(context),
+          ),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (_) => MessageImagesCubit(
+            RepositoryProvider.of<MessengerRepository>(context),
+          ),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (_) => CarModelsCubit(
+            RepositoryProvider.of<CarMarksRepository>(context),
+          ),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (_) => SelectMarkCubit(
+            RepositoryProvider.of<MarksRepository>(context),
+          ),
+          lazy: false,
+        ),
+      ],
+      child: const MyApp(),
+    );
   }
 }

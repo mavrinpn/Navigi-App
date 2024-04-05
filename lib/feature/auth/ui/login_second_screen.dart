@@ -49,6 +49,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
           Dialogs.hide(context);
         }
         if (state is AuthSuccessState) {
+          //TODO auth
           BlocProvider.of<CreatorCubit>(context)
               .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
           Navigator.pop(context);

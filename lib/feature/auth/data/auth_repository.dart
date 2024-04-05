@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:typed_data';
-
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:rxdart/rxdart.dart';
@@ -21,9 +20,9 @@ class AuthRepository {
   final MessagingService _messagingService;
   final FileStorageManager _fileStorageManager;
 
-  late User _user;
+  User? _user;
   String _tempMail = '';
-  late UserData userData;
+  UserData? userData;
   String? sessionID;
 
   bool appMounted = true;
@@ -44,7 +43,7 @@ class AuthRepository {
 
   static const sessionIdKey = 'sessionID';
 
-  String get userId => _user.$id;
+  String get userId => _user?.$id ?? '';
 
   AuthRepository(
       {required this.client,
@@ -60,17 +59,14 @@ class AuthRepository {
 
   BehaviorSubject<bool> refresherStream = BehaviorSubject();
 
-  BehaviorSubject<EntranceStateEnum> authState =
-      BehaviorSubject<EntranceStateEnum>.seeded(EntranceStateEnum.wait);
+  BehaviorSubject<EntranceStateEnum> authState = BehaviorSubject<EntranceStateEnum>.seeded(EntranceStateEnum.wait);
 
-  BehaviorSubject<AuthStateEnum> appState =
-      BehaviorSubject<AuthStateEnum>.seeded(AuthStateEnum.wait);
+  BehaviorSubject<AuthStateEnum> appState = BehaviorSubject<AuthStateEnum>.seeded(AuthStateEnum.wait);
 
-  BehaviorSubject<LoadingStateEnum> profileState =
-      BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.loading);
+  BehaviorSubject<LoadingStateEnum> profileState = BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.loading);
 
   Future<void> _initMessaging() async {
-    _messagingService.userId = _user.$id;
+    _messagingService.userId = _user?.$id ?? '';
     _messagingService.initNotification();
     _messagingService.handleTokenRefreshing();
   }
@@ -106,7 +102,7 @@ class AuthRepository {
       }
 
       await _databaseService.users.editProfile(
-        uid: _user.$id,
+        uid: _user?.$id ?? '',
         name: name,
         phone: phone,
         imageUrl: imageUrl,
@@ -117,10 +113,14 @@ class AuthRepository {
     }
   }
 
-  void logout() async {
+  Future<void> logout() async {
     try {
-      await _account.deleteSession(sessionId: sessionID ?? '');
+      //TODO logout
+      await _account.deleteSessions();
+      // await _account.deleteSession(sessionId: sessionID ?? '');
       sessionID = null;
+      _user = null;
+      userData = null;
     } catch (e) {
       log('session already deleted');
     }
@@ -142,9 +142,11 @@ class AuthRepository {
 
       authState.add(EntranceStateEnum.success);
       appState.add(AuthStateEnum.auth);
-    } catch (e) {
+    } catch (err) {
+      // ignore: avoid_print
+      print(err);
       authState.add(EntranceStateEnum.fail);
-      // rethrow; //*
+      //rethrow; //TODO auth
     }
   }
 
@@ -177,7 +179,7 @@ class AuthRepository {
   Future<bool> getUserData() async {
     profileState.add(LoadingStateEnum.loading);
     try {
-      final res = await _databaseService.users.getUserData(uid: _user.$id);
+      final res = await _databaseService.users.getUserData(uid: _user?.$id ?? '');
       if (res != null) {
         userData = res;
       } else {
@@ -229,8 +231,7 @@ class AuthRepository {
     }
 
     try {
-      await _account.createEmailPasswordSession(
-          email: email ?? _tempMail, password: password);
+      await _account.createEmailPasswordSession(email: email ?? _tempMail, password: password);
     } catch (err) {
       // ignore: avoid_print
       print(err);
@@ -242,19 +243,20 @@ class AuthRepository {
     String? registrationName,
     bool needRegister = false,
   }) async {
-    assert(!needRegister || needRegister && registrationName != null,
-        'for registration required name');
+    assert(!needRegister || needRegister && registrationName != null, 'for registration required name');
 
-    try {
-      final sessions = await _account.listSessions();
-      if (sessions.sessions.isNotEmpty) {
-        // await _account.deleteSession(sessionId: 'current');
-        await _account.deleteSessions();
-      }
-    } catch (err) {
-      // ignore: avoid_print
-      print(err);
-    }
+    // try {
+    //   final sessions = await _account.listSessions();
+    //   if (sessions.sessions.isNotEmpty) {
+    //     // await _account.deleteSession(sessionId: 'current');
+    //     await _account.deleteSessions();
+    //   }
+    // } catch (err) {
+    //   // ignore: avoid_print
+    //   print(2);
+    //   print(err);
+    //   rethrow;
+    // }
 
     try {
       final promise = await _account.createEmailPasswordSession(
@@ -266,6 +268,7 @@ class AuthRepository {
     } catch (err) {
       // ignore: avoid_print
       print(err);
+      rethrow;
     }
 
     if (needRegister) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
 import 'package:smart/widgets/button/back_button.dart';
@@ -30,9 +31,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     customLocate = CustomLocate(
         shortName: localizations.localeName,
-        name: localizations.localeName == 'ar'
-            ? CustomLocate.ar().name
-            : CustomLocate.fr().name);
+        name: localizations.localeName == 'ar' ? CustomLocate.ar().name : CustomLocate.fr().name);
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -62,9 +62,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SvgPicture.asset('Assets/icons/language.svg'),
             CustomSingleCheckBoxes(
               parameters: listLocates,
-              onChange: (CustomLocate? a) {
+              onChange: (CustomLocate? a) async {
                 MyApp.setLocate(context, Locale(a!.shortName));
                 customLocate = a;
+
+                final SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.setString('lang', a.shortName);
+                currentLocaleShortName.value = a.shortName;
+
                 setState(() {});
               },
               currentVariable: customLocate!,

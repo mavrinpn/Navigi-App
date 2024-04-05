@@ -146,7 +146,6 @@ class MessengerRepository {
     _chats.add(currentRoom!);
     chatsStream.add(_chats);
 
-    //* refreshSubscription
     refreshSubscription();
   }
 

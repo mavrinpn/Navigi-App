@@ -103,7 +103,7 @@ class AnnouncementsService {
       queries.add(Query.notEqual('announcements', filterData.excludeId));
     }
 
-    queries.add(Query.limit(40)); //TODO
+    queries.add(Query.isNotNull('announcements'));
 
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
@@ -156,6 +156,10 @@ class AnnouncementsService {
       'price_type': creatingData.priceType?.name ?? 'dzd',
       'title': creatingData.title,
       'active': true,
+      'keywords': ItemParameters().buildListFormatParameters(
+        addParameters: parameters,
+        title: creatingData.title,
+      ),
     };
 
     if (carFilter != null) {
@@ -429,6 +433,10 @@ class AnnouncementsService {
       'area_id': editData.areaId,
       'latitude': editData.latitude,
       'longitude': editData.longitude,
+      'keywords': ItemParameters().buildListFormatParameters(
+        addParameters: editData.parameters,
+        title: editData.title,
+      ),
     };
 
     for (var parameter in editData.parameters) {

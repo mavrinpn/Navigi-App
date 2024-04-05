@@ -196,6 +196,10 @@ class CreatingAnnouncementManager {
       parameters.addAll(subcategoryFilters!.parameters);
       creatingData.parameters =
           ItemParameters().buildJsonFormatParameters(addParameters: parameters);
+      creatingData.keywords = ItemParameters().buildListFormatParameters(
+        addParameters: parameters,
+        title: creatingData.title,
+      );
     }
   }
 

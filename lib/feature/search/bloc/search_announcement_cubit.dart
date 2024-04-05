@@ -179,24 +179,28 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     try {
       if (searchMode == SearchModeEnum.simple) {
         await _announcementManager.loadSearchAnnouncement(
-          searchText: keyword.query,
+          // searchText: '${keyword.nameFr} ${keyword.nameAr}',
+          keyword: keyword,
           isNew: true,
           sortBy: _sortBy,
-          model: keyword.model, //TODO
-          type: keyword.type, //TODO
+          mark: keyword.mark,
+          model: keyword.model,
+          type: keyword.type,
         );
       } else {
         await _announcementManager.searchWithSubcategory(
           subcategoryId: _subcategoryId!,
           parameters: const <Parameter>[],
-          searchText: keyword.query,
+          // searchText: '${keyword.nameFr} ${keyword.nameAr}',
+          keyword: keyword,
           isNew: true,
           sortBy: _sortBy,
-          model: keyword.model, //TODO
-          type: keyword.type, //TODO
+          mark: keyword.mark,
+          model: keyword.model,
+          type: keyword.type,
         );
       }
-      _lastText = keyword.query;
+      _lastText = keyword.nameFr;
       emit(SearchAnnouncementsSuccessState());
     } catch (e) {
       emit(SearchAnnouncementsFailState());

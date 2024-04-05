@@ -31,21 +31,17 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
 
   @override
   void initState() {
-    liked = BlocProvider.of<FavouritesCubit>(context)
-        .isLiked(widget.announcement.id);
+    liked = BlocProvider.of<FavouritesCubit>(context).isLiked(widget.announcement.id);
     super.initState();
   }
 
   void onLikeTapped() {
     final localizations = AppLocalizations.of(context)!;
-    BlocProvider.of<FavouritesCubit>(context)
-        .likeUnlike(widget.announcement.id);
+    BlocProvider.of<FavouritesCubit>(context).likeUnlike(widget.announcement.id);
     setState(() {
       CustomSnackBar.showSnackBar(
         context,
-        liked
-            ? localizations.adRemovedFromFavorites
-            : localizations.adAddedToFavorites,
+        liked ? localizations.adRemovedFromFavorites : localizations.adAddedToFavorites,
       );
       liked = !liked;
     });
@@ -92,8 +88,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
             const SizedBox(height: 5),
             BlocListener<FavouritesCubit, FavouritesState>(
               listener: (context, state) {
-                if (state is LikeSuccessState &&
-                    state.changedPostId == widget.announcement.id) {
+                if (state is LikeSuccessState && state.changedPostId == widget.announcement.id) {
                   setState(() {
                     liked = state.value;
                   });
@@ -139,11 +134,9 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                 Text(
                   widget.announcement.creatorData.name,
                   style: widget.announcement.creatorData.verified
-                      ? AppTypography.font12lightGray.copyWith(
-                          color: const Color(0xFF0F7EE4),
-                          fontWeight: FontWeight.w400)
-                      : AppTypography.font12lightGray
-                          .copyWith(fontWeight: FontWeight.w400),
+                      ? AppTypography.font12lightGray
+                          .copyWith(color: const Color(0xFF0F7EE4), fontWeight: FontWeight.w400)
+                      : AppTypography.font12lightGray.copyWith(fontWeight: FontWeight.w400),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -164,7 +157,9 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                 const SizedBox(width: 2),
                 Expanded(
                   child: Text(
-                    widget.announcement.area.name,
+                    widget.announcement.cityName != ''
+                        ? '${widget.announcement.cityName}, ${widget.announcement.area.name}'
+                        : widget.announcement.area.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: AppTypography.font14black,

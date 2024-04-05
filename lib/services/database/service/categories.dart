@@ -91,7 +91,6 @@ class CategoriesService {
     return (subcategory: subcategory, category: category);
   }
 
-  //TODO announcement creating
   Future<List<SubcategoryItem>> getItemsFromSubcategory(
       String subcategory) async {
     final res = await _databases.listDocuments(
