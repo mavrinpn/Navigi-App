@@ -34,7 +34,13 @@ class ParametersFilterBuilder {
         arAndQueries.add(Query.contains('keywords', textRow.toLowerCase()));
       }
 
-      List<String> orQueries = [Query.and(frAndQueries), Query.and(arAndQueries)];
+      List<String> orQueries = [];
+      if (frAndQueries.isNotEmpty) {
+        orQueries.add(Query.and(frAndQueries));
+      }
+      if (arAndQueries.isNotEmpty) {
+        orQueries.add(Query.and(arAndQueries));
+      }
 
       if (orQueries.length > 1) {
         queries.add(Query.or(orQueries));
@@ -45,16 +51,22 @@ class ParametersFilterBuilder {
 
     //TODO text search
     if (filterData.text != null && filterData.text != '') {
-      List<String> orQueries = [];
       for (final textRow in filterData.text!.split(' ')) {
-        orQueries.add(Query.contains('keywords', textRow.toLowerCase())); 
-      }
-      if (orQueries.length > 1) {
-        queries.add(Query.or(orQueries));
-      } else {
-        queries.add(Query.contains('keywords', filterData.text!.toLowerCase()));
+        queries.add(Query.contains('keywords', textRow.toLowerCase()));
       }
     }
+
+    // if (filterData.text != null && filterData.text != '') {
+    //   List<String> orQueries = [];
+    //   for (final textRow in filterData.text!.split(' ')) {
+    //     orQueries.add(Query.contains('keywords', textRow.toLowerCase()));
+    //   }
+    //   if (orQueries.length > 1) {
+    //     queries.add(Query.or(orQueries));
+    //   } else {
+    //     queries.add(Query.contains('keywords', filterData.text!.toLowerCase()));
+    //   }
+    // }
 
     if (filterData.sortBy != null) {
       queries.add(SortTypes.toQuery(filterData.sortBy!)!);
