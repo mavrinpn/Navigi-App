@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/keywords/keywords_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
-import 'package:smart/models/key_word.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/category/products.dart';
@@ -29,18 +28,16 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    final creatingManager =
-        RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    final creatingManager = RepositoryProvider.of<CreatingAnnouncementManager>(context);
     final itemManager = RepositoryProvider.of<ItemManager>(context);
 
-    final cubit = BlocProvider.of<ItemSearchCubit>(context);
-
+    // final cubit = BlocProvider.of<ItemSearchCubit>(context);
     // productsController.text = cubit.getSearchText();
-    productsController.selection = TextSelection.fromPosition(
-        TextPosition(offset: productsController.text.length));
+    productsController.selection = TextSelection.fromPosition(TextPosition(offset: productsController.text.length));
     final width = MediaQuery.of(context).size.width;
 
-    bool buttonActive = cubit.getSearchText().isNotEmpty;
+    // bool buttonActive = cubit.getSearchText().isNotEmpty;
+    bool buttonActive = productsController.text != '';
 
     void setIsTouch(bool isT) {
       buttonActive = isT;
@@ -70,14 +67,12 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
               hintText: '',
               width: double.infinity,
               onChange: (value) {
-                String lastWord = value.trimRight().split(' ').lastOrNull ?? '';
+                //String lastWord = value.trimRight().split(' ').lastOrNull ?? '';
 
-                final creatingManager =
-                    RepositoryProvider.of<CreatingAnnouncementManager>(context);
+                final creatingManager = RepositoryProvider.of<CreatingAnnouncementManager>(context);
                 BlocProvider.of<KeyWordsCubit>(context).getKeywordsBy(
-                  subcategoryId:
-                      creatingManager.creatingData.subcategoryId ?? '',
-                  query: lastWord,
+                  subcategoryId: creatingManager.creatingData.subcategoryId ?? '',
+                  query: value,
                 );
 
                 setIsTouch(value.isNotEmpty);
@@ -91,53 +86,80 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                 style: AppTypography.font16black.copyWith(fontSize: 14),
               ),
             ),
-            BlocBuilder<KeyWordsCubit, KeyWordsState>(
-              builder: (context, state) {
-                if (state is KeyWordssSuccessState) {
-                  return Wrap(
-                    children: [
-                      ...state.keyWordsFr
-                          .map((e) => Padding(
-                                padding: const EdgeInsets.all(3),
-                                child: ProductWidget(
-                                  onTap: () {
-                                    _setTitle(e);
-                                  },
-                                  name: e.nameFr,
-                                ),
-                              ))
-                          .toList(),
-                      ...state.keyWordsAr
-                          .map((e) => Padding(
-                                padding: const EdgeInsets.all(3),
-                                child: ProductWidget(
-                                  onTap: () {
-                                    _setTitle(e);
-                                    // cubit.setItemName(e.name);
-                                    // creatingManager.setItem(e);
-                                    // setState(() {});
-                                  },
-                                  name: e.nameAr,
-                                ),
-                              ))
-                          .toList()
-                    ],
-                  );
-                } else if (state is SearchEmptyState) {
-                  return Center(
-                    child: Text(localizations.notFound),
-                  );
-                } else if (state is SearchFailState) {
-                  return Center(
-                    child: Text(localizations.errorReviewOrEnterOther),
-                  );
-                } else {
-                  return Center(
-                    child: AppAnimations.bouncingLine,
-                  );
-                }
-              },
+            Expanded(
+              child: BlocBuilder<KeyWordsCubit, KeyWordsState>(
+                builder: (context, state) {
+                  if (state is KeyWordssSuccessState) {
+                    return SingleChildScrollView(
+                      child: Wrap(
+                        children: [
+                          ...state.keywords.take(8).map((e) {
+                            String name = '';
+                            if (e.nameFr.toLowerCase().contains(state.currentQuery.toLowerCase())) {
+                              name = e.nameFr;
+                            }
+                            if (e.nameAr.toLowerCase().contains(state.currentQuery.toLowerCase())) {
+                              name = e.nameAr;
+                            }
+                            return Padding(
+                              padding: const EdgeInsets.all(3),
+                              child: ProductWidget(
+                                onTap: () {
+                                  // creatingManager.setItem(e);
+                                  setState(() {});
+                                  _setTitle(name);
+                                },
+                                name: name,
+                              ),
+                            );
+                          }).toList(),
+                          // ...state.keyWordsFr
+                          //     .take(8)
+                          //     .map((e) => Padding(
+                          //           padding: const EdgeInsets.all(3),
+                          //           child: ProductWidget(
+                          //             onTap: () {
+                          //               _setTitle(e.nameFr);
+                          //             },
+                          //             name: e.nameFr,
+                          //           ),
+                          //         ))
+                          //     .toList(),
+                          // ...state.keyWordsAr
+                          //     .take(8)
+                          //     .map((e) => Padding(
+                          //           padding: const EdgeInsets.all(3),
+                          //           child: ProductWidget(
+                          //             onTap: () {
+                          //               _setTitle(e.nameAr);
+                          //               // cubit.setItemName(e.name);
+                          //               // creatingManager.setItem(e);
+                          //               // setState(() {});
+                          //             },
+                          //             name: e.nameAr,
+                          //           ),
+                          //         ))
+                          //     .toList()
+                        ],
+                      ),
+                    );
+                  } else if (state is SearchEmptyState) {
+                    return Center(
+                      child: Text(localizations.notFound),
+                    );
+                  } else if (state is SearchFailState) {
+                    return Center(
+                      child: Text(localizations.errorReviewOrEnterOther),
+                    );
+                  } else {
+                    return Center(
+                      child: AppAnimations.bouncingLine,
+                    );
+                  }
+                },
+              ),
             ),
+            const SizedBox(height: 80),
           ],
         ),
       ),
@@ -156,8 +178,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
               id: item?.id,
             );
 
-            Navigator.pushNamed(
-                context, AppRoutesNames.announcementCreatingDescription);
+            Navigator.pushNamed(context, AppRoutesNames.announcementCreatingDescription);
           }
         },
         active: buttonActive,
@@ -165,15 +186,15 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
     );
   }
 
-  void _setTitle(KeyWord e) {
-    String title = productsController.text.trimRight();
-    List<String> titleWords = title.split(' ');
-    if (titleWords.isNotEmpty) {
-      titleWords.removeLast();
-    }
-    title = '${titleWords.join(' ')} ${e.nameFr}';
-    productsController.text = title;
-
+  void _setTitle(String keywordName) {
+    // String title = productsController.text.trimRight();
+    // List<String> titleWords = title.split(' ');
+    // if (titleWords.isNotEmpty) {
+    //   titleWords.removeLast();
+    // }
+    // title = '${titleWords.join(' ')} $keywordName';
+    // productsController.text = title;
+    productsController.text = keywordName;
     setState(() {});
   }
 }

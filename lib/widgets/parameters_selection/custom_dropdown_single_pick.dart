@@ -26,12 +26,10 @@ class CustomDropDownSingleCheckBox extends StatefulWidget {
   final bool useLocalizationKeys;
 
   @override
-  State<CustomDropDownSingleCheckBox> createState() =>
-      _CustomDropDownSingleCheckBoxState();
+  State<CustomDropDownSingleCheckBox> createState() => _CustomDropDownSingleCheckBoxState();
 }
 
-class _CustomDropDownSingleCheckBoxState
-    extends State<CustomDropDownSingleCheckBox> {
+class _CustomDropDownSingleCheckBoxState extends State<CustomDropDownSingleCheckBox> {
   bool isOpen = true;
   bool showAll = false;
 
@@ -66,10 +64,9 @@ class _CustomDropDownSingleCheckBoxState
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        currentLocale == 'fr'
-                            ? widget.parameter.frName
-                            : widget.parameter.arName,
+                        currentLocale == 'fr' ? widget.parameter.frName : widget.parameter.arName,
                         style: AppTypography.font16black.copyWith(fontSize: 18),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     !isOpen
@@ -87,11 +84,7 @@ class _CustomDropDownSingleCheckBoxState
               ),
             ),
           ),
-          if (isOpen) ...[
-            !showAll
-                ? buildSimplePicker()
-                : SinglePickWithSearch(parameter: widget.parameter)
-          ]
+          if (isOpen) ...[!showAll ? buildSimplePicker() : SinglePickWithSearch(parameter: widget.parameter)]
         ]),
       ),
     );
@@ -122,18 +115,16 @@ class _CustomDropDownSingleCheckBoxState
                       child: Row(
                         children: [
                           CustomCheckBox(
-                            isActive: parametrOption.key.toString() ==
-                                widget.currentKey,
+                            isActive: parametrOption.key.toString() == widget.currentKey,
                             onChanged: () => widget.onChange(parametrOption),
                           ),
-                          Text(
-                            MyApp.getLocale(context) == 'fr'
-                                ? parametrOption.nameFr
-                                : parametrOption.nameAr,
-                            maxLines: 1,
-                            overflow: TextOverflow.clip,
-                            style: AppTypography.font14black
-                                .copyWith(fontSize: 16),
+                          Expanded(
+                            child: Text(
+                              MyApp.getLocale(context) == 'fr' ? parametrOption.nameFr : parametrOption.nameAr,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTypography.font14black.copyWith(fontSize: 16),
+                            ),
                           ),
                         ],
                       ),
@@ -151,8 +142,8 @@ class _CustomDropDownSingleCheckBoxState
               },
               child: Text(
                 "${MyApp.getLocale(context) == 'fr' ? 'Afficher tout' : 'عرض الكل'} ${widget.parameter.variants.length}",
-                style: AppTypography.font12lightGray
-                    .copyWith(color: AppColors.red),
+                overflow: TextOverflow.ellipsis,
+                style: AppTypography.font12lightGray.copyWith(color: AppColors.red),
               ),
             )
           ]

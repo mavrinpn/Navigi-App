@@ -43,7 +43,8 @@ class Announcement {
   })  : title = json['name'],
         subcategoryId = json['subcategoryId'],
         description = json['description'],
-        creatorData = CreatorData.fromJson(data: json['creator']),
+        creatorData =
+            json['creator'] != null ? CreatorData.fromJson(data: json['creator']) : CreatorData.fromJson(data: {}),
         price = double.parse(json['price'].toString()),
         priceType = PriceTypeExtendion.fromString(json['price_type']),
         images = json['images'],

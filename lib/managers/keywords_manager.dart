@@ -12,21 +12,30 @@ class KeyWordsManager {
     required this.client,
   }) : account = Account(client);
 
-  Future<List<KeyWord>> searchByFr({
+  Future<List<KeyWord>> searchBy({
     required String subcategoryId,
     required String query,
   }) async =>
-      databaseService.keyWords.searchByFr(
+      databaseService.keyWords.searchBy(
         subcategoryId: subcategoryId,
         query: query,
       );
 
-  Future<List<KeyWord>> searchByAr({
-    required String subcategoryId,
-    required String query,
-  }) async =>
-      databaseService.keyWords.searchByAr(
-        subcategoryId: subcategoryId,
-        query: query,
-      );
+  // Future<List<KeyWord>> searchByFr({
+  //   required String subcategoryId,
+  //   required String query,
+  // }) async =>
+  //     databaseService.keyWords.searchByFr(
+  //       subcategoryId: subcategoryId,
+  //       query: query,
+  //     );
+
+  // Future<List<KeyWord>> searchByAr({
+  //   required String subcategoryId,
+  //   required String query,
+  // }) async =>
+  //     databaseService.keyWords.searchByAr(
+  //       subcategoryId: subcategoryId,
+  //       query: query,
+  //     );
 }

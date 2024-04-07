@@ -5,16 +5,19 @@ class KeyWordsService {
 
   KeyWordsService(Databases databases) : _databases = databases;
 
-  Future<List<KeyWord>> searchByFr({
+  Future<List<KeyWord>> searchBy({
     required String subcategoryId,
     required String query,
   }) async {
-    List<String> queries = [];
+    List<String> queries = [
+      Query.or([
+        Query.contains('nameAr', query),
+        Query.contains('nameFr', query),
+      ]),
+      Query.limit(40),
+    ];
 
     queries.add(Query.equal('subcategory_id', subcategoryId));
-
-    queries.add(Query.equal('subcategory_id', subcategoryId));
-    queries.add(Query.startsWith('nameFr', query));
 
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
@@ -29,29 +32,53 @@ class KeyWordsService {
 
     return result;
   }
+  // Future<List<KeyWord>> searchByFr({
+  //   required String subcategoryId,
+  //   required String query,
+  // }) async {
+  //   List<String> queries = [];
 
-  Future<List<KeyWord>> searchByAr({
-    required String subcategoryId,
-    required String query,
-  }) async {
-    List<String> queries = [];
+  //   queries.add(Query.equal('subcategory_id', subcategoryId));
 
-    queries.add(Query.equal('subcategory_id', subcategoryId));
+  //   queries.add(Query.equal('subcategory_id', subcategoryId));
+  //   queries.add(Query.startsWith('nameFr', query));
 
-    queries.add(Query.equal('subcategory_id', subcategoryId));
-    queries.add(Query.startsWith('nameAr', query));
+  //   final res = await _databases.listDocuments(
+  //     databaseId: mainDatabase,
+  //     collectionId: keyWordsCollection,
+  //     queries: queries,
+  //   );
 
-    final res = await _databases.listDocuments(
-      databaseId: mainDatabase,
-      collectionId: keyWordsCollection,
-      queries: queries,
-    );
+  //   List<KeyWord> result = [];
+  //   for (var doc in res.documents) {
+  //     result.add(KeyWord.fromJson(doc.data));
+  //   }
 
-    List<KeyWord> result = [];
-    for (var doc in res.documents) {
-      result.add(KeyWord.fromJson(doc.data));
-    }
+  //   return result;
+  // }
 
-    return result;
-  }
+  // Future<List<KeyWord>> searchByAr({
+  //   required String subcategoryId,
+  //   required String query,
+  // }) async {
+  //   List<String> queries = [];
+
+  //   queries.add(Query.equal('subcategory_id', subcategoryId));
+
+  //   queries.add(Query.equal('subcategory_id', subcategoryId));
+  //   queries.add(Query.startsWith('nameAr', query));
+
+  //   final res = await _databases.listDocuments(
+  //     databaseId: mainDatabase,
+  //     collectionId: keyWordsCollection,
+  //     queries: queries,
+  //   );
+
+  //   List<KeyWord> result = [];
+  //   for (var doc in res.documents) {
+  //     result.add(KeyWord.fromJson(doc.data));
+  //   }
+
+  //   return result;
+  // }
 }

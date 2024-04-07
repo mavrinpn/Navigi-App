@@ -10,7 +10,7 @@ class SearchItemsCubit extends Cubit<SearchItemsState> {
 
   SearchItemsCubit({required this.searchManager}) : super(SearchItemsWait());
 
-  void search({
+  void searchKeywords({
     required String query,
     required String? subcategoryId,
   }) async {
@@ -24,7 +24,10 @@ class SearchItemsCubit extends Cubit<SearchItemsState> {
           subcategoryId: subcategoryId,
         );
 
-        emit(SearchItemsSuccess(result: result));
+        emit(SearchItemsSuccess(
+          result: result,
+          currentQuery: query,
+        ));
       } catch (e) {
         emit(SearchItemsFail());
         rethrow;

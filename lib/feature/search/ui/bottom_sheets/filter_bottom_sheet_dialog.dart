@@ -21,26 +21,22 @@ void showFilterBottomSheet({
     builder: (BuildContext context) {
       if (parameterKey == FilterKeys.price) {
         return Padding(
-          padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom + 12),
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 12),
           child: const PriceFilterBottomSheet(),
         );
       } else if (parameterKey == FilterKeys.location) {
         return Padding(
-          padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom + 12),
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 12),
           child: const LocationFilterBottomSheet(),
         );
       } else if (parameterKey != null) {
         return Padding(
-          padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom + 12),
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 12),
           child: SingleFilterBottomSheet(parameterKey: parameterKey),
         );
       } else {
         return Padding(
-          padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom + 12),
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 12),
           child: const CommonFiltersBottomSheet(),
         );
       }

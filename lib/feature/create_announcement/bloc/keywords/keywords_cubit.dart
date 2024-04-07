@@ -21,24 +21,32 @@ class KeyWordsCubit extends Cubit<KeyWordsState> {
 
     if (query == '') {
       emit(KeyWordssSuccessState(
-        keyWordsFr: const [],
-        keyWordsAr: const [],
+        keywords: const [],
+        currentQuery: query,
+        // keyWordsFr: const [],
+        // keyWordsAr: const [],
       ));
       return;
     }
     try {
-      final resFr = await _keyWordsManager.searchByFr(
+      final results = await _keyWordsManager.searchBy(
         subcategoryId: subcategoryId,
         query: query,
       );
-      final resAr = await _keyWordsManager.searchByAr(
-        subcategoryId: subcategoryId,
-        query: query,
-      );
+      // final resFr = await _keyWordsManager.searchByFr(
+      //   subcategoryId: subcategoryId,
+      //   query: query,
+      // );
+      // final resAr = await _keyWordsManager.searchByAr(
+      //   subcategoryId: subcategoryId,
+      //   query: query,
+      // );
 
       emit(KeyWordssSuccessState(
-        keyWordsFr: resFr,
-        keyWordsAr: resAr,
+        keywords: results,
+        currentQuery: query,
+        // keyWordsFr: resFr,
+        // keyWordsAr: resAr,
       ));
     } catch (e) {
       emit(KeyWordssFailState());

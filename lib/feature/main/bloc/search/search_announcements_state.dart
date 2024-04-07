@@ -6,8 +6,12 @@ class SearchItemsInitial extends SearchItemsState {}
 
 class SearchItemsSuccess extends SearchItemsState {
   List<KeyWord> result;
+  String currentQuery;
 
-  SearchItemsSuccess({required this.result});
+  SearchItemsSuccess({
+    required this.result,
+    required this.currentQuery,
+  });
 }
 
 class SearchItemsFail extends SearchItemsState {}

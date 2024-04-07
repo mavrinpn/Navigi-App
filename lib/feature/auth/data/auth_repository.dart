@@ -146,7 +146,7 @@ class AuthRepository {
       // ignore: avoid_print
       print(err);
       authState.add(EntranceStateEnum.fail);
-      //rethrow; //TODO auth
+      // rethrow; //TODO auth
     }
   }
 
@@ -245,31 +245,73 @@ class AuthRepository {
   }) async {
     assert(!needRegister || needRegister && registrationName != null, 'for registration required name');
 
-    // try {
-    //   final sessions = await _account.listSessions();
-    //   if (sessions.sessions.isNotEmpty) {
-    //     // await _account.deleteSession(sessionId: 'current');
-    //     await _account.deleteSessions();
-    //   }
-    // } catch (err) {
-    //   // ignore: avoid_print
-    //   print(2);
-    //   print(err);
-    //   rethrow;
-    // }
-
     try {
-      final promise = await _account.createEmailPasswordSession(
-        email: credentials.mail,
-        password: credentials.password,
-      );
-      _user = await _account.get();
-      await _saveSessionId(promise.$id);
+      await _account.get();
+      final sessions = await _account.listSessions();
+      if (sessions.sessions.isNotEmpty) {
+        _user = await _account.get();
+        final session = await _account.getSession(sessionId: 'current');
+        await _saveSessionId(session.$id);
+      } else {
+        try {
+          final promise = await _account.createEmailPasswordSession(
+            email: credentials.mail,
+            password: credentials.password,
+          );
+          _user = await _account.get();
+          await _saveSessionId(promise.$id);
+        } catch (err) {
+          // ignore: avoid_print
+          print(err);
+          rethrow;
+        }
+      }
     } catch (err) {
       // ignore: avoid_print
       print(err);
-      rethrow;
+      try {
+        final promise = await _account.createEmailPasswordSession(
+          email: credentials.mail,
+          password: credentials.password,
+        );
+        _user = await _account.get();
+        await _saveSessionId(promise.$id);
+      } catch (err) {
+        // ignore: avoid_print
+        print(err);
+        rethrow;
+      }
     }
+
+    // try {
+    //   print('try sessions');
+    //   final sessions = await _account.listSessions();
+    //   if (sessions.sessions.isNotEmpty) {
+    //     print('sessions.isNotEmpty');
+    //     _user = await _account.get();
+    //     final session = await _account.getSession(sessionId: 'current');
+    //     await _saveSessionId(session.$id);
+    //   } else {
+    //     print('sessions.isEmpty');
+    //     try {
+    //       final promise = await _account.createEmailPasswordSession(
+    //         email: credentials.mail,
+    //         password: credentials.password,
+    //       );
+    //       _user = await _account.get();
+    //       await _saveSessionId(promise.$id);
+    //     } catch (err) {
+    //       // ignore: avoid_print
+    //       print(err);
+    //       // AppwriteException (AppwriteException: user_session_already_exists, Creation of a session is prohibited when a session is active. (401))
+    //       rethrow;
+    //     }
+    //   }
+    // } catch (err) {
+    //   // ignore: avoid_print
+    //   print(err);
+    //   rethrow;
+    // }
 
     if (needRegister) {
       await _createUserData(credentials.mail, registrationName!);

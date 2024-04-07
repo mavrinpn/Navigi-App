@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:smart/main.dart';
 import 'package:smart/services/parameters_parser.dart';
 import 'package:smart/utils/fonts.dart';
@@ -70,11 +71,13 @@ class _SinglePickWithSearchState extends State<SinglePickWithSearch> {
                             widget.parameter.setVariant(e);
                             setState(() {});
                           }),
-                      Text(
-                        MyApp.getLocale(context) == 'fr' ? e.nameFr : e.nameAr,
-                        maxLines: 1,
-                        overflow: TextOverflow.clip,
-                        style: AppTypography.font14black.copyWith(fontSize: 16),
+                      Expanded(
+                        child: Text(
+                          MyApp.getLocale(context) == 'fr' ? e.nameFr : e.nameAr,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTypography.font14black.copyWith(fontSize: 16),
+                        ),
                       ),
                     ],
                   ),

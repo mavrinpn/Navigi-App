@@ -9,31 +9,48 @@ class SearchItemsWidget extends StatelessWidget {
     super.key,
     required this.state,
     required this.onKeywordTap,
+    required this.onCurrentQueryTap,
   });
 
   final Function(KeyWord) onKeywordTap;
+  final Function(String) onCurrentQueryTap;
   final SearchItemsSuccess state;
 
   @override
   Widget build(BuildContext context) {
     final String currentLocale = MyApp.getLocale(context) ?? 'fr';
-    
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: state.result
-          .map((keyword) => Padding(
-                padding: const EdgeInsets.all(15),
-                child: InkWell(
-                  onTap: () {
-                    onKeywordTap(keyword);
-                  },
-                  child: Text(
-                    currentLocale == 'fr' ? keyword.nameFr : keyword.nameAr,
-                    style: AppTypography.font14black,
-                  ),
+
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      TextButton(
+        onPressed: () {
+          onCurrentQueryTap(state.currentQuery);
+        },
+        child: SizedBox(
+          width: double.infinity,
+          child: Text(
+            state.currentQuery,
+            textAlign: TextAlign.start,
+            style: AppTypography.font14black,
+          ),
+        ),
+      ),
+      ...state.result
+          .map(
+            (keyword) => TextButton(
+              onPressed: () {
+                onKeywordTap(keyword);
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  currentLocale == 'fr' ? keyword.nameFr : keyword.nameAr,
+                  textAlign: TextAlign.start,
+                  style: AppTypography.font14black,
                 ),
-              ))
+              ),
+            ),
+          )
           .toList(),
-    );
+    ]);
   }
 }

@@ -161,8 +161,8 @@ class CategoriesService {
   }) async {
     List<String> queries = [
       Query.or([
-        Query.search('nameAr', name),
-        Query.search('nameFr', name),
+        Query.contains('nameAr', name),
+        Query.contains('nameFr', name),
       ]),
       Query.limit(40),
     ];
