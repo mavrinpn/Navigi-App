@@ -2,13 +2,15 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smart/main.dart';
+import 'package:smart/models/city.dart';
 import 'package:smart/models/item/static_parameters.dart';
 import 'package:smart/models/user.dart';
 import 'package:smart/utils/price_type.dart';
 
 part 'creator_data.dart';
 
-part 'place.dart';
+part 'city_district.dart';
 
 class Announcement {
   final String title;
@@ -23,7 +25,7 @@ class Announcement {
   final String id;
   final StaticParameters staticParameters;
   final CityDistrict area;
-  final String cityName;
+  final City city;
   final CreatorData creatorData;
   late final Widget previewImage;
   final String _createdAt;
@@ -61,7 +63,7 @@ class Announcement {
         mark = json['mark'] ?? '',
         longitude = double.tryParse('${json['longitude']}') ?? 0,
         latitude = double.tryParse('${json['latitude']}') ?? 0,
-        cityName = json['city'] != null ? json['city']['name'] : '',
+        city = json['city'] != null ? City.fromJson(json['city']) : City.none(),
         area = json['area2'] != null ? CityDistrict.fromJson(json['area2']) : CityDistrict.none() {
     var l = [];
     for (String i in images) {

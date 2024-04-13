@@ -164,7 +164,7 @@ class CategoriesService {
         Query.contains('nameAr', name),
         Query.contains('nameFr', name),
       ]),
-      Query.limit(40),
+      Query.limit(10),
     ];
     if (subcategoryId != null) {
       queries.add(

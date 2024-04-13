@@ -157,8 +157,8 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                 const SizedBox(width: 2),
                 Expanded(
                   child: Text(
-                    widget.announcement.cityName != ''
-                        ? '${widget.announcement.cityName}, ${widget.announcement.area.name}'
+                    widget.announcement.city.name != ''
+                        ? '${widget.announcement.city.name}, ${widget.announcement.area.name}'
                         : widget.announcement.area.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
