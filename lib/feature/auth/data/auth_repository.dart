@@ -117,7 +117,6 @@ class AuthRepository {
     try {
       //TODO logout
       await _account.deleteSessions();
-      // await _account.deleteSession(sessionId: sessionID ?? '');
       sessionID = null;
       _user = null;
       userData = null;

@@ -9,4 +9,8 @@ class CreatingSuccessState extends CreatingAnnouncementState {}
 
 class CreatingLoadingState extends CreatingAnnouncementState {}
 
-class CreatingFailState extends CreatingAnnouncementState {}
+class CreatingFailState extends CreatingAnnouncementState {
+  final String error;
+
+  CreatingFailState(this.error);
+}

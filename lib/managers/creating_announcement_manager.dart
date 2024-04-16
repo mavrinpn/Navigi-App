@@ -5,6 +5,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smart/feature/create_announcement/bloc/creating/creating_announcement_cubit.dart';
 import 'package:smart/feature/create_announcement/data/models/car_filter.dart';
 import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
 import 'package:smart/models/announcement.dart';
@@ -48,8 +49,7 @@ class CreatingAnnouncementManager {
   CityDistrict? cityDistrict;
   LatLng? customPosition;
 
-  BehaviorSubject<LoadingStateEnum> creatingState =
-      BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
+  BehaviorSubject<LoadingStateEnum> creatingState = BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
 
   String get prise => (creatingData.price ?? 0).toString();
 
@@ -96,8 +96,7 @@ class CreatingAnnouncementManager {
   //   }
   // }
 
-  Future<Uint8List> _compressImage(Uint8List list) async =>
-      await FlutterImageCompress.compressWithList(
+  Future<Uint8List> _compressImage(Uint8List list) async => await FlutterImageCompress.compressWithList(
         list,
         minWidth: 400,
         quality: 96,
@@ -112,8 +111,7 @@ class CreatingAnnouncementManager {
   void setType(bool type) => creatingData.type = type;
 
   void setItem(SubcategoryItem? newItem, {String? name, String? id}) {
-    currentItem =
-        newItem ?? SubcategoryItem.withName(name!, creatingData.subcategoryId!);
+    currentItem = newItem ?? SubcategoryItem.withName(name!, creatingData.subcategoryId!);
 
     creatingData.itemName = currentItem!.name;
     creatingData.itemId = currentItem!.id;
@@ -136,8 +134,7 @@ class CreatingAnnouncementManager {
     specialOptions.clear();
   }
 
-  void setDescription(String description) =>
-      creatingData.description = description;
+  void setDescription(String description) => creatingData.description = description;
 
   void setPrice(double price) => creatingData.price = price;
   void setPriceType(PriceType type) => creatingData.priceType = type;
@@ -194,8 +191,7 @@ class CreatingAnnouncementManager {
         //parameters.addAll(marksFilter!.modelParameters!);
       }
       parameters.addAll(subcategoryFilters!.parameters);
-      creatingData.parameters =
-          ItemParameters().buildJsonFormatParameters(addParameters: parameters);
+      creatingData.parameters = ItemParameters().buildJsonFormatParameters(addParameters: parameters);
       creatingData.keywords = ItemParameters().buildListFormatParameters(
         addParameters: parameters,
         title: creatingData.title,
@@ -234,7 +230,8 @@ class CreatingAnnouncementManager {
 
       clearAllData();
       creatingState.add(LoadingStateEnum.success);
-    } catch (e) {
+    } catch (error) {
+      creatingAnnouncementError = error.toString();
       creatingState.add(LoadingStateEnum.fail);
       rethrow;
     }

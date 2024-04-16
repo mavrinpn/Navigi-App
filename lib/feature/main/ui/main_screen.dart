@@ -142,7 +142,7 @@ class _MainScreenState extends State<MainScreen> {
                   child: AdvertisementContainer(
                     onTap: () {},
                     imageUrl:
-                        'https://avatars.mds.yandex.net/i?id=6deffd61630391bd9df44801831eb1ef_sr-5241446-images-thumbs&n=13',
+                        'http://143.244.206.96/v1/storage/buckets/661d74e7000bc76c563f/files/main_ad/view?project=65d8fa703a95c4ef256b&mode=admin',
                   ),
                 ),
                 SliverToBoxAdapter(

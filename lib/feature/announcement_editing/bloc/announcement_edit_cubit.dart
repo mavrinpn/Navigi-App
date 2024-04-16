@@ -19,8 +19,7 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
   AnnouncementEditingRepository repository;
   AnnouncementManager announcementManager;
 
-  AnnouncementEditCubit(this.repository, this.announcementManager)
-      : super(AnnouncementEditInitial());
+  AnnouncementEditCubit(this.repository, this.announcementManager) : super(AnnouncementEditInitial());
 
   /// всю информацию на экране брать отсюда
   AnnouncementEditData? get data => repository.editData;
@@ -30,8 +29,7 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
   /// Повесить на экран [PopScope] и вызывать когда он закрывается
   void closeEdit() => repository.closeEdit();
 
-  Future<void> deleteAnnouncement(Announcement announcement) =>
-      repository.deleteAnnouncement(announcement.id);
+  Future<void> deleteAnnouncement(Announcement announcement) => repository.deleteAnnouncement(announcement.id);
 
   /// Вызывать в initState экрана, либо если будет агрессировать то до пуша
   Future setAnnouncement(Announcement announcement) async {
@@ -120,8 +118,8 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
         newModelId,
       );
       emit(AnnouncementEditSuccess());
-    } catch (e) {
-      emit(AnnouncementEditFail());
+    } catch (err) {
+      emit(AnnouncementEditFail(error: err.toString()));
       rethrow;
     }
   }

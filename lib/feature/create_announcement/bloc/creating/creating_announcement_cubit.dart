@@ -4,8 +4,9 @@ import 'package:meta/meta.dart';
 import '../../../../enum/enum.dart';
 import '../../../../managers/creating_announcement_manager.dart';
 
-
 part 'creating_announcement_state.dart';
+
+String creatingAnnouncementError = '';
 
 class CreatingAnnouncementCubit extends Cubit<CreatingAnnouncementState> {
   CreatingAnnouncementManager creatingAnnouncementManager;
@@ -18,7 +19,9 @@ class CreatingAnnouncementCubit extends Cubit<CreatingAnnouncementState> {
         //creatingAnnouncementManager.imagesAsBytes = [];
         emit(CreatingSuccessState());
       }
-      if (event == LoadingStateEnum.fail) emit(CreatingFailState());
+      if (event == LoadingStateEnum.fail) {
+        emit(CreatingFailState(creatingAnnouncementError));
+      }
     });
   }
 

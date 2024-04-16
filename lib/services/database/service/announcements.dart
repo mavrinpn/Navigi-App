@@ -26,19 +26,16 @@ class AnnouncementsService {
       queries: queries,
     );
 
-    List<Announcement> newAnnounces =
-        announcementsFromDocuments(res.documents, _storage);
+    List<Announcement> newAnnounces = announcementsFromDocuments(res.documents, _storage);
 
     return newAnnounces;
   }
 
-  Future<List<Announcement>> searchLimitAnnouncements(
-      DefaultFilterDto filterData) async {
+  Future<List<Announcement>> searchLimitAnnouncements(DefaultFilterDto filterData) async {
     List<String> queries = ParametersFilterBuilder.getSearchQueries(filterData);
 
     if ((filterData.radius ?? 0) != 0) {
-      queries.addAll(
-          await LocationFilter.getLocationFilterForRadius(filterData.radius!));
+      queries.addAll(await LocationFilter.getLocationFilterForRadius(filterData.radius!));
     }
 
     if (filterData.cityId != null) {
@@ -55,14 +52,12 @@ class AnnouncementsService {
       queries: queries,
     );
 
-    List<Announcement> newAnnounces =
-        announcementsFromDocuments(res.documents, _storage);
+    List<Announcement> newAnnounces = announcementsFromDocuments(res.documents, _storage);
 
     return newAnnounces;
   }
 
-  Future<List<Announcement>> searchAnnouncementsInSubcategory(
-      SubcategoryFilterDTO filterData) async {
+  Future<List<Announcement>> searchAnnouncementsInSubcategory(SubcategoryFilterDTO filterData) async {
     List<String> queries = ParametersFilterBuilder.getSearchQueries(
       filterData.toDefaultFilter(),
       subcategory: true,
@@ -71,8 +66,7 @@ class AnnouncementsService {
     queries.addAll(filterData.convertParametersToQuery());
 
     if ((filterData.radius ?? 0) != 0) {
-      queries.addAll(
-          await LocationFilter.getLocationFilterForRadius(filterData.radius!));
+      queries.addAll(await LocationFilter.getLocationFilterForRadius(filterData.radius!));
     }
 
     if (filterData.mark != null) {
@@ -281,21 +275,20 @@ class AnnouncementsService {
 
   Future getUserAnnouncements({required String userId}) async {
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: postCollection,
-        queries: [
-          Query.equal("creator_id", userId),
-          Query.orderDesc(DefaultDocumentParameters.createdAt)
-        ]);
+      databaseId: mainDatabase,
+      collectionId: postCollection,
+      queries: [
+        Query.equal("creator_id", userId),
+        Query.orderDesc(DefaultDocumentParameters.createdAt),
+      ],
+    );
 
     return announcementsFromDocuments(res.documents, _storage);
   }
 
   Future changeAnnouncementActivity(String announcementsId) async {
     final res = await _databases.getDocument(
-        databaseId: mainDatabase,
-        collectionId: postCollection,
-        documentId: announcementsId);
+        databaseId: mainDatabase, collectionId: postCollection, documentId: announcementsId);
 
     final bool currentValue = res.data[activeAttribute];
 
@@ -309,8 +302,7 @@ class AnnouncementsService {
   Future<Uint8List> getAnnouncementImage(String url) async {
     final id = getIdFromUrl(url);
 
-    final futureBytes =
-        _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+    final futureBytes = _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
 
     return futureBytes;
   }
@@ -349,8 +341,7 @@ class AnnouncementsService {
       data: postCollectionUpdateData,
     );
 
-    if (newSubcategoryid != null &&
-        editData.subcollectionId != newSubcategoryid) {
+    if (newSubcategoryid != null && editData.subcollectionId != newSubcategoryid) {
       final subcollectionCreateData = _subcollectionCreateData(editData);
 
       // final existsDocument = await _databases.listDocuments(
@@ -441,11 +432,9 @@ class AnnouncementsService {
 
     for (var parameter in editData.parameters) {
       if (parameter is SelectParameter) {
-        subcollectionUpdateData
-            .addAll({parameter.key: parameter.currentValue.key});
+        subcollectionUpdateData.addAll({parameter.key: parameter.currentValue.key});
       } else if (parameter is SingleSelectParameter) {
-        subcollectionUpdateData
-            .addAll({parameter.key: parameter.currentValue.key});
+        subcollectionUpdateData.addAll({parameter.key: parameter.currentValue.key});
       } else if (parameter is MultiSelectParameter) {
         final value = parameter.selectedVariants.map((e) => e.key).toList();
         subcollectionUpdateData.addAll({parameter.key: value});
@@ -457,8 +446,8 @@ class AnnouncementsService {
     return subcollectionUpdateData;
   }
 
-  _postCollectionUpdateData(AnnouncementEditData editData,
-      String? newSubcategoryid, String? newMarkId, String? newModelId) async {
+  _postCollectionUpdateData(
+      AnnouncementEditData editData, String? newSubcategoryid, String? newMarkId, String? newModelId) async {
     List<Parameter> parametersWithMarkAndModel = [];
 
     // final mark = await _databases.getDocument(
@@ -526,11 +515,9 @@ class AnnouncementsService {
 
     for (var parameter in editData.parameters) {
       if (parameter is SelectParameter) {
-        subcollectionCreateData
-            .addAll({parameter.key: parameter.currentValue.key});
+        subcollectionCreateData.addAll({parameter.key: parameter.currentValue.key});
       } else if (parameter is SingleSelectParameter) {
-        subcollectionCreateData
-            .addAll({parameter.key: parameter.currentValue.key});
+        subcollectionCreateData.addAll({parameter.key: parameter.currentValue.key});
       } else if (parameter is MultiSelectParameter) {
         final value = parameter.selectedVariants.map((e) => e.key).toList();
         subcollectionCreateData.addAll({parameter.key: value});

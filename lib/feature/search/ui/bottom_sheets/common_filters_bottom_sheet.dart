@@ -34,8 +34,7 @@ class CommonFiltersBottomSheet extends StatefulWidget {
   final bool needOpenNewScreen;
 
   @override
-  State<CommonFiltersBottomSheet> createState() =>
-      _CommonFiltersBottomSheetState();
+  State<CommonFiltersBottomSheet> createState() => _CommonFiltersBottomSheetState();
 }
 
 class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
@@ -57,10 +56,8 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
 
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
     _priceType = searchCubit.priceType;
-    _minPriceController = TextEditingController(
-        text: _priceType.convertDzdToCurrencyString(searchCubit.minPrice));
-    _maxPriceController = TextEditingController(
-        text: _priceType.convertDzdToCurrencyString(searchCubit.maxPrice));
+    _minPriceController = TextEditingController(text: _priceType.convertDzdToCurrencyString(searchCubit.minPrice));
+    _maxPriceController = TextEditingController(text: _priceType.convertDzdToCurrencyString(searchCubit.maxPrice));
   }
 
   void requestLocation() async {
@@ -98,8 +95,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
     final localizations = AppLocalizations.of(context)!;
 
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-    final selectCategoryCubit =
-        BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+    final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
 
     choosedMarksFilter = searchCubit.marksFilter;
@@ -122,8 +118,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                       height: 4,
                       decoration: ShapeDecoration(
                           color: const Color(0xFFDDE1E7),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(1))),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(1))),
                     ),
                   ),
                   Padding(
@@ -190,36 +185,29 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                         icon: 'Assets/icons/tirage.svg',
                         parameter: searchCubit.sortTypesParameter,
                         onChange: (parametrOption) {
-                          searchCubit.sortTypesParameter
-                              .setVariant(parametrOption);
+                          searchCubit.sortTypesParameter.setVariant(parametrOption);
                           searchCubit.sortType = parametrOption.key;
                           setState(() {});
                         },
                         currentKey: searchCubit.sortBy,
                       ),
-                      if (selectCategoryCubit.subcategoryId == carSubcategoryId)
-                        ..._buildCarMarkWidget(context),
+                      if (selectCategoryCubit.subcategoryId == carSubcategoryId) ..._buildCarMarkWidget(context),
                       if (selectCategoryCubit.subcategoryFilters != null &&
                           selectCategoryCubit.subcategoryFilters!.hasMark &&
                           selectCategoryCubit.subcategoryId != carSubcategoryId)
                         ..._buildSelectMarkWidget(context),
                       ..._buildLocationWidget(context),
-                      if (searchCubit.marksFilter?.modelParameters != null)
-                        ...buildModelFilters(),
-                      if (searchCubit.searchMode ==
-                          SearchModeEnum.subcategory) ...[
-                        BlocBuilder<SearchSelectSubcategoryCubit,
-                            SearchSelectSubcategoryState>(
+                      if (searchCubit.marksFilter?.modelParameters != null) ...buildModelFilters(),
+                      if (searchCubit.searchMode == SearchModeEnum.subcategory) ...[
+                        BlocBuilder<SearchSelectSubcategoryCubit, SearchSelectSubcategoryState>(
                           builder: (context, state) {
                             if (state is FiltersGotState) {
                               return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 4),
+                                padding: const EdgeInsets.symmetric(horizontal: 4),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: buildFiltersSelection(
-                                      selectCategoryCubit.parameters),
+                                  children: buildFiltersSelection(selectCategoryCubit.parameters),
                                 ),
                               );
                             }
@@ -227,48 +215,49 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                           },
                         ),
                       ],
-                      const SizedBox(height: 16),
-                      CustomTextButton.orangeContinue(
-                        callback: () {
-                          RepositoryProvider.of<SearchManager>(context)
-                              .setSearch(false);
-
-                          searchCubit.priceType = _priceType;
-                          searchCubit.minPrice = _priceType
-                              .fromPriceString(_minPriceController.text);
-                          searchCubit.maxPrice = _priceType
-                              .fromPriceString(_maxPriceController.text);
-
-                          searchCubit.setFilters(
-                            parameters: selectCategoryCubit.parameters,
-                            cityId: selectedCityId,
-                            areaId: selectedAreaId,
-                            cityTitle: selectedCityTitle,
-                            areaTitle: selectedAreaTitle,
-                          );
-                          Navigator.pop(context);
-
-                          if (widget.needOpenNewScreen) {
-                            Navigator.pushNamed(
-                              context,
-                              AppRoutesNames.search,
-                              arguments: {
-                                'showSearchHelper': false,
-                              },
-                            );
-                          }
-
-                          updateAppBarFilterCubit.needUpdateAppBarFilters();
-
-                          setState(() {});
-                        },
-                        text: locale() == 'fr' ? 'Appliquer' : 'تطبيق',
-                        active: true,
-                      ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 80),
                     ],
                   ),
                 ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 20,
+              left: 20,
+              child: CustomTextButton.orangeContinue(
+                callback: () {
+                  RepositoryProvider.of<SearchManager>(context).setSearch(false);
+              
+                  searchCubit.priceType = _priceType;
+                  searchCubit.minPrice = _priceType.fromPriceString(_minPriceController.text);
+                  searchCubit.maxPrice = _priceType.fromPriceString(_maxPriceController.text);
+              
+                  searchCubit.setFilters(
+                    parameters: selectCategoryCubit.parameters,
+                    cityId: selectedCityId,
+                    areaId: selectedAreaId,
+                    cityTitle: selectedCityTitle,
+                    areaTitle: selectedAreaTitle,
+                  );
+                  Navigator.pop(context);
+              
+                  if (widget.needOpenNewScreen) {
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutesNames.search,
+                      arguments: {
+                        'showSearchHelper': false,
+                      },
+                    );
+                  }
+              
+                  updateAppBarFilterCubit.needUpdateAppBarFilters();
+              
+                  setState(() {});
+                },
+                text: locale() == 'fr' ? 'Appliquer' : 'تطبيق',
+                active: true,
               ),
             ),
           ],
@@ -330,8 +319,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
 
   List<Widget> _buildCarMarkWidget(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    final selectCategoryCubit =
-        BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+    final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
 
@@ -411,8 +399,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
 
   List<Widget> _buildSelectMarkWidget(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    final selectCategoryCubit =
-        BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+    final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
 
     return [
@@ -422,8 +409,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
         borderRadius: const BorderRadius.all(Radius.circular(12)),
         child: InkWell(
           onTap: () async {
-            final needSelectModel =
-                selectCategoryCubit.subcategoryFilters!.hasModel;
+            final needSelectModel = selectCategoryCubit.subcategoryFilters!.hasModel;
             final List<MarksFilter?> filter = await Navigator.push(
               context,
               MaterialPageRoute(

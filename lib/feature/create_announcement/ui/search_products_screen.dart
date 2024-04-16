@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart/feature/create_announcement/bloc/keywords/keywords_cubit.dart';
+import 'package:smart/feature/create_announcement/bloc/tipwords/tipwords_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/main.dart';
+import 'package:smart/models/tip_word.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/category/products.dart';
@@ -23,6 +25,20 @@ class SearchProductsScreen extends StatefulWidget {
 
 class _SearchProductsScreenState extends State<SearchProductsScreen> {
   final productsController = TextEditingController();
+  TipWord? _selectedTipWord;
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<TipWordsCubit>(context).getTipWordsBy(
+      subcategoryId: '',
+      query: null,
+      markId: null,
+      modelId: null,
+      previousWordId: null,
+      previousWordGroupId: null,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +83,24 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
               hintText: '',
               width: double.infinity,
               onChange: (value) {
-                //String lastWord = value.trimRight().split(' ').lastOrNull ?? '';
+                if (value.isEmpty) {
+                  _selectedTipWord = null;
+                }
+                String lastWord = value.trimRight().split(' ').lastOrNull ?? '';
 
+                //TODO add tipword type
                 final creatingManager = RepositoryProvider.of<CreatingAnnouncementManager>(context);
-                BlocProvider.of<KeyWordsCubit>(context).getKeywordsBy(
+                final markId = creatingManager.carFilter?.markId ?? creatingManager.marksFilter?.markId;
+                // final modelId = creatingManager.carFilter?.modelId ?? creatingManager.marksFilter?.modelId;
+
+                BlocProvider.of<TipWordsCubit>(context).getTipWordsBy(
                   subcategoryId: creatingManager.creatingData.subcategoryId ?? '',
-                  query: value,
+                  query: lastWord,
+                  markId: _selectedTipWord == null ? markId : null,
+                  //modelId: _selectedTipWord == null ? modelId : null,
+                  modelId: null,
+                  previousWordId: _selectedTipWord?.id,
+                  previousWordGroupId: _selectedTipWord?.groupId,
                 );
 
                 setIsTouch(value.isNotEmpty);
@@ -87,59 +115,38 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
               ),
             ),
             Expanded(
-              child: BlocBuilder<KeyWordsCubit, KeyWordsState>(
+              child: BlocBuilder<TipWordsCubit, TipWordsState>(
                 builder: (context, state) {
-                  if (state is KeyWordssSuccessState) {
+                  if (state is TipWordssSuccessState) {
                     return SingleChildScrollView(
                       child: Wrap(
                         children: [
-                          ...state.keywords.take(8).map((e) {
+                          ...state.tipWords.take(8).map((tipWord) {
                             String name = '';
-                            if (e.nameFr.toLowerCase().contains(state.currentQuery.toLowerCase())) {
-                              name = e.nameFr;
+                            if (state.currentQuery.isNotEmpty) {
+                              if (tipWord.nameFr.toLowerCase().contains(state.currentQuery.toLowerCase())) {
+                                name = tipWord.nameFr;
+                              }
+                              if (tipWord.nameAr.toLowerCase().contains(state.currentQuery.toLowerCase())) {
+                                name = tipWord.nameAr;
+                              }
+                            } else {
+                              name = currentLocaleShortName.value == 'fr' ? tipWord.nameFr : tipWord.nameAr;
                             }
-                            if (e.nameAr.toLowerCase().contains(state.currentQuery.toLowerCase())) {
-                              name = e.nameAr;
-                            }
+
                             return Padding(
                               padding: const EdgeInsets.all(3),
                               child: ProductWidget(
                                 onTap: () {
+                                  _selectedTipWord = tipWord;
                                   // creatingManager.setItem(e);
                                   setState(() {});
-                                  _setTitle(name);
+                                  _setTitle(tipWord, name);
                                 },
                                 name: name,
                               ),
                             );
                           }).toList(),
-                          // ...state.keyWordsFr
-                          //     .take(8)
-                          //     .map((e) => Padding(
-                          //           padding: const EdgeInsets.all(3),
-                          //           child: ProductWidget(
-                          //             onTap: () {
-                          //               _setTitle(e.nameFr);
-                          //             },
-                          //             name: e.nameFr,
-                          //           ),
-                          //         ))
-                          //     .toList(),
-                          // ...state.keyWordsAr
-                          //     .take(8)
-                          //     .map((e) => Padding(
-                          //           padding: const EdgeInsets.all(3),
-                          //           child: ProductWidget(
-                          //             onTap: () {
-                          //               _setTitle(e.nameAr);
-                          //               // cubit.setItemName(e.name);
-                          //               // creatingManager.setItem(e);
-                          //               // setState(() {});
-                          //             },
-                          //             name: e.nameAr,
-                          //           ),
-                          //         ))
-                          //     .toList()
                         ],
                       ),
                     );
@@ -186,15 +193,26 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
     );
   }
 
-  void _setTitle(String keywordName) {
-    // String title = productsController.text.trimRight();
-    // List<String> titleWords = title.split(' ');
-    // if (titleWords.isNotEmpty) {
-    //   titleWords.removeLast();
-    // }
-    // title = '${titleWords.join(' ')} $keywordName';
-    // productsController.text = title;
-    productsController.text = keywordName;
+  void _setTitle(TipWord tipWord, String tipwordName) {
+    String title = productsController.text;
+    List<String> titleWords = title.split(' ');
+    if (titleWords.isNotEmpty) {
+      titleWords.removeLast();
+    }
+    title = '${titleWords.join(' ')} $tipwordName ';
+    productsController.text = title;
     setState(() {});
+
+    final creatingManager = RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    final markId = creatingManager.carFilter?.markId ?? creatingManager.marksFilter?.markId;
+    BlocProvider.of<TipWordsCubit>(context).getTipWordsBy(
+      subcategoryId: creatingManager.creatingData.subcategoryId ?? '',
+      query: null,
+      markId: _selectedTipWord == null ? markId : null,
+      //modelId: _selectedTipWord == null ? modelId : null,
+      modelId: null,
+      previousWordId: _selectedTipWord?.id,
+      previousWordGroupId: _selectedTipWord?.groupId,
+    );
   }
 }

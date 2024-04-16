@@ -5,8 +5,7 @@ import 'package:smart/utils/fonts.dart';
 import '../../utils/colors.dart';
 
 abstract class CustomSnackBar {
-  static void showSnackBarWithIcon(
-      BuildContext context, String text, String icon) {
+  static void showSnackBarWithIcon(BuildContext context, String text, String icon) {
     final snackBarWithIcon = SnackBar(
       content: Row(
         mainAxisSize: MainAxisSize.min,
@@ -34,8 +33,7 @@ abstract class CustomSnackBar {
           const SizedBox(
             width: 12,
           ),
-          Text(text,
-              textAlign: TextAlign.center, style: AppTypography.font14white),
+          Text(text, textAlign: TextAlign.center, style: AppTypography.font14white),
         ],
       ),
       backgroundColor: AppColors.dark,
@@ -44,11 +42,10 @@ abstract class CustomSnackBar {
     ScaffoldMessenger.of(context).showSnackBar(snackBarWithIcon);
   }
 
-  static void showSnackBar(BuildContext context, String text) {
+  static void showSnackBar(BuildContext context, String text, [int duration = 2]) {
     final snackBar = SnackBar(
-      duration: const Duration(seconds: 2),
-      content: Text(text,
-          textAlign: TextAlign.start, style: AppTypography.font14white),
+      duration: Duration(seconds: duration),
+      content: Text(text, textAlign: TextAlign.start, style: AppTypography.font14white),
       backgroundColor: AppColors.dark,
       behavior: SnackBarBehavior.floating,
     );

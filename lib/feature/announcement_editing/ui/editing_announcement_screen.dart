@@ -28,6 +28,7 @@ import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/price_type.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/back_button.dart';
+import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 import '../../../models/custom_locate.dart';
 import '../../../utils/colors.dart';
@@ -38,8 +39,7 @@ class EditingAnnouncementScreen extends StatefulWidget {
   const EditingAnnouncementScreen({super.key});
 
   @override
-  State<EditingAnnouncementScreen> createState() =>
-      _EditingAnnouncementScreenState();
+  State<EditingAnnouncementScreen> createState() => _EditingAnnouncementScreenState();
 }
 
 List<CustomLocate> listLocates = [
@@ -67,8 +67,7 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
 
     BlocProvider.of<PlacesCubit>(context).searchCities('');
 
-    final announcementEditCubit =
-        BlocProvider.of<AnnouncementEditCubit>(context);
+    final announcementEditCubit = BlocProvider.of<AnnouncementEditCubit>(context);
     setParameretres(
       announcementEditCubit.data?.subcollectionId ?? '',
       announcementEditCubit.data?.modelId ?? '',
@@ -76,10 +75,8 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
     final subcategoryId = announcementEditCubit.data?.subcollectionId ?? '';
     final creatingManager = context.read<CreatingAnnouncementManager>();
 
-    if (realEstateSubcategories.contains(subcategoryId) ||
-        servicesSubcategories.contains(subcategoryId)) {
-      creatingManager.specialOptions
-          .add(SpecialAnnouncementOptions.customPlace);
+    if (realEstateSubcategories.contains(subcategoryId) || servicesSubcategories.contains(subcategoryId)) {
+      creatingManager.specialOptions.add(SpecialAnnouncementOptions.customPlace);
     }
   }
 
@@ -105,8 +102,7 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
 
   String? priceValidator(String? value) {
     final localizations = AppLocalizations.of(context)!;
-    final announcementEditCubit =
-        BlocProvider.of<AnnouncementEditCubit>(context);
+    final announcementEditCubit = BlocProvider.of<AnnouncementEditCubit>(context);
     double? n;
     n = double.tryParse(priceController.text) ?? -1;
     if (n < 0) {
@@ -129,10 +125,9 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
   }
 
   void updateTextSelection() {
-    descriptionController.selection = TextSelection.fromPosition(
-        TextPosition(offset: descriptionController.text.length));
-    titleController.selection = TextSelection.fromPosition(
-        TextPosition(offset: titleController.text.length));
+    descriptionController.selection =
+        TextSelection.fromPosition(TextPosition(offset: descriptionController.text.length));
+    titleController.selection = TextSelection.fromPosition(TextPosition(offset: titleController.text.length));
   }
 
   void validateButtonActive() {
@@ -148,8 +143,7 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
     titleController.text = cubit.data?.title ?? '';
     descriptionController.text = cubit.data?.description ?? '';
     _priceType = cubit.data?.priceType ?? PriceType.dzd;
-    priceController.text =
-        _priceType.convertDzdToCurrencyString(cubit.data?.price ?? 0);
+    priceController.text = _priceType.convertDzdToCurrencyString(cubit.data?.price ?? 0);
     _place = cubit.data?.area.name ?? '';
   }
 
@@ -182,14 +176,13 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
             }
 
             if (state is AnnouncementEditSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(localizations.changesSaved)));
-              BlocProvider.of<CreatorCubit>(context).setUserId(
-                  RepositoryProvider.of<AuthRepository>(context).userId);
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(localizations.changesSaved)));
+              BlocProvider.of<CreatorCubit>(context).setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
               Navigator.of(context).pop();
             } else if (state is AnnouncementEditFail) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(localizations.dataSavingError)));
+              CustomSnackBar.showSnackBar(context, state.error, 10);
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //     SnackBar(content: Text(localizations.dataSavingError)));
             }
           },
           builder: (context, state) {
@@ -231,18 +224,13 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                     slivers: [
                       ChangeCategoryButton(
                         onTap: () async {
-                          final creatingManager =
-                              context.read<CreatingAnnouncementManager>();
+                          final creatingManager = context.read<CreatingAnnouncementManager>();
                           creatingManager.isCreating = false;
-                          await Navigator.pushNamed(context,
-                              AppRoutesNames.announcementCreatingCategory);
-                          final subcategoryId =
-                              creatingManager.creatingData.subcategoryId ?? '';
+                          await Navigator.pushNamed(context, AppRoutesNames.announcementCreatingCategory);
+                          final subcategoryId = creatingManager.creatingData.subcategoryId ?? '';
                           final carModelId = creatingManager.carFilter?.modelId;
-                          final markModelId =
-                              creatingManager.marksFilter?.modelId;
-                          setParameretres(
-                              subcategoryId, carModelId ?? markModelId ?? '');
+                          final markModelId = creatingManager.marksFilter?.modelId;
+                          setParameretres(subcategoryId, carModelId ?? markModelId ?? '');
                           _newSubcategoryId = subcategoryId;
                           _newCarFilter = creatingManager.carFilter;
                           _newMarksFilter = creatingManager.marksFilter;
@@ -255,14 +243,12 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                           announcementEditCubit.onPriceChanged(price);
                         },
                         priceType: _priceType,
-                        subCategoryId:
-                            announcementEditCubit.data?.subcollectionId ?? '',
+                        subCategoryId: announcementEditCubit.data?.subcollectionId ?? '',
                         onChangePriceType: (priceType) {
                           setState(() {
                             _priceType = priceType;
                           });
-                          final price =
-                              _priceType.fromPriceString(priceController.text);
+                          final price = _priceType.fromPriceString(priceController.text);
                           announcementEditCubit.onPriceChanged(price);
                           announcementEditCubit.onPriceTypeChanged(priceType);
                         },
@@ -297,9 +283,7 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                             }
                           }),
                       const SliverToBoxAdapter(child: SizedBox(height: 26)),
-                      SliverToBoxAdapter(
-                          child: Text(localizations.location,
-                              style: AppTypography.font18black)),
+                      SliverToBoxAdapter(child: Text(localizations.location, style: AppTypography.font18black)),
                       const SliverToBoxAdapter(child: SizedBox(height: 26)),
                       SliverToBoxAdapter(
                         child: SelectLocationWidget(
@@ -318,13 +302,10 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                       ),
                       ParametersSection(
                         paramaters: _paramaters,
-                        staticParameters:
-                            announcementEditCubit.data?.staticParameters,
+                        staticParameters: announcementEditCubit.data?.staticParameters,
                       ),
                       const SliverToBoxAdapter(child: SizedBox(height: 26)),
-                      SliverToBoxAdapter(
-                          child: Text(localizations.photo,
-                              style: AppTypography.font18black)),
+                      SliverToBoxAdapter(child: Text(localizations.photo, style: AppTypography.font18black)),
                       const SliverToBoxAdapter(
                         child: SizedBox(height: 26),
                       ),
@@ -337,13 +318,10 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                             active: buttonActive,
                             callback: () {
                               if (buttonActive) {
-                                final creatingManager =
-                                    context.read<CreatingAnnouncementManager>();
-                                final place =
-                                    placeManager.searchPlaceIdByName(_place);
+                                final creatingManager = context.read<CreatingAnnouncementManager>();
+                                final place = placeManager.searchPlaceIdByName(_place);
                                 announcementEditCubit.onPlaceChange(place);
-                                announcementEditCubit.onCustomCoordinateChange(
-                                    creatingManager.customPosition);
+                                announcementEditCubit.onCustomCoordinateChange(creatingManager.customPosition);
                                 announcementEditCubit.onParametersChanged(
                                   newParamaters: _paramaters,
                                   newCarFilter: _newCarFilter,

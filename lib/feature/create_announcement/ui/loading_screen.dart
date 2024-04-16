@@ -7,6 +7,7 @@ import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 import '../bloc/creating/creating_announcement_cubit.dart';
 
@@ -22,22 +23,18 @@ class LoadingScreen extends StatelessWidget {
       child: BlocListener<CreatingAnnouncementCubit, CreatingAnnouncementState>(
         listener: (context, state) {
           if (state is CreatingSuccessState) {
-            BlocProvider.of<CreatorCubit>(context).setUserId(
-                RepositoryProvider.of<AuthRepository>(context).userId);
-            RepositoryProvider.of<AnnouncementManager>(context)
-                .addLimitAnnouncements(true);
+            BlocProvider.of<CreatorCubit>(context).setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
+            RepositoryProvider.of<AnnouncementManager>(context).addLimitAnnouncements(true);
 
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(localizations.adSuccessfullyAdded)));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(localizations.adSuccessfullyAdded)));
 
-            Navigator.of(context)
-                .popUntil(ModalRoute.withName(AppRoutesNames.root));
+            Navigator.of(context).popUntil(ModalRoute.withName(AppRoutesNames.root));
           }
           if (state is CreatingFailState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(localizations.errorCreatingAd)));
-            Navigator.of(context)
-                .popUntil(ModalRoute.withName(AppRoutesNames.root));
+            CustomSnackBar.showSnackBar(context, state.error, 10);
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //     SnackBar(content: Text(localizations.errorCreatingAd)));
+            Navigator.of(context).popUntil(ModalRoute.withName(AppRoutesNames.root));
           }
         },
         child: Scaffold(
@@ -59,9 +56,7 @@ class LoadingScreen extends StatelessWidget {
                 const SizedBox(
                   height: 16,
                 ),
-                Text(localizations.doNotBlockThe,
-                    textAlign: TextAlign.center,
-                    style: AppTypography.font14light),
+                Text(localizations.doNotBlockThe, textAlign: TextAlign.center, style: AppTypography.font14light),
                 const SizedBox(
                   height: 80,
                 )

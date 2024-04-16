@@ -23,8 +23,7 @@ class CreatorProfileScreen extends StatefulWidget {
   State<CreatorProfileScreen> createState() => _CreatorProfileScreenState();
 }
 
-class _CreatorProfileScreenState extends State<CreatorProfileScreen>
-    with SingleTickerProviderStateMixin {
+class _CreatorProfileScreenState extends State<CreatorProfileScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   final controller = ScrollController();
@@ -47,14 +46,10 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
               color: AppColors.mainBackground,
               child: Center(
                 child: AnnouncementContainer(
-                    announcement: _tabController.index == 0
-                        ? state.available[index]
-                        : state.sold[index]),
+                    announcement: _tabController.index == 0 ? state.available[index] : state.sold[index]),
               ),
             ),
-            childCount: (_tabController.index == 0
-                ? state.available.length
-                : state.sold.length),
+            childCount: (_tabController.index == 0 ? state.available.length : state.sold.length),
           ),
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             crossAxisSpacing: 18,
@@ -98,9 +93,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
             return CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
-                  child: AccountMediumInfo(
-                      user: RepositoryProvider.of<CreatorRepository>(context)
-                          .userData!),
+                  child: AccountMediumInfo(user: RepositoryProvider.of<CreatorRepository>(context).userData!),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 26)),
                 // SliverToBoxAdapter(
@@ -120,8 +113,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                 SliverToBoxAdapter(
                   child: CustomTextButton.withIcon(
                     callback: () {
-                      final userData =
-                          context.read<CreatorRepository>().userData;
+                      final userData = context.read<CreatorRepository>().userData;
                       if (userData != null) {
                         checkBlockedAndCall(
                           context: context,
@@ -145,11 +137,12 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                   child: SizedBox(height: 25),
                 ),
                 AnnouncementTypeTabs(
-                    tabController: _tabController,
-                    onTap: (int val) {
-                      setState(() {});
-                    },
-                    state: state),
+                  tabController: _tabController,
+                  onTap: (int val) {
+                    setState(() {});
+                  },
+                  state: state,
+                ),
                 const SliverToBoxAdapter(
                   child: SizedBox(
                     height: 15,

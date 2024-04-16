@@ -23,16 +23,16 @@ class CreatorRepository {
 
   Future _getAnnouncements() async {
     final announcements = await databaseService.announcements.getUserAnnouncements(
-        userId: currentCreatorId!);
+      userId: currentCreatorId!,
+    );
 
     availableAnnouncements.clear();
     soldAnnouncements.clear();
 
-    for (Announcement announcement in announcements){
-      if (announcement.active){
+    for (Announcement announcement in announcements) {
+      if (announcement.active) {
         availableAnnouncements.add(announcement);
-      }
-      else{
+      } else {
         soldAnnouncements.add(announcement);
       }
     }

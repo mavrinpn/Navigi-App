@@ -16,6 +16,7 @@ class DatabaseService {
   late final NotificationsDatabaseService notifications;
   late final ReviewsService reviews;
   late final KeyWordsService keyWords;
+  late final TipWordsService tipWords;
   late final ModelsService models;
   late final MediumPriceService mediumPrices;
   late final BlockedUsersService blockedUsers;
@@ -33,10 +34,10 @@ class DatabaseService {
     reviews = ReviewsService(_databases, _storage);
     mediumPrices = MediumPriceService(_databases);
     keyWords = KeyWordsService(_databases);
+    tipWords = TipWordsService(_databases);
     models = ModelsService(_databases);
     blockedUsers = BlockedUsersService(_databases);
     favourites = FavouritesService(_databases, _storage);
-    messages =
-        MessagesService(_databases, _realtime, _functions, _storage, users);
+    messages = MessagesService(_databases, _realtime, _functions, _storage, users);
   }
 }

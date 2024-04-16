@@ -56,18 +56,6 @@ class ParametersFilterBuilder {
       }
     }
 
-    // if (filterData.text != null && filterData.text != '') {
-    //   List<String> orQueries = [];
-    //   for (final textRow in filterData.text!.split(' ')) {
-    //     orQueries.add(Query.contains('keywords', textRow.toLowerCase()));
-    //   }
-    //   if (orQueries.length > 1) {
-    //     queries.add(Query.or(orQueries));
-    //   } else {
-    //     queries.add(Query.contains('keywords', filterData.text!.toLowerCase()));
-    //   }
-    // }
-
     if (filterData.sortBy != null) {
       queries.add(SortTypes.toQuery(filterData.sortBy!)!);
     }

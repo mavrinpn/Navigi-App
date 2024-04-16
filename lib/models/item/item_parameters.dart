@@ -76,7 +76,7 @@ class ItemParameters {
     }
     if (parameter is InputParameter) {
       if (parameter.currentValue != null) {
-        return [parameter.currentValue];
+        return ['${parameter.currentValue}'];
       }
     }
     if (parameter is TextParameter) {

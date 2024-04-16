@@ -13,8 +13,11 @@ import '../../localization/app_localizations.dart';
 import '../../models/announcement.dart';
 
 class AccountSmallInfo extends StatefulWidget {
-  const AccountSmallInfo(
-      {super.key, required this.creatorData, required this.clickable});
+  const AccountSmallInfo({
+    super.key,
+    required this.creatorData,
+    required this.clickable,
+  });
 
   final CreatorData creatorData;
   final bool clickable;
@@ -89,8 +92,7 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                     children: [
                       Text(
                         localizations.seller,
-                        style: AppTypography.font14lightGray
-                            .copyWith(fontSize: 12),
+                        style: AppTypography.font14lightGray.copyWith(fontSize: 12),
                       ),
                       const SizedBox(
                         height: 5,
@@ -144,12 +146,8 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                           SvgPicture.asset(Assets.iconsPoint),
                           RichText(
                               text: TextSpan(children: [
-                            TextSpan(
-                                text: ' ${widget.creatorData.place.name}',
-                                style: AppTypography.font14black),
-                            TextSpan(
-                                text: '  ${widget.creatorData.distance}',
-                                style: AppTypography.font14lightGray),
+                            TextSpan(text: ' ${widget.creatorData.place.name}', style: AppTypography.font14black),
+                            TextSpan(text: '  ${widget.creatorData.distance}', style: AppTypography.font14lightGray),
                           ]))
                         ],
                       )

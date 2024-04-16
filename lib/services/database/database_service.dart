@@ -19,6 +19,7 @@ import 'package:smart/models/category.dart';
 import 'package:smart/models/city.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/models/key_word.dart';
+import 'package:smart/models/tip_word.dart';
 import 'package:smart/models/medium_price.dart';
 import 'package:smart/models/messenger/message.dart';
 import 'package:smart/models/review.dart';
@@ -56,5 +57,7 @@ part 'service/medium_prices.dart';
 part 'service/models.dart';
 
 part 'service/keywords.dart';
+
+part 'service/tipwords.dart';
 
 part 'service/blocked_users.dart';

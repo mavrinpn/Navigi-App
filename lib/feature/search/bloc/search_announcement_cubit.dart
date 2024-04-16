@@ -125,8 +125,8 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
       }
 
       emit(SearchAnnouncementsSuccessState());
-    } catch (e) {
-      emit(SearchAnnouncementsFailState());
+    } catch (err) {
+      emit(SearchAnnouncementsFailState(error: err.toString()));
       rethrow;
     }
   }
@@ -165,8 +165,8 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
       //     maxPrice: _maxPrice);
       _lastText = searchText;
       emit(SearchAnnouncementsSuccessState());
-    } catch (e) {
-      emit(SearchAnnouncementsFailState());
+    } catch (err) {
+      emit(SearchAnnouncementsFailState(error: err.toString()));
       rethrow;
     }
   }
@@ -202,8 +202,8 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
       }
       _lastText = keyword.nameFr;
       emit(SearchAnnouncementsSuccessState());
-    } catch (e) {
-      emit(SearchAnnouncementsFailState());
+    } catch (err) {
+      emit(SearchAnnouncementsFailState(error: err.toString()));
       rethrow;
     }
   }

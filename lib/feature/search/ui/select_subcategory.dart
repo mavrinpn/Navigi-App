@@ -72,7 +72,7 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData.fallback(),
-        backgroundColor: AppColors.empty,
+        // backgroundColor: AppColors.empty,
         elevation: 0,
         title: Text(
           localizations.addAnAd,

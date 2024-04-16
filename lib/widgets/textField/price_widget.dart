@@ -30,10 +30,15 @@ class _PriceWidgetState extends State<PriceWidget> {
   late PriceType _priceType;
 
   @override
+  void didUpdateWidget(PriceWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _priceType = widget.priceType;
+  }
+
+  @override
   void initState() {
     super.initState();
-    _availableTypes =
-        PriceTypeExtendion.availableTypesFor(widget.subcategoryId);
+    _availableTypes = PriceTypeExtendion.availableTypesFor(widget.subcategoryId);
     if (_availableTypes.contains(widget.priceType)) {
       _priceType = widget.priceType;
     } else {
@@ -56,8 +61,7 @@ class _PriceWidgetState extends State<PriceWidget> {
                 width: 24,
               ),
               const SizedBox(width: 12),
-              Text(AppLocalizations.of(context)!.price,
-                  style: AppTypography.font18gray)
+              Text(AppLocalizations.of(context)!.price, style: AppTypography.font18gray)
             ]),
             const SizedBox(height: 14),
             Row(
@@ -89,8 +93,7 @@ class _PriceWidgetState extends State<PriceWidget> {
                       width: 17,
                       child: Text('—',
                           textAlign: TextAlign.center,
-                          style: AppTypography.font18gray.copyWith(
-                              fontSize: 16, fontWeight: FontWeight.w400))),
+                          style: AppTypography.font18gray.copyWith(fontSize: 16, fontWeight: FontWeight.w400))),
                 ),
                 Expanded(
                   flex: 3,

@@ -13,6 +13,7 @@ import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/widgets/button/back_button.dart';
+import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 import '../../../managers/announcement_manager.dart';
 import '../../../managers/search_manager.dart';
@@ -159,9 +160,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
               },
               onTap: () {
-                // setState(() {
-                //   _showFilterChips = false;
-                // });
+                setState(() {
+                  _showFilterChips = false;
+                });
               },
               searchController: searchController,
             ),
@@ -181,16 +182,22 @@ class _SearchScreenState extends State<SearchScreen> {
             );
           },
           onKeywordTap: (keyword) {
-            // final String currentLocale = MyApp.getLocale(context) ?? 'fr';
-            // final query = currentLocale == 'fr' ? keyword.nameFr : keyword.nameAr;
+            setState(() {
+              _showFilterChips = true;
+            });
+
+            final String currentLocale = MyApp.getLocale(context) ?? 'fr';
+            final query = currentLocale == 'fr' ? keyword.nameFr : keyword.nameAr;
 
             BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnouncesByKeyword(
               keyword: keyword,
               isNew: true,
             );
             searchManager.setSearch(false);
-            setSearchText(state.currentQuery);
+            setSearchText(query);
             setState(() {});
+
+            FocusManager.instance.primaryFocus?.unfocus();
           },
         );
       } else if (state is SearchItemsLoading) {
@@ -256,6 +263,9 @@ class _SearchScreenState extends State<SearchScreen> {
       if (announcementRepository.searchAnnouncements.isNotEmpty) {}
 
       if (state is SearchAnnouncementsFailState || announcementRepository.searchAnnouncements.isEmpty) {
+        if (state is SearchAnnouncementsFailState) {
+          CustomSnackBar.showSnackBar(context, state.error, 10);
+        }
         return Center(
           child: Text(AppLocalizations.of(context)!.empty),
         );
@@ -388,12 +398,16 @@ class _SearchScreenState extends State<SearchScreen> {
                           } else if (parameter is MinMaxParameter) {
                             isSelected = parameter.min != null || parameter.max != null;
                           }
-
-                          return FilterChipWidget(
-                            isSelected: isSelected,
-                            title: MyApp.getLocale(context) == 'fr' ? parameter.frName : parameter.arName,
-                            parameterKey: parameter.key,
-                          );
+                          //TODO SingleSelectParameter
+                          if (parameter is! MultiSelectParameter) {
+                            return FilterChipWidget(
+                              isSelected: isSelected,
+                              title: MyApp.getLocale(context) == 'fr' ? parameter.frName : parameter.arName,
+                              parameterKey: parameter.key,
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
                         }).toList(),
                       ],
                     ),

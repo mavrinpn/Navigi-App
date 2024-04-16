@@ -34,90 +34,92 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
 
-    final selectCategoryCubit =
-        BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+    final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
 
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxHeight: MediaQuery.sizeOf(context).height * 0.8,
       ),
       child: Container(
-        // height: MediaQuery.sizeOf(context).height * 0.8,
         color: Colors.white,
         child: SafeArea(
-          child: SingleChildScrollView(
-            clipBehavior: Clip.none,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  Center(
-                    child: Container(
-                      width: 120,
-                      height: 4,
-                      decoration: ShapeDecoration(
-                          color: const Color(0xFFDDE1E7),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(1))),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  SingleChildScrollView(
-                      child: Column(
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                clipBehavior: Clip.none,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (searchCubit.searchMode ==
-                          SearchModeEnum.subcategory) ...[
-                        BlocBuilder<SearchSelectSubcategoryCubit,
-                            SearchSelectSubcategoryState>(
-                          builder: (context, state) {
-                            if (state is FiltersGotState) {
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: buildFiltersSelection(
-                                    selectCategoryCubit.parameters),
-                              );
-                            }
-                                  
-                            return Container();
-                          },
+                      const SizedBox(height: 20),
+                      Center(
+                        child: Container(
+                          width: 120,
+                          height: 4,
+                          decoration: ShapeDecoration(
+                              color: const Color(0xFFDDE1E7),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(1))),
                         ),
-                      ],
-                      const SizedBox(height: 16),
-                      CustomTextButton.orangeContinue(
-                        callback: () {
-                          RepositoryProvider.of<SearchManager>(context)
-                              .setSearch(false);
-                                  
-                          searchCubit.setFilters(
-                            parameters: selectCategoryCubit.parameters,
-                          );
-                          Navigator.pop(context);
-                                  
-                          if (widget.needOpenNewScreen) {
-                            Navigator.pushNamed(
-                              context,
-                              AppRoutesNames.search,
-                              arguments: {
-                                'showSearchHelper': false,
-                              },
-                            );
-                          }
-                          updateAppBarFilterCubit.needUpdateAppBarFilters();
-                                  
-                          setState(() {});
-                        },
-                        text: locale() == 'fr' ? 'Appliquer' : 'تطبيق',
-                        active: true,
                       ),
+                      const SizedBox(height: 20),
+                      SingleChildScrollView(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (searchCubit.searchMode == SearchModeEnum.subcategory) ...[
+                            BlocBuilder<SearchSelectSubcategoryCubit, SearchSelectSubcategoryState>(
+                              builder: (context, state) {
+                                if (state is FiltersGotState) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: buildFiltersSelection(selectCategoryCubit.parameters),
+                                  );
+                                }
+
+                                return Container();
+                              },
+                            ),
+                          ],
+                          const SizedBox(height: 70),
+                        ],
+                      )),
                     ],
-                  )),
-                ],
+                  ),
+                ),
               ),
-            ),
+              Positioned(
+                bottom: 0,
+                left: 20,
+                right: 20,
+                child: CustomTextButton.orangeContinue(
+                  callback: () {
+                    RepositoryProvider.of<SearchManager>(context).setSearch(false);
+                
+                    searchCubit.setFilters(
+                      parameters: selectCategoryCubit.parameters,
+                    );
+                    Navigator.pop(context);
+                
+                    if (widget.needOpenNewScreen) {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutesNames.search,
+                        arguments: {
+                          'showSearchHelper': false,
+                        },
+                      );
+                    }
+                    updateAppBarFilterCubit.needUpdateAppBarFilters();
+                
+                    setState(() {});
+                  },
+                  text: locale() == 'fr' ? 'Appliquer' : 'تطبيق',
+                  active: true,
+                ),
+              ),
+            ],
           ),
         ),
       ),

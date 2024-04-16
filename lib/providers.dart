@@ -15,6 +15,7 @@ import 'package:smart/feature/create_announcement/bloc/mark_model/mark_model_cub
 import 'package:smart/feature/create_announcement/bloc/marks/select_mark_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/bloc/subcategory/subcategory_cubit.dart';
+import 'package:smart/feature/create_announcement/bloc/tipwords/tipwords_cubit.dart';
 import 'package:smart/feature/create_announcement/data/car_marks_repository.dart';
 import 'package:smart/feature/create_announcement/data/marks_repository.dart';
 import 'package:smart/feature/messenger/bloc/blocked_users/blocked_users_cubit.dart';
@@ -30,6 +31,7 @@ import 'package:smart/managers/keywords_manager.dart';
 import 'package:smart/managers/mark_model_manager.dart';
 import 'package:smart/managers/meduim_price_manager.dart';
 import 'package:smart/managers/reviews_manager.dart';
+import 'package:smart/managers/tipwords_manager.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/storage_service.dart';
@@ -81,6 +83,12 @@ class MyRepositoryProviders extends StatelessWidget {
       ),
       RepositoryProvider(
         create: (_) => KeyWordsManager(
+          client: client,
+          databaseService: databaseService,
+        ),
+      ),
+      RepositoryProvider(
+        create: (_) => TipWordsManager(
           client: client,
           databaseService: databaseService,
         ),
@@ -182,6 +190,12 @@ class MyBlocProviders extends StatelessWidget {
         BlocProvider(
           create: (_) => KeyWordsCubit(
             keyWordsManager: RepositoryProvider.of<KeyWordsManager>(context),
+          ),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (_) => TipWordsCubit(
+            tipWordsManager: RepositoryProvider.of<TipWordsManager>(context),
           ),
           lazy: false,
         ),

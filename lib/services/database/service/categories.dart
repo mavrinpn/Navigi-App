@@ -9,6 +9,7 @@ class CategoriesService {
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
       collectionId: categoriesCollection,
+      queries: [Query.orderAsc('order')]
     );
 
     List<Category> categories = [];
@@ -29,6 +30,7 @@ class CategoriesService {
       queries: [
         Query.equal(categoryId, categoryID),
         Query.limit(1000),
+        Query.orderAsc('order'),
       ],
     );
 
@@ -40,19 +42,15 @@ class CategoriesService {
     return subcategories;
   }
 
-  Future<Map<String, dynamic>> getSubcategoryParameters(
-      String subcategory) async {
+  Future<Map<String, dynamic>> getSubcategoryParameters(String subcategory) async {
     final res = await _databases.getDocument(
-        databaseId: mainDatabase,
-        collectionId: 'categoryFilters',
-        documentId: subcategory);
+        databaseId: mainDatabase, collectionId: 'categoryFilters', documentId: subcategory);
 
     final decodedParameters = jsonDecode(res.data['parameters']);
     return decodedParameters;
   }
 
-  Future<List<Subcategory>> getSubcategoriesBySubcategory(
-      String subcategoryID) async {
+  Future<List<Subcategory>> getSubcategoriesBySubcategory(String subcategoryID) async {
     List<Subcategory> subcategories = <Subcategory>[];
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
@@ -60,6 +58,7 @@ class CategoriesService {
       queries: [
         Query.equal('subcategoryId', subcategoryID),
         Query.limit(1000),
+        Query.orderAsc('order'),
       ],
     );
 
@@ -70,8 +69,7 @@ class CategoriesService {
     return subcategories;
   }
 
-  Future<({Subcategory subcategory, Category category})> getSubcategyById(
-      String subcategoryID) async {
+  Future<({Subcategory subcategory, Category category})> getSubcategyById(String subcategoryID) async {
     final subcategoryDoc = await _databases.getDocument(
       databaseId: mainDatabase,
       collectionId: subcategoriesCollection,
@@ -91,12 +89,9 @@ class CategoriesService {
     return (subcategory: subcategory, category: category);
   }
 
-  Future<List<SubcategoryItem>> getItemsFromSubcategory(
-      String subcategory) async {
+  Future<List<SubcategoryItem>> getItemsFromSubcategory(String subcategory) async {
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: itemsCollection,
-        queries: [Query.equal(subcategoryId, subcategory)]);
+        databaseId: mainDatabase, collectionId: itemsCollection, queries: [Query.equal(subcategoryId, subcategory)]);
     List<SubcategoryItem> items = [];
     for (var doc in res.documents) {
       items.add(SubcategoryItem.fromJson(doc.data));
@@ -117,7 +112,10 @@ class CategoriesService {
 
   Future<List<City>> getAllCities() async {
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase, collectionId: citiesCollection);
+      databaseId: mainDatabase,
+      collectionId: citiesCollection,
+      queries: [Query.limit(1000)],
+    );
 
     List<City> cities = [];
     for (var doc in res.documents) {
@@ -128,9 +126,13 @@ class CategoriesService {
 
   Future<List<CityDistrict>> getCityDistricts(String cityId) async {
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: areaCollection,
-        queries: [Query.equal('city_id', cityId)]);
+      databaseId: mainDatabase,
+      collectionId: areaCollection,
+      queries: [
+        Query.equal('city_id', cityId),
+        Query.limit(1000),
+      ],
+    );
 
     List<CityDistrict> places = [];
     for (var doc in res.documents) {
@@ -184,8 +186,7 @@ class CategoriesService {
   }
 
   Future<List<String>> getPopularQueries() async {
-    final res = await _databases.listDocuments(
-        databaseId: mainDatabase, collectionId: 'queries');
+    final res = await _databases.listDocuments(databaseId: mainDatabase, collectionId: 'queries');
 
     return res.documents.map((e) => e.data['name'].toString()).toList();
   }
@@ -206,10 +207,7 @@ class CategoriesService {
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: 'manufacturerSubcategory',
-        queries: [
-          Query.equal('subcategoryId', subcategory),
-          Query.limit(1000)
-        ]);
+        queries: [Query.equal('subcategoryId', subcategory), Query.limit(1000)]);
 
     List<Mark> marks = <Mark>[];
     for (var i in res.documents) {
@@ -252,10 +250,7 @@ class CategoriesService {
     final res = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: 'manufacturerSubcategory',
-        queries: [
-          Query.equal('subcategoryId', subcategory),
-          Query.limit(1000)
-        ]);
+        queries: [Query.equal('subcategoryId', subcategory), Query.limit(1000)]);
 
     List<Mark> marks = <Mark>[];
     for (var i in res.documents) {
@@ -279,11 +274,7 @@ class CategoriesService {
     required String subcategory,
     required String mark,
   }) async {
-    final query = [
-      Query.equal('subcategoryId', subcategory),
-      Query.equal('manufacturerId', mark),
-      Query.limit(1000)
-    ];
+    final query = [Query.equal('subcategoryId', subcategory), Query.equal('manufacturerId', mark), Query.limit(1000)];
 
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
@@ -305,11 +296,7 @@ class CategoriesService {
     required String subcategory,
     required String mark,
   }) async {
-    final query = [
-      Query.equal('subcategoryId', subcategory),
-      Query.equal('manufacturerId', mark),
-      Query.limit(1000)
-    ];
+    final query = [Query.equal('subcategoryId', subcategory), Query.equal('manufacturerId', mark), Query.limit(1000)];
 
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
