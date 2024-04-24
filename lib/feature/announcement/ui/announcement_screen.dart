@@ -103,7 +103,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
             child: Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
-                backgroundColor: AppColors.empty,
+                backgroundColor: AppColors.appBarColor,
                 elevation: 0,
                 titleSpacing: 6,
                 title: Row(

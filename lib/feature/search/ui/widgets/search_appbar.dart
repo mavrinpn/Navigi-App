@@ -13,12 +13,14 @@ class SearchAppBar extends StatefulWidget {
     required this.searchController,
     required this.onTap,
     required this.showBackButton,
+    required this.autofocus,
   });
   final Function(String) onSubmitted;
   final Function(String) onChange;
   final Function() onTap;
   final TextEditingController searchController;
   final bool showBackButton;
+  final bool autofocus;
 
   @override
   State<SearchAppBar> createState() => _SearchAppBarState();
@@ -41,6 +43,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
             controller: widget.searchController,
             icon: "Assets/icons/only_search.svg",
             onTap: widget.onTap,
+            autofocus: widget.autofocus,
           ),
         ),
         const SizedBox(width: 10),

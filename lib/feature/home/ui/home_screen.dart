@@ -5,6 +5,7 @@ import 'package:smart/bloc/app/app_cubit.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/favorites/favorites_screen.dart';
+import 'package:smart/feature/home/bloc/scroll/scroll_cubit.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/feature/messenger/ui/all_chats_screen.dart';
 import 'package:smart/localization/app_localizations.dart';
@@ -39,7 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     void onSelectTab(int index) {
-      if (_selectedTab == index) return;
+      if (_selectedTab == index) {
+        if (index == 0) {
+          context.read<ScrollCubit>().scrollToTop();
+        }
+        return;
+      }
 
       final isUserAith = context.read<AppCubit>().state is AppAuthState;
       if (index != 0 && !isUserAith) {
@@ -60,8 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // }
 
       if (index == 3) {
-        BlocProvider.of<CreatorCubit>(context)
-            .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
+        BlocProvider.of<CreatorCubit>(context).setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
       }
 
       setState(() {
@@ -87,9 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // child: widgetOptions[_selectedTab],
         ),
         bottomNavigationBar: Container(
-          decoration: const BoxDecoration(
-              border:
-                  Border(top: BorderSide(color: Color(0xffDEE2E7), width: 1))),
+          decoration: const BoxDecoration(border: Border(top: BorderSide(color: Color(0xffDEE2E7), width: 1))),
           child: BottomNavigationBar(
             backgroundColor: const Color(0xffFBFBFC),
             iconSize: 30,
@@ -101,12 +104,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     asset: 'Assets/icons/search.svg',
                     isSelected: _selectedTab == 0,
                   ),
-                  tooltip: MyApp.getLocale(context) == 'fr'
-                      ? 'Page daccueil'
-                      : 'الصفحة الرئيسية',
-                  label: MyApp.getLocale(context) == 'fr'
-                      ? 'Page daccueil'
-                      : 'الصفحة الرئيسية'),
+                  tooltip: MyApp.getLocale(context) == 'fr' ? 'Page daccueil' : 'الصفحة الرئيسية',
+                  label: MyApp.getLocale(context) == 'fr' ? 'Page daccueil' : 'الصفحة الرئيسية'),
               BottomNavigationBarItem(
                 icon: MessengerIcon(
                   isSelected: _selectedTab == 1,
@@ -119,10 +118,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   asset: 'Assets/icons/like.svg',
                   isSelected: _selectedTab == 2,
                 ),
-                tooltip:
-                    MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المتعة',
-                label:
-                    MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المتعة',
+                tooltip: MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المتعة',
+                label: MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المتعة',
               ),
               BottomNavigationBarItem(
                 icon: NavigatorBarItem(
@@ -160,9 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class NavigatorBarItem extends StatelessWidget {
-  const NavigatorBarItem(
-      {Key? key, required this.asset, required this.isSelected})
-      : super(key: key);
+  const NavigatorBarItem({Key? key, required this.asset, required this.isSelected}) : super(key: key);
 
   final String asset;
   final bool isSelected;

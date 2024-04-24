@@ -19,17 +19,30 @@ class AuthCubit extends Cubit<AuthState> {
       if (event == EntranceStateEnum.loading) emit(AuthLoadingState());
       if (event == EntranceStateEnum.fail) emit(AuthFailState());
       if (event == EntranceStateEnum.alreadyExist) emit(AlreadyExistState());
+      if (event == EntranceStateEnum.userNotFound) emit(NotFoundState());
     });
   }
 
   setPhoneForLogin(String newPhone) => _phone = newPhone;
 
-  registerWithPhone(
-      {required String phone, required String name, required String password}) {
+  registerWithPhone({
+    required String phone,
+    required String name,
+    required String password,
+  }) {
     _nameForRegistration = name;
     _passwordForRegistration = password;
     _phone = phone;
-    _sendSms();
+    _sendSms(isPasswordRestore: false);
+  }
+
+  restorePassword({
+    required String phone,
+    required String password,
+  }) {
+    _passwordForRegistration = password;
+    _phone = phone;
+    _sendSms(isPasswordRestore: true);
   }
 
   loginWithPhone({required String password}) {
@@ -37,16 +50,23 @@ class AuthCubit extends Cubit<AuthState> {
     authRepository.login(email, password);
   }
 
-  void _sendSms() async {
+  void _sendSms({required bool isPasswordRestore}) async {
     if (_phone.isEmpty) throw Exception('phone must not be empty');
-    await authRepository.createAccountAndSendSms(_phone);
+    await authRepository.createAccountAndSendSms(
+      phone: _phone,
+      isPasswordRestore: isPasswordRestore,
+    );
   }
 
-  void confirmCode(String code) async {
+  Future<void> confirmCode({
+    required String code,
+    required bool isPasswordRestore,
+  }) async {
     await authRepository.confirmCode(
       code,
       password: _passwordForRegistration,
       name: _nameForRegistration,
+      isPasswordRestore: isPasswordRestore,
     );
   }
 

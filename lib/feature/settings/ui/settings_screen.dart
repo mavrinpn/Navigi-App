@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
+import 'package:smart/feature/auth/bloc/auth_cubit.dart';
+import 'package:smart/feature/auth/data/auth_repository.dart';
+import 'package:smart/feature/profile/ui/widgets/row_button.dart';
 import 'package:smart/localization/app_localizations.dart';
-import 'package:smart/main.dart';
+import 'package:smart/restart_controller.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/back_button.dart';
+import 'package:smart/widgets/button/custom_elevated_button.dart';
+import 'package:smart/widgets/button/custom_text_button.dart';
 
 import '../../../models/custom_locate.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
-import '../../../widgets/parameters_selection/single_pick_list.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -36,7 +41,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: AppColors.empty,
+        backgroundColor: AppColors.appBarColor,
         elevation: 0,
         titleSpacing: 6,
         title: Row(
@@ -59,24 +64,120 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SvgPicture.asset('Assets/icons/language.svg'),
-            CustomSingleCheckBoxes(
-              parameters: listLocates,
-              onChange: (CustomLocate? a) async {
-                MyApp.setLocate(context, Locale(a!.shortName));
-                customLocate = a;
-
-                final SharedPreferences prefs = await SharedPreferences.getInstance();
-                await prefs.setString('lang', a.shortName);
-                currentLocaleShortName.value = a.shortName;
-
-                setState(() {});
+            RowButton(
+              title: localizations.notifications,
+              icon: 'Assets/icons/notifications.svg',
+              onTap: () {},
+            ),
+            RowButton(
+              title: localizations.language,
+              icon: 'Assets/icons/language.svg',
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutesNames.settingsLanguage,
+                );
               },
-              currentVariable: customLocate!,
+            ),
+            RowButton(
+              title: localizations.myData,
+              icon: 'Assets/icons/profile_settings.svg',
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutesNames.editProfile,
+                );
+              },
+            ),
+            RowButton(
+              title: localizations.myComments,
+              icon: 'Assets/icons/messages.svg',
+              onTap: () {
+                Navigator.of(context).pushNamed(
+                  AppRoutesNames.reviews,
+                  arguments: RepositoryProvider.of<AuthRepository>(context).userData!,
+                );
+              },
+            ),
+            RowButton(
+              title: localizations.faq,
+              icon: 'Assets/icons/faq.svg',
+              onTap: () {},
+            ),
+            RowButton(
+              title: localizations.privacyPolicy,
+              icon: 'Assets/icons/security.svg',
+              onTap: () {},
+            ),
+            RowButton(
+              title: localizations.termsOfUse,
+              icon: 'Assets/icons/terms_of_use.svg',
+              onTap: () {},
+            ),
+            const SizedBox(height: 20),
+            CustomElevatedButton(
+              icon: "Assets/icons/exit.svg",
+              title: localizations.disconnectFromTheAccount,
+              onPress: () => _logoutButton(),
+              height: 52,
+              width: double.infinity,
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void _logoutButton() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          title: Center(
+              child: Text(
+            'Vous voulez sortir?',
+            style: AppTypography.font16black,
+          )),
+          content: Text(
+            'Pharetra ultricies ullamcorper a et magna convallis condimentum. Proin mi orci dignissim lectus nulla neque elitInt',
+            textAlign: TextAlign.center,
+            style: AppTypography.font14lightGray,
+          ),
+          actions: [
+            CustomTextButton.orangeContinue(
+              callback: () {
+                BlocProvider.of<CreatorCubit>(context).setUserId('');
+
+                BlocProvider.of<AuthCubit>(context).logout().then((value) {
+                  HotRestartController.performHotRestart(context);
+                });
+                Navigator.popUntil(context, ModalRoute.withName(AppRoutesNames.root));
+              },
+              styleText: AppTypography.font14black.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              text: 'Oui',
+              active: true,
+              activeColor: AppColors.black,
+            ),
+            const SizedBox(height: 10),
+            CustomTextButton.shadow(
+              callback: () {
+                Navigator.of(context).pop();
+              },
+              styleText: AppTypography.font14black.copyWith(fontWeight: FontWeight.bold),
+              text: 'Non',
+              active: true,
+              activeColor: Colors.white,
+            )
+          ],
+        );
+      },
     );
   }
 }

@@ -14,6 +14,7 @@ class CustomDropDownSingleCheckBox extends StatefulWidget {
     required this.parameter,
     required this.onChange,
     required this.currentKey,
+    required this.isClickable,
     this.icon,
     this.useLocalizationKeys = false,
   });
@@ -22,6 +23,7 @@ class CustomDropDownSingleCheckBox extends StatefulWidget {
   final dynamic parameter;
   final String currentKey;
   final String? icon;
+  final bool isClickable;
 
   final bool useLocalizationKeys;
 
@@ -47,10 +49,12 @@ class _CustomDropDownSingleCheckBoxState extends State<CustomDropDownSingleCheck
             clipBehavior: Clip.hardEdge,
             borderRadius: const BorderRadius.all(Radius.circular(12)),
             child: InkWell(
-              onTap: () {
-                isOpen = !isOpen;
-                setState(() {});
-              },
+              onTap: widget.isClickable
+                  ? () {
+                      isOpen = !isOpen;
+                      setState(() {});
+                    }
+                  : null,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                 child: Row(
@@ -69,16 +73,17 @@ class _CustomDropDownSingleCheckBoxState extends State<CustomDropDownSingleCheck
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    !isOpen
-                        ? const Icon(
-                            Icons.arrow_forward_ios_outlined,
-                            size: 16,
-                            color: AppColors.lightGray,
-                          )
-                        : const Icon(
-                            Icons.keyboard_arrow_down_sharp,
-                            color: AppColors.lightGray,
-                          )
+                    if (widget.isClickable)
+                      !isOpen
+                          ? const Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              size: 16,
+                              color: AppColors.lightGray,
+                            )
+                          : const Icon(
+                              Icons.keyboard_arrow_down_sharp,
+                              color: AppColors.lightGray,
+                            )
                   ],
                 ),
               ),

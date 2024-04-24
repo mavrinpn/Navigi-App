@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/feature/home/bloc/scroll/scroll_cubit.dart';
+import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
 import 'package:smart/feature/main/ui/sections/categories_section.dart';
 import 'package:smart/feature/main/ui/widgets/appbar_with_search_field.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
@@ -78,7 +80,10 @@ class _MainScreenState extends State<MainScreen> {
       );
     }
 
-    void openSearchScreen(String? query) {
+    void openSearchScreen({
+      required String? query,
+      required bool showKeyboard,
+    }) {
       context.read<SearchAnnouncementCubit>().setSearchMode(SearchModeEnum.simple);
       BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
       BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
@@ -88,8 +93,17 @@ class _MainScreenState extends State<MainScreen> {
       Navigator.pushNamed(
         context,
         AppRoutesNames.search,
-        arguments: {'query': query, 'backButton': false},
-      );
+        arguments: {
+          'query': query,
+          'backButton': false,
+          'showKeyboard': showKeyboard,
+        },
+      ).then((value) {
+        BlocProvider.of<SearchItemsCubit>(context).searchKeywords(
+          query: '',
+          subcategoryId: '',
+        );
+      });
     }
 
     void openFilters() {
@@ -97,79 +111,90 @@ class _MainScreenState extends State<MainScreen> {
       showFilterBottomSheet(context: context);
     }
 
-    return MainScaffold(
-      canPop: false,
-      appBar: AppBar(
-        backgroundColor: AppColors.mainBackground,
-        elevation: 0,
-        surfaceTintColor: Colors.transparent,
-        flexibleSpace: MainAppBar(
-          isSearch: isSearch,
-          openSearchScreen: () => openSearchScreen(null),
-          openFilters: openFilters,
-          cancel: () {
-            FocusScope.of(context).unfocus();
-            setSearch(false);
+    return BlocListener<ScrollCubit, ScrollState>(
+      listener: (context, state) {
+        if (state is ScrollToTop) {
+          _controller.animateTo(
+            0,
+            duration: Durations.medium2,
+            curve: Curves.bounceInOut,
+          );
+        }
+      },
+      child: MainScaffold(
+        canPop: false,
+        appBar: AppBar(
+          backgroundColor: AppColors.appBarColor,
+          elevation: 0,
+          surfaceTintColor: Colors.transparent,
+          flexibleSpace: MainAppBar(
+            isSearch: isSearch,
+            openSearchScreen: () => openSearchScreen(query: null, showKeyboard: true),
+            openFilters: openFilters,
+            cancel: () {
+              FocusScope.of(context).unfocus();
+              setSearch(false);
+            },
+          ),
+        ),
+        body: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
+          builder: (context, state) {
+            return RefreshIndicator(
+              color: AppColors.red,
+              onRefresh: () async {
+                BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(true);
+              },
+              child: CustomScrollView(
+                controller: _controller,
+                physics: const AlwaysScrollableScrollPhysics(),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: PopularQueriesWidget(
+                        onSearch: (e) {
+                          openSearchScreen(query: e, showKeyboard: false);
+                        },
+                      ),
+                    ),
+                  ),
+                  CategoriesSection(key: UniqueKey()),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: 8),
+                  ),
+                  SliverToBoxAdapter(
+                    child: AdvertisementContainer(
+                      onTap: () {},
+                      imageUrl:
+                          'http://143.244.206.96/v1/storage/buckets/661d74e7000bc76c563f/files/main_ad/view?project=65d8fa703a95c4ef256b&mode=admin',
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 25, 15, 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(AppLocalizations.of(context)!.recommendations,
+                              textAlign: TextAlign.center, style: AppTypography.font20black),
+                          // Text(AppLocalizations.of(context)!.viewAll,
+                          //     style: AppTypography.font14lightGray
+                          //         .copyWith(fontSize: 12)),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverPadding(padding: const EdgeInsets.symmetric(horizontal: 15), sliver: getAnnouncementsGrid()),
+                  if (state is AnnouncementsLoadingState) ...[
+                    SliverToBoxAdapter(
+                      child: Center(child: AppAnimations.bouncingLine),
+                    )
+                  ],
+                ],
+              ),
+            );
           },
         ),
-      ),
-      body: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
-        builder: (context, state) {
-          return RefreshIndicator(
-            color: AppColors.red,
-            onRefresh: () async {
-              BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(true);
-            },
-            child: CustomScrollView(
-              controller: _controller,
-              physics: const AlwaysScrollableScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: PopularQueriesWidget(
-                      onSearch: (e) {
-                        openSearchScreen(e);
-                      },
-                    ),
-                  ),
-                ),
-                CategoriesSection(key: UniqueKey()),
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: 8),
-                ),
-                SliverToBoxAdapter(
-                  child: AdvertisementContainer(
-                    onTap: () {},
-                    imageUrl:
-                        'http://143.244.206.96/v1/storage/buckets/661d74e7000bc76c563f/files/main_ad/view?project=65d8fa703a95c4ef256b&mode=admin',
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 25, 15, 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(AppLocalizations.of(context)!.recommendations,
-                            textAlign: TextAlign.center, style: AppTypography.font20black),
-                        // Text(AppLocalizations.of(context)!.viewAll,
-                        //     style: AppTypography.font14lightGray
-                        //         .copyWith(fontSize: 12)),
-                      ],
-                    ),
-                  ),
-                ),
-                SliverPadding(padding: const EdgeInsets.symmetric(horizontal: 15), sliver: getAnnouncementsGrid()),
-                if (state is AnnouncementsLoadingState) ...[
-                  SliverToBoxAdapter(
-                    child: Center(child: AppAnimations.bouncingLine),
-                  )
-                ],
-              ],
-            ),
-          );
-        },
       ),
     );
   }

@@ -9,18 +9,17 @@ import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
 import 'package:smart/models/subcategory.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/category/subcategory.dart';
 
-import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 
 class SearchSubcategoryScreen extends StatefulWidget {
   const SearchSubcategoryScreen({super.key});
 
   @override
-  State<SearchSubcategoryScreen> createState() =>
-      _SearchSubcategoryScreenState();
+  State<SearchSubcategoryScreen> createState() => _SearchSubcategoryScreenState();
 }
 
 class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> {
@@ -37,13 +36,11 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> {
 
       searchCubit.setSubcategory(subcategory.id);
       searchCubit.setSearchMode(SearchModeEnum.subcategory);
-      subcategoriesCubit
-          .getSubcategoryFilters(subcategory.id)
-          .then((value) => searchCubit.searchAnnounces(
-                searchText: '',
-                isNew: true,
-                parameters: value,
-              ));
+      subcategoriesCubit.getSubcategoryFilters(subcategory.id).then((value) => searchCubit.searchAnnounces(
+            searchText: '',
+            isNew: true,
+            parameters: value,
+          ));
 
       RepositoryProvider.of<SearchManager>(context).setSearch(false);
       BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
@@ -56,8 +53,7 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> {
         arguments: {
           'showBackButton': false,
           'showSearchHelper': false,
-          'title':
-              currentLocale == 'fr' ? subcategory.nameFr : subcategory.nameAr
+          'title': currentLocale == 'fr' ? subcategory.nameFr : subcategory.nameAr
         },
       );
     }
@@ -66,21 +62,19 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    final aearchSelectSubcategoryCubit =
-        BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+    final aearchSelectSubcategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
 
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData.fallback(),
-        // backgroundColor: AppColors.empty,
+        backgroundColor: AppColors.appBarColor,
         elevation: 0,
         title: Text(
           localizations.addAnAd,
           style: AppTypography.font20black,
         ),
       ),
-      body: BlocBuilder<SearchSelectSubcategoryCubit,
-          SearchSelectSubcategoryState>(
+      body: BlocBuilder<SearchSelectSubcategoryCubit, SearchSelectSubcategoryState>(
         builder: (context, state) {
           if (state is SubcategoriesGotState || subcategoriesGot) {
             if (!subcategoriesGot) subcategoriesGot = true;

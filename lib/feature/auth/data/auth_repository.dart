@@ -114,8 +114,8 @@ class AuthRepository {
   }
 
   Future<void> logout() async {
+    //TODO user logout
     try {
-      //TODO logout
       await _account.deleteSessions();
       sessionID = null;
       _user = null;
@@ -132,12 +132,29 @@ class AuthRepository {
   }
 
   Future<void> login(String email, String password) async {
+    //TODO user login
     authState.add(EntranceStateEnum.loading);
     try {
-      await _authorizeWithCredentials(UserCredentials(
+      final credentials = UserCredentials(
         mail: email,
         password: password,
-      ));
+      );
+      try {
+        final sessions = await _account.listSessions();
+        if (sessions.sessions.isNotEmpty) {
+          _account.deleteSessions();
+        }
+      } catch (err) {
+        // ignore: avoid_print
+        print(err);
+      }
+
+      await _createSession(credentials);
+      await _createUserData(credentials.mail, '');
+
+      await getUserData();
+      _initMessaging();
+      _startOnlineTimer();
 
       authState.add(EntranceStateEnum.success);
       appState.add(AuthStateEnum.auth);
@@ -145,11 +162,13 @@ class AuthRepository {
       // ignore: avoid_print
       print(err);
       authState.add(EntranceStateEnum.fail);
-      // rethrow; //TODO auth
     }
   }
 
-  Future<void> createAccountAndSendSms(String phone) async {
+  Future<void> createAccountAndSendSms({
+    required String phone,
+    required bool isPasswordRestore,
+  }) async {
     await _createTempAccount(phone);
     await _databaseService.users.sendSms();
   }
@@ -158,16 +177,25 @@ class AuthRepository {
     String code, {
     required String password,
     required String name,
+    required bool isPasswordRestore,
   }) async {
+    //TODO user register
     authState.add(EntranceStateEnum.loading);
 
-    final res = await _databaseService.users.confirmSms(code, password);
-    if (res != null) {
-      await _authorizeWithCredentials(
-        res,
-        registrationName: name,
-        needRegister: true,
-      );
+    final (credentials, userExist) = await _databaseService.users.confirmSms(code, password);
+    if (userExist && !isPasswordRestore) {
+      authState.add(EntranceStateEnum.alreadyExist);
+    } else if (!userExist && isPasswordRestore) {
+      authState.add(EntranceStateEnum.userNotFound);
+    } else if (credentials != null) {
+      await _account.deleteSessions();
+      await _createSession(credentials);
+      await _createUserData(credentials.mail, name);
+
+      await getUserData();
+      _initMessaging();
+      _startOnlineTimer();
+
       authState.add(EntranceStateEnum.success);
       appState.add(AuthStateEnum.auth);
     } else {
@@ -207,7 +235,6 @@ class AuthRepository {
   Future _createTempAccount(String phone) async {
     const String password = 'temppassword123';
     final String? email = await _getEmailByPhone(phone);
-
     try {
       await _account.deleteSessions();
     } catch (err) {
@@ -230,95 +257,103 @@ class AuthRepository {
     }
 
     try {
-      await _account.createEmailPasswordSession(email: email ?? _tempMail, password: password);
+      await _account.createEmailPasswordSession(
+        email: email ?? _tempMail,
+        password: password,
+      );
     } catch (err) {
       // ignore: avoid_print
       print(err);
     }
   }
 
-  Future<void> _authorizeWithCredentials(
-    UserCredentials credentials, {
-    String? registrationName,
-    bool needRegister = false,
-  }) async {
-    assert(!needRegister || needRegister && registrationName != null, 'for registration required name');
+  // Future<void> _registerWithCredentials({
+  //   required UserCredentials credentials,
+  //   String? registrationName,
+  //   required bool userExist,
+  //   bool needRegister = false,
+  // }) async {
+  //   assert(!needRegister || needRegister && registrationName != null, 'for registration required name');
 
+  //   await _createSession(credentials);
+
+  //   if (userExist) {
+  //     print('userExist');
+  //     await _createSession(credentials);
+  //   } else {
+  //     print('user not Exist');
+  //     await _createSession(credentials);
+  //     // try {
+  //     //   await _account.get();
+  //     //   final sessions = await _account.listSessions();
+  //     //   if (sessions.sessions.isNotEmpty) {
+  //     //     _user = await _account.get();
+  //     //     final session = await _account.getSession(sessionId: 'current');
+  //     //     await _saveSessionId(session.$id);
+  //     //   } else {
+  //     //     await _createSession(credentials);
+  //     //   }
+  //     // } catch (err) {
+  //     //   // ignore: avoid_print
+  //     //   print(err);
+  //     //   await _createSession(credentials);
+  //     // }
+
+  //     // if (needRegister) {
+  //     //   await _createUserData(credentials.mail, registrationName!);
+  //     // }
+  //   }
+
+  //   await _createUserData(credentials.mail, registrationName!);
+
+  //   // try {
+  //   //   print('try sessions');
+  //   //   final sessions = await _account.listSessions();
+  //   //   if (sessions.sessions.isNotEmpty) {
+  //   //     print('sessions.isNotEmpty');
+  //   //     _user = await _account.get();
+  //   //     final session = await _account.getSession(sessionId: 'current');
+  //   //     await _saveSessionId(session.$id);
+  //   //   } else {
+  //   //     print('sessions.isEmpty');
+  //   //     try {
+  //   //       final promise = await _account.createEmailPasswordSession(
+  //   //         email: credentials.mail,
+  //   //         password: credentials.password,
+  //   //       );
+  //   //       _user = await _account.get();
+  //   //       await _saveSessionId(promise.$id);
+  //   //     } catch (err) {
+  //   //       // ignore: avoid_print
+  //   //       print(err);
+  //   //       // AppwriteException (AppwriteException: user_session_already_exists, Creation of a session is prohibited when a session is active. (401))
+  //   //       rethrow;
+  //   //     }
+  //   //   }
+  //   // } catch (err) {
+  //   //   // ignore: avoid_print
+  //   //   print(err);
+  //   //   rethrow;
+  //   // }
+
+  //   await getUserData();
+  //   _initMessaging();
+  //   _startOnlineTimer();
+  // }
+
+  Future<void> _createSession(UserCredentials credentials) async {
     try {
-      await _account.get();
-      final sessions = await _account.listSessions();
-      if (sessions.sessions.isNotEmpty) {
-        _user = await _account.get();
-        final session = await _account.getSession(sessionId: 'current');
-        await _saveSessionId(session.$id);
-      } else {
-        try {
-          final promise = await _account.createEmailPasswordSession(
-            email: credentials.mail,
-            password: credentials.password,
-          );
-          _user = await _account.get();
-          await _saveSessionId(promise.$id);
-        } catch (err) {
-          // ignore: avoid_print
-          print(err);
-          rethrow;
-        }
-      }
+      final promise = await _account.createEmailPasswordSession(
+        email: credentials.mail,
+        password: credentials.password,
+      );
+      _user = await _account.get();
+      await _saveSessionId(promise.$id);
     } catch (err) {
       // ignore: avoid_print
       print(err);
-      try {
-        final promise = await _account.createEmailPasswordSession(
-          email: credentials.mail,
-          password: credentials.password,
-        );
-        _user = await _account.get();
-        await _saveSessionId(promise.$id);
-      } catch (err) {
-        // ignore: avoid_print
-        print(err);
-        rethrow;
-      }
+      rethrow;
     }
-
-    // try {
-    //   print('try sessions');
-    //   final sessions = await _account.listSessions();
-    //   if (sessions.sessions.isNotEmpty) {
-    //     print('sessions.isNotEmpty');
-    //     _user = await _account.get();
-    //     final session = await _account.getSession(sessionId: 'current');
-    //     await _saveSessionId(session.$id);
-    //   } else {
-    //     print('sessions.isEmpty');
-    //     try {
-    //       final promise = await _account.createEmailPasswordSession(
-    //         email: credentials.mail,
-    //         password: credentials.password,
-    //       );
-    //       _user = await _account.get();
-    //       await _saveSessionId(promise.$id);
-    //     } catch (err) {
-    //       // ignore: avoid_print
-    //       print(err);
-    //       // AppwriteException (AppwriteException: user_session_already_exists, Creation of a session is prohibited when a session is active. (401))
-    //       rethrow;
-    //     }
-    //   }
-    // } catch (err) {
-    //   // ignore: avoid_print
-    //   print(err);
-    //   rethrow;
-    // }
-
-    if (needRegister) {
-      await _createUserData(credentials.mail, registrationName!);
-    }
-
-    await getUserData();
-    _initMessaging();
-    _startOnlineTimer();
   }
 
   Future _saveSessionId(String newSessionId) async {

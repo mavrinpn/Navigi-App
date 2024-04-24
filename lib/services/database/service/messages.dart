@@ -8,19 +8,17 @@ class MessagesService {
 
   final UserService _usersService;
 
-  MessagesService(Databases databases, Realtime realtime, Functions functions,
-      Storage storage, UserService userService)
+  MessagesService(Databases databases, Realtime realtime, Functions functions, Storage storage, UserService userService)
       : _databases = databases,
         _storage = storage,
         _functions = functions,
         _usersService = userService,
         _realtime = realtime;
 
-  RealtimeSubscription getMessagesSubscription() => _realtime.subscribe(
-      ['databases.$mainDatabase.collections.$messagesCollection.documents']);
+  RealtimeSubscription getMessagesSubscription() =>
+      _realtime.subscribe(['databases.$mainDatabase.collections.$messagesCollection.documents']);
 
-  ChatUserInfo _getOtherUserNameAndImage(
-      Map<String, dynamic> documentData, String userId) {
+  ChatUserInfo _getOtherUserNameAndImage(Map<String, dynamic> documentData, String userId) {
     final user1 = documentData['user1'];
     final user2 = documentData['user2'];
     // print(user1);
@@ -44,12 +42,10 @@ class MessagesService {
     final otherUser = _getOtherUserNameAndImage(doc.data, userId);
 
     Future<Uint8List> futureBytes;
-    if (doc.data['announcement'] != null &&
-        doc.data['announcement']['images'] != null) {
+    if (doc.data['announcement'] != null && doc.data['announcement']['images'] != null) {
       final id = getIdFromUrl(doc.data['announcement']['images'][0]);
 
-      futureBytes =
-          _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+      futureBytes = _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
     } else {
       futureBytes = Future.value(Uint8List.fromList([]));
     }
@@ -64,12 +60,15 @@ class MessagesService {
 
   Future<List<Room>> getUserChats(String userId) async {
     final res = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: roomsCollection,
-        queries: [Query.contains('members', userId)]);
+      databaseId: mainDatabase,
+      collectionId: roomsCollection,
+      queries: [Query.contains('members', userId)],
+    );
     List<Room> chats = [];
     for (var doc in res.documents) {
-      chats.add(_roomFromDoc(doc, userId));
+      if (doc.data['announcement'] != null) {
+        chats.add(_roomFromDoc(doc, userId));
+      }
     }
     return chats;
   }
@@ -84,8 +83,7 @@ class MessagesService {
     return _roomFromDoc(doc, userId);
   }
 
-  Future<List<Message>> getChatMessages(String chatId, String userId,
-      {int? limit}) async {
+  Future<List<Message>> getChatMessages(String chatId, String userId, {int? limit}) async {
     final queries = [Query.equal('roomId', chatId)];
     if (limit != null) {
       queries.add(Query.limit(limit));
@@ -112,17 +110,12 @@ class MessagesService {
   Future<void> refreshOnlineStatus(String userId) async {
     final time = DateTime.now().toIso8601String();
     _databases.updateDocument(
-        databaseId: mainDatabase,
-        collectionId: usersCollection,
-        documentId: userId,
-        data: {'lastSeen': time});
+        databaseId: mainDatabase, collectionId: usersCollection, documentId: userId, data: {'lastSeen': time});
   }
 
   Future<DateTime?> userLastSeen(String userId) async {
-    final res = await _databases.getDocument(
-        databaseId: mainDatabase,
-        collectionId: usersCollection,
-        documentId: userId);
+    final res =
+        await _databases.getDocument(databaseId: mainDatabase, collectionId: usersCollection, documentId: userId);
     return DateTime.tryParse(res.data['lastSeen']);
   }
 
@@ -159,8 +152,7 @@ class MessagesService {
         data: {'wasRead': DateTime.now().millisecondsSinceEpoch});
   }
 
-  Future<Map<String, dynamic>> createRoom(
-      List<String> userIds, String announcementId) async {
+  Future<Map<String, dynamic>> createRoom(List<String> userIds, String announcementId) async {
     final existRoom = await _databases.listDocuments(
       databaseId: mainDatabase,
       collectionId: roomsCollection,
@@ -196,12 +188,8 @@ class MessagesService {
     required String senderId,
     List<String>? images,
   }) async {
-    final encodedBody = jsonEncode({
-      'roomId': roomId,
-      'senderId': senderId,
-      'message': content,
-      'images': images ?? []
-    });
+    final encodedBody =
+        jsonEncode({'roomId': roomId, 'senderId': senderId, 'message': content, 'images': images ?? []});
 
     try {
       final res = await _functions.createExecution(

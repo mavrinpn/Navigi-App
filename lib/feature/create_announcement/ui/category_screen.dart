@@ -50,7 +50,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           return Scaffold(
             appBar: AppBar(
               iconTheme: const IconThemeData.fallback(),
-              backgroundColor: AppColors.empty,
+              backgroundColor: AppColors.appBarColor,
               elevation: 0,
               title: Text(
                 localizations.addAnAd,

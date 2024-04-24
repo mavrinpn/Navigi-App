@@ -27,12 +27,9 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
   void initState() {
     super.initState();
     BlocProvider.of<PlacesCubit>(context).searchCities('');
-    final creatingManager =
-        RepositoryProvider.of<CreatingAnnouncementManager>(context);
-    if ([servicesCategoryId, realEstateCategoryId]
-        .contains(creatingManager.creatingData.categoryId)) {
-      creatingManager.specialOptions
-          .add(SpecialAnnouncementOptions.customPlace);
+    final creatingManager = RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    if ([servicesCategoryId, realEstateCategoryId].contains(creatingManager.creatingData.categoryId)) {
+      creatingManager.specialOptions.add(SpecialAnnouncementOptions.customPlace);
     }
   }
 
@@ -40,8 +37,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    final creatingManager =
-        RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    final creatingManager = RepositoryProvider.of<CreatingAnnouncementManager>(context);
     final placeManager = RepositoryProvider.of<PlacesManager>(context);
     // final placesCubit = BlocProvider.of<PlacesCubit>(context);
     final width = MediaQuery.of(context).size.width;
@@ -49,15 +45,15 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData.fallback(),
-        backgroundColor: AppColors.empty,
+        backgroundColor: AppColors.appBarColor,
         elevation: 0,
         title: Text(
           localizations.place,
           style: AppTypography.font20black,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 80),
         child: SelectLocationWidget(
           onSetActive: (active) {
             setState(() {

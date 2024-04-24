@@ -33,7 +33,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
     return Scaffold(
         appBar: AppBar(
           iconTheme: const IconThemeData.fallback(),
-          backgroundColor: AppColors.empty,
+          backgroundColor: AppColors.appBarColor,
           elevation: 0,
           title: Text(
             localizations.photo,

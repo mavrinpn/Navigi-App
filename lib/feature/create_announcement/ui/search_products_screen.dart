@@ -49,7 +49,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
 
     // final cubit = BlocProvider.of<ItemSearchCubit>(context);
     // productsController.text = cubit.getSearchText();
-    productsController.selection = TextSelection.fromPosition(TextPosition(offset: productsController.text.length));
+    //productsController.selection = TextSelection.fromPosition(TextPosition(offset: productsController.text.length));
     final width = MediaQuery.of(context).size.width;
 
     // bool buttonActive = cubit.getSearchText().isNotEmpty;
@@ -62,7 +62,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData.fallback(),
-        backgroundColor: AppColors.empty,
+        backgroundColor: AppColors.appBarColor,
         elevation: 0,
         title: Text(
           localizations.indicateTheName,
@@ -88,7 +88,6 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                 }
                 String lastWord = value.trimRight().split(' ').lastOrNull ?? '';
 
-                //TODO add tipword type
                 final creatingManager = RepositoryProvider.of<CreatingAnnouncementManager>(context);
                 final markId = creatingManager.carFilter?.markId ?? creatingManager.marksFilter?.markId;
                 // final modelId = creatingManager.carFilter?.modelId ?? creatingManager.marksFilter?.modelId;

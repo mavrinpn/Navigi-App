@@ -13,7 +13,6 @@ class TipWordsService {
     required String? previousWordId,
     required String? previousWordGroupId,
   }) async {
-    //TODO TipWord queries
     List<String> queries = [];
 
     if (query != null) {

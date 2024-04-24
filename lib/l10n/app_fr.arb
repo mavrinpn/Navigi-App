@@ -56,7 +56,7 @@
 "delProfile": "Supprimer le profil",
 "onTheServiceOf": "Sur le service de",
 "charit": "Se cértifier",
-"applicationSettings": "Paramètres de l'application",
+"applicationSettings": "Paramètres",
 "notifications": "Notifications",
 "language": "Langue",
 "fr": "Français",
@@ -168,7 +168,7 @@
 "cancelation": "Annulation",
 "withSuccess": "Avec succès",
 "save": "Enregistrer",
-"placeApplicationSettings": "Paramètres de l'application place",
+"placeApplicationSettings": "Paramètres",
 "mark": "Marque",
 "model": "Model",
 "choosingCarBrand": "La marque de voiture",
@@ -216,5 +216,11 @@
 },
 "dzd": "Dinar Algerien",
 "mln": "Millions",
-"mlrd": "Milliards"
+"mlrd": "Milliards",
+"tryAgainLater": "Réessayez plus tard",
+"userAlreadyRegistered": "Cet utilisateur est déjà enregistré",
+"userNotFound": "Utilisateur non enregistré",
+"forgotYourPassword": "Mot de passe oublié?",
+"next": "Suivant",
+"recoverPassword": "Récupérer le mot de passe"
 }

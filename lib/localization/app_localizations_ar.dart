@@ -607,4 +607,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get mlrd => 'المليارات';
+
+  @override
+  String get tryAgainLater => 'حاول مرة أخرى لاحقا';
+
+  @override
+  String get userAlreadyRegistered => 'هذا المستخدم مسجل بالفعل';
+
+  @override
+  String get userNotFound => 'المستخدم غير مسجل';
+
+  @override
+  String get forgotYourPassword => 'نسيت كلمة المرور?';
+
+  @override
+  String get next => 'التالي';
+
+  @override
+  String get recoverPassword => 'استعادة كلمة المرور';
 }

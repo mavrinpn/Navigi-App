@@ -24,7 +24,7 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: AppColors.mainBackground,
+        backgroundColor: AppColors.appBarColor,
         elevation: 0,
         title: Text(localizations.messages, style: AppTypography.font20black),
       ),

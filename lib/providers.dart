@@ -18,6 +18,7 @@ import 'package:smart/feature/create_announcement/bloc/subcategory/subcategory_c
 import 'package:smart/feature/create_announcement/bloc/tipwords/tipwords_cubit.dart';
 import 'package:smart/feature/create_announcement/data/car_marks_repository.dart';
 import 'package:smart/feature/create_announcement/data/marks_repository.dart';
+import 'package:smart/feature/home/bloc/scroll/scroll_cubit.dart';
 import 'package:smart/feature/messenger/bloc/blocked_users/blocked_users_cubit.dart';
 import 'package:smart/feature/messenger/bloc/message_images_cubit.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
@@ -167,6 +168,10 @@ class MyBlocProviders extends StatelessWidget {
         BlocProvider(
           create: (_) => AnnouncementEditCubit(RepositoryProvider.of<AnnouncementEditingRepository>(context),
               RepositoryProvider.of<AnnouncementManager>(context)),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (_) => ScrollCubit(),
           lazy: false,
         ),
         BlocProvider(

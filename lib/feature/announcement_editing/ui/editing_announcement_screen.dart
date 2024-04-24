@@ -54,7 +54,7 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
   PriceType _priceType = PriceType.dzd;
   String _place = '';
   bool _areaSelected = true;
-  List<Parameter> _paramaters = [];
+  List<Parameter> _parameters = [];
   String? _newSubcategoryId;
   CarFilter? _newCarFilter;
   MarksFilter? _newMarksFilter;
@@ -91,7 +91,7 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
           modelId: modelId,
         )
         .then((result) {
-      _paramaters = result.$1;
+      _parameters = result.$1;
       _newSubcategoryFilters = result.$2;
       setState(() {});
     });
@@ -191,7 +191,7 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
             return Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
-                backgroundColor: AppColors.empty,
+                backgroundColor: AppColors.appBarColor,
                 elevation: 0,
                 titleSpacing: 6,
                 title: Row(
@@ -222,6 +222,37 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                   padding: const EdgeInsets.all(20.0),
                   child: CustomScrollView(
                     slivers: [
+                      // SliverToBoxAdapter(
+                      //   child: Align(
+                      //     alignment: Alignment.topRight,
+                      //     child: InkWell(
+                      //       borderRadius: BorderRadius.circular(10),
+                      //       onTap: () {
+                      //         for (var param in _parameters) {
+                      //           if (param is SelectParameter) {
+                      //             param.currentValue = param.variants[0];
+                      //           } else if (param is SingleSelectParameter) {
+                      //             param.currentValue = param.variants[0];
+                      //           } else if (param is MultiSelectParameter) {
+                      //             param.selectedVariants = [];
+                      //           } else if (param is InputParameter) {
+                      //             param.value = null;
+                      //           } else if (param is TextParameter) {
+                      //             param.value = '';
+                      //           }
+                      //         }
+                      //         setState(() {});
+                      //       },
+                      //       child: Padding(
+                      //         padding: const EdgeInsets.all(4),
+                      //         child: Text(
+                      //           localizations.resetEverything,
+                      //           style: AppTypography.font12gray,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       ChangeCategoryButton(
                         onTap: () async {
                           final creatingManager = context.read<CreatingAnnouncementManager>();
@@ -301,7 +332,7 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                         ),
                       ),
                       ParametersSection(
-                        paramaters: _paramaters,
+                        paramaters: _parameters,
                         staticParameters: announcementEditCubit.data?.staticParameters,
                       ),
                       const SliverToBoxAdapter(child: SizedBox(height: 26)),
@@ -323,7 +354,7 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                                 announcementEditCubit.onPlaceChange(place);
                                 announcementEditCubit.onCustomCoordinateChange(creatingManager.customPosition);
                                 announcementEditCubit.onParametersChanged(
-                                  newParamaters: _paramaters,
+                                  newParamaters: _parameters,
                                   newCarFilter: _newCarFilter,
                                   newMarksFilter: _newMarksFilter,
                                   newSubcategoryFilters: _newSubcategoryFilters,

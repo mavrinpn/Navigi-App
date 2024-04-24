@@ -18,6 +18,11 @@ class SelectParameter implements Parameter {
   @override
   final String frName;
 
+  String get name {
+    final locale = currentLocaleShortName.value;
+    return locale == 'fr' ? frName : arName;
+  }
+
   @override
   ParameterOption currentValue;
 
@@ -32,11 +37,7 @@ class SelectParameter implements Parameter {
   bool isSelected(ParameterOption value) => selectedVariants.contains(value);
 
   SelectParameter(
-      {required this.key,
-      required this.variants,
-      ParameterOption? current,
-      required this.arName,
-      required this.frName})
+      {required this.key, required this.variants, ParameterOption? current, required this.arName, required this.frName})
       : currentValue = current ??
             variants.firstOrNull ??
             ParameterOption(
@@ -60,6 +61,11 @@ class SingleSelectParameter implements Parameter {
   final String arName;
   @override
   final String frName;
+
+  String get name {
+    final locale = currentLocaleShortName.value;
+    return locale == 'fr' ? frName : arName;
+  }
 
   @override
   ParameterOption currentValue;
@@ -103,6 +109,11 @@ class MultiSelectParameter implements Parameter {
   final String arName;
   @override
   final String frName;
+
+  String get name {
+    final locale = currentLocaleShortName.value;
+    return locale == 'fr' ? frName : arName;
+  }
 
   @override
   ParameterOption currentValue;
@@ -148,6 +159,11 @@ class InputParameter implements Parameter {
   @override
   final String frName;
 
+  String get name {
+    final locale = currentLocaleShortName.value;
+    return locale == 'fr' ? frName : arName;
+  }
+
   final String type;
   dynamic value;
 
@@ -157,8 +173,7 @@ class InputParameter implements Parameter {
   @override
   dynamic get currentValue => value;
 
-  Map<String, dynamic> toJson() =>
-      {'id': key, 'nameAr': arName, 'nameFr': frName, 'value': currentValue};
+  Map<String, dynamic> toJson() => {'id': key, 'nameAr': arName, 'nameFr': frName, 'value': currentValue};
 
   InputParameter(this.key, this.type, this.arName, this.frName);
 
@@ -172,7 +187,11 @@ class InputParameter implements Parameter {
 }
 
 class MinMaxParameter implements Parameter {
-  MinMaxParameter(this.key, this.arName, this.frName);
+  MinMaxParameter(
+    this.key,
+    this.arName,
+    this.frName,
+  );
 
   @override
   get currentValue => '$min - $max';
@@ -187,6 +206,11 @@ class MinMaxParameter implements Parameter {
   final String arName;
   @override
   final String frName;
+
+  String get name {
+    final locale = currentLocaleShortName.value;
+    return locale == 'fr' ? frName : arName;
+  }
 }
 
 class TextParameter implements Parameter {
@@ -197,12 +221,16 @@ class TextParameter implements Parameter {
   @override
   final String frName;
 
+  String get name {
+    final locale = currentLocaleShortName.value;
+    return locale == 'fr' ? frName : arName;
+  }
+
   String value;
   @override
   String get currentValue => value;
 
-  Map<String, dynamic> toJson() =>
-      {'id': key, 'nameAr': arName, 'nameFr': frName, 'value': currentValue};
+  Map<String, dynamic> toJson() => {'id': key, 'nameAr': arName, 'nameFr': frName, 'value': currentValue};
 
   TextParameter({
     required this.key,

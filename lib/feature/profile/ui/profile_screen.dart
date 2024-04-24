@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
-import 'package:smart/feature/profile/ui/widgets/row_button.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/managers/creating_announcement_manager.dart';
 import 'package:smart/models/announcement.dart';
-import 'package:smart/restart_controller.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/conatainers/announcement_horizontal.dart';
@@ -16,11 +14,9 @@ import 'package:smart/widgets/conatainers/announcement_horizontal.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
 import '../../../widgets/accuont/account_medium_info.dart';
-import '../../../widgets/button/custom_elevated_button.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../announcement/bloc/creator_cubit/creator_cubit.dart';
 import '../../announcement/data/creator_repository.dart';
-import '../../auth/bloc/auth_cubit.dart';
 import '../../auth/data/auth_repository.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -67,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: AppColors.mainBackground,
+        backgroundColor: AppColors.appBarColor,
         elevation: 0,
         titleSpacing: 0,
         title: Row(
@@ -233,77 +229,6 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                           ),
                         ),
                       ),
-                    const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      sliver: SliverToBoxAdapter(
-                        child: RowButton(
-                          title: localizations.myData,
-                          icon: 'Assets/icons/profile_settings.svg',
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              AppRoutesNames.editProfile,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      sliver: SliverToBoxAdapter(
-                        child: RowButton(
-                          title: localizations.myComments,
-                          icon: 'Assets/icons/messages.svg',
-                          onTap: () {},
-                        ),
-                      ),
-                    ),
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      sliver: SliverToBoxAdapter(
-                        child: RowButton(
-                          title: localizations.faq,
-                          icon: 'Assets/icons/faq.svg',
-                          onTap: () {},
-                        ),
-                      ),
-                    ),
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      sliver: SliverToBoxAdapter(
-                        child: RowButton(
-                          title: localizations.privacyPolicy,
-                          icon: 'Assets/icons/security.svg',
-                          onTap: () {},
-                        ),
-                      ),
-                    ),
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      sliver: SliverToBoxAdapter(
-                        child: RowButton(
-                          title: localizations.termsOfUse,
-                          icon: 'Assets/icons/terms_of_use.svg',
-                          onTap: () {},
-                        ),
-                      ),
-                    ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 20),
-                    ),
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      sliver: SliverToBoxAdapter(
-                        child: CustomElevatedButton(
-                          icon: "Assets/icons/exit.svg",
-                          title: localizations.disconnectFromTheAccount,
-                          onPress: () => _logoutButton(),
-                          height: 52,
-                          width: double.infinity,
-                        ),
-                      ),
-                    ),
                     const SliverToBoxAdapter(child: SizedBox(height: 90)),
                   ],
                 );
@@ -314,64 +239,6 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
           }
         },
       ),
-    );
-  }
-
-  void _logoutButton() {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.transparent,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          title: Center(
-              child: Text(
-            'Vous voulez sortir?',
-            style: AppTypography.font16black,
-          )),
-          content: Text(
-            'Pharetra ultricies ullamcorper a et magna convallis condimentum. Proin mi orci dignissim lectus nulla neque elitInt',
-            textAlign: TextAlign.center,
-            style: AppTypography.font14lightGray,
-          ),
-          actions: [
-            CustomTextButton.orangeContinue(
-              callback: () {
-                BlocProvider.of<CreatorCubit>(context).setUserId('');
-                setState(() {
-                  _available = [];
-                  _sold = [];
-                });
-
-                BlocProvider.of<AuthCubit>(context).logout().then((value) {
-                  //TODO logout
-                  HotRestartController.performHotRestart(context);
-                });
-                Navigator.of(context).pop();
-              },
-              styleText: AppTypography.font14black.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-              text: 'Oui',
-              active: true,
-              activeColor: AppColors.black,
-            ),
-            const SizedBox(height: 10),
-            CustomTextButton.shadow(
-              callback: () {
-                Navigator.of(context).pop();
-              },
-              styleText: AppTypography.font14black.copyWith(fontWeight: FontWeight.bold),
-              text: 'Non',
-              active: true,
-              activeColor: Colors.white,
-            )
-          ],
-        );
-      },
     );
   }
 }

@@ -80,6 +80,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
+          backgroundColor: AppColors.appBarColor,
           automaticallyImplyLeading: false,
           titleSpacing: 6,
           title: Row(
@@ -106,9 +107,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               }
               if (state is EditSuccessState) {
                 CustomSnackBar.showSnackBarWithIcon(
-                    context,
-                    localizations.withSuccess,
-                    'Assets/icons/heart_out_line.svg');
+                    context, localizations.withSuccess, 'Assets/icons/heart_out_line.svg');
               } else if (state is EditFailState) {
                 CustomSnackBar.showSnackBar(context, 'Essayez plus tard');
               }
@@ -138,13 +137,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         url: user?.imageUrl ?? '',
                                         borderRadius: 50,
                                       )
-                                    : ClipOval(
-                                        child:
-                                            Image.memory(bytes!, width: 100)),
+                                    : ClipOval(child: Image.memory(bytes!, width: 100)),
                                 Container(
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      color: Colors.black.withOpacity(0.3)),
+                                      borderRadius: BorderRadius.circular(50), color: Colors.black.withOpacity(0.3)),
                                 ),
                                 Container(
                                     alignment: Alignment.center,
@@ -198,8 +194,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             );
                           },
                           text: localizations.save,
-                          styleText: AppTypography.font14white
-                              .copyWith(fontWeight: FontWeight.w600),
+                          styleText: AppTypography.font14white.copyWith(fontWeight: FontWeight.w600),
                           active: true,
                           activeColor: AppColors.black,
                         ),

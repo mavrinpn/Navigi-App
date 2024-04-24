@@ -1088,7 +1088,7 @@ abstract class AppLocalizations {
   /// No description provided for @placeApplicationSettings.
   ///
   /// In en, this message translates to:
-  /// **'Place application settings'**
+  /// **'Settings'**
   String get placeApplicationSettings;
 
   /// No description provided for @mark.
@@ -1294,6 +1294,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Billions'**
   String get mlrd;
+
+  /// No description provided for @tryAgainLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again later'**
+  String get tryAgainLater;
+
+  /// No description provided for @userAlreadyRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'This user is already registered'**
+  String get userAlreadyRegistered;
+
+  /// No description provided for @userNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'The user is not registered'**
+  String get userNotFound;
+
+  /// No description provided for @forgotYourPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your password?'**
+  String get forgotYourPassword;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @recoverPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Recover password'**
+  String get recoverPassword;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

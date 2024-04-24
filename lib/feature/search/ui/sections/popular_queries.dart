@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/main/bloc/popularQueries/popular_queries_cubit.dart';
 import 'package:smart/managers/search_manager.dart';
 import 'package:smart/utils/animations.dart';
-
-import '../widgets/popular_query_item.dart';
+import 'package:smart/utils/colors.dart';
+import 'package:smart/utils/fonts.dart';
 
 class PopularQueriesWidget extends StatelessWidget {
   const PopularQueriesWidget({
@@ -18,31 +18,65 @@ class PopularQueriesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final searchManager = RepositoryProvider.of<SearchManager>(context);
 
-    return SizedBox(
-      height: 30,
-      child: BlocBuilder<PopularQueriesCubit, PopularQueriesState>(
-        builder: (context, state) {
-          if (state is PopularQueriesSuccess &&
-              searchManager.popularQueries.isNotEmpty) {
-            return ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: searchManager.popularQueries.length,
-              separatorBuilder: (context, index) => const SizedBox(width: 6),
-              itemBuilder: (context, index) {
-                final e = searchManager.popularQueries.reversed.toList()[index];
-                return PopularQueryItem(
-                    onTap: () {
-                      onSearch(e);
-                    },
-                    name: e);
-              },
-            );
-          } else if (state is PopularQueriesLoading) {
-            return Center(child: AppAnimations.bouncingLine);
-          }
-          return const Text('Popular Queries failed');
-        },
-      ),
+    return BlocBuilder<PopularQueriesCubit, PopularQueriesState>(
+      builder: (context, state) {
+        if (state is PopularQueriesSuccess && searchManager.popularQueries.isNotEmpty) {
+          return SizedBox(
+            height: searchManager.popularQueries.length > 4 ? 60 : 30,
+            child: Wrap(
+              clipBehavior: Clip.hardEdge,
+              spacing: 6,
+              runSpacing: 6,
+              children: searchManager.popularQueries.reversed
+                  .map(
+                    (e) => GestureDetector(
+                      onTap: () {
+                        onSearch(e);
+                      },
+                      child: Container(
+                        height: 24,
+                        decoration: BoxDecoration(
+                          color: AppColors.backgroundLightGray,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                e,
+                                style: AppTypography.font12normal.copyWith(
+                                  color: AppColors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          );
+          // return ListView.separated(
+          //   scrollDirection: Axis.horizontal,
+          //   itemCount: searchManager.popularQueries.length,
+          //   separatorBuilder: (context, index) => const SizedBox(width: 6),
+          //   itemBuilder: (context, index) {
+          //     final e = searchManager.popularQueries.reversed.toList()[index];
+          //     return PopularQueryItem(
+          //         onTap: () {
+          //           onSearch(e);
+          //         },
+          //         name: e);
+          //   },
+          // );
+        } else if (state is PopularQueriesLoading) {
+          return Center(child: AppAnimations.bouncingLine);
+        }
+        return const Text('Popular Queries failed');
+      },
     );
   }
 }

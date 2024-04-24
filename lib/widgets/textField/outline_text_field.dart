@@ -19,6 +19,7 @@ class OutlineTextField extends StatelessWidget {
   final String icon;
   final bool readonly;
   final bool error;
+  final FocusNode? focusNode;
 
   const OutlineTextField({
     Key? key,
@@ -34,6 +35,7 @@ class OutlineTextField extends StatelessWidget {
     this.readonly = false,
     this.icon = "",
     this.error = false,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -42,7 +44,7 @@ class OutlineTextField extends StatelessWidget {
       width: width,
       height: height,
       alignment: Alignment.center,
-      child: TextFormField(
+      child: TextField(
         keyboardType: keyBoardType,
         readOnly: readonly,
         maxLines: maxLines,
@@ -86,6 +88,7 @@ class OutlineTextField extends StatelessWidget {
           ),
         ),
         controller: controller,
+        focusNode: focusNode,
       ),
     );
   }

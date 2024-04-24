@@ -63,7 +63,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen> with Single
       appBar: AppBar(
         automaticallyImplyLeading: true,
         leading: const CustomBackButton(),
-        backgroundColor: AppColors.mainBackground,
+        backgroundColor: AppColors.appBarColor,
         elevation: 0,
         titleSpacing: 6,
         title: Row(

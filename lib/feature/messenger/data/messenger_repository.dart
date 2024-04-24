@@ -21,9 +21,7 @@ class MessengerRepository {
   final FileStorageManager _storageManager;
   RealtimeSubscription? _messageListener;
 
-  MessengerRepository(
-      {required DatabaseService databaseService,
-      required FileStorageManager storage})
+  MessengerRepository({required DatabaseService databaseService, required FileStorageManager storage})
       : _databaseService = databaseService,
         _storageManager = storage;
 
@@ -36,8 +34,7 @@ class MessengerRepository {
   set userId(String newUserId) => _userId = newUserId;
 
   BehaviorSubject<List<Room>> chatsStream = BehaviorSubject.seeded([]);
-  BehaviorSubject<List<ChatItem>> currentChatItemsStream =
-      BehaviorSubject.seeded([]);
+  BehaviorSubject<List<ChatItem>> currentChatItemsStream = BehaviorSubject.seeded([]);
 
   Room? currentRoom;
 
@@ -140,8 +137,7 @@ class MessengerRepository {
       currentRoom!.announcement.id,
     );
 
-    currentRoom =
-        await _databaseService.messages.getRoom(roomData['room'], _userId!);
+    currentRoom = await _databaseService.messages.getRoom(roomData['room'], _userId!);
 
     _chats.add(currentRoom!);
     chatsStream.add(_chats);
@@ -152,8 +148,7 @@ class MessengerRepository {
   void _selectRoomById(String id) {
     final Message? lastMessage = _chats[_findChatById(id)!].lastMessage;
     currentRoom = _chats[_findChatById(id)!];
-    _currentChatMessages =
-        MessagesList(lastMessage != null ? [lastMessage] : []);
+    _currentChatMessages = MessagesList(lastMessage != null ? [lastMessage] : []);
     currentChatItemsStream.add(lastMessage != null
         ? [
             MessagesGroupData(messages: [lastMessage])
@@ -260,8 +255,7 @@ class MessengerRepository {
     _updateRoomsPreviewMessages(data);
   }
 
-  void _markAllMessagesAsRead() =>
-      _databaseService.messages.markMessagesAsRead(currentRoom!.id, _userId!);
+  void _markAllMessagesAsRead() => _databaseService.messages.markMessagesAsRead(currentRoom!.id, _userId!);
 
   void _addMessageToCurrentRoom(data, Message message) {
     _currentChatMessages!.addMessage(message);
@@ -272,8 +266,7 @@ class MessengerRepository {
   }
 
   void _getNewRoom(data) async {
-    final room =
-        await _databaseService.messages.getRoom(data['roomId'], _userId!);
+    final room = await _databaseService.messages.getRoom(data['roomId'], _userId!);
     final messages = await _getChatMessages(room.id);
     room.lastMessage = messages[0];
     _chats.add(room);

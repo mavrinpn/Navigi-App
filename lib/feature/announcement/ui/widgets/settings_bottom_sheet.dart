@@ -35,32 +35,34 @@ class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
   void changeActivity() {
     announcementManager.changeActivity(widget.announcement.id).then((value) {
       Navigator.pop(context);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('success')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('success')));
       creatorCubit.setUserId(widget.announcement.creatorData.uid);
     });
   }
 
   void openEditing() {
-    context
-        .read<AnnouncementEditCubit>()
-        .setAnnouncement(widget.announcement)
-        .then((value) => Navigator.pushReplacementNamed(
-              context,
-              AppRoutesNames.editingAnnouncement,
-            ));
+    context.read<AnnouncementEditCubit>().setAnnouncement(widget.announcement).then((value) {
+      Navigator.pop(context);
+      if (Navigator.canPop(context)) {
+        Navigator.pushReplacementNamed(
+          context,
+          AppRoutesNames.editingAnnouncement,
+        );
+      } else {
+        Navigator.pushNamed(
+          context,
+          AppRoutesNames.editingAnnouncement,
+        );
+      }
+    });
   }
 
   void deleteAnnouncement() {
     Dialogs.showModal(context, AppAnimations.circleFadingAnimation);
     try {
-      context
-          .read<AnnouncementEditCubit>()
-          .deleteAnnouncement(widget.announcement)
-          .then((value) {
+      context.read<AnnouncementEditCubit>().deleteAnnouncement(widget.announcement).then((value) {
         Dialogs.hide(context);
-        BlocProvider.of<CreatorCubit>(context)
-            .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
+        BlocProvider.of<CreatorCubit>(context).setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
         Navigator.popUntil(context, ModalRoute.withName(AppRoutesNames.root));
       });
     } catch (e) {

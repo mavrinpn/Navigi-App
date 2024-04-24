@@ -35,11 +35,11 @@ class Room {
     _refreshOnlineStatus();
   }
 
-  Room.fromDocument(
-      Document doc, Future<Uint8List> announcementImage, ChatUserInfo otherUser,
-      {this.onlineGetter})
+  Room.fromDocument(Document doc, Future<Uint8List> announcementImage, ChatUserInfo otherUser, {this.onlineGetter})
       : announcement = Announcement.fromJson(
-            json: doc.data['announcement'], futureBytes: announcementImage),
+          json: doc.data['announcement'],
+          futureBytes: announcementImage,
+        ),
         chatName = '${otherUser.name} ${doc.data['announcement']['name']}',
         otherUserPhone = otherUser.phone,
         otherUserId = otherUser.id,

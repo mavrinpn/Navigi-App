@@ -17,6 +17,12 @@ class _InputParameterWidgetState extends State<InputParameterWidget> {
   bool error = false;
 
   @override
+  void didUpdateWidget(covariant InputParameterWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    controller.text = '${widget.parameter.value ?? ''}';
+  }
+
+  @override
   void initState() {
     super.initState();
     controller.text = '${widget.parameter.value ?? ''}';

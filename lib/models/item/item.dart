@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:smart/main.dart';
 import 'package:smart/services/parameters_parser.dart';
 
 part 'item_parameters.dart';
@@ -11,8 +12,7 @@ class SubcategoryItem {
   final String _name;
   final String _subcategoryId;
 
-  SubcategoryItem(
-      {required String name, required this.id, required String subcategoryId})
+  SubcategoryItem({required String name, required this.id, required String subcategoryId})
       : _subcategoryId = subcategoryId,
         _name = name;
 

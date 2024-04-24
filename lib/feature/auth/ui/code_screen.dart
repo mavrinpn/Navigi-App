@@ -15,7 +15,12 @@ import '../../../utils/dialogs.dart';
 import '../../../widgets/button/custom_text_button.dart';
 
 class CodeScreen extends StatefulWidget {
-  const CodeScreen({Key? key}) : super(key: key);
+  const CodeScreen({
+    Key? key,
+    required this.isPasswordRestore,
+  }) : super(key: key);
+
+  final bool isPasswordRestore;
 
   @override
   State<CodeScreen> createState() => _CodeScreenState();
@@ -34,16 +39,14 @@ class _CodeScreenState extends State<CodeScreen> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthLoadingState) {
-          Dialogs.showModal(
-              context, Center(child: AppAnimations.circleFadingAnimation));
+          Dialogs.showModal(context, Center(child: AppAnimations.circleFadingAnimation));
         } else {
           Dialogs.hide(context);
         }
         if (state is AuthSuccessState) {
           Navigator.popUntil(context, ModalRoute.withName(AppRoutesNames.root));
         } else if (state is AuthFailState) {
-          CustomSnackBar.showSnackBar(context,
-              AppLocalizations.of(context)!.passwordOrEmailEnteredIncorrectly);
+          CustomSnackBar.showSnackBar(context, AppLocalizations.of(context)!.passwordOrEmailEnteredIncorrectly);
         }
       },
       child: GestureDetector(
@@ -53,6 +56,7 @@ class _CodeScreenState extends State<CodeScreen> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
+            backgroundColor: AppColors.appBarColor,
             automaticallyImplyLeading: false,
             titleSpacing: 6,
             title: const Row(
@@ -116,9 +120,7 @@ class _CodeScreenState extends State<CodeScreen> {
                         color: AppColors.dark,
                       ),
                       decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                color: AppColors.darkGrayUnderline, width: 1)),
+                        border: Border(bottom: BorderSide(color: AppColors.darkGrayUnderline, width: 1)),
                       )),
                 ),
                 const SizedBox(
@@ -129,8 +131,7 @@ class _CodeScreenState extends State<CodeScreen> {
                     children: <TextSpan>[
                       TextSpan(
                           text: localizations.haventRecieveCode,
-                          style: AppTypography.font14lightGray
-                              .copyWith(fontSize: 16)),
+                          style: AppTypography.font14lightGray.copyWith(fontSize: 16)),
                       TextSpan(
                           text: localizations.sendAgain,
                           recognizer: TapGestureRecognizer()
@@ -147,15 +148,25 @@ class _CodeScreenState extends State<CodeScreen> {
                 CustomTextButton(
                   callback: () {
                     if (buttonActive) {
-                      bloc.confirmCode(codeController.text);
+                      bloc
+                          .confirmCode(
+                        code: codeController.text,
+                        isPasswordRestore: widget.isPasswordRestore,
+                      )
+                          .timeout(
+                        const Duration(seconds: 4),
+                        onTimeout: () {
+                          Navigator.of(context).pop();
+                          CustomSnackBar.showSnackBar(context, localizations.tryAgainLater);
+                        },
+                      );
                     }
                   },
                   active: buttonActive,
                   text: localizations.afterwards,
                   styleText: AppTypography.font14white,
                   height: 52,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
                 ),
                 const Spacer(
                   flex: 6,

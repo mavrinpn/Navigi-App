@@ -5,11 +5,13 @@ import 'package:smart/feature/announcement/bloc/related/related_announcement_cub
 import 'package:smart/feature/announcement/ui/announcement_screen.dart';
 import 'package:smart/feature/announcement/ui/creator_screen.dart';
 import 'package:smart/feature/announcement_editing/ui/editing_announcement_screen.dart';
+import 'package:smart/feature/auth/ui/auth_error_screen.dart';
 import 'package:smart/feature/auth/ui/check_code_screen.dart';
 import 'package:smart/feature/auth/ui/code_screen.dart';
 import 'package:smart/feature/auth/ui/login_first_screen.dart';
 import 'package:smart/feature/auth/ui/login_second_screen.dart';
 import 'package:smart/feature/auth/ui/registration_screen.dart';
+import 'package:smart/feature/auth/ui/restore_password_screen.dart';
 import 'package:smart/feature/home/ui/home_screen.dart';
 import 'package:smart/feature/main/ui/main_screen.dart';
 import 'package:smart/feature/messenger/ui/chat_screen.dart';
@@ -18,7 +20,9 @@ import 'package:smart/feature/reviews/ui/create_review_screen.dart';
 import 'package:smart/feature/reviews/ui/reviews_screen.dart';
 import 'package:smart/feature/search/ui/search_screen.dart';
 import 'package:smart/feature/search/ui/select_subcategory.dart';
+import 'package:smart/feature/settings/ui/language_screen.dart';
 import 'package:smart/feature/settings/ui/settings_screen.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
 import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/models/user.dart';
@@ -38,12 +42,53 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
         );
       },
     );
+  } else if (settings.name == AppRoutesNames.authCode) {
+    final arguments = settings.arguments as Map<String, dynamic>;
+    final isPasswordRestore = arguments['isPasswordRestore'] as bool?;
+
+    return MaterialPageRoute(
+      builder: (context) {
+        return CodeScreen(
+          isPasswordRestore: isPasswordRestore ?? false,
+        );
+      },
+    );
+  } else if (settings.name == AppRoutesNames.checkCode) {
+    final arguments = settings.arguments as Map<String, dynamic>;
+    final isPasswordRestore = arguments['isPasswordRestore'] as bool?;
+
+    return MaterialPageRoute(
+      builder: (context) {
+        return CheckCodeScreen(
+          isPasswordRestore: isPasswordRestore ?? false,
+        );
+      },
+    );
+  } else if (settings.name == AppRoutesNames.userExist) {
+    return MaterialPageRoute(
+      builder: (context) {
+        final localizations = AppLocalizations.of(context)!;
+        return AuthErrorScreen(
+          message: localizations.userAlreadyRegistered,
+        );
+      },
+    );
+  } else if (settings.name == AppRoutesNames.userNotFound) {
+    return MaterialPageRoute(
+      builder: (context) {
+        final localizations = AppLocalizations.of(context)!;
+        return AuthErrorScreen(
+          message: localizations.userNotFound,
+        );
+      },
+    );
   } else if (settings.name == AppRoutesNames.search) {
     final arguments = settings.arguments as Map<String, dynamic>;
     final query = arguments['query'] as String?;
     final title = arguments['title'] as String?;
     final showBackButton = arguments['showBackButton'] as bool?;
     final showSearchHelper = arguments['showSearchHelper'] as bool?;
+    final showKeyboard = arguments['showKeyboard'] as bool?;
 
     return MaterialPageRoute(
       builder: (context) {
@@ -52,6 +97,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
           showSearchHelper: showSearchHelper ?? true,
           title: title ?? '',
           searchQueryString: query,
+          showKeyboard: showKeyboard ?? false,
         );
       },
     );
@@ -84,15 +130,13 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
           providers: [
             BlocProvider(
               create: (_) => AnnouncementCubit(
-                announcementManager:
-                    RepositoryProvider.of<AnnouncementManager>(context),
+                announcementManager: RepositoryProvider.of<AnnouncementManager>(context),
               ),
               lazy: false,
             ),
             BlocProvider(
               create: (_) => RelatedAnnouncementCubit(
-                announcementManager:
-                    RepositoryProvider.of<AnnouncementManager>(context),
+                announcementManager: RepositoryProvider.of<AnnouncementManager>(context),
               ),
               lazy: false,
             ),
@@ -113,35 +157,28 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
 final appRoutes = {
   AppRoutesNames.root: (context) => const HomePage(),
   // AppRoutesNames.loginFirst: (context) => const LoginFirstScreen(),
-  AppRoutesNames.authCode: (context) => const CodeScreen(),
-  AppRoutesNames.checkCode: (context) => const CheckCodeScreen(),
+  // AppRoutesNames.authCode: (context) => const CodeScreen(),
+  AppRoutesNames.restorePassword: (context) => const RestorePasswordScreen(),
+  // AppRoutesNames.checkCode: (context) => const CheckCodeScreen(),
+
   AppRoutesNames.loginSecond: (context) => const LoginSecondScreen(),
   AppRoutesNames.register: (context) => const RegistrationScreen(),
   AppRoutesNames.home: (context) => const HomeScreen(),
-  AppRoutesNames.announcementCreatingCategory: (context) =>
-      const CategoryScreen(),
-  AppRoutesNames.announcementCreatingSubcategory: (context) =>
-      const SubCategoryScreen(),
-  AppRoutesNames.announcementCreatingTitle: (context) =>
-      const SearchProductsScreen(),
-  AppRoutesNames.announcementCreatingPhoto: (context) =>
-      const PickPhotosScreen(),
+  AppRoutesNames.announcementCreatingCategory: (context) => const CategoryScreen(),
+  AppRoutesNames.announcementCreatingSubcategory: (context) => const SubCategoryScreen(),
+  AppRoutesNames.announcementCreatingTitle: (context) => const SearchProductsScreen(),
+  AppRoutesNames.announcementCreatingPhoto: (context) => const PickPhotosScreen(),
   AppRoutesNames.announcementCreatingType: (context) => const ByNotByScreen(),
-  AppRoutesNames.announcementCreatingDescription: (context) =>
-      const DescriptionScreen(),
-  AppRoutesNames.announcementCreatingPlace: (context) =>
-      const SearchPlaceScreen(),
-  AppRoutesNames.announcementCreatingLoading: (context) =>
-      const LoadingScreen(),
-  AppRoutesNames.announcementCreatingOptions: (context) =>
-      const OptionsScreen(),
+  AppRoutesNames.announcementCreatingDescription: (context) => const DescriptionScreen(),
+  AppRoutesNames.announcementCreatingPlace: (context) => const SearchPlaceScreen(),
+  AppRoutesNames.announcementCreatingLoading: (context) => const LoadingScreen(),
+  AppRoutesNames.announcementCreatingOptions: (context) => const OptionsScreen(),
   AppRoutesNames.main: (context) => const MainScreen(),
   // AppRoutesNames.announcement: (context) => const AnnouncementScreen(),
   AppRoutesNames.editProfile: (context) => const EditProfileScreen(),
   AppRoutesNames.settings: (context) => const SettingsScreen(),
+  AppRoutesNames.settingsLanguage: (context) => const LanguageScreen(),
   AppRoutesNames.announcementCreator: (context) => const CreatorProfileScreen(),
-  AppRoutesNames.editingAnnouncement: (context) =>
-      const EditingAnnouncementScreen(),
-  AppRoutesNames.searchSelectSubcategory: (context) =>
-      const SearchSubcategoryScreen(),
+  AppRoutesNames.editingAnnouncement: (context) => const EditingAnnouncementScreen(),
+  AppRoutesNames.searchSelectSubcategory: (context) => const SearchSubcategoryScreen(),
 };

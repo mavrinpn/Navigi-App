@@ -20,7 +20,6 @@ class MultipleCheckboxPicker extends StatefulWidget {
 }
 
 class _MultipleCheckboxPickerState extends State<MultipleCheckboxPicker> {
-  
   @override
   Widget build(BuildContext context) {
     final variants = widget.parameter.variants;
@@ -33,9 +32,7 @@ class _MultipleCheckboxPickerState extends State<MultipleCheckboxPicker> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            MyApp.getLocale(context) == 'fr'
-                ? widget.parameter.frName
-                : widget.parameter.arName,
+            widget.parameter.name,
             style: AppTypography.font16black.copyWith(fontSize: 18),
           ),
           const SizedBox(height: 10),
@@ -45,9 +42,7 @@ class _MultipleCheckboxPickerState extends State<MultipleCheckboxPicker> {
               ...List.generate(
                 variants.length,
                 (index) => MultipleCheckboxWidget(
-                  value: MyApp.getLocale(context) == 'fr'
-                      ? variants[index].nameFr
-                      : variants[index].nameAr,
+                  value: MyApp.getLocale(context) == 'fr' ? variants[index].nameFr : variants[index].nameAr,
                   onTap: (bool? v) {
                     updateAppBarFilterCubit.needUpdateAppBarFilters();
                     if (v ?? false) {

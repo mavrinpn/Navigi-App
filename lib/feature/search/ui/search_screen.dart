@@ -31,11 +31,13 @@ class SearchScreen extends StatefulWidget {
     required this.showBackButton,
     required this.title,
     required this.showSearchHelper,
+    required this.showKeyboard,
     this.searchQueryString,
   });
 
   final bool showBackButton;
   final bool showSearchHelper;
+  final bool showKeyboard;
   final String title;
   final String? searchQueryString;
 
@@ -74,11 +76,6 @@ class _SearchScreenState extends State<SearchScreen> {
   void didChangeDependencies() {
     context.watch<SearchSelectSubcategoryCubit>();
     super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   void setSearchText(String text) {
@@ -122,7 +119,7 @@ class _SearchScreenState extends State<SearchScreen> {
     );
 
     AppBar searchAppBar = AppBar(
-      backgroundColor: AppColors.mainBackground,
+      backgroundColor: AppColors.appBarColor,
       automaticallyImplyLeading: false,
       elevation: 0,
       titleSpacing: 0,
@@ -160,11 +157,13 @@ class _SearchScreenState extends State<SearchScreen> {
                 BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
               },
               onTap: () {
+                searchManager.setSearch(true);
                 setState(() {
                   _showFilterChips = false;
                 });
               },
               searchController: searchController,
+              autofocus: widget.showKeyboard,
             ),
           ),
         ],
@@ -172,7 +171,8 @@ class _SearchScreenState extends State<SearchScreen> {
     );
 
     Widget searchScreenBuilder(context, state) {
-      if (state is SearchItemsSuccess && searchController.text.isNotEmpty && state.result.isNotEmpty) {
+      //if (state is SearchItemsSuccess && searchController.text.isNotEmpty && state.result.isNotEmpty) {
+      if (state is SearchItemsSuccess) {
         return SearchItemsWidget(
           state: state,
           onCurrentQueryTap: (currentQuery) {
@@ -200,9 +200,10 @@ class _SearchScreenState extends State<SearchScreen> {
             FocusManager.instance.primaryFocus?.unfocus();
           },
         );
-      } else if (state is SearchItemsLoading) {
+      } else if (searchQueryString != null || state is SearchItemsLoading) {
         return Center(child: AppAnimations.bouncingLine);
       }
+
       return Column(
         children: [
           SizedBox(
@@ -312,11 +313,12 @@ class _SearchScreenState extends State<SearchScreen> {
                 },
               ),
               SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 0),
                       width: width,
                       curve: Curves.fastOutSlowIn,
                       height: searchManager.isSearch ? height : 0,
@@ -391,14 +393,12 @@ class _SearchScreenState extends State<SearchScreen> {
                           if (parameter is SelectParameter) {
                             isSelected = parameter.selectedVariants.isNotEmpty;
                           } else if (parameter is SingleSelectParameter) {
-                            //TODO SingleSelectParameter
                             isSelected = parameter.currentValue.key != null;
                           } else if (parameter is MultiSelectParameter) {
                             isSelected = parameter.selectedVariants.isNotEmpty;
                           } else if (parameter is MinMaxParameter) {
                             isSelected = parameter.min != null || parameter.max != null;
                           }
-                          //TODO SingleSelectParameter
                           if (parameter is! MultiSelectParameter) {
                             return FilterChipWidget(
                               isSelected: isSelected,

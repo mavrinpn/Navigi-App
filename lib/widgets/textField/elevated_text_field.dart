@@ -21,24 +21,26 @@ class ElevatedTextField extends StatelessWidget {
   final Function(String)? onSubmitted;
   final TextInputAction? action;
   final bool readOnly;
+  final bool autofocus;
 
-  const ElevatedTextField(
-      {Key? key,
-      required this.hintText,
-      this.controller,
-      required this.onTap,
-      this.width = 290,
-      this.height = 50,
-      this.obscureText = false,
-      this.maxLines = 1,
-      this.maxLength,
-      this.keyBoardType = TextInputType.text,
-      this.onChange,
-      this.icon = "",
-      this.onSubmitted,
-      this.action,
-      this.readOnly = false})
-      : super(key: key);
+  const ElevatedTextField({
+    Key? key,
+    required this.hintText,
+    this.controller,
+    required this.onTap,
+    this.width = 290,
+    this.height = 50,
+    this.obscureText = false,
+    this.maxLines = 1,
+    this.maxLength,
+    this.keyBoardType = TextInputType.text,
+    this.onChange,
+    this.icon = "",
+    this.onSubmitted,
+    this.action,
+    this.readOnly = false,
+    this.autofocus = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +63,7 @@ class ElevatedTextField extends StatelessWidget {
       ),
       alignment: Alignment.center,
       child: TextField(
+        autofocus: autofocus,
         readOnly: readOnly,
         onTap: onTap,
         textInputAction: action,
@@ -72,8 +75,7 @@ class ElevatedTextField extends StatelessWidget {
         textAlignVertical: TextAlignVertical.bottom,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle:
-              AppTypography.font14lightGray.copyWith(color: AppColors.disable),
+          hintStyle: AppTypography.font14lightGray.copyWith(color: AppColors.disable),
           prefixIcon: icon != ""
               ? Row(
                   mainAxisSize: MainAxisSize.min,

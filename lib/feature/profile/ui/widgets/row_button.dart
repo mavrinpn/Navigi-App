@@ -1,15 +1,14 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/utils/utils.dart';
 
 class RowButton extends StatelessWidget {
-  const RowButton(
-      {super.key,
-        required this.title,
-        required this.icon,
-        required this.onTap});
+  const RowButton({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.onTap,
+  });
 
   final String icon;
   final String title;
@@ -33,15 +32,17 @@ class RowButton extends StatelessWidget {
               Container(
                 width: 30,
                 height: 30,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: AppColors.backgroundIcon),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: AppColors.backgroundIcon),
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: SvgPicture.asset(
                     icon,
                     width: 20,
                     height: 20,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.red,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               ),
@@ -55,8 +56,7 @@ class RowButton extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: AppTypography.font14black
-                          .copyWith(fontWeight: FontWeight.w400),
+                      style: AppTypography.font14black.copyWith(fontWeight: FontWeight.w400),
                     ),
                     const Icon(
                       Icons.arrow_forward_ios,

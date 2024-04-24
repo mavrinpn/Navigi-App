@@ -37,6 +37,9 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
   final placeController = TextEditingController();
   final cityController = TextEditingController();
 
+  final placeFocusNode = FocusNode();
+  final cityFocusNode = FocusNode();
+
   CityDistrict? _cityDistrict;
 
   bool initial = false;
@@ -55,10 +58,8 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
   }
 
   void setActive(bool value) {
-    final creatingManager =
-        RepositoryProvider.of<CreatingAnnouncementManager>(context);
-    if (creatingManager.specialOptions
-        .contains(SpecialAnnouncementOptions.customPlace)) {
+    final creatingManager = RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    if (creatingManager.specialOptions.contains(SpecialAnnouncementOptions.customPlace)) {
       if (isCoordinatesSelected) {
         widget.onSetActive(value);
       }
@@ -79,13 +80,14 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
       widget.onChangePlace('');
 
       setActive(false);
-      setState(() {});
+      // setState(() {});
+      // cityFocusNode.requestFocus();
+      placeFocusNode.requestFocus();
     });
   }
 
   void selectPlace(CityDistrict selectedDistrict) async {
-    final creatingManager =
-        RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    final creatingManager = RepositoryProvider.of<CreatingAnnouncementManager>(context);
     final placesCubit = BlocProvider.of<PlacesCubit>(context);
 
     placesCubit.setPlaceName(selectedDistrict.name);
@@ -97,16 +99,16 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
     _cityDistrict = selectedDistrict;
 
     setActive(true);
-    setState(() {
-      selectingCity = true;
-    });
+    // setState(() {
+    //   selectingCity = true;
+    // });
+    placeFocusNode.unfocus();
   }
 
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    final creatingManager =
-        RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    final creatingManager = RepositoryProvider.of<CreatingAnnouncementManager>(context);
     // final placeManager = RepositoryProvider.of<PlacesManager>(context);
     final placesCubit = BlocProvider.of<PlacesCubit>(context);
 
@@ -122,6 +124,7 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
         ),
         OutlineTextField(
           controller: cityController,
+          focusNode: cityFocusNode,
           height: 55,
           hintText: '',
           width: double.infinity,
@@ -176,6 +179,7 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
         ),
         OutlineTextField(
           controller: placeController,
+          focusNode: placeFocusNode,
           height: 55,
           hintText: '',
           width: double.infinity,
@@ -221,8 +225,7 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
           ),
         ],
         const SizedBox(height: 16),
-        if (creatingManager.specialOptions
-            .contains(SpecialAnnouncementOptions.customPlace)) ...[
+        if (creatingManager.specialOptions.contains(SpecialAnnouncementOptions.customPlace)) ...[
           CustomTextButton.orangeContinue(
             active: _cityDistrict != null,
             callback: () async {

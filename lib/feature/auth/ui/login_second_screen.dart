@@ -7,7 +7,9 @@ import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
 
@@ -43,18 +45,15 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthLoadingState) {
-          Dialogs.showModal(
-              context, Center(child: AppAnimations.circleFadingAnimation));
+          Dialogs.showModal(context, Center(child: AppAnimations.circleFadingAnimation));
         } else {
           Dialogs.hide(context);
         }
         if (state is AuthSuccessState) {
-          BlocProvider.of<CreatorCubit>(context)
-              .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
+          BlocProvider.of<CreatorCubit>(context).setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
           Navigator.pop(context);
         } else if (state is AuthFailState) {
-          CustomSnackBar.showSnackBar(context,
-              AppLocalizations.of(context)!.passwordOrEmailEnteredIncorrectly);
+          CustomSnackBar.showSnackBar(context, AppLocalizations.of(context)!.passwordOrEmailEnteredIncorrectly);
         }
       },
       child: GestureDetector(
@@ -65,6 +64,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             automaticallyImplyLeading: false,
+            backgroundColor: AppColors.appBarColor,
             titleSpacing: 6,
             title: const Row(
               children: [
@@ -124,8 +124,17 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                               setState(() {});
                             },
                           ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutesNames.restorePassword,
+                              );
+                            },
+                            child: Text(localizations.forgotYourPassword),
+                          ),
                           SizedBox(
-                            height: height * 0.18,
+                            height: height * 0.14,
                           ),
                           CustomTextButton(
                             key: buttonKey,
@@ -136,16 +145,14 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                               }
 
                               if (buttonActive) {
-                                bloc.loginWithPhone(
-                                    password: passwordController.text.trim());
+                                bloc.loginWithPhone(password: passwordController.text.trim());
                               }
                             },
                             active: buttonActive,
                             text: localizations.enter,
                             styleText: AppTypography.font14white,
                             height: 52,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 0),
+                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
                           ),
                         ],
                       )),
@@ -156,15 +163,12 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                     text: TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                            text: localizations.noAccount,
-                            style: AppTypography.font14lightGray
-                                .copyWith(fontSize: 16)),
+                            text: localizations.noAccount, style: AppTypography.font14lightGray.copyWith(fontSize: 16)),
                         TextSpan(
                             text: localizations.register,
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.pushNamed(
-                                    context, '/register_screen');
+                                Navigator.pushNamed(context, '/register_screen');
                               },
                             style: AppTypography.font16UnderLinePink)
                       ],
@@ -178,8 +182,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                         RawMaterialButton(
                             onPressed: () {},
                             shape: const CircleBorder(),
-                            constraints: const BoxConstraints(
-                                maxWidth: 40, maxHeight: 40),
+                            constraints: const BoxConstraints(maxWidth: 40, maxHeight: 40),
                             child: SvgPicture.asset(
                               'Assets/icons/facebook.svg',
                               width: 40,
@@ -188,8 +191,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                           width: 5,
                         ),
                         RawMaterialButton(
-                            constraints: const BoxConstraints(
-                                maxWidth: 40, maxHeight: 40),
+                            constraints: const BoxConstraints(maxWidth: 40, maxHeight: 40),
                             onPressed: () {},
                             shape: const CircleBorder(),
                             child: SvgPicture.asset(

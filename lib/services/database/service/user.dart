@@ -15,19 +15,46 @@ class UserService {
     required String uid,
     required String phone,
   }) async {
-    await _databases.createDocument(
+    //TODO user check
+    final existsDocument = await _databases.listDocuments(
+      databaseId: mainDatabase,
+      collectionId: usersCollection,
+      queries: [Query.equal('\$id', uid)],
+    );
+    if (existsDocument.documents.isEmpty) {
+      await _databases.createDocument(
         databaseId: mainDatabase,
         collectionId: usersCollection,
         documentId: uid,
-        data: {userName: name, userPhone: phone});
+        data: {
+          userName: name,
+          userPhone: phone,
+        },
+      );
+    } else {
+      final data = {};
+      if (name != '') {
+        data[userName] = name;
+      }
+      if (phone != '') {
+        data[userPhone] = phone;
+      }
+      await _databases.updateDocument(
+        databaseId: mainDatabase,
+        collectionId: usersCollection,
+        documentId: uid,
+        data: data,
+      );
+    }
   }
 
   Future<UserData?> getUserData({required String uid}) async {
     try {
       final res = await _databases.getDocument(
-          databaseId: mainDatabase,
-          collectionId: usersCollection,
-          documentId: uid);
+        databaseId: mainDatabase,
+        collectionId: usersCollection,
+        documentId: uid,
+      );
       return UserData.fromJson(res.data);
     } catch (e) {
       return null;
@@ -58,24 +85,30 @@ class UserService {
 
   Future<void> sendSms() async {
     final jwt = await getJwt();
-    await _functions.createExecution(
+    final res = await _functions.createExecution(
       functionId: '658d94ecc79d136f5fec',
       body: jsonEncode({'jwt': jwt}),
     );
+    // ignore: avoid_print
+    print('sendSms ${res.responseBody}');
     log('sms sent');
   }
 
-  Future<UserCredentials?> confirmSms(String code, String password) async {
+  Future<(UserCredentials?, bool)> confirmSms(String code, String password) async {
     final jwt = await getJwt();
     final body = jsonEncode({'jwt': jwt, 'code': code, 'password': password});
 
     final res = await _functions.createExecution(
-        functionId: '658d94c13158a0f7ba5b', body: body);
+      functionId: '658d94c13158a0f7ba5b',
+      body: body,
+    );
+
+    final resBody = jsonDecode(res.responseBody);
 
     try {
-      return UserCredentials.fromJson(jsonDecode(res.responseBody));
+      return Future.value((UserCredentials.fromJson(resBody), resBody['user_exist'] as bool));
     } catch (e) {
-      return null;
+      return Future.value((null, false));
     }
   }
 
@@ -92,10 +125,8 @@ class UserService {
 
   Future<DateTime> getLastUserOnline(String userId) async {
     try {
-      final res = await _databases.getDocument(
-          databaseId: mainDatabase,
-          collectionId: usersCollection,
-          documentId: userId);
+      final res =
+          await _databases.getDocument(databaseId: mainDatabase, collectionId: usersCollection, documentId: userId);
 
       return DateTime.fromMillisecondsSinceEpoch(res.data[lastSeen] ?? 0);
     } catch (err) {
@@ -105,10 +136,7 @@ class UserService {
 
   Future<bool> userExists(String userId) async {
     try {
-      await _databases.getDocument(
-          databaseId: mainDatabase,
-          collectionId: usersCollection,
-          documentId: userId);
+      await _databases.getDocument(databaseId: mainDatabase, collectionId: usersCollection, documentId: userId);
       return true;
     } catch (e) {
       return false;

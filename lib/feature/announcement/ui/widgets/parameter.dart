@@ -22,10 +22,13 @@ class ItemParameterWidget extends StatelessWidget {
             name,
             style: AppTypography.font14lightGray,
           ),
-          Text(
-            currentValue,
-            style:
-                AppTypography.font14black.copyWith(fontWeight: FontWeight.w600),
+          const SizedBox(width: 20),
+          Expanded(
+            child: Text(
+              currentValue,
+              textAlign: TextAlign.right,
+              style: AppTypography.font14black.copyWith(fontWeight: FontWeight.w600),
+            ),
           ),
         ],
       ),

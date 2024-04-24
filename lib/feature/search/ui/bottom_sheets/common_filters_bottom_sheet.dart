@@ -184,6 +184,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                       CustomDropDownSingleCheckBox(
                         icon: 'Assets/icons/tirage.svg',
                         parameter: searchCubit.sortTypesParameter,
+                        isClickable: true,
                         onChange: (parametrOption) {
                           searchCubit.sortTypesParameter.setVariant(parametrOption);
                           searchCubit.sortType = parametrOption.key;

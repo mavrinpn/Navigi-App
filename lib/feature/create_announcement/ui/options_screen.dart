@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/feature/create_announcement/ui/widgets/select_parameter_bottom_sheet.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/price_type.dart';
 import 'package:smart/utils/routes/route_names.dart';
@@ -32,18 +33,15 @@ class _OptionsScreenState extends State<OptionsScreen> {
   @override
   void initState() {
     super.initState();
-    final repository =
-        RepositoryProvider.of<CreatingAnnouncementManager>(context);
-    _availableTypes = PriceTypeExtendion.availableTypesFor(
-        repository.creatingData.subcategoryId ?? '');
+    final repository = RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    _availableTypes = PriceTypeExtendion.availableTypesFor(repository.creatingData.subcategoryId ?? '');
     _priceType = _availableTypes.first;
     _parametersList = repository.getParametersList();
   }
 
   @override
   Widget build(BuildContext context) {
-    final repository =
-        RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    final repository = RepositoryProvider.of<CreatingAnnouncementManager>(context);
 
     final localizations = AppLocalizations.of(context)!;
 
@@ -53,7 +51,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           iconTheme: const IconThemeData.fallback(),
-          backgroundColor: AppColors.empty,
+          backgroundColor: AppColors.appBarColor,
           elevation: 0,
           title: Text(
             AppLocalizations.of(context)!.features,
@@ -67,8 +65,34 @@ class _OptionsScreenState extends State<OptionsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 16,
+                Align(
+                  alignment: Alignment.topRight,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(10),
+                    onTap: () {
+                      for (var param in _parametersList) {
+                        if (param is SelectParameter) {
+                          param.currentValue = param.variants[0];
+                        } else if (param is SingleSelectParameter) {
+                          param.currentValue = param.variants[0];
+                        } else if (param is MultiSelectParameter) {
+                          param.selectedVariants = [];
+                        } else if (param is InputParameter) {
+                          param.value = null;
+                        } else if (param is TextParameter) {
+                          param.value = '';
+                        }
+                      }
+                      setState(() {});
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Text(
+                        localizations.resetEverything,
+                        style: AppTypography.font12gray,
+                      ),
+                    ),
+                  ),
                 ),
                 Text(
                   AppLocalizations.of(context)!.price,
@@ -107,15 +131,13 @@ class _OptionsScreenState extends State<OptionsScreen> {
                   },
                   onEditingComplete: () {
                     setState(() {
-                      priceController.text =
-                          double.parse(priceController.text).toString();
+                      priceController.text = double.parse(priceController.text).toString();
                     });
                     FocusScope.of(context).requestFocus(FocusNode());
                   },
                   onTapOutside: (e) {
                     setState(() {
-                      priceController.text =
-                          double.parse(priceController.text).toString();
+                      priceController.text = double.parse(priceController.text).toString();
                     });
                     FocusScope.of(context).requestFocus(FocusNode());
                   },
@@ -124,11 +146,17 @@ class _OptionsScreenState extends State<OptionsScreen> {
                 SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children:
-                        _parametersList.map((e) => buildParameter(e)).toList() +
-                            [const SizedBox(height: 120)],
+                    children: [
+                      ..._parametersList
+                          .map((e) => Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 4),
+                                child: buildParameter(e),
+                              ))
+                          .toList(),
+                      const SizedBox(height: 120),
+                    ],
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -138,8 +166,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
           text: localizations.continue_,
           callback: () {
             if (buttonActive) {
-              repository.setPrice(
-                  _priceType.fromPriceString(priceController.text) ?? 0);
+              repository.setPrice(_priceType.fromPriceString(priceController.text) ?? 0);
 
               repository.setPriceType(_priceType);
               repository.setInfoFormItem();
@@ -155,15 +182,50 @@ class _OptionsScreenState extends State<OptionsScreen> {
     );
   }
 
+  // Widget buildParameter(Parameter parameter) {
+  //   if (parameter is SelectParameter) {
+  //     return SelectParameterWidget(parameter: parameter);
+  //   } else if (parameter is SingleSelectParameter) {
+  //     return SelectParameterWidget(parameter: parameter);
+  //   } else if (parameter is MultiSelectParameter) {
+  //     return MultipleCheckboxPicker(
+  //       parameter: parameter,
+  //       wrapDirection: Axis.vertical,
+  //     );
+  //   } else if (parameter is InputParameter) {
+  //     return Padding(
+  //       padding: const EdgeInsets.only(bottom: 16.0),
+  //       child: InputParameterWidget(parameter: parameter),
+  //     );
+  //   } else {
+  //     return Container();
+  //   }
+  // }
+
   Widget buildParameter(Parameter parameter) {
     if (parameter is SelectParameter) {
-      return SelectParameterWidget(parameter: parameter);
+      return SelectParameterBottomSheet(
+        title: parameter.name,
+        child: SelectParameterWidget(
+          parameter: parameter,
+          isClickable: false,
+        ),
+      );
     } else if (parameter is SingleSelectParameter) {
-      return SelectParameterWidget(parameter: parameter);
+      return SelectParameterBottomSheet(
+        title: parameter.name,
+        child: SelectParameterWidget(
+          parameter: parameter,
+          isClickable: false,
+        ),
+      );
     } else if (parameter is MultiSelectParameter) {
-      return MultipleCheckboxPicker(
-        parameter: parameter,
-        wrapDirection: Axis.vertical,
+      return SelectParameterBottomSheet(
+        title: parameter.name,
+        child: MultipleCheckboxPicker(
+          parameter: parameter,
+          wrapDirection: Axis.vertical,
+        ),
       );
     } else if (parameter is InputParameter) {
       return Padding(

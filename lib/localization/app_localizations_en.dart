@@ -500,7 +500,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get save => 'Save';
 
   @override
-  String get placeApplicationSettings => 'Place application settings';
+  String get placeApplicationSettings => 'Settings';
 
   @override
   String get mark => 'Mark';
@@ -607,4 +607,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mlrd => 'Billions';
+
+  @override
+  String get tryAgainLater => 'Try again later';
+
+  @override
+  String get userAlreadyRegistered => 'This user is already registered';
+
+  @override
+  String get userNotFound => 'The user is not registered';
+
+  @override
+  String get forgotYourPassword => 'Forgot your password?';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get recoverPassword => 'Recover password';
 }

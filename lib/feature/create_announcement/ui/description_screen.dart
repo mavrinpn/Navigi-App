@@ -23,20 +23,19 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    final repository =
-        RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    final repository = RepositoryProvider.of<CreatingAnnouncementManager>(context);
 
     // titleController.text = repository.creatingData.title!;
 
-    descriptionController.selection = TextSelection.fromPosition(
-        TextPosition(offset: descriptionController.text.length));
+    // descriptionController.selection =
+    // TextSelection.fromPosition(TextPosition(offset: descriptionController.text.length));
     // titleController.selection = TextSelection.fromPosition(
-        // TextPosition(offset: titleController.text.length));
+    // TextPosition(offset: titleController.text.length));
 
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData.fallback(),
-        backgroundColor: AppColors.empty,
+        backgroundColor: AppColors.appBarColor,
         elevation: 0,
         title: Text(
           localizations.information,
@@ -122,8 +121,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
           repository.setDescription(descriptionController.text);
           // repository.setTitle(titleController.text);
           repository.setInfoFormItem();
-          BlocProvider.of<CreatingAnnouncementCubit>(context)
-              .createAnnouncement();
+          BlocProvider.of<CreatingAnnouncementCubit>(context).createAnnouncement();
           Navigator.pushNamed(context, '/loading_screen');
         },
       ),

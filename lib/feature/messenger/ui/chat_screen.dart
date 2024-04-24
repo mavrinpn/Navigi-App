@@ -114,7 +114,7 @@ class _ChatScreenState extends State<ChatScreen> {
           resizeToAvoidBottomInset: true,
           backgroundColor: AppColors.backgroundLightGray,
           appBar: AppBar(
-            backgroundColor: AppColors.mainBackground,
+            backgroundColor: AppColors.appBarColor,
             automaticallyImplyLeading: false,
             actions: [
               IconButton(

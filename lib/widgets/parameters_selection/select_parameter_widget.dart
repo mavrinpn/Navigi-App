@@ -5,8 +5,10 @@ class SelectParameterWidget extends StatefulWidget {
   const SelectParameterWidget({
     super.key,
     required this.parameter,
+    this.isClickable = true,
   });
   final dynamic parameter;
+  final bool isClickable;
 
   @override
   State<SelectParameterWidget> createState() => _SelectParameterWidgetState();
@@ -17,6 +19,7 @@ class _SelectParameterWidgetState extends State<SelectParameterWidget> {
   Widget build(BuildContext context) {
     return CustomDropDownSingleCheckBox(
       parameter: widget.parameter,
+      isClickable: widget.isClickable,
       onChange: (dynamic value) {
         widget.parameter.setVariant(value!);
         setState(() {});

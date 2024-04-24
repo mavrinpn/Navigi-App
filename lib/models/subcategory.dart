@@ -6,7 +6,7 @@ class Subcategory {
   final bool containsOther;
   final String categoryId;
   final String subcategoryId;
-  final int weight;
+  // final int weight;
 
   String localizedName(String locale) {
     if (locale == 'fr') {
@@ -26,7 +26,7 @@ class Subcategory {
     required this.nameFr,
     required this.nameAr,
     this.containsOther = false,
-    required this.weight,
+    // required this.weight,
   });
 
   factory Subcategory.fromJson(Map<String, dynamic> json) {
@@ -37,7 +37,7 @@ class Subcategory {
       id: json['\$id'],
       nameFr: json['nameFr'],
       nameAr: json['nameAr'],
-      weight: int.tryParse('${json['weight']}') ?? 999,
+      // weight: int.tryParse('${json['weight']}') ?? 999,
       containsOther: json['containsOther'] ?? false,
     );
   }

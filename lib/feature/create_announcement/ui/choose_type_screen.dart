@@ -30,7 +30,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData.fallback(),
-        backgroundColor: AppColors.empty,
+        backgroundColor: AppColors.appBarColor,
         elevation: 0,
         title: Text(
           localizations.typeOfNews,

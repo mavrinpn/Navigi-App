@@ -8,7 +8,12 @@ import 'package:smart/widgets/button/back_button.dart';
 import '../../../widgets/button/custom_text_button.dart';
 
 class CheckCodeScreen extends StatefulWidget {
-  const CheckCodeScreen({Key? key}) : super(key: key);
+  const CheckCodeScreen({
+    Key? key,
+    required this.isPasswordRestore,
+  }) : super(key: key);
+
+  final bool isPasswordRestore;
 
   @override
   State<CheckCodeScreen> createState() => _CodeScreenState();
@@ -26,6 +31,7 @@ class _CodeScreenState extends State<CheckCodeScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        backgroundColor: AppColors.appBarColor,
         automaticallyImplyLeading: false,
         titleSpacing: 6,
         title: const Row(
@@ -109,7 +115,11 @@ class _CodeScreenState extends State<CheckCodeScreen> {
             ),
             CustomTextButton(
               callback: () {
-                Navigator.pushNamed(context, AppRoutesNames.authCode);
+                Navigator.pushReplacementNamed(
+                  context,
+                  AppRoutesNames.authCode,
+                  arguments: {'isPasswordRestore': widget.isPasswordRestore},
+                );
               },
               active: true,
               text: localizations.callMe,

@@ -9,8 +9,10 @@ class AuthLoadingState extends AuthState {}
 
 class AuthSuccessState extends AuthState {}
 
-class AuthFailState extends AuthState  {}
+class AuthFailState extends AuthState {}
 
-class AlreadyExistState extends AuthState  {}
+class AlreadyExistState extends AuthState {}
+
+class NotFoundState extends AuthState {}
 
 class CodeSentState extends AuthState {}

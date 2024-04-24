@@ -47,6 +47,7 @@ class _SelectCarMarkScreenState extends State<SelectCarMarkScreen> {
     return Scaffold(
       appBar: widget.isBottomSheet
           ? AppBar(
+              backgroundColor: AppColors.appBarColor,
               automaticallyImplyLeading: false,
               toolbarHeight: 70,
               flexibleSpace: Column(
@@ -59,8 +60,7 @@ class _SelectCarMarkScreenState extends State<SelectCarMarkScreen> {
                       height: 4,
                       decoration: ShapeDecoration(
                           color: const Color(0xFFDDE1E7),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(1))),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(1))),
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -78,7 +78,7 @@ class _SelectCarMarkScreenState extends State<SelectCarMarkScreen> {
             )
           : AppBar(
               iconTheme: const IconThemeData.fallback(),
-              backgroundColor: AppColors.empty,
+              backgroundColor: AppColors.appBarColor,
               elevation: 0,
               title: Text(
                 localizations.choosingCarBrand,
@@ -94,8 +94,7 @@ class _SelectCarMarkScreenState extends State<SelectCarMarkScreen> {
             return ListView(
               padding: const EdgeInsets.only(bottom: 120),
               children: cubit.marks
-                  .where((element) =>
-                      element.name.toLowerCase().startsWith(_searchString))
+                  .where((element) => element.name.toLowerCase().startsWith(_searchString))
                   .map(
                     (mark) => CarMarkWidget(
                       mark: mark,

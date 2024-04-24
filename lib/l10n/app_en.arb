@@ -168,7 +168,7 @@
 "cancelation": "Cancelation",
 "withSuccess": "With success",
 "save": "Save",
-"placeApplicationSettings": "Place application settings",
+"placeApplicationSettings": "Settings",
 "mark": "Mark",
 "model": "Model",
 "choosingCarBrand": "Choosing a car brand",
@@ -216,5 +216,11 @@
 },
 "dzd": "Algerian Dinar",
 "mln": "Millions",
-"mlrd": "Billions"
+"mlrd": "Billions",
+"tryAgainLater": "Try again later",
+"userAlreadyRegistered": "This user is already registered",
+"userNotFound": "The user is not registered",
+"forgotYourPassword": "Forgot your password?",
+"next": "Next",
+"recoverPassword": "Recover password"
 }

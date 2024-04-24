@@ -51,7 +51,7 @@ class _FavoritesScreen extends State<FavoritesScreen> {
         child: Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: false,
-              backgroundColor: AppColors.mainBackground,
+              backgroundColor: AppColors.appBarColor,
               elevation: 0,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

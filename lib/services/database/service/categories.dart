@@ -38,7 +38,7 @@ class CategoriesService {
       subcategories.add(Subcategory.fromJson(doc.data));
     }
 
-    subcategories.sort((a, b) => a.weight.compareTo(b.weight));
+    // subcategories.sort((a, b) => a.weight.compareTo(b.weight));
     return subcategories;
   }
 
@@ -65,7 +65,7 @@ class CategoriesService {
     for (var doc in res.documents) {
       subcategories.add(Subcategory.fromJson(doc.data));
     }
-    subcategories.sort((a, b) => a.weight.compareTo(b.weight));
+    // subcategories.sort((a, b) => a.weight.compareTo(b.weight));
     return subcategories;
   }
 

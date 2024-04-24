@@ -216,5 +216,11 @@
 },
 "dzd": "الدينار الجزائري",
 "mln": "الملايين",
-"mlrd": "المليارات"
+"mlrd": "المليارات",
+"tryAgainLater": "حاول مرة أخرى لاحقا",
+"userAlreadyRegistered": "هذا المستخدم مسجل بالفعل",
+"userNotFound": "المستخدم غير مسجل",
+"forgotYourPassword": "نسيت كلمة المرور?",
+"next": "التالي",
+"recoverPassword": "استعادة كلمة المرور"
 }

@@ -176,7 +176,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get charit => 'Se cértifier';
 
   @override
-  String get applicationSettings => 'Paramètres de l\'application';
+  String get applicationSettings => 'Paramètres';
 
   @override
   String get notifications => 'Notifications';
@@ -500,7 +500,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get save => 'Enregistrer';
 
   @override
-  String get placeApplicationSettings => 'Paramètres de l\'application place';
+  String get placeApplicationSettings => 'Paramètres';
 
   @override
   String get mark => 'Marque';
@@ -607,4 +607,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get mlrd => 'Milliards';
+
+  @override
+  String get tryAgainLater => 'Réessayez plus tard';
+
+  @override
+  String get userAlreadyRegistered => 'Cet utilisateur est déjà enregistré';
+
+  @override
+  String get userNotFound => 'Utilisateur non enregistré';
+
+  @override
+  String get forgotYourPassword => 'Mot de passe oublié?';
+
+  @override
+  String get next => 'Suivant';
+
+  @override
+  String get recoverPassword => 'Récupérer le mot de passe';
 }

@@ -22,7 +22,6 @@ class ParametersFilterBuilder {
       queries.add(Query.cursorAfter(filterData.lastId!));
     }
 
-    //TODO keyword search
     if (filterData.keyword != null) {
       List<String> frAndQueries = [];
       for (final textRow in filterData.keyword!.nameFr.split(' ')) {
@@ -49,7 +48,6 @@ class ParametersFilterBuilder {
       }
     }
 
-    //TODO text search
     if (filterData.text != null && filterData.text != '') {
       for (final textRow in filterData.text!.split(' ')) {
         queries.add(Query.contains('keywords', textRow.toLowerCase()));
