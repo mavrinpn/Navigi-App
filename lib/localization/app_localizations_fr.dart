@@ -625,4 +625,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get recoverPassword => 'Récupérer le mot de passe';
+
+  @override
+  String get notSpecified => 'non spécifié';
+
+  @override
+  String get selected => 'sélectionné';
 }

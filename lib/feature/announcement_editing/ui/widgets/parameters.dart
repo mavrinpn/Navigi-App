@@ -24,15 +24,23 @@ class ParametersSection extends StatefulWidget {
 
 class _ParametersSectionState extends State<ParametersSection> {
   @override
+  void initState() {
+    super.initState();
+    // loadCurrentParametersValue();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
         child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: widget.paramaters.map((e) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: buildParameter(e),
-      )).toList(),
+      children: widget.paramaters
+          .map((e) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: buildParameter(e),
+              ))
+          .toList(),
     ));
   }
 
@@ -99,6 +107,58 @@ class _ParametersSectionState extends State<ParametersSection> {
   //   }
   // }
 
+  void loadCurrentParametersValue() {
+    for (final parameter in widget.paramaters) {
+      if (parameter is SelectParameter) {
+        final SelectStaticParameter? current = widget.staticParameters?.parameters
+            .where((param) => param.key == parameter.key)
+            .firstOrNull as SelectStaticParameter?;
+        if (current != null) {
+          final parameterOption = ParameterOption(
+            current.currentOption.key,
+            nameAr: current.currentOption.nameAr,
+            nameFr: current.currentOption.nameFr,
+          );
+          parameter.currentValue = parameterOption;
+        }
+      } else if (parameter is SingleSelectParameter) {
+        final SingleSelectStaticParameter? current = widget.staticParameters?.parameters
+            .where((param) => param.key == parameter.key)
+            .firstOrNull as SingleSelectStaticParameter?;
+        if (current != null) {
+          final parameterOption = ParameterOption(
+            current.currentOption.key,
+            nameAr: current.currentOption.nameAr,
+            nameFr: current.currentOption.nameFr,
+          );
+          parameter.currentValue = parameterOption;
+        }
+      } else if (parameter is MultiSelectParameter) {
+        final MultiSelectStaticParameter? current = widget.staticParameters?.parameters
+            .where((param) => param.key == parameter.key)
+            .firstOrNull as MultiSelectStaticParameter?;
+
+        if (current != null) {
+          for (final selectedOption in current.currentOption) {
+            final parameterOption = ParameterOption(
+              selectedOption.key,
+              nameAr: selectedOption.nameAr,
+              nameFr: selectedOption.nameFr,
+            );
+            parameter.addSelectedValue(parameterOption);
+          }
+        }
+      } else if (parameter is InputParameter) {
+        final InputStaticParameter? current = widget.staticParameters?.parameters
+            .where((param) => param.key == parameter.key)
+            .firstOrNull as InputStaticParameter?;
+        if (current != null) {
+          parameter.value = current.value;
+        }
+      }
+    }
+  }
+
   Widget buildParameter(Parameter parameter) {
     if (parameter is SelectParameter) {
       final SelectStaticParameter? current = widget.staticParameters?.parameters
@@ -112,14 +172,23 @@ class _ParametersSectionState extends State<ParametersSection> {
         );
         parameter.currentValue = parameterOption;
       }
-
-      return SelectParameterBottomSheet(
-        title: parameter.name,
-        child: SelectParameterWidget(
+      if (parameter.variants.length > 3) {
+        return SelectParameterBottomSheet(
+          title: parameter.name,
+          selected: parameter.currentValue.name,
+          child: SelectParameterWidget(
+            parameter: parameter,
+            isClickable: false,
+            onChange: () => setState(() {}),
+          ),
+        );
+      } else {
+        return SelectParameterWidget(
           parameter: parameter,
           isClickable: false,
-        ),
-      );
+          onChange: () => setState(() {}),
+        );
+      }
     } else if (parameter is SingleSelectParameter) {
       final SingleSelectStaticParameter? current = widget.staticParameters?.parameters
           .where((param) => param.key == parameter.key)
@@ -132,19 +201,27 @@ class _ParametersSectionState extends State<ParametersSection> {
         );
         parameter.currentValue = parameterOption;
       }
-
-      return SelectParameterBottomSheet(
-        title: parameter.name,
-        child: SelectParameterWidget(
+      if (parameter.variants.length > 3) {
+        return SelectParameterBottomSheet(
+          title: parameter.name,
+          selected: parameter.currentValue.name,
+          child: SelectParameterWidget(
+            parameter: parameter,
+            isClickable: false,
+            onChange: () => setState(() {}),
+          ),
+        );
+      } else {
+        return SelectParameterWidget(
           parameter: parameter,
           isClickable: false,
-        ),
-      );
+          onChange: () => setState(() {}),
+        );
+      }
     } else if (parameter is MultiSelectParameter) {
       final MultiSelectStaticParameter? current = widget.staticParameters?.parameters
           .where((param) => param.key == parameter.key)
           .firstOrNull as MultiSelectStaticParameter?;
-
       if (current != null) {
         for (final selectedOption in current.currentOption) {
           final parameterOption = ParameterOption(
@@ -158,9 +235,11 @@ class _ParametersSectionState extends State<ParametersSection> {
 
       return SelectParameterBottomSheet(
         title: parameter.name,
+        selected: parameter.currentValue.name,
         child: MultipleCheckboxPicker(
           parameter: parameter,
           wrapDirection: Axis.vertical,
+          onChange: () => setState(() {}),
         ),
       );
     } else if (parameter is InputParameter) {
@@ -176,7 +255,7 @@ class _ParametersSectionState extends State<ParametersSection> {
         child: InputParameterWidget(parameter: parameter),
       );
     } else {
-      return Container();
+      return const SizedBox.shrink();
     }
   }
 }

@@ -625,4 +625,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recoverPassword => 'Recover password';
+
+  @override
+  String get notSpecified => 'not specified';
+
+  @override
+  String get selected => 'selected';
 }

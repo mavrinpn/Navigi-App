@@ -1,3 +1,4 @@
+import 'package:smart/main.dart';
 import 'package:smart/models/item/item.dart';
 
 class ParametersParser {
@@ -39,11 +40,8 @@ class ParametersParser {
       options.add(ParameterOption.fromJson(optionJson));
     }
 
-    final parameter = SelectParameter(
-        key: json['id'],
-        variants: options,
-        arName: json['nameAr'],
-        frName: json['nameFr']);
+    final parameter =
+        SelectParameter(key: json['id'], variants: options, arName: json['nameAr'], frName: json['nameFr']);
 
     decodedParameters.add(parameter);
   }
@@ -55,11 +53,8 @@ class ParametersParser {
       options.add(ParameterOption.fromJson(optionJson));
     }
 
-    final parameter = MultiSelectParameter(
-        key: json['id'],
-        variants: options,
-        arName: json['nameAr'],
-        frName: json['nameFr']);
+    final parameter =
+        MultiSelectParameter(key: json['id'], variants: options, arName: json['nameAr'], frName: json['nameFr']);
 
     decodedParameters.add(parameter);
   }
@@ -71,25 +66,20 @@ class ParametersParser {
       options.add(ParameterOption.fromJson(optionJson));
     }
 
-    final parameter = SingleSelectParameter(
-        key: json['id'],
-        variants: options,
-        arName: json['nameAr'],
-        frName: json['nameFr']);
+    final parameter =
+        SingleSelectParameter(key: json['id'], variants: options, arName: json['nameAr'], frName: json['nameFr']);
 
     decodedParameters.add(parameter);
   }
 
   void parseInputParameter(Map json) {
-    final parameter =
-        InputParameter(json['id'], 'int', json['nameAr'], json['nameFr']);
+    final parameter = InputParameter(json['id'], 'int', json['nameAr'], json['nameFr']);
 
     decodedParameters.add(parameter);
   }
 
   void parseMinMaxParameter(Map json) {
-    final parameter =
-        MinMaxParameter(json['id'], json['nameAr'], json['nameFr']);
+    final parameter = MinMaxParameter(json['id'], json['nameAr'], json['nameFr']);
 
     decodedParameters.add(parameter);
   }
@@ -99,6 +89,10 @@ class ParameterOption {
   final dynamic key;
   final String nameAr;
   final String nameFr;
+
+  String get name {
+    return currentLocaleShortName.value == 'fr' ? nameFr : nameAr;
+  }
 
   ParameterOption(
     this.key, {
@@ -111,8 +105,7 @@ class ParameterOption {
         nameAr = json['nameAr'],
         nameFr = json['nameFr'];
 
-  Map<String, dynamic> toJson() =>
-      {'id': key, 'nameAr': nameAr, 'nameFr': nameFr};
+  Map<String, dynamic> toJson() => {'id': key, 'nameAr': nameAr, 'nameFr': nameFr};
 
   @override
   bool operator ==(Object other) {

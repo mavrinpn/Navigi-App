@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smart/main.dart';
-import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 
@@ -9,10 +8,12 @@ class SelectParameterBottomSheet extends StatelessWidget {
     super.key,
     required this.child,
     required this.title,
+    required this.selected,
   });
 
   final Widget child;
   final String title;
+  final String selected;
 
   @override
   Widget build(BuildContext context) {
@@ -95,10 +96,16 @@ class SelectParameterBottomSheet extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const Icon(
-              Icons.keyboard_arrow_down_sharp,
-              color: AppColors.lightGray,
-            ),
+            if (selected.isNotEmpty)
+              Text(
+                selected,
+                style: AppTypography.font14light,
+                overflow: TextOverflow.ellipsis,
+              ),
+            // const Icon(
+            //   Icons.keyboard_arrow_down_sharp,
+            //   color: AppColors.lightGray,
+            // ),
           ],
         ),
       ),

@@ -182,51 +182,69 @@ class _OptionsScreenState extends State<OptionsScreen> {
     );
   }
 
-  // Widget buildParameter(Parameter parameter) {
-  //   if (parameter is SelectParameter) {
-  //     return SelectParameterWidget(parameter: parameter);
-  //   } else if (parameter is SingleSelectParameter) {
-  //     return SelectParameterWidget(parameter: parameter);
-  //   } else if (parameter is MultiSelectParameter) {
-  //     return MultipleCheckboxPicker(
-  //       parameter: parameter,
-  //       wrapDirection: Axis.vertical,
-  //     );
-  //   } else if (parameter is InputParameter) {
-  //     return Padding(
-  //       padding: const EdgeInsets.only(bottom: 16.0),
-  //       child: InputParameterWidget(parameter: parameter),
-  //     );
-  //   } else {
-  //     return Container();
-  //   }
-  // }
-
   Widget buildParameter(Parameter parameter) {
+    final localizations = AppLocalizations.of(context)!;
+
     if (parameter is SelectParameter) {
-      return SelectParameterBottomSheet(
-        title: parameter.name,
-        child: SelectParameterWidget(
+      if (parameter.variants.length > 3) {
+        return SelectParameterBottomSheet(
+          title: parameter.name,
+          selected: parameter.currentValue.name,
+          child: SelectParameterWidget(
+            parameter: parameter,
+            isClickable: false,
+            onChange: () => setState(() {}),
+          ),
+        );
+      } else {
+        return SelectParameterWidget(
           parameter: parameter,
           isClickable: false,
-        ),
-      );
+          onChange: () => setState(() {}),
+        );
+      }
     } else if (parameter is SingleSelectParameter) {
-      return SelectParameterBottomSheet(
-        title: parameter.name,
-        child: SelectParameterWidget(
+      if (parameter.variants.length > 3) {
+        return SelectParameterBottomSheet(
+          title: parameter.name,
+          selected: parameter.currentValue.name,
+          child: SelectParameterWidget(
+            parameter: parameter,
+            isClickable: false,
+            onChange: () => setState(() {}),
+          ),
+        );
+      } else {
+        return SelectParameterWidget(
           parameter: parameter,
           isClickable: false,
-        ),
-      );
+          onChange: () => setState(() {}),
+        );
+      }
     } else if (parameter is MultiSelectParameter) {
-      return SelectParameterBottomSheet(
-        title: parameter.name,
-        child: MultipleCheckboxPicker(
+      if (parameter.variants.length > 3) {
+        String selected = localizations.notSpecified;
+        if (parameter.selectedVariants.length == 1) {
+          selected = parameter.selectedVariants.first.name;
+        } else if (parameter.selectedVariants.length > 1) {
+          selected = '${localizations.selected}: ${parameter.selectedVariants.length}';
+        }
+        return SelectParameterBottomSheet(
+          title: parameter.name,
+          selected: selected,
+          child: MultipleCheckboxPicker(
+            parameter: parameter,
+            wrapDirection: Axis.vertical,
+            onChange: () => setState(() {}),
+          ),
+        );
+      } else {
+        return MultipleCheckboxPicker(
           parameter: parameter,
           wrapDirection: Axis.vertical,
-        ),
-      );
+          onChange: () => setState(() {}),
+        );
+      }
     } else if (parameter is InputParameter) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 16.0),

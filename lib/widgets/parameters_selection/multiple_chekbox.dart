@@ -10,10 +10,12 @@ class MultipleCheckboxPicker extends StatefulWidget {
     super.key,
     required this.parameter,
     required this.wrapDirection,
+    required this.onChange,
   });
 
   final dynamic parameter;
   final Axis wrapDirection;
+  final Function onChange;
 
   @override
   State<MultipleCheckboxPicker> createState() => _MultipleCheckboxPickerState();
@@ -27,7 +29,7 @@ class _MultipleCheckboxPickerState extends State<MultipleCheckboxPicker> {
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
 
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 6.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -52,6 +54,7 @@ class _MultipleCheckboxPickerState extends State<MultipleCheckboxPicker> {
                     }
 
                     setState(() {});
+                    widget.onChange();
                   },
                   active: widget.parameter.isSelected(
                     variants[index],

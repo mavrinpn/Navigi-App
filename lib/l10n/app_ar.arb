@@ -222,5 +222,7 @@
 "userNotFound": "المستخدم غير مسجل",
 "forgotYourPassword": "نسيت كلمة المرور?",
 "next": "التالي",
-"recoverPassword": "استعادة كلمة المرور"
+"recoverPassword": "استعادة كلمة المرور",
+"notSpecified": "غير محدد",
+"selected": "مختارة"
 }

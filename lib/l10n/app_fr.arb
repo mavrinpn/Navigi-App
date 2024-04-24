@@ -222,5 +222,7 @@
 "userNotFound": "Utilisateur non enregistré",
 "forgotYourPassword": "Mot de passe oublié?",
 "next": "Suivant",
-"recoverPassword": "Récupérer le mot de passe"
+"recoverPassword": "Récupérer le mot de passe",
+"notSpecified": "non spécifié",
+"selected": "sélectionné"
 }

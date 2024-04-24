@@ -625,4 +625,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get recoverPassword => 'استعادة كلمة المرور';
+
+  @override
+  String get notSpecified => 'غير محدد';
+
+  @override
+  String get selected => 'مختارة';
 }

@@ -229,11 +229,11 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
               child: CustomTextButton.orangeContinue(
                 callback: () {
                   RepositoryProvider.of<SearchManager>(context).setSearch(false);
-              
+
                   searchCubit.priceType = _priceType;
                   searchCubit.minPrice = _priceType.fromPriceString(_minPriceController.text);
                   searchCubit.maxPrice = _priceType.fromPriceString(_maxPriceController.text);
-              
+
                   searchCubit.setFilters(
                     parameters: selectCategoryCubit.parameters,
                     cityId: selectedCityId,
@@ -242,7 +242,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                     areaTitle: selectedAreaTitle,
                   );
                   Navigator.pop(context);
-              
+
                   if (widget.needOpenNewScreen) {
                     Navigator.pushNamed(
                       context,
@@ -252,9 +252,9 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                       },
                     );
                   }
-              
+
                   updateAppBarFilterCubit.needUpdateAppBarFilters();
-              
+
                   setState(() {});
                 },
                 text: locale() == 'fr' ? 'Appliquer' : 'تطبيق',
@@ -274,15 +274,18 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
         children.add(MultipleCheckboxPicker(
           parameter: i,
           wrapDirection: Axis.horizontal,
+          onChange: () => setState(() {}),
         ));
       } else if (i is SingleSelectParameter) {
         children.add(SelectParameterWidget(
           parameter: i,
+          onChange: () => setState(() {}),
         ));
       } else if (i is MultiSelectParameter) {
         children.add(MultipleCheckboxPicker(
           parameter: i,
           wrapDirection: Axis.horizontal,
+          onChange: () => setState(() {}),
         ));
       } else if (i is MinMaxParameter) {
         children.add(MinMaxParameterWidget(parameter: i));
@@ -301,15 +304,18 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
         children.add(MultipleCheckboxPicker(
           parameter: i,
           wrapDirection: Axis.horizontal,
+          onChange: () => setState(() {}),
         ));
       } else if (i is SingleSelectParameter) {
         children.add(SelectParameterWidget(
           parameter: i,
+          onChange: () => setState(() {}),
         ));
       } else if (i is MultiSelectParameter) {
         children.add(MultipleCheckboxPicker(
           parameter: i,
           wrapDirection: Axis.horizontal,
+          onChange: () => setState(() {}),
         ));
       } else if (i is MinMaxParameter) {
         children.add(MinMaxParameterWidget(parameter: i));

@@ -1330,6 +1330,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recover password'**
   String get recoverPassword;
+
+  /// No description provided for @notSpecified.
+  ///
+  /// In en, this message translates to:
+  /// **'not specified'**
+  String get notSpecified;
+
+  /// No description provided for @selected.
+  ///
+  /// In en, this message translates to:
+  /// **'selected'**
+  String get selected;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

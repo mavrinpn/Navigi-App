@@ -39,59 +39,58 @@ class _CustomDropDownSingleCheckBoxState extends State<CustomDropDownSingleCheck
   Widget build(BuildContext context) {
     final currentLocale = MyApp.getLocale(context);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 100),
-        child: Column(children: [
-          Material(
-            color: Colors.transparent,
-            clipBehavior: Clip.hardEdge,
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            child: InkWell(
-              onTap: widget.isClickable
-                  ? () {
-                      isOpen = !isOpen;
-                      setState(() {});
-                    }
-                  : null,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (widget.icon != null)
-                      SvgPicture.asset(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 100),
+      child: Column(children: [
+        Material(
+          color: Colors.transparent,
+          clipBehavior: Clip.hardEdge,
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          child: InkWell(
+            onTap: widget.isClickable
+                ? () {
+                    isOpen = !isOpen;
+                    setState(() {});
+                  }
+                : null,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  if (widget.icon != null)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
+                      child: SvgPicture.asset(
                         widget.icon!,
                         width: 24,
                       ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        currentLocale == 'fr' ? widget.parameter.frName : widget.parameter.arName,
-                        style: AppTypography.font16black.copyWith(fontSize: 18),
-                        overflow: TextOverflow.ellipsis,
-                      ),
                     ),
-                    if (widget.isClickable)
-                      !isOpen
-                          ? const Icon(
-                              Icons.arrow_forward_ios_outlined,
-                              size: 16,
-                              color: AppColors.lightGray,
-                            )
-                          : const Icon(
-                              Icons.keyboard_arrow_down_sharp,
-                              color: AppColors.lightGray,
-                            )
-                  ],
-                ),
+                  Expanded(
+                    child: Text(
+                      currentLocale == 'fr' ? widget.parameter.frName : widget.parameter.arName,
+                      style: AppTypography.font16black.copyWith(fontSize: 18),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  if (widget.isClickable)
+                    !isOpen
+                        ? const Icon(
+                            Icons.arrow_forward_ios_outlined,
+                            size: 16,
+                            color: AppColors.lightGray,
+                          )
+                        : const Icon(
+                            Icons.keyboard_arrow_down_sharp,
+                            color: AppColors.lightGray,
+                          )
+                ],
               ),
             ),
           ),
-          if (isOpen) ...[!showAll ? buildSimplePicker() : SinglePickWithSearch(parameter: widget.parameter)]
-        ]),
-      ),
+        ),
+        if (isOpen) ...[!showAll ? buildSimplePicker() : SinglePickWithSearch(parameter: widget.parameter)]
+      ]),
     );
   }
 

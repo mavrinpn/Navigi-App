@@ -222,5 +222,7 @@
 "userNotFound": "The user is not registered",
 "forgotYourPassword": "Forgot your password?",
 "next": "Next",
-"recoverPassword": "Recover password"
+"recoverPassword": "Recover password",
+"notSpecified": "not specified",
+"selected": "selected"
 }
