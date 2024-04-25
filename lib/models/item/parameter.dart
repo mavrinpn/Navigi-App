@@ -122,9 +122,17 @@ class MultiSelectParameter implements Parameter {
 
   List<ParameterOption> selectedVariants = [];
 
-  void addSelectedValue(dynamic value) => selectedVariants.add(value);
+  void addSelectedValue(dynamic value) {
+    final parameter = value as ParameterOption;
+
+    if (selectedVariants.where((element) => element.key == parameter.key).isEmpty) {
+      selectedVariants.add(value);
+    }
+  }
 
   void removeSelectedValue(dynamic value) => selectedVariants.remove(value);
+
+  void clearSelectedValue() => selectedVariants.clear();
 
   bool isSelected(ParameterOption value) => selectedVariants.contains(value);
 

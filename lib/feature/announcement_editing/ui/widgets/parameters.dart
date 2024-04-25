@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart/feature/create_announcement/ui/widgets/select_parameter_bottom_sheet.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/models/item/static_localized_parameter.dart';
 import 'package:smart/models/item/static_parameters.dart';
@@ -26,7 +27,12 @@ class _ParametersSectionState extends State<ParametersSection> {
   @override
   void initState() {
     super.initState();
-    // loadCurrentParametersValue();
+  }
+
+  @override
+  void didUpdateWidget (ParametersSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    loadCurrentParametersValue();
   }
 
   @override
@@ -160,18 +166,20 @@ class _ParametersSectionState extends State<ParametersSection> {
   }
 
   Widget buildParameter(Parameter parameter) {
+    final localizations = AppLocalizations.of(context)!;
+
     if (parameter is SelectParameter) {
-      final SelectStaticParameter? current = widget.staticParameters?.parameters
-          .where((param) => param.key == parameter.key)
-          .firstOrNull as SelectStaticParameter?;
-      if (current != null) {
-        final parameterOption = ParameterOption(
-          current.currentOption.key,
-          nameAr: current.currentOption.nameAr,
-          nameFr: current.currentOption.nameFr,
-        );
-        parameter.currentValue = parameterOption;
-      }
+      // final SelectStaticParameter? current = widget.staticParameters?.parameters
+      //     .where((param) => param.key == parameter.key)
+      //     .firstOrNull as SelectStaticParameter?;
+      // if (current != null) {
+      //   final parameterOption = ParameterOption(
+      //     current.currentOption.key,
+      //     nameAr: current.currentOption.nameAr,
+      //     nameFr: current.currentOption.nameFr,
+      //   );
+      //   parameter.currentValue = parameterOption;
+      // }
       if (parameter.variants.length > 3) {
         return SelectParameterBottomSheet(
           title: parameter.name,
@@ -190,17 +198,17 @@ class _ParametersSectionState extends State<ParametersSection> {
         );
       }
     } else if (parameter is SingleSelectParameter) {
-      final SingleSelectStaticParameter? current = widget.staticParameters?.parameters
-          .where((param) => param.key == parameter.key)
-          .firstOrNull as SingleSelectStaticParameter?;
-      if (current != null) {
-        final parameterOption = ParameterOption(
-          current.currentOption.key,
-          nameAr: current.currentOption.nameAr,
-          nameFr: current.currentOption.nameFr,
-        );
-        parameter.currentValue = parameterOption;
-      }
+      // final SingleSelectStaticParameter? current = widget.staticParameters?.parameters
+      //     .where((param) => param.key == parameter.key)
+      //     .firstOrNull as SingleSelectStaticParameter?;
+      // if (current != null) {
+      //   final parameterOption = ParameterOption(
+      //     current.currentOption.key,
+      //     nameAr: current.currentOption.nameAr,
+      //     nameFr: current.currentOption.nameFr,
+      //   );
+      //   parameter.currentValue = parameterOption;
+      // }
       if (parameter.variants.length > 3) {
         return SelectParameterBottomSheet(
           title: parameter.name,
@@ -219,23 +227,29 @@ class _ParametersSectionState extends State<ParametersSection> {
         );
       }
     } else if (parameter is MultiSelectParameter) {
-      final MultiSelectStaticParameter? current = widget.staticParameters?.parameters
-          .where((param) => param.key == parameter.key)
-          .firstOrNull as MultiSelectStaticParameter?;
-      if (current != null) {
-        for (final selectedOption in current.currentOption) {
-          final parameterOption = ParameterOption(
-            selectedOption.key,
-            nameAr: selectedOption.nameAr,
-            nameFr: selectedOption.nameFr,
-          );
-          parameter.addSelectedValue(parameterOption);
-        }
+      // final MultiSelectStaticParameter? current = widget.staticParameters?.parameters
+      //     .where((param) => param.key == parameter.key)
+      //     .firstOrNull as MultiSelectStaticParameter?;
+      // if (current != null) {
+      //   for (final selectedOption in current.currentOption) {
+      //     final parameterOption = ParameterOption(
+      //       selectedOption.key,
+      //       nameAr: selectedOption.nameAr,
+      //       nameFr: selectedOption.nameFr,
+      //     );
+      //     parameter.addSelectedValue(parameterOption);
+      //   }
+      // }
+      String selected = localizations.notSpecified;
+      if (parameter.selectedVariants.length == 1) {
+        selected = parameter.selectedVariants.first.name;
+      } else if (parameter.selectedVariants.length > 1) {
+        selected = '${localizations.selected}: ${parameter.selectedVariants.length}';
       }
 
       return SelectParameterBottomSheet(
         title: parameter.name,
-        selected: parameter.currentValue.name,
+        selected: selected,
         child: MultipleCheckboxPicker(
           parameter: parameter,
           wrapDirection: Axis.vertical,
@@ -243,12 +257,12 @@ class _ParametersSectionState extends State<ParametersSection> {
         ),
       );
     } else if (parameter is InputParameter) {
-      final InputStaticParameter? current = widget.staticParameters?.parameters
-          .where((param) => param.key == parameter.key)
-          .firstOrNull as InputStaticParameter?;
-      if (current != null) {
-        parameter.value = current.value;
-      }
+      // final InputStaticParameter? current = widget.staticParameters?.parameters
+      //     .where((param) => param.key == parameter.key)
+      //     .firstOrNull as InputStaticParameter?;
+      // if (current != null) {
+      //   parameter.value = current.value;
+      // }
 
       return Padding(
         padding: const EdgeInsets.only(bottom: 16.0),
