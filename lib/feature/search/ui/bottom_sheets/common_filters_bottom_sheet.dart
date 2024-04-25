@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:smart/feature/create_announcement/data/models/marks_filter.dart';
 import 'package:smart/feature/create_announcement/ui/select_car_mark_screen.dart';
 import 'package:smart/feature/create_announcement/ui/select_mark_screen.dart';
+import 'package:smart/feature/create_announcement/ui/widgets/select_parameter_bottom_sheet.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
@@ -267,28 +268,110 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
     );
   }
 
+  // List<Widget> buildFiltersSelection(List<Parameter> parameters) {
+  //   final children = <Widget>[];
+  //   for (var i in parameters) {
+  //     if (i is SelectParameter) {
+  //       children.add(MultipleCheckboxPicker(
+  //         parameter: i,
+  //         wrapDirection: Axis.horizontal,
+  //         onChange: () => setState(() {}),
+  //       ));
+  //     } else if (i is SingleSelectParameter) {
+  //       children.add(SelectParameterWidget(
+  //         parameter: i,
+  //         onChange: () => setState(() {}),
+  //       ));
+  //     } else if (i is MultiSelectParameter) {
+  //       children.add(MultipleCheckboxPicker(
+  //         parameter: i,
+  //         wrapDirection: Axis.horizontal,
+  //         onChange: () => setState(() {}),
+  //       ));
+  //     } else if (i is MinMaxParameter) {
+  //       children.add(MinMaxParameterWidget(parameter: i));
+  //     }
+  //   }
+  //   return children;
+  // }
+
+//TODO filter
   List<Widget> buildFiltersSelection(List<Parameter> parameters) {
+    final localizations = AppLocalizations.of(context)!;
     final children = <Widget>[];
-    for (var i in parameters) {
-      if (i is SelectParameter) {
-        children.add(MultipleCheckboxPicker(
-          parameter: i,
-          wrapDirection: Axis.horizontal,
-          onChange: () => setState(() {}),
+    for (var parameter in parameters) {
+      if (parameter is SelectParameter) {
+        if (parameter.variants.length > 3) {
+          children.add(SelectParameterBottomSheet(
+            title: parameter.name,
+            selected: parameter.currentValue.name,
+            child: MultipleCheckboxPicker(
+              parameter: parameter,
+              wrapDirection: Axis.vertical,
+              onChange: () => setState(() {}),
+            ),
+          ));
+          children.add(const SizedBox(height: 4));
+        } else {
+          children.add(MultipleCheckboxPicker(
+            parameter: parameter,
+            wrapDirection: Axis.horizontal,
+            onChange: () => setState(() {}),
+          ));
+          children.add(const SizedBox(height: 4));
+        }
+      } else if (parameter is SingleSelectParameter) {
+        if (parameter.variants.length > 3) {
+          children.add(SelectParameterBottomSheet(
+            title: parameter.name,
+            selected: parameter.currentValue.name,
+            child: SelectParameterWidget(
+              parameter: parameter,
+              isClickable: false,
+              onChange: () => setState(() {}),
+            ),
+          ));
+          children.add(const SizedBox(height: 4));
+        } else {
+          children.add(SelectParameterWidget(
+            parameter: parameter,
+            isClickable: false,
+            onChange: () => setState(() {}),
+          ));
+          children.add(const SizedBox(height: 4));
+        }
+      } else if (parameter is MultiSelectParameter) {
+        if (parameter.variants.length > 3) {
+          String selected = localizations.notSpecified;
+          if (parameter.selectedVariants.length == 1) {
+            selected = parameter.selectedVariants.first.name;
+          } else if (parameter.selectedVariants.length > 1) {
+            selected = '${localizations.selected}: ${parameter.selectedVariants.length}';
+          }
+          children.add(SelectParameterBottomSheet(
+            title: parameter.name,
+            selected: selected,
+            child: MultipleCheckboxPicker(
+              parameter: parameter,
+              wrapDirection: Axis.vertical,
+              onChange: () => setState(() {}),
+            ),
+          ));
+          children.add(const SizedBox(height: 4));
+        } else {
+          children.add(MultipleCheckboxPicker(
+            parameter: parameter,
+            wrapDirection: Axis.horizontal,
+            onChange: () => setState(() {}),
+          ));
+          children.add(const SizedBox(height: 4));
+        }
+      } else if (parameter is MinMaxParameter) {
+        children.add(Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: MinMaxParameterWidget(parameter: parameter),
         ));
-      } else if (i is SingleSelectParameter) {
-        children.add(SelectParameterWidget(
-          parameter: i,
-          onChange: () => setState(() {}),
-        ));
-      } else if (i is MultiSelectParameter) {
-        children.add(MultipleCheckboxPicker(
-          parameter: i,
-          wrapDirection: Axis.horizontal,
-          onChange: () => setState(() {}),
-        ));
-      } else if (i is MinMaxParameter) {
-        children.add(MinMaxParameterWidget(parameter: i));
+        children.add(const SizedBox(height: 4));
       }
     }
     return children;
