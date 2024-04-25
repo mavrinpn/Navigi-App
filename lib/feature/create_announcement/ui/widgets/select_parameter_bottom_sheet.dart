@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart/main.dart';
+import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 
@@ -85,7 +86,7 @@ class SelectParameterBottomSheet extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        padding: const EdgeInsets.fromLTRB(4, 8, 0, 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -102,10 +103,12 @@ class SelectParameterBottomSheet extends StatelessWidget {
                 style: AppTypography.font14light,
                 overflow: TextOverflow.ellipsis,
               ),
-            // const Icon(
-            //   Icons.keyboard_arrow_down_sharp,
-            //   color: AppColors.lightGray,
-            // ),
+            const SizedBox(width: 10),
+            const Icon(
+              Icons.arrow_forward_ios_outlined,
+              size: 16,
+              color: AppColors.lightGray,
+            ),
           ],
         ),
       ),

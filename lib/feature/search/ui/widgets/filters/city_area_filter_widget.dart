@@ -63,11 +63,10 @@ class _CityAreaFilterWidgetState extends State<CityAreaFilterWidget> {
       selectedDistrict.id,
       selectedDistrict.name,
     );
-
     district = selectedDistrict;
-    setState(() {
-      selectingCity = true;
-    });
+    // setState(() {
+    //   selectingCity = true;
+    // });
   }
 
   void _resetPlace() {
@@ -124,8 +123,7 @@ class _CityAreaFilterWidgetState extends State<CityAreaFilterWidget> {
           if (selectingCity && !initial) ...[
             BlocBuilder<PlacesCubit, PlacesState>(
               builder: (context, state) {
-                if (state is PlacesSuccessState ||
-                    state is PlacesLoadingState) {
+                if (state is PlacesSuccessState || state is PlacesLoadingState) {
                   return Wrap(
                     children: placesCubit
                         .getCities()
@@ -176,8 +174,7 @@ class _CityAreaFilterWidgetState extends State<CityAreaFilterWidget> {
           if (!selectingCity) ...[
             BlocBuilder<PlacesCubit, PlacesState>(
               builder: (context, state) {
-                if (state is PlacesSuccessState ||
-                    state is PlacesLoadingState) {
+                if (state is PlacesSuccessState || state is PlacesLoadingState) {
                   return Wrap(
                     children: placesCubit
                         .getPlaces()

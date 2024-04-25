@@ -295,16 +295,22 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
   //   return children;
   // }
 
-//TODO filter
+  //TODO
   List<Widget> buildFiltersSelection(List<Parameter> parameters) {
     final localizations = AppLocalizations.of(context)!;
     final children = <Widget>[];
     for (var parameter in parameters) {
       if (parameter is SelectParameter) {
         if (parameter.variants.length > 3) {
+          String selected = localizations.notSpecified;
+          if (parameter.selectedVariants.length == 1) {
+            selected = parameter.selectedVariants.first.name;
+          } else if (parameter.selectedVariants.length > 1) {
+            selected = '${localizations.selected}: ${parameter.selectedVariants.length}';
+          }
           children.add(SelectParameterBottomSheet(
             title: parameter.name,
-            selected: parameter.currentValue.name,
+            selected: selected,
             child: MultipleCheckboxPicker(
               parameter: parameter,
               wrapDirection: Axis.vertical,
@@ -322,9 +328,15 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
         }
       } else if (parameter is SingleSelectParameter) {
         if (parameter.variants.length > 3) {
+          String selected = localizations.notSpecified;
+          if (parameter.selectedVariants.length == 1) {
+            selected = parameter.selectedVariants.first.name;
+          } else if (parameter.selectedVariants.length > 1) {
+            selected = '${localizations.selected}: ${parameter.selectedVariants.length}';
+          }
           children.add(SelectParameterBottomSheet(
             title: parameter.name,
-            selected: parameter.currentValue.name,
+            selected: selected,
             child: SelectParameterWidget(
               parameter: parameter,
               isClickable: false,
