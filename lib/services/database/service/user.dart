@@ -94,7 +94,19 @@ class UserService {
     log('sms sent');
   }
 
-  Future<(UserCredentials?, bool)> confirmSms(String code, String password) async {
+  Future<void> sendEmailCode() async {
+    final jwt = await getJwt();
+    final res = await _functions.createExecution(
+      //TODO sendEmailCode
+      functionId: '658d94ecc79d136f5fec',
+      body: jsonEncode({'jwt': jwt}),
+    );
+    // ignore: avoid_print
+    print('sendEmailCode ${res.responseBody}');
+    log('Email code sent');
+  }
+
+  Future<(UserCredentials?, bool)> confirmCode(String code, String password) async {
     final jwt = await getJwt();
     final body = jsonEncode({'jwt': jwt, 'code': code, 'password': password});
 

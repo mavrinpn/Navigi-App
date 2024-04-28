@@ -224,5 +224,6 @@
 "next": "Suivant",
 "recoverPassword": "Récupérer le mot de passe",
 "notSpecified": "non spécifié",
-"selected": "sélectionné"
+"selected": "sélectionné",
+"enterValidEmail": "Entrez une adresse e-mail valide"
 }

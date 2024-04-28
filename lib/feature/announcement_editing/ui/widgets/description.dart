@@ -33,6 +33,7 @@ class DescriptionSection extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           OutlineTextField(
+            keyBoardType: TextInputType.multiline,
             hintText: localizations.description,
             controller: descriptionController,
             maxLines: 20,

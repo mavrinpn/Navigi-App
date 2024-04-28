@@ -46,6 +46,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           padding: const EdgeInsets.all(10),
           child: TextFormField(
             validator: widget.validator,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             maxLines: 1,
             obscureText: widget.obscureText,
             keyboardType: widget.keyboardType,
@@ -92,19 +93,14 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                       )
                     ],
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  const SizedBox(width: 10),
                   Column(mainAxisSize: MainAxisSize.min, children: [
-                    SvgPicture.asset('Assets/icons/line.svg',
-                        color: AppColors.lightGray),
+                    SvgPicture.asset('Assets/icons/line.svg', color: AppColors.lightGray),
                     const SizedBox(
                       height: 4,
                     )
                   ]),
-                  const SizedBox(
-                    width: 10,
-                  )
+                  const SizedBox(width: 10)
                 ],
               ),
             ),

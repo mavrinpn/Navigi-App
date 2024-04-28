@@ -224,5 +224,6 @@
 "next": "التالي",
 "recoverPassword": "استعادة كلمة المرور",
 "notSpecified": "غير محدد",
-"selected": "مختارة"
+"selected": "مختارة",
+"enterValidEmail": "أدخل بريد إلكتروني صالح"
 }

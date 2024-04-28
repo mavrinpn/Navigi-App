@@ -631,4 +631,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get selected => 'sélectionné';
+
+  @override
+  String get enterValidEmail => 'Entrez une adresse e-mail valide';
 }

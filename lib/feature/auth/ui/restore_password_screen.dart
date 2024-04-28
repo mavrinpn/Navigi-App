@@ -1,7 +1,7 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/fonts.dart';
@@ -14,13 +14,12 @@ import '../../../utils/colors.dart';
 import '../../../utils/dialogs.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/custom_text_field.dart';
-import '../../../widgets/textField/mask_text_field.dart';
 
-final maskPhoneFormatter = MaskTextInputFormatter(
-  mask: '+213 (###) ## ## ##',
-  filter: {"#": RegExp(r'[0-9]')},
-  type: MaskAutoCompletionType.lazy,
-);
+// final maskPhoneFormatter = MaskTextInputFormatter(
+//   mask: '+213 (###) ## ## ##',
+//   filter: {"#": RegExp(r'[0-9]')},
+//   type: MaskAutoCompletionType.lazy,
+// );
 
 class RestorePasswordScreen extends StatefulWidget {
   const RestorePasswordScreen({Key? key}) : super(key: key);
@@ -30,17 +29,17 @@ class RestorePasswordScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RestorePasswordScreen> {
-  final phoneController = TextEditingController();
+  // final phoneController = TextEditingController();
+  final emailController = TextEditingController();
   final firstPasswordController = TextEditingController();
   final secondPasswordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  bool isButtonActive = false;
 
-  bool isTouch = false;
-
-  bool checkFields(String phone, String firstPassword, String secondPassword) {
-    return phone.length == 9 && firstPassword == secondPassword && firstPassword.length >= 8;
-  }
+  // bool checkFields(String phone, String firstPassword, String secondPassword) {
+  //   return phone.length == 9 && firstPassword == secondPassword && firstPassword.length >= 8;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -49,19 +48,19 @@ class _RegistrationScreenState extends State<RestorePasswordScreen> {
 
     final localizations = AppLocalizations.of(context)!;
 
-    void checkIsTouch() {
-      if (checkFields(
-        maskPhoneFormatter.getUnmaskedText(),
-        firstPasswordController.text,
-        secondPasswordController.text,
-      )) {
-        isTouch = true;
-        setState(() {});
-        return;
-      }
-      isTouch = false;
-      setState(() {});
-    }
+    // void checkIsTouch() {
+    //   if (checkFields(
+    //     maskPhoneFormatter.getUnmaskedText(),
+    //     firstPasswordController.text,
+    //     secondPasswordController.text,
+    //   )) {
+    //     isButtonActive = true;
+    //     setState(() {});
+    //     return;
+    //   }
+    //   isButtonActive = false;
+    //   setState(() {});
+    // }
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
@@ -114,22 +113,42 @@ class _RegistrationScreenState extends State<RestorePasswordScreen> {
                         style: AppTypography.font24black.copyWith(fontSize: 20),
                       ),
                       const SizedBox(height: 30),
-                      MaskTextFormField(
-                        controller: phoneController,
-                        hintText: '+213 (###) ## ## ##',
-                        keyboardType: TextInputType.phone,
+                      // MaskTextFormField(
+                      //   controller: phoneController,
+                      //   hintText: '+213 (###) ## ## ##',
+                      //   keyboardType: TextInputType.phone,
+                      //   width: width * 0.95,
+                      //   prefIcon: 'Assets/icons/phone.svg',
+                      //   validator: (value) {
+                      //     if (maskPhoneFormatter.getUnmaskedText().length != 9) {
+                      //       return localizations.errorReviewOrEnterOther;
+                      //     }
+                      //     return null;
+                      //   },
+                      //   onChanged: (value) {
+                      //     checkIsTouch();
+                      //   },
+                      //   mask: maskPhoneFormatter,
+                      // ),
+                      CustomTextFormField(
+                        controller: emailController,
+                        hintText: 'E-mail',
+                        keyboardType: TextInputType.text,
                         width: width * 0.95,
-                        prefIcon: 'Assets/icons/phone.svg',
+                        prefIcon: 'Assets/icons/email.svg',
                         validator: (value) {
-                          if (maskPhoneFormatter.getUnmaskedText().length != 9) {
+                          if (value!.isEmpty) {
                             return localizations.errorReviewOrEnterOther;
+                          }
+                          if (!EmailValidator.validate(value)) {
+                            return localizations.enterValidEmail;
                           }
                           return null;
                         },
                         onChanged: (value) {
-                          checkIsTouch();
+                          isButtonActive = _formKey.currentState?.validate() ?? false;
+                          setState(() {});
                         },
-                        mask: maskPhoneFormatter,
                       ),
                       CustomTextFormField(
                           controller: firstPasswordController,
@@ -145,7 +164,8 @@ class _RegistrationScreenState extends State<RestorePasswordScreen> {
                             return null;
                           },
                           onChanged: (value) {
-                            checkIsTouch();
+                            isButtonActive = _formKey.currentState?.validate() ?? false;
+                            setState(() {});
                           }),
                       CustomTextFormField(
                         controller: secondPasswordController,
@@ -161,7 +181,8 @@ class _RegistrationScreenState extends State<RestorePasswordScreen> {
                           return null;
                         },
                         onChanged: (value) {
-                          checkIsTouch();
+                          isButtonActive = _formKey.currentState?.validate() ?? false;
+                          setState(() {});
                         },
                       ),
                     ],
@@ -171,12 +192,16 @@ class _RegistrationScreenState extends State<RestorePasswordScreen> {
                     children: [
                       CustomTextButton(
                         callback: () {
-                          if (!_formKey.currentState!.validate() || !isTouch) {
+                          if (!_formKey.currentState!.validate() || !isButtonActive) {
                             setState(() {});
                             return;
                           }
-                          BlocProvider.of<AuthCubit>(context).restorePassword(
-                            phone: maskPhoneFormatter.getUnmaskedText(),
+                          // BlocProvider.of<AuthCubit>(context).restorePassword(
+                          //   phone: maskPhoneFormatter.getUnmaskedText(),
+                          //   password: firstPasswordController.text.trim(),
+                          // );
+                          BlocProvider.of<AuthCubit>(context).restorePasswordWithEmail(
+                            email: emailController.text.trim(),
                             password: firstPasswordController.text.trim(),
                           );
 
@@ -189,7 +214,7 @@ class _RegistrationScreenState extends State<RestorePasswordScreen> {
                         text: localizations.next,
                         styleText: AppTypography.font14white,
                         height: 52,
-                        active: isTouch,
+                        active: isButtonActive,
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
                         activeColor: AppColors.dark,
                       ),

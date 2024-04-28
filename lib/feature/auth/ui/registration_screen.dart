@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
+import 'package:smart/feature/auth/data/validators.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
@@ -13,13 +13,12 @@ import '../../../utils/colors.dart';
 import '../../../utils/dialogs.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/custom_text_field.dart';
-import '../../../widgets/textField/mask_text_field.dart';
 
-final maskPhoneFormatter = MaskTextInputFormatter(
-  mask: '+213 (###) ## ## ##',
-  filter: {"#": RegExp(r'[0-9]')},
-  type: MaskAutoCompletionType.lazy,
-);
+// final maskPhoneFormatter = MaskTextInputFormatter(
+//   mask: '+213 (###) ## ## ##',
+//   filter: {"#": RegExp(r'[0-9]')},
+//   type: MaskAutoCompletionType.lazy,
+// );
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -29,41 +28,49 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  final phoneController = TextEditingController();
+  // final phoneController = TextEditingController();
+  final emailController = TextEditingController();
   final nameController = TextEditingController();
   final firstPasswordController = TextEditingController();
   final secondPasswordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-
-  bool isTouch = false;
+  bool isNameValid = false;
+  bool isEmailValid = false;
+  bool isPasswordValid = false;
+  bool isConfirmPasswordValid = false;
+  bool isButtonActive = false;
   bool isTapCheckBox = false;
 
-  bool checkFields(String phone, String name, String firstPassword, String secondPassword) {
-    return phone.length == 9 &&
-        name.isNotEmpty &&
-        firstPassword == secondPassword &&
-        firstPassword.length >= 8 &&
-        isTapCheckBox;
-  }
+  // bool checkFields(
+  //   String phone,
+  //   String name,
+  //   String firstPassword,
+  //   String secondPassword,
+  // ) {
+  //   return phone.length == 9 &&
+  //       name.isNotEmpty &&
+  //       firstPassword == secondPassword &&
+  //       firstPassword.length >= 8 &&
+  //       isTapCheckBox;
+  // }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-
     final localizations = AppLocalizations.of(context)!;
 
-    void checkIsTouch() {
-      if (checkFields(maskPhoneFormatter.getUnmaskedText(), nameController.text, firstPasswordController.text,
-          secondPasswordController.text)) {
-        isTouch = true;
-        setState(() {});
-        return;
-      }
-      isTouch = false;
-      setState(() {});
-    }
+    // void checkIsTouch() {
+    //   if (checkFields(maskPhoneFormatter.getUnmaskedText(), nameController.text, firstPasswordController.text,
+    //       secondPasswordController.text)) {
+    //     isButtonActive = true;
+    //     setState(() {});
+    //     return;
+    //   }
+    //   isButtonActive = false;
+    //   setState(() {});
+    // }
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
@@ -107,36 +114,50 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                       const SizedBox(height: 30),
                       CustomTextFormField(
-                          controller: nameController,
-                          hintText: localizations.yourName,
-                          keyboardType: TextInputType.text,
-                          width: width * 0.95,
-                          prefIcon: 'Assets/icons/profile.svg',
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return localizations.errorReviewOrEnterOther;
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            checkIsTouch();
-                          }),
-                      MaskTextFormField(
-                        controller: phoneController,
-                        hintText: '+213 (###) ## ## ##',
-                        keyboardType: TextInputType.phone,
+                        controller: nameController,
+                        hintText: localizations.yourName,
+                        keyboardType: TextInputType.text,
                         width: width * 0.95,
-                        prefIcon: 'Assets/icons/phone.svg',
+                        prefIcon: 'Assets/icons/profile.svg',
                         validator: (value) {
-                          if (maskPhoneFormatter.getUnmaskedText().length != 9) {
+                          if (value!.isEmpty) {
                             return localizations.errorReviewOrEnterOther;
                           }
                           return null;
                         },
                         onChanged: (value) {
-                          checkIsTouch();
+                          isNameValid = (value ?? '').isNotEmpty;
+                          _checkActiveButton();
                         },
-                        mask: maskPhoneFormatter,
+                      ),
+                      // MaskTextFormField(
+                      //   controller: phoneController,
+                      //   hintText: '+213 (###) ## ## ##',
+                      //   keyboardType: TextInputType.phone,
+                      //   width: width * 0.95,
+                      //   prefIcon: 'Assets/icons/phone.svg',
+                      //   validator: (value) {
+                      //     if (maskPhoneFormatter.getUnmaskedText().length != 9) {
+                      //       return localizations.errorReviewOrEnterOther;
+                      //     }
+                      //     return null;
+                      //   },
+                      //   onChanged: (value) {
+                      //     checkIsTouch();
+                      //   },
+                      //   mask: maskPhoneFormatter,
+                      // ),
+                      CustomTextFormField(
+                        controller: emailController,
+                        hintText: 'E-mail',
+                        keyboardType: TextInputType.text,
+                        width: width * 0.95,
+                        prefIcon: 'Assets/icons/email.svg',
+                        validator: (value) => emailValidator(value: value, localizations: localizations),
+                        onChanged: (value) {
+                          isEmailValid = emailValidator(value: value, localizations: localizations) == null;
+                          _checkActiveButton();
+                        },
                       ),
                       CustomTextFormField(
                           controller: firstPasswordController,
@@ -145,14 +166,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           width: width * 0.95,
                           prefIcon: 'Assets/icons/key.svg',
                           obscureText: true,
-                          validator: (value) {
-                            if (value! != secondPasswordController.text || value.length < 8) {
-                              return localizations.errorReviewOrEnterOther;
-                            }
-                            return null;
-                          },
+                          validator: (value) => passwordValidator(
+                                value: value,
+                                otherValue: secondPasswordController.text,
+                                localizations: localizations,
+                              ),
                           onChanged: (value) {
-                            checkIsTouch();
+                            isPasswordValid = passwordValidator(
+                                  value: value,
+                                  otherValue: secondPasswordController.text,
+                                  localizations: localizations,
+                                ) ==
+                                null;
+                            isConfirmPasswordValid = passwordValidator(
+                                  value: value,
+                                  otherValue: firstPasswordController.text,
+                                  localizations: localizations,
+                                ) ==
+                                null;
+                            _checkActiveButton();
                           }),
                       CustomTextFormField(
                           controller: secondPasswordController,
@@ -161,14 +193,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           width: width * 0.95,
                           prefIcon: 'Assets/icons/key.svg',
                           obscureText: true,
-                          validator: (value) {
-                            if (value! != firstPasswordController.text || value.length < 8) {
-                              return localizations.errorReviewOrEnterOther;
-                            }
-                            return null;
-                          },
+                          validator: (value) => passwordValidator(
+                                value: value,
+                                otherValue: firstPasswordController.text,
+                                localizations: localizations,
+                              ),
                           onChanged: (value) {
-                            checkIsTouch();
+                            isPasswordValid = passwordValidator(
+                                  value: value,
+                                  otherValue: secondPasswordController.text,
+                                  localizations: localizations,
+                                ) ==
+                                null;
+                            isConfirmPasswordValid = passwordValidator(
+                                  value: value,
+                                  otherValue: firstPasswordController.text,
+                                  localizations: localizations,
+                                ) ==
+                                null;
+                            _checkActiveButton();
                           }),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
@@ -215,21 +258,27 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     children: [
                       CustomTextButton(
                         callback: () {
-                          if (!_formKey.currentState!.validate() || !isTouch) {
+                          if (!_formKey.currentState!.validate() || !isButtonActive) {
                             setState(() {});
                             return;
                           }
-                          BlocProvider.of<AuthCubit>(context).registerWithPhone(
-                              phone: maskPhoneFormatter.getUnmaskedText(),
-                              name: nameController.text.trim(),
-                              password: firstPasswordController.text.trim());
+                          // BlocProvider.of<AuthCubit>(context).registerWithPhone(
+                          //   phone: maskPhoneFormatter.getUnmaskedText(),
+                          //   name: nameController.text.trim(),
+                          //   password: firstPasswordController.text.trim(),
+                          // );
+                          BlocProvider.of<AuthCubit>(context).registerWithEmail(
+                            email: emailController.text.trim(),
+                            name: nameController.text.trim(),
+                            password: firstPasswordController.text.trim(),
+                          );
 
                           Navigator.pushNamed(context, AppRoutesNames.checkCode);
                         },
                         text: localizations.regg,
                         styleText: AppTypography.font14white,
                         height: 52,
-                        active: isTouch,
+                        active: isButtonActive,
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
                         activeColor: AppColors.dark,
                       ),
@@ -252,18 +301,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 
-  _checkBoxPressed() {
-    setState(() {
-      isTapCheckBox = !isTapCheckBox;
-    });
-
-    if (checkFields(maskPhoneFormatter.getUnmaskedText(), nameController.text, firstPasswordController.text,
-        secondPasswordController.text)) {
-      isTouch = true;
-      setState(() {});
-      return;
+  _checkActiveButton() {
+    if (isEmailValid && isNameValid && isPasswordValid && isConfirmPasswordValid && isTapCheckBox) {
+      isButtonActive = true;
+    } else {
+      isButtonActive = false;
     }
-    isTouch = false;
     setState(() {});
+  }
+
+  _checkBoxPressed() {
+    isTapCheckBox = !isTapCheckBox;
+    _checkActiveButton();
   }
 }

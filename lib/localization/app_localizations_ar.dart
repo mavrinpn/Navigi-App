@@ -631,4 +631,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get selected => 'مختارة';
+
+  @override
+  String get enterValidEmail => 'أدخل بريد إلكتروني صالح';
 }

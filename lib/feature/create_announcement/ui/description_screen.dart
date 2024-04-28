@@ -96,6 +96,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
                   ),
                   const SizedBox(height: 5),
                   OutlineTextField(
+                    keyBoardType: TextInputType.multiline,
                     hintText: localizations.description,
                     controller: descriptionController,
                     maxLines: 20,

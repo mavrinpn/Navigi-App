@@ -1342,6 +1342,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'selected'**
   String get selected;
+
+  /// No description provided for @enterValidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter valid E-mail'**
+  String get enterValidEmail;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

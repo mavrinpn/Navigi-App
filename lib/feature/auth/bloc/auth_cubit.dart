@@ -10,6 +10,7 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthRepository authRepository;
   String _phone = '';
+  String _email = '';
   String _nameForRegistration = '';
   String _passwordForRegistration = '';
 
@@ -24,6 +25,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   setPhoneForLogin(String newPhone) => _phone = newPhone;
+  setEmailForLogin(String newEMail) => _email = newEMail;
 
   registerWithPhone({
     required String phone,
@@ -36,6 +38,17 @@ class AuthCubit extends Cubit<AuthState> {
     _sendSms(isPasswordRestore: false);
   }
 
+  registerWithEmail({
+    required String email,
+    required String name,
+    required String password,
+  }) {
+    _nameForRegistration = name;
+    _passwordForRegistration = password;
+    _email = email;
+    _sendEmailCode(isPasswordRestore: false);
+  }
+
   restorePassword({
     required String phone,
     required String password,
@@ -45,8 +58,22 @@ class AuthCubit extends Cubit<AuthState> {
     _sendSms(isPasswordRestore: true);
   }
 
+  restorePasswordWithEmail({
+    required String email,
+    required String password,
+  }) {
+    _passwordForRegistration = password;
+    _email = email;
+    _sendEmailCode(isPasswordRestore: true);
+  }
+
   loginWithPhone({required String password}) {
     final email = convertPhoneToVerifiedEmail(_phone);
+    authRepository.login(email, password);
+  }
+
+  loginWithEmail({required String password}) {
+    final email = _email;
     authRepository.login(email, password);
   }
 
@@ -54,6 +81,14 @@ class AuthCubit extends Cubit<AuthState> {
     if (_phone.isEmpty) throw Exception('phone must not be empty');
     await authRepository.createAccountAndSendSms(
       phone: _phone,
+      isPasswordRestore: isPasswordRestore,
+    );
+  }
+
+  void _sendEmailCode({required bool isPasswordRestore}) async {
+    if (_email.isEmpty) throw Exception('E-mail must not be empty');
+    await authRepository.createAccountAndSendEmailCode(
+      email: _email,
       isPasswordRestore: isPasswordRestore,
     );
   }

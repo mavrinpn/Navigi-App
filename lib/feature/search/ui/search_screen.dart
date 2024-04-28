@@ -289,51 +289,73 @@ class _SearchScreenState extends State<SearchScreen> {
     return Container(
       color: AppColors.mainBackground,
       child: SafeArea(
-        child: Scaffold(
-          backgroundColor: AppColors.mainBackground,
-          appBar: searchAppBar,
-          body: Stack(
-            children: [
-              BlocConsumer<SearchAnnouncementCubit, SearchAnnouncementState>(
-                listener: (context, state) {
-                  if (state is SearchAnnouncementsSuccessState) {
-                    if (searchQueryString != null) {
-                      setSearch(
-                        searchQueryString!,
-                        searchManager,
-                      );
-                      searchQueryString = null;
+        child: PopScope(
+          onPopInvoked: (didPop) {
+            final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+            final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+            final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
+            updateAppBarFilterCubit.needUpdateAppBarFilters();
+            searchCubit.clearFilters();
+            selectCategoryCubit.clearFilters();
+            for (var param in selectCategoryCubit.parameters) {
+              if (param is SelectParameter) {
+                param.selectedVariants = [];
+              } else if (param is SingleSelectParameter) {
+                param.selectedVariants = [];
+              } else if (param is MultiSelectParameter) {
+                param.selectedVariants = [];
+              } else if (param is MinMaxParameter) {
+                param.min = null;
+                param.max = null;
+              }
+            }
+          },
+          child: Scaffold(
+            backgroundColor: AppColors.mainBackground,
+            appBar: searchAppBar,
+            body: Stack(
+              children: [
+                BlocConsumer<SearchAnnouncementCubit, SearchAnnouncementState>(
+                  listener: (context, state) {
+                    if (state is SearchAnnouncementsSuccessState) {
+                      if (searchQueryString != null) {
+                        setSearch(
+                          searchQueryString!,
+                          searchManager,
+                        );
+                        searchQueryString = null;
+                      }
                     }
-                  }
-                },
-                builder: (context, state) {
-                  return BlocBuilder<SearchAnnouncementCubit, SearchAnnouncementState>(
-                    builder: announcementsBuilder,
-                  );
-                },
-              ),
-              SingleChildScrollView(
-                physics: const ClampingScrollPhysics(),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 0),
-                      width: width,
-                      curve: Curves.fastOutSlowIn,
-                      height: searchManager.isSearch ? height : 0,
-                      color: Colors.white,
-                      padding: const EdgeInsets.all(15),
-                      child: SingleChildScrollView(
-                        child: BlocBuilder<SearchItemsCubit, SearchItemsState>(
-                          builder: searchScreenBuilder,
+                  },
+                  builder: (context, state) {
+                    return BlocBuilder<SearchAnnouncementCubit, SearchAnnouncementState>(
+                      builder: announcementsBuilder,
+                    );
+                  },
+                ),
+                SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 0),
+                        width: width,
+                        curve: Curves.fastOutSlowIn,
+                        height: searchManager.isSearch ? height : 0,
+                        color: Colors.white,
+                        padding: const EdgeInsets.all(15),
+                        child: SingleChildScrollView(
+                          child: BlocBuilder<SearchItemsCubit, SearchItemsState>(
+                            builder: searchScreenBuilder,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

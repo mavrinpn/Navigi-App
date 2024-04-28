@@ -145,7 +145,8 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                               }
 
                               if (buttonActive) {
-                                bloc.loginWithPhone(password: passwordController.text.trim());
+                                //bloc.loginWithPhone(password: passwordController.text.trim());
+                                bloc.loginWithEmail(password: passwordController.text.trim());
                               }
                             },
                             active: buttonActive,
@@ -187,9 +188,7 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                               'Assets/icons/facebook.svg',
                               width: 40,
                             )),
-                        const SizedBox(
-                          width: 5,
-                        ),
+                        const SizedBox(width: 5),
                         RawMaterialButton(
                             constraints: const BoxConstraints(maxWidth: 40, maxHeight: 40),
                             onPressed: () {},

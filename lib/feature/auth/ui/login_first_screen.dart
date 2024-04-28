@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,17 +6,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/fonts.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/back_button.dart';
+import 'package:smart/widgets/textField/custom_text_field.dart';
 
 import '../../../widgets/button/custom_text_button.dart';
-import '../../../widgets/textField/mask_text_field.dart';
 
-final maskPhoneFormatter = MaskTextInputFormatter(
-    mask: '+213 (###) ## ## ##',
-    filter: {"#": RegExp(r'[0-9]')},
-    type: MaskAutoCompletionType.lazy);
+// final maskPhoneFormatter = MaskTextInputFormatter(
+//   mask: '+213 (###) ## ## ##',
+//   filter: {"#": RegExp(r'[0-9]')},
+//   type: MaskAutoCompletionType.lazy,
+// );
 
 class LoginFirstScreen extends StatefulWidget {
   const LoginFirstScreen({
@@ -30,13 +31,11 @@ class LoginFirstScreen extends StatefulWidget {
 }
 
 class _LoginFirstScreenState extends State<LoginFirstScreen> {
-  final phoneController = TextEditingController();
-
+  // final phoneController = TextEditingController();
+  final emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
   bool isError = false;
-
-  bool isTouch = false;
+  bool isButtonActive = false;
 
   @override
   Widget build(BuildContext context) {
@@ -87,34 +86,50 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                     key: _formKey,
                     child: Column(
                       children: <Widget>[
-                        MaskTextFormField(
-                          controller: phoneController,
-                          keyboardType: TextInputType.phone,
+                        // MaskTextFormField(
+                        //   controller: phoneController,
+                        //   keyboardType: TextInputType.phone,
+                        //   width: width * 0.95,
+                        //   prefIcon: 'Assets/icons/phone.svg',
+                        //   mask: maskPhoneFormatter,
+                        //   hintText: '+213 (###) ## ## ##',
+                        //   validator: (value) {
+                        //     if (maskPhoneFormatter.getUnmaskedText().length != 9) {
+                        //       return localizations.errorIncorrectInfo;
+                        //     }
+                        //     return null;
+                        //   },
+                        //   onChanged: (value) {
+                        //     if (maskPhoneFormatter.getUnmaskedText().length == 9) {
+                        //       isTouch = true;
+                        //       setState(() {});
+                        //       return;
+                        //     }
+                        //     isTouch = false;
+                        //     setState(() {});
+                        //   },
+                        // ),
+                        CustomTextFormField(
+                          controller: emailController,
+                          hintText: 'E-mail',
+                          keyboardType: TextInputType.text,
                           width: width * 0.95,
-                          prefIcon: 'Assets/icons/phone.svg',
-                          mask: maskPhoneFormatter,
-                          hintText: '+213 (###) ## ## ##',
+                          prefIcon: 'Assets/icons/email.svg',
                           validator: (value) {
-                            if (maskPhoneFormatter.getUnmaskedText().length !=
-                                9) {
-                              return localizations.errorIncorrectInfo;
+                            if (value!.isEmpty) {
+                              return localizations.errorReviewOrEnterOther;
+                            }
+                            if (!EmailValidator.validate(value)) {
+                              return localizations.enterValidEmail;
                             }
                             return null;
                           },
                           onChanged: (value) {
-                            if (maskPhoneFormatter.getUnmaskedText().length ==
-                                9) {
-                              isTouch = true;
-                              setState(() {});
-                              return;
-                            }
-                            isTouch = false;
+                            isButtonActive = _formKey.currentState?.validate() ?? false;
                             setState(() {});
                           },
                         ),
-                        SizedBox(
-                          height: height * 0.18,
-                        ),
+                        SizedBox(height: height * 0.18),
                         CustomTextButton(
                           callback: () {
                             if (!_formKey.currentState!.validate()) {
@@ -122,22 +137,18 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                               setState(() {});
                               return;
                             }
-                            if (isTouch) {
+                            if (isButtonActive) {
                               final bloc = BlocProvider.of<AuthCubit>(context);
-                              bloc.setPhoneForLogin(
-                                  maskPhoneFormatter.getUnmaskedText());
-                              // print('set phone ${maskPhoneFormatter.getMaskedText()}');
-                              Navigator.pushNamed(
-                                  context, AppRoutesNames.loginSecond);
-                              // print('push');
+                              //bloc.setPhoneForLogin(maskPhoneFormatter.getUnmaskedText());
+                              bloc.setEmailForLogin(emailController.text.trim());
+                              Navigator.pushNamed(context, AppRoutesNames.loginSecond);
                             }
                           },
                           text: AppLocalizations.of(context)!.enter,
                           styleText: AppTypography.font14white,
                           height: 52,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 0),
-                          active: isTouch,
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                          active: isButtonActive,
                         ),
                       ],
                     )),
@@ -146,9 +157,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                   text: TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                          text: localizations.noAccount,
-                          style: AppTypography.font14lightGray
-                              .copyWith(fontSize: 16)),
+                          text: localizations.noAccount, style: AppTypography.font14lightGray.copyWith(fontSize: 16)),
                       TextSpan(
                           text: localizations.register,
                           recognizer: TapGestureRecognizer()
@@ -167,8 +176,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                       RawMaterialButton(
                           onPressed: () {},
                           shape: const CircleBorder(),
-                          constraints:
-                              const BoxConstraints(maxWidth: 40, maxHeight: 40),
+                          constraints: const BoxConstraints(maxWidth: 40, maxHeight: 40),
                           child: SvgPicture.asset(
                             'Assets/icons/facebook.svg',
                             width: 40,
@@ -177,8 +185,7 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                         width: 5,
                       ),
                       RawMaterialButton(
-                          constraints:
-                              const BoxConstraints(maxWidth: 40, maxHeight: 40),
+                          constraints: const BoxConstraints(maxWidth: 40, maxHeight: 40),
                           onPressed: () {},
                           shape: const CircleBorder(),
                           child: SvgPicture.asset(

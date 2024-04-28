@@ -295,7 +295,6 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
   //   return children;
   // }
 
-  //TODO
   List<Widget> buildFiltersSelection(List<Parameter> parameters) {
     final localizations = AppLocalizations.of(context)!;
     final children = <Widget>[];

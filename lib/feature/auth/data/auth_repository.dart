@@ -9,7 +9,6 @@ import 'package:smart/models/user.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/storage_service.dart';
-import 'package:smart/utils/functions.dart';
 
 import '../../../enum/enum.dart';
 
@@ -21,7 +20,7 @@ class AuthRepository {
   final FileStorageManager _fileStorageManager;
 
   User? _user;
-  String _tempMail = '';
+  // String _tempMail = '';
   UserData? userData;
   String? sessionID;
 
@@ -173,6 +172,14 @@ class AuthRepository {
     await _databaseService.users.sendSms();
   }
 
+  Future<void> createAccountAndSendEmailCode({
+    required String email,
+    required bool isPasswordRestore,
+  }) async {
+    await _createTempAccount(email);
+    await _databaseService.users.sendEmailCode();
+  }
+
   Future<void> confirmCode(
     String code, {
     required String password,
@@ -182,7 +189,10 @@ class AuthRepository {
     //TODO user register
     authState.add(EntranceStateEnum.loading);
 
-    final (credentials, userExist) = await _databaseService.users.confirmSms(code, password);
+    final (credentials, userExist) = await _databaseService.users.confirmCode(
+      code,
+      password,
+    );
     if (userExist && !isPasswordRestore) {
       authState.add(EntranceStateEnum.alreadyExist);
     } else if (!userExist && isPasswordRestore) {
@@ -221,20 +231,20 @@ class AuthRepository {
     }
   }
 
-  Future<String?> _getEmailByPhone(String phone) async {
-    final String? email;
-    if (!_tempMail.startsWith('89$phone')) {
-      email = convertPhoneToTempEmail(phone);
-      _tempMail = email;
-    } else {
-      email = null;
-    }
-    return email;
-  }
+  // Future<String?> _getEmailByPhone(String phone) async {
+  //   final String? email;
+  //   if (!_tempMail.startsWith('89$phone')) {
+  //     email = convertPhoneToTempEmail(phone);
+  //     _tempMail = email;
+  //   } else {
+  //     email = null;
+  //   }
+  //   return email;
+  // }
 
-  Future _createTempAccount(String phone) async {
+  Future _createTempAccount(String email) async {
     const String password = 'temppassword123';
-    final String? email = await _getEmailByPhone(phone);
+    //final String? email = await _getEmailByPhone(phone);
     try {
       await _account.deleteSessions();
     } catch (err) {
@@ -242,23 +252,21 @@ class AuthRepository {
       print(err);
     }
 
-    if (email != null) {
-      try {
-        await _account.create(
-          userId: ID.unique(),
-          email: email,
-          password: password,
-          name: 'Guest',
-        );
-      } catch (err) {
-        // ignore: avoid_print
-        print(err);
-      }
+    try {
+      await _account.create(
+        userId: ID.unique(),
+        email: email,
+        password: password,
+        name: 'Guest',
+      );
+    } catch (err) {
+      // ignore: avoid_print
+      print(err);
     }
 
     try {
       await _account.createEmailPasswordSession(
-        email: email ?? _tempMail,
+        email: email,
         password: password,
       );
     } catch (err) {
