@@ -140,7 +140,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                               if (param is SelectParameter) {
                                 param.selectedVariants = [];
                               } else if (param is SingleSelectParameter) {
-                                param.selectedVariants = [];
+                                param.currentValue = param.variants.first;
                               } else if (param is MultiSelectParameter) {
                                 param.selectedVariants = [];
                               } else if (param is MinMaxParameter) {
@@ -327,15 +327,9 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
         }
       } else if (parameter is SingleSelectParameter) {
         if (parameter.variants.length > 3) {
-          String selected = localizations.notSpecified;
-          if (parameter.selectedVariants.length == 1) {
-            selected = parameter.selectedVariants.first.name;
-          } else if (parameter.selectedVariants.length > 1) {
-            selected = '${localizations.selected}: ${parameter.selectedVariants.length}';
-          }
           children.add(SelectParameterBottomSheet(
             title: parameter.name,
-            selected: selected,
+            selected: parameter.currentValue.name,
             child: SelectParameterWidget(
               parameter: parameter,
               isClickable: false,

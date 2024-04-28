@@ -14,18 +14,35 @@ class TipWordsManager {
 
   Future<List<TipWord>> searchBy({
     required String subcategoryId,
-    required String? query,
+    required String? lastWord,
+    required String? wholeString,
     required String? markId,
     required String? modelId,
     required String? previousWordId,
     required String? previousWordGroupId,
-  }) async =>
-      databaseService.tipWords.searchBy(
+  }) async {
+    final List<TipWord> result = [];
+
+    final listByLastWord = await databaseService.tipWords.searchByLastWord(
+      subcategoryId: subcategoryId,
+      query: lastWord,
+      markId: markId,
+      modelId: modelId,
+      previousWordId: previousWordId,
+      previousWordGroupId: previousWordGroupId,
+    );
+    result.addAll(listByLastWord);
+
+    if (lastWord != null) {
+      final listByWholeString = await databaseService.tipWords.searchByWholeString(
         subcategoryId: subcategoryId,
-        query: query,
+        query: lastWord,
         markId: markId,
         modelId: modelId,
-        previousWordId: previousWordId,
-        previousWordGroupId: previousWordGroupId,
       );
+      result.addAll(listByWholeString);
+    }
+
+    return result;
+  }
 }

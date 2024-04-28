@@ -14,14 +14,16 @@ class TipWordssLoadingState extends TipWordsState {
 
 class TipWordssSuccessState extends TipWordsState {
   final List<TipWord> tipWords;
-  final String currentQuery;
+  final String lastWord;
+  final String wholeString;
 
   TipWordssSuccessState({
     required this.tipWords,
-    required this.currentQuery,
+    required this.lastWord,
+    required this.wholeString,
   });
   @override
-  List<Object?> get props => [tipWords, currentQuery];
+  List<Object?> get props => [tipWords, lastWord, wholeString];
 }
 
 class TipWordssFailState extends TipWordsState {

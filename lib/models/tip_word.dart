@@ -9,6 +9,7 @@ class TipWord {
   final String? mark;
   final String? model;
   final String? type;
+  final bool fullTip;
 
   TipWord({
     required this.id,
@@ -21,6 +22,7 @@ class TipWord {
     required this.mark,
     required this.model,
     required this.type,
+    required this.fullTip,
   });
 
   factory TipWord.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,7 @@ class TipWord {
       mark: json['mark'],
       model: json['model'],
       type: json['type'],
+      fullTip: json['full_tip'] ?? false,
     );
   }
 }

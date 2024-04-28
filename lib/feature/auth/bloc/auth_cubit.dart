@@ -41,11 +41,13 @@ class AuthCubit extends Cubit<AuthState> {
   registerWithEmail({
     required String email,
     required String name,
+    required String phone,
     required String password,
   }) {
     _nameForRegistration = name;
     _passwordForRegistration = password;
     _email = email;
+    _phone = phone;
     _sendEmailCode(isPasswordRestore: false);
   }
 
@@ -101,6 +103,7 @@ class AuthCubit extends Cubit<AuthState> {
       code,
       password: _passwordForRegistration,
       name: _nameForRegistration,
+      phone: _phone,
       isPasswordRestore: isPasswordRestore,
     );
   }

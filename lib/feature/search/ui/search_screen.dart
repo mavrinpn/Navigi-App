@@ -301,7 +301,7 @@ class _SearchScreenState extends State<SearchScreen> {
               if (param is SelectParameter) {
                 param.selectedVariants = [];
               } else if (param is SingleSelectParameter) {
-                param.selectedVariants = [];
+                param.currentValue = param.variants.first;
               } else if (param is MultiSelectParameter) {
                 param.selectedVariants = [];
               } else if (param is MinMaxParameter) {

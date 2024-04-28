@@ -74,7 +74,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                         if (param is SelectParameter) {
                           param.currentValue = param.variants[0];
                         } else if (param is SingleSelectParameter) {
-                          param.currentValue = param.variants[0];
+                          param.currentValue = param.variants.first;
                         } else if (param is MultiSelectParameter) {
                           param.selectedVariants = [];
                         } else if (param is InputParameter) {

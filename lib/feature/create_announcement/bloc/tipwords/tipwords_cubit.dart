@@ -15,7 +15,8 @@ class TipWordsCubit extends Cubit<TipWordsState> {
 
   void getTipWordsBy({
     required String subcategoryId,
-    required String? query,
+    required String? lastWord,
+    required String? wholeString,
     required String? markId,
     required String? modelId,
     required String? previousWordId,
@@ -23,17 +24,19 @@ class TipWordsCubit extends Cubit<TipWordsState> {
   }) async {
     emit(TipWordssLoadingState());
 
-    if (query == '') {
+    if (lastWord == '' && wholeString == '') {
       emit(TipWordssSuccessState(
         tipWords: const [],
-        currentQuery: query ?? '',
+        lastWord: '',
+        wholeString: '',
       ));
       return;
     }
     try {
       final results = await _tipWordsManager.searchBy(
         subcategoryId: subcategoryId,
-        query: query,
+        lastWord: lastWord,
+        wholeString: wholeString,
         markId: markId,
         modelId: modelId,
         previousWordId: previousWordId,
@@ -42,7 +45,8 @@ class TipWordsCubit extends Cubit<TipWordsState> {
 
       emit(TipWordssSuccessState(
         tipWords: results,
-        currentQuery: query ?? '',
+        lastWord: lastWord ?? '',
+        wholeString: wholeString ?? '',
       ));
     } catch (e) {
       emit(TipWordssFailState());

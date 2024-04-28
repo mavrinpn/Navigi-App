@@ -30,7 +30,7 @@ class _ParametersSectionState extends State<ParametersSection> {
   }
 
   @override
-  void didUpdateWidget (ParametersSection oldWidget) {
+  void didUpdateWidget(ParametersSection oldWidget) {
     super.didUpdateWidget(oldWidget);
     loadCurrentParametersValue();
   }
@@ -49,69 +49,6 @@ class _ParametersSectionState extends State<ParametersSection> {
           .toList(),
     ));
   }
-
-  // Widget buildParameter(Parameter parameter) {
-  //   if (parameter is SelectParameter) {
-  //     final SelectStaticParameter? current = widget.staticParameters?.parameters
-  //         .where((param) => param.key == parameter.key)
-  //         .firstOrNull as SelectStaticParameter?;
-  //     if (current != null) {
-  //       final parameterOption = ParameterOption(
-  //         current.currentOption.key,
-  //         nameAr: current.currentOption.nameAr,
-  //         nameFr: current.currentOption.nameFr,
-  //       );
-  //       parameter.currentValue = parameterOption;
-  //     }
-  //     return SelectParameterWidget(parameter: parameter);
-  //   } else if (parameter is SingleSelectParameter) {
-  //     final SingleSelectStaticParameter? current = widget
-  //         .staticParameters?.parameters
-  //         .where((param) => param.key == parameter.key)
-  //         .firstOrNull as SingleSelectStaticParameter?;
-  //     if (current != null) {
-  //       final parameterOption = ParameterOption(
-  //         current.currentOption.key,
-  //         nameAr: current.currentOption.nameAr,
-  //         nameFr: current.currentOption.nameFr,
-  //       );
-  //       parameter.currentValue = parameterOption;
-  //     }
-  //     return SelectParameterWidget(parameter: parameter);
-  //   } else if (parameter is MultiSelectParameter) {
-  //     final MultiSelectStaticParameter? current = widget
-  //         .staticParameters?.parameters
-  //         .where((param) => param.key == parameter.key)
-  //         .firstOrNull as MultiSelectStaticParameter?;
-  //     if (current != null) {
-  //       for (final selectedOption in current.currentOption) {
-  //         final parameterOption = ParameterOption(
-  //           selectedOption.key,
-  //           nameAr: selectedOption.nameAr,
-  //           nameFr: selectedOption.nameFr,
-  //         );
-  //         parameter.addSelectedValue(parameterOption);
-  //       }
-  //     }
-  //     return MultipleCheckboxPicker(
-  //       parameter: parameter,
-  //       wrapDirection: Axis.vertical,
-  //     );
-  //   } else if (parameter is InputParameter) {
-  //     final InputStaticParameter? current = widget.staticParameters?.parameters
-  //         .where((param) => param.key == parameter.key)
-  //         .firstOrNull as InputStaticParameter?;
-  //     if (current != null) {
-  //       parameter.value = current.value;
-  //     }
-  //     return Padding(
-  //       padding: const EdgeInsets.only(bottom: 16.0),
-  //       child: InputParameterWidget(parameter: parameter),
-  //     );
-  //   } else {
-  //     return Container();
-  //   }
-  // }
 
   void loadCurrentParametersValue() {
     for (final parameter in widget.paramaters) {

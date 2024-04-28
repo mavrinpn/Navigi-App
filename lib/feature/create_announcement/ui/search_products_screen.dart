@@ -32,7 +32,8 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
     super.initState();
     BlocProvider.of<TipWordsCubit>(context).getTipWordsBy(
       subcategoryId: '',
-      query: null,
+      lastWord: null,
+      wholeString: null,
       markId: null,
       modelId: null,
       previousWordId: null,
@@ -94,7 +95,8 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
 
                 BlocProvider.of<TipWordsCubit>(context).getTipWordsBy(
                   subcategoryId: creatingManager.creatingData.subcategoryId ?? '',
-                  query: lastWord,
+                  lastWord: lastWord,
+                  wholeString: value,
                   markId: _selectedTipWord == null ? markId : null,
                   //modelId: _selectedTipWord == null ? modelId : null,
                   modelId: null,
@@ -121,16 +123,25 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                       child: Wrap(
                         children: [
                           ...state.tipWords.take(8).map((tipWord) {
-                            String name = '';
-                            if (state.currentQuery.isNotEmpty) {
-                              if (tipWord.nameFr.toLowerCase().contains(state.currentQuery.toLowerCase())) {
-                                name = tipWord.nameFr;
-                              }
-                              if (tipWord.nameAr.toLowerCase().contains(state.currentQuery.toLowerCase())) {
-                                name = tipWord.nameAr;
+                            String name = currentLocaleShortName.value == 'fr' ? tipWord.nameFr : tipWord.nameAr;
+                            if (tipWord.fullTip) {
+                              if (state.wholeString.isNotEmpty) {
+                                if (tipWord.nameFr.toLowerCase().contains(state.wholeString.toLowerCase())) {
+                                  name = tipWord.nameFr;
+                                }
+                                if (tipWord.nameAr.toLowerCase().contains(state.wholeString.toLowerCase())) {
+                                  name = tipWord.nameAr;
+                                }
                               }
                             } else {
-                              name = currentLocaleShortName.value == 'fr' ? tipWord.nameFr : tipWord.nameAr;
+                              if (state.lastWord.isNotEmpty) {
+                                if (tipWord.nameFr.toLowerCase().contains(state.lastWord.toLowerCase())) {
+                                  name = tipWord.nameFr;
+                                }
+                                if (tipWord.nameAr.toLowerCase().contains(state.lastWord.toLowerCase())) {
+                                  name = tipWord.nameAr;
+                                }
+                              }
                             }
 
                             return Padding(
@@ -138,9 +149,8 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                               child: ProductWidget(
                                 onTap: () {
                                   _selectedTipWord = tipWord;
-                                  // creatingManager.setItem(e);
                                   setState(() {});
-                                  _setTitle(tipWord, name);
+                                  _setTitle(tipWord: tipWord, tipwordName: name);
                                 },
                                 name: name,
                               ),
@@ -192,13 +202,20 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
     );
   }
 
-  void _setTitle(TipWord tipWord, String tipwordName) {
+  void _setTitle({
+    required TipWord tipWord,
+    required String tipwordName,
+  }) {
     String title = productsController.text;
-    List<String> titleWords = title.split(' ');
-    if (titleWords.isNotEmpty) {
-      titleWords.removeLast();
+    if (tipWord.fullTip) {
+      title = tipwordName;
+    } else {
+      List<String> titleWords = title.split(' ');
+      if (titleWords.isNotEmpty) {
+        titleWords.removeLast();
+      }
+      title = '${titleWords.join(' ')} $tipwordName ';
     }
-    title = '${titleWords.join(' ')} $tipwordName ';
     productsController.text = title;
     setState(() {});
 
@@ -206,7 +223,8 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
     final markId = creatingManager.carFilter?.markId ?? creatingManager.marksFilter?.markId;
     BlocProvider.of<TipWordsCubit>(context).getTipWordsBy(
       subcategoryId: creatingManager.creatingData.subcategoryId ?? '',
-      query: null,
+      lastWord: null,
+      wholeString: null,
       markId: _selectedTipWord == null ? markId : null,
       //modelId: _selectedTipWord == null ? modelId : null,
       modelId: null,

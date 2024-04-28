@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/feature/auth/data/validators.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
+import 'package:smart/widgets/textField/mask_text_field.dart';
 
 import '../../../utils/animations.dart';
 import '../../../utils/colors.dart';
@@ -14,11 +16,11 @@ import '../../../utils/dialogs.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/custom_text_field.dart';
 
-// final maskPhoneFormatter = MaskTextInputFormatter(
-//   mask: '+213 (###) ## ## ##',
-//   filter: {"#": RegExp(r'[0-9]')},
-//   type: MaskAutoCompletionType.lazy,
-// );
+final maskPhoneFormatter = MaskTextInputFormatter(
+  mask: '+213 (###) ## ## ##',
+  filter: {"#": RegExp(r'[0-9]')},
+  type: MaskAutoCompletionType.lazy,
+);
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -28,7 +30,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  // final phoneController = TextEditingController();
+  final phoneController = TextEditingController();
   final emailController = TextEditingController();
   final nameController = TextEditingController();
   final firstPasswordController = TextEditingController();
@@ -37,6 +39,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
   bool isNameValid = false;
   bool isEmailValid = false;
+  bool isPhoneValid = false;
   bool isPasswordValid = false;
   bool isConfirmPasswordValid = false;
   bool isButtonActive = false;
@@ -130,23 +133,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           _checkActiveButton();
                         },
                       ),
-                      // MaskTextFormField(
-                      //   controller: phoneController,
-                      //   hintText: '+213 (###) ## ## ##',
-                      //   keyboardType: TextInputType.phone,
-                      //   width: width * 0.95,
-                      //   prefIcon: 'Assets/icons/phone.svg',
-                      //   validator: (value) {
-                      //     if (maskPhoneFormatter.getUnmaskedText().length != 9) {
-                      //       return localizations.errorReviewOrEnterOther;
-                      //     }
-                      //     return null;
-                      //   },
-                      //   onChanged: (value) {
-                      //     checkIsTouch();
-                      //   },
-                      //   mask: maskPhoneFormatter,
-                      // ),
                       CustomTextFormField(
                         controller: emailController,
                         hintText: 'E-mail',
@@ -158,6 +144,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           isEmailValid = emailValidator(value: value, localizations: localizations) == null;
                           _checkActiveButton();
                         },
+                      ),
+                      MaskTextFormField(
+                        controller: phoneController,
+                        hintText: '+213 (###) ## ## ##',
+                        keyboardType: TextInputType.phone,
+                        width: width * 0.95,
+                        prefIcon: 'Assets/icons/phone.svg',
+                        validator: (value) {
+                          if (maskPhoneFormatter.getUnmaskedText().length != 9) {
+                            return localizations.errorReviewOrEnterOther;
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          isPhoneValid = maskPhoneFormatter.getUnmaskedText().length == 9;
+                          _checkActiveButton();
+                        },
+                        mask: maskPhoneFormatter,
                       ),
                       CustomTextFormField(
                           controller: firstPasswordController,
@@ -269,6 +273,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           // );
                           BlocProvider.of<AuthCubit>(context).registerWithEmail(
                             email: emailController.text.trim(),
+                            phone: maskPhoneFormatter.getUnmaskedText(),
                             name: nameController.text.trim(),
                             password: firstPasswordController.text.trim(),
                           );
@@ -302,7 +307,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   _checkActiveButton() {
-    if (isEmailValid && isNameValid && isPasswordValid && isConfirmPasswordValid && isTapCheckBox) {
+    if (isEmailValid && isPhoneValid && isNameValid && isPasswordValid && isConfirmPasswordValid && isTapCheckBox) {
       isButtonActive = true;
     } else {
       isButtonActive = false;

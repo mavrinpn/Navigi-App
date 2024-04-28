@@ -149,7 +149,11 @@ class AuthRepository {
       }
 
       await _createSession(credentials);
-      await _createUserData(credentials.mail, '');
+      await _createUserData(
+        email: credentials.mail,
+        name: '',
+        phone: '',
+      );
 
       await getUserData();
       _initMessaging();
@@ -184,6 +188,7 @@ class AuthRepository {
     String code, {
     required String password,
     required String name,
+    required String phone,
     required bool isPasswordRestore,
   }) async {
     //TODO user register
@@ -200,7 +205,11 @@ class AuthRepository {
     } else if (credentials != null) {
       await _account.deleteSessions();
       await _createSession(credentials);
-      await _createUserData(credentials.mail, name);
+      await _createUserData(
+        email: credentials.mail,
+        name: name,
+        phone: phone,
+      );
 
       await getUserData();
       _initMessaging();
@@ -370,8 +379,12 @@ class AuthRepository {
     prefs.setString(sessionIdKey, sessionID!);
   }
 
-  Future _createUserData(String email, String name) async {
-    final phone = email.split('@')[0];
+  Future _createUserData({
+    required String email,
+    required String name,
+    required String phone,
+  }) async {
+    // final phone = email.split('@')[0];
 
     await _databaseService.users.createUser(
       name: name,

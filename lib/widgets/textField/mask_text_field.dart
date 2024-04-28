@@ -49,6 +49,7 @@ class _MaskTextFormFieldState extends State<MaskTextFormField> {
       child: Padding(
           padding: const EdgeInsets.all(10),
           child: TextFormField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: widget.validator,
             inputFormatters: [widget.mask],
             maxLines: 1,
