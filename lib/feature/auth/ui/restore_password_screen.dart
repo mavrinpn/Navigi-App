@@ -7,7 +7,6 @@ import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/back_button.dart';
-import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 import '../../../utils/animations.dart';
 import '../../../utils/colors.dart';
@@ -64,18 +63,17 @@ class _RegistrationScreenState extends State<RestorePasswordScreen> {
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is AuthLoadingState) {
+        if (state is UserCreatingState) {
           Dialogs.showModal(context, Center(child: AppAnimations.bouncingLine));
         } else {
           Dialogs.hide(context);
         }
-        if (state is AuthSuccessState) {
-          Navigator.pop(context);
-        } else if (state is AuthFailState) {
-          CustomSnackBar.showSnackBar(context, 'Error with database');
-        } else if (state is NotFoundState) {
-          Navigator.of(context).pushReplacementNamed(AppRoutesNames.userExist);
-          // CustomSnackBar.showSnackBar(context, 'Use was already register');
+        if (state is UserSuccessCreatedState) {
+          Navigator.pushNamed(
+            context,
+            AppRoutesNames.authCode,
+            arguments: {'isPasswordRestore': true},
+          );
         }
       },
       child: GestureDetector(
@@ -203,12 +201,6 @@ class _RegistrationScreenState extends State<RestorePasswordScreen> {
                           BlocProvider.of<AuthCubit>(context).restorePasswordWithEmail(
                             email: emailController.text.trim(),
                             password: firstPasswordController.text.trim(),
-                          );
-
-                          Navigator.pushNamed(
-                            context,
-                            AppRoutesNames.checkCode,
-                            arguments: {'isPasswordRestore': true},
                           );
                         },
                         text: localizations.next,

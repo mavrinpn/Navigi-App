@@ -225,5 +225,6 @@
 "recoverPassword": "استعادة كلمة المرور",
 "notSpecified": "غير محدد",
 "selected": "مختارة",
-"enterValidEmail": "أدخل بريد إلكتروني صالح"
+"enterValidEmail": "أدخل بريد إلكتروني صالح",
+"invalidCode": "رمز غير صالح"
 }

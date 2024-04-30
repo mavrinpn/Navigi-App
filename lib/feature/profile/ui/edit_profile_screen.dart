@@ -65,13 +65,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    final userRepo = RepositoryProvider.of<AuthRepository>(context);
+
+    nameController.text = userRepo.userData?.name ?? '';
+    phoneController.text = userRepo.userData?.phone ?? '';
+    emailController.text = userRepo.loggedUser?.email ?? '';
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final user = RepositoryProvider.of<AuthRepository>(context).userData;
-
-    nameController.text = user?.name ?? '';
-    phoneController.text = user?.phone ?? '';
-
     final localizations = AppLocalizations.of(context)!;
+    final user = RepositoryProvider.of<AuthRepository>(context).userData;
 
     return GestureDetector(
       onTap: () {
@@ -170,6 +176,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           },
                         ),
                         CustomTextFormField(
+                          readOnly: true,
                           controller: emailController,
                           keyboardType: TextInputType.text,
                           prefIcon: 'Assets/icons/email.svg',

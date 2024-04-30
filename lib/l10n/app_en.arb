@@ -225,5 +225,6 @@
 "recoverPassword": "Recover password",
 "notSpecified": "not specified",
 "selected": "selected",
-"enterValidEmail": "Enter valid E-mail"
+"enterValidEmail": "Enter valid E-mail",
+"invalidCode": "Invalid Code"
 }

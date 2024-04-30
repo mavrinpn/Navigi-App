@@ -1348,6 +1348,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter valid E-mail'**
   String get enterValidEmail;
+
+  /// No description provided for @invalidCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid Code'**
+  String get invalidCode;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

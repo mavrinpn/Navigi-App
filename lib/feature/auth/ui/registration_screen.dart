@@ -77,7 +77,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is AuthLoadingState) {
+        if (state is AuthLoadingState || state is UserCreatingState) {
           Dialogs.showModal(context, Center(child: AppAnimations.bouncingLine));
         } else {
           Dialogs.hide(context);
@@ -86,9 +86,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           Navigator.pop(context);
         } else if (state is AuthFailState) {
           CustomSnackBar.showSnackBar(context, 'Error with database');
-        } else if (state is AlreadyExistState) {
-          Navigator.of(context).pushReplacementNamed(AppRoutesNames.userExist);
-          // CustomSnackBar.showSnackBar(context, 'Use was already register');
+        } else if (state is UserAlreadyExistState) {
+          Navigator.of(context).pushNamed(AppRoutesNames.userExist);
+        } else if (state is UserSuccessCreatedState) {
+          Navigator.pushNamed(
+            context,
+            AppRoutesNames.authCode,
+            arguments: {'isPasswordRestore': false},
+          );
         }
       },
       child: GestureDetector(
@@ -272,13 +277,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           //   password: firstPasswordController.text.trim(),
                           // );
                           BlocProvider.of<AuthCubit>(context).registerWithEmail(
+                            name: nameController.text.trim(),
                             email: emailController.text.trim(),
                             phone: maskPhoneFormatter.getUnmaskedText(),
-                            name: nameController.text.trim(),
                             password: firstPasswordController.text.trim(),
                           );
-
-                          Navigator.pushNamed(context, AppRoutesNames.checkCode);
                         },
                         text: localizations.regg,
                         styleText: AppTypography.font14white,

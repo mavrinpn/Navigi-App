@@ -20,6 +20,7 @@ class CustomTextFormField extends StatefulWidget {
     this.obscureText = false,
     this.validator,
     this.hintText = '',
+    this.readOnly = false,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -31,6 +32,7 @@ class CustomTextFormField extends StatefulWidget {
   final FormFieldValidator<String>? validator;
   final void Function(String?) onChanged;
   final String hintText;
+  final bool readOnly;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -45,6 +47,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       child: Padding(
           padding: const EdgeInsets.all(10),
           child: TextFormField(
+            readOnly: widget.readOnly,
             validator: widget.validator,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             maxLines: 1,

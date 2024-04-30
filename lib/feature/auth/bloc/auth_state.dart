@@ -11,8 +11,16 @@ class AuthSuccessState extends AuthState {}
 
 class AuthFailState extends AuthState {}
 
-class AlreadyExistState extends AuthState {}
+class AuthErrorInvalidCode extends AuthState {}
+
+class AuthUserNotVerificated extends AuthState {}
+
+class UserAlreadyExistState extends AuthState {}
 
 class NotFoundState extends AuthState {}
 
 class CodeSentState extends AuthState {}
+
+class UserCreatingState extends AuthState {}
+
+class UserSuccessCreatedState extends AuthState {}

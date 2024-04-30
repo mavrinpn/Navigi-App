@@ -634,4 +634,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get enterValidEmail => 'Entrez une adresse e-mail valide';
+
+  @override
+  String get invalidCode => 'Code Non Valide';
 }

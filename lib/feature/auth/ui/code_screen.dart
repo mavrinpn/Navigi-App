@@ -45,8 +45,10 @@ class _CodeScreenState extends State<CodeScreen> {
         }
         if (state is AuthSuccessState) {
           Navigator.popUntil(context, ModalRoute.withName(AppRoutesNames.root));
+        } else if (state is AuthErrorInvalidCode) {
+          CustomSnackBar.showSnackBar(context, localizations.invalidCode);
         } else if (state is AuthFailState) {
-          CustomSnackBar.showSnackBar(context, AppLocalizations.of(context)!.passwordOrEmailEnteredIncorrectly);
+          CustomSnackBar.showSnackBar(context, localizations.passwordOrEmailEnteredIncorrectly);
         }
       },
       child: GestureDetector(
@@ -149,7 +151,7 @@ class _CodeScreenState extends State<CodeScreen> {
                   callback: () {
                     if (buttonActive) {
                       bloc
-                          .confirmCode(
+                          .confirmEmailCode(
                         code: codeController.text,
                         isPasswordRestore: widget.isPasswordRestore,
                       )

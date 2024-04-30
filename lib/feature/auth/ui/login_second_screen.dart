@@ -52,8 +52,15 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
         if (state is AuthSuccessState) {
           BlocProvider.of<CreatorCubit>(context).setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
           Navigator.pop(context);
+          Navigator.pop(context);
         } else if (state is AuthFailState) {
           CustomSnackBar.showSnackBar(context, AppLocalizations.of(context)!.passwordOrEmailEnteredIncorrectly);
+        } else if (state is AuthUserNotVerificated) {
+          Navigator.pushNamed(
+            context,
+            AppRoutesNames.authCode,
+            arguments: {'isPasswordRestore': false},
+          );
         }
       },
       child: GestureDetector(

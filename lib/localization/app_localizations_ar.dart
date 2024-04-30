@@ -634,4 +634,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get enterValidEmail => 'أدخل بريد إلكتروني صالح';
+
+  @override
+  String get invalidCode => 'رمز غير صالح';
 }

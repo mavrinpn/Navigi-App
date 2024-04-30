@@ -5,6 +5,10 @@ class UserService {
   final Functions _functions;
   final Account _account;
 
+  final sendEmailCodeFunction = '662fb6dee05cdf53d400';
+  final confirmEmailFunction = '662fbeae05374336da66';
+  final updatePasswordFunction = '662fbfe76c295575a1d0';
+
   UserService(Databases databases, Functions functions, Account account)
       : _databases = databases,
         _account = account,
@@ -15,7 +19,6 @@ class UserService {
     required String uid,
     required String phone,
   }) async {
-    //TODO user check
     final existsDocument = await _databases.listDocuments(
       databaseId: mainDatabase,
       collectionId: usersCollection,
@@ -39,12 +42,14 @@ class UserService {
       if (phone != '') {
         data[userPhone] = phone;
       }
-      await _databases.updateDocument(
-        databaseId: mainDatabase,
-        collectionId: usersCollection,
-        documentId: uid,
-        data: data,
-      );
+      if (data.isNotEmpty) {
+        await _databases.updateDocument(
+          databaseId: mainDatabase,
+          collectionId: usersCollection,
+          documentId: uid,
+          data: data,
+        );
+      }
     }
   }
 
@@ -83,45 +88,53 @@ class UserService {
 
   Future<String> getJwt() => _account.createJWT().then((value) => value.jwt);
 
-  Future<void> sendSms() async {
-    final jwt = await getJwt();
-    final res = await _functions.createExecution(
-      functionId: '658d94ecc79d136f5fec',
-      body: jsonEncode({'jwt': jwt}),
-    );
-    // ignore: avoid_print
-    print('sendSms ${res.responseBody}');
-    log('sms sent');
-  }
+  // Future<void> sendSms() async {
+  //   final jwt = await getJwt();
+  //   final res = await _functions.createExecution(
+  //     functionId: '658d94ecc79d136f5fec',
+  //     body: jsonEncode({'jwt': jwt}),
+  //   );
+  //   // ignore: avoid_print
+  //   print('sendSms ${res.responseBody}');
+  //   log('sms sent');
+  // }
 
-  Future<void> sendEmailCode() async {
+  Future<void> sendEmailCode(String email) async {
     final jwt = await getJwt();
     final res = await _functions.createExecution(
-      //TODO sendEmailCode
-      functionId: '658d94ecc79d136f5fec',
-      body: jsonEncode({'jwt': jwt}),
+      functionId: sendEmailCodeFunction,
+      body: jsonEncode({
+        'jwt': jwt,
+        'email': email,
+      }),
     );
     // ignore: avoid_print
     print('sendEmailCode ${res.responseBody}');
     log('Email code sent');
   }
 
-  Future<(UserCredentials?, bool)> confirmCode(String code, String password) async {
+  Future<String> confirmEmailCode({
+    required String code,
+    required String email,
+  }) async {
     final jwt = await getJwt();
-    final body = jsonEncode({'jwt': jwt, 'code': code, 'password': password});
+    final body = jsonEncode({
+      'jwt': jwt,
+      'code': code,
+      'email': email,
+    });
 
     final res = await _functions.createExecution(
-      functionId: '658d94c13158a0f7ba5b',
+      functionId: confirmEmailFunction,
       body: body,
     );
 
+    // ignore: avoid_print
+    print(res.responseBody);
+
     final resBody = jsonDecode(res.responseBody);
 
-    try {
-      return Future.value((UserCredentials.fromJson(resBody), resBody['user_exist'] as bool));
-    } catch (e) {
-      return Future.value((null, false));
-    }
+    return Future.value(resBody['status'] != null ? resBody['status'] as String : '');
   }
 
   static const String lastSeen = 'lastSeen';
