@@ -637,4 +637,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get invalidCode => 'Code Non Valide';
+
+  @override
+  String get passwordUpdateSuccess => 'Mise À Jour Du Mot De Passe Réussie';
 }

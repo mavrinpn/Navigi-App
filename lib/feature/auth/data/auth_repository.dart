@@ -251,7 +251,6 @@ class AuthRepository {
     required String name,
     required String phone,
     required String email,
-    required bool isPasswordRestore,
   }) async {
     // authState.add(EntranceStateEnum.loading);
 
@@ -267,6 +266,24 @@ class AuthRepository {
 
       // authState.add(EntranceStateEnum.success);
       appState.add(AuthStateEnum.auth);
+    } else {
+      return status;
+    }
+    return null;
+  }
+
+  Future<String?> updateEmailCode(
+    String code, {
+    required String password,
+    required String email,
+  }) async {
+    final status = await _databaseService.users.updatePassword(
+      code: code,
+      email: email,
+      password: password,
+    );
+
+    if (status == 'ok') {
     } else {
       return status;
     }

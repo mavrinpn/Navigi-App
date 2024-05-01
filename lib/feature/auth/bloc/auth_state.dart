@@ -13,6 +13,8 @@ class AuthFailState extends AuthState {}
 
 class AuthErrorInvalidCode extends AuthState {}
 
+class AuthPasswordUpdateSuccessState extends AuthState {}
+
 class AuthUserNotVerificated extends AuthState {}
 
 class UserAlreadyExistState extends AuthState {}

@@ -43,8 +43,12 @@ class _CodeScreenState extends State<CodeScreen> {
         } else {
           Dialogs.hide(context);
         }
+
         if (state is AuthSuccessState) {
           Navigator.popUntil(context, ModalRoute.withName(AppRoutesNames.root));
+        } else if (state is AuthPasswordUpdateSuccessState) {
+          Navigator.pop(context);
+          CustomSnackBar.showSnackBar(context, localizations.passwordUpdateSuccess);
         } else if (state is AuthErrorInvalidCode) {
           CustomSnackBar.showSnackBar(context, localizations.invalidCode);
         } else if (state is AuthFailState) {
@@ -150,18 +154,23 @@ class _CodeScreenState extends State<CodeScreen> {
                 CustomTextButton(
                   callback: () {
                     if (buttonActive) {
-                      bloc
-                          .confirmEmailCode(
-                        code: codeController.text,
-                        isPasswordRestore: widget.isPasswordRestore,
-                      )
-                          .timeout(
-                        const Duration(seconds: 4),
-                        onTimeout: () {
-                          Navigator.of(context).pop();
-                          CustomSnackBar.showSnackBar(context, localizations.tryAgainLater);
-                        },
-                      );
+                      if (widget.isPasswordRestore) {
+                        bloc.updateEmailPassword(code: codeController.text).timeout(
+                          const Duration(seconds: 4),
+                          onTimeout: () {
+                            Navigator.of(context).pop();
+                            CustomSnackBar.showSnackBar(context, localizations.tryAgainLater);
+                          },
+                        );
+                      } else {
+                        bloc.confirmEmailCode(code: codeController.text).timeout(
+                          const Duration(seconds: 4),
+                          onTimeout: () {
+                            Navigator.of(context).pop();
+                            CustomSnackBar.showSnackBar(context, localizations.tryAgainLater);
+                          },
+                        );
+                      }
                     }
                   },
                   active: buttonActive,

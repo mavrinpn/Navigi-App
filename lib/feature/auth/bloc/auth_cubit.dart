@@ -24,6 +24,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   setPhoneForLogin(String newPhone) => _phone = newPhone;
   setEmailForLogin(String newEMail) => _email = newEMail;
+  String getEmailForLogin() => _email;
 
   // registerWithPhone({
   //   required String phone,
@@ -126,7 +127,6 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> confirmEmailCode({
     required String code,
-    required bool isPasswordRestore,
   }) async {
     emit(AuthLoadingState());
 
@@ -136,13 +136,34 @@ class AuthCubit extends Cubit<AuthState> {
       name: _name,
       phone: _phone,
       email: _email,
-      isPasswordRestore: isPasswordRestore,
     );
 
     if (result == null) {
       emit(AuthSuccessState());
     } else if (result == 'error_invalid_code') {
       emit(AuthErrorInvalidCode());
+    } else {
+      emit(AuthFailState());
+    }
+  }
+
+  Future<void> updateEmailPassword({
+    required String code,
+  }) async {
+    emit(AuthLoadingState());
+
+    final result = await authRepository.updateEmailCode(
+      code,
+      password: _password,
+      email: _email,
+    );
+
+    if (result == null) {
+      emit(AuthPasswordUpdateSuccessState());
+    } else if (result == 'error_invalid_code') {
+      emit(AuthErrorInvalidCode());
+    } else if (result == 'error_abuse_24hour') {
+      emit(AuthFailState());
     } else {
       emit(AuthFailState());
     }

@@ -226,5 +226,6 @@
 "notSpecified": "not specified",
 "selected": "selected",
 "enterValidEmail": "Enter valid E-mail",
-"invalidCode": "Invalid Code"
+"invalidCode": "Invalid Code",
+"passwordUpdateSuccess": "Password Update Successfully"
 }

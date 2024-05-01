@@ -637,4 +637,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get invalidCode => 'رمز غير صالح';
+
+  @override
+  String get passwordUpdateSuccess => 'تحديث كلمة المرور بنجاح';
 }

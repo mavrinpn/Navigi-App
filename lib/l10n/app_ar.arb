@@ -226,5 +226,6 @@
 "notSpecified": "غير محدد",
 "selected": "مختارة",
 "enterValidEmail": "أدخل بريد إلكتروني صالح",
-"invalidCode": "رمز غير صالح"
+"invalidCode": "رمز غير صالح",
+"passwordUpdateSuccess": "تحديث كلمة المرور بنجاح"
 }

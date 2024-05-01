@@ -637,4 +637,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get invalidCode => 'Invalid Code';
+
+  @override
+  String get passwordUpdateSuccess => 'Password Update Successfully';
 }

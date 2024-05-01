@@ -41,6 +41,12 @@ class _RegistrationScreenState extends State<RestorePasswordScreen> {
   // }
 
   @override
+  void initState() {
+    super.initState();
+    emailController.text = BlocProvider.of<AuthCubit>(context).getEmailForLogin();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;

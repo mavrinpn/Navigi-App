@@ -100,11 +100,10 @@ class UserService {
   // }
 
   Future<void> sendEmailCode(String email) async {
-    final jwt = await getJwt();
+    // final jwt = await getJwt();
     final res = await _functions.createExecution(
       functionId: sendEmailCodeFunction,
       body: jsonEncode({
-        'jwt': jwt,
         'email': email,
       }),
     );
@@ -131,6 +130,32 @@ class UserService {
 
     // ignore: avoid_print
     print(res.responseBody);
+
+    final resBody = jsonDecode(res.responseBody);
+
+    return Future.value(resBody['status'] != null ? resBody['status'] as String : '');
+  }
+
+  Future<String> updatePassword({
+    required String code,
+    required String email,
+    required String password,
+  }) async {
+    final body = jsonEncode({
+      'new_password': password,
+      'code': code,
+      'email': email,
+    });
+
+    print(body);
+
+    final res = await _functions.createExecution(
+      functionId: updatePasswordFunction,
+      body: body,
+    );
+
+    // ignore: avoid_print
+    print('updatePassword ${res.responseBody}');
 
     final resBody = jsonDecode(res.responseBody);
 

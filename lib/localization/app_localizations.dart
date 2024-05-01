@@ -1354,6 +1354,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Invalid Code'**
   String get invalidCode;
+
+  /// No description provided for @passwordUpdateSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Update Successfully'**
+  String get passwordUpdateSuccess;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

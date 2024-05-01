@@ -226,5 +226,6 @@
 "notSpecified": "non spécifié",
 "selected": "sélectionné",
 "enterValidEmail": "Entrez une adresse e-mail valide",
-"invalidCode": "Code Non Valide"
+"invalidCode": "Code Non Valide",
+"passwordUpdateSuccess": "Mise À Jour Du Mot De Passe Réussie"
 }
