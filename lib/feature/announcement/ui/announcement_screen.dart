@@ -1,4 +1,7 @@
 // ignore_for_file: deprecated_member_use
+import 'dart:ui';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,7 +31,6 @@ import '../../../managers/announcement_manager.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/accuont/account_small_info.dart';
 import '../../../widgets/button/custom_icon_button.dart';
-import '../../../widgets/images/network_image.dart';
 import '../bloc/announcement/announcement_cubit.dart';
 import 'map.dart';
 
@@ -49,32 +51,28 @@ class AnnouncementScreen extends StatefulWidget {
 class _AnnouncementScreenState extends State<AnnouncementScreen> {
   @override
   void initState() {
-    BlocProvider.of<AnnouncementCubit>(context)
-        .loadAnnouncementById(widget.announcementId);
+    BlocProvider.of<AnnouncementCubit>(context).loadAnnouncementById(widget.announcementId);
     super.initState();
   }
 
   void incViewsIfNeed(AnnouncementSuccessState state) {
     final userId = RepositoryProvider.of<AuthRepository>(context).userId;
     if (userId != state.data.creatorData.uid) {
-      RepositoryProvider.of<AnnouncementManager>(context)
-          .incTotalViews(state.data.id);
+      RepositoryProvider.of<AnnouncementManager>(context).incTotalViews(state.data.id);
     }
   }
 
   void incContactsIfNeed(AnnouncementSuccessState state) {
     final userId = RepositoryProvider.of<AuthRepository>(context).userId;
     if (userId != state.data.creatorData.uid) {
-      RepositoryProvider.of<AnnouncementManager>(context)
-          .incContactsViews(state.data.id);
+      RepositoryProvider.of<AnnouncementManager>(context).incContactsViews(state.data.id);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    PageController pageController =
-        PageController(viewportFraction: 0.9, initialPage: activePage);
+    PageController pageController = PageController(viewportFraction: 0.9, initialPage: activePage);
 
     final width = MediaQuery.of(context).size.width;
     final String currentLocale = MyApp.getLocale(context) ?? 'fr';
@@ -82,9 +80,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     return BlocConsumer<AnnouncementCubit, AnnouncementState>(
       listener: (context, state) {
         if (state is AnnouncementSuccessState) {
-          context
-              .read<SubcategoryCubit>()
-              .loadSubcategory(subcategoryId: state.data.subcategoryId);
+          context.read<SubcategoryCubit>().loadSubcategory(subcategoryId: state.data.subcategoryId);
           context.read<MarkModelCubit>().load(
                 markId: state.data.mark,
                 modelId: state.data.model,
@@ -97,8 +93,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
 
           return RefreshIndicator(
             onRefresh: () async {
-              BlocProvider.of<AnnouncementCubit>(context)
-                  .refreshAnnouncement(state.data.id);
+              BlocProvider.of<AnnouncementCubit>(context).refreshAnnouncement(state.data.id);
             },
             child: Scaffold(
               appBar: AppBar(
@@ -114,9 +109,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: () {
-                        if (state.data.creatorData.uid ==
-                            RepositoryProvider.of<AuthRepository>(context)
-                                .userId) {
+                        if (state.data.creatorData.uid == RepositoryProvider.of<AuthRepository>(context).userId) {
                           showModalBottomSheet(
                             context: context,
                             isScrollControlled: true,
@@ -125,8 +118,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             ),
                             showDragHandle: true,
                             builder: (ctx) {
-                              return SettingsBottomSheet(
-                                  announcement: state.data);
+                              return SettingsBottomSheet(announcement: state.data);
                             },
                           );
                         }
@@ -156,8 +148,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) =>
-                                  PhotoViews(images: state.data.images),
+                              builder: (_) => PhotoViews(images: state.data.images),
                             ),
                           );
                         },
@@ -172,11 +163,38 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             },
                             itemBuilder: (context, index) {
                               return Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: CustomNetworkImage(
-                                  width: 320,
-                                  height: 258,
-                                  url: state.data.images[index],
+                                padding: const EdgeInsets.symmetric(horizontal: 6),
+                                child: Container(
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: CachedNetworkImageProvider(
+                                          state.data.images[index],
+                                        ),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                    child: BackdropFilter(
+                                      filter: ImageFilter.blur(
+                                        sigmaX: 10.0,
+                                        sigmaY: 10.0,
+                                      ),
+                                      child: CachedNetworkImage(
+                                        imageUrl: state.data.images[index],
+                                        fit: BoxFit.contain,
+                                        fadeInDuration: Duration.zero,
+                                      ),
+                                    ),
+                                  ),
+                                  // child: CustomNetworkImage(
+                                  //   width: 320,
+                                  //   height: 258,
+                                  //   url: state.data.images[index],
+                                  // ),
                                 ),
                               );
                             }),
@@ -189,8 +207,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     ),
                     const SizedBox(height: 12),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 6),
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
                       child: Row(
                         children: [
                           SvgPicture.asset(
@@ -202,8 +219,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           const SizedBox(width: 6),
                           Text(
                             state.data.createdAt,
-                            style: AppTypography.font14lightGray
-                                .copyWith(fontSize: 12),
+                            style: AppTypography.font14lightGray.copyWith(fontSize: 12),
                           ),
                           const Spacer(),
                           SvgPicture.asset(
@@ -214,14 +230,12 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           ),
                           const SizedBox(width: 6),
                           Text(state.data.totalViews.toString(),
-                              style: AppTypography.font14lightGray
-                                  .copyWith(fontSize: 12)),
+                              style: AppTypography.font14lightGray.copyWith(fontSize: 12)),
                         ],
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 6),
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
                       alignment: Alignment.topLeft,
                       child: Text(
                         state.data.title,
@@ -250,17 +264,14 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             SvgPicture.asset('Assets/icons/point.svg'),
                             RichText(
                                 text: TextSpan(children: [
-                              TextSpan(
-                                  text: ' ${state.data.area.name}',
-                                  style: AppTypography.font14black),
+                              TextSpan(text: ' ${state.data.area.name}', style: AppTypography.font14black),
                             ]))
                           ],
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 6),
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -324,8 +335,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             checkBlockedAndPushChat(
                               context: context,
                               data: state.data,
-                              message:
-                                  '${localizations.offerMessage} $offerPriceString',
+                              message: '${localizations.offerMessage} $offerPriceString',
                             );
                           }
                         });
@@ -342,8 +352,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         children: [
                           Text(
                             AppLocalizations.of(context)!.features,
-                            style: AppTypography.font16black
-                                .copyWith(fontWeight: FontWeight.w700),
+                            style: AppTypography.font16black.copyWith(fontWeight: FontWeight.w700),
                           ),
                         ],
                       ),
@@ -355,21 +364,18 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         .map(
                           (e) => ItemParameterWidget(
                             name: currentLocale == 'fr' ? e.nameFr : e.nameAr,
-                            currentValue:
-                                currentLocale == 'fr' ? e.valueFr : e.valueAr,
+                            currentValue: currentLocale == 'fr' ? e.valueFr : e.valueAr,
                           ),
                         )
                         .toList(),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
                             AppLocalizations.of(context)!.description,
-                            style: AppTypography.font16black
-                                .copyWith(fontWeight: FontWeight.w700),
+                            style: AppTypography.font16black.copyWith(fontWeight: FontWeight.w700),
                           ),
                         ],
                       ),
@@ -398,7 +404,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       subcategoryId: state.data.subcategoryId,
                       parentId: state.data.id,
                       model: state.data.model,
-                      staticParameters: state.data.staticParameters, //TODO type
+                      staticParameters: state.data.staticParameters,
                     ),
                   ],
                 ),
@@ -469,15 +475,11 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
             children: [
               ItemParameterWidget(
                 name: localizations.category,
-                currentValue: currentLocale == 'fr'
-                    ? state.category.nameFr
-                    : state.category.nameAr,
+                currentValue: currentLocale == 'fr' ? state.category.nameFr : state.category.nameAr,
               ),
               ItemParameterWidget(
                 name: localizations.subcategory,
-                currentValue: currentLocale == 'fr'
-                    ? state.subcategory.nameFr
-                    : state.subcategory.nameAr,
+                currentValue: currentLocale == 'fr' ? state.subcategory.nameFr : state.subcategory.nameAr,
               ),
             ],
           );

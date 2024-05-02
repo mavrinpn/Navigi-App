@@ -42,18 +42,20 @@ class _CustomNetworkImageState extends State<CustomNetworkImage> {
             child: Container(
               width: widget.width,
               height: widget.height,
-              decoration: BoxDecoration(
-                  color: Colors.grey[300]!,
-                  borderRadius: BorderRadius.circular(widget.borderRadius)),
+              decoration:
+                  BoxDecoration(color: Colors.grey[300]!, borderRadius: BorderRadius.circular(widget.borderRadius)),
             ),
           )
         : Container(
             width: widget.width,
             height: widget.height,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(widget.borderRadius),
-                image:
-                    DecorationImage(image: widget._image, fit: BoxFit.cover)),
+              borderRadius: BorderRadius.circular(widget.borderRadius),
+              image: DecorationImage(
+                image: widget._image,
+                fit: BoxFit.cover,
+              ),
+            ),
           );
   }
 }

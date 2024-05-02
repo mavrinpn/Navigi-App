@@ -74,14 +74,9 @@ class _PhotoViewsState extends State<PhotoViews> {
               pageController: pageController,
             ),
           ),
-          const SizedBox(
-            height: 30,
-          ),
-          ImagesIndicators(
-              length: widget.images.length, currentIndex: activePage, size: 10),
-          const SizedBox(
-            height: 20,
-          )
+          const SizedBox(height: 30),
+          ImagesIndicators(length: widget.images.length, currentIndex: activePage, size: 10),
+          const SizedBox(height: 20)
         ],
       ),
     );
