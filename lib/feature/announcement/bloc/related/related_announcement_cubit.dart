@@ -20,6 +20,8 @@ class RelatedAnnouncementCubit extends Cubit<RelatedAnnouncementState> {
     required double minPrice,
     required double maxPrice,
     required String excludeId,
+    required String model,
+    required String type,
     List<Parameter>? parameters,
   }) async {
     emit(RelatedAnnouncementsLoadingState());
@@ -31,10 +33,11 @@ class RelatedAnnouncementCubit extends Cubit<RelatedAnnouncementState> {
         parameters: parameters ?? [],
         limit: 6,
         excludeId: excludeId,
+        model: model,
+        type: type,
       );
 
-      final res = await _announcementManager.dbService.announcements
-          .searchAnnouncementsInSubcategory(filter);
+      final res = await _announcementManager.dbService.announcements.searchAnnouncementsInSubcategory(filter);
 
       emit(RelatedAnnouncementsSuccessState(announcements: res));
     } catch (e) {

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/announcement/bloc/related/related_announcement_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/models/item/static_localized_parameter.dart';
+import 'package:smart/models/item/static_parameters.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/conatainers/announcement_container.dart';
@@ -12,25 +14,39 @@ class RelatedAnnouncementWidget extends StatefulWidget {
     required this.price,
     required this.subcategoryId,
     required this.parentId,
+    required this.model,
+    required this.staticParameters,
   });
 
   final double price;
   final String subcategoryId;
   final String parentId;
+  final String model;
+  final StaticParameters staticParameters;
 
   @override
-  State<RelatedAnnouncementWidget> createState() =>
-      _RelatedAnnouncementWidgetState();
+  State<RelatedAnnouncementWidget> createState() => _RelatedAnnouncementWidgetState();
 }
 
 class _RelatedAnnouncementWidgetState extends State<RelatedAnnouncementWidget> {
   @override
   void initState() {
+    String type = '';
+    final typeParams = widget.staticParameters.parameters.where(
+      (element) => element.key == 'type',
+    );
+    if (typeParams.isNotEmpty) {
+      final typeParam = typeParams.first as SingleSelectStaticParameter;
+      type = typeParam.currentOption.key;
+    }
+
     context.read<RelatedAnnouncementCubit>().load(
           subcategoryId: widget.subcategoryId,
           minPrice: widget.price * 0.8,
           maxPrice: widget.price * 1.2,
           excludeId: widget.parentId,
+          model: widget.model,
+          type: type,
         );
     super.initState();
   }
@@ -48,8 +64,7 @@ class _RelatedAnnouncementWidgetState extends State<RelatedAnnouncementWidget> {
                   physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
                   shrinkWrap: true,
-                  itemBuilder: (context, index) => AnnouncementContainer(
-                      announcement: state.announcements[index]),
+                  itemBuilder: (context, index) => AnnouncementContainer(announcement: state.announcements[index]),
                   itemCount: state.announcements.length,
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                     crossAxisSpacing: 10,

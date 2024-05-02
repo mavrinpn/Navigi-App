@@ -69,15 +69,15 @@ class AnnouncementsService {
       queries.addAll(await LocationFilter.getLocationFilterForRadius(filterData.radius!));
     }
 
-    if (filterData.mark != null) {
+    if (filterData.mark != null && filterData.mark!.isNotEmpty) {
       queries.add(Query.equal('mark', filterData.mark));
     }
 
-    if (filterData.model != null) {
+    if (filterData.model != null && filterData.model!.isNotEmpty) {
       queries.add(Query.equal('model', filterData.model));
     }
 
-    if (filterData.type != null) {
+    if (filterData.type != null && filterData.type!.isNotEmpty) {
       queries.add(Query.equal('type', filterData.type));
     }
 

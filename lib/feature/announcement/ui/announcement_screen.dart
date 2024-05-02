@@ -397,6 +397,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       price: state.data.price,
                       subcategoryId: state.data.subcategoryId,
                       parentId: state.data.id,
+                      model: state.data.model,
+                      staticParameters: state.data.staticParameters, //TODO type
                     ),
                   ],
                 ),

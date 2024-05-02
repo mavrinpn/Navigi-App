@@ -147,8 +147,6 @@ class UserService {
       'email': email,
     });
 
-    print(body);
-
     final res = await _functions.createExecution(
       functionId: updatePasswordFunction,
       body: body,
