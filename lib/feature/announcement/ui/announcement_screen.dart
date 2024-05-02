@@ -180,8 +180,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                                     ),
                                     child: BackdropFilter(
                                       filter: ImageFilter.blur(
-                                        sigmaX: 10.0,
-                                        sigmaY: 10.0,
+                                        sigmaX: 2.5,
+                                        sigmaY: 2.5,
                                       ),
                                       child: CachedNetworkImage(
                                         imageUrl: state.data.images[index],

@@ -99,7 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
           Navigator.pushNamed(context, AppRoutesNames.announcementCreatingCategory);
         },
         width: MediaQuery.of(context).size.width - 30,
-        text: AppLocalizations.of(context)!.addAnAd,
+        text: localizations.addAnAd,
         styleText: AppTypography.font14white,
         active: true,
         icon: const Icon(
@@ -197,8 +197,9 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                       : min(_sold.length, 4),
                               itemBuilder: (BuildContext context, int index) {
                                 return AnnouncementContainerHorizontal(
-                                    announcement: _tabController.index == 0 ? _available[index] : _sold[index],
-                                    likeCount: '13');
+                                  announcement: _tabController.index == 0 ? _available[index] : _sold[index],
+                                  likeCount: '13',
+                                );
                               },
                               separatorBuilder: (context, index) => const SizedBox(height: 12),
                             )

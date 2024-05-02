@@ -143,9 +143,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get youHaveNoAds => 'ليس لديك إعلانات';
 
   @override
-  String get addAnAd => ' إضافة إعلان';
-
-  @override
   String get salesHaveReported => 'ذكرت المبيعات';
 
   @override
@@ -273,6 +270,15 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get yes => 'نعم';
+
+  @override
+  String get addAnAd => ' إضافة إعلان';
+
+  @override
+  String get selectCategory => 'اختر فئة';
+
+  @override
+  String get selectSubcategory => 'حدد فئة فرعية';
 
   @override
   String get loremipsum => 'loremipsum';

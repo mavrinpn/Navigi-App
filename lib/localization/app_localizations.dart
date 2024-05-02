@@ -371,12 +371,6 @@ abstract class AppLocalizations {
   /// **'You have no ads'**
   String get youHaveNoAds;
 
-  /// No description provided for @addAnAd.
-  ///
-  /// In en, this message translates to:
-  /// **' Add an ad'**
-  String get addAnAd;
-
   /// No description provided for @salesHaveReported.
   ///
   /// In en, this message translates to:
@@ -634,6 +628,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Yes'**
   String get yes;
+
+  /// No description provided for @addAnAd.
+  ///
+  /// In en, this message translates to:
+  /// **' Add an ad'**
+  String get addAnAd;
+
+  /// No description provided for @selectCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a category'**
+  String get selectCategory;
+
+  /// No description provided for @selectSubcategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a subcategory'**
+  String get selectSubcategory;
 
   /// No description provided for @loremipsum.
   ///

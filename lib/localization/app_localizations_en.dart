@@ -143,9 +143,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get youHaveNoAds => 'You have no ads';
 
   @override
-  String get addAnAd => ' Add an ad';
-
-  @override
   String get salesHaveReported => 'Sales have reported';
 
   @override
@@ -273,6 +270,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yes => 'Yes';
+
+  @override
+  String get addAnAd => ' Add an ad';
+
+  @override
+  String get selectCategory => 'Select a category';
+
+  @override
+  String get selectSubcategory => 'Select a subcategory';
 
   @override
   String get loremipsum => 'Loremipsum';

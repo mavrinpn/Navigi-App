@@ -152,9 +152,12 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
         iconTheme: const IconThemeData.fallback(),
         backgroundColor: AppColors.appBarColor,
         elevation: 0,
-        title: Text(
-          localizations.addAnAd,
-          style: AppTypography.font20black,
+        titleSpacing: 0,
+        title: FittedBox(
+          child: Text(
+            localizations.selectSubcategory,
+            style: AppTypography.font20black,
+          ),
         ),
       ),
       body: BlocBuilder<SubcategoryCubit, SubcategoryState>(

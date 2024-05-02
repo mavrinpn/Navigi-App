@@ -53,7 +53,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               backgroundColor: AppColors.appBarColor,
               elevation: 0,
               title: Text(
-                localizations.addAnAd,
+                localizations.selectCategory,
                 style: AppTypography.font20black,
               ),
             ),
