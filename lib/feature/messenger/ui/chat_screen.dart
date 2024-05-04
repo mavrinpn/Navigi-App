@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -45,16 +46,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   bool preparing = false;
   final messageTextFieldBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(18),
-      borderSide: const BorderSide(color: AppColors.whiteGray));
+      borderRadius: BorderRadius.circular(18), borderSide: const BorderSide(color: AppColors.whiteGray));
 
   final List<XFile> images = [];
 
   @override
   void initState() {
     messageController = TextEditingController(text: widget.message ?? '');
-    final messengerRepository =
-        RepositoryProvider.of<MessengerRepository>(context);
+    final messengerRepository = RepositoryProvider.of<MessengerRepository>(context);
     //* preloadChats
     messengerRepository.preloadChats();
     messengerRepository.refreshSubscription();
@@ -64,16 +63,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void didChangeDependencies() {
-    final messengerRepository =
-        RepositoryProvider.of<MessengerRepository>(context);
-    final blockedUsersManager =
-        RepositoryProvider.of<BlockedUsersManager>(context);
+    final messengerRepository = RepositoryProvider.of<MessengerRepository>(context);
+    final blockedUsersManager = RepositoryProvider.of<BlockedUsersManager>(context);
 
-    final isAuthUserBlockedFor = blockedUsersManager.isAuthUserBlockedFor(
-        messengerRepository.currentRoom?.otherUserId ?? '');
+    final isAuthUserBlockedFor =
+        blockedUsersManager.isAuthUserBlockedFor(messengerRepository.currentRoom?.otherUserId ?? '');
 
-    final isUserBlockedForAuth = blockedUsersManager.isUserBlockedForAuth(
-        messengerRepository.currentRoom?.otherUserId ?? '');
+    final isUserBlockedForAuth =
+        blockedUsersManager.isUserBlockedForAuth(messengerRepository.currentRoom?.otherUserId ?? '');
 
     Future.wait([isAuthUserBlockedFor, isUserBlockedForAuth]).then((value) {
       _authUserIsBlocked = value[0];
@@ -86,8 +83,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final messengerRepository =
-        RepositoryProvider.of<MessengerRepository>(context);
+    final messengerRepository = RepositoryProvider.of<MessengerRepository>(context);
 
     return PopScope(
       canPop: true,
@@ -150,13 +146,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 const SizedBox(width: 10),
                 CircleAvatar(
                   radius: 20,
-                  backgroundImage: (messengerRepository
-                                  .currentRoom!.otherUserAvatarUrl ??
-                              '')
-                          .isNotEmpty
-                      ? NetworkImage(
-                          messengerRepository.currentRoom!.otherUserAvatarUrl ??
-                              '')
+                  backgroundImage: (messengerRepository.currentRoom!.otherUserAvatarUrl ?? '').isNotEmpty
+                      ? NetworkImage(messengerRepository.currentRoom!.otherUserAvatarUrl ?? '')
                       : null,
                 ),
                 const SizedBox(width: 10),
@@ -165,8 +156,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   style: AppTypography.font12lightGray,
                 ),
                 StreamBuilder(
-                    stream: messengerRepository
-                        .currentRoom!.onlineRefreshStream.stream,
+                    stream: messengerRepository.currentRoom!.onlineRefreshStream.stream,
                     builder: (ctx, snapshot) {
                       if (snapshot.hasData) {
                         return snapshot.data ?? false
@@ -200,8 +190,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                     child: StreamBuilder<List<ChatItem>>(
                         stream: messengerRepository.currentChatItemsStream,
                         initialData: const [],
@@ -212,10 +201,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 return item is MessagesGroupData
                                     ? MessageGroupWidget(
                                         data: item,
-                                        avatarUrl: messengerRepository
-                                                .currentRoom!
-                                                .otherUserAvatarUrl ??
-                                            '')
+                                        avatarUrl: messengerRepository.currentRoom!.otherUserAvatarUrl ?? '')
                                     : DateSplitterWidget(
                                         data: item as DateSplitter,
                                       );
@@ -251,8 +237,7 @@ class _ChatScreenState extends State<ChatScreen> {
     required Function(bool blocked) onAction,
   }) async {
     final localizations = AppLocalizations.of(context)!;
-    final blockedUsersManager =
-        RepositoryProvider.of<BlockedUsersManager>(context);
+    final blockedUsersManager = RepositoryProvider.of<BlockedUsersManager>(context);
 
     blockedUsersManager.isUserBlockedForAuth(userId).then((isBlocked) {
       showModalBottomSheet(
@@ -284,9 +269,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      isBlocked
-                          ? localizations.unblockUser
-                          : localizations.blockUser,
+                      isBlocked ? localizations.unblockUser : localizations.blockUser,
                       style: AppTypography.font18black,
                     )
                   ],
@@ -299,9 +282,8 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  void _send() {
-    final messengerRepository =
-        RepositoryProvider.of<MessengerRepository>(context);
+  void _send() async {
+    final messengerRepository = RepositoryProvider.of<MessengerRepository>(context);
 
     if (images.isNotEmpty) {
       BlocProvider.of<MessageImagesCubit>(context).sendImages(images);
@@ -313,28 +295,27 @@ class _ChatScreenState extends State<ChatScreen> {
         preparing = true;
       });
 
-      messengerRepository
+      await messengerRepository
           .sendMessage(messageController.text)
           .catchError((err) {
             CustomSnackBar.showSnackBar(context, err.toString());
-            //* timeout
           })
           .timeout(const Duration(seconds: 2))
-          .whenComplete(() {
-            setState(() {
-              messageController.text = '';
-              preparing = false;
-            });
-          });
+          .whenComplete(
+            () {
+              setState(() {
+                messageController.text = '';
+                preparing = false;
+              });
+            },
+          );
     }
   }
 
   Widget _buildInputRow() {
     final localizations = AppLocalizations.of(context)!;
-    final messengerRepository =
-        RepositoryProvider.of<MessengerRepository>(context);
-    final blockedUsersManager =
-        RepositoryProvider.of<BlockedUsersManager>(context);
+    final messengerRepository = RepositoryProvider.of<MessengerRepository>(context);
+    final blockedUsersManager = RepositoryProvider.of<BlockedUsersManager>(context);
 
     if (_otherUserIsBlocked) {
       return SafeArea(
@@ -344,12 +325,9 @@ class _ChatScreenState extends State<ChatScreen> {
               padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
               child: CustomTextButton.orangeContinue(
                 callback: () {
-                  final blockedUsersManager =
-                      RepositoryProvider.of<BlockedUsersManager>(context);
-                  final messengerRepository =
-                      RepositoryProvider.of<MessengerRepository>(context);
-                  blockedUsersManager
-                      .unblock(messengerRepository.currentRoom!.otherUserId);
+                  final blockedUsersManager = RepositoryProvider.of<BlockedUsersManager>(context);
+                  final messengerRepository = RepositoryProvider.of<MessengerRepository>(context);
+                  blockedUsersManager.unblock(messengerRepository.currentRoom!.otherUserId);
                   setState(() {
                     _otherUserIsBlocked = false;
                   });
@@ -360,8 +338,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 activeColor: AppColors.dark,
               ),
             ),
-            Text(localizations.youBlockedUser(
-                messengerRepository.currentRoom!.otherUserName)),
+            Text(localizations.youBlockedUser(messengerRepository.currentRoom!.otherUserName)),
           ],
         ),
       );
@@ -369,8 +346,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     if (_authUserIsBlocked) {
       return SafeArea(
-        child: Text(localizations
-            .userBlockedYou(messengerRepository.currentRoom!.otherUserName)),
+        child: Text(localizations.userBlockedYou(messengerRepository.currentRoom!.otherUserName)),
       );
     }
 
@@ -386,14 +362,16 @@ class _ChatScreenState extends State<ChatScreen> {
             },
             send: () async {
               blockedUsersManager
-                  .isAuthUserBlockedFor(
-                      messengerRepository.currentRoom?.otherUserId ?? '')
+                  .isAuthUserBlockedFor(messengerRepository.currentRoom?.otherUserId ?? '')
                   .then((isBlocked) {
                 if (isBlocked) {
-                  CustomSnackBar.showSnackBar(
-                      context, localizations.chatBlocked);
+                  CustomSnackBar.showSnackBar(context, localizations.chatBlocked);
                 } else {
-                  _send();
+                  EasyDebounce.debounce(
+                    'my-debouncer',
+                    const Duration(milliseconds: 2000),
+                    () => _send(),
+                  );
                 }
               });
             },
