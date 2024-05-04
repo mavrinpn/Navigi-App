@@ -51,6 +51,8 @@
 "faq": "Faq",
 "privacyPolicy": "Privacy Policy",
 "termsOfUse": "Terms of use",
+"privacyPolicyFileId": "privacy_policy_fr",
+"termsOfUseFileId": "terms_of_use_fr",
 "disconnectFromTheAccount": "Disconnect from the account",
 "delProfile": "Delete profile",
 "onTheServiceOf": "On the service of",

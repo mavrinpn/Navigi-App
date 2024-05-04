@@ -107,12 +107,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
             RowButton(
               title: localizations.privacyPolicy,
               icon: 'Assets/icons/security.svg',
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(
+                  AppRoutesNames.pdfView,
+                  arguments: {
+                    'fileId': localizations.privacyPolicyFileId,
+                    'title': localizations.privacyPolicy,
+                  },
+                );
+              },
             ),
             RowButton(
               title: localizations.termsOfUse,
               icon: 'Assets/icons/terms_of_use.svg',
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(
+                  AppRoutesNames.pdfView,
+                  arguments: {
+                    'fileId': localizations.termsOfUseFileId,
+                    'title': localizations.termsOfUse,
+                  },
+                );
+              },
             ),
             const SizedBox(height: 20),
             CustomElevatedButton(

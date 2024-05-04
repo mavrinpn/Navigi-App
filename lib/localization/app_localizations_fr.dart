@@ -161,6 +161,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get termsOfUse => 'Conditions dutilisation';
 
   @override
+  String get privacyPolicyFileId => 'privacy_policy_fr';
+
+  @override
+  String get termsOfUseFileId => 'terms_of_use_fr';
+
+  @override
   String get disconnectFromTheAccount => 'Se déconnecter du compte';
 
   @override

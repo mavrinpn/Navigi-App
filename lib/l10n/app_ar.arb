@@ -51,6 +51,8 @@
 "faq": "التعليمات",
 "privacyPolicy": "سياسة الخصوصية",
 "termsOfUse": "شروط الاستعمال",
+"privacyPolicyFileId": "privacy_policy_ar",
+"termsOfUseFileId": "terms_of_use_ar",
 "disconnectFromTheAccount": "تسجيل الخروج",
 "delProfile": "حذف الملف الشخصي",
 "onTheServiceOf": "على خدمة",

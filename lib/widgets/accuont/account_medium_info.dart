@@ -62,8 +62,7 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
                     child: Material(
                       color: Colors.transparent,
                       clipBehavior: Clip.hardEdge,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).pushNamed(
@@ -83,45 +82,45 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Container(width: 10),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 0, 0, 4),
-                                    child: RatingStars(
-                                      value: widget.user.score,
-                                      starBuilder: (index, color) => Icon(
-                                        Icons.star,
-                                        color: color,
-                                        size: 20,
-                                      ),
-                                      starCount: 5,
-                                      starSize: 20,
-                                      valueLabelColor: const Color(0xff9b9b9b),
-                                      maxValue: 5,
-                                      starSpacing: 2,
-                                      valueLabelPadding: EdgeInsets.zero,
-                                      valueLabelMargin: EdgeInsets.zero,
-                                      maxValueVisibility: true,
-                                      valueLabelVisibility: false,
-                                      starOffColor: AppColors.disable,
-                                      starColor: AppColors.starsActive,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const SizedBox(height: 3),
-                                      Text(
-                                        '${widget.user.score}',
-                                        style: AppTypography.font14black
-                                            .copyWith(fontSize: 12),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                              widget.user.rating != -1
+                                  ? Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
+                                          child: RatingStars(
+                                            value: widget.user.rating,
+                                            starBuilder: (index, color) => Icon(
+                                              Icons.star,
+                                              color: color,
+                                              size: 20,
+                                            ),
+                                            starCount: 5,
+                                            starSize: 20,
+                                            valueLabelColor: const Color(0xff9b9b9b),
+                                            maxValue: 5,
+                                            starSpacing: 2,
+                                            valueLabelPadding: EdgeInsets.zero,
+                                            valueLabelMargin: EdgeInsets.zero,
+                                            maxValueVisibility: true,
+                                            valueLabelVisibility: false,
+                                            starOffColor: AppColors.disable,
+                                            starColor: AppColors.starsActive,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            const SizedBox(height: 3),
+                                            Text(
+                                              '${widget.user.rating}',
+                                              style: AppTypography.font14black.copyWith(fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  : const SizedBox.shrink(),
                             ],
                           ),
                         ),
@@ -131,8 +130,7 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
                   const SizedBox(height: 5),
                   Text(
                     '${localizations.onTheServiceOf} ${widget.user.atService}',
-                    style: AppTypography.font12lightGray
-                        .copyWith(fontWeight: FontWeight.w400),
+                    style: AppTypography.font12lightGray.copyWith(fontWeight: FontWeight.w400),
                   ),
                 ],
               ),

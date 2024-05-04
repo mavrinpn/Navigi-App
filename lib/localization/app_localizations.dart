@@ -407,6 +407,18 @@ abstract class AppLocalizations {
   /// **'Terms of use'**
   String get termsOfUse;
 
+  /// No description provided for @privacyPolicyFileId.
+  ///
+  /// In en, this message translates to:
+  /// **'privacy_policy_fr'**
+  String get privacyPolicyFileId;
+
+  /// No description provided for @termsOfUseFileId.
+  ///
+  /// In en, this message translates to:
+  /// **'terms_of_use_fr'**
+  String get termsOfUseFileId;
+
   /// No description provided for @disconnectFromTheAccount.
   ///
   /// In en, this message translates to:

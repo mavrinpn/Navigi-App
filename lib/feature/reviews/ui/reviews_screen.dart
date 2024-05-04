@@ -65,7 +65,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
               children: [
                 const SizedBox(height: 24),
                 UserScoreWidget(
-                  score: widget.user.score,
+                  score: widget.user.rating,
                   subtitle: '${state.reviews.length} ${localizations.comments}',
                 ),
                 const SizedBox(height: 24),

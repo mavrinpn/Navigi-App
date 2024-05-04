@@ -21,6 +21,7 @@ import 'package:smart/feature/reviews/ui/reviews_screen.dart';
 import 'package:smart/feature/search/ui/search_screen.dart';
 import 'package:smart/feature/search/ui/select_subcategory.dart';
 import 'package:smart/feature/settings/ui/language_screen.dart';
+import 'package:smart/feature/settings/ui/pdf_view_screen.dart';
 import 'package:smart/feature/settings/ui/settings_screen.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
@@ -120,6 +121,18 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (context) {
         return CreateReviewScreen(user: arguments);
+      },
+    );
+  } else if (settings.name == AppRoutesNames.pdfView) {
+    final arguments = settings.arguments as Map<String, dynamic>;
+    final fileId = arguments['fileId'] as String;
+    final title = arguments['title'] as String;
+    return MaterialPageRoute(
+      builder: (context) {
+        return PdfViewScreen(
+          fileId: fileId,
+          title: title,
+        );
       },
     );
   } else if (settings.name == AppRoutesNames.announcement) {

@@ -30,4 +30,5 @@ class AppRoutesNames {
   static const String searchSelectSubcategory = '/search_select_subcategory';
   static const String reviews = '/reviews';
   static const String createReview = '/create_review';
+  static const String pdfView = '/pdf_view';
 }

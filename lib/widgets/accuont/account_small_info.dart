@@ -94,9 +94,7 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                         localizations.seller,
                         style: AppTypography.font14lightGray.copyWith(fontSize: 12),
                       ),
-                      const SizedBox(
-                        height: 5,
-                      ),
+                      const SizedBox(height: 5),
                       Row(
                         children: [
                           SizedBox(
@@ -110,30 +108,36 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(5, 0, 0, 4),
-                            child: RatingStars(
-                              value: widget.creatorData.score,
-                              starBuilder: (index, color) => Icon(
-                                Icons.star,
-                                color: color,
-                                size: 20,
-                              ),
-                              starCount: 5,
-                              starSize: 20,
-                              valueLabelColor: const Color(0xff9b9b9b),
-                              maxValue: 5,
-                              starSpacing: 2,
-                              valueLabelPadding: EdgeInsets.zero,
-                              valueLabelMargin: EdgeInsets.zero,
-                              maxValueVisibility: true,
-                              valueLabelVisibility: false,
-                              starOffColor: AppColors.disable,
-                              starColor: AppColors.starsActive,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            '${widget.creatorData.score}',
-                            style: AppTypography.font14black,
+                            child: widget.creatorData.rating != -1
+                                ? Row(
+                                    children: [
+                                      RatingStars(
+                                        value: widget.creatorData.rating,
+                                        starBuilder: (index, color) => Icon(
+                                          Icons.star,
+                                          color: color,
+                                          size: 20,
+                                        ),
+                                        starCount: 5,
+                                        starSize: 20,
+                                        valueLabelColor: const Color(0xff9b9b9b),
+                                        maxValue: 5,
+                                        starSpacing: 2,
+                                        valueLabelPadding: EdgeInsets.zero,
+                                        valueLabelMargin: EdgeInsets.zero,
+                                        maxValueVisibility: true,
+                                        valueLabelVisibility: false,
+                                        starOffColor: AppColors.disable,
+                                        starColor: AppColors.starsActive,
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Text(
+                                        '${widget.creatorData.rating}',
+                                        style: AppTypography.font14black,
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox.shrink(),
                           ),
                         ],
                       ),

@@ -80,6 +80,9 @@ class MyRepositoryProviders extends StatelessWidget {
         create: (_) => CreatingAnnouncementManager(client: client),
       ),
       RepositoryProvider(
+        create: (_) => FileStorageManager(client: client),
+      ),
+      RepositoryProvider(
         create: (_) => ItemManager(databaseService: databaseService),
       ),
       RepositoryProvider(

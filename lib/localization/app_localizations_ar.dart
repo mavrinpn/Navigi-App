@@ -161,6 +161,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get termsOfUse => 'شروط الاستعمال';
 
   @override
+  String get privacyPolicyFileId => 'privacy_policy_ar';
+
+  @override
+  String get termsOfUseFileId => 'terms_of_use_ar';
+
+  @override
   String get disconnectFromTheAccount => 'تسجيل الخروج';
 
   @override

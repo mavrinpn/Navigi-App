@@ -161,6 +161,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get termsOfUse => 'Terms of use';
 
   @override
+  String get privacyPolicyFileId => 'privacy_policy_fr';
+
+  @override
+  String get termsOfUseFileId => 'terms_of_use_fr';
+
+  @override
   String get disconnectFromTheAccount => 'Disconnect from the account';
 
   @override
