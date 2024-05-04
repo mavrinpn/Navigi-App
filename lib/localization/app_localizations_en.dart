@@ -296,9 +296,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get new_ => 'New';
 
   @override
-  String get price => 'Price';
-
-  @override
   String get color => 'Color';
 
   @override
@@ -321,6 +318,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get filters => ' Filters';
+
+  @override
+  String get price => 'Price';
 
   @override
   String get resetEverything => 'Reset everything';
@@ -378,9 +378,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get area => 'Area';
-
-  @override
-  String get neighborhood => 'Neighborhood';
 
   @override
   String get researchArea => 'Research area';

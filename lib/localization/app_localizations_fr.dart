@@ -74,7 +74,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get view => 'Regarder';
 
   @override
-  String get researchInAlgiers => 'Recherche a Alger';
+  String get researchInAlgiers => 'Recherche sur Navigi';
 
   @override
   String get recommendations => 'Recommandations';
@@ -110,10 +110,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get searchBrand => 'Recherche de marque';
 
   @override
-  String get done => 'Ça y est';
+  String get done => 'Suivant';
 
   @override
-  String get location => 'Rayon';
+  String get location => 'Localisation';
 
   @override
   String get searchZone => 'Zone de recherche';
@@ -209,7 +209,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get del => 'Supprimer';
 
   @override
-  String get features => 'Caractéristiques';
+  String get features => 'Critères';
 
   @override
   String get typeOfProduct => 'Type de produit';
@@ -287,16 +287,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get no => ' Non';
 
   @override
-  String get indicateTheName => 'Indiquez le nom';
+  String get indicateTheName => 'Indiquez le nom de votre annonce';
 
   @override
   String get typeOfNews => 'Type d\'annonce';
 
   @override
   String get new_ => 'Nouveau';
-
-  @override
-  String get price => 'Prix';
 
   @override
   String get color => 'Couleur';
@@ -321,6 +318,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get filters => ' Filtres';
+
+  @override
+  String get price => 'Prix';
 
   @override
   String get resetEverything => 'Réinitialiser tout';
@@ -377,10 +377,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get jobsAndServices => 'Emplois et services';
 
   @override
-  String get area => 'Quartier';
-
-  @override
-  String get neighborhood => 'Quartier';
+  String get area => 'Municipal';
 
   @override
   String get researchArea => 'Zone de recherche';
@@ -407,7 +404,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get comments => 'commentaires';
 
   @override
-  String get theTransactionTookPlace => 'La transaction a eu lieu';
+  String get theTransactionTookPlace => 'La transaction a eu localisation';
 
   @override
   String get whatDidYouTalkAbout => 'De quoi avez-vous parlé?';
@@ -434,7 +431,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get used => 'Utilisé';
 
   @override
-  String get passwordOrEmailEnteredIncorrectly => 'Not de passe ou email mal saisi';
+  String get passwordOrEmailEnteredIncorrectly => 'Mot de passe ou email mal saisi';
 
   @override
   String get photo => 'Photo';
@@ -464,19 +461,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get afterwards => 'Ensuite';
 
   @override
-  String get loremLobortisMi => 'Lorem lobortis mi ornare nisi tellus sed aliquam accuornare nis';
+  String get loremLobortisMi => 'Saisissez votre mot de passe';
 
   @override
   String get errorReviewOrEnterOther => 'Erreur! Réessayez ou entrez dautres informations.';
 
   @override
-  String get jacceptsTheConditionsForTheilization => 'Jaccepte les conditions dutilisation et confirme que jaccepte la politique de confidentialité.';
+  String get jacceptsTheConditionsForTheilization => 'J\'accepte les conditions d\'utilisation et la politique de confidentialité.';
 
   @override
   String get regg => 'Se faire enregistrer';
 
   @override
-  String get entrance => 'Entrée';
+  String get entrance => 'Se connecter';
 
   @override
   String get continue_ => 'Continuer';
@@ -491,7 +488,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get name => 'Name';
 
   @override
-  String get place => 'lieu';
+  String get place => 'localisation';
 
   @override
   String get popularRequests => 'Requêtes populaires';
@@ -515,13 +512,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get model => 'Model';
 
   @override
-  String get choosingCarBrand => 'La marque de voiture';
+  String get choosingCarBrand => 'Choisissez la marque';
 
   @override
   String get choosingMark => 'Choix de la marque';
 
   @override
-  String get specifyPlace => 'Précisez le lieu';
+  String get specifyPlace => 'Précisez le localisation';
 
   @override
   String get change => 'Changement';

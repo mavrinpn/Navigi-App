@@ -101,7 +101,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get favourites => 'مفضل';
 
   @override
-  String get profile => 'ملفي';
+  String get profile => 'حسابي الشخصي';
 
   @override
   String get showAll => 'عرض الكل';
@@ -110,10 +110,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get searchBrand => 'البحث العلامة التجارية';
 
   @override
-  String get done => 'كفى';
+  String get done => 'التالي';
 
   @override
-  String get location => 'دائرة نصف قطرها';
+  String get location => 'ابحث في دائرة نصف قطرها';
 
   @override
   String get searchZone => 'منطقة البحوث';
@@ -128,7 +128,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sort => 'فرز';
 
   @override
-  String get dontHaveProducts => 'ليس لديك منتجات محددة';
+  String get dontHaveProducts => 'ليس لديك إعلانات مفضلة';
 
   @override
   String get goRepertoire => 'اذهب إلى ذخيرة';
@@ -161,7 +161,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get termsOfUse => 'شروط الاستعمال';
 
   @override
-  String get disconnectFromTheAccount => 'افصل عن الحساب';
+  String get disconnectFromTheAccount => 'تسجيل الخروج';
 
   @override
   String get delProfile => 'حذف الملف الشخصي';
@@ -203,13 +203,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get downloadThePhoto => 'قم بتنزيل الصورة بتنسيق PNG ، JPEG.';
 
   @override
-  String get edit => 'يحرر';
+  String get edit => 'تعديل';
 
   @override
   String get del => 'يمسح';
 
   @override
-  String get features => 'سمات';
+  String get features => 'مواصفات';
 
   @override
   String get typeOfProduct => 'نوع المنتوج';
@@ -236,7 +236,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get shooting => 'اطلاق الرصاص';
 
   @override
-  String get description => 'وصف';
+  String get description => 'تصنيف';
 
   @override
   String get board => 'سبورة';
@@ -296,9 +296,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get new_ => 'جديد';
 
   @override
-  String get price => 'سعر';
-
-  @override
   String get color => 'لون';
 
   @override
@@ -320,7 +317,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get doNotBlockThe => 'لا تمنع التطبيق أثناء علاج إعلانك';
 
   @override
-  String get filters => ' المرشحات';
+  String get filters => 'الالإعدادات';
+
+  @override
+  String get price => 'السعر';
 
   @override
   String get resetEverything => 'أعد ضبط كل شيء';
@@ -380,9 +380,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get area => 'المنطقة';
 
   @override
-  String get neighborhood => 'حيّ';
-
-  @override
   String get researchArea => 'منطقة البحوث';
 
   @override
@@ -392,10 +389,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get report => ' تقرير';
 
   @override
-  String get productAddedToFavorites => 'المنتج يضاف إلى المفضلة!';
+  String get productAddedToFavorites => 'المنتج يضاف إلى المفضلة ة!';
 
   @override
-  String get toWrite => 'يكتب';
+  String get toWrite => 'أكتب';
 
   @override
   String get toCall => 'للإتصال';
@@ -440,7 +437,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get photo => 'صورة';
 
   @override
-  String get popularResearch => 'البحث الشعبي';
+  String get popularResearch => 'الاكثر بحثا / الاكثر شعبية';
 
   @override
   String get researchHistory => 'تاريخ البحث';
@@ -455,7 +452,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get seller => 'البائع';
 
   @override
-  String get offrirVotrePrix => 'قدم سعرك';
+  String get offrirVotrePrix => 'اقترح سعرك';
 
   @override
   String get addPictures => 'أضف الصور';
@@ -479,7 +476,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get entrance => 'مدخل';
 
   @override
-  String get continue_ => 'يكمل';
+  String get continue_ => 'التالي';
 
   @override
   String get information => 'معلومة';
@@ -506,10 +503,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get save => 'يحفظ';
 
   @override
-  String get placeApplicationSettings => 'ضع إعدادات التطبيق';
+  String get placeApplicationSettings => 'الإعدادات';
 
   @override
-  String get mark => 'مارك';
+  String get mark => 'العلامة';
 
   @override
   String get model => 'نموذج';
@@ -606,13 +603,13 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get dzd => 'الدينار الجزائري';
+  String get dzd => 'دينار جزائري';
 
   @override
-  String get mln => 'الملايين';
+  String get mln => 'مليون';
 
   @override
-  String get mlrd => 'المليارات';
+  String get mlrd => 'مليار';
 
   @override
   String get tryAgainLater => 'حاول مرة أخرى لاحقا';

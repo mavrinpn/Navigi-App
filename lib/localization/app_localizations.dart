@@ -677,12 +677,6 @@ abstract class AppLocalizations {
   /// **'New'**
   String get new_;
 
-  /// No description provided for @price.
-  ///
-  /// In en, this message translates to:
-  /// **'Price'**
-  String get price;
-
   /// No description provided for @color.
   ///
   /// In en, this message translates to:
@@ -730,6 +724,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **' Filters'**
   String get filters;
+
+  /// No description provided for @price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
 
   /// No description provided for @resetEverything.
   ///
@@ -844,12 +844,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Area'**
   String get area;
-
-  /// No description provided for @neighborhood.
-  ///
-  /// In en, this message translates to:
-  /// **'Neighborhood'**
-  String get neighborhood;
 
   /// No description provided for @researchArea.
   ///
