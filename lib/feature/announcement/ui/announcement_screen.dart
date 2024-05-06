@@ -21,6 +21,7 @@ import 'package:smart/feature/announcement/ui/widgets/parameter.dart';
 import 'package:smart/feature/announcement/ui/widgets/settings_bottom_sheet.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/models/item/static_localized_parameter.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/constants.dart';
 import 'package:smart/utils/fonts.dart';
@@ -75,7 +76,6 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     PageController pageController = PageController(viewportFraction: 0.9, initialPage: activePage);
 
     final width = MediaQuery.of(context).size.width;
-    final String currentLocale = MyApp.getLocale(context) ?? 'fr';
 
     return BlocConsumer<AnnouncementCubit, AnnouncementState>(
       listener: (context, state) {
@@ -360,14 +360,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     const SizedBox(height: 10),
                     _categoryWidget(),
                     _markModelWidget(),
-                    ...state.data.staticParameters.parameters
-                        .map(
-                          (e) => ItemParameterWidget(
-                            name: currentLocale == 'fr' ? e.nameFr : e.nameAr,
-                            currentValue: currentLocale == 'fr' ? e.valueFr : e.valueAr,
-                          ),
-                        )
-                        .toList(),
+                    ..._staticParameters(state.data.staticParameters.parameters),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
                       child: Row(
@@ -503,5 +496,32 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
         }
       },
     );
+  }
+
+  List<Widget> _staticParameters(List<StaticLocalizedParameter> parameters) {
+    List<Widget> result = [];
+
+    for (final param in parameters) {
+      if (param.runtimeType != MultiSelectStaticParameter) {
+        result.add(
+          ItemParameterWidget(
+            name: currentLocaleShortName.value == 'fr' ? param.nameFr : param.nameAr,
+            currentValue: currentLocaleShortName.value == 'fr' ? param.valueFr : param.valueAr,
+          ),
+        );
+      }
+    }
+    for (final param in parameters) {
+      if (param.runtimeType == MultiSelectStaticParameter) {
+        result.add(
+          ItemParameterWidget(
+            name: currentLocaleShortName.value == 'fr' ? param.nameFr : param.nameAr,
+            currentValue: currentLocaleShortName.value == 'fr' ? param.valueFr : param.valueAr,
+          ),
+        );
+      }
+    }
+
+    return result;
   }
 }
