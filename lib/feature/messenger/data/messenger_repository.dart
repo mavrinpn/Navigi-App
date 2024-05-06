@@ -65,7 +65,7 @@ class MessengerRepository {
     }
   }
 
-  void preloadChats() async {
+  Future<void> preloadChats() async {
     _chats = await _databaseService.messages.getUserChats(_userId!);
     // chatsStream.add(_chats);
     _loadChatsPreviewMessages();

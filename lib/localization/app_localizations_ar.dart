@@ -5,37 +5,37 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get connectToDiscoverFeatures => 'الاتصال لاكتشاف جميع ميزاتنا.';
+  String get connectToDiscoverFeatures => 'سجل نفسك  لاكتشاف جميع ميزاتنا.';
 
   @override
-  String get enter => 'يدخل';
+  String get enter => 'التالية';
 
   @override
-  String get noAccount => 'لا حساب؟';
+  String get noAccount => 'لا يوجد حساب؟';
 
   @override
-  String get register => 'يسجل!';
+  String get register => 'إنشاء حساب!';
 
   @override
   String get enterPassword => 'أدخل كلمة المرور';
 
   @override
-  String get forgotPassword => 'نسيت كلمة السر؟';
+  String get forgotPassword => 'نسيت كلمة المرور؟';
 
   @override
-  String get enterPhone => 'أدخل رقم الهاتف المرتبط بحسابك';
+  String get enterPhone => 'أدخل البريد الإلكتروني المرتبط بحسابك';
 
   @override
   String get enterCode => 'أدخل رمز التحقق';
 
   @override
-  String get checkPhone => 'دعنا نتحقق من رقم هاتفك معا.';
+  String get checkPhone => 'دعنا نتحقق من بريدك الإلكتروني معا.';
 
   @override
-  String get callMe => 'هاتفني';
+  String get callMe => 'اتصل بي';
 
   @override
-  String get enterFourDigits => 'أدخل آخر 4 أرقام من رقم المكالمة الواردة';
+  String get enterFourDigits => 'أدخل رمز التحقق';
 
   @override
   String get haventRecieveCode => 'لم تتلق الرمز؟';
@@ -50,7 +50,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get yourName => 'اسمك';
 
   @override
-  String get createPassword => 'تمرير كلمة المرور';
+  String get createPassword => 'ادخل كلمة المرور جديد';
 
   @override
   String get repeatePassword => 'كرر كلمة المرور';
@@ -59,7 +59,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get acceptPolicy => 'أقبل شروط الاستخدام وأؤكد أنني أقبل سياسة الخصوصية.';
 
   @override
-  String get errorIncorrectInfo => 'خطأ! جرب أو أدخل معلومات أخرى.';
+  String get errorIncorrectInfo => 'خطأ! جرب مجددا أو أدخل معلومات أخرى.';
 
   @override
   String get registration => 'تسجيل';
@@ -77,7 +77,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get researchInAlgiers => 'البحث في الجزائر';
 
   @override
-  String get recommendations => 'التوصيات';
+  String get recommendations => 'الإعلانات';
 
   @override
   String get relatedAnnouncements => 'إعلانات ذات صلة';
@@ -86,7 +86,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get viewAll => 'انظر إلى كل شيء';
 
   @override
-  String get city => 'مدينة';
+  String get city => 'الولاية';
 
   @override
   String get kmOfYou => 'كم منكم)';
@@ -95,10 +95,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homePage => 'الصفحة الرئيسية';
 
   @override
-  String get messages => 'رسائل';
+  String get messages => 'الرسائل';
 
   @override
-  String get favourites => 'مفضل';
+  String get favourites => 'المفضلة';
 
   @override
   String get profile => 'حسابي الشخصي';
@@ -107,19 +107,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get showAll => 'عرض الكل';
 
   @override
-  String get searchBrand => 'البحث العلامة التجارية';
+  String get searchBrand => 'بحث في العلامة التجارية';
 
   @override
   String get done => 'التالي';
 
   @override
-  String get location => 'ابحث في دائرة نصف قطرها';
+  String get location => 'المكان';
 
   @override
-  String get searchZone => 'منطقة البحوث';
+  String get searchZone => 'منطقة البحث';
 
   @override
-  String get displayAds => 'اعرض الاعلان';
+  String get displayAds => 'عرض الإعلانات';
 
   @override
   String get withPicture => 'مع الصورة';
@@ -131,22 +131,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dontHaveProducts => 'ليس لديك إعلانات مفضلة';
 
   @override
-  String get goRepertoire => 'اذهب إلى ذخيرة';
+  String get goRepertoire => 'اذهب إلى الإعلانات';
 
   @override
-  String get active => 'نشيط';
+  String get active => 'في السوق';
 
   @override
-  String get sold => 'مُباع';
+  String get sold => 'تمت الصفقة';
 
   @override
   String get youHaveNoAds => 'ليس لديك إعلانات';
 
   @override
-  String get salesHaveReported => 'ذكرت المبيعات';
+  String get salesHaveReported => 'ربحت من المبيعات';
 
   @override
-  String get myData => 'بياناتي';
+  String get myData => 'معلوماتي الشخصية';
 
   @override
   String get myComments => 'تعليقاتي';
@@ -170,28 +170,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get disconnectFromTheAccount => 'تسجيل الخروج';
 
   @override
-  String get delProfile => 'حذف الملف الشخصي';
+  String get delProfile => 'حذف الحساب';
 
   @override
-  String get onTheServiceOf => 'على خدمة';
+  String get onTheServiceOf => 'في التطبيق من ';
 
   @override
-  String get charit => 'Charit';
+  String get charit => 'توثيق الحساب';
 
   @override
   String get applicationSettings => 'إعدادات التطبيق';
 
   @override
-  String get notifications => 'إشعارات';
+  String get notifications => 'التنبيهات';
 
   @override
-  String get language => 'لغة';
+  String get language => 'اللغة';
 
   @override
-  String get fr => 'فرنسي';
+  String get fr => 'الفرنسية';
 
   @override
-  String get ar => 'عرب';
+  String get ar => 'العربية';
 
   @override
   String get personalOffers => 'العروض الشخصية';
@@ -200,7 +200,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get selectedProducts => 'منتجات مختارة';
 
   @override
-  String get certify => 'صدق';
+  String get certify => 'توثيق الحساب';
 
   @override
   String get takeAphotoWith => 'التقط صورة مع بطاقة هوية تمسك بجانب الشخص كما هو موضح في المثال أدناه.';
@@ -212,13 +212,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get edit => 'تعديل';
 
   @override
-  String get del => 'يمسح';
+  String get del => 'حذف';
 
   @override
-  String get features => 'مواصفات';
+  String get features => 'المواصفات';
 
   @override
-  String get typeOfProduct => 'نوع المنتوج';
+  String get typeOfProduct => 'نوع المنتج';
 
   @override
   String get productCategory => 'فئة المنتج';
@@ -227,10 +227,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get operatingSystem => 'نظام التشغيل';
 
   @override
-  String get state => 'حالة';
+  String get state => 'حالةال';
 
   @override
-  String get diagonal => 'قطري';
+  String get diagonal => 'القطر';
 
   @override
   String get tactile => 'اللمس';
@@ -239,13 +239,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get integratedMemory => 'ذاكرة متكاملة';
 
   @override
-  String get shooting => 'اطلاق الرصاص';
+  String get shooting => 'التصوير';
 
   @override
   String get description => 'تصنيف';
 
   @override
-  String get board => 'سبورة';
+  String get board => 'اللوحة';
 
   @override
   String get electronic => 'إلكتروني';
@@ -254,22 +254,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ipados => 'iPados';
 
   @override
-  String get todayAt => 'اليوم في';
+  String get todayAt => 'اليوم على';
 
   @override
-  String get views => 'الآراء';
+  String get views => 'المشاهدات';
 
   @override
-  String get statistical => 'إحصاء';
+  String get statistical => 'الإحصائيات';
 
   @override
   String get euismodAeneanSed => 'Euismod Aenean SED؟';
 
   @override
-  String get contactTheSupport => 'اتصل بالدعم';
+  String get contactTheSupport => 'اتصل بنا';
 
   @override
-  String get writeWithSupport => 'اكتب بدعم';
+  String get writeWithSupport => 'اكتب لنا';
 
   @override
   String get doYouWant => 'هل تريد الخروج؟';
@@ -281,10 +281,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addAnAd => ' إضافة إعلان';
 
   @override
-  String get selectCategory => 'اختر فئة';
+  String get selectCategory => 'إختيار الفئة';
 
   @override
-  String get selectSubcategory => 'حدد فئة فرعية';
+  String get selectSubcategory => 'تحديد الفئة الفرعية';
 
   @override
   String get loremipsum => 'loremipsum';
@@ -293,16 +293,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get no => ' لا';
 
   @override
-  String get indicateTheName => 'أشر إلى الاسم';
+  String get indicateTheName => 'تحديد عنوان الإعلان';
 
   @override
-  String get typeOfNews => 'نوع الأخبار';
+  String get typeOfNews => 'نوع الإعلان';
 
   @override
   String get new_ => 'جديد';
 
   @override
-  String get color => 'لون';
+  String get color => 'اللون';
 
   @override
   String get black => 'أسود';
@@ -311,28 +311,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get white => 'أبيض';
 
   @override
-  String get roseGold => 'وارتفع الذهب';
+  String get roseGold => 'وردي ذهبي';
 
   @override
   String get graySpace => 'مساحة رمادية';
 
   @override
-  String get theModerationOfThe => 'اعتدال الإعلان جاري';
+  String get theModerationOfThe => 'جاري التحقق من الإعلان';
 
   @override
-  String get doNotBlockThe => 'لا تمنع التطبيق أثناء علاج إعلانك';
+  String get doNotBlockThe => 'لا تغلق التطبيق خلال معالجة الإعلان';
 
   @override
-  String get filters => 'الالإعدادات';
+  String get filters => 'الإعدادت';
 
   @override
   String get price => 'السعر';
 
   @override
-  String get resetEverything => 'أعد ضبط كل شيء';
+  String get resetEverything => 'مسح';
 
   @override
-  String get category => 'فئة';
+  String get category => 'الفئة';
 
   @override
   String get subcategory => 'الفئة الفرعية';
@@ -350,28 +350,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get byDate => 'حسب التاريخ';
 
   @override
-  String get firstCheap => 'الرخيصة الأولى';
+  String get firstCheap => 'الأقل سعرا أولا';
 
   @override
-  String get firstDear => 'أولا عزيزي';
+  String get firstDear => 'الأغلى أولا';
 
   @override
-  String get outOfDistance => 'خارج المسافة';
+  String get outOfDistance => ' الأقرب أولا';
 
   @override
   String get realEstate => 'العقارات';
 
   @override
-  String get car => 'سيارة';
+  String get car => 'السيارات';
 
   @override
   String get householdItems => 'الأدوات المنزلية';
 
   @override
-  String get splash => 'دفقة';
+  String get splash => 'قطاع الغيار';
 
   @override
-  String get garment => 'ملابس';
+  String get garment => 'الملابس';
 
   @override
   String get houseAndleisure => 'البيت والترفيه';
@@ -383,52 +383,52 @@ class AppLocalizationsAr extends AppLocalizations {
   String get jobsAndServices => 'الوظائف والخدمات';
 
   @override
-  String get area => 'المنطقة';
+  String get area => 'البلدية';
 
   @override
-  String get researchArea => 'منطقة البحوث';
+  String get researchArea => 'منطقة البحث';
 
   @override
-  String get toBlock => ' ليحجب';
+  String get toBlock => ' بلوك';
 
   @override
   String get report => ' تقرير';
 
   @override
-  String get productAddedToFavorites => 'المنتج يضاف إلى المفضلة ة!';
+  String get productAddedToFavorites => 'تمت إضافة المنتج إلى المفضلة!';
 
   @override
-  String get toWrite => 'أكتب';
+  String get toWrite => 'مراسلة';
 
   @override
-  String get toCall => 'للإتصال';
+  String get toCall => 'الإتصال';
 
   @override
-  String get onServiceSince => 'على الخدمة منذ ذلك الحين';
+  String get onServiceSince => 'في التطبيق منذ';
 
   @override
   String get comments => 'تعليقات';
 
   @override
-  String get theTransactionTookPlace => 'وقعت الصفقة';
+  String get theTransactionTookPlace => 'تمت الصفقة';
 
   @override
-  String get whatDidYouTalkAbout => 'ماذا كنت تتحدث عن؟';
+  String get whatDidYouTalkAbout => 'ماذا تتحدثتم عنه؟';
 
   @override
-  String get haveYouBoughtTheGoods => ' هل اشتريت البضائع؟';
+  String get haveYouBoughtTheGoods => ' هل تمت الصفقة؟';
 
   @override
   String get howDidItEnd => 'كيف انتهى؟';
 
   @override
-  String get phoneCommunication => 'الاتصالات الهاتفية';
+  String get phoneCommunication => 'مكالمة هاتفية';
 
   @override
-  String get meetingAgreement => 'اتفاقية الاجتماع';
+  String get meetingAgreement => 'اتفاقية';
 
   @override
-  String get toWriteAcomment => 'لكتابة تعليق';
+  String get toWriteAcomment => 'كتابة تعليق';
 
   @override
   String get hello => 'مرحبا!';
@@ -437,22 +437,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get used => 'مستخدم';
 
   @override
-  String get passwordOrEmailEnteredIncorrectly => 'لا تمريرة أو بريد إلكتروني مُصلح بشكل سيء';
+  String get passwordOrEmailEnteredIncorrectly => 'البريد الإلكتروني أو كلمة السر غير صحيحة';
 
   @override
-  String get photo => 'صورة';
+  String get photo => 'الصور';
 
   @override
-  String get popularResearch => 'الاكثر بحثا / الاكثر شعبية';
+  String get popularResearch => 'الاكثر بحثا';
 
   @override
   String get researchHistory => 'تاريخ البحث';
 
   @override
-  String get toClean => 'لينظف';
+  String get toClean => 'مسح';
 
   @override
-  String get empty => 'كن فارغا';
+  String get empty => 'لا يوجد شئ';
 
   @override
   String get seller => 'البائع';
@@ -464,49 +464,49 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addPictures => 'أضف الصور';
 
   @override
-  String get afterwards => 'عقب ذلك مباشرة';
+  String get afterwards => 'التالي';
 
   @override
   String get loremLobortisMi => 'Lorem Lobortis Mi ornare nisi tellus sed aliquam nis nis';
 
   @override
-  String get errorReviewOrEnterOther => 'خطأ! مراجعة أو أدخل معلومات أخرى.';
+  String get errorReviewOrEnterOther => 'خطأ! كرر مجددا أو أدخل معلومات أخرى.';
 
   @override
-  String get jacceptsTheConditionsForTheilization => 'جاكسور الشروط الخاصة بالاستقرار ويؤكد أن جاكسيبوت سياسة الخصوصية.';
+  String get jacceptsTheConditionsForTheilization => 'أقبل الشروط الخاصة و سياسة الخصوصية.';
 
   @override
-  String get regg => 'يسجل';
+  String get regg => 'انشاء حساب';
 
   @override
-  String get entrance => 'مدخل';
+  String get entrance => 'تسجيل الدخول';
 
   @override
   String get continue_ => 'التالي';
 
   @override
-  String get information => 'معلومة';
+  String get information => 'معلومات';
 
   @override
-  String get title => 'عنوان';
+  String get title => 'العنوان';
 
   @override
-  String get name => 'اسم';
+  String get name => 'الإسم';
 
   @override
-  String get place => 'مكان';
+  String get place => 'المكان';
 
   @override
-  String get popularRequests => 'الطلبات الشعبية';
+  String get popularRequests => 'البحوث المتداولة';
 
   @override
-  String get cancelation => 'الإلغاء';
+  String get cancelation => 'إلغاء';
 
   @override
   String get withSuccess => 'بنجاح';
 
   @override
-  String get save => 'يحفظ';
+  String get save => 'حفظ';
 
   @override
   String get placeApplicationSettings => 'الإعدادات';
@@ -515,19 +515,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mark => 'العلامة';
 
   @override
-  String get model => 'نموذج';
+  String get model => 'الموديل';
 
   @override
-  String get choosingCarBrand => 'اختيار ماركة السيارة';
+  String get choosingCarBrand => 'اختيار العلامة';
 
   @override
-  String get choosingMark => 'اختيار علامة';
+  String get choosingMark => 'اختيار العلامة';
 
   @override
-  String get specifyPlace => 'حدد المكان';
+  String get specifyPlace => 'تحديد المكان';
 
   @override
-  String get change => 'التغيير';
+  String get change => 'تغيير';
 
   @override
   String get loading => 'تحميل';
@@ -542,16 +542,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get offerMessage => 'مرحبا! أقترح عليك';
 
   @override
-  String get writeComment => 'اكتب تعليق';
+  String get writeComment => 'كتابة تعليق';
 
   @override
   String get dataDownloadError => 'خطأ في تنزيل البيانات';
 
   @override
-  String get publish => 'للنشر';
+  String get publish => 'نشر';
 
   @override
-  String get changesSaved => 'يتم حفظ التغييرات';
+  String get changesSaved => 'تم حفظ البيانات';
 
   @override
   String get dataSavingError => 'خطأ في حفظ البيانات';
@@ -560,7 +560,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get adSuccessfullyAdded => 'تمت إضافة الإعلان بنجاح';
 
   @override
-  String get errorCreatingAd => 'خطأ في إنشاء الإعلان';
+  String get errorCreatingAd => 'خطأ في إضافة الإعلان';
 
   @override
   String get chatBlocked => 'تم حظر الدردشة';
@@ -596,7 +596,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get productParameters => 'معلمات المنتج';
 
   @override
-  String get cityAndRegion => 'المدينة والمنطقة';
+  String get cityAndRegion => 'الولاية البلدية';
 
   @override
   String userBlockedYou(String userName) {
@@ -621,7 +621,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tryAgainLater => 'حاول مرة أخرى لاحقا';
 
   @override
-  String get userAlreadyRegistered => 'هذا المستخدم مسجل بالفعل';
+  String get userAlreadyRegistered => 'هذا المستخدم مسجل';
 
   @override
   String get userNotFound => 'المستخدم غير مسجل';

@@ -26,6 +26,7 @@ class AppRoutesNames {
   static const String search = '/search_screen';
   static const String announcementCreator = '/creator_screen';
   static const String chat = '/chat_screen';
+  static const String chatLoading = '/chat_loading';
   static const String editingAnnouncement = '/editing_announcement_screen';
   static const String searchSelectSubcategory = '/search_select_subcategory';
   static const String reviews = '/reviews';

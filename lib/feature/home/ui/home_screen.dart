@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,6 +11,7 @@ import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/feature/messenger/ui/all_chats_screen.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
+import 'package:smart/services/messaging_service.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
@@ -27,6 +29,28 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedTab = 0;
   int _targetTab = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pushProcessing();
+  }
+
+  void _pushProcessing() {
+    selectNotificationStream.stream.listen((String payload) {
+      final messengerRepository = RepositoryProvider.of<MessengerRepository>(context);
+      messengerRepository.preloadChats().then((value) {
+        messengerRepository.selectChat(id: payload);
+        Navigator.pushNamed(context, AppRoutesNames.chat);
+      });
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      if (message.notification != null && message.data['room_id'] != null) {
+        selectNotificationStream.add(message.data['room_id']);
+      }
+    });
+    MessagingService.checkInitialMessage();
+  }
 
   @override
   Widget build(BuildContext context) {
