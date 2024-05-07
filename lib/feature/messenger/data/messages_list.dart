@@ -19,9 +19,7 @@ class MessagesList {
         items.add(MessagesGroupData(messages: [message]));
       } else {
         final lastGroup = items.last as MessagesGroupData;
-        bool timeConditionToSplitGroups =
-            (lastGroup.sentAt.difference(message.createdAtDt).inSeconds).abs() >
-                30;
+        bool timeConditionToSplitGroups = (lastGroup.sentAt.difference(message.createdAtDt).inSeconds).abs() > 30;
         if (lastGroup.owned != message.owned || timeConditionToSplitGroups) {
           if (lastGroup.diffDate(message.createdAtDt)) {
             items.add(DateSplitter(dateTime: message.createdAtDt));

@@ -196,18 +196,18 @@ class _ChatScreenState extends State<ChatScreen> {
                         initialData: const [],
                         builder: (context, snapshot) {
                           return ListView.builder(
-                              itemBuilder: (ctx, i) {
-                                final item = snapshot.data![i];
-                                return item is MessagesGroupData
-                                    ? MessageGroupWidget(
-                                        data: item,
-                                        avatarUrl: messengerRepository.currentRoom!.otherUserAvatarUrl ?? '')
-                                    : DateSplitterWidget(
-                                        data: item as DateSplitter,
-                                      );
-                              },
-                              itemCount: snapshot.data!.length,
-                              reverse: true);
+                            itemBuilder: (ctx, i) {
+                              final item = snapshot.data![i];
+                              return item is MessagesGroupData
+                                  ? MessageGroupWidget(
+                                      data: item, avatarUrl: messengerRepository.currentRoom!.otherUserAvatarUrl ?? '')
+                                  : DateSplitterWidget(
+                                      data: item as DateSplitter,
+                                    );
+                            },
+                            itemCount: snapshot.data!.length,
+                            reverse: true,
+                          );
                         }),
                   ),
                 ),

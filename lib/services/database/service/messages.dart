@@ -62,7 +62,10 @@ class MessagesService {
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
       collectionId: roomsCollection,
-      queries: [Query.contains('members', userId)],
+      queries: [
+        Query.contains('members', userId),
+        Query.limit(1000),
+      ],
     );
     List<Room> chats = [];
     for (var doc in res.documents) {
@@ -90,6 +93,8 @@ class MessagesService {
       if (limit == 1) {
         queries.add(Query.orderDesc(DefaultDocumentParameters.createdAt));
       }
+    } else {
+      queries.add(Query.limit(1000));
     }
 
     final res = await _databases.listDocuments(
