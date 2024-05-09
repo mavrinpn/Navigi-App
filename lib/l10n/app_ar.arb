@@ -230,5 +230,9 @@
 "invalidCode": "رمز غير صالح",
 "passwordUpdateSuccess": "تحديث كلمة المرور بنجاح",
 "changeActivity": "تمت الصفقة",
-"delete": "حذف"
+"delete": "حذف",
+"errorCommentAlreadyLeft": "لقد قمت بتقييم المستخدم من قبل",
+"errorCommentYourself": "لا يمكنك تقييم نفسك",
+"errorInvalidScore": "خطأ في التقييم",
+"errorText": "خطأ في النص"
 }

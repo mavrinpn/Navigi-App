@@ -193,8 +193,12 @@ class MessagesService {
     required String senderId,
     List<String>? images,
   }) async {
-    final encodedBody =
-        jsonEncode({'roomId': roomId, 'senderId': senderId, 'message': content, 'images': images ?? []});
+    final encodedBody = jsonEncode({
+      'roomId': roomId,
+      'senderId': senderId,
+      'message': content,
+      'images': images ?? [],
+    });
 
     try {
       final res = await _functions.createExecution(

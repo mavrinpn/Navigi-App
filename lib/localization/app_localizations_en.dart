@@ -655,4 +655,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get delete => 'Delete';
+
+  @override
+  String get errorCommentAlreadyLeft => 'The review has already been sent to this seller';
+
+  @override
+  String get errorCommentYourself => 'You can\'t send feedback to yourself';
+
+  @override
+  String get errorInvalidScore => 'Rating error';
+
+  @override
+  String get errorText => 'Error in the text';
 }

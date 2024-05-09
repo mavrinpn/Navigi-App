@@ -81,9 +81,12 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
             );
           } else if (state is ReviewsFailState) {
             return Center(child: Text(localizations.dataDownloadError));
-          } else {
-            return Center(child: AppAnimations.bouncingLine);
+          } else if (state is ReviewSaveFailState) {
+            return Center(child: Text(state.message));
+          } else if (state is ReviewSuccessSavedState) {
+            context.read<ReviewsCubit>().loadBy(receiverId: widget.user.id);
           }
+          return Center(child: AppAnimations.bouncingLine);
         },
       ),
     );

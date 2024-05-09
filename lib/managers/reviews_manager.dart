@@ -12,10 +12,9 @@ class ReviewsManager {
     required this.client,
   }) : account = Account(client);
 
-  Future<List<Review>> loadBy(String receiverId) async =>
-      databaseService.reviews.getReviewsBy(receiverId);
+  Future<List<Review>> loadBy(String receiverId) async => databaseService.reviews.getReviewsBy(receiverId);
 
-  Future<void> newReview({
+  Future<String?> newReview({
     required String receiverId,
     required int score,
     required String text,
@@ -23,7 +22,7 @@ class ReviewsManager {
     final user = await account.get();
     final uid = user.$id;
 
-    databaseService.reviews.create(
+    return databaseService.reviews.create(
       creatorId: uid,
       receiverId: receiverId,
       score: score,

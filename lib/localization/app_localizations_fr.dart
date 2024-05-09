@@ -655,4 +655,16 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get delete => 'Supprimer';
+
+  @override
+  String get errorCommentAlreadyLeft => 'Vous avez déjà laissé un commentaire à ce vendeur';
+
+  @override
+  String get errorCommentYourself => 'Vous ne pouvez pas écrire un commentaire pour sois même!';
+
+  @override
+  String get errorInvalidScore => 'Erreur dans la note';
+
+  @override
+  String get errorText => 'Erreur dans le texte';
 }

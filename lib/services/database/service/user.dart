@@ -9,8 +9,11 @@ class UserService {
   final confirmEmailFunction = '662fbeae05374336da66';
   final updatePasswordFunction = '662fbfe76c295575a1d0';
 
-  UserService(Databases databases, Functions functions, Account account)
-      : _databases = databases,
+  UserService(
+    Databases databases,
+    Functions functions,
+    Account account,
+  )   : _databases = databases,
         _account = account,
         _functions = functions;
 

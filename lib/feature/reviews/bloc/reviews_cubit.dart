@@ -1,5 +1,9 @@
+import 'dart:ui';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/main.dart';
 import 'package:smart/managers/reviews_manager.dart';
 import 'package:smart/models/review.dart';
 
@@ -34,13 +38,36 @@ class ReviewsCubit extends Cubit<ReviewsState> {
   }) async {
     emit(ReviewSavingState());
     try {
-      await _reviewsManager.newReview(
+      final status = await _reviewsManager.newReview(
         receiverId: receiverId,
         score: score,
         text: text,
       );
 
-      emit(ReviewSuccessSavedState());
+      if (status == 'ok') {
+        emit(ReviewSuccessSavedState());
+      } else {
+        final locale = Locale(currentLocaleShortName.value);
+        AppLocalizations localizations = await AppLocalizations.delegate.load(locale);
+        String message = '';
+        switch (status) {
+          case 'error_comment_already_left':
+            message = localizations.errorCommentAlreadyLeft;
+            break;
+          case 'error_comment_yourself':
+            message = localizations.errorCommentYourself;
+            break;
+          case 'error_invalid_score':
+            message = localizations.errorInvalidScore;
+            break;
+          case 'error_text':
+            message = localizations.errorText;
+            break;
+          default:
+        }
+
+        emit(ReviewSaveFailState(message: message));
+      }
     } catch (err) {
       emit(ReviewSaveFailState(message: err.toString()));
       rethrow;

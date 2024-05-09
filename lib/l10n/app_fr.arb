@@ -230,5 +230,10 @@
 "invalidCode": "Code Non Valide",
 "passwordUpdateSuccess": "Mise À Jour Du Mot De Passe Réussie",
 "changeActivity": "Changer d'activité",
-"delete": "Supprimer"
+"delete": "Supprimer",
+"errorCommentAlreadyLeft": "Vous avez déjà laissé un commentaire à ce vendeur",
+"errorCommentYourself": "Vous ne pouvez pas écrire un commentaire pour sois même!",
+"errorInvalidScore": "Erreur dans la note",
+"errorText": "Erreur dans le texte"
+
 }

@@ -1390,6 +1390,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete'**
   String get delete;
+
+  /// No description provided for @errorCommentAlreadyLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'The review has already been sent to this seller'**
+  String get errorCommentAlreadyLeft;
+
+  /// No description provided for @errorCommentYourself.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t send feedback to yourself'**
+  String get errorCommentYourself;
+
+  /// No description provided for @errorInvalidScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating error'**
+  String get errorInvalidScore;
+
+  /// No description provided for @errorText.
+  ///
+  /// In en, this message translates to:
+  /// **'Error in the text'**
+  String get errorText;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -230,5 +230,9 @@
 "invalidCode": "Invalid Code",
 "passwordUpdateSuccess": "Password Update Successfully",
 "changeActivity": "Change activity",
-"delete": "Delete"
+"delete": "Delete",
+"errorCommentAlreadyLeft": "The review has already been sent to this seller",
+"errorCommentYourself": "You can't send feedback to yourself",
+"errorInvalidScore": "Rating error",
+"errorText": "Error in the text"
 }

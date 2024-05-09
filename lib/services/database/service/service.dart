@@ -31,7 +31,7 @@ class DatabaseService {
     notifications = NotificationsDatabaseService(_databases);
     users = UserService(_databases, _functions, _account);
     announcements = AnnouncementsService(_databases, _storage);
-    reviews = ReviewsService(_databases, _storage);
+    reviews = ReviewsService(_databases, _storage, _functions, _account);
     mediumPrices = MediumPriceService(_databases);
     keyWords = KeyWordsService(_databases);
     tipWords = TipWordsService(_databases);

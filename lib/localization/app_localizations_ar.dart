@@ -655,4 +655,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get delete => 'حذف';
+
+  @override
+  String get errorCommentAlreadyLeft => 'لقد قمت بتقييم المستخدم من قبل';
+
+  @override
+  String get errorCommentYourself => 'لا يمكنك تقييم نفسك';
+
+  @override
+  String get errorInvalidScore => 'خطأ في التقييم';
+
+  @override
+  String get errorText => 'خطأ في النص';
 }
