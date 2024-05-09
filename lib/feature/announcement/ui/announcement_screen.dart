@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:smart/feature/announcement/ui/dialogs/creator_show_more_bottom_sheet.dart';
 import 'package:smart/feature/announcement/ui/dialogs/offer_price_bottom_sheet.dart';
 import 'package:smart/feature/announcement/ui/widgets/announcement_mini_map.dart';
 import 'package:smart/feature/announcement/ui/widgets/market_price_widget.dart';
@@ -107,8 +108,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     const Spacer(),
                     FavouriteIndicator(postId: state.data.id),
                     const SizedBox(width: 4),
-                    GestureDetector(
-                      onTap: () {
+                    IconButton(
+                      onPressed: () {
                         if (state.data.creatorData.uid == RepositoryProvider.of<AuthRepository>(context).userId) {
                           showModalBottomSheet(
                             context: context,
@@ -121,15 +122,16 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                               return SettingsBottomSheet(announcement: state.data);
                             },
                           );
+                        } else {
+                          creatorShowMoreAction(
+                            context: context,
+                            userId: state.data.creatorData.uid,
+                            onAction: (value) {},
+                          );
                         }
                       },
-                      child: SvgPicture.asset(
-                        'Assets/icons/three_dots.svg',
-                        width: 24,
-                        height: 24,
-                        color: AppColors.black,
-                      ),
-                    )
+                      icon: SvgPicture.asset('Assets/icons/menu_dots_vertical.svg'),
+                    ),
                   ],
                 ),
               ),
@@ -383,10 +385,11 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    AccountSmallInfo(
-                      creatorData: state.data.creatorData,
-                      clickable: true,
-                    ),
+                    if (state.data.creatorData.uid != RepositoryProvider.of<AuthRepository>(context).userId)
+                      AccountSmallInfo(
+                        creatorData: state.data.creatorData,
+                        clickable: true,
+                      ),
                     AnnouncementMiniMap(
                       cityDistrict: state.data.area,
                       latitude: state.data.latitude,

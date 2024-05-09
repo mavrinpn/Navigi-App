@@ -68,7 +68,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get confirmation => 'تأكيد';
 
   @override
-  String get categories => 'فئات';
+  String get categories => 'الفئات';
 
   @override
   String get view => 'شاهد';
@@ -443,10 +443,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get photo => 'الصور';
 
   @override
-  String get popularResearch => 'الاكثر بحثا';
+  String get popularResearch => 'الأكثر طلبا';
 
   @override
-  String get researchHistory => 'تاريخ البحث';
+  String get researchHistory => 'سجل البحث';
 
   @override
   String get toClean => 'مسح';
@@ -649,4 +649,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get passwordUpdateSuccess => 'تحديث كلمة المرور بنجاح';
+
+  @override
+  String get changeActivity => 'تمت الصفقة';
+
+  @override
+  String get delete => 'حذف';
 }

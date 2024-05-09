@@ -85,7 +85,7 @@ class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
             ),
             const SizedBox(width: 12),
             Text(
-              'Change activity',
+              localizations.changeActivity,
               style: AppTypography.font18black,
             )
           ]),
@@ -111,7 +111,7 @@ class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
               width: 12,
             ),
             Text(
-              'Delete',
+              localizations.delete,
               style: AppTypography.font18black,
             )
           ]),

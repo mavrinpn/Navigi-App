@@ -24,7 +24,7 @@ class StarRowWidget extends StatelessWidget {
         itemCount: 5,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () => onTap?.call(index),
+            onTap: onTap != null ? () => onTap!(index) : null,
             child: Icon(
               Icons.star,
               size: size,

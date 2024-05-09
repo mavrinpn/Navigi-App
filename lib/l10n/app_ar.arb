@@ -20,7 +20,7 @@
 "errorIncorrectInfo": "خطأ! جرب مجددا أو أدخل معلومات أخرى.",
 "registration": "تسجيل",
 "confirmation": "تأكيد",
-"categories": "فئات",
+"categories": "الفئات",
 "view": "شاهد",
 "researchInAlgiers": "البحث في الجزائر",
 "recommendations": "الإعلانات",
@@ -147,8 +147,8 @@
 "passwordOrEmailEnteredIncorrectly": "البريد الإلكتروني أو كلمة السر غير صحيحة",
 "photo": "الصور",
 "termsOfUse": "شروط الاستعمال",
-"popularResearch": "الاكثر بحثا",
-"researchHistory": "تاريخ البحث",
+"popularResearch": "الأكثر طلبا",
+"researchHistory": "سجل البحث",
 "toClean": "مسح",
 "empty": "لا يوجد شئ",
 "seller": "البائع",
@@ -228,5 +228,7 @@
 "selected": "مختارة",
 "enterValidEmail": "أدخل بريد إلكتروني صالح",
 "invalidCode": "رمز غير صالح",
-"passwordUpdateSuccess": "تحديث كلمة المرور بنجاح"
+"passwordUpdateSuccess": "تحديث كلمة المرور بنجاح",
+"changeActivity": "تمت الصفقة",
+"delete": "حذف"
 }

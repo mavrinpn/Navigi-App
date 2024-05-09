@@ -7,10 +7,12 @@ class UserScoreWidget extends StatelessWidget {
     super.key,
     required this.score,
     required this.subtitle,
+    required this.bigSize,
   });
 
   final double score;
   final String subtitle;
+  final bool bigSize;
 
   @override
   Widget build(BuildContext context) {
@@ -21,20 +23,21 @@ class UserScoreWidget extends StatelessWidget {
           children: [
             StarRowWidget(
               score: score.toInt(),
-              size: 30,
+              size: bigSize ? 30 : 20,
             ),
             const SizedBox(width: 8),
             Text(
-              '$score',
-              style: AppTypography.font20black,
+              score.toStringAsFixed(1),
+              style: bigSize ? AppTypography.font20black : AppTypography.font14lightGray,
             ),
           ],
         ),
-        const SizedBox(height: 6),
-        Text(
-          subtitle,
-          style: AppTypography.font14lightGray,
-        ),
+        if (subtitle.isNotEmpty) const SizedBox(height: 6),
+        if (subtitle.isNotEmpty)
+          Text(
+            subtitle,
+            style: AppTypography.font14lightGray,
+          ),
       ],
     );
   }

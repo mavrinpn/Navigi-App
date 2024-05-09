@@ -20,7 +20,7 @@ class UserData {
   UserData.fromJson(Map<String, dynamic> json)
       : id = json['\$id'],
         name = json['name'],
-        rating = json['rating'] != null ? (double.tryParse('${json['rating']['score']}') ?? -1) : -1,
+        rating = json['rating'] != null ? (double.tryParse('${json['rating']['score']}') ?? 0) : 0,
         verified = json['verified'],
         imageUrl = json['image_url'] ?? '',
         _atService = json['\$createdAt'],

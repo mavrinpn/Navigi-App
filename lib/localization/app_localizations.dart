@@ -1378,6 +1378,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password Update Successfully'**
   String get passwordUpdateSuccess;
+
+  /// No description provided for @changeActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Change activity'**
+  String get changeActivity;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

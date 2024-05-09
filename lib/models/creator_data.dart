@@ -15,7 +15,7 @@ class CreatorData {
         place = CityDistrict.none(),
         name = data['name'] ?? '',
         phone = data['phone'] ?? '',
-        rating = data['rating'] != null ? (double.tryParse('${data['rating']['score']}') ?? -1) : -1,
+        rating = data['rating'] != null ? (double.tryParse('${data['rating']['score']}') ?? 0) : 0,
         verified = data['verified'] ?? true,
         imageUrl = data['image_url'] ?? '',
         uid = data['\$id'] ?? 'aboba';

@@ -649,4 +649,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get passwordUpdateSuccess => 'Mise À Jour Du Mot De Passe Réussie';
+
+  @override
+  String get changeActivity => 'Changer d\'activité';
+
+  @override
+  String get delete => 'Supprimer';
 }

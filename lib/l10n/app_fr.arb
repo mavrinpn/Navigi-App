@@ -228,5 +228,7 @@
 "selected": "sélectionné",
 "enterValidEmail": "Entrez une adresse e-mail valide",
 "invalidCode": "Code Non Valide",
-"passwordUpdateSuccess": "Mise À Jour Du Mot De Passe Réussie"
+"passwordUpdateSuccess": "Mise À Jour Du Mot De Passe Réussie",
+"changeActivity": "Changer d'activité",
+"delete": "Supprimer"
 }

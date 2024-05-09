@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/announcement/data/creator_repository.dart';
+import 'package:smart/feature/announcement/ui/dialogs/creator_show_more_bottom_sheet.dart';
 import 'package:smart/feature/announcement/ui/widgets/tabs.dart';
 import 'package:smart/feature/messenger/chat_function.dart';
 import 'package:smart/utils/animations.dart';
-import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/back_button.dart';
 
 import '../../../localization/app_localizations.dart';
@@ -69,19 +69,16 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen> with Single
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, AppRoutesNames.settings);
+            IconButton(
+              onPressed: () {
+                final userData = context.read<CreatorRepository>().userData;
+                creatorShowMoreAction(
+                  context: context,
+                  userId: userData!.id,
+                  onAction: (value) {},
+                );
               },
-              child: SvgPicture.asset(
-                'Assets/icons/menu_dots_vertical.svg',
-                width: 24,
-                height: 24,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.black,
-                  BlendMode.srcIn,
-                ),
-              ),
+              icon: SvgPicture.asset('Assets/icons/menu_dots_vertical.svg'),
             ),
           ],
         ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smart/feature/announcement/ui/widgets/settings_bottom_sheet.dart';
+import 'package:smart/feature/announcement/ui/dialogs/creator_show_more_bottom_sheet.dart';
 import 'package:smart/feature/messenger/bloc/message_images_cubit.dart';
 import 'package:smart/feature/messenger/chat_function.dart';
 import 'package:smart/feature/messenger/ui/widgets/chat_input.dart';
@@ -14,7 +14,6 @@ import 'package:smart/models/messenger/chat_item.dart';
 import 'package:smart/models/messenger/date_splitter.dart';
 import 'package:smart/models/messenger/messages_group.dart';
 import 'package:smart/utils/animations.dart';
-import 'package:smart/utils/app_icons_icons.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/fonts.dart';
@@ -126,7 +125,7 @@ class _ChatScreenState extends State<ChatScreen> {
               if (!_otherUserIsBlocked)
                 IconButton(
                   onPressed: () {
-                    _showMoreAction(
+                    creatorShowMoreAction(
                       context: context,
                       userId: messengerRepository.currentRoom!.otherUserId,
                       onAction: (value) {
@@ -229,57 +228,6 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
-  }
-
-  void _showMoreAction({
-    required BuildContext context,
-    required String userId,
-    required Function(bool blocked) onAction,
-  }) async {
-    final localizations = AppLocalizations.of(context)!;
-    final blockedUsersManager = RepositoryProvider.of<BlockedUsersManager>(context);
-
-    blockedUsersManager.isUserBlockedForAuth(userId).then((isBlocked) {
-      showModalBottomSheet(
-        context: context,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        showDragHandle: true,
-        builder: (ctx) {
-          return SizedBox(
-            height: 100,
-            child: Column(
-              children: [
-                RowSettingsButton(
-                  onTap: () {
-                    if (isBlocked) {
-                      blockedUsersManager.unblock(userId);
-                    } else {
-                      blockedUsersManager.block(userId);
-                    }
-                    onAction(!isBlocked);
-                    Navigator.of(context).pop();
-                  },
-                  children: [
-                    const Icon(
-                      AppIcons.block,
-                      color: Colors.black,
-                      size: 24,
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      isBlocked ? localizations.unblockUser : localizations.blockUser,
-                      style: AppTypography.font18black,
-                    )
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    });
   }
 
   void _send() async {

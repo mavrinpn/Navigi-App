@@ -228,5 +228,7 @@
 "selected": "selected",
 "enterValidEmail": "Enter valid E-mail",
 "invalidCode": "Invalid Code",
-"passwordUpdateSuccess": "Password Update Successfully"
+"passwordUpdateSuccess": "Password Update Successfully",
+"changeActivity": "Change activity",
+"delete": "Delete"
 }

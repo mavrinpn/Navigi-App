@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/reviews/bloc/reviews_cubit.dart';
 import 'package:smart/feature/reviews/ui/widgets/review_list_widget.dart';
 import 'package:smart/feature/reviews/ui/widgets/user_score_widget.dart';
@@ -46,17 +47,19 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
           style: AppTypography.font20black,
         ),
       ),
-      floatingActionButton: CustomTextButton.orangeContinue(
-        active: true,
-        width: MediaQuery.of(context).size.width - 30,
-        text: localizations.writeComment,
-        callback: () {
-          Navigator.of(context).pushNamed(
-            AppRoutesNames.createReview,
-            arguments: widget.user,
-          );
-        },
-      ),
+      floatingActionButton: (widget.user.id != RepositoryProvider.of<AuthRepository>(context).userId)
+          ? CustomTextButton.orangeContinue(
+              active: true,
+              width: MediaQuery.of(context).size.width - 30,
+              text: localizations.writeComment,
+              callback: () {
+                Navigator.of(context).pushNamed(
+                  AppRoutesNames.createReview,
+                  arguments: widget.user,
+                );
+              },
+            )
+          : null,
       body: BlocBuilder<ReviewsCubit, ReviewsState>(
         builder: (context, state) {
           if (state is ReviewsSuccessState) {
@@ -67,6 +70,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                 UserScoreWidget(
                   score: widget.user.rating,
                   subtitle: '${state.reviews.length} ${localizations.comments}',
+                  bigSize: true,
                 ),
                 const SizedBox(height: 24),
                 ReviewsListWidget(

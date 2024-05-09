@@ -649,4 +649,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordUpdateSuccess => 'Password Update Successfully';
+
+  @override
+  String get changeActivity => 'Change activity';
+
+  @override
+  String get delete => 'Delete';
 }
