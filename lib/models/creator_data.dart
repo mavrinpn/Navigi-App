@@ -10,6 +10,14 @@ class CreatorData {
   final bool verified;
   final String phone;
 
+  get displayName => _displayName();
+  String _displayName() {
+    if (name.isEmpty) {
+      return 'user${uid.substring(uid.length - 8)}';
+    }
+    return name;
+  }
+
   CreatorData.fromJson({required Map<String, dynamic> data})
       : _distance = 4,
         place = CityDistrict.none(),

@@ -46,7 +46,7 @@ class ReviewsListWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        review.creator.name,
+                        review.creator.displayName,
                         style: AppTypography.font12black,
                       ),
                       Text(

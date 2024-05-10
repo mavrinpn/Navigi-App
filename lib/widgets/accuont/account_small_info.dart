@@ -97,7 +97,7 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                         children: [
                           Expanded(
                             child: Text(
-                              widget.creatorData.name,
+                              widget.creatorData.displayName,
                               style: AppTypography.font18black,
                               softWrap: false,
                               overflow: TextOverflow.ellipsis,

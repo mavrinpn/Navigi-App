@@ -132,7 +132,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
             Row(
               children: [
                 Text(
-                  widget.announcement.creatorData.name,
+                  widget.announcement.creatorData.displayName,
                   style: widget.announcement.creatorData.verified
                       ? AppTypography.font12lightGray
                           .copyWith(color: const Color(0xFF0F7EE4), fontWeight: FontWeight.w400)

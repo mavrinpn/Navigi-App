@@ -660,7 +660,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorCommentAlreadyLeft => 'The review has already been sent to this seller';
 
   @override
-  String get errorCommentYourself => 'You can\'t send feedback to yourself';
+  String get errorCommentYourself => 'You can\'t send review to yourself';
 
   @override
   String get errorInvalidScore => 'Rating error';

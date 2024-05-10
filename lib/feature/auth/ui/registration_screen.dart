@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/feature/auth/data/validators.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/functions.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
 import 'package:smart/widgets/textField/mask_text_field.dart';
@@ -15,12 +15,6 @@ import '../../../utils/colors.dart';
 import '../../../utils/dialogs.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/textField/custom_text_field.dart';
-
-final maskPhoneFormatter = MaskTextInputFormatter(
-  mask: '+213 (###) ## ## ##',
-  filter: {"#": RegExp(r'[0-9]')},
-  type: MaskAutoCompletionType.lazy,
-);
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);

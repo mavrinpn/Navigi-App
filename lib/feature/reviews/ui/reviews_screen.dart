@@ -42,7 +42,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
           ),
         ),
         title: Text(
-          widget.user.name,
+          widget.user.displayName,
           overflow: TextOverflow.ellipsis,
           style: AppTypography.font20black,
         ),

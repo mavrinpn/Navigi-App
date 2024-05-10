@@ -37,6 +37,9 @@ class UserData {
   String get displayName => _capitalizeName();
 
   String _capitalizeName() {
+    if (name.isEmpty) {
+      return 'user${id.substring(id.length - 8)}';
+    }
     String n;
     if (name.split(' ').length > 1) {
       String last = name.split(' ')[name.split(' ').length - 1];

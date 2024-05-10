@@ -1,5 +1,12 @@
 import 'package:intl/intl.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:uuid/uuid.dart';
+
+final maskPhoneFormatter = MaskTextInputFormatter(
+  mask: '+213 (###) ## ## ##',
+  filter: {"#": RegExp(r'[0-9]')},
+  type: MaskAutoCompletionType.lazy,
+);
 
 int _calculateDifference(DateTime date) {
   DateTime now = DateTime.now();

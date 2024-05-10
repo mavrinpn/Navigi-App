@@ -1400,7 +1400,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorCommentYourself.
   ///
   /// In en, this message translates to:
-  /// **'You can\'t send feedback to yourself'**
+  /// **'You can\'t send review to yourself'**
   String get errorCommentYourself;
 
   /// No description provided for @errorInvalidScore.

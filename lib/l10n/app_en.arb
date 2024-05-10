@@ -232,7 +232,7 @@
 "changeActivity": "Change activity",
 "delete": "Delete",
 "errorCommentAlreadyLeft": "The review has already been sent to this seller",
-"errorCommentYourself": "You can't send feedback to yourself",
+"errorCommentYourself": "You can't send review to yourself",
 "errorInvalidScore": "Rating error",
 "errorText": "Error in the text"
 }

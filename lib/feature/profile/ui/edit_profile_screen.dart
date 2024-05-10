@@ -11,8 +11,10 @@ import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/functions.dart';
 import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
+import 'package:smart/widgets/textField/mask_text_field.dart';
 
 import '../../../widgets/images/network_image.dart';
 import '../../../widgets/snackBar/snack_bar.dart';
@@ -32,11 +34,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController placeController = TextEditingController();
 
+  bool isButtonActive = false;
+  bool isPhoneValid = false;
+
   CroppedFile? image;
 
   Uint8List? bytes;
-  String? changedName;
-  String? phone;
+  // String? changedName;
+  // String? phone;
 
   void pickImage() async {
     final file = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -70,8 +75,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final userRepo = RepositoryProvider.of<AuthRepository>(context);
 
     nameController.text = userRepo.userData?.name ?? '';
-    phoneController.text = userRepo.userData?.phone ?? '';
+    phoneController.text = maskPhoneFormatter.maskText(userRepo.userData?.phone ?? '');
     emailController.text = userRepo.loggedUser?.email ?? '';
+
+    isPhoneValid = maskPhoneFormatter.getUnmaskedText().length == 9;
+    _checkActiveButton();
   }
 
   @override
@@ -163,18 +171,35 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           controller: nameController,
                           keyboardType: TextInputType.text,
                           prefIcon: 'Assets/icons/profile.svg',
-                          onChanged: (String? o) {
-                            changedName = o != user?.name ? o : null;
+                          onChanged: (value) {
+                            // changedName = o != user?.name ? o : null;
                           },
                         ),
-                        CustomTextFormField(
+                        MaskTextFormField(
                           controller: phoneController,
-                          keyboardType: TextInputType.text,
+                          hintText: '+213 (###) ## ## ##',
+                          keyboardType: TextInputType.phone,
                           prefIcon: 'Assets/icons/phone.svg',
-                          onChanged: (String? o) {
-                            phone = o != user?.phone ? o : null;
+                          validator: (value) {
+                            if (maskPhoneFormatter.getUnmaskedText().length != 9) {
+                              return localizations.errorReviewOrEnterOther;
+                            }
+                            return null;
                           },
+                          onChanged: (value) {
+                            isPhoneValid = maskPhoneFormatter.getUnmaskedText().length == 9;
+                            _checkActiveButton();
+                          },
+                          mask: maskPhoneFormatter,
                         ),
+                        // CustomTextFormField(
+                        //   controller: phoneController,
+                        //   keyboardType: TextInputType.text,
+                        //   prefIcon: 'Assets/icons/phone.svg',
+                        //   onChanged: (String? o) {
+                        //     phone = o != user?.phone ? o : null;
+                        //   },
+                        // ),
                         CustomTextFormField(
                           readOnly: true,
                           controller: emailController,
@@ -194,15 +219,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       children: [
                         CustomTextButton(
                           callback: () {
-                            BlocProvider.of<UserCubit>(context).editProfile(
-                              name: changedName,
-                              phone: phone,
-                              bytes: bytes,
-                            );
+                            if (isButtonActive) {
+                              BlocProvider.of<UserCubit>(context).editProfile(
+                                name: nameController.text.trim(),
+                                phone: maskPhoneFormatter.getUnmaskedText(),
+                                bytes: bytes,
+                              );
+                            }
                           },
                           text: localizations.save,
                           styleText: AppTypography.font14white.copyWith(fontWeight: FontWeight.w600),
-                          active: true,
+                          active: isButtonActive,
                           activeColor: AppColors.black,
                         ),
                         const SizedBox(height: 30),
@@ -214,5 +241,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             )),
       ),
     );
+  }
+
+  _checkActiveButton() {
+    if (isPhoneValid) {
+      isButtonActive = true;
+    } else {
+      isButtonActive = false;
+    }
+    setState(() {});
   }
 }
