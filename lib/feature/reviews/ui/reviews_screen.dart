@@ -21,6 +21,8 @@ class ReviewsScreen extends StatefulWidget {
 }
 
 class _ReviewsScreenState extends State<ReviewsScreen> {
+  bool commentAlreadyLeft = false;
+
   @override
   void didChangeDependencies() {
     context.read<ReviewsCubit>().loadBy(receiverId: widget.user.id);
@@ -47,7 +49,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
           style: AppTypography.font20black,
         ),
       ),
-      floatingActionButton: (widget.user.id != RepositoryProvider.of<AuthRepository>(context).userId)
+      floatingActionButton: _checkNeedsButton()
           ? CustomTextButton.orangeContinue(
               active: true,
               width: MediaQuery.of(context).size.width - 30,
@@ -60,7 +62,18 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
               },
             )
           : null,
-      body: BlocBuilder<ReviewsCubit, ReviewsState>(
+      body: BlocConsumer<ReviewsCubit, ReviewsState>(
+        listener: (context, state) {
+          if (state is ReviewsSuccessState) {
+            if (state.reviews
+                .where((element) => element.creatorId == RepositoryProvider.of<AuthRepository>(context).userId)
+                .isNotEmpty) {
+              setState(() {
+                commentAlreadyLeft = true;
+              });
+            }
+          }
+        },
         builder: (context, state) {
           if (state is ReviewsSuccessState) {
             return ListView(
@@ -90,5 +103,12 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
         },
       ),
     );
+  }
+
+  bool _checkNeedsButton() {
+    if (commentAlreadyLeft) {
+      return false;
+    }
+    return widget.user.id != RepositoryProvider.of<AuthRepository>(context).userId;
   }
 }
