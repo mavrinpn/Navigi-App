@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:smart/feature/announcement/ui/widgets/settings_bottom_sheet.dart';
+import 'package:smart/feature/announcement/ui/widgets/additional_menu_bottom_sheet.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
 import 'package:smart/models/announcement.dart';
@@ -17,12 +17,10 @@ class AnnouncementContainerHorizontal extends StatefulWidget {
     required this.announcement,
     this.width,
     this.height,
-    required this.likeCount,
   });
 
   final double? width, height;
   final Announcement announcement;
-  final String likeCount;
 
   @override
   State<AnnouncementContainerHorizontal> createState() => _AnnouncementContainerHorizontalState();
@@ -162,7 +160,7 @@ class _AnnouncementContainerHorizontalState extends State<AnnouncementContainerH
                                   ),
                                   showDragHandle: true,
                                   builder: (ctx) {
-                                    return SettingsBottomSheet(announcement: widget.announcement);
+                                    return AdditionalMenuBottomSheet(announcement: widget.announcement);
                                   });
                             }
                           },

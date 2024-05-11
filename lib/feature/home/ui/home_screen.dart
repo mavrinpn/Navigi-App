@@ -36,6 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
     _pushProcessing();
   }
 
+  @override
+  void dispose() {
+    selectNotificationStream.close();
+    super.dispose();
+  }
+
   void _pushProcessing() {
     selectNotificationStream.stream.listen((String payload) {
       final messengerRepository = RepositoryProvider.of<MessengerRepository>(context);

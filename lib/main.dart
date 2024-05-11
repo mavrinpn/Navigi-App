@@ -14,9 +14,6 @@ import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/services.dart';
 import 'package:smart/utils/app_theme.dart';
 import 'package:smart/utils/routes/routes.dart';
-import 'package:smart/widgets/splash.dart';
-import 'bloc/app/app_cubit.dart';
-import 'feature/home/ui/home_screen.dart';
 
 final ValueNotifier<String> currentLocaleShortName = ValueNotifier<String>('fr');
 
@@ -105,42 +102,4 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       color: const Color(0xff292B57),
     );
   }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({
-    Key? key,
-  }) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: BlocBuilder<AppCubit, AppState>(
-        builder: (context, state) {
-          if (state is AppAuthState || state is AppUnAuthState) {
-            return const HomeScreen();
-          } else {
-            return const Splash();
-          }
-        },
-      ),
-    );
-  }
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     resizeToAvoidBottomInset: false,
-  //     body: BlocBuilder<AppCubit, AppState>(
-  //       builder: (context, state) {
-  //         if (state is AppAuthState) {
-  //           return const HomeScreen();
-  //         } else if (state is AppUnAuthState) {
-  //           return const LoginFirstScreen();
-  //         } else {
-  //           return const Splash();
-  //         }
-  //       },
-  //     ),
-  //   );
-  // }
 }

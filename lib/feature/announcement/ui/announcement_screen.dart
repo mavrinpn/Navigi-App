@@ -19,7 +19,7 @@ import 'package:smart/feature/announcement/ui/photo_view.dart';
 import 'package:smart/feature/announcement/ui/widgets/favourite_indicator.dart';
 import 'package:smart/feature/announcement/ui/widgets/images_amount_indicators.dart';
 import 'package:smart/feature/announcement/ui/widgets/parameter.dart';
-import 'package:smart/feature/announcement/ui/widgets/settings_bottom_sheet.dart';
+import 'package:smart/feature/announcement/ui/widgets/additional_menu_bottom_sheet.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/models/item/static_localized_parameter.dart';
@@ -119,7 +119,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             ),
                             showDragHandle: true,
                             builder: (ctx) {
-                              return SettingsBottomSheet(announcement: state.data);
+                              return AdditionalMenuBottomSheet(announcement: state.data);
                             },
                           );
                         } else {

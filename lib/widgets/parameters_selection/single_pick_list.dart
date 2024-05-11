@@ -11,9 +11,9 @@ class CustomSingleCheckBoxes extends StatefulWidget {
     required this.currentVariable,
   });
 
-  final Function(CustomLocate?) onChange;
-  final List<CustomLocate> parameters;
-  final CustomLocate currentVariable;
+  final Function(CustomLocale?) onChange;
+  final List<CustomLocale> parameters;
+  final CustomLocale currentVariable;
 
   @override
   State<CustomSingleCheckBoxes> createState() => _CustomSingleCheckBoxesState();
@@ -33,7 +33,7 @@ class _CustomSingleCheckBoxesState extends State<CustomSingleCheckBoxes> {
                       onChanged: () => widget.onChange(e),
                     ),
                     Text(
-                      e.name,
+                      e.displayName,
                       maxLines: 1,
                       overflow: TextOverflow.clip,
                       style: AppTypography.font14black.copyWith(fontSize: 16),

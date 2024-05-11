@@ -13,6 +13,7 @@ import 'package:smart/feature/auth/ui/login_second_screen.dart';
 import 'package:smart/feature/auth/ui/registration_screen.dart';
 import 'package:smart/feature/auth/ui/restore_password_screen.dart';
 import 'package:smart/feature/home/ui/home_screen.dart';
+import 'package:smart/feature/main/ui/main_page.dart';
 import 'package:smart/feature/main/ui/main_screen.dart';
 import 'package:smart/feature/messenger/ui/chat_screen.dart';
 import 'package:smart/feature/profile/ui/edit_profile_screen.dart';
@@ -24,7 +25,6 @@ import 'package:smart/feature/settings/ui/language_screen.dart';
 import 'package:smart/feature/settings/ui/pdf_view_screen.dart';
 import 'package:smart/feature/settings/ui/settings_screen.dart';
 import 'package:smart/localization/app_localizations.dart';
-import 'package:smart/main.dart';
 import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/models/user.dart';
 import 'package:smart/utils/routes/route_names.dart';
@@ -168,7 +168,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
 }
 
 final appRoutes = {
-  AppRoutesNames.root: (context) => const HomePage(),
+  AppRoutesNames.root: (context) => const MainPage(),
   // AppRoutesNames.loginFirst: (context) => const LoginFirstScreen(),
   // AppRoutesNames.authCode: (context) => const CodeScreen(),
   AppRoutesNames.restorePassword: (context) => const RestorePasswordScreen(),

@@ -116,7 +116,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 _loggedUserId = RepositoryProvider.of<AuthRepository>(context).userData?.id ?? '';
 
                 if (creatorState is CreatorSuccessState) {
-                  if (creatorState.available.firstOrNull?.creatorData.uid == _loggedUserId) {
+                  if (creatorState.available.firstOrNull?.creatorData.uid == _loggedUserId ||
+                      creatorState.sold.firstOrNull?.creatorData.uid == _loggedUserId) {
                     _available = [...creatorState.available];
                     _sold = [...creatorState.sold];
                   }
@@ -198,7 +199,6 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                               itemBuilder: (BuildContext context, int index) {
                                 return AnnouncementContainerHorizontal(
                                   announcement: _tabController.index == 0 ? _available[index] : _sold[index],
-                                  likeCount: '13',
                                 );
                               },
                               separatorBuilder: (context, index) => const SizedBox(height: 12),

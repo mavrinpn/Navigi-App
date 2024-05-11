@@ -229,10 +229,12 @@
 "enterValidEmail": "أدخل بريد إلكتروني صالح",
 "invalidCode": "رمز غير صالح",
 "passwordUpdateSuccess": "تحديث كلمة المرور بنجاح",
-"changeActivity": "تمت الصفقة",
+"soldAction": "تمت الصفقة",
+"putForSaleAction": "الإعادة إلى البيع",
 "delete": "حذف",
 "errorCommentAlreadyLeft": "لقد قمت بتقييم المستخدم من قبل",
 "errorCommentYourself": "لا يمكنك تقييم نفسك",
 "errorInvalidScore": "خطأ في التقييم",
-"errorText": "خطأ في النص"
+"errorText": "خطأ في النص",
+"noConnection": "لا يوجد اتصال بالإنترنت. يرجى التأكد من تمكين خدمة الواي فاي أو الاتصال الخلوي وحاول مرة أخرى."
 }

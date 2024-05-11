@@ -1,3 +1,6 @@
+const String serviceProtocol = 'http://';
+const String serviceDomain = '143.244.206.96';
+
 const String carSubcategoryId = '65d45e64812538dfea60';
 
 const String immo1SubcategoryId = '65d45b996a6f6f196d83';

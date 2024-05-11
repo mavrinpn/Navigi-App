@@ -8,6 +8,7 @@ import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog
 import 'package:smart/feature/search/ui/sections/popular_queries.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/colors.dart';
+import 'package:smart/utils/constants.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/scaffold/main_scaffold.dart';
@@ -166,7 +167,7 @@ class _MainScreenState extends State<MainScreen> {
                     child: AdvertisementContainer(
                       onTap: () {},
                       imageUrl:
-                          'http://143.244.206.96/v1/storage/buckets/661d74e7000bc76c563f/files/main_ad/view?project=65d8fa703a95c4ef256b&mode=admin',
+                          '$serviceProtocol$serviceDomain/v1/storage/buckets/661d74e7000bc76c563f/files/main_ad/view?project=65d8fa703a95c4ef256b&mode=admin',
                     ),
                   ),
                   SliverToBoxAdapter(
@@ -175,8 +176,11 @@ class _MainScreenState extends State<MainScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(AppLocalizations.of(context)!.recommendations,
-                              textAlign: TextAlign.center, style: AppTypography.font20black),
+                          Text(
+                            AppLocalizations.of(context)!.recommendations,
+                            textAlign: TextAlign.center,
+                            style: AppTypography.font20black,
+                          ),
                           // Text(AppLocalizations.of(context)!.viewAll,
                           //     style: AppTypography.font14lightGray
                           //         .copyWith(fontSize: 12)),

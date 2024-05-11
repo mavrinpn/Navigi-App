@@ -42,9 +42,9 @@ class EditingAnnouncementScreen extends StatefulWidget {
   State<EditingAnnouncementScreen> createState() => _EditingAnnouncementScreenState();
 }
 
-List<CustomLocate> listLocates = [
-  CustomLocate.fr(),
-  CustomLocate.ar(),
+List<CustomLocale> listLocates = [
+  CustomLocale.fr(),
+  CustomLocale.ar(),
 ];
 
 class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
@@ -97,7 +97,7 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
     });
   }
 
-  CustomLocate? customLocate;
+  CustomLocale? customLocate;
   bool buttonActive = true;
 
   String? priceValidator(String? value) {

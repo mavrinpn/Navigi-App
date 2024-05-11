@@ -651,7 +651,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get passwordUpdateSuccess => 'Mise À Jour Du Mot De Passe Réussie';
 
   @override
-  String get changeActivity => 'Changer d\'activité';
+  String get soldAction => 'Vendu';
+
+  @override
+  String get putForSaleAction => 'Mettre à vendre';
 
   @override
   String get delete => 'Supprimer';
@@ -667,4 +670,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get errorText => 'Erreur dans le texte';
+
+  @override
+  String get noConnection => 'Pas de connexion Internet. Veuillez vous assurer que le wi-fi ou la connexion cellulaire est activée et réessayez.';
 }

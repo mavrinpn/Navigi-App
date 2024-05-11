@@ -30,7 +30,9 @@ class SearchItemsWidget extends StatelessWidget {
           child: Text(
             state.currentQuery,
             textAlign: TextAlign.start,
-            style: AppTypography.font14black,
+            style: AppTypography.font14black.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),

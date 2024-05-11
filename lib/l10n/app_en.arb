@@ -229,10 +229,12 @@
 "enterValidEmail": "Enter valid E-mail",
 "invalidCode": "Invalid Code",
 "passwordUpdateSuccess": "Password Update Successfully",
-"changeActivity": "Change activity",
+"soldAction": "Sold",
+"putForSaleAction": "Put for sale",
 "delete": "Delete",
 "errorCommentAlreadyLeft": "The review has already been sent to this seller",
 "errorCommentYourself": "You can't send review to yourself",
 "errorInvalidScore": "Rating error",
-"errorText": "Error in the text"
+"errorText": "Error in the text",
+"noConnection": "There is no Internet connection. Please make sure that wi-fi or cellular connection is enabled and try again."
 }

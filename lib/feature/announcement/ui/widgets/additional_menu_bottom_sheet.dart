@@ -12,16 +12,16 @@ import 'package:smart/utils/routes/route_names.dart';
 
 import '../../../../utils/fonts.dart';
 
-class SettingsBottomSheet extends StatefulWidget {
-  const SettingsBottomSheet({super.key, required this.announcement});
+class AdditionalMenuBottomSheet extends StatefulWidget {
+  const AdditionalMenuBottomSheet({super.key, required this.announcement});
 
   final Announcement announcement;
 
   @override
-  State<SettingsBottomSheet> createState() => _SettingsBottomSheetState();
+  State<AdditionalMenuBottomSheet> createState() => _AdditionalMenuBottomSheetState();
 }
 
-class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
+class _AdditionalMenuBottomSheetState extends State<AdditionalMenuBottomSheet> {
   late final AnnouncementManager announcementManager;
   late final CreatorCubit creatorCubit;
 
@@ -85,7 +85,7 @@ class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
             ),
             const SizedBox(width: 12),
             Text(
-              localizations.changeActivity,
+              widget.announcement.active ? localizations.soldAction : localizations.putForSaleAction,
               style: AppTypography.font18black,
             )
           ]),

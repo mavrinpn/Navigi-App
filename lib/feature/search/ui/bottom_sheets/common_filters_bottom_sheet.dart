@@ -41,7 +41,8 @@ class CommonFiltersBottomSheet extends StatefulWidget {
 class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
   bool radiusOptionShown = false;
   double sliderValue = 0;
-  PriceType _priceType = PriceType.dzd;
+  late final List<PriceType> _availableTypes;
+  late PriceType _priceType;
   late final TextEditingController _minPriceController;
   late final TextEditingController _maxPriceController;
 
@@ -55,8 +56,15 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
   void initState() {
     super.initState();
 
+    final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-    _priceType = searchCubit.priceType;
+
+    _availableTypes = PriceTypeExtendion.availableTypesFor(selectCategoryCubit.subcategoryId ?? '');
+    if (_availableTypes.contains(searchCubit.priceType)) {
+      _priceType = searchCubit.priceType;
+    } else {
+      _priceType = _availableTypes.first;
+    }
     _minPriceController = TextEditingController(text: _priceType.convertDzdToCurrencyString(searchCubit.minPrice));
     _maxPriceController = TextEditingController(text: _priceType.convertDzdToCurrencyString(searchCubit.maxPrice));
   }

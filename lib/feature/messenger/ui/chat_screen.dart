@@ -1,4 +1,3 @@
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -239,12 +238,14 @@ class _ChatScreenState extends State<ChatScreen> {
     }
 
     if (messageController.text.isNotEmpty) {
+      final text = messageController.text;
       setState(() {
         preparing = true;
+        messageController.text = '';
       });
 
       await messengerRepository
-          .sendMessage(messageController.text)
+          .sendMessage(text)
           .catchError((err) {
             CustomSnackBar.showSnackBar(context, err.toString());
           })
@@ -252,7 +253,6 @@ class _ChatScreenState extends State<ChatScreen> {
           .whenComplete(
             () {
               setState(() {
-                messageController.text = '';
                 preparing = false;
               });
             },
@@ -315,11 +315,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 if (isBlocked) {
                   CustomSnackBar.showSnackBar(context, localizations.chatBlocked);
                 } else {
-                  EasyDebounce.debounce(
-                    'my-debouncer',
-                    const Duration(milliseconds: 2000),
-                    () => _send(),
-                  );
+                  if (!preparing) {
+                    _send();
+                  }
                 }
               });
             },

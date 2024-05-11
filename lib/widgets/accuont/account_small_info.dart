@@ -84,7 +84,7 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                     ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 16),
+                  padding: const EdgeInsets.only(left: 10, right: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -101,10 +101,12 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> {
                               style: AppTypography.font18black,
                               softWrap: false,
                               overflow: TextOverflow.ellipsis,
+                              textDirection: TextDirection.ltr,
                             ),
                           ),
+                          const SizedBox(width: 10),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(5, 0, 0, 4),
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
                             child: Row(
                               children: [
                                 UserScoreWidget(

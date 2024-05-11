@@ -25,7 +25,8 @@ class PriceFilterBottomSheet extends StatefulWidget {
 class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
   String locale() => MyApp.getLocale(context) ?? 'fr';
 
-  PriceType _priceType = PriceType.dzd;
+  late final List<PriceType> _availableTypes;
+  late PriceType _priceType;
   late final TextEditingController _minPriceController;
   late final TextEditingController _maxPriceController;
 
@@ -33,19 +34,24 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
   void initState() {
     super.initState();
 
+    final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-    _priceType = searchCubit.priceType;
-    _minPriceController = TextEditingController(
-        text: _priceType.convertDzdToCurrencyString(searchCubit.minPrice));
-    _maxPriceController = TextEditingController(
-        text: _priceType.convertDzdToCurrencyString(searchCubit.maxPrice));
+
+    _availableTypes = PriceTypeExtendion.availableTypesFor(selectCategoryCubit.subcategoryId ?? '');
+    if (_availableTypes.contains(searchCubit.priceType)) {
+      _priceType = searchCubit.priceType;
+    } else {
+      _priceType = _availableTypes.first;
+    }
+
+    _minPriceController = TextEditingController(text: _priceType.convertDzdToCurrencyString(searchCubit.minPrice));
+    _maxPriceController = TextEditingController(text: _priceType.convertDzdToCurrencyString(searchCubit.maxPrice));
   }
 
   @override
   Widget build(BuildContext context) {
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-    final selectCategoryCubit =
-        BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+    final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
 
     return Container(
@@ -66,8 +72,7 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
                     height: 4,
                     decoration: ShapeDecoration(
                         color: const Color(0xFFDDE1E7),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(1))),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(1))),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -85,14 +90,11 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
                 const SizedBox(height: 16),
                 CustomTextButton.orangeContinue(
                   callback: () {
-                    RepositoryProvider.of<SearchManager>(context)
-                        .setSearch(false);
+                    RepositoryProvider.of<SearchManager>(context).setSearch(false);
 
                     searchCubit.priceType = _priceType;
-                    searchCubit.minPrice =
-                        _priceType.fromPriceString(_minPriceController.text);
-                    searchCubit.maxPrice =
-                        _priceType.fromPriceString(_maxPriceController.text);
+                    searchCubit.minPrice = _priceType.fromPriceString(_minPriceController.text);
+                    searchCubit.maxPrice = _priceType.fromPriceString(_maxPriceController.text);
 
                     searchCubit.setFilters(
                       parameters: selectCategoryCubit.parameters,

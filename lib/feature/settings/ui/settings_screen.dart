@@ -22,21 +22,21 @@ class SettingsScreen extends StatefulWidget {
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-List<CustomLocate> listLocates = [
-  CustomLocate.fr(),
-  CustomLocate.ar(),
+List<CustomLocale> listLocates = [
+  CustomLocale.fr(),
+  CustomLocale.ar(),
 ];
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  CustomLocate? customLocate;
+  CustomLocale? customLocate;
 
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    customLocate = CustomLocate(
+    customLocate = CustomLocale(
         shortName: localizations.localeName,
-        name: localizations.localeName == 'ar' ? CustomLocate.ar().name : CustomLocate.fr().name);
+        name: localizations.localeName == 'ar' ? CustomLocale.ar().name : CustomLocale.fr().name);
 
     return Scaffold(
       appBar: AppBar(

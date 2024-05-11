@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart/feature/announcement/ui/widgets/settings_bottom_sheet.dart';
+import 'package:smart/feature/announcement/ui/widgets/additional_menu_bottom_sheet.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/managers/blocked_users_manager.dart';
 import 'package:smart/utils/app_icons_icons.dart';

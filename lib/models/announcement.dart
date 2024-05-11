@@ -6,6 +6,7 @@ import 'package:smart/main.dart';
 import 'package:smart/models/city.dart';
 import 'package:smart/models/item/static_parameters.dart';
 import 'package:smart/models/user.dart';
+import 'package:smart/utils/constants.dart';
 import 'package:smart/utils/price_type.dart';
 
 part 'creator_data.dart';
@@ -67,7 +68,7 @@ class Announcement {
         area = json['area2'] != null ? CityDistrict.fromJson(json['area2']) : CityDistrict.none() {
     var l = [];
     for (String i in images) {
-      i.replaceAll('89.253.237.166', '143.244.206.96'); //admin.navigidz.online
+      i.replaceAll('89.253.237.166', serviceDomain); //admin.navigidz.online
       l.add(i);
     }
     images = l;

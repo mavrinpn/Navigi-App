@@ -17,21 +17,21 @@ class LanguageScreen extends StatefulWidget {
   State<LanguageScreen> createState() => _SettingsScreenState();
 }
 
-List<CustomLocate> listLocates = [
-  CustomLocate.fr(),
-  CustomLocate.ar(),
+List<CustomLocale> listLocates = [
+  CustomLocale.fr(),
+  CustomLocale.ar(),
 ];
 
 class _SettingsScreenState extends State<LanguageScreen> {
-  CustomLocate? customLocate;
+  CustomLocale? customLocate;
 
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    customLocate = CustomLocate(
+    customLocate = CustomLocale(
         shortName: localizations.localeName,
-        name: localizations.localeName == 'ar' ? CustomLocate.ar().name : CustomLocate.fr().name);
+        name: localizations.localeName == 'ar' ? CustomLocale.ar().name : CustomLocale.fr().name);
 
     return Scaffold(
       appBar: AppBar(
@@ -72,7 +72,7 @@ class _SettingsScreenState extends State<LanguageScreen> {
             const SizedBox(height: 10),
             CustomSingleCheckBoxes(
               parameters: listLocates,
-              onChange: (CustomLocate? a) async {
+              onChange: (CustomLocale? a) async {
                 MyApp.setLocate(context, Locale(a!.shortName));
                 customLocate = a;
 

@@ -651,7 +651,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get passwordUpdateSuccess => 'Password Update Successfully';
 
   @override
-  String get changeActivity => 'Change activity';
+  String get soldAction => 'Sold';
+
+  @override
+  String get putForSaleAction => 'Put for sale';
 
   @override
   String get delete => 'Delete';
@@ -667,4 +670,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorText => 'Error in the text';
+
+  @override
+  String get noConnection => 'There is no Internet connection. Please make sure that wi-fi or cellular connection is enabled and try again.';
 }

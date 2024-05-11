@@ -1379,11 +1379,17 @@ abstract class AppLocalizations {
   /// **'Password Update Successfully'**
   String get passwordUpdateSuccess;
 
-  /// No description provided for @changeActivity.
+  /// No description provided for @soldAction.
   ///
   /// In en, this message translates to:
-  /// **'Change activity'**
-  String get changeActivity;
+  /// **'Sold'**
+  String get soldAction;
+
+  /// No description provided for @putForSaleAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Put for sale'**
+  String get putForSaleAction;
 
   /// No description provided for @delete.
   ///
@@ -1414,6 +1420,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error in the text'**
   String get errorText;
+
+  /// No description provided for @noConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no Internet connection. Please make sure that wi-fi or cellular connection is enabled and try again.'**
+  String get noConnection;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

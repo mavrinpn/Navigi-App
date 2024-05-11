@@ -219,7 +219,7 @@ class _SearchScreenState extends State<SearchScreen> {
               setSearch(e, searchManager);
             },
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -227,9 +227,15 @@ class _SearchScreenState extends State<SearchScreen> {
                 localizations.researchHistory,
                 style: AppTypography.font14black.copyWith(fontWeight: FontWeight.w600),
               ),
-              Text(
-                localizations.toClean,
-                style: AppTypography.font12lightGray.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+              TextButton(
+                onPressed: () {
+                  searchManager.clearQuery();
+                  setState(() {});
+                },
+                child: Text(
+                  localizations.toClean,
+                  style: AppTypography.font12lightGray.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                ),
               ),
             ],
           ),

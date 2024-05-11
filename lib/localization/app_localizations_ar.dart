@@ -651,7 +651,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get passwordUpdateSuccess => 'تحديث كلمة المرور بنجاح';
 
   @override
-  String get changeActivity => 'تمت الصفقة';
+  String get soldAction => 'تمت الصفقة';
+
+  @override
+  String get putForSaleAction => 'الإعادة إلى البيع';
 
   @override
   String get delete => 'حذف';
@@ -667,4 +670,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get errorText => 'خطأ في النص';
+
+  @override
+  String get noConnection => 'لا يوجد اتصال بالإنترنت. يرجى التأكد من تمكين خدمة الواي فاي أو الاتصال الخلوي وحاول مرة أخرى.';
 }

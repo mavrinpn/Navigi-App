@@ -62,6 +62,14 @@ collection
 2.18
 file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/collection-1.18.0/
 file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/collection-1.18.0/lib/
+connectivity_plus
+3.2
+file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/connectivity_plus-6.0.3/
+file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/connectivity_plus-6.0.3/lib/
+connectivity_plus_platform_interface
+2.18
+file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/connectivity_plus_platform_interface-2.0.0/
+file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/connectivity_plus_platform_interface-2.0.0/lib/
 convert
 2.18
 file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/convert-3.1.1/
@@ -86,6 +94,10 @@ cupertino_icons
 2.19
 file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.6/
 file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.6/lib/
+dbus
+2.17
+file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/dbus-0.7.10/
+file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/dbus-0.7.10/lib/
 device_info_plus
 2.18
 file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/device_info_plus-9.1.2/
@@ -346,6 +358,10 @@ image_picker_windows
 2.19
 file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/image_picker_windows-0.2.1+1/
 file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/image_picker_windows-0.2.1+1/lib/
+internet_connection_checker_plus
+3.3
+file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/internet_connection_checker_plus-2.3.0/
+file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/internet_connection_checker_plus-2.3.0/lib/
 intl
 2.12
 file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/intl-0.18.1/
@@ -406,6 +422,10 @@ nested
 2.12
 file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/nested-1.0.0/
 file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/nested-1.0.0/lib/
+nm
+2.12
+file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/nm-0.5.0/
+file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/nm-0.5.0/lib/
 octo_image
 2.12
 file:///Users/mavrinpn/.pub-cache/hosted/pub.dev/octo_image-2.0.0/

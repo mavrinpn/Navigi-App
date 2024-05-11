@@ -11,8 +11,7 @@ class SearchManager {
   final DatabaseService dbService;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  SearchManager({required Client client})
-      : dbService = DatabaseService(client: client);
+  SearchManager({required Client client}) : dbService = DatabaseService(client: client);
 
   var popularQueries = <String>[];
 
@@ -74,6 +73,16 @@ class SearchManager {
     List<String> history = prefs.getStringList(_historyKey) ?? [];
 
     history.remove(name);
+
+    await prefs.setStringList(_historyKey, history);
+  }
+
+  Future<void> clearQuery() async {
+    final prefs = await _prefs;
+
+    List<String> history = prefs.getStringList(_historyKey) ?? [];
+
+    history.clear();
 
     await prefs.setStringList(_historyKey, history);
   }

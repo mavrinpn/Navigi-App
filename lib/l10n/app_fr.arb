@@ -229,11 +229,12 @@
 "enterValidEmail": "Entrez une adresse e-mail valide",
 "invalidCode": "Code Non Valide",
 "passwordUpdateSuccess": "Mise À Jour Du Mot De Passe Réussie",
-"changeActivity": "Changer d'activité",
+"soldAction": "Vendu",
+"putForSaleAction": "Mettre à vendre",
 "delete": "Supprimer",
 "errorCommentAlreadyLeft": "Vous avez déjà laissé un commentaire à ce vendeur",
 "errorCommentYourself": "Vous ne pouvez pas écrire un commentaire pour sois même!",
 "errorInvalidScore": "Erreur dans la note",
-"errorText": "Erreur dans le texte"
-
+"errorText": "Erreur dans le texte",
+"noConnection": "Pas de connexion Internet. Veuillez vous assurer que le wi-fi ou la connexion cellulaire est activée et réessayez."
 }

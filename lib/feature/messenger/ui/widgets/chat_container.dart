@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/models/messenger/message.dart';
 import 'package:smart/models/messenger/room.dart';
 import 'package:smart/utils/fonts.dart';
@@ -48,7 +49,7 @@ class ChatContainer extends StatefulWidget {
 class _ChatContainerState extends State<ChatContainer> {
   @override
   Widget build(BuildContext context) {
-    // final localizations = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context)!;
 
     return SliverPadding(
         padding: const EdgeInsets.fromLTRB(15, 12, 15, 0),
@@ -202,7 +203,7 @@ class _ChatContainerState extends State<ChatContainer> {
                           child: Text(
                             (widget.message!.images ?? []).isEmpty
                                 ? widget.message!.content
-                                : 'Фото',
+                                : localizations.photo,
                             style: AppTypography.font12lightGray,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,

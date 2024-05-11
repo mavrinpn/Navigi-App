@@ -36,6 +36,7 @@ import 'package:smart/managers/tipwords_manager.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/storage_service.dart';
+import 'package:smart/utils/constants.dart';
 
 import 'main.dart';
 import 'managers/announcement_manager.dart';
@@ -59,7 +60,7 @@ import 'package:appwrite/appwrite.dart' as a;
 class MyRepositoryProviders extends StatelessWidget {
   MyRepositoryProviders({Key? key}) : super(key: key);
 
-  final client = a.Client().setEndpoint('http://143.244.206.96/v1').setProject('65d8fa703a95c4ef256b');
+  final client = a.Client().setEndpoint('$serviceProtocol$serviceDomain/v1').setProject('65d8fa703a95c4ef256b');
 
   @override
   Widget build(BuildContext context) {

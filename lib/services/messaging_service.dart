@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:smart/services/database/database_service.dart';
 
-final StreamController<String> selectNotificationStream = StreamController<String>();
+final StreamController<String> selectNotificationStream = StreamController<String>.broadcast();
 
 class MessagingService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;

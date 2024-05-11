@@ -15,16 +15,19 @@ class AnnouncementsService {
     required String? excudeUserId,
   }) async {
     List<String> queries = ParametersFilterBuilder.getQueriesForGet(lastId);
-
+    print(5);
     if (excudeUserId != null) {
       queries.add(Query.notEqual('creator_id', excudeUserId));
     }
+    print(queries);
 
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
       collectionId: postCollection,
       queries: queries,
     );
+
+    print(res);
 
     List<Announcement> newAnnounces = announcementsFromDocuments(res.documents, _storage);
 
