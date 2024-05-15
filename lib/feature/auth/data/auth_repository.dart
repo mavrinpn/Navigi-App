@@ -105,6 +105,11 @@ class AuthRepository {
         phone: phone,
         imageUrl: imageUrl,
       );
+
+      // await _account.updatePhone(
+      //   phone: '+213$phone',
+      //   password: password,
+      // );
     } catch (e) {
       profileState.add(LoadingStateEnum.fail);
       rethrow;
@@ -212,6 +217,11 @@ class AuthRepository {
     try {
       await _account.createEmailPasswordSession(
         email: email,
+        password: password,
+      );
+
+      await _account.updatePhone(
+        phone: '+213$phone',
         password: password,
       );
       loggedUser = await _account.get();

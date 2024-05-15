@@ -19,16 +19,18 @@ class MessagesService {
       _realtime.subscribe(['databases.$mainDatabase.collections.$messagesCollection.documents']);
 
   ChatUserInfo _getOtherUserNameAndImage(Map<String, dynamic> documentData, String userId) {
-    final user1 = documentData['user1'];
-    final user2 = documentData['user2'];
-    // print(user1);
-    // print(user2);
+    //TODO
+    final user = documentData['announcement']['creator'];
+    return ChatUserInfo.fromJson(user);
+    
+    // final user1 = documentData['user1'];
+    // final user2 = documentData['user2'];
 
-    if (user1[DefaultDocumentParameters.id] != userId) {
-      return ChatUserInfo.fromJson(user1);
-    } else {
-      return ChatUserInfo.fromJson(user2);
-    }
+    // if (user1[DefaultDocumentParameters.id] != userId) {
+    //   return ChatUserInfo.fromJson(user1);
+    // } else {
+    //   return ChatUserInfo.fromJson(user2);
+    // }
   }
 
   Future<bool> _onlineGetter(String userId) async {

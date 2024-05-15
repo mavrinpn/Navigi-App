@@ -32,29 +32,27 @@ class AnnouncementManager {
     announcementsLoadingState.add(LoadingStateEnum.loading);
     if (_canGetMoreAnnouncement) {
       String? uid;
-      print(1);
+
       try {
         final user = await account.get();
         uid = user.$id;
         // ignore: empty_catches
       } catch (err) {}
-      print(2);
+
       try {
         if (isNew) {
           announcements.clear();
           _lastId = '';
         }
-        print(3);
+
         final newAnnouncements = await dbService.announcements.getAnnouncements(
           lastId: _lastId,
           excudeUserId: uid,
         );
-        print(4);
 
         announcements.addAll(newAnnouncements);
         _lastId = announcements.last.id;
       } catch (e) {
-        print(e);
         if (e.toString() != 'Bad state: No element') {
           rethrow;
         } else {

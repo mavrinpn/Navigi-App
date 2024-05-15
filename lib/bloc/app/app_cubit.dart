@@ -36,6 +36,7 @@ class AppCubit extends Cubit<AppState> {
         emit(AppAuthState());
       }
       if (event == AuthStateEnum.unAuth) {
+        announcementManager.addLimitAnnouncements(true);
         favouritesManager.userId = null;
         favouritesManager.announcements = [];
         messengerRepository.clear();
