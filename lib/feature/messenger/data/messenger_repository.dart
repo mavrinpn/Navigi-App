@@ -132,12 +132,13 @@ class MessengerRepository {
   }
 
   Future<void> _createRoom() async {
-    final roomData = await _databaseService.messages.createRoom(
-      [_userId!, currentRoom!.announcement.creatorData.uid],
+    final roomId = await _databaseService.messages.createRoom(
+      _userId!,
+      currentRoom!.announcement.creatorData.uid,
       currentRoom!.announcement.id,
     );
 
-    currentRoom = await _databaseService.messages.getRoom(roomData['room'], _userId!);
+    currentRoom = await _databaseService.messages.getRoom(roomId, _userId!);
 
     _chats.add(currentRoom!);
     chatsStream.add(_chats);

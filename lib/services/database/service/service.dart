@@ -38,6 +38,6 @@ class DatabaseService {
     models = ModelsService(_databases);
     blockedUsers = BlockedUsersService(_databases);
     favourites = FavouritesService(_databases, _storage);
-    messages = MessagesService(_databases, _realtime, _functions, _storage, users);
+    messages = MessagesService(_databases, _realtime, _functions, _storage, users, _account);
   }
 }

@@ -249,7 +249,7 @@ class _ChatScreenState extends State<ChatScreen> {
           .catchError((err) {
             CustomSnackBar.showSnackBar(context, err.toString());
           })
-          .timeout(const Duration(seconds: 2))
+          .timeout(const Duration(seconds: 4))
           .whenComplete(
             () {
               setState(() {
