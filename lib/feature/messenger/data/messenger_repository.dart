@@ -82,7 +82,7 @@ class MessengerRepository {
     final urls = await _storageManager.uploadMessageImages(bytes);
 
     for (var i in urls) {
-      await _databaseService.messages.sendMessage(
+      await _databaseService.messages.sendMessageDirect(
         roomId: currentRoom!.id,
         content: '',
         senderId: _userId!,
@@ -94,7 +94,7 @@ class MessengerRepository {
   Future<void> sendMessage(String content) async {
     if (currentRoom?.id == _needCreateRoomId) await _createRoom();
 
-    await _databaseService.messages.sendMessage(
+    await _databaseService.messages.sendMessageDirect(
       roomId: currentRoom!.id,
       content: content,
       senderId: _userId!,
@@ -132,7 +132,7 @@ class MessengerRepository {
   }
 
   Future<void> _createRoom() async {
-    final roomId = await _databaseService.messages.createRoom(
+    final roomId = await _databaseService.messages.createRoomDirect(
       _userId!,
       currentRoom!.announcement.creatorData.uid,
       currentRoom!.announcement.id,
