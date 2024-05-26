@@ -51,9 +51,11 @@ class MessagesService {
 
     Future<Uint8List> futureBytes;
     if (doc.data['announcement'] != null && doc.data['announcement']['images'] != null) {
-      final id = getIdFromUrl(doc.data['announcement']['images'][0]);
-
-      futureBytes = _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+      final imageUrl = doc.data['announcement']['images'][0];
+      futureBytes = futureBytesForImageURL(
+        storage: _storage,
+        imageUrl: imageUrl,
+      );
     } else {
       futureBytes = Future.value(Uint8List.fromList([]));
     }

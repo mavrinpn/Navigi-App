@@ -20,8 +20,7 @@ class AnnouncementEditingRepository {
   final FileStorageManager _storageManager;
   final _picker = ImagePicker();
 
-  AnnouncementEditingRepository(
-      DatabaseService databaseService, FileStorageManager storageManager)
+  AnnouncementEditingRepository(DatabaseService databaseService, FileStorageManager storageManager)
       : _databaseService = databaseService,
         _storageManager = storageManager;
 
@@ -173,9 +172,8 @@ class AnnouncementEditingRepository {
     final newImages = <ImageData>[];
 
     for (var imageUrl in _currentAnnouncement!.images) {
-      final String id = getIdFromUrl(imageUrl);
-      final Uint8List bytes =
-          await _databaseService.announcements.getAnnouncementImage(imageUrl);
+      final String id = getIdFromUrl(imageUrl) ?? imageUrl;
+      final Uint8List bytes = await _databaseService.announcements.getAnnouncementImage(imageUrl);
 
       newImages.add(ImageData(id, bytes));
     }

@@ -111,11 +111,10 @@ class AnnouncementsService {
       if (doc.data['announcements'] != null) {
         Future<Uint8List> futureBytes = Future.value(Uint8List.fromList([]));
         if (doc.data['announcements']['images'] != null) {
-          final id = getIdFromUrl(doc.data['announcements']['images'][0]);
-
-          futureBytes = _storage.getFileView(
-            bucketId: announcementsBucketId,
-            fileId: id,
+          final imageUrl = doc.data['announcements']['images'][0];
+          futureBytes = futureBytesForImageURL(
+            storage: _storage,
+            imageUrl: imageUrl,
           );
         }
 
@@ -300,9 +299,10 @@ class AnnouncementsService {
   }
 
   Future<Uint8List> getAnnouncementImage(String url) async {
-    final id = getIdFromUrl(url);
-
-    final futureBytes = _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+    final futureBytes = futureBytesForImageURL(
+      storage: _storage,
+      imageUrl: url,
+    );
 
     return futureBytes;
   }

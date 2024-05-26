@@ -8,15 +8,11 @@ class FavouritesService {
       : _databases = databases,
         _storage = storage;
 
-  Future<void> likePost(
-      {required String postId, required String userId}) async {
+  Future<void> likePost({required String postId, required String userId}) async {
     final docs = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: likesCollection,
-        queries: [
-          Query.equal('user_id', userId),
-          Query.equal('postCollection', postId)
-        ]);
+        queries: [Query.equal('user_id', userId), Query.equal('postCollection', postId)]);
 
     if (docs.documents.isNotEmpty) return;
 
@@ -24,32 +20,19 @@ class FavouritesService {
         databaseId: mainDatabase,
         collectionId: likesCollection,
         documentId: ID.unique(),
-        permissions: [
-          Permission.delete(Role.user(userId)),
-          Permission.read(Role.user(userId))
-        ],
-        data: {
-          "user_id": userId,
-          "postCollection": postId
-        });
+        permissions: [Permission.delete(Role.user(userId)), Permission.read(Role.user(userId))],
+        data: {"user_id": userId, "postCollection": postId});
   }
 
-  Future<void> unlikePost(
-      {required String postId, required String userId}) async {
+  Future<void> unlikePost({required String postId, required String userId}) async {
     final docs = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: likesCollection,
-        queries: [
-          Query.equal('user_id', userId),
-          Query.equal('postCollection', postId)
-        ]);
+        queries: [Query.equal('user_id', userId), Query.equal('postCollection', postId)]);
 
     final doc = docs.documents[0];
 
-    await _databases.deleteDocument(
-        databaseId: mainDatabase,
-        collectionId: likesCollection,
-        documentId: doc.$id);
+    await _databases.deleteDocument(databaseId: mainDatabase, collectionId: likesCollection, documentId: doc.$id);
   }
 
   Future getFavouritesAnnouncements({
@@ -66,18 +49,17 @@ class FavouritesService {
 
     for (var doc in documents.documents) {
       Future<Uint8List> futureBytes;
-      if (doc.data['postCollection'] != null &&
-          doc.data['postCollection']['images'] != null) {
-        final id = getIdFromUrl(doc.data['postCollection']['images'][0]);
-
-        futureBytes =
-            _storage.getFileView(bucketId: announcementsBucketId, fileId: id);
+      if (doc.data['postCollection'] != null && doc.data['postCollection']['images'] != null) {
+        final imageUrl = doc.data['postCollection']['images'][0];
+        futureBytes = futureBytesForImageURL(
+          storage: _storage,
+          imageUrl: imageUrl,
+        );
       } else {
         futureBytes = Future.value(Uint8List.fromList([]));
       }
       if (doc.data['postCollection'] != null) {
-        final announcement = Announcement.fromJson(
-            json: doc.data['postCollection'], futureBytes: futureBytes);
+        final announcement = Announcement.fromJson(json: doc.data['postCollection'], futureBytes: futureBytes);
         announcements.add(announcement);
       }
     }
@@ -89,9 +71,7 @@ class FavouritesService {
 
   Future<int> countLikes({required String postId}) async {
     final docs = await _databases.listDocuments(
-        databaseId: mainDatabase,
-        collectionId: likesCollection,
-        queries: [Query.equal('postCollection', postId)]);
+        databaseId: mainDatabase, collectionId: likesCollection, queries: [Query.equal('postCollection', postId)]);
 
     return docs.documents.length;
   }
