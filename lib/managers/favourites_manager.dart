@@ -14,7 +14,7 @@ class FavouritesManager {
 
   bool contains(String id) {
     for (var i in announcements) {
-      if (i.id == id) return true;
+      if (i.anouncesTableId == id) return true;
     }
     return false;
   }

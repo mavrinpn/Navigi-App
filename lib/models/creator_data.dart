@@ -12,7 +12,7 @@ class CreatorData {
 
   get displayName => _displayName();
   String _displayName() {
-    if (name.isEmpty) {
+    if (name.isEmpty && name.length > 8) {
       return 'user${uid.substring(uid.length - 8)}';
     }
     return name;

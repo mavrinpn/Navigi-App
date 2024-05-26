@@ -34,7 +34,7 @@ class _AnnouncementContainerHorizontalState extends State<AnnouncementContainerH
   void initState() {
     super.initState();
     final favouritesManager = context.read<FavouritesCubit>().favouritesManager;
-    favouritesManager.count(widget.announcement.id).then((value) {
+    favouritesManager.count(widget.announcement.anouncesTableId).then((value) {
       setState(() {
         _likeCount = value;
       });
@@ -52,7 +52,7 @@ class _AnnouncementContainerHorizontalState extends State<AnnouncementContainerH
         Navigator.pushNamed(
           context,
           AppRoutesNames.announcement,
-          arguments: widget.announcement.id,
+          arguments: widget.announcement.anouncesTableId,
         );
       },
       child: Container(

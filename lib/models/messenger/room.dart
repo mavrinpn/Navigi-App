@@ -39,6 +39,7 @@ class Room {
       : announcement = Announcement.fromJson(
           json: doc.data['announcement'],
           futureBytes: announcementImage,
+          subcollTableId: '',
         ),
         chatName = '${otherUser.name} ${doc.data['announcement']['name']}',
         otherUserPhone = otherUser.phone,

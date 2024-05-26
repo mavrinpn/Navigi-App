@@ -33,7 +33,7 @@ class _AdditionalMenuBottomSheetState extends State<AdditionalMenuBottomSheet> {
   }
 
   void changeActivity() {
-    announcementManager.changeActivity(widget.announcement.id).then((value) {
+    announcementManager.changeActivity(widget.announcement.anouncesTableId).then((value) {
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('success')));
       creatorCubit.setUserId(widget.announcement.creatorData.uid);

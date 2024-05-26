@@ -30,6 +30,7 @@ class AnnouncementManager {
 
   Future<void> addLimitAnnouncements(bool isNew) async {
     announcementsLoadingState.add(LoadingStateEnum.loading);
+
     if (_canGetMoreAnnouncement) {
       String? uid;
 
@@ -51,7 +52,7 @@ class AnnouncementManager {
         );
 
         announcements.addAll(newAnnouncements);
-        _lastId = announcements.last.id;
+        _lastId = announcements.last.anouncesTableId;
       } catch (e) {
         if (e.toString() != 'Bad state: No element') {
           rethrow;
@@ -73,14 +74,14 @@ class AnnouncementManager {
 
   Future<Announcement?> refreshAnnouncement(String id) async {
     for (var a in announcements) {
-      if (a.id == id) {
+      if (a.anouncesTableId == id) {
         a = await dbService.announcements.getAnnouncementById(id);
         lastAnnouncement = a;
         return a;
       }
     }
     for (var a in searchAnnouncements) {
-      if (a.id == id) {
+      if (a.anouncesTableId == id) {
         a = await dbService.announcements.getAnnouncementById(id);
         lastAnnouncement = a;
         return a;
@@ -92,13 +93,13 @@ class AnnouncementManager {
 
   Announcement? _getAnnouncementFromLocal(String id) {
     for (var a in announcements) {
-      if (a.id == id) {
+      if (a.anouncesTableId == id) {
         lastAnnouncement = a;
         return a;
       }
     }
     for (var a in searchAnnouncements) {
-      if (a.id == id) {
+      if (a.anouncesTableId == id) {
         lastAnnouncement = a;
         return a;
       }
@@ -160,7 +161,7 @@ class AnnouncementManager {
 
       searchAnnouncements.addAll(await dbService.announcements.searchAnnouncementsInSubcategory(filter));
 
-      _searchLastId = searchAnnouncements.last.id;
+      _searchLastId = searchAnnouncements.last.subTableId;
     } catch (e) {
       if (e.toString() != 'Bad state: No element') {
         rethrow;
@@ -205,7 +206,7 @@ class AnnouncementManager {
 
       searchAnnouncements.addAll(await dbService.announcements.searchLimitAnnouncements(filter));
 
-      _searchLastId = searchAnnouncements.last.id;
+      _searchLastId = searchAnnouncements.last.anouncesTableId;
     } catch (e) {
       if (e.toString() != 'Bad state: No element') {
         rethrow;

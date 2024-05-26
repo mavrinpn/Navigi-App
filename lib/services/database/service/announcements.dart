@@ -91,6 +91,8 @@ class AnnouncementsService {
 
     if (filterData.limit != null) {
       queries.add(Query.limit(filterData.limit!));
+    } else {
+      queries.add(Query.limit(20));
     }
 
     if (filterData.excludeId != null) {
@@ -121,6 +123,7 @@ class AnnouncementsService {
         final ann = Announcement.fromJson(
           json: doc.data['announcements'],
           futureBytes: futureBytes,
+          subcollTableId: doc.$id,
         );
         newAnnounces.add(ann);
       }
@@ -316,7 +319,11 @@ class AnnouncementsService {
 
     final futureBytes = getAnnouncementImage(res.data['images'][0]);
 
-    return Announcement.fromJson(json: res.data, futureBytes: futureBytes);
+    return Announcement.fromJson(
+      json: res.data,
+      futureBytes: futureBytes,
+      subcollTableId: '',
+    );
   }
 
   Future<void> editAnnouncement({

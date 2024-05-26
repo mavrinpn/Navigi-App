@@ -135,7 +135,7 @@ class MessengerRepository {
     final roomId = await _databaseService.messages.createRoomDirect(
       _userId!,
       currentRoom!.announcement.creatorData.uid,
-      currentRoom!.announcement.id,
+      currentRoom!.announcement.anouncesTableId,
     );
 
     currentRoom = await _databaseService.messages.getRoom(roomId, _userId!);
@@ -160,7 +160,7 @@ class MessengerRepository {
 
   void _selectRoomByAnnouncement(Announcement announcement) {
     for (Room room in _chats) {
-      if (room.announcement.id == announcement.id) {
+      if (room.announcement.anouncesTableId == announcement.anouncesTableId) {
         return _selectRoomById(room.id);
       }
     }

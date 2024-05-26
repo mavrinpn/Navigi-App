@@ -59,7 +59,11 @@ class FavouritesService {
         futureBytes = Future.value(Uint8List.fromList([]));
       }
       if (doc.data['postCollection'] != null) {
-        final announcement = Announcement.fromJson(json: doc.data['postCollection'], futureBytes: futureBytes);
+        final announcement = Announcement.fromJson(
+          json: doc.data['postCollection'],
+          futureBytes: futureBytes,
+          subcollTableId: '',
+        );
         announcements.add(announcement);
       }
     }

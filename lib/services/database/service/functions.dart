@@ -10,37 +10,41 @@ String? getIdFromUrl(String url) {
 
 Future<Uint8List> futureBytesForImageURL({
   required Storage storage,
-  required String imageUrl,
+  required String? imageUrl,
 }) {
-  late final Future<Uint8List> futureBytes;
-  final id = getIdFromUrl(imageUrl);
-  if (id != null) {
-    futureBytes = storage.getFileView(
-      bucketId: announcementsBucketId,
-      fileId: id,
-    );
-  } else if (imageUrl.isNotEmpty) {
-    futureBytes = http.get(Uri.parse(imageUrl)).then((value) => value.bodyBytes);
-  } else {
-    futureBytes = Future.value(Uint8List.fromList([]));
+  Future<Uint8List> futureBytes = storage.getFileView(
+    bucketId: staffBucketId,
+    fileId: 'no_photo',
+  );
+  if (imageUrl != null) {
+    final id = getIdFromUrl(imageUrl);
+    if (id != null) {
+      futureBytes = storage.getFileView(
+        bucketId: announcementsBucketId,
+        fileId: id,
+      );
+    } else if (imageUrl.isNotEmpty) {
+      futureBytes = http.get(Uri.parse(imageUrl)).then((value) => value.bodyBytes);
+    }
   }
+
   return futureBytes;
 }
 
 List<Announcement> announcementsFromDocuments(List<Document> documents, Storage storage) {
   List<Announcement> newAnnounces = [];
   for (var doc in documents) {
-    final imageUrl = doc.data['images'][0];
+    final imageUrl = doc.data['images'][0] ?? '';
     final futureBytes = futureBytesForImageURL(
       storage: storage,
       imageUrl: imageUrl,
     );
 
-    doc.data.forEach((key, value) {
-      // print('$key: $value');
-    });
-
-    newAnnounces.add(Announcement.fromJson(json: doc.data, futureBytes: futureBytes));
+    newAnnounces.add(Announcement.fromJson(
+      json: doc.data,
+      futureBytes: futureBytes,
+      subcollTableId: '',
+    ));
   }
 
   return newAnnounces;

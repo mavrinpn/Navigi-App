@@ -24,9 +24,9 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
     try {
       await _announcementManager.addLimitAnnouncements(isNew);
       //emit(AnnouncementsSuccessState());
-    } catch (e) {
+    } catch (err) {
       emit(AnnouncementsFailState());
-      rethrow;
+      // rethrow;
     }
   }
 }

@@ -31,13 +31,13 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
 
   @override
   void initState() {
-    liked = BlocProvider.of<FavouritesCubit>(context).isLiked(widget.announcement.id);
+    liked = BlocProvider.of<FavouritesCubit>(context).isLiked(widget.announcement.anouncesTableId);
     super.initState();
   }
 
   void onLikeTapped() {
     final localizations = AppLocalizations.of(context)!;
-    BlocProvider.of<FavouritesCubit>(context).likeUnlike(widget.announcement.id);
+    BlocProvider.of<FavouritesCubit>(context).likeUnlike(widget.announcement.anouncesTableId);
     setState(() {
       CustomSnackBar.showSnackBar(
         context,
@@ -59,7 +59,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
           Navigator.pushNamed(
             context,
             AppRoutesNames.announcement,
-            arguments: widget.announcement.id,
+            arguments: widget.announcement.anouncesTableId,
           );
         },
         child: Column(
@@ -88,7 +88,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
             const SizedBox(height: 5),
             BlocListener<FavouritesCubit, FavouritesState>(
               listener: (context, state) {
-                if (state is LikeSuccessState && state.changedPostId == widget.announcement.id) {
+                if (state is LikeSuccessState && state.changedPostId == widget.announcement.anouncesTableId) {
                   setState(() {
                     liked = state.value;
                   });

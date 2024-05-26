@@ -58,18 +58,18 @@ class _SearchScreenState extends State<SearchScreen> {
     searchManager.setSearch(widget.showSearchHelper);
     searchQueryString = widget.searchQueryString;
 
-    // _controller.addListener(() async {
-    //   if (_controller.position.atEdge) {
-    //     double maxScroll = _controller.position.maxScrollExtent;
-    //     double currentScroll = _controller.position.pixels;
-    //     if (currentScroll >= maxScroll * 0.8) {
-    //       BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
-    //         searchText: '',
-    //         isNew: false,
-    //       );
-    //     }
-    //   }
-    // });
+    _controller.addListener(() async {
+      if (_controller.position.atEdge) {
+        double maxScroll = _controller.position.maxScrollExtent;
+        double currentScroll = _controller.position.pixels;
+        if (currentScroll >= maxScroll * 0.8) {
+          BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
+            searchText: '',
+            isNew: false,
+          );
+        }
+      }
+    });
   }
 
   @override

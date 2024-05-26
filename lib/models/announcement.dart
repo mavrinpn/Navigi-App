@@ -23,7 +23,8 @@ class Announcement {
   final PriceType priceType;
   final bool active;
   List images;
-  final String id;
+  final String anouncesTableId;
+  final String subTableId;
   final StaticParameters staticParameters;
   final CityDistrict area;
   final City city;
@@ -41,11 +42,13 @@ class Announcement {
 
   Announcement.fromJson({
     required Map<String, dynamic> json,
+    required String subcollTableId,
     required this.futureBytes,
     this.liked = false,
   })  : title = json['name'],
         subcategoryId = json['subcategoryId'],
         description = json['description'],
+        // creatorData = CreatorData.fromJson(data: {}),
         creatorData =
             json['creator'] != null ? CreatorData.fromJson(data: json['creator']) : CreatorData.fromJson(data: {}),
         price = double.parse(json['price'].toString()),
@@ -57,19 +60,24 @@ class Announcement {
         totalViews = json['total_views'] ?? 0,
         contactsViews = json['contacts_views'] ?? 0,
         _createdAt = json['\$createdAt'],
-        id = json['\$id'],
+        anouncesTableId = json['\$id'],
+        subTableId = subcollTableId,
         active = json['active'],
         itemId = json['itemId'],
         model = json['model'] ?? '',
         mark = json['mark'] ?? '',
         longitude = double.tryParse('${json['longitude']}') ?? 0,
         latitude = double.tryParse('${json['latitude']}') ?? 0,
+        // city = City.none(),
+        // area = CityDistrict.none() {
         city = json['city'] != null ? City.fromJson(json['city']) : City.none(),
         area = json['area2'] != null ? CityDistrict.fromJson(json['area2']) : CityDistrict.none() {
     var l = [];
-    for (String i in images) {
-      i.replaceAll('89.253.237.166', serviceDomain); //admin.navigidz.online
-      l.add(i);
+    for (final image in images) {
+      if (image != null && image is String) {
+        image.replaceAll('89.253.237.166', serviceDomain); //admin.navigidz.online
+        l.add(image);
+      }
     }
     images = l;
     loadBytes();

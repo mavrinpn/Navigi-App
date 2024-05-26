@@ -22,7 +22,7 @@ class AnnouncementEditData {
   double latitude;
 
   AnnouncementEditData.fromAnnouncement(Announcement announcement)
-      : id = announcement.id,
+      : id = announcement.anouncesTableId,
         subcollectionId = announcement.subcategoryId,
         title = announcement.title,
         description = announcement.description,

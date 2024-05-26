@@ -69,5 +69,6 @@ const String usersCollection = 'name';
 
 const String categoriesBucketId = '64a2d173cd2eac1c8c18';
 const String announcementsBucketId = '64a2d46f3f4ed91f837a';
+const String staffBucketId = '6652f32c002dd0260959';
 const String avatarsBucketId = '64abdd27c9326a1cdfde';
 const String chatImagesBucket = '6533fe5e7327fb4620a1';

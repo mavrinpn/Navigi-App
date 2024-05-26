@@ -60,14 +60,14 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
   void incViewsIfNeed(AnnouncementSuccessState state) {
     final userId = RepositoryProvider.of<AuthRepository>(context).userId;
     if (userId != state.data.creatorData.uid) {
-      RepositoryProvider.of<AnnouncementManager>(context).incTotalViews(state.data.id);
+      RepositoryProvider.of<AnnouncementManager>(context).incTotalViews(state.data.anouncesTableId);
     }
   }
 
   void incContactsIfNeed(AnnouncementSuccessState state) {
     final userId = RepositoryProvider.of<AuthRepository>(context).userId;
     if (userId != state.data.creatorData.uid) {
-      RepositoryProvider.of<AnnouncementManager>(context).incContactsViews(state.data.id);
+      RepositoryProvider.of<AnnouncementManager>(context).incContactsViews(state.data.anouncesTableId);
     }
   }
 
@@ -94,7 +94,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
 
           return RefreshIndicator(
             onRefresh: () async {
-              BlocProvider.of<AnnouncementCubit>(context).refreshAnnouncement(state.data.id);
+              BlocProvider.of<AnnouncementCubit>(context).refreshAnnouncement(state.data.anouncesTableId);
             },
             child: Scaffold(
               appBar: AppBar(
@@ -106,7 +106,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                   children: [
                     const CustomBackButton(),
                     const Spacer(),
-                    FavouriteIndicator(postId: state.data.id),
+                    FavouriteIndicator(postId: state.data.anouncesTableId),
                     const SizedBox(width: 4),
                     IconButton(
                       onPressed: () {
@@ -398,7 +398,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     RelatedAnnouncementWidget(
                       price: state.data.price,
                       subcategoryId: state.data.subcategoryId,
-                      parentId: state.data.id,
+                      parentId: state.data.anouncesTableId,
                       model: state.data.model,
                       staticParameters: state.data.staticParameters,
                     ),

@@ -16,7 +16,7 @@ class AnnouncementShortInfo extends StatelessWidget {
         Navigator.pushNamed(
           context,
           AppRoutesNames.announcement,
-          arguments: announcement.id,
+          arguments: announcement.anouncesTableId,
         );
       },
       child: Container(

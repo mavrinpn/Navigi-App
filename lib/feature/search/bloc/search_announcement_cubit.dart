@@ -137,11 +137,12 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     List<Parameter> parameters = const <Parameter>[],
   }) async {
     emit(SearchAnnouncementsLoadingState());
+
     try {
       if (searchMode == SearchModeEnum.simple) {
         await _announcementManager.loadSearchAnnouncement(
           searchText: searchText,
-          isNew: true,
+          isNew: isNew,
           sortBy: _sortBy,
           minPrice: _minPrice,
           maxPrice: _maxPrice,
@@ -151,7 +152,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
           subcategoryId: _subcategoryId!,
           parameters: parameters,
           searchText: searchText,
-          isNew: true,
+          isNew: isNew,
           sortBy: _sortBy,
           minPrice: _minPrice,
           maxPrice: _maxPrice,
