@@ -121,7 +121,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               }
               if (state is EditSuccessState) {
                 CustomSnackBar.showSnackBarWithIcon(
-                    context, localizations.withSuccess, 'Assets/icons/heart_out_line.svg');
+                  context: context,
+                  text: localizations.withSuccess,
+                  iconAsset: 'Assets/icons/heart_out_line.svg',
+                );
               } else if (state is EditFailState) {
                 CustomSnackBar.showSnackBar(context, 'Essayez plus tard');
               }
@@ -175,7 +178,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             // changedName = o != user?.name ? o : null;
                           },
                         ),
-                        MaskTextFormField(
+                        PhoneTextFormField(
                           controller: phoneController,
                           hintText: '+213 (###) ## ## ##',
                           keyboardType: TextInputType.phone,

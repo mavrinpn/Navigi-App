@@ -1426,6 +1426,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'There is no Internet connection. Please make sure that wi-fi or cellular connection is enabled and try again.'**
   String get noConnection;
+
+  /// No description provided for @isConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Internet connection has been restored'**
+  String get isConnection;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

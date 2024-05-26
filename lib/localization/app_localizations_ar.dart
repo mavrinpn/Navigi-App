@@ -673,4 +673,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noConnection => 'لا يوجد اتصال بالإنترنت. يرجى التأكد من تمكين خدمة الواي فاي أو الاتصال الخلوي وحاول مرة أخرى.';
+
+  @override
+  String get isConnection => 'تمت استعادة اتصال الإنترنت';
 }

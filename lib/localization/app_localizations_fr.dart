@@ -673,4 +673,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get noConnection => 'Pas de connexion Internet. Veuillez vous assurer que le wi-fi ou la connexion cellulaire est activée et réessayez.';
+
+  @override
+  String get isConnection => 'Connexion Internet rétablie';
 }

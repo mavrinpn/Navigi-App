@@ -145,7 +145,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             _checkActiveButton();
                           },
                         ),
-                        MaskTextFormField(
+                        PhoneTextFormField(
                           controller: phoneController,
                           hintText: '+213 (###) ## ## ##',
                           keyboardType: TextInputType.phone,

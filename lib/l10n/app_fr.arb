@@ -236,5 +236,6 @@
 "errorCommentYourself": "Vous ne pouvez pas écrire un commentaire pour sois même!",
 "errorInvalidScore": "Erreur dans la note",
 "errorText": "Erreur dans le texte",
-"noConnection": "Pas de connexion Internet. Veuillez vous assurer que le wi-fi ou la connexion cellulaire est activée et réessayez."
+"noConnection": "Pas de connexion Internet. Veuillez vous assurer que le wi-fi ou la connexion cellulaire est activée et réessayez.",
+"isConnection": "Connexion Internet rétablie"
 }

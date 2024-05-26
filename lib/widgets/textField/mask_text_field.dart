@@ -4,14 +4,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:smart/main.dart';
 import 'package:smart/utils/colors.dart';
 
 // Project imports:
 
 import '../../utils/fonts.dart';
 
-class MaskTextFormField extends StatefulWidget {
-  const MaskTextFormField({
+class PhoneTextFormField extends StatefulWidget {
+  const PhoneTextFormField({
     Key? key,
     required this.controller,
     required this.keyboardType,
@@ -37,10 +38,10 @@ class MaskTextFormField extends StatefulWidget {
   final String hintText;
 
   @override
-  State<MaskTextFormField> createState() => _MaskTextFormFieldState();
+  State<PhoneTextFormField> createState() => _PhoneTextFormFieldState();
 }
 
-class _MaskTextFormFieldState extends State<MaskTextFormField> {
+class _PhoneTextFormFieldState extends State<PhoneTextFormField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -56,6 +57,8 @@ class _MaskTextFormFieldState extends State<MaskTextFormField> {
             obscureText: widget.obscureText,
             keyboardType: widget.keyboardType,
             textAlignVertical: TextAlignVertical.center,
+            textDirection: TextDirection.ltr,
+            textAlign: currentLocaleShortName.value == 'ar' ? TextAlign.end : TextAlign.start,
             decoration: InputDecoration(
               isDense: true,
               hintText: widget.hintText,
@@ -102,8 +105,7 @@ class _MaskTextFormFieldState extends State<MaskTextFormField> {
                     width: 10,
                   ),
                   Column(mainAxisSize: MainAxisSize.min, children: [
-                    SvgPicture.asset('Assets/icons/line.svg',
-                        color: AppColors.lightGray),
+                    SvgPicture.asset('Assets/icons/line.svg', color: AppColors.lightGray),
                     const SizedBox(
                       height: 4,
                     )

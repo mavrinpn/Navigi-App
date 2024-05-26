@@ -5,8 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:smart/bloc/app/app_cubit.dart';
 import 'package:smart/feature/home/ui/home_screen.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/constants.dart';
-import 'package:smart/widgets/no_connection.dart';
+import 'package:smart/widgets/snackBar/snack_bar.dart';
 import 'package:smart/widgets/splash.dart';
 
 class MainPage extends StatefulWidget {
@@ -36,14 +37,25 @@ class _MainPageState extends State<MainPage> {
       ],
     );
     _internetConnectionSubscription = connection.onStatusChange.listen((InternetStatus status) {
+      final localizations = AppLocalizations.of(context)!;
       switch (status) {
         case InternetStatus.connected:
-          hasConnection = true;
-          setState(() {});
+          CustomSnackBar.showSnackBarWithIcon(
+            context: context,
+            text: localizations.isConnection,
+            iconData: Icons.wifi_outlined,
+          );
+          // hasConnection = true;
+          // setState(() {});
           break;
         case InternetStatus.disconnected:
-          hasConnection = false;
-          setState(() {});
+          CustomSnackBar.showSnackBarWithIcon(
+            context: context,
+            text: localizations.noConnection,
+            iconData: Icons.wifi_off,
+          );
+          // hasConnection = false;
+          // setState(() {});
           break;
       }
     });
@@ -83,9 +95,9 @@ class _MainPageState extends State<MainPage> {
       resizeToAvoidBottomInset: false,
       body: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
-          if (!hasConnection) {
-            return const NoConnection();
-          }
+          // if (!hasConnection) {
+          //   return const NoConnection();
+          // }
           if (state is AppAuthState || state is AppUnAuthState) {
             return const HomeScreen();
           } else {

@@ -5,7 +5,12 @@ import 'package:smart/utils/fonts.dart';
 import '../../utils/colors.dart';
 
 abstract class CustomSnackBar {
-  static void showSnackBarWithIcon(BuildContext context, String text, String icon) {
+  static void showSnackBarWithIcon({
+    required BuildContext context,
+    required String text,
+    String? iconAsset,
+    IconData? iconData,
+  }) {
     final snackBarWithIcon = SnackBar(
       content: Row(
         mainAxisSize: MainAxisSize.min,
@@ -22,18 +27,25 @@ abstract class CustomSnackBar {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SvgPicture.asset(
-                  icon,
-                  width: 20,
-                  height: 16,
-                ),
+                if (iconAsset != null)
+                  SvgPicture.asset(
+                    iconAsset,
+                    width: 20,
+                    height: 16,
+                  ),
+                if (iconData != null)
+                  Icon(
+                    iconData,
+                    size: 20,
+                    color: Colors.white,
+                  ),
               ],
             ),
           ),
           const SizedBox(
             width: 12,
           ),
-          Text(text, textAlign: TextAlign.center, style: AppTypography.font14white),
+          Expanded(child: Text(text, textAlign: TextAlign.center, style: AppTypography.font14white)),
         ],
       ),
       backgroundColor: AppColors.dark,
@@ -42,7 +54,7 @@ abstract class CustomSnackBar {
     ScaffoldMessenger.of(context).showSnackBar(snackBarWithIcon);
   }
 
-  static void showSnackBar(BuildContext context, String text, [int duration = 2]) {
+  static void showSnackBar(BuildContext context, String text, [int duration = 5]) {
     final snackBar = SnackBar(
       duration: Duration(seconds: duration),
       content: Text(text, textAlign: TextAlign.start, style: AppTypography.font14white),
