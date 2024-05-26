@@ -40,11 +40,6 @@ class _MainPageState extends State<MainPage> {
       final localizations = AppLocalizations.of(context)!;
       switch (status) {
         case InternetStatus.connected:
-          CustomSnackBar.showSnackBarWithIcon(
-            context: context,
-            text: localizations.isConnection,
-            iconData: Icons.wifi_outlined,
-          );
           // hasConnection = true;
           // setState(() {});
           break;

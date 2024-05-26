@@ -168,15 +168,16 @@ class MessagesService {
   }
 
   Future<String> createRoomDirect(
-    String userId,
-    String otherUserId,
+    // String userId,
+    String announcementUserId,
     String announcementId,
   ) async {
+    final myUserId = (await _account.get()).$id;
     final existRoom = await _databases.listDocuments(
       databaseId: mainDatabase,
       collectionId: roomsCollection,
       queries: [
-        Query.equal('otherUser', otherUserId),
+        Query.equal('otherUser', myUserId),
         Query.equal('announcement', announcementId),
       ],
     );
@@ -190,8 +191,8 @@ class MessagesService {
       collectionId: roomsCollection,
       documentId: ID.unique(),
       data: {
-        'otherUser': otherUserId,
-        'members': [userId, otherUserId],
+        'otherUser': myUserId,
+        'members': [announcementUserId, myUserId],
         'announcement': announcementId,
       },
     );
@@ -199,45 +200,45 @@ class MessagesService {
     return room.$id;
   }
 
-  Future<String> createRoomByFunc(
-    String userId,
-    String otherUserId,
-    String announcementId,
-  ) async {
-    final existRoom = await _databases.listDocuments(
-      databaseId: mainDatabase,
-      collectionId: roomsCollection,
-      queries: [
-        Query.equal('otherUser', otherUserId),
-        Query.equal('announcement', announcementId),
-      ],
-    );
+  // Future<String> createRoomByFunc(
+  //   String userId,
+  //   String otherUserId,
+  //   String announcementId,
+  // ) async {
+  //   final existRoom = await _databases.listDocuments(
+  //     databaseId: mainDatabase,
+  //     collectionId: roomsCollection,
+  //     queries: [
+  //       Query.equal('otherUser', otherUserId),
+  //       Query.equal('announcement', announcementId),
+  //     ],
+  //   );
 
-    if (existRoom.documents.isNotEmpty) {
-      return existRoom.documents.first.$id;
-    }
+  //   if (existRoom.documents.isNotEmpty) {
+  //     return existRoom.documents.first.$id;
+  //   }
 
-    final jwt = await getJwt();
-    final encodedBody = jsonEncode({
-      'jwt': jwt,
-      'announcement': announcementId,
-      'receiverId': otherUserId,
-    });
+  //   final jwt = await getJwt();
+  //   final encodedBody = jsonEncode({
+  //     'jwt': jwt,
+  //     'announcement': announcementId,
+  //     'receiverId': otherUserId,
+  //   });
 
-    try {
-      final res = await _functions.createExecution(
-        functionId: sendMessageFunc,
-        body: encodedBody,
-      );
+  //   try {
+  //     final res = await _functions.createExecution(
+  //       functionId: sendMessageFunc,
+  //       body: encodedBody,
+  //     );
 
-      final resBody = jsonDecode(res.responseBody);
-      return resBody['room_id'] != null ? resBody['room_id'] as String : '';
-    } catch (err) {
-      // ignore: avoid_print
-      print(err);
-      return '';
-    }
-  }
+  //     final resBody = jsonDecode(res.responseBody);
+  //     return resBody['room_id'] != null ? resBody['room_id'] as String : '';
+  //   } catch (err) {
+  //     // ignore: avoid_print
+  //     print(err);
+  //     return '';
+  //   }
+  // }
 
   Future<String> getJwt() => _account.createJWT().then((value) => value.jwt);
 
@@ -247,7 +248,6 @@ class MessagesService {
     required String senderId,
     List<String>? images,
   }) async {
-    //TODO sendMessageDirect
     final encodedBody = jsonEncode({
       'roomId': roomId,
       'senderId': senderId,

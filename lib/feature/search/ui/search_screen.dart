@@ -54,6 +54,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
+    _showFilterChips = !widget.showBackButton;
     final searchManager = RepositoryProvider.of<SearchManager>(context);
     searchManager.setSearch(widget.showSearchHelper);
     searchQueryString = widget.searchQueryString;
@@ -124,7 +125,8 @@ class _SearchScreenState extends State<SearchScreen> {
       elevation: 0,
       titleSpacing: 0,
       clipBehavior: Clip.none,
-      bottom: !widget.showBackButton ? _buildCategoryAppBarBottom(_showFilterChips) : null,
+      //bottom: !widget.showBackButton ? _buildCategoryAppBarBottom(_showFilterChips) : null,
+      bottom: _buildCategoryAppBarBottom(_showFilterChips, !widget.showBackButton),
       title: Column(
         children: [
           Padding(
@@ -368,9 +370,16 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  _buildCategoryAppBarBottom(bool showFilterChips) {
+  _buildCategoryAppBarBottom(bool showFilterChips, bool showBackButton) {
+    double height = 0;
+    if (showFilterChips) {
+      height += 46;
+    }
+    if (showBackButton) {
+      height += 46;
+    }
     return PreferredSize(
-      preferredSize: Size.fromHeight(showFilterChips ? 90 : 44),
+      preferredSize: Size.fromHeight(height),
       child: BlocBuilder<UpdateAppBarFilterCubit, UpdateAppBarFilterState>(
         builder: (context, state) {
           final localizations = AppLocalizations.of(context)!;
@@ -382,62 +391,66 @@ class _SearchScreenState extends State<SearchScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  const CustomBackButton(),
-                  Text(
-                    widget.title,
-                    style: const TextStyle(
-                      fontFamily: 'SF Pro Display',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+              if (showBackButton)
+                Row(
+                  children: [
+                    const CustomBackButton(),
+                    Text(
+                      widget.title,
+                      style: const TextStyle(
+                        fontFamily: 'SF Pro Display',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
               if (showFilterChips)
                 Padding(
                   padding: const EdgeInsets.only(left: 15, right: 15),
                   child: SingleChildScrollView(
                     clipBehavior: Clip.none,
                     scrollDirection: Axis.horizontal,
-                    child: Wrap(
-                      alignment: WrapAlignment.start,
-                      spacing: 6,
-                      children: [
-                        FilterChipWidget(
-                          isSelected: !(searchCubit.minPrice == null && searchCubit.maxPrice == null),
-                          title: localizations.price,
-                          parameterKey: FilterKeys.price,
-                        ),
-                        FilterChipWidget(
-                          isSelected: searchCubit.areaId != null || searchCubit.cityId != null,
-                          title: localizations.location,
-                          parameterKey: FilterKeys.location,
-                        ),
-                        if (selectCategoryCubit.subcategoryFilters?.hasMark ?? false) const MarkChipWidget(),
-                        ...selectCategoryCubit.parameters.map((parameter) {
-                          bool isSelected = false;
-                          if (parameter is SelectParameter) {
-                            isSelected = parameter.selectedVariants.isNotEmpty;
-                          } else if (parameter is SingleSelectParameter) {
-                            isSelected = parameter.currentValue.key != null;
-                          } else if (parameter is MultiSelectParameter) {
-                            isSelected = parameter.selectedVariants.isNotEmpty;
-                          } else if (parameter is MinMaxParameter) {
-                            isSelected = parameter.min != null || parameter.max != null;
-                          }
-                          if (parameter is! MultiSelectParameter) {
-                            return FilterChipWidget(
-                              isSelected: isSelected,
-                              title: MyApp.getLocale(context) == 'fr' ? parameter.frName : parameter.arName,
-                              parameterKey: parameter.key,
-                            );
-                          } else {
-                            return const SizedBox.shrink();
-                          }
-                        }).toList(),
-                      ],
+                    child: SizedBox(
+                      width: double.maxFinite,
+                      child: Wrap(
+                        alignment: WrapAlignment.start,
+                        spacing: 6,
+                        children: [
+                          FilterChipWidget(
+                            isSelected: !(searchCubit.minPrice == null && searchCubit.maxPrice == null),
+                            title: localizations.price,
+                            parameterKey: FilterKeys.price,
+                          ),
+                          FilterChipWidget(
+                            isSelected: searchCubit.areaId != null || searchCubit.cityId != null,
+                            title: localizations.location,
+                            parameterKey: FilterKeys.location,
+                          ),
+                          if (selectCategoryCubit.subcategoryFilters?.hasMark ?? false) const MarkChipWidget(),
+                          ...selectCategoryCubit.parameters.map((parameter) {
+                            bool isSelected = false;
+                            if (parameter is SelectParameter) {
+                              isSelected = parameter.selectedVariants.isNotEmpty;
+                            } else if (parameter is SingleSelectParameter) {
+                              isSelected = parameter.currentValue.key != null;
+                            } else if (parameter is MultiSelectParameter) {
+                              isSelected = parameter.selectedVariants.isNotEmpty;
+                            } else if (parameter is MinMaxParameter) {
+                              isSelected = parameter.min != null || parameter.max != null;
+                            }
+                            if (parameter is! MultiSelectParameter) {
+                              return FilterChipWidget(
+                                isSelected: isSelected,
+                                title: MyApp.getLocale(context) == 'fr' ? parameter.frName : parameter.arName,
+                                parameterKey: parameter.key,
+                              );
+                            } else {
+                              return const SizedBox.shrink();
+                            }
+                          }).toList(),
+                        ],
+                      ),
                     ),
                   ),
                 ),

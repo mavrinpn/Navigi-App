@@ -133,7 +133,6 @@ class MessengerRepository {
 
   Future<void> _createRoom() async {
     final roomId = await _databaseService.messages.createRoomDirect(
-      _userId!,
       currentRoom!.announcement.creatorData.uid,
       currentRoom!.announcement.anouncesTableId,
     );

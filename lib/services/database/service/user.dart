@@ -132,7 +132,7 @@ class UserService {
     );
 
     // ignore: avoid_print
-    print(res.responseBody);
+    print('confirmEmailCode ${res.responseBody}');
 
     final resBody = jsonDecode(res.responseBody);
 

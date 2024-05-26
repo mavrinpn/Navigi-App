@@ -55,12 +55,12 @@ import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 
-import 'package:appwrite/appwrite.dart' as a;
+import 'package:appwrite/appwrite.dart' as appwrite;
 
 class MyRepositoryProviders extends StatelessWidget {
   MyRepositoryProviders({Key? key}) : super(key: key);
 
-  final client = a.Client().setEndpoint('$serviceProtocol$serviceDomain/v1').setProject('65d8fa703a95c4ef256b');
+  final client = appwrite.Client().setEndpoint('$serviceProtocol$serviceDomain/v1').setProject('65d8fa703a95c4ef256b');
 
   @override
   Widget build(BuildContext context) {
