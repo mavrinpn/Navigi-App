@@ -49,6 +49,7 @@ class MessengerRepository {
     _currentChatMessages = null;
     _chats.clear();
 
+    _sortChats();
     chatsStream.add(_chats);
     currentChatItemsStream.add([]);
 
@@ -110,6 +111,7 @@ class MessengerRepository {
       }
     }
 
+    _sortChats();
     chatsStream.add(list);
   }
 
@@ -140,6 +142,7 @@ class MessengerRepository {
     currentRoom = await _databaseService.messages.getRoom(roomId, _userId!);
 
     _chats.add(currentRoom!);
+    _sortChats();
     chatsStream.add(_chats);
 
     refreshSubscription();
@@ -270,6 +273,7 @@ class MessengerRepository {
     final messages = await _getChatMessages(room.id);
     room.lastMessage = messages[0];
     _chats.add(room);
+    _sortChats();
     chatsStream.add(_chats);
   }
 
@@ -277,6 +281,7 @@ class MessengerRepository {
     _chats[index].lastMessage = message;
 
     _upChannelFrom(index);
+    _sortChats();
     chatsStream.add(_chats);
   }
 

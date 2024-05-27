@@ -50,27 +50,25 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
                       decoration: InputDecoration(
                           prefixIcon: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: SvgPicture.asset(
-                                'Assets/icons/search_simple.svg',
-                                width: 22),
+                            child: SvgPicture.asset('Assets/icons/search_simple.svg', width: 22),
                           ),
-                          prefixIconConstraints:
-                              const BoxConstraints(maxWidth: 50, maxHeight: 22),
+                          prefixIconConstraints: const BoxConstraints(maxWidth: 50, maxHeight: 22),
                           contentPadding: EdgeInsets.zero,
                           filled: true,
                           fillColor: const Color(0xffF4F5F6),
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              gapPadding: 0,
-                              borderSide: BorderSide.none)),
+                              borderRadius: BorderRadius.circular(10), gapPadding: 0, borderSide: BorderSide.none)),
                     ),
                   ),
                 ),
                 const SliverToBoxAdapter(
                   child: SizedBox(height: 16),
                 ),
-                ...List.generate(snapshot.data!.length,
-                    (index) => ChatContainer.fromRoom(snapshot.data![index]))
+                //TODO
+                ...List.generate(
+                  snapshot.data!.length,
+                  (index) => ChatContainer.fromRoom(snapshot.data![index]),
+                )
               ],
             );
           }),

@@ -148,8 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   asset: 'Assets/icons/like.svg',
                   isSelected: _selectedTab == 2,
                 ),
-                tooltip: MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المتعة',
-                label: MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المتعة',
+                tooltip: MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المفضلة',
+                label: MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المفضلة',
               ),
               BottomNavigationBarItem(
                 icon: NavigatorBarItem(
