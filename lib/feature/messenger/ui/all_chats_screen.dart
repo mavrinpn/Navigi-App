@@ -64,7 +64,6 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
                 const SliverToBoxAdapter(
                   child: SizedBox(height: 16),
                 ),
-                //TODO
                 ...List.generate(
                   snapshot.data!.length,
                   (index) => ChatContainer.fromRoom(snapshot.data![index]),

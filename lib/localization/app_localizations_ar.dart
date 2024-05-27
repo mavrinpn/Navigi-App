@@ -242,7 +242,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get shooting => 'التصوير';
 
   @override
-  String get description => 'تصنيف';
+  String get description => 'وصف الإعلان';
 
   @override
   String get board => 'اللوحة';

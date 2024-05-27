@@ -1,4 +1,5 @@
 // ignore_for_file: deprecated_member_use
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -77,6 +78,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     PageController pageController = PageController(viewportFraction: 0.9, initialPage: activePage);
 
     final width = MediaQuery.of(context).size.width;
+    const maxImageCount = 10;
 
     return BlocConsumer<AnnouncementCubit, AnnouncementState>(
       listener: (context, state) {
@@ -150,12 +152,14 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => PhotoViews(images: state.data.images),
+                              builder: (_) => PhotoViews(
+                                images: state.data.images.take(maxImageCount).toList(),
+                              ),
                             ),
                           );
                         },
                         child: PageView.builder(
-                            itemCount: state.data.images.length,
+                            itemCount: min(state.data.images.length, maxImageCount),
                             pageSnapping: true,
                             controller: pageController,
                             onPageChanged: (int page) {
@@ -182,8 +186,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                                     ),
                                     child: BackdropFilter(
                                       filter: ImageFilter.blur(
-                                        sigmaX: 2.5,
-                                        sigmaY: 2.5,
+                                        sigmaX: 5,
+                                        sigmaY: 5,
                                       ),
                                       child: CachedNetworkImage(
                                         imageUrl: state.data.images[index],
@@ -204,7 +208,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     ),
                     const SizedBox(height: 5),
                     ImagesIndicators(
-                      length: state.data.images.length,
+                      length: min(state.data.images.length, maxImageCount),
                       currentIndex: activePage,
                     ),
                     const SizedBox(height: 12),
