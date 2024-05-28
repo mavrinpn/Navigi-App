@@ -452,7 +452,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get toClean => 'مسح';
 
   @override
-  String get empty => 'لا يوجد شئ';
+  String get empty => 'لا يوجد اعلانات الآن';
 
   @override
   String get seller => 'البائع';

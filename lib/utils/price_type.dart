@@ -1,3 +1,4 @@
+import 'package:smart/main.dart';
 import 'package:smart/utils/constants.dart';
 
 enum PriceType { dzd, mln, mlrd }
@@ -53,9 +54,7 @@ extension PriceTypeExtendion on PriceType {
   }
 
   double? fromPriceString(String text) {
-    return double.tryParse(text) != null
-        ? (double.parse(text) * _multiplier())
-        : null;
+    return double.tryParse(text) != null ? (double.parse(text) * _multiplier()) : null;
   }
 
   double convertDzdToCurrency(double value) {
@@ -71,12 +70,27 @@ extension PriceTypeExtendion on PriceType {
 
   String convertCurrencyToCurrencyString(double? value) {
     if (value != null) {
-      if (this != PriceType.mlrd) {
-        return '${value.round()} ${name.toUpperCase()}';
+      if (this == PriceType.mlrd) {
+        if (currentLocaleShortName.value == 'ar') {
+          return 'مليار $value';
+        } else {
+          return '$value MLRD';
+        }
+      } else if (this == PriceType.mln) {
+        if (currentLocaleShortName.value == 'ar') {
+          return 'مليون ${value.round()}';
+        } else {
+          return '${value.round()} MLN';
+        }
       } else {
-        return '$value ${name.toUpperCase()}';
+        if (currentLocaleShortName.value == 'ar') {
+          return 'دينار جزائري ${value.round()}';
+        } else {
+          return '${value.round()} DZD';
+        }
       }
     }
+
     return '';
   }
 }

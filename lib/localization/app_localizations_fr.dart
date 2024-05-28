@@ -452,7 +452,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get toClean => 'Nettoyer';
 
   @override
-  String get empty => 'être vide';
+  String get empty => 'Il n’y pas encore d’annonces';
 
   @override
   String get seller => 'le Vendeur';
