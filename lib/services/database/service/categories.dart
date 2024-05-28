@@ -7,10 +7,7 @@ class CategoriesService {
 
   Future<List<Category>> getAllCategories() async {
     final res = await _databases.listDocuments(
-      databaseId: mainDatabase,
-      collectionId: categoriesCollection,
-      queries: [Query.orderAsc('order')]
-    );
+        databaseId: mainDatabase, collectionId: categoriesCollection, queries: [Query.orderAsc('order')]);
 
     List<Category> categories = [];
     for (var doc in res.documents) {
@@ -43,6 +40,9 @@ class CategoriesService {
   }
 
   Future<Map<String, dynamic>> getSubcategoryParameters(String subcategory) async {
+    if (subcategory.isEmpty) {
+      return {};
+    }
     final res = await _databases.getDocument(
         databaseId: mainDatabase, collectionId: 'categoryFilters', documentId: subcategory);
 

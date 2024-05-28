@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:smart/bloc/app/app_cubit.dart';
 import 'package:smart/feature/announcement/ui/dialogs/creator_show_more_bottom_sheet.dart';
 import 'package:smart/feature/announcement/ui/dialogs/offer_price_bottom_sheet.dart';
 import 'package:smart/feature/announcement/ui/widgets/announcement_mini_map.dart';
@@ -27,6 +28,7 @@ import 'package:smart/models/item/static_localized_parameter.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/constants.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 
@@ -92,7 +94,10 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
       },
       builder: (context, state) {
         if (state is AnnouncementSuccessState) {
-          incViewsIfNeed(state);
+          final isUserAuth = context.read<AppCubit>().state is AppAuthState;
+          if (isUserAuth) {
+            incViewsIfNeed(state);
+          }
 
           return RefreshIndicator(
             onRefresh: () async {
@@ -112,6 +117,14 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     const SizedBox(width: 4),
                     IconButton(
                       onPressed: () {
+                        final isUserAuth = context.read<AppCubit>().state is AppAuthState;
+                        if (!isUserAuth) {
+                          Navigator.of(context).pushNamed(
+                            AppRoutesNames.loginFirst,
+                            arguments: {'showBackButton': true},
+                          );
+                          return;
+                        }
                         if (state.data.creatorData.uid == RepositoryProvider.of<AuthRepository>(context).userId) {
                           showModalBottomSheet(
                             context: context,
@@ -300,6 +313,14 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           disableColor: AppColors.red,
                           width: MediaQuery.of(context).size.width - 62,
                           callback: () {
+                            final isUserAuth = context.read<AppCubit>().state is AppAuthState;
+                            if (!isUserAuth) {
+                              Navigator.of(context).pushNamed(
+                                AppRoutesNames.loginFirst,
+                                arguments: {'showBackButton': true},
+                              );
+                              return;
+                            }
                             incContactsIfNeed(state);
                             checkBlockedAndPushChat(
                               context: context,
@@ -317,6 +338,14 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         ),
                         CustomIconButton(
                           callback: () {
+                            final isUserAuth = context.read<AppCubit>().state is AppAuthState;
+                            if (!isUserAuth) {
+                              Navigator.of(context).pushNamed(
+                                AppRoutesNames.loginFirst,
+                                arguments: {'showBackButton': true},
+                              );
+                              return;
+                            }
                             incContactsIfNeed(state);
                             checkBlockedAndCall(
                               context: context,
@@ -332,6 +361,14 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     CustomTextButton.withIcon(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       callback: () {
+                        final isUserAuth = context.read<AppCubit>().state is AppAuthState;
+                        if (!isUserAuth) {
+                          Navigator.of(context).pushNamed(
+                            AppRoutesNames.loginFirst,
+                            arguments: {'showBackButton': true},
+                          );
+                          return;
+                        }
                         showOfferPriceDialog(
                           context: context,
                           announcement: state.data,

@@ -99,11 +99,16 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                 children: [
                   Row(
                     children: [
-                      Expanded(
-                        child: Text(
-                          widget.announcement.stringPrice,
-                          style: AppTypography.font16boldRed,
-                          textDirection: TextDirection.ltr,
+                      SizedBox(
+                        width: imageWidth * 0.8,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            widget.announcement.stringPrice,
+                            style: AppTypography.font16boldRed,
+                            textDirection: TextDirection.ltr,
+                          ),
                         ),
                       ),
                     ],

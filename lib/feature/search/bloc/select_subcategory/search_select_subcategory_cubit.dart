@@ -11,8 +11,7 @@ part 'search_select_subcategory_state.dart';
 class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
   final CategoriesManager categoriesManager;
 
-  SearchSelectSubcategoryCubit(this.categoriesManager)
-      : super(SearchSelectSubcategoryInitial());
+  SearchSelectSubcategoryCubit(this.categoriesManager) : super(SearchSelectSubcategoryInitial());
 
   List<Category> categories = [];
   List<Subcategory> subcategories = [];
@@ -65,8 +64,7 @@ class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
   }
 
   void getSubcategories({String? categoryId, String? subcategoryId}) async {
-    if (categoryId != null && categoryId == lastCategory ||
-        subcategoryId != null && subcategoryId == lastCategory) {
+    if (categoryId != null && categoryId == lastCategory || subcategoryId != null && subcategoryId == lastCategory) {
       return emit(SubcategoriesGotState());
     }
     emit(SubcategoriesLoadingState());
@@ -76,11 +74,9 @@ class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
     needAddCarSelectButton = false;
     autoFilter = null;
     if (categoryId != null) {
-      subcategories =
-          await categoriesManager.loadSubcategoriesByCategory(categoryId);
+      subcategories = await categoriesManager.loadSubcategoriesByCategory(categoryId);
     } else {
-      subcategories = await categoriesManager
-          .tryToLoadSubcategoriesBuSubcategory(subcategoryId!);
+      subcategories = await categoriesManager.tryToLoadSubcategoriesBuSubcategory(subcategoryId!);
     }
 
     emit(SubcategoriesGotState());
@@ -89,15 +85,20 @@ class SearchSelectSubcategoryCubit extends Cubit<SearchSelectSubcategoryState> {
   Future getSubcategoryFilters(String selectedSubcategoryId) async {
     emit(FiltersLoadingState());
 
-    final res = await categoriesManager.getFilters(selectedSubcategoryId);
-    _parameters =
-        ParametersParser(res['parameters'], useMinMax: true).decodedParameters;
+    if (selectedSubcategoryId.isNotEmpty) {
+      final res = await categoriesManager.getFilters(selectedSubcategoryId);
+      _parameters = ParametersParser(res['parameters'], useMinMax: true).decodedParameters;
 
-    subcategoryFilters = SubcategoryFilters(
-      _parameters,
-      hasMark: res['hasMark'],
-      hasModel: res['hasModel'],
-    );
+      subcategoryFilters = SubcategoryFilters(
+        _parameters,
+        hasMark: res['hasMark'],
+        hasModel: res['hasModel'],
+      );
+    } else {
+      _parameters = [];
+      subcategoryFilters = null;
+    }
+
     subcategoryId = selectedSubcategoryId;
 
     emit(FiltersGotState(_parameters));

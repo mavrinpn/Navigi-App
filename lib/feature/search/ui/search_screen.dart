@@ -50,6 +50,7 @@ class _SearchScreenState extends State<SearchScreen> {
   final _controller = ScrollController();
   String? searchQueryString;
   bool _showFilterChips = true;
+  String lastQuery = '';
 
   @override
   void initState() {
@@ -65,7 +66,7 @@ class _SearchScreenState extends State<SearchScreen> {
         double currentScroll = _controller.position.pixels;
         if (currentScroll >= maxScroll * 0.8) {
           BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
-            searchText: '',
+            searchText: lastQuery,
             isNew: false,
           );
         }
@@ -89,6 +90,7 @@ class _SearchScreenState extends State<SearchScreen> {
       searchText: query,
       isNew: true,
     );
+    lastQuery = query;
     searchManager?.setSearch(false);
     setSearchText(query);
     setState(() {});
@@ -146,6 +148,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   isNew: true,
                   parameters: context.read<SearchSelectSubcategoryCubit>().parameters,
                 );
+                lastQuery = value;
               },
               onChange: (String value) {
                 searchManager.setSearch(true);
@@ -195,6 +198,7 @@ class _SearchScreenState extends State<SearchScreen> {
               keyword: keyword,
               isNew: true,
             );
+            lastQuery = query;
             searchManager.setSearch(false);
             setSearchText(query);
             setState(() {});
@@ -394,7 +398,12 @@ class _SearchScreenState extends State<SearchScreen> {
               if (showBackButton)
                 Row(
                   children: [
-                    const CustomBackButton(),
+                    CustomBackButton(
+                      callback: () {
+                        // final subcategoriesCubit = context.read<SearchSelectSubcategoryCubit>();
+                        selectCategoryCubit.getSubcategoryFilters('');
+                      },
+                    ),
                     Text(
                       widget.title,
                       style: const TextStyle(
@@ -412,7 +421,6 @@ class _SearchScreenState extends State<SearchScreen> {
                     clipBehavior: Clip.none,
                     scrollDirection: Axis.horizontal,
                     child: SizedBox(
-                      width: double.maxFinite,
                       child: Wrap(
                         alignment: WrapAlignment.start,
                         spacing: 6,
@@ -427,28 +435,32 @@ class _SearchScreenState extends State<SearchScreen> {
                             title: localizations.location,
                             parameterKey: FilterKeys.location,
                           ),
-                          if (selectCategoryCubit.subcategoryFilters?.hasMark ?? false) const MarkChipWidget(),
-                          ...selectCategoryCubit.parameters.map((parameter) {
-                            bool isSelected = false;
-                            if (parameter is SelectParameter) {
-                              isSelected = parameter.selectedVariants.isNotEmpty;
-                            } else if (parameter is SingleSelectParameter) {
-                              isSelected = parameter.currentValue.key != null;
-                            } else if (parameter is MultiSelectParameter) {
-                              isSelected = parameter.selectedVariants.isNotEmpty;
-                            } else if (parameter is MinMaxParameter) {
-                              isSelected = parameter.min != null || parameter.max != null;
-                            }
-                            if (parameter is! MultiSelectParameter) {
-                              return FilterChipWidget(
-                                isSelected: isSelected,
-                                title: MyApp.getLocale(context) == 'fr' ? parameter.frName : parameter.arName,
-                                parameterKey: parameter.key,
-                              );
-                            } else {
-                              return const SizedBox.shrink();
-                            }
-                          }).toList(),
+                          if (selectCategoryCubit.subcategoryId != null &&
+                              selectCategoryCubit.subcategoryId!.isNotEmpty)
+                            if (selectCategoryCubit.subcategoryFilters?.hasMark ?? false) const MarkChipWidget(),
+                          if (selectCategoryCubit.subcategoryId != null &&
+                              selectCategoryCubit.subcategoryId!.isNotEmpty)
+                            ...selectCategoryCubit.parameters.map((parameter) {
+                              bool isSelected = false;
+                              if (parameter is SelectParameter) {
+                                isSelected = parameter.selectedVariants.isNotEmpty;
+                              } else if (parameter is SingleSelectParameter) {
+                                isSelected = parameter.currentValue.key != null;
+                              } else if (parameter is MultiSelectParameter) {
+                                isSelected = parameter.selectedVariants.isNotEmpty;
+                              } else if (parameter is MinMaxParameter) {
+                                isSelected = parameter.min != null || parameter.max != null;
+                              }
+                              if (parameter is! MultiSelectParameter) {
+                                return FilterChipWidget(
+                                  isSelected: isSelected,
+                                  title: MyApp.getLocale(context) == 'fr' ? parameter.frName : parameter.arName,
+                                  parameterKey: parameter.key,
+                                );
+                              } else {
+                                return const SizedBox.shrink();
+                              }
+                            }).toList(),
                         ],
                       ),
                     ),

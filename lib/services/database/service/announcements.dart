@@ -34,6 +34,8 @@ class AnnouncementsService {
   Future<List<Announcement>> searchLimitAnnouncements(DefaultFilterDto filterData) async {
     List<String> queries = ParametersFilterBuilder.getSearchQueries(filterData);
 
+    queries.add(Query.limit(24));
+
     if ((filterData.radius ?? 0) != 0) {
       queries.addAll(await LocationFilter.getLocationFilterForRadius(filterData.radius!));
     }
@@ -92,7 +94,7 @@ class AnnouncementsService {
     if (filterData.limit != null) {
       queries.add(Query.limit(filterData.limit!));
     } else {
-      queries.add(Query.limit(20));
+      queries.add(Query.limit(24));
     }
 
     if (filterData.excludeId != null) {

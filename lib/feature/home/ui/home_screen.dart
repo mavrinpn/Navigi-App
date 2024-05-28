@@ -77,8 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
         return;
       }
 
-      final isUserAith = context.read<AppCubit>().state is AppAuthState;
-      if (index != 0 && !isUserAith) {
+      final isUserAuth = context.read<AppCubit>().state is AppAuthState;
+      if (index != 0 && !isUserAuth) {
         _targetTab = index;
         Navigator.of(context).pushNamed(
           AppRoutesNames.loginFirst,
