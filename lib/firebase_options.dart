@@ -63,6 +63,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '227932496847',
     projectId: 'navigi-b23aa',
     storageBucket: 'navigi-b23aa.appspot.com',
-    iosBundleId: 'com.example.smart',
+    iosBundleId: 'dev.platovco.navigi',
   );
 }

@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:227932496847:android:15a78f2c9609993eb268ba",
         "android_client_info": {
-          "package_name": "com.example.smart"
+          "package_name": "dev.platovco.navigi"
         }
       },
       "oauth_client": [],
