@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none"
 
-version: 1.0.0+117
+version: 1.0.0+118
 
 environment:
   sdk: ">=3.0.5 <4.0.0"
@@ -77,6 +77,7 @@ flutter_launcher_icons:
   ios: true
   image_path: "Assets/app_icon/icon.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
+  # dart run flutter_launcher_icons
 
 flutter:
   fonts:
