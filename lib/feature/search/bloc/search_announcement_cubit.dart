@@ -178,39 +178,26 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
   }) async {
     emit(SearchAnnouncementsLoadingState());
     try {
-      await _announcementManager.searchWithSubcategory(
-        subcategoryId: keyword.subcategoryId,
-        parameters: const <Parameter>[],
-        keyword: keyword,
-        isNew: true,
-        sortBy: _sortBy,
-        mark: keyword.mark,
-        model: keyword.model,
-        type: keyword.type,
-      );
-      // if (searchMode == SearchModeEnum.simple) {
-      //   await _announcementManager.loadSearchAnnouncement(
-      //     // searchText: '${keyword.nameFr} ${keyword.nameAr}',
-      //     keyword: keyword,
-      //     isNew: true,
-      //     sortBy: _sortBy,
-      //     mark: keyword.mark,
-      //     model: keyword.model,
-      //     type: keyword.type,
-      //   );
-      // } else {
-      //   await _announcementManager.searchWithSubcategory(
-      //     subcategoryId: _subcategoryId!,
-      //     parameters: const <Parameter>[],
-      //     // searchText: '${keyword.nameFr} ${keyword.nameAr}',
-      //     keyword: keyword,
-      //     isNew: true,
-      //     sortBy: _sortBy,
-      //     mark: keyword.mark,
-      //     model: keyword.model,
-      //     type: keyword.type,
-      //   );
-      // }
+      if (searchMode == SearchModeEnum.simple) {
+        await _announcementManager.loadSearchAnnouncement(
+          keyword: keyword,
+          isNew: true,
+          sortBy: _sortBy,
+          mark: keyword.mark,
+          model: keyword.model,
+        );
+      } else {
+        await _announcementManager.searchWithSubcategory(
+          subcategoryId: _subcategoryId!,
+          parameters: const <Parameter>[],
+          keyword: keyword,
+          isNew: true,
+          sortBy: _sortBy,
+          mark: keyword.mark,
+          model: keyword.model,
+          type: keyword.type,
+        );
+      }
       _lastText = keyword.nameFr;
       emit(SearchAnnouncementsSuccessState());
     } catch (err) {

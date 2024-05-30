@@ -182,33 +182,33 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        RawMaterialButton(
-                            onPressed: () {},
-                            shape: const CircleBorder(),
-                            constraints: const BoxConstraints(maxWidth: 40, maxHeight: 40),
-                            child: SvgPicture.asset(
-                              'Assets/icons/facebook.svg',
-                              width: 40,
-                            )),
-                        const SizedBox(width: 5),
-                        RawMaterialButton(
-                            constraints: const BoxConstraints(maxWidth: 40, maxHeight: 40),
-                            onPressed: () {},
-                            shape: const CircleBorder(),
-                            child: SvgPicture.asset(
-                              'Assets/icons/google.svg',
-                              width: 40,
-                            )),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(10),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       RawMaterialButton(
+                  //           onPressed: () {},
+                  //           shape: const CircleBorder(),
+                  //           constraints: const BoxConstraints(maxWidth: 40, maxHeight: 40),
+                  //           child: SvgPicture.asset(
+                  //             'Assets/icons/facebook.svg',
+                  //             width: 40,
+                  //           )),
+                  //       const SizedBox(width: 5),
+                  //       RawMaterialButton(
+                  //           constraints: const BoxConstraints(maxWidth: 40, maxHeight: 40),
+                  //           onPressed: () {},
+                  //           shape: const CircleBorder(),
+                  //           child: SvgPicture.asset(
+                  //             'Assets/icons/google.svg',
+                  //             width: 40,
+                  //           )),
+                  //     ],
+                  //   ),
+                  // ),
                   const SizedBox(
-                    height: 20,
+                    height: 60,
                   ),
                 ],
               ),
