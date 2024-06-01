@@ -139,6 +139,8 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
   }) async {
     if (showLoading) {
       emit(SearchAnnouncementsLoadingState());
+    } else {
+      emit(SearchAnnouncementsScrollLoadingState());
     }
 
     try {

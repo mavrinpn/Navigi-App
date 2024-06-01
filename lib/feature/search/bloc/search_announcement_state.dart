@@ -8,6 +8,8 @@ class SearchAnnouncementInitial extends SearchAnnouncementState {}
 
 class SearchAnnouncementsLoadingState extends SearchAnnouncementState {}
 
+class SearchAnnouncementsScrollLoadingState extends SearchAnnouncementState {}
+
 class SearchAnnouncementsSuccessState extends SearchAnnouncementState {}
 
 class SearchAnnouncementsFailState extends SearchAnnouncementState {

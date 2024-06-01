@@ -52,6 +52,8 @@ class _SearchScreenState extends State<SearchScreen> {
   bool _showFilterChips = true;
   String lastQuery = '';
 
+  bool isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -61,17 +63,28 @@ class _SearchScreenState extends State<SearchScreen> {
     searchQueryString = widget.searchQueryString;
 
     _controller.addListener(() async {
-      if (_controller.position.atEdge) {
-        double maxScroll = _controller.position.maxScrollExtent;
-        double currentScroll = _controller.position.pixels;
-        if (currentScroll >= maxScroll * 0.8) {
+      if (_controller.position.maxScrollExtent < _controller.offset + 250) {
+        if (!isLoading) {
+          isLoading = true;
           BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
             searchText: lastQuery,
             isNew: false,
-            showLoading: true,
+            showLoading: false,
           );
         }
       }
+      // if (_controller.position.atEdge) {
+      //   double maxScroll = _controller.position.maxScrollExtent;
+      //   double currentScroll = _controller.position.pixels;
+      //   if (currentScroll >= maxScroll * 0.5) {
+      //     print('searchAnnounces');
+      //     BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
+      //       searchText: lastQuery,
+      //       isNew: false,
+      //       showLoading: false,
+      //     );
+      //   }
+      // }
     });
   }
 
@@ -87,6 +100,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void setSearch(String query, SearchManager? searchManager) {
     searchManager?.saveInHistory(query);
+    isLoading = true;
     BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
       searchText: query,
       isNew: true,
@@ -145,6 +159,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 searchManager.setSearch(false);
                 searchManager.saveInHistory(value!);
                 setState(() {});
+                isLoading = true;
                 BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
                   searchText: value,
                   isNew: true,
@@ -197,6 +212,7 @@ class _SearchScreenState extends State<SearchScreen> {
             final String currentLocale = MyApp.getLocale(context) ?? 'fr';
             final query = currentLocale == 'fr' ? keyword.nameFr : keyword.nameAr;
 
+            isLoading = true;
             BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnouncesByKeyword(
               keyword: keyword,
               isNew: true,
@@ -292,11 +308,17 @@ class _SearchScreenState extends State<SearchScreen> {
         physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
         slivers: [
           gridBuild(),
-          if (state is SearchAnnouncementsLoadingState) ...[
+          // if (state is SearchAnnouncementsScrollLoadingState) ...[
+          if (announcementRepository.searchAnnouncements.length >= 20)
             SliverToBoxAdapter(
-              child: Center(child: AppAnimations.bouncingLine),
+              child: Center(
+                child: SizedBox(
+                  height: 200,
+                  child: AppAnimations.bouncingLine,
+                ),
+              ),
             )
-          ]
+          // ]
         ],
       );
     }
@@ -333,6 +355,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 BlocConsumer<SearchAnnouncementCubit, SearchAnnouncementState>(
                   listener: (context, state) {
                     if (state is SearchAnnouncementsSuccessState) {
+                      isLoading = false;
                       if (searchQueryString != null) {
                         setSearch(
                           searchQueryString!,
