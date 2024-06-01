@@ -90,6 +90,7 @@ class _MainScreenState extends State<MainScreen> {
       BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
         searchText: '',
         isNew: true,
+        showLoading: false,
       );
       Navigator.pushNamed(
         context,

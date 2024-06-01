@@ -68,6 +68,7 @@ class _SearchScreenState extends State<SearchScreen> {
           BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
             searchText: lastQuery,
             isNew: false,
+            showLoading: true,
           );
         }
       }
@@ -89,6 +90,7 @@ class _SearchScreenState extends State<SearchScreen> {
     BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
       searchText: query,
       isNew: true,
+      showLoading: true,
     );
     lastQuery = query;
     searchManager?.setSearch(false);
@@ -146,6 +148,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
                   searchText: value,
                   isNew: true,
+                  showLoading: true,
                   parameters: context.read<SearchSelectSubcategoryCubit>().parameters,
                 );
                 lastQuery = value;

@@ -40,6 +40,7 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> with 
       subcategoriesCubit.getSubcategoryFilters(subcategory.id).then((value) => searchCubit.searchAnnounces(
             searchText: '',
             isNew: true,
+            showLoading: true,
             parameters: value,
           ));
 

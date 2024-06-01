@@ -134,9 +134,12 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
   void searchAnnounces({
     required String? searchText,
     required bool isNew,
+    required bool showLoading,
     List<Parameter> parameters = const <Parameter>[],
   }) async {
-    emit(SearchAnnouncementsLoadingState());
+    if (showLoading) {
+      emit(SearchAnnouncementsLoadingState());
+    }
 
     try {
       if (searchMode == SearchModeEnum.simple) {
