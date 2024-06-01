@@ -69,7 +69,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     _cityTitle = null;
     _areaTitle = null;
     marksFilter = null;
-    setFilters();
+    // setFilters();
   }
 
   SearchAnnouncementCubit({required AnnouncementManager announcementManager})

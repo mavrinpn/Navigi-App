@@ -4,6 +4,7 @@ import 'package:smart/feature/create_announcement/bloc/subcategory/subcategory_c
 import 'package:smart/feature/main/bloc/popularQueries/popular_queries_cubit.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
+import 'package:smart/feature/search/ui/loading_mixin.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
@@ -22,7 +23,7 @@ class SearchSubcategoryScreen extends StatefulWidget {
   State<SearchSubcategoryScreen> createState() => _SearchSubcategoryScreenState();
 }
 
-class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> {
+class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> with LoadingMixin {
   bool subcategoriesGot = false;
 
   void onSubcategoryTapped(Subcategory subcategory) {

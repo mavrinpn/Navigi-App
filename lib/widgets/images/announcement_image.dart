@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smart/models/announcement.dart';
 
 class AnnouncementImage extends StatelessWidget {
@@ -28,8 +29,7 @@ class AnnouncementImage extends StatelessWidget {
                     fit: BoxFit.cover,
                     width: width,
                     height: height,
-                    frameBuilder:
-                        ((context, child, frame, wasSynchronouslyLoaded) {
+                    frameBuilder: ((context, child, frame, wasSynchronouslyLoaded) {
                       return AnimatedSwitcher(
                         duration: const Duration(milliseconds: 300),
                         child: frame != null
@@ -42,10 +42,14 @@ class AnnouncementImage extends StatelessWidget {
                       );
                     }),
                   )
-                : Container(
-                    height: height,
-                    width: width,
-                    color: Colors.grey[300],
+                : Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      height: height,
+                      width: width,
+                      color: Colors.grey[300],
+                    ),
                   ),
           );
         });

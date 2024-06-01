@@ -4,12 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/models/announcement.dart';
+import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/images/announcement_image.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
-
-import '../../utils/colors.dart';
 
 class AnnouncementContainer extends StatefulWidget {
   const AnnouncementContainer({
