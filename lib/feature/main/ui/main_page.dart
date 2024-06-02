@@ -62,11 +62,11 @@ class _MainPageState extends State<MainPage> with LoadingMixin {
           if (state is AppAuthState || state is AppUnAuthState) {
             return BlocListener<SearchAnnouncementCubit, SearchAnnouncementState>(
               listener: (context, state) {
-                if (state is SearchAnnouncementsLoadingState) {
-                  showLoadingOverlay(context);
-                } else {
-                  hideLoadingOverlay(context);
-                }
+                // if (state is SearchAnnouncementsLoadingState) {
+                //   showLoadingOverlay(context);
+                // } else {
+                //   hideLoadingOverlay(context);
+                // }
               },
               child: const HomeScreen(),
             );

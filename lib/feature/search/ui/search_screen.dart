@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_keys.dart';
 import 'package:smart/feature/search/ui/sections/history.dart';
 import 'package:smart/feature/search/ui/sections/popular_queries.dart';
 import 'package:smart/feature/search/ui/sections/search_items.dart';
+import 'package:smart/feature/search/ui/widgets/announcement_shimmer.dart';
 import 'package:smart/feature/search/ui/widgets/chips/filter_chip_widget.dart';
 import 'package:smart/feature/search/ui/widgets/chips/mark_chip_widget.dart';
 import 'package:smart/feature/search/ui/widgets/search_appbar.dart';
@@ -52,7 +54,7 @@ class _SearchScreenState extends State<SearchScreen> {
   bool _showFilterChips = true;
   String lastQuery = '';
 
-  bool isLoading = false;
+  bool isScrollLoading = false;
 
   @override
   void initState() {
@@ -64,8 +66,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
     _controller.addListener(() async {
       if (_controller.position.maxScrollExtent < _controller.offset + 250) {
-        if (!isLoading) {
-          isLoading = true;
+        if (!isScrollLoading) {
+          isScrollLoading = true;
           BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
             searchText: lastQuery,
             isNew: false,
@@ -100,7 +102,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void setSearch(String query, SearchManager? searchManager) {
     searchManager?.saveInHistory(query);
-    isLoading = true;
+    // isScrollLoading = true;
     BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
       searchText: query,
       isNew: true,
@@ -159,7 +161,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 searchManager.setSearch(false);
                 searchManager.saveInHistory(value!);
                 setState(() {});
-                isLoading = true;
+                // isScrollLoading = true;
                 BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
                   searchText: value,
                   isNew: true,
@@ -212,7 +214,7 @@ class _SearchScreenState extends State<SearchScreen> {
             final String currentLocale = MyApp.getLocale(context) ?? 'fr';
             final query = currentLocale == 'fr' ? keyword.nameFr : keyword.nameAr;
 
-            isLoading = true;
+            // isScrollLoading = true;
             BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnouncesByKeyword(
               keyword: keyword,
               isNew: true,
@@ -226,7 +228,8 @@ class _SearchScreenState extends State<SearchScreen> {
           },
         );
       } else if (searchQueryString != null || state is SearchItemsLoading) {
-        return Center(child: AppAnimations.bouncingLine);
+        // return Center(child: AppAnimations.bouncingLine);
+        return const SizedBox.shrink();
       }
 
       return Column(
@@ -292,7 +295,29 @@ class _SearchScreenState extends State<SearchScreen> {
     }
 
     Widget announcementsBuilder(context, state) {
-      if (announcementRepository.searchAnnouncements.isNotEmpty) {}
+      if (state is SearchAnnouncementsLoadingState && !isScrollLoading) {
+        return SingleChildScrollView(
+          padding: const EdgeInsets.only(top: 18),
+          child: Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: const Center(
+              child: Wrap(
+                spacing: 10,
+                runSpacing: 50,
+                children: [
+                  AnnouncementShimmer(),
+                  AnnouncementShimmer(),
+                  AnnouncementShimmer(),
+                  AnnouncementShimmer(),
+                  AnnouncementShimmer(),
+                  AnnouncementShimmer(),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
 
       if (state is SearchAnnouncementsFailState || announcementRepository.searchAnnouncements.isEmpty) {
         if (state is SearchAnnouncementsFailState) {
@@ -355,7 +380,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 BlocConsumer<SearchAnnouncementCubit, SearchAnnouncementState>(
                   listener: (context, state) {
                     if (state is SearchAnnouncementsSuccessState) {
-                      isLoading = false;
+                      isScrollLoading = false;
                       if (searchQueryString != null) {
                         setSearch(
                           searchQueryString!,
@@ -365,11 +390,12 @@ class _SearchScreenState extends State<SearchScreen> {
                       }
                     }
                   },
-                  builder: (context, state) {
-                    return BlocBuilder<SearchAnnouncementCubit, SearchAnnouncementState>(
-                      builder: announcementsBuilder,
-                    );
-                  },
+                  builder: announcementsBuilder,
+                  // builder: (context, state) {
+                  //   return BlocBuilder<SearchAnnouncementCubit, SearchAnnouncementState>(
+                  //     builder: announcementsBuilder,
+                  //   );
+                  // },
                 ),
                 SingleChildScrollView(
                   physics: const ClampingScrollPhysics(),
