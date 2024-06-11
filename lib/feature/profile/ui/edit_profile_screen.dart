@@ -47,7 +47,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final file = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (file != null) {
       image = await ImageCropper().cropImage(
-        sourcePath: file!.path,
+        sourcePath: file.path,
         aspectRatioPresets: [
           CropAspectRatioPreset.square,
         ],

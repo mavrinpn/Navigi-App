@@ -38,6 +38,7 @@ dependencies:
 
   url_launcher: ^6.2.5
   email_validator: ^2.1.17
+  flutter_email_sender: ^6.0.3
   image_picker: ^1.0.0
   image_cropper: ^5.0.0
   flutter_image_compress: ^2.0.3

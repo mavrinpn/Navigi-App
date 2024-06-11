@@ -389,10 +389,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get researchArea => 'Zone de recherche';
 
   @override
-  String get toBlock => ' Bloquer';
+  String get toBlock => 'Bloquer';
 
   @override
-  String get report => ' Signaler';
+  String get report => 'Signaler';
 
   @override
   String get productAddedToFavorites => 'Produit ajouté aux favoris!';
