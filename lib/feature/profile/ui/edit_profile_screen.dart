@@ -45,28 +45,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void pickImage() async {
     final file = await ImagePicker().pickImage(source: ImageSource.gallery);
-    image = await ImageCropper().cropImage(
-      sourcePath: file!.path,
-      aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-      ],
-      compressQuality: 50,
-      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-      cropStyle: CropStyle.circle,
-      uiSettings: [
-        AndroidUiSettings(
-            toolbarTitle: 'Cropper',
-            toolbarColor: AppColors.dark,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.square,
-            lockAspectRatio: true),
-        IOSUiSettings(
-          title: 'Cropper',
-        ),
-      ],
-    );
-    bytes = await image?.readAsBytes();
-    setState(() {});
+    if (file != null) {
+      image = await ImageCropper().cropImage(
+        sourcePath: file!.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+        ],
+        compressQuality: 50,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        cropStyle: CropStyle.circle,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Cropper',
+              toolbarColor: AppColors.dark,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.square,
+              lockAspectRatio: true),
+          IOSUiSettings(
+            title: 'Cropper',
+          ),
+        ],
+      );
+      bytes = await image?.readAsBytes();
+      setState(() {});
+    }
   }
 
   @override
