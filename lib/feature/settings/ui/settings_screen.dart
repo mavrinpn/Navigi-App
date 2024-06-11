@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
+import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/feature/profile/ui/widgets/row_button.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/restart_controller.dart';
@@ -138,6 +139,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               height: 52,
               width: double.infinity,
             ),
+            const SizedBox(height: 20),
+            CustomElevatedButton(
+              icon: "Assets/icons/delete.svg",
+              title: localizations.delProfile,
+              onPress: () => _deleteButton(),
+              height: 52,
+              width: double.infinity,
+            ),
           ],
         ),
       ),
@@ -172,6 +181,63 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   HotRestartController.performHotRestart(context);
                 });
                 Navigator.popUntil(context, ModalRoute.withName(AppRoutesNames.root));
+              },
+              styleText: AppTypography.font14black.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              text: 'Oui',
+              active: true,
+              activeColor: AppColors.black,
+            ),
+            const SizedBox(height: 10),
+            CustomTextButton.shadow(
+              callback: () {
+                Navigator.of(context).pop();
+              },
+              styleText: AppTypography.font14black.copyWith(fontWeight: FontWeight.bold),
+              text: 'Non',
+              active: true,
+              activeColor: Colors.white,
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void _deleteButton() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          title: Center(
+              child: Text(
+            'Vous voulez sortir?', //TODO localization
+            style: AppTypography.font16black,
+          )),
+          content: Text(
+            //TODO localization
+            'Pharetra ultricies ullamcorper a et magna convallis condimentum. Proin mi orci dignissim lectus nulla neque elitInt',
+            textAlign: TextAlign.center,
+            style: AppTypography.font14lightGray,
+          ),
+          actions: [
+            CustomTextButton.orangeContinue(
+              callback: () {
+                BlocProvider.of<UserCubit>(context).deleteProfile().then((value) {
+                  BlocProvider.of<CreatorCubit>(context).setUserId('');
+
+                  //TODO replace with function
+                  BlocProvider.of<AuthCubit>(context).deleteIdentity().then((value) {
+                    HotRestartController.performHotRestart(context);
+                  });
+                  Navigator.popUntil(context, ModalRoute.withName(AppRoutesNames.root));
+                });
               },
               styleText: AppTypography.font14black.copyWith(
                 fontWeight: FontWeight.bold,

@@ -89,6 +89,25 @@ class UserService {
     );
   }
 
+  Future<void> deleteProfile({
+    required String uid,
+  }) async {
+    await _databases.updateDocument(
+      databaseId: mainDatabase,
+      collectionId: usersCollection,
+      documentId: uid,
+      data: {
+        'name': 'USER_DELETED',
+        'phone': '',
+        'registred_at': null,
+        'image_url': null,
+        'verified': false,
+        'lastSeen': null,
+        'rating': null,
+      },
+    );
+  }
+
   Future<String> getJwt() => _account.createJWT().then((value) => value.jwt);
 
   // Future<void> sendSms() async {

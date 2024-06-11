@@ -33,4 +33,12 @@ class UserCubit extends Cubit<UserState> {
       rethrow;
     }
   }
+
+  Future<void> deleteProfile() async {
+    try {
+      return authRepository.deleteProfile();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -53,7 +53,6 @@ void creatorShowMoreAction({
               ),
               RowSettingsButton(
                 onTap: () {
-                  //TODO
                   FlutterEmailSender.send(EmailTemplates.reportEmail(userId));
                 },
                 children: [

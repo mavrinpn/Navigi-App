@@ -170,4 +170,6 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> logout() => authRepository.logout();
+
+  Future<void> deleteIdentity() => authRepository.deleteIdentity();
 }

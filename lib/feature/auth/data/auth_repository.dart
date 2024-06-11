@@ -116,6 +116,16 @@ class AuthRepository {
     }
   }
 
+  Future<void> deleteProfile() async {
+    try {
+      await _databaseService.users.deleteProfile(
+        uid: loggedUser?.$id ?? '',
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> logout() async {
     try {
       await _account.deleteSessions();
@@ -129,6 +139,26 @@ class AuthRepository {
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
     // authState.add(EntranceStateEnum.wait);
+    _messagingService.userId = null;
+    appState.add(AuthStateEnum.unAuth);
+  }
+
+  Future<void> deleteIdentity() async {
+    if (loggedUser != null) {
+      try {
+        await _account.deleteIdentity(identityId: loggedUser!.$id);
+        sessionID = null;
+        loggedUser = null;
+        userData = null;
+      } catch (e) {
+        log(e.toString());
+      }
+    } else {
+      log('loggedUser is null');
+    }
+
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
     _messagingService.userId = null;
     appState.add(AuthStateEnum.unAuth);
   }
