@@ -29,16 +29,14 @@ class _FavoritesScreen extends State<FavoritesScreen> {
           delegate: SliverChildBuilderDelegate(
             (context, index) => Container(
               color: AppColors.mainBackground,
-              child: Center(
-                child: AnnouncementContainer(
-                    announcement: favouritesManager.announcements[index]),
-              ),
+              child: AnnouncementContainer(announcement: favouritesManager.announcements[index]),
             ),
             childCount: favouritesManager.announcements.length,
           ),
+          //TODO
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              crossAxisSpacing: 18,
-              mainAxisSpacing: 16,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
               maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
               childAspectRatio: 160 / 272));
     }
@@ -81,13 +79,10 @@ class _FavoritesScreen extends State<FavoritesScreen> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text(
-                                    localizations.dontHaveProducts),
+                                Text(localizations.dontHaveProducts),
                                 const SizedBox(height: 14),
                                 CustomTextButton.orangeContinue(
-                                    callback: () {},
-                                    text: localizations.goRepertoire,
-                                    active: true)
+                                    callback: () {}, text: localizations.goRepertoire, active: true)
                               ],
                             ),
                           ),

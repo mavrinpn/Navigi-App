@@ -67,8 +67,8 @@ class _RelatedAnnouncementWidgetState extends State<RelatedAnnouncementWidget> {
                   itemBuilder: (context, index) => AnnouncementContainer(announcement: state.announcements[index]),
                   itemCount: state.announcements.length,
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
                     maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
                     childAspectRatio: 160 / 272,
                   ),

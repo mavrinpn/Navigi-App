@@ -52,8 +52,8 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen> with Single
             childCount: (_tabController.index == 0 ? state.available.length : state.sold.length),
           ),
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            crossAxisSpacing: 18,
-            mainAxisSpacing: 16,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
             maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
             childAspectRatio: 160 / 272,
           ));

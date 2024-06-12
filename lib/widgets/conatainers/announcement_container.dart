@@ -14,11 +14,8 @@ class AnnouncementContainer extends StatefulWidget {
   const AnnouncementContainer({
     super.key,
     required this.announcement,
-    this.width,
-    this.height,
   });
 
-  final double? width, height;
   final Announcement announcement;
 
   @override
@@ -50,8 +47,8 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    final double imageWidth = widget.width ?? width / 2 - 25;
-    final double imageHeight = widget.height ?? (width / 2 - 25) * 1.032;
+    final double imageWidth = width / 2;
+    final double imageHeight = width / 2 * 0.9;
 
     return GestureDetector(
         onTap: () {

@@ -133,8 +133,8 @@ class _SearchScreenState extends State<SearchScreen> {
     }
 
     SliverGridDelegateWithMaxCrossAxisExtent gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 15,
+      crossAxisSpacing: 12,
+      mainAxisSpacing: 12,
       maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
       childAspectRatio: 160 / 272,
     );
@@ -283,7 +283,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
     Widget gridBuild() {
       return SliverPadding(
-        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         sliver: SliverGrid(
           gridDelegate: gridDelegate,
           delegate: SliverChildBuilderDelegate(
@@ -297,13 +297,13 @@ class _SearchScreenState extends State<SearchScreen> {
     Widget announcementsBuilder(context, state) {
       if (state is SearchAnnouncementsLoadingState && !isScrollLoading) {
         return SingleChildScrollView(
-          padding: const EdgeInsets.only(top: 18),
+          padding: const EdgeInsets.only(top: 16),
           child: Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
             highlightColor: Colors.grey[100]!,
             child: const Center(
               child: Wrap(
-                spacing: 10,
+                spacing: 12,
                 runSpacing: 50,
                 children: [
                   AnnouncementShimmer(),

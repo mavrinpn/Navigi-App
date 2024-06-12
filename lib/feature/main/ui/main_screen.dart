@@ -70,8 +70,8 @@ class _MainScreenState extends State<MainScreen> {
     Widget getAnnouncementsGrid() {
       return SliverGrid(
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            crossAxisSpacing: 25,
-            mainAxisSpacing: 14,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
             maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
             childAspectRatio: 160 / 272),
         delegate: SliverChildBuilderDelegate(
