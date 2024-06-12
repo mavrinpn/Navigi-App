@@ -29,7 +29,7 @@ class _MainPageState extends State<MainPage> with LoadingMixin {
     super.initState();
 
     final connection = InternetConnection.createInstance(
-      checkInterval: const Duration(seconds: 10),
+      checkInterval: const Duration(seconds: 20),
     );
     _internetConnectionSubscription = connection.onStatusChange.listen((InternetStatus status) {
       final localizations = AppLocalizations.of(context)!;

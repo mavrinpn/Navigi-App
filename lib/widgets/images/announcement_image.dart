@@ -19,39 +19,40 @@ class AnnouncementImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: announcement.futureBytes,
-        builder: (context, snapshot) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: snapshot.hasData
-                ? Image.memory(
-                    announcement.bytes ?? Uint8List(0),
-                    fit: BoxFit.cover,
-                    width: width,
+      future: announcement.futureBytes,
+      builder: (context, snapshot) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(6),
+          child: snapshot.hasData
+              ? Image.memory(
+                  announcement.bytes ?? Uint8List(0),
+                  fit: BoxFit.cover,
+                  width: width,
+                  height: height,
+                  frameBuilder: ((context, child, frame, wasSynchronouslyLoaded) {
+                    return AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: frame != null
+                          ? child
+                          : Container(
+                              height: height,
+                              width: width,
+                              color: Colors.grey[300],
+                            ),
+                    );
+                  }),
+                )
+              : Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
                     height: height,
-                    frameBuilder: ((context, child, frame, wasSynchronouslyLoaded) {
-                      return AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        child: frame != null
-                            ? child
-                            : Container(
-                                height: height,
-                                width: width,
-                                color: Colors.grey[300],
-                              ),
-                      );
-                    }),
-                  )
-                : Shimmer.fromColors(
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.grey[100]!,
-                    child: Container(
-                      height: height,
-                      width: width,
-                      color: Colors.grey[300],
-                    ),
+                    width: width,
+                    color: Colors.grey[300],
                   ),
-          );
-        });
+                ),
+        );
+      },
+    );
   }
 }

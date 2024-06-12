@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smart/feature/home/bloc/scroll/scroll_cubit.dart';
 import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
 import 'package:smart/feature/main/ui/sections/categories_section.dart';
 import 'package:smart/feature/main/ui/widgets/appbar_with_search_field.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
 import 'package:smart/feature/search/ui/sections/popular_queries.dart';
+import 'package:smart/feature/search/ui/widgets/announcement_shimmer.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/constants.dart';
@@ -14,7 +16,6 @@ import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/scaffold/main_scaffold.dart';
 
 import '../../../managers/announcement_manager.dart';
-import '../../../utils/animations.dart';
 import '../../../widgets/conatainers/advertisement_containers.dart';
 import '../../../widgets/conatainers/announcement_container.dart';
 import '../../search/bloc/search_announcement_cubit.dart';
@@ -160,7 +161,7 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                     ),
                   ),
-                  CategoriesSection(key: UniqueKey()),
+                  const CategoriesSection(),
                   const SliverToBoxAdapter(
                     child: SizedBox(height: 8),
                   ),
@@ -189,10 +190,32 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                     ),
                   ),
-                  SliverPadding(padding: const EdgeInsets.symmetric(horizontal: 15), sliver: getAnnouncementsGrid()),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    sliver: getAnnouncementsGrid(),
+                  ),
                   if (state is AnnouncementsLoadingState) ...[
                     SliverToBoxAdapter(
-                      child: Center(child: AppAnimations.bouncingLine),
+                      child: SingleChildScrollView(
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: const Center(
+                            child: Wrap(
+                              spacing: 12,
+                              runSpacing: 50,
+                              children: [
+                                AnnouncementShimmer(),
+                                AnnouncementShimmer(),
+                                AnnouncementShimmer(),
+                                AnnouncementShimmer(),
+                                AnnouncementShimmer(),
+                                AnnouncementShimmer(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     )
                   ],
                 ],

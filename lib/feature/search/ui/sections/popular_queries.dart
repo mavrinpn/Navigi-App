@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smart/feature/main/bloc/popularQueries/popular_queries_cubit.dart';
 import 'package:smart/managers/search_manager.dart';
-import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 
@@ -73,7 +73,30 @@ class PopularQueriesWidget extends StatelessWidget {
           //   },
           // );
         } else if (state is PopularQueriesLoading) {
-          return Center(child: AppAnimations.bouncingLine);
+          return Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: SizedBox(
+              height: 60,
+              child: Wrap(
+                clipBehavior: Clip.hardEdge,
+                spacing: 6,
+                runSpacing: 6,
+                children: [60.0, 80.0, 70.0, 100.0, 70.0, 60.0, 80.0, 70.0, 100.0, 70.0]
+                    .map(
+                      (e) => Container(
+                        height: 24,
+                        decoration: BoxDecoration(
+                          color: AppColors.backgroundLightGray,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Container(width: e),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+          );
         }
         return const Text('Popular Queries failed');
       },

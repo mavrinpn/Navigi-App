@@ -12,7 +12,8 @@ class CategoryCubit extends Cubit<CategoryState> {
 
   void loadCategories() async {
     emit(CategoryLoadingState());
-    try{
+    try {
+      await Future.delayed(const Duration(seconds: 2));
       final categories = await categoriesManager.loadCategories();
       emit(CategorySuccessState(categories: categories));
     } catch (e) {

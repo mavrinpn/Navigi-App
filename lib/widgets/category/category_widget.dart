@@ -1,5 +1,5 @@
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:smart/main.dart';
 import 'package:smart/models/category.dart';
 import 'package:smart/utils/fonts.dart';
@@ -33,9 +33,11 @@ class _CategoryWidgetState extends State<CategoryWidget> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: Image.network(
-                widget.category.imageUrl!,
-                fit: BoxFit.cover,
+              child: FancyShimmerImage(
+                imageUrl: widget.category.imageUrl!,
+                boxFit: BoxFit.cover,
+                shimmerBaseColor: Colors.grey[300]!,
+                shimmerHighlightColor: Colors.grey[100]!,
               ),
             ),
           ),

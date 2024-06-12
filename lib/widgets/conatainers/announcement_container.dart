@@ -38,6 +38,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
       CustomSnackBar.showSnackBar(
         context,
         liked ? localizations.adRemovedFromFavorites : localizations.adAddedToFavorites,
+        2,
       );
       liked = !liked;
     });
@@ -75,7 +76,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
               width: imageWidth,
               child: Text(
                 widget.announcement.title,
-                style: AppTypography.font12dark,
+                style: AppTypography.font14dark,
                 softWrap: false,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

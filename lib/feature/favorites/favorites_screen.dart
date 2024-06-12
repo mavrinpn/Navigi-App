@@ -33,7 +33,6 @@ class _FavoritesScreen extends State<FavoritesScreen> {
             ),
             childCount: favouritesManager.announcements.length,
           ),
-          //TODO
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
