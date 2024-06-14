@@ -272,7 +272,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get writeWithSupport => 'Écrire au support';
 
   @override
-  String get doYouWant => 'Vous voulez sortir?';
+  String get doYouWantLogout => 'Vous voulez sortir?';
+
+  @override
+  String get doYouWantLogoutAlert => 'La prochaine fois, vous devrez entrer un mot de passe';
+
+  @override
+  String get doYouWantDelete => 'Voulez-vous supprimer votre compte?';
+
+  @override
+  String get doYouWantDeleteAlert => 'Si vous supprimez votre compte, vous ne pourrez plus récupérer le contenu ou les informations que vous avez partagés sur Navigi. Votre profil seront également supprimés.';
 
   @override
   String get yes => 'Oui';

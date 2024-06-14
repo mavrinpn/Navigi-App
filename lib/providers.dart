@@ -1,3 +1,4 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/bloc/app/app_cubit.dart';
@@ -72,10 +73,12 @@ class MyRepositoryProviders extends StatelessWidget {
     return MultiRepositoryProvider(providers: [
       RepositoryProvider(
         create: (_) => AuthRepository(
-            client: client,
-            databaseService: databaseService,
-            messagingService: messagingService,
-            fileStorageManager: storageManager),
+          client: client,
+          databaseService: databaseService,
+          messagingService: messagingService,
+          fileStorageManager: storageManager,
+          functions: Functions(client),
+        ),
       ),
       RepositoryProvider(
         create: (_) => CreatingAnnouncementManager(client: client),

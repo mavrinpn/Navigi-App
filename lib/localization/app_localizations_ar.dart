@@ -272,7 +272,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get writeWithSupport => 'اكتب لنا';
 
   @override
-  String get doYouWant => 'هل تريد الخروج؟';
+  String get doYouWantLogout => 'هل تريد الخروج؟';
+
+  @override
+  String get doYouWantLogoutAlert => 'في المرة القادمة سوف تحتاج إلى إدخال كلمة مرور';
+
+  @override
+  String get doYouWantDelete => 'هل تريد حذف حسابك?';
+
+  @override
+  String get doYouWantDeleteAlert => 'إذا قمت بحذف حسابك ، فلن تتمكن بعد الآن من استعادة المحتوى أو المعلومات التي قمت بمشاركتها على نافيجي. سيتم أيضا حذف ملف التعريف الخاص بك.';
 
   @override
   String get yes => 'نعم';

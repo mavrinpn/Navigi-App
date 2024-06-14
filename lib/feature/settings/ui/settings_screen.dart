@@ -154,6 +154,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _logoutButton() {
+    final localizations = AppLocalizations.of(context)!;
+
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -164,11 +166,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           title: Center(
               child: Text(
-            'Vous voulez sortir?',
+            localizations.doYouWantLogout,
             style: AppTypography.font16black,
           )),
           content: Text(
-            'Pharetra ultricies ullamcorper a et magna convallis condimentum. Proin mi orci dignissim lectus nulla neque elitInt',
+            localizations.doYouWantLogoutAlert,
             textAlign: TextAlign.center,
             style: AppTypography.font14lightGray,
           ),
@@ -207,6 +209,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _deleteButton() {
+    final localizations = AppLocalizations.of(context)!;
+
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -217,12 +221,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           title: Center(
               child: Text(
-            'Vous voulez sortir?', //TODO localization
+            localizations.doYouWantDelete,
             style: AppTypography.font16black,
           )),
           content: Text(
-            //TODO localization
-            'Pharetra ultricies ullamcorper a et magna convallis condimentum. Proin mi orci dignissim lectus nulla neque elitInt',
+            localizations.doYouWantDeleteAlert,
             textAlign: TextAlign.center,
             style: AppTypography.font14lightGray,
           ),
@@ -232,7 +235,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 BlocProvider.of<UserCubit>(context).deleteProfile().then((value) {
                   BlocProvider.of<CreatorCubit>(context).setUserId('');
 
-                  //TODO replace with function
                   BlocProvider.of<AuthCubit>(context).deleteIdentity().then((value) {
                     HotRestartController.performHotRestart(context);
                   });

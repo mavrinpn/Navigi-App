@@ -272,7 +272,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get writeWithSupport => 'Write with support';
 
   @override
-  String get doYouWant => 'Do you want to go out?';
+  String get doYouWantLogout => 'Do you want to log out?';
+
+  @override
+  String get doYouWantLogoutAlert => 'Next time you will need to enter a password';
+
+  @override
+  String get doYouWantDelete => 'Do you want to delete your account?';
+
+  @override
+  String get doYouWantDeleteAlert => 'If you delete your account, you will no longer be able to recover the content or information that you have shared on Navigi. Your profile will also be deleted.';
 
   @override
   String get yes => 'Yes';

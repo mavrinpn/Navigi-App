@@ -629,11 +629,29 @@ abstract class AppLocalizations {
   /// **'Write with support'**
   String get writeWithSupport;
 
-  /// No description provided for @doYouWant.
+  /// No description provided for @doYouWantLogout.
   ///
   /// In en, this message translates to:
-  /// **'Do you want to go out?'**
-  String get doYouWant;
+  /// **'Do you want to log out?'**
+  String get doYouWantLogout;
+
+  /// No description provided for @doYouWantLogoutAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'Next time you will need to enter a password'**
+  String get doYouWantLogoutAlert;
+
+  /// No description provided for @doYouWantDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to delete your account?'**
+  String get doYouWantDelete;
+
+  /// No description provided for @doYouWantDeleteAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'If you delete your account, you will no longer be able to recover the content or information that you have shared on Navigi. Your profile will also be deleted.'**
+  String get doYouWantDeleteAlert;
 
   /// No description provided for @yes.
   ///

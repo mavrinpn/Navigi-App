@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 import 'package:appwrite/appwrite.dart';
@@ -15,9 +16,12 @@ import '../../../enum/enum.dart';
 class AuthRepository {
   final Client client;
   final Account _account;
+  final Functions _functions;
   final DatabaseService _databaseService;
   final MessagingService _messagingService;
   final FileStorageManager _fileStorageManager;
+
+  final deleteAccountFunc = '666c00bba70155719253';
 
   User? loggedUser;
   UserData? userData;
@@ -43,12 +47,14 @@ class AuthRepository {
 
   String get userId => loggedUser?.$id ?? '';
 
-  AuthRepository(
-      {required this.client,
-      required DatabaseService databaseService,
-      required MessagingService messagingService,
-      required FileStorageManager fileStorageManager})
-      : _account = Account(client),
+  AuthRepository({
+    required this.client,
+    required DatabaseService databaseService,
+    required MessagingService messagingService,
+    required FileStorageManager fileStorageManager,
+    required Functions functions,
+  })  : _account = Account(client),
+        _functions = functions,
         _fileStorageManager = fileStorageManager,
         _messagingService = messagingService,
         _databaseService = databaseService {
@@ -143,10 +149,24 @@ class AuthRepository {
     appState.add(AuthStateEnum.unAuth);
   }
 
+  Future<String> getJwt() => _account.createJWT().then((value) => value.jwt);
+
   Future<void> deleteIdentity() async {
     if (loggedUser != null) {
+      final jwt = await getJwt();
+      final encodedBody = jsonEncode({
+        'jwt': jwt,
+      });
+
       try {
-        await _account.deleteIdentity(identityId: loggedUser!.$id);
+        final res = await _functions.createExecution(
+          functionId: deleteAccountFunc,
+          body: encodedBody,
+        );
+
+        // ignore: avoid_print
+        print('${res.responseStatusCode}');
+
         sessionID = null;
         loggedUser = null;
         userData = null;
