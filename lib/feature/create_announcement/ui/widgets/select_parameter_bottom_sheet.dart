@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart/main.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
@@ -18,6 +18,8 @@ class SelectParameterBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return InkWell(
       borderRadius: BorderRadius.circular(10),
       onTap: () {
@@ -73,7 +75,7 @@ class SelectParameterBottomSheet extends StatelessWidget {
                           callback: () {
                             Navigator.of(context).pop();
                           },
-                          text: currentLocaleShortName.value == 'fr' ? 'Appliquer' : 'تطبيق',
+                          text: localizations.apply,
                           active: true,
                         ),
                       ),

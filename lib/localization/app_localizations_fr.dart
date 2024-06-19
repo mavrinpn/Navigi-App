@@ -518,6 +518,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get save => 'Enregistrer';
 
   @override
+  String get apply => 'Appliquer';
+
+  @override
   String get placeApplicationSettings => 'Paramètres';
 
   @override
@@ -531,6 +534,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get choosingMark => 'Choix de la marque';
+
+  @override
+  String get choosingCategory => 'Choisissez la catégorie';
 
   @override
   String get specifyPlace => 'Précisez le localisation';

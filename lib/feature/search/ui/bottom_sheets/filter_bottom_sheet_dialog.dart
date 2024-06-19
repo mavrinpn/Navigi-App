@@ -4,6 +4,7 @@ import 'package:smart/feature/search/ui/bottom_sheets/common_filters_bottom_shee
 import 'package:smart/feature/search/ui/bottom_sheets/location_filter_bottom_sheet.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/price_filter_bottom_sheet.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/single_filter_bottom_sheet.dart';
+import 'package:smart/feature/search/ui/bottom_sheets/subcategory_filter_bottom_sheet.dart';
 
 void showFilterBottomSheet({
   required BuildContext context,
@@ -28,6 +29,14 @@ void showFilterBottomSheet({
         return Padding(
           padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 12),
           child: const LocationFilterBottomSheet(),
+        );
+      } else if (parameterKey == FilterKeys.subcategory) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.8,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 12),
+            child: const SubcategoryFilterBottomSheet(),
+          ),
         );
       } else if (parameterKey != null) {
         return Padding(

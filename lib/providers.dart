@@ -228,7 +228,7 @@ class MyBlocProviders extends StatelessWidget {
           lazy: false,
         ),
         BlocProvider(
-          create: (_) => UpdateAppBarFilterCubit(UpdateAppBarFilterState(needUpdate: false)),
+          create: (_) => UpdateAppBarFilterCubit(UpdateAppBarFilterState(needUpdate: false, title: null)),
           lazy: false,
         ),
         BlocProvider(

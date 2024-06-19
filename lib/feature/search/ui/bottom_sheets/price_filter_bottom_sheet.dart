@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
 import 'package:smart/utils/price_type.dart';
@@ -50,6 +51,8 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
     final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
@@ -114,7 +117,7 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
 
                     setState(() {});
                   },
-                  text: locale() == 'fr' ? 'Appliquer' : 'تطبيق',
+                  text: localizations.apply,
                   active: true,
                 )
               ],

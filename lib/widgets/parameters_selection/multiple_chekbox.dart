@@ -106,7 +106,7 @@ class MultipleCheckboxWidget extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4.0),
                   ),
-                  side: MaterialStateBorderSide.resolveWith(
+                  side: WidgetStateBorderSide.resolveWith(
                     (states) => BorderSide(
                       width: 1,
                       color: active ? AppColors.red : AppColors.radioButtonGray,

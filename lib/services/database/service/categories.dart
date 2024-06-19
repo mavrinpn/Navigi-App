@@ -11,7 +11,9 @@ class CategoriesService {
 
     List<Category> categories = [];
     for (var doc in res.documents) {
-      categories.add(Category.fromJson(doc.data));
+      final subcategories = await getAllSubcategoriesFromCategoryId(doc.$id);
+      final category = Category.fromJson(doc.data).copyWith(subcategories: subcategories);
+      categories.add(category);
     }
 
     return categories;
@@ -52,6 +54,7 @@ class CategoriesService {
 
   Future<List<Subcategory>> getSubcategoriesBySubcategory(String subcategoryID) async {
     List<Subcategory> subcategories = <Subcategory>[];
+
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
       collectionId: subcategoriesCollection,

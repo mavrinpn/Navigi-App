@@ -518,6 +518,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get save => 'حفظ';
 
   @override
+  String get apply => 'تطبيق';
+
+  @override
   String get placeApplicationSettings => 'الإعدادات';
 
   @override
@@ -531,6 +534,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get choosingMark => 'اختيار العلامة';
+
+  @override
+  String get choosingCategory => 'اختر الفئة';
 
   @override
   String get specifyPlace => 'تحديد المكان';

@@ -1121,6 +1121,12 @@ abstract class AppLocalizations {
   /// **'Save'**
   String get save;
 
+  /// No description provided for @apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get apply;
+
   /// No description provided for @placeApplicationSettings.
   ///
   /// In en, this message translates to:
@@ -1150,6 +1156,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choosing mark'**
   String get choosingMark;
+
+  /// No description provided for @choosingCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Choosing category'**
+  String get choosingCategory;
 
   /// No description provided for @specifyPlace.
   ///

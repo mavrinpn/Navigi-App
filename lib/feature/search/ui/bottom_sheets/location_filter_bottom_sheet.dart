@@ -68,6 +68,8 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
     final selectCategoryCubit =
         BlocProvider.of<SearchSelectSubcategoryCubit>(context);
@@ -126,7 +128,7 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
 
                     setState(() {});
                   },
-                  text: locale() == 'fr' ? 'Appliquer' : 'تطبيق',
+                  text: localizations.apply,
                   active: true,
                 ),
                 const SizedBox(height: 16),

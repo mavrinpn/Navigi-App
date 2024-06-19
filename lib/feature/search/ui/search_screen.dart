@@ -222,6 +222,18 @@ class _SearchScreenState extends State<SearchScreen> {
             lastQuery = query;
             searchManager.setSearch(false);
             setSearchText(query);
+
+            //TODO change subcategory
+            final subcategoriesCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+            final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+
+            searchCubit.setSubcategory(keyword.subcategoryId);
+            searchCubit.setSearchMode(SearchModeEnum.subcategory);
+            subcategoriesCubit.getSubcategoryFilters(keyword.subcategoryId);
+
+            RepositoryProvider.of<SearchManager>(context).setSearch(false);
+            BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
+
             setState(() {});
 
             FocusManager.instance.primaryFocus?.unfocus();
@@ -456,12 +468,16 @@ class _SearchScreenState extends State<SearchScreen> {
                         selectCategoryCubit.getSubcategoryFilters('');
                       },
                     ),
-                    Text(
-                      widget.title,
-                      style: const TextStyle(
-                        fontFamily: 'SF Pro Display',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                    Expanded(
+                      child: Text(
+                        state.title ?? widget.title,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: const TextStyle(
+                          fontFamily: 'SF Pro Display',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
@@ -477,6 +493,12 @@ class _SearchScreenState extends State<SearchScreen> {
                         alignment: WrapAlignment.start,
                         spacing: 6,
                         children: [
+                          FilterChipWidget(
+                            isSelected: selectCategoryCubit.subcategoryId != null &&
+                                selectCategoryCubit.subcategoryId!.isNotEmpty,
+                            title: localizations.category,
+                            parameterKey: FilterKeys.subcategory,
+                          ),
                           FilterChipWidget(
                             isSelected: !(searchCubit.minPrice == null && searchCubit.maxPrice == null),
                             title: localizations.price,

@@ -266,7 +266,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
 
                   setState(() {});
                 },
-                text: locale() == 'fr' ? 'Appliquer' : 'تطبيق',
+                text: localizations.apply,
                 active: true,
               ),
             ),

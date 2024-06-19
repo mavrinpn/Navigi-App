@@ -47,15 +47,13 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> with 
       RepositoryProvider.of<SearchManager>(context).setSearch(false);
       BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
 
-      final String currentLocale = MyApp.getLocale(context) ?? 'fr';
-
       Navigator.pushNamed(
         context,
         AppRoutesNames.search,
         arguments: {
           'showBackButton': false,
           'showSearchHelper': false,
-          'title': currentLocale == 'fr' ? subcategory.nameFr : subcategory.nameAr
+          'title': subcategory.localizedName(currentLocaleShortName.value),
         },
       );
     }
