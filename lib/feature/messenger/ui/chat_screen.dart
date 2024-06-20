@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/announcement/ui/dialogs/creator_show_more_bottom_sheet.dart';
 import 'package:smart/feature/messenger/bloc/message_images_cubit.dart';
 import 'package:smart/feature/messenger/chat_function.dart';
 import 'package:smart/feature/messenger/ui/widgets/chat_input.dart';
 import 'package:smart/feature/messenger/ui/widgets/message_group_widget.dart';
+import 'package:smart/feature/search/ui/loading_mixin.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/managers/blocked_users_manager.dart';
 import 'package:smart/models/messenger/chat_item.dart';
@@ -18,6 +20,7 @@ import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/feature/messenger/ui/widgets/announcement_short_info.dart';
 import 'package:smart/feature/messenger/ui/widgets/date_splitter_widget.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
@@ -36,7 +39,7 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
   late final TextEditingController messageController;
   bool _blockIsChecked = false;
   bool _authUserIsBlocked = false;
@@ -142,11 +145,29 @@ class _ChatScreenState extends State<ChatScreen> {
               children: [
                 const CustomBackButton(),
                 const SizedBox(width: 10),
-                CircleAvatar(
-                  radius: 20,
-                  backgroundImage: (messengerRepository.currentRoom!.otherUserAvatarUrl ?? '').isNotEmpty
-                      ? NetworkImage(messengerRepository.currentRoom!.otherUserAvatarUrl ?? '')
-                      : null,
+                InkWell(
+                  hoverColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () {
+                    showLoadingOverlay(context);
+                    final otherUserId = messengerRepository.currentRoom?.otherUserId ?? '';
+                    BlocProvider.of<CreatorCubit>(context)
+                        .setUserData(
+                      creatorId: otherUserId,
+                      userData: null,
+                    )
+                        .then((_) {
+                          hideLoadingOverlay(context);
+                      Navigator.pushNamed(context, AppRoutesNames.announcementCreator);
+                    });
+                  },
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundImage: (messengerRepository.currentRoom!.otherUserAvatarUrl ?? '').isNotEmpty
+                        ? NetworkImage(messengerRepository.currentRoom!.otherUserAvatarUrl ?? '')
+                        : null,
+                  ),
                 ),
                 const SizedBox(width: 10),
                 Text(

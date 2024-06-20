@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/messenger/ui/widgets/image_message.dart';
 import 'package:smart/feature/messenger/ui/widgets/message_widget.dart';
+import 'package:smart/feature/search/ui/loading_mixin.dart';
 import 'package:smart/models/messenger/messages_group.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/routes/route_names.dart';
 
-class MessageGroupWidget extends StatelessWidget {
+class MessageGroupWidget extends StatelessWidget with LoadingMixin  {
   const MessageGroupWidget({
     super.key,
     required this.data,
@@ -71,23 +75,37 @@ class MessageGroupWidget extends StatelessWidget {
           if (!data.owned) ...[
             Padding(
               padding: const EdgeInsets.only(bottom: 20, right: 8),
-              child: CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.grey[300],
-                backgroundImage:
-                    avatarUrl != '' ? NetworkImage(avatarUrl) : null,
+              child: InkWell(
+                hoverColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: () {
+                  showLoadingOverlay(context);
+                  final userId = data.messages.firstOrNull?.senderId ?? '';
+                  BlocProvider.of<CreatorCubit>(context)
+                      .setUserData(
+                    creatorId: userId,
+                    userData: null,
+                  )
+                      .then((_) {
+                        hideLoadingOverlay(context);
+                    Navigator.pushNamed(context, AppRoutesNames.announcementCreator);
+                  });
+                },
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Colors.grey[300],
+                  backgroundImage: avatarUrl != '' ? NetworkImage(avatarUrl) : null,
+                ),
               ),
             ),
           ],
           Expanded(
             child: Column(
-              crossAxisAlignment: data.owned
-                  ? CrossAxisAlignment.end
-                  : CrossAxisAlignment.start,
+              crossAxisAlignment: data.owned ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: generateMessages()
                 ..add(SizedBox(
-                  width:
-                      MediaQuery.sizeOf(context).width - (data.owned ? 30 : 78),
+                  width: MediaQuery.sizeOf(context).width - (data.owned ? 30 : 78),
                 )),
             ),
           ),

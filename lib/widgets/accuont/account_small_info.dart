@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/reviews/ui/widgets/user_score_widget.dart';
+import 'package:smart/feature/search/ui/loading_mixin.dart';
 import 'package:smart/generated/assets.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
@@ -25,19 +26,24 @@ class AccountSmallInfo extends StatefulWidget {
   State<AccountSmallInfo> createState() => _AccountSmallInfoState();
 }
 
-class _AccountSmallInfoState extends State<AccountSmallInfo> {
+class _AccountSmallInfoState extends State<AccountSmallInfo> with LoadingMixin  {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
     void onClick() {
-      BlocProvider.of<CreatorCubit>(context).setUser(
+      showLoadingOverlay(context);
+      BlocProvider.of<CreatorCubit>(context)
+          .setUserData(
         creatorId: widget.creatorData.uid,
         userData: widget.creatorData.toUserData(),
-      );
+      )
+          .then((_) {
+            hideLoadingOverlay(context);
+        Navigator.pushNamed(context, AppRoutesNames.announcementCreator);
+      });
       // BlocProvider.of<CreatorCubit>(context).setUserId(widget.creatorData.uid);
       // BlocProvider.of<CreatorCubit>(context).setUserData(widget.creatorData.toUserData());
-      Navigator.pushNamed(context, AppRoutesNames.announcementCreator);
     }
 
     return Padding(

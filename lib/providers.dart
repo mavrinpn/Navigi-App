@@ -289,6 +289,7 @@ class MyBlocProviders extends StatelessWidget {
         BlocProvider(
           create: (_) => CreatorCubit(
             creatorRepository: RepositoryProvider.of<CreatorRepository>(context),
+            authRepository: RepositoryProvider.of<AuthRepository>(context),
           ),
           lazy: false,
         ),

@@ -368,6 +368,15 @@ class AuthRepository {
     }
   }
 
+  Future<UserData?> getUserDataById(String id) async {
+    try {
+      final res = await _databaseService.users.getUserData(uid: id);
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   // Future<String?> _getEmailByPhone(String phone) async {
   //   final String? email;
   //   if (!_tempMail.startsWith('89$phone')) {
