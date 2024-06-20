@@ -161,7 +161,7 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
               const SizedBox(width: 10),
               Text(
                 localizations.location,
-                style: AppTypography.font16black,
+                style: AppTypography.font18gray,
               ),
             ],
           ),

@@ -60,7 +60,7 @@ class _FiltersBottomSheetState extends State<SubcategoryFilterBottomSheet> {
               padding: const EdgeInsets.only(left: 20),
               child: Text(
                 localizations.choosingCategory,
-                style: AppTypography.font20black,
+                style: AppTypography.font18gray,
               ),
             ),
             const SizedBox(height: 12),

@@ -61,7 +61,10 @@ class _PriceWidgetState extends State<PriceWidget> {
                 width: 24,
               ),
               const SizedBox(width: 12),
-              Text(AppLocalizations.of(context)!.price, style: AppTypography.font18gray)
+              Text(
+                AppLocalizations.of(context)!.price,
+                style: AppTypography.font18gray,
+              )
             ]),
             const SizedBox(height: 14),
             Row(

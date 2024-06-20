@@ -68,7 +68,7 @@ class _SelectMarkScreenState extends State<SelectMarkScreen> {
                     padding: const EdgeInsets.only(left: 20),
                     child: Text(
                       localizations.choosingMark,
-                      style: AppTypography.font20black,
+                      style: AppTypography.font18gray,
                     ),
                   ),
                   const SizedBox(height: 12),

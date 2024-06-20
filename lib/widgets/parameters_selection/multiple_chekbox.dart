@@ -35,7 +35,7 @@ class _MultipleCheckboxPickerState extends State<MultipleCheckboxPicker> {
         children: [
           Text(
             widget.parameter.name,
-            style: AppTypography.font16black.copyWith(fontSize: 18),
+            style: AppTypography.font18gray,
           ),
           const SizedBox(height: 10),
           Wrap(
