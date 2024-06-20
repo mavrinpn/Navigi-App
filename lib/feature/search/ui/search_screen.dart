@@ -161,6 +161,15 @@ class _SearchScreenState extends State<SearchScreen> {
                 searchManager.setSearch(false);
                 searchManager.saveInHistory(value!);
                 setState(() {});
+
+                if (widget.showBackButton) {
+                  final subcategoriesCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+                  final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+                  searchCubit.setSubcategory('');
+                  searchCubit.setSearchMode(SearchModeEnum.simple);
+                  subcategoriesCubit.getSubcategoryFilters('');
+                }
+
                 // isScrollLoading = true;
                 BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
                   searchText: value,
@@ -214,7 +223,12 @@ class _SearchScreenState extends State<SearchScreen> {
             final String currentLocale = MyApp.getLocale(context) ?? 'fr';
             final query = currentLocale == 'fr' ? keyword.nameFr : keyword.nameAr;
 
-            // isScrollLoading = true;
+            final subcategoriesCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+            final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+            searchCubit.setSubcategory(keyword.subcategoryId);
+            searchCubit.setSearchMode(SearchModeEnum.subcategory);
+            subcategoriesCubit.getSubcategoryFilters(keyword.subcategoryId);
+
             BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnouncesByKeyword(
               keyword: keyword,
               isNew: true,
@@ -222,14 +236,6 @@ class _SearchScreenState extends State<SearchScreen> {
             lastQuery = query;
             searchManager.setSearch(false);
             setSearchText(query);
-
-            //TODO change subcategory
-            final subcategoriesCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
-            final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-
-            searchCubit.setSubcategory(keyword.subcategoryId);
-            searchCubit.setSearchMode(SearchModeEnum.subcategory);
-            subcategoriesCubit.getSubcategoryFilters(keyword.subcategoryId);
 
             RepositoryProvider.of<SearchManager>(context).setSearch(false);
             BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
