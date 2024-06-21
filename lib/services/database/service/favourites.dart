@@ -42,7 +42,10 @@ class FavouritesService {
     final documents = await _databases.listDocuments(
       databaseId: mainDatabase,
       collectionId: likesCollection,
-      queries: [Query.equal('user_id', userId)],
+      queries: [
+        Query.equal('user_id', userId),
+        Query.orderDesc('\$createdAt'),
+      ],
     );
 
     List<Announcement> announcements = [];
