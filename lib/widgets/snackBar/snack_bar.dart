@@ -57,6 +57,7 @@ abstract class CustomSnackBar {
   static void showSnackBar(BuildContext context, String text, [int duration = 5]) {
     final snackBar = SnackBar(
       duration: Duration(seconds: duration),
+      margin: const EdgeInsets.only(bottom: 64, left: 12, right: 12),
       content: Text(text, textAlign: TextAlign.start, style: AppTypography.font14white),
       backgroundColor: AppColors.dark,
       behavior: SnackBarBehavior.floating,
