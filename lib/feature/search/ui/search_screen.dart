@@ -14,14 +14,12 @@ import 'package:smart/feature/search/ui/widgets/search_appbar.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
 import 'package:smart/models/item/item.dart';
+import 'package:smart/utils/utils.dart';
 import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 import '../../../managers/announcement_manager.dart';
 import '../../../managers/search_manager.dart';
-import '../../../utils/animations.dart';
-import '../../../utils/colors.dart';
-import '../../../utils/fonts.dart';
 import '../../../widgets/conatainers/announcement_container.dart';
 import '../../main/bloc/popularQueries/popular_queries_cubit.dart';
 import '../../main/bloc/search/search_announcements_cubit.dart';
@@ -133,10 +131,10 @@ class _SearchScreenState extends State<SearchScreen> {
     }
 
     SliverGridDelegateWithMaxCrossAxisExtent gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
-      crossAxisSpacing: 12,
-      mainAxisSpacing: 12,
+      crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
+      mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
       maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-      childAspectRatio: 160 / 272,
+      childAspectRatio: AppSizes.anouncementAspectRatio,
     );
 
     AppBar searchAppBar = AppBar(
@@ -319,11 +317,11 @@ class _SearchScreenState extends State<SearchScreen> {
           child: Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
             highlightColor: Colors.grey[100]!,
-            child: const Center(
+            child: Center(
               child: Wrap(
-                spacing: 12,
-                runSpacing: 50,
-                children: [
+                spacing: AppSizes.anouncementGridCrossSpacing,
+                runSpacing: AppSizes.anouncementRunSpacing,
+                children: const [
                   AnnouncementShimmer(),
                   AnnouncementShimmer(),
                   AnnouncementShimmer(),

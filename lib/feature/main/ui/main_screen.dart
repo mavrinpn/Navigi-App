@@ -9,10 +9,9 @@ import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog
 import 'package:smart/feature/search/ui/sections/popular_queries.dart';
 import 'package:smart/feature/search/ui/widgets/announcement_shimmer.dart';
 import 'package:smart/localization/app_localizations.dart';
-import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/constants.dart';
-import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/utils/utils.dart';
 import 'package:smart/widgets/scaffold/main_scaffold.dart';
 
 import '../../../managers/announcement_manager.dart';
@@ -71,10 +70,11 @@ class _MainScreenState extends State<MainScreen> {
     Widget getAnnouncementsGrid() {
       return SliverGrid(
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-            childAspectRatio: 160 / 272),
+          crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
+          mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
+          maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+          childAspectRatio: AppSizes.anouncementAspectRatio,
+        ),
         delegate: SliverChildBuilderDelegate(
           (context, index) => AnnouncementContainer(announcement: announcementRepository.announcements[index]),
           childCount: announcementRepository.announcements.length,
@@ -191,7 +191,9 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                   SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSizes.anouncementGridSidePadding,
+                    ),
                     sliver: getAnnouncementsGrid(),
                   ),
                   if (state is AnnouncementsLoadingState) ...[
@@ -200,11 +202,11 @@ class _MainScreenState extends State<MainScreen> {
                         child: Shimmer.fromColors(
                           baseColor: Colors.grey[300]!,
                           highlightColor: Colors.grey[100]!,
-                          child: const Center(
+                          child: Center(
                             child: Wrap(
-                              spacing: 12,
-                              runSpacing: 50,
-                              children: [
+                              spacing: AppSizes.anouncementGridCrossSpacing,
+                              runSpacing: AppSizes.anouncementRunSpacing,
+                              children: const [
                                 AnnouncementShimmer(),
                                 AnnouncementShimmer(),
                                 AnnouncementShimmer(),

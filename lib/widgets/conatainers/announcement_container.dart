@@ -131,26 +131,26 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
               ),
             ),
             const SizedBox(height: 5),
-            Row(
-              children: [
-                Text(
-                  widget.announcement.creatorData.displayName,
-                  style: widget.announcement.creatorData.verified
-                      ? AppTypography.font12lightGray
-                          .copyWith(color: const Color(0xFF0F7EE4), fontWeight: FontWeight.w400)
-                      : AppTypography.font12lightGray.copyWith(fontWeight: FontWeight.w400),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                if (widget.announcement.creatorData.verified) ...[
-                  const SizedBox(width: 5),
-                  SvgPicture.asset(
-                    'Assets/icons/verified-user.svg',
-                    width: 12,
-                  )
-                ]
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     Text(
+            //       widget.announcement.creatorData.displayName,
+            //       style: widget.announcement.creatorData.verified
+            //           ? AppTypography.font12lightGray
+            //               .copyWith(color: const Color(0xFF0F7EE4), fontWeight: FontWeight.w400)
+            //           : AppTypography.font12lightGray.copyWith(fontWeight: FontWeight.w400),
+            //       maxLines: 1,
+            //       overflow: TextOverflow.ellipsis,
+            //     ),
+            //     if (widget.announcement.creatorData.verified) ...[
+            //       const SizedBox(width: 5),
+            //       SvgPicture.asset(
+            //         'Assets/icons/verified-user.svg',
+            //         width: 12,
+            //       )
+            //     ]
+            //   ],
+            // ),
             const SizedBox(height: 5),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -42,13 +42,11 @@ class SearchItemsWidget extends StatelessWidget {
               onPressed: () {
                 onKeywordTap(keyword);
               },
-              child: SizedBox(
-                width: double.infinity,
-                child: Text(
-                  currentLocale == 'fr' ? keyword.nameFr : keyword.nameAr,
-                  textAlign: TextAlign.start,
-                  style: AppTypography.font14black,
-                ),
+              child: Text(
+                currentLocale == 'fr' ? keyword.nameFr : keyword.nameAr,
+                textDirection: TextDirection.ltr,
+                textAlign: TextAlign.start,
+                style: AppTypography.font14black,
               ),
             ),
           )

@@ -6,12 +6,10 @@ import 'package:smart/feature/announcement/data/creator_repository.dart';
 import 'package:smart/feature/announcement/ui/dialogs/creator_show_more_bottom_sheet.dart';
 import 'package:smart/feature/announcement/ui/widgets/tabs.dart';
 import 'package:smart/feature/messenger/chat_function.dart';
-import 'package:smart/utils/animations.dart';
+import 'package:smart/utils/utils.dart';
 import 'package:smart/widgets/button/back_button.dart';
 
 import '../../../localization/app_localizations.dart';
-import '../../../utils/colors.dart';
-import '../../../utils/fonts.dart';
 import '../../../widgets/accuont/account_medium_info.dart';
 import '../../../widgets/button/custom_text_button.dart';
 import '../../../widgets/conatainers/announcement_container.dart';
@@ -52,10 +50,10 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen> with Single
             childCount: (_tabController.index == 0 ? state.available.length : state.sold.length),
           ),
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
+            crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
+            mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
             maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-            childAspectRatio: 160 / 272,
+            childAspectRatio: AppSizes.anouncementAspectRatio,
           ));
     }
 
@@ -84,7 +82,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen> with Single
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(16.0),
         child: BlocBuilder<CreatorCubit, CreatorState>(
           builder: (context, state) {
             return CustomScrollView(
@@ -93,20 +91,6 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen> with Single
                   child: AccountMediumInfo(user: RepositoryProvider.of<CreatorRepository>(context).userData!),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 26)),
-                // SliverToBoxAdapter(
-                //   child: CustomTextButton.withIcon(
-                //     callback: () {},
-                //     text: localizations.toWrite,
-                //     styleText: AppTypography.font14white,
-                //     active: true,
-                //     icon: const Icon(
-                //       Icons.mail_outline,
-                //       color: Colors.white,
-                //       size: 24,
-                //     ),
-                //   ),
-                // ),
-                // const SliverToBoxAdapter(child: SizedBox(height: 10)),
                 SliverToBoxAdapter(
                   child: CustomTextButton.withIcon(
                     callback: () {
@@ -141,9 +125,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen> with Single
                   state: state,
                 ),
                 const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 15,
-                  ),
+                  child: SizedBox(height: 15),
                 ),
                 if (state is CreatorSuccessState) ...[
                   buildAnnouncementsGrid(state)

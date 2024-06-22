@@ -6,7 +6,7 @@ class AnnouncementShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final double cardSize = width / 2 - 25;
+    final double cardSize = width / 2 - 22;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -15,7 +15,7 @@ class AnnouncementShimmer extends StatelessWidget {
           height: cardSize,
           width: cardSize,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(6),
             color: Colors.grey,
           ),
         ),

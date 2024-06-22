@@ -4,8 +4,7 @@ import 'package:smart/feature/announcement/bloc/related/related_announcement_cub
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/models/item/static_localized_parameter.dart';
 import 'package:smart/models/item/static_parameters.dart';
-import 'package:smart/utils/animations.dart';
-import 'package:smart/utils/fonts.dart';
+import 'package:smart/utils/utils.dart';
 import 'package:smart/widgets/conatainers/announcement_container.dart';
 
 class RelatedAnnouncementWidget extends StatefulWidget {
@@ -67,10 +66,10 @@ class _RelatedAnnouncementWidgetState extends State<RelatedAnnouncementWidget> {
                   itemBuilder: (context, index) => AnnouncementContainer(announcement: state.announcements[index]),
                   itemCount: state.announcements.length,
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
+                    crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
+                    mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
                     maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-                    childAspectRatio: 160 / 272,
+                    childAspectRatio: AppSizes.anouncementAspectRatio,
                   ),
                 ),
                 const SizedBox(height: 50),

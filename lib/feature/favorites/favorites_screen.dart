@@ -26,18 +26,20 @@ class _FavoritesScreen extends State<FavoritesScreen> {
 
     Widget buildAnnouncementsGrid() {
       return SliverGrid(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) => Container(
-              color: AppColors.mainBackground,
-              child: AnnouncementContainer(announcement: favouritesManager.announcements[index]),
-            ),
-            childCount: favouritesManager.announcements.length,
+        delegate: SliverChildBuilderDelegate(
+          (context, index) => Container(
+            color: AppColors.mainBackground,
+            child: AnnouncementContainer(announcement: favouritesManager.announcements[index]),
           ),
-          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-              childAspectRatio: 160 / 272));
+          childCount: favouritesManager.announcements.length,
+        ),
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
+          mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
+          maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+          childAspectRatio: AppSizes.anouncementAspectRatio,
+        ),
+      );
     }
 
     return RefreshIndicator(
