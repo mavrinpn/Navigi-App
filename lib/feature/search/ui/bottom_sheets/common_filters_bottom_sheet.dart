@@ -9,8 +9,11 @@ import 'package:smart/feature/create_announcement/ui/widgets/select_parameter_bo
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
+import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
+import 'package:smart/feature/search/ui/bottom_sheets/filter_keys.dart';
 import 'package:smart/feature/search/ui/widgets/filters/city_area_filter_widget.dart';
 import 'package:smart/main.dart';
+import 'package:smart/managers/categories_manager.dart';
 import 'package:smart/managers/search_manager.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/utils/constants.dart';
@@ -179,6 +182,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      ..._buildSelectCategoryWidget(context),
                       PriceWidget(
                         minPriceController: _minPriceController,
                         maxPriceController: _maxPriceController,
@@ -275,33 +279,6 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
       ),
     );
   }
-
-  // List<Widget> buildFiltersSelection(List<Parameter> parameters) {
-  //   final children = <Widget>[];
-  //   for (var i in parameters) {
-  //     if (i is SelectParameter) {
-  //       children.add(MultipleCheckboxPicker(
-  //         parameter: i,
-  //         wrapDirection: Axis.horizontal,
-  //         onChange: () => setState(() {}),
-  //       ));
-  //     } else if (i is SingleSelectParameter) {
-  //       children.add(SelectParameterWidget(
-  //         parameter: i,
-  //         onChange: () => setState(() {}),
-  //       ));
-  //     } else if (i is MultiSelectParameter) {
-  //       children.add(MultipleCheckboxPicker(
-  //         parameter: i,
-  //         wrapDirection: Axis.horizontal,
-  //         onChange: () => setState(() {}),
-  //       ));
-  //     } else if (i is MinMaxParameter) {
-  //       children.add(MinMaxParameterWidget(parameter: i));
-  //     }
-  //   }
-  //   return children;
-  // }
 
   List<Widget> buildFiltersSelection(List<Parameter> parameters) {
     final localizations = AppLocalizations.of(context)!;
@@ -562,6 +539,62 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
         ),
       ],
       const SizedBox(height: 10),
+    ];
+  }
+
+  List<Widget> _buildSelectCategoryWidget(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+    final subcategoryId = searchCubit.subcategoryId; //
+    final subcategory = CategoriesManager.subcategory(subcategoryId);
+
+    return [
+      Material(
+        color: Colors.transparent,
+        clipBehavior: Clip.hardEdge,
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
+        child: InkWell(
+          onTap: () async {
+            await showFilterBottomSheet(
+              context: context,
+              parameterKey: FilterKeys.subcategory,
+            );
+            setState(() {});
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+            child: Row(
+              children: [
+                Text(
+                  localizations.choosingCategory,
+                  style: AppTypography.font16black.copyWith(fontSize: 18),
+                ),
+                const Spacer(),
+                subcategoryId == null
+                    ? const Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        size: 16,
+                        color: AppColors.lightGray,
+                      )
+                    : const Icon(
+                        Icons.keyboard_arrow_down_sharp,
+                        color: AppColors.lightGray,
+                      )
+              ],
+            ),
+          ),
+        ),
+      ),
+      if (subcategoryId != null) ...[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Text(
+            subcategory?.localizedName() ?? '',
+            style: AppTypography.font18lightGray,
+          ),
+        ),
+      ],
+      const SizedBox(height: 16),
     ];
   }
 

@@ -1,3 +1,5 @@
+import 'package:smart/main.dart';
+
 class Subcategory {
   final String id;
   final String name;
@@ -8,7 +10,8 @@ class Subcategory {
   final String subcategoryId;
   // final int weight;
 
-  String localizedName(String locale) {
+  String localizedName() {
+    final locale = currentLocaleShortName.value;
     if (locale == 'fr') {
       return nameFr;
     } else if (locale == 'ar') {

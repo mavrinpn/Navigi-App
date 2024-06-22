@@ -3,25 +3,36 @@ import 'package:smart/services/database/database_service.dart';
 import '../../models/models.dart';
 
 class CategoriesManager {
+  static List<Category> allCategories = [];
+  static Subcategory? subcategory(String? subcategoryId) {
+    if (subcategoryId == null || subcategoryId == '') {
+      return null;
+    }
+
+    for (final category in allCategories) {
+      for (final subcategory in category.subcategories) {
+        if (subcategory.id == subcategoryId) {
+          return subcategory;
+        }
+      }
+    }
+    return null;
+  }
+
   final DatabaseService databaseService;
 
   CategoriesManager({required this.databaseService});
 
-  Future<List<Category>> loadCategories() async =>
-      databaseService.categories.getAllCategories();
+  Future<List<Category>> loadCategories() async => databaseService.categories.getAllCategories();
 
-  Future<List<Subcategory>> loadSubcategoriesByCategory(
-          String categoryID) async =>
+  Future<List<Subcategory>> loadSubcategoriesByCategory(String categoryID) async =>
       databaseService.categories.getAllSubcategoriesFromCategoryId(categoryID);
 
-  Future<List<Subcategory>> tryToLoadSubcategoriesBuSubcategory(
-          String subcategoryId) async =>
+  Future<List<Subcategory>> tryToLoadSubcategoriesBuSubcategory(String subcategoryId) async =>
       databaseService.categories.getSubcategoriesBySubcategory(subcategoryId);
 
-  Future getFilters(String subcategoryId) async =>
-      databaseService.categories.getSubcategoryParameters(subcategoryId);
+  Future getFilters(String subcategoryId) async => databaseService.categories.getSubcategoryParameters(subcategoryId);
 
-  Future<({Subcategory subcategory, Category category})> getSubcategory(
-          String subcategoryId) async =>
+  Future<({Subcategory subcategory, Category category})> getSubcategory(String subcategoryId) async =>
       databaseService.categories.getSubcategyById(subcategoryId);
 }

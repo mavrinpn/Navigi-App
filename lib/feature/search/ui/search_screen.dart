@@ -13,6 +13,7 @@ import 'package:smart/feature/search/ui/widgets/chips/mark_chip_widget.dart';
 import 'package:smart/feature/search/ui/widgets/search_appbar.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
+import 'package:smart/managers/categories_manager.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/utils/utils.dart';
 import 'package:smart/widgets/button/back_button.dart';
@@ -163,7 +164,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 if (widget.showBackButton) {
                   final subcategoriesCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
                   final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-                  searchCubit.setSubcategory('');
+                  searchCubit.setSubcategory(null);
                   searchCubit.setSearchMode(SearchModeEnum.simple);
                   subcategoriesCubit.getSubcategoryFilters('');
                 }
@@ -223,7 +224,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
             final subcategoriesCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
             final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-            searchCubit.setSubcategory(keyword.subcategoryId);
+            searchCubit.setSubcategory(CategoriesManager.subcategory(keyword.subcategoryId));
             searchCubit.setSearchMode(SearchModeEnum.subcategory);
             subcategoriesCubit.getSubcategoryFilters(keyword.subcategoryId);
 

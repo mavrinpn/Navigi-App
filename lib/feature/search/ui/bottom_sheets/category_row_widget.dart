@@ -99,7 +99,7 @@ class _CategoryRowWidgetState extends State<CategoryRowWidget> {
                         ),
                         Expanded(
                           child: Text(
-                            subcategory.localizedName(currentLocaleShortName.value),
+                            subcategory.localizedName(),
                             overflow: TextOverflow.ellipsis,
                             style: AppTypography.font16black.copyWith(fontWeight: FontWeight.w400),
                           ),

@@ -6,7 +6,6 @@ import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/ui/loading_mixin.dart';
 import 'package:smart/localization/app_localizations.dart';
-import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
 import 'package:smart/models/subcategory.dart';
 import 'package:smart/utils/animations.dart';
@@ -35,7 +34,7 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> with 
     } else {
       final searchCubit = context.read<SearchAnnouncementCubit>();
 
-      searchCubit.setSubcategory(subcategory.id);
+      searchCubit.setSubcategory(subcategory);
       searchCubit.setSearchMode(SearchModeEnum.subcategory);
       subcategoriesCubit.getSubcategoryFilters(subcategory.id).then((value) => searchCubit.searchAnnounces(
             searchText: '',
@@ -53,7 +52,7 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> with 
         arguments: {
           'showBackButton': false,
           'showSearchHelper': false,
-          'title': subcategory.localizedName(currentLocaleShortName.value),
+          'title': subcategory.localizedName(),
         },
       );
     }

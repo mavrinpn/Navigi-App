@@ -7,7 +7,6 @@ import 'package:smart/feature/search/bloc/select_subcategory/search_select_subca
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/category_row_widget.dart';
 import 'package:smart/localization/app_localizations.dart';
-import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
 import 'package:smart/models/models.dart';
 import 'package:smart/utils/utils.dart';
@@ -101,7 +100,7 @@ class _FiltersBottomSheetState extends State<SubcategoryFilterBottomSheet> {
                 if (newSubcategory != null) {
                   Navigator.pop(context);
 
-                  searchCubit.setSubcategory(newSubcategory!.id);
+                  searchCubit.setSubcategory(newSubcategory!);
                   searchCubit.setSearchMode(SearchModeEnum.subcategory);
                   subcategoriesCubit
                       .getSubcategoryFilters(newSubcategory!.id)
@@ -115,8 +114,7 @@ class _FiltersBottomSheetState extends State<SubcategoryFilterBottomSheet> {
                   RepositoryProvider.of<SearchManager>(context).setSearch(false);
                   BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
 
-                  updateAppBarFilterCubit.needUpdateAppBarFilters(
-                      title: newSubcategory!.localizedName(currentLocaleShortName.value));
+                  updateAppBarFilterCubit.needUpdateAppBarFilters(title: newSubcategory!.localizedName());
 
                   setState(() {});
                 }

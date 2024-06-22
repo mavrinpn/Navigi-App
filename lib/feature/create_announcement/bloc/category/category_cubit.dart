@@ -5,6 +5,8 @@ import '../../../../models/category.dart';
 
 part 'category_state.dart';
 
+// List<Category> allCategories = [];
+
 class CategoryCubit extends Cubit<CategoryState> {
   final CategoriesManager categoriesManager;
 
@@ -13,8 +15,8 @@ class CategoryCubit extends Cubit<CategoryState> {
   void loadCategories() async {
     emit(CategoryLoadingState());
     try {
-      await Future.delayed(const Duration(seconds: 2));
       final categories = await categoriesManager.loadCategories();
+      CategoriesManager.allCategories = categories;
       emit(CategorySuccessState(categories: categories));
     } catch (e) {
       emit(CategoryFailState());

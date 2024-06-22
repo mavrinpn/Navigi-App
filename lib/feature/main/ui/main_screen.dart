@@ -110,6 +110,7 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     void openFilters() {
+      openSearchScreen(query: null, showKeyboard: true);
       context.read<SearchAnnouncementCubit>().setSearchMode(SearchModeEnum.simple);
       showFilterBottomSheet(context: context);
     }

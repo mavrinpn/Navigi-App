@@ -4,6 +4,7 @@ import 'package:smart/feature/create_announcement/data/models/marks_filter.dart'
 import 'package:smart/models/item/item.dart';
 import 'package:smart/models/key_word.dart';
 import 'package:smart/models/sort_types.dart';
+import 'package:smart/models/subcategory.dart';
 import 'package:smart/utils/price_type.dart';
 
 import '../../../managers/announcement_manager.dart';
@@ -35,7 +36,8 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
   String? get cityTitle => _cityTitle;
   String? get areaTitle => _areaTitle;
 
-  String? _subcategoryId;
+  String? subcategoryId;
+  Subcategory? subcategory;
 
   String get sortBy => _sortBy ?? SortTypes.dateDESC;
 
@@ -78,7 +80,10 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
 
   void setSearchMode(SearchModeEnum mode) => searchMode = mode;
 
-  void setSubcategory(String id) => _subcategoryId = id;
+  void setSubcategory(Subcategory? subcategory) {
+    subcategoryId = subcategory?.id;
+    subcategory = subcategory;
+  }
 
   void setMarksFilter(MarksFilter? newMarksFilter) {
     marksFilter = newMarksFilter;
@@ -110,7 +115,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
         );
       } else {
         await _announcementManager.searchWithSubcategory(
-          subcategoryId: _subcategoryId ?? '',
+          subcategoryId: subcategoryId ?? '',
           parameters: parameters ?? [],
           searchText: _lastText,
           isNew: true,
@@ -155,7 +160,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
         );
       } else {
         await _announcementManager.searchWithSubcategory(
-          subcategoryId: _subcategoryId!,
+          subcategoryId: subcategoryId!,
           parameters: parameters,
           searchText: searchText,
           isNew: isNew,
@@ -194,7 +199,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
         );
       } else {
         await _announcementManager.searchWithSubcategory(
-          subcategoryId: _subcategoryId!,
+          subcategoryId: subcategoryId!,
           parameters: const <Parameter>[],
           keyword: keyword,
           isNew: true,

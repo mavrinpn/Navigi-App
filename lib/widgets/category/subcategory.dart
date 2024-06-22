@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart/main.dart';
 import 'package:smart/models/models.dart';
 import 'package:smart/utils/fonts.dart';
 
@@ -25,7 +24,7 @@ class SubCategoryWidget extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                subcategory.localizedName(MyApp.getLocale(context) ?? 'fr'),
+                subcategory.localizedName(),
                 overflow: TextOverflow.ellipsis,
                 style: AppTypography.font16black,
               ),

@@ -6,11 +6,11 @@ import 'package:smart/feature/search/ui/bottom_sheets/price_filter_bottom_sheet.
 import 'package:smart/feature/search/ui/bottom_sheets/single_filter_bottom_sheet.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/subcategory_filter_bottom_sheet.dart';
 
-void showFilterBottomSheet({
+Future<void> showFilterBottomSheet({
   required BuildContext context,
   String? parameterKey,
 }) {
-  showModalBottomSheet(
+  return showModalBottomSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(20),
