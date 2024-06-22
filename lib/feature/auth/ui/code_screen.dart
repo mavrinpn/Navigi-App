@@ -104,21 +104,21 @@ class _CodeScreenState extends State<CodeScreen> {
                     ),
                   ],
                 ),
-                const Spacer(
-                  flex: 16,
-                ),
-                Pinput(
-                  controller: codeController,
-                  length: codeLength,
-                  onCompleted: (v) {
-                    setState(() {
-                      buttonActive = true;
-                    });
-                  },
-                  onChanged: (v) {
-                    buttonActive = v.length == codeLength;
-                  },
-                  defaultPinTheme: const PinTheme(
+                const Spacer(flex: 16),
+                Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: Pinput(
+                    controller: codeController,
+                    length: codeLength,
+                    onCompleted: (v) {
+                      setState(() {
+                        buttonActive = true;
+                      });
+                    },
+                    onChanged: (v) {
+                      buttonActive = v.length == codeLength;
+                    },
+                    defaultPinTheme: const PinTheme(
                       width: 56,
                       height: 60,
                       textStyle: TextStyle(
@@ -127,11 +127,11 @@ class _CodeScreenState extends State<CodeScreen> {
                       ),
                       decoration: BoxDecoration(
                         border: Border(bottom: BorderSide(color: AppColors.darkGrayUnderline, width: 1)),
-                      )),
+                      ),
+                    ),
+                  ),
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
+                const SizedBox(height: 16),
                 RichText(
                   text: TextSpan(
                     children: <TextSpan>[
