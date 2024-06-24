@@ -91,7 +91,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     final showSearchHelper = arguments['showSearchHelper'] as bool?;
     final showKeyboard = arguments['showKeyboard'] as bool?;
 
-    return MaterialPageRoute(
+    return customSlideTransition(
       builder: (context) {
         return SearchScreen(
           showBackButton: showBackButton ?? true,
@@ -137,7 +137,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     );
   } else if (settings.name == AppRoutesNames.announcement) {
     final arguments = settings.arguments as String;
-    return MaterialPageRoute(
+
+    return customFadeTransition(
       builder: (context) {
         return MultiBlocProvider(
           providers: [
@@ -167,13 +168,66 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
   );
 }
 
+//TODO
+customFadeTransition({required Widget Function(BuildContext) builder}) {
+  return PageRouteBuilder(
+    transitionDuration: const Duration(milliseconds: 800),
+    reverseTransitionDuration: const Duration(milliseconds: 800),
+    pageBuilder: (
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+    ) {
+      return builder(context);
+    },
+    transitionsBuilder: (
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child,
+    ) {
+      return FadeTransition(
+        opacity: animation,
+        child: child,
+      );
+    },
+  );
+}
+
+//TODO
+customSlideTransition({required Widget Function(BuildContext) builder}) {
+  return PageRouteBuilder(
+    transitionDuration: const Duration(milliseconds: 800),
+    reverseTransitionDuration: const Duration(milliseconds: 800),
+    pageBuilder: (
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+    ) {
+      return builder(context);
+    },
+    transitionsBuilder: (
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child,
+    ) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      final tween = Tween(begin: begin, end: end);
+      final offsetAnimation = animation.drive(tween);
+
+      return SlideTransition(
+        position: offsetAnimation,
+        child: child,
+      );
+    },
+  );
+}
+
 final appRoutes = {
   AppRoutesNames.root: (context) => const MainPage(),
-  // AppRoutesNames.loginFirst: (context) => const LoginFirstScreen(),
-  // AppRoutesNames.authCode: (context) => const CodeScreen(),
   AppRoutesNames.restorePassword: (context) => const RestorePasswordScreen(),
-  // AppRoutesNames.checkCode: (context) => const CheckCodeScreen(),
-
   AppRoutesNames.loginSecond: (context) => const LoginSecondScreen(),
   AppRoutesNames.register: (context) => const RegistrationScreen(),
   AppRoutesNames.home: (context) => const HomeScreen(),
@@ -187,7 +241,6 @@ final appRoutes = {
   AppRoutesNames.announcementCreatingLoading: (context) => const LoadingScreen(),
   AppRoutesNames.announcementCreatingOptions: (context) => const OptionsScreen(),
   AppRoutesNames.main: (context) => const MainScreen(),
-  // AppRoutesNames.announcement: (context) => const AnnouncementScreen(),
   AppRoutesNames.editProfile: (context) => const EditProfileScreen(),
   AppRoutesNames.settings: (context) => const SettingsScreen(),
   AppRoutesNames.settingsLanguage: (context) => const LanguageScreen(),
