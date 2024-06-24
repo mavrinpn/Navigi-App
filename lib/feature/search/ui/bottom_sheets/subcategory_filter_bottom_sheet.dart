@@ -40,7 +40,7 @@ class _FiltersBottomSheetState extends State<SubcategoryFilterBottomSheet> {
       appBar: AppBar(
         backgroundColor: AppColors.appBarColor,
         automaticallyImplyLeading: false,
-        toolbarHeight: 70,
+        toolbarHeight: 76,
         flexibleSpace: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -56,13 +56,43 @@ class _FiltersBottomSheetState extends State<SubcategoryFilterBottomSheet> {
             ),
             const SizedBox(height: 12),
             Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Text(
-                localizations.choosingCategory,
-                style: AppTypography.font18gray,
+              padding: const EdgeInsets.only(left: 20, right: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    localizations.choosingCategory,
+                    style: AppTypography.font18gray,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      //TODO reset subcategory
+                      Navigator.pop(context);
+
+                      searchCubit.setSubcategory(null);
+                      searchCubit.setSearchMode(SearchModeEnum.simple);
+                      subcategoriesCubit
+                          .getSubcategoryFilters('')
+                          .then((value) => searchCubit.searchAnnounces(
+                                searchText: '',
+                                isNew: true,
+                                showLoading: true,
+                                parameters: [],
+                              ));
+
+                      RepositoryProvider.of<SearchManager>(context).setSearch(false);
+                      BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
+
+                      updateAppBarFilterCubit.needUpdateAppBarFilters(title: '');
+                    },
+                    child: Text(
+                      localizations.reset,
+                      style: AppTypography.font14lightGray.copyWith(fontSize: 12),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 12),
           ],
         ),
       ),

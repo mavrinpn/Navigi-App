@@ -161,13 +161,13 @@ class _SearchScreenState extends State<SearchScreen> {
                 searchManager.saveInHistory(value!);
                 setState(() {});
 
-                if (widget.showBackButton) {
-                  final subcategoriesCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
-                  final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-                  searchCubit.setSubcategory(null);
-                  searchCubit.setSearchMode(SearchModeEnum.simple);
-                  subcategoriesCubit.getSubcategoryFilters('');
-                }
+                // if (widget.showBackButton) {
+                //   final subcategoriesCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+                //   final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+                //   searchCubit.setSubcategory(null);
+                //   searchCubit.setSearchMode(SearchModeEnum.simple);
+                //   subcategoriesCubit.getSubcategoryFilters('');
+                // }
 
                 // isScrollLoading = true;
                 BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(

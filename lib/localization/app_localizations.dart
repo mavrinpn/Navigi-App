@@ -767,6 +767,12 @@ abstract class AppLocalizations {
   /// **'Reset everything'**
   String get resetEverything;
 
+  /// No description provided for @reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
+
   /// No description provided for @category.
   ///
   /// In en, this message translates to:

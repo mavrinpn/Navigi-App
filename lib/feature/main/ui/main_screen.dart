@@ -5,6 +5,7 @@ import 'package:smart/feature/home/bloc/scroll/scroll_cubit.dart';
 import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
 import 'package:smart/feature/main/ui/sections/categories_section.dart';
 import 'package:smart/feature/main/ui/widgets/appbar_with_search_field.dart';
+import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
 import 'package:smart/feature/search/ui/sections/popular_queries.dart';
 import 'package:smart/feature/search/ui/widgets/announcement_shimmer.dart';
@@ -86,7 +87,19 @@ class _MainScreenState extends State<MainScreen> {
       required String? query,
       required bool showKeyboard,
     }) {
-      context.read<SearchAnnouncementCubit>().setSearchMode(SearchModeEnum.simple);
+      //TODO reset
+      final subcategoriesCubit = context.read<SearchSelectSubcategoryCubit>();
+      final searchCubit = context.read<SearchAnnouncementCubit>();
+      searchCubit.setSubcategory(null);
+      searchCubit.setSearchMode(SearchModeEnum.simple);
+
+      subcategoriesCubit.getSubcategoryFilters('').then((value) => searchCubit.searchAnnounces(
+            searchText: '',
+            isNew: true,
+            showLoading: true,
+            parameters: [],
+          ));
+
       BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
       BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
         searchText: '',

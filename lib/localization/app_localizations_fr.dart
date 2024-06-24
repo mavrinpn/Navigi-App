@@ -341,6 +341,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get resetEverything => 'Réinitialiser tout';
 
   @override
+  String get reset => 'Réinitialiser';
+
+  @override
   String get category => 'Catégorie';
 
   @override

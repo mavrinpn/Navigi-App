@@ -341,6 +341,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetEverything => 'Reset everything';
 
   @override
+  String get reset => 'Reset';
+
+  @override
   String get category => 'Category';
 
   @override
