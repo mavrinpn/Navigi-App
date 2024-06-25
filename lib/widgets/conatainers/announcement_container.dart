@@ -1,13 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
-import 'package:smart/widgets/images/announcement_image.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 class AnnouncementContainer extends StatefulWidget {
@@ -62,13 +63,25 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            Container(
+              clipBehavior: Clip.hardEdge,
               width: imageWidth,
               height: imageHeight,
-              child: AnnouncementImage(
-                announcement: widget.announcement,
-                width: imageWidth,
-                height: imageHeight,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+              child: CachedNetworkImage(
+                imageUrl: widget.announcement.images.firstOrNull,
+                fit: BoxFit.cover,
+                progressIndicatorBuilder: (context, url, progress) {
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      height: imageHeight,
+                      width: imageWidth,
+                      color: Colors.grey[300],
+                    ),
+                  );
+                },
               ),
             ),
             const SizedBox(height: 10),
