@@ -91,7 +91,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     final showSearchHelper = arguments['showSearchHelper'] as bool?;
     final showKeyboard = arguments['showKeyboard'] as bool?;
 
-    return customSlideTransition(
+    return customFadeTransition(
       builder: (context) {
         return SearchScreen(
           showBackButton: showBackButton ?? true,
@@ -168,11 +168,11 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
   );
 }
 
-//TODO
+//TODO customFadeTransition
 customFadeTransition({required Widget Function(BuildContext) builder}) {
   return PageRouteBuilder(
-    transitionDuration: const Duration(milliseconds: 800),
-    reverseTransitionDuration: const Duration(milliseconds: 800),
+    transitionDuration: const Duration(milliseconds: 300),
+    reverseTransitionDuration: const Duration(milliseconds: 300),
     pageBuilder: (
       BuildContext context,
       Animation<double> animation,
@@ -194,36 +194,35 @@ customFadeTransition({required Widget Function(BuildContext) builder}) {
   );
 }
 
-//TODO
-customSlideTransition({required Widget Function(BuildContext) builder}) {
-  return PageRouteBuilder(
-    transitionDuration: const Duration(milliseconds: 800),
-    reverseTransitionDuration: const Duration(milliseconds: 800),
-    pageBuilder: (
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-    ) {
-      return builder(context);
-    },
-    transitionsBuilder: (
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      Widget child,
-    ) {
-      const begin = Offset(1.0, 0.0);
-      const end = Offset.zero;
-      final tween = Tween(begin: begin, end: end);
-      final offsetAnimation = animation.drive(tween);
+// customSlideTransition({required Widget Function(BuildContext) builder}) {
+//   return PageRouteBuilder(
+//     transitionDuration: const Duration(milliseconds: 300),
+//     reverseTransitionDuration: const Duration(milliseconds: 300),
+//     pageBuilder: (
+//       BuildContext context,
+//       Animation<double> animation,
+//       Animation<double> secondaryAnimation,
+//     ) {
+//       return builder(context);
+//     },
+//     transitionsBuilder: (
+//       BuildContext context,
+//       Animation<double> animation,
+//       Animation<double> secondaryAnimation,
+//       Widget child,
+//     ) {
+//       const begin = Offset(1.0, 0.0);
+//       const end = Offset.zero;
+//       final tween = Tween(begin: begin, end: end);
+//       final offsetAnimation = animation.drive(tween);
 
-      return SlideTransition(
-        position: offsetAnimation,
-        child: child,
-      );
-    },
-  );
-}
+//       return SlideTransition(
+//         position: offsetAnimation,
+//         child: child,
+//       );
+//     },
+//   );
+// }
 
 final appRoutes = {
   AppRoutesNames.root: (context) => const MainPage(),

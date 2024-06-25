@@ -23,8 +23,7 @@ class SpecifyPlaceScreen extends StatefulWidget {
 }
 
 class SpecifyPlaceScreenState extends State<SpecifyPlaceScreen> {
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
+  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
 
   BitmapDescriptor customMarker = BitmapDescriptor.defaultMarker;
   bool loading = true;
@@ -50,8 +49,10 @@ class SpecifyPlaceScreenState extends State<SpecifyPlaceScreen> {
   }
 
   void loadMarker() async {
-    final icon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, 'Assets/map_marker.png');
+    final icon = await BitmapDescriptor.asset(
+      ImageConfiguration.empty,
+      'Assets/map_marker.png',
+    );
     setState(() {
       customMarker = icon;
       loading = false;

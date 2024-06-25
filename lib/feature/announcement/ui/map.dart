@@ -60,8 +60,10 @@ class MapSampleState extends State<MapSample> {
   }
 
   void loadMarker() async {
-    final icon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, 'Assets/map_marker.png');
+    final icon = await BitmapDescriptor.asset(
+      ImageConfiguration.empty,
+      'Assets/map_marker.png',
+    );
     setState(() {
       customMarker = icon;
       loading = false;
@@ -75,9 +77,7 @@ class MapSampleState extends State<MapSample> {
               height: MediaQuery.of(context).size.height * 0.3,
               width: double.infinity,
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12)),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
                 color: AppColors.whiteGray,
               ),
               child: Column(
@@ -88,9 +88,7 @@ class MapSampleState extends State<MapSample> {
                   Container(
                     width: 100,
                     height: 5,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(2),
-                        color: Colors.white),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(2), color: Colors.white),
                   ),
                   const SizedBox(
                     height: 20,
@@ -98,13 +96,8 @@ class MapSampleState extends State<MapSample> {
                   RichText(
                       text: TextSpan(children: [
                     TextSpan(
-                        text: ' ${widget.placeData.name}',
-                        style:
-                            AppTypography.font14black.copyWith(fontSize: 20)),
-                    TextSpan(
-                        text: '  4 km',
-                        style: AppTypography.font14lightGray
-                            .copyWith(fontSize: 20)),
+                        text: ' ${widget.placeData.name}', style: AppTypography.font14black.copyWith(fontSize: 20)),
+                    TextSpan(text: '  4 km', style: AppTypography.font14lightGray.copyWith(fontSize: 20)),
                   ]))
                 ],
               ),

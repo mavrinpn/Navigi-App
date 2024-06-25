@@ -87,7 +87,7 @@ class _MainScreenState extends State<MainScreen> {
       required String? query,
       required bool showKeyboard,
     }) {
-      //TODO reset
+      //TODO reset subcategory
       final subcategoriesCubit = context.read<SearchSelectSubcategoryCubit>();
       final searchCubit = context.read<SearchAnnouncementCubit>();
       searchCubit.setSubcategory(null);
