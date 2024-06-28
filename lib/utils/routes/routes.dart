@@ -36,7 +36,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     final arguments = settings.arguments as Map<String, dynamic>;
     final showBackButton = arguments['showBackButton'] as bool?;
 
-    return MaterialPageRoute(
+    return CustomPageRoute(
       builder: (context) {
         return LoginFirstScreen(
           showBackButton: showBackButton ?? false,
@@ -47,7 +47,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     final arguments = settings.arguments as Map<String, dynamic>;
     final isPasswordRestore = arguments['isPasswordRestore'] as bool?;
 
-    return MaterialPageRoute(
+    return CustomPageRoute(
       builder: (context) {
         return CodeScreen(
           isPasswordRestore: isPasswordRestore ?? false,
@@ -58,7 +58,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     final arguments = settings.arguments as Map<String, dynamic>;
     final isPasswordRestore = arguments['isPasswordRestore'] as bool?;
 
-    return MaterialPageRoute(
+    return CustomPageRoute(
       builder: (context) {
         return CheckCodeScreen(
           isPasswordRestore: isPasswordRestore ?? false,
@@ -66,7 +66,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       },
     );
   } else if (settings.name == AppRoutesNames.userExist) {
-    return MaterialPageRoute(
+    return CustomPageRoute(
       builder: (context) {
         final localizations = AppLocalizations.of(context)!;
         return AuthErrorScreen(
@@ -75,7 +75,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       },
     );
   } else if (settings.name == AppRoutesNames.userNotFound) {
-    return MaterialPageRoute(
+    return CustomPageRoute(
       builder: (context) {
         final localizations = AppLocalizations.of(context)!;
         return AuthErrorScreen(
@@ -91,7 +91,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     final showSearchHelper = arguments['showSearchHelper'] as bool?;
     final showKeyboard = arguments['showKeyboard'] as bool?;
 
-    return customSlideTransition(
+    return CustomPageRoute(
       builder: (context) {
         return SearchScreen(
           showBackButton: showBackButton ?? true,
@@ -104,21 +104,21 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     );
   } else if (settings.name == AppRoutesNames.chat) {
     final arguments = settings.arguments as String?;
-    return MaterialPageRoute(
+    return CustomPageRoute(
       builder: (context) {
         return ChatScreen(message: arguments);
       },
     );
   } else if (settings.name == AppRoutesNames.reviews) {
     final arguments = settings.arguments as UserData;
-    return MaterialPageRoute(
+    return CustomPageRoute(
       builder: (context) {
         return ReviewsScreen(user: arguments);
       },
     );
   } else if (settings.name == AppRoutesNames.createReview) {
     final arguments = settings.arguments as UserData;
-    return MaterialPageRoute(
+    return CustomPageRoute(
       builder: (context) {
         return CreateReviewScreen(user: arguments);
       },
@@ -127,7 +127,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     final arguments = settings.arguments as Map<String, dynamic>;
     final fileId = arguments['fileId'] as String;
     final title = arguments['title'] as String;
-    return MaterialPageRoute(
+    return CustomPageRoute(
       builder: (context) {
         return PdfViewScreen(
           fileId: fileId,
@@ -138,7 +138,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
   } else if (settings.name == AppRoutesNames.announcement) {
     final arguments = settings.arguments as String;
 
-    return customFadeTransition(
+    return CustomPageRoute(
       builder: (context) {
         return MultiBlocProvider(
           providers: [
@@ -160,69 +160,23 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       },
     );
   }
+  final otherRoute = appRoutes[settings.name];
+  if (otherRoute != null) {
+    return CustomPageRoute(builder: otherRoute);
+  }
 
-  return MaterialPageRoute(
+  return CustomPageRoute(
     builder: (context) {
       return const Text('Page not found');
     },
   );
 }
 
-//TODO
-customFadeTransition({required Widget Function(BuildContext) builder}) {
-  return PageRouteBuilder(
-    transitionDuration: const Duration(milliseconds: 800),
-    reverseTransitionDuration: const Duration(milliseconds: 800),
-    pageBuilder: (
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-    ) {
-      return builder(context);
-    },
-    transitionsBuilder: (
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      Widget child,
-    ) {
-      return FadeTransition(
-        opacity: animation,
-        child: child,
-      );
-    },
-  );
-}
+class CustomPageRoute extends MaterialPageRoute {
+  CustomPageRoute({builder}) : super(builder: builder);
 
-//TODO
-customSlideTransition({required Widget Function(BuildContext) builder}) {
-  return PageRouteBuilder(
-    transitionDuration: const Duration(milliseconds: 800),
-    reverseTransitionDuration: const Duration(milliseconds: 800),
-    pageBuilder: (
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-    ) {
-      return builder(context);
-    },
-    transitionsBuilder: (
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      Widget child,
-    ) {
-      const begin = Offset(1.0, 0.0);
-      const end = Offset.zero;
-      final tween = Tween(begin: begin, end: end);
-      final offsetAnimation = animation.drive(tween);
-
-      return SlideTransition(
-        position: offsetAnimation,
-        child: child,
-      );
-    },
-  );
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 0);
 }
 
 final appRoutes = {

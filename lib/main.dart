@@ -97,7 +97,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       title: 'Navigi',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.theme,
-      routes: appRoutes,
+      // routes: appRoutes,
       onGenerateRoute: onGenerateRoute,
       color: const Color(0xff292B57),
     );
