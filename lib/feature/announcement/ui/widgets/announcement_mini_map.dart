@@ -36,10 +36,9 @@ class _AnnouncementMiniMapState extends State<AnnouncementMiniMap> {
       zoom: 14,
     );
 
-    BitmapDescriptor.asset(
-      ImageConfiguration.empty,
-      'Assets/map_marker.png',
-    ).then((icon) {
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration.empty, 'Assets/map_marker.png')
+        .then((icon) {
       markers.add(Marker(
         icon: icon,
         // markerId: MarkerId(widget.cityDistrict.name),
@@ -52,9 +51,10 @@ class _AnnouncementMiniMapState extends State<AnnouncementMiniMap> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.latitude == 0 && widget.longitude == 0) {
+    if (widget.latitude == 0 &&
+        widget.longitude == 0) {
       return const SizedBox.shrink();
-    }
+    } 
     return GestureDetector(
       onTap: () {
         Navigator.push(
