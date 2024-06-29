@@ -24,14 +24,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
   void selectCategory(Category category) async {
     final creatingManager = context.read<CreatingAnnouncementManager>();
 
-    BlocProvider.of<SubcategoryCubit>(context)
-        .loadSubCategories(categoryId: category.id);
+    BlocProvider.of<SubcategoryCubit>(context).loadSubCategories(categoryId: category.id);
     creatingManager.clearSpecifications();
 
-    if (category.id == realEstateCategoryId ||
-        category.id == servicesCategoryId) {
-      creatingManager.specialOptions
-          .add(SpecialAnnouncementOptions.customPlace);
+    if (category.id == realEstateCategoryId || category.id == servicesCategoryId) {
+      creatingManager.specialOptions.add(SpecialAnnouncementOptions.customPlace);
     }
 
     Navigator.pushNamed(
@@ -44,20 +41,20 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    return BlocBuilder<CategoryCubit, CategoryState>(
-      builder: (context, state) {
-        if (state is CategorySuccessState) {
-          return Scaffold(
-            appBar: AppBar(
-              iconTheme: const IconThemeData.fallback(),
-              backgroundColor: AppColors.appBarColor,
-              elevation: 0,
-              title: Text(
-                localizations.selectCategory,
-                style: AppTypography.font20black,
-              ),
-            ),
-            body: Padding(
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: const IconThemeData.fallback(),
+        backgroundColor: AppColors.appBarColor,
+        elevation: 0,
+        title: Text(
+          localizations.selectCategory,
+          style: AppTypography.font20black,
+        ),
+      ),
+      body: BlocBuilder<CategoryCubit, CategoryState>(
+        builder: (context, state) {
+          if (state is CategorySuccessState) {
+            return Padding(
               padding: const EdgeInsets.all(15),
               child: GridView.count(
                 mainAxisSpacing: 10,
@@ -72,18 +69,18 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         ))
                     .toList(),
               ),
-            ),
-          );
-        } else if (state is CategoryFailState) {
-          return const Center(
-            child: Text('Loadding categories fail'),
-          );
-        } else {
-          return Center(
-            child: AppAnimations.bouncingLine,
-          );
-        }
-      },
+            );
+          } else if (state is CategoryFailState) {
+            return Center(
+              child: Text('Loading categories fail: ${state.message}'),
+            );
+          } else {
+            return Center(
+              child: AppAnimations.bouncingLine,
+            );
+          }
+        },
+      ),
     );
   }
 }

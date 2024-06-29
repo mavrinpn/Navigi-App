@@ -11,4 +11,8 @@ class CategorySuccessState extends CategoryState {
   CategorySuccessState({required this.categories});
 }
 
-class CategoryFailState extends CategoryState {}
+class CategoryFailState extends CategoryState {
+  final String message;
+
+  CategoryFailState({required this.message});
+}

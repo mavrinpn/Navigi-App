@@ -19,7 +19,13 @@ class CategoryCubit extends Cubit<CategoryState> {
       CategoriesManager.allCategories = categories;
       emit(CategorySuccessState(categories: categories));
     } catch (e) {
-      emit(CategoryFailState());
+      emit(CategoryFailState(message: e.toString()));
+      Future.delayed(
+        const Duration(seconds: 5),
+        () {
+          loadCategories();
+        },
+      );
       rethrow;
     }
   }
