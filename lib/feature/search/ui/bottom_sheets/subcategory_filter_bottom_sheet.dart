@@ -66,19 +66,16 @@ class _FiltersBottomSheetState extends State<SubcategoryFilterBottomSheet> {
                   ),
                   TextButton(
                     onPressed: () {
-                      //TODO reset subcategory
                       Navigator.pop(context);
 
                       searchCubit.setSubcategory(null);
                       searchCubit.setSearchMode(SearchModeEnum.simple);
-                      subcategoriesCubit
-                          .getSubcategoryFilters('')
-                          .then((value) => searchCubit.searchAnnounces(
-                                searchText: '',
-                                isNew: true,
-                                showLoading: true,
-                                parameters: [],
-                              ));
+                      subcategoriesCubit.getSubcategoryFilters('').then((value) => searchCubit.searchAnnounces(
+                            searchText: '',
+                            isNew: true,
+                            showLoading: true,
+                            parameters: [],
+                          ));
 
                       RepositoryProvider.of<SearchManager>(context).setSearch(false);
                       BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();

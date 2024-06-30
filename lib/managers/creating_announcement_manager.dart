@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
@@ -12,6 +11,7 @@ import 'package:smart/models/announcement.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/models/item/subcategory_filters.dart';
 import 'package:smart/services/database/database_service.dart';
+import 'package:smart/utils/image_compress.dart';
 import 'package:smart/utils/price_type.dart';
 
 import '../../models/announcement_creating_data.dart';
@@ -83,7 +83,7 @@ class CreatingAnnouncementManager {
     List<Uint8List> imagesAsBytes = [];
     for (var image in images) {
       final bytes = await image.readAsBytes();
-      final res = await _compressImage(bytes);
+      final res = await resizeAndcompressImage(bytes);
       imagesAsBytes.add(res);
     }
     return imagesAsBytes;
@@ -95,12 +95,6 @@ class CreatingAnnouncementManager {
   //     imagesAsBytes.add(res);
   //   }
   // }
-
-  Future<Uint8List> _compressImage(Uint8List list) async => await FlutterImageCompress.compressWithList(
-        list,
-        minWidth: 400,
-        quality: 96,
-      );
 
   void setCategory(String categoryId) => creatingData.categoryId = categoryId;
 

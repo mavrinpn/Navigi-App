@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none"
 
-version: 1.0.3+128
+version: 1.0.3+129
 
 environment:
   sdk: ">=3.4.0 <4.0.0"
@@ -41,6 +41,7 @@ dependencies:
   flutter_email_sender: ^6.0.3
   image_picker: ^1.0.0
   image_cropper: ^5.0.0
+  image: ^4.2.0
   fancy_shimmer_image: ^2.0.3
   flutter_image_compress: ^2.0.3
   photo_view: ^0.14.0
