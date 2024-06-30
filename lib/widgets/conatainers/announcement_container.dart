@@ -69,7 +69,9 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
               height: imageHeight,
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
               child: CachedNetworkImage(
-                imageUrl: widget.announcement.images.firstOrNull ?? '',
+                imageUrl: widget.announcement.thumb != ''
+                    ? widget.announcement.thumb
+                    : widget.announcement.images.firstOrNull ?? '',
                 fit: BoxFit.cover,
                 progressIndicatorBuilder: (context, url, progress) {
                   return Shimmer.fromColors(

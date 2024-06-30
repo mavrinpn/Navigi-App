@@ -27,13 +27,10 @@ class LoadingScreen extends StatelessWidget {
             RepositoryProvider.of<AnnouncementManager>(context).addLimitAnnouncements(true);
 
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(localizations.adSuccessfullyAdded)));
-
             Navigator.of(context).popUntil(ModalRoute.withName(AppRoutesNames.root));
           }
           if (state is CreatingFailState) {
             CustomSnackBar.showSnackBar(context, state.error, 10);
-            // ScaffoldMessenger.of(context).showSnackBar(
-            //     SnackBar(content: Text(localizations.errorCreatingAd)));
             Navigator.of(context).popUntil(ModalRoute.withName(AppRoutesNames.root));
           }
         },

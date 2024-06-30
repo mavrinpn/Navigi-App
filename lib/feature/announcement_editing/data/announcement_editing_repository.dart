@@ -49,8 +49,7 @@ class AnnouncementEditingRepository {
 
   void deleteImage(ImageData image) => images.deleteImage(image);
 
-  /// нахуй не надо
-  void addImage(Uint8List imageAsBytes) => images.addImage(imageAsBytes);
+  // void addImage(Uint8List imageAsBytes) => images.addImage(imageAsBytes);
 
   void setTitle(String newValue) => editData!.title = newValue;
 
@@ -139,6 +138,7 @@ class AnnouncementEditingRepository {
     String? newModelId,
   ) async {
     await _saveImagesChanges();
+    await _saveThumb();
     await _databaseService.announcements.editAnnouncement(
       editData: editData!,
       newSubcategoryid: newSubcategiryid,
@@ -153,10 +153,22 @@ class AnnouncementEditingRepository {
     await _deleteImages();
   }
 
+  Future _saveThumb() async {
+    await _deleteThumb();
+    final thumbUrl = await _uploadThumb();
+    editData!.thumb = thumbUrl;
+  }
+
   Future<List<String>> _uploadNewImages() async {
     final bytesList = await images.getNewImages();
     final urls = await _storageManager.uploadAnnouncementImages(bytesList);
     return urls;
+  }
+
+  Future<String> _uploadThumb() async {
+    final bytesList = await images.getThumbImage();
+    final url = await _storageManager.uploadThumb(bytesList);
+    return url;
   }
 
   Future<void> _deleteImages() async {
@@ -168,16 +180,27 @@ class AnnouncementEditingRepository {
     }
   }
 
+  Future<void> _deleteThumb() async {
+    final deletedId = images.thumbImage();
+    if (deletedId != null) {
+      await _storageManager.deleteImage(deletedId, announcementsBucketId);
+    }
+  }
+
   Future _getCurrentAnnouncementImages() async {
     final newImages = <ImageData>[];
-
     for (var imageUrl in _currentAnnouncement!.images) {
       final String id = getIdFromUrl(imageUrl) ?? imageUrl;
       final Uint8List bytes = await _databaseService.announcements.getAnnouncementImage(imageUrl);
-
       newImages.add(ImageData(id, bytes));
     }
 
-    images.addCurrentImages(newImages);
+    late ImageData thumbImage;
+    final String thumbUrl = _currentAnnouncement!.thumb;
+    final String id = getIdFromUrl(thumbUrl) ?? thumbUrl;
+    final Uint8List bytes = await _databaseService.announcements.getAnnouncementImage(thumbUrl);
+    thumbImage = ImageData(id, bytes);
+
+    images.addCurrentImages(newImages, thumbImage);
   }
 }

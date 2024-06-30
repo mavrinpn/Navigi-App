@@ -16,6 +16,7 @@ class AnnouncementEditData {
   StaticParameters staticParameters;
   List<Parameter> parameters;
   List<dynamic> images;
+  String thumb;
   String modelId;
   String markId;
   double longitude;
@@ -30,6 +31,7 @@ class AnnouncementEditData {
         areaId = announcement.area.id,
         area = announcement.area,
         images = announcement.images,
+        thumb = announcement.thumb,
         price = announcement.price,
         priceType = announcement.priceType,
         staticParameters = announcement.staticParameters,
@@ -71,6 +73,7 @@ class AnnouncementEditData {
           title: title,
         ),
         'images': images,
+        'thumb': thumb,
         'mark': newMarkId ?? markId,
         'model': newModelId ?? modelId,
         'subcategoryId': newSubcollectionId,

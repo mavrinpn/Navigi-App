@@ -21,7 +21,12 @@ class AnnouncementCreatingData {
     return 'category: $categoryId, \nsubcategory: $subcategoryId, \ndescription: $description, \ntype: $type, \nprice: $price \nparameters: $parameters';
   }
 
-  Map<String, dynamic> toJson(String creatorId, List<String> urls) => {
+  Map<String, dynamic> toJson(
+    String creatorId,
+    List<String> urls,
+    String thumb,
+  ) =>
+      {
         'name': itemName, //title,
         'description': description,
         'type': type,
@@ -32,6 +37,7 @@ class AnnouncementCreatingData {
         'keywords': keywords,
         'creator_id': creatorId,
         'images': urls,
+        'thumb': thumb,
         'creator': creatorId,
         'area2': areaId,
         'city': cityId,

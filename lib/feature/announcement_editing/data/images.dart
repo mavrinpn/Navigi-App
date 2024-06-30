@@ -7,6 +7,7 @@ class EditImages {
   final List<ImageData> _deletedImages = [];
   final List<ImageData> _addedImages = [];
   final List<ImageData> _currentAnnouncementImages = [];
+  late ImageData _thumbImage;
 
   List<ImageData> get currentImages {
     final images = <ImageData>[];
@@ -21,7 +22,10 @@ class EditImages {
     return images;
   }
 
-  void addCurrentImages(List<ImageData> images) => _currentAnnouncementImages.addAll(images);
+  void addCurrentImages(List<ImageData> images, ImageData thumb) {
+    _currentAnnouncementImages.addAll(images);
+    _thumbImage = thumb;
+  }
 
   void deleteImage(ImageData image) {
     if (_addedImages.contains(image)) {
@@ -41,8 +45,17 @@ class EditImages {
     return List.generate(_addedImages.length, (index) => _addedImages[index].bytes);
   }
 
+  Future<Uint8List> getThumbImage() async {
+    await _compressThumb();
+    return _thumbImage.bytes;
+  }
+
   List<String> deletedImages() {
     return List.generate(_deletedImages.length, (index) => _deletedImages[index].id!);
+  }
+
+  String? thumbImage() {
+    return _thumbImage.id;
   }
 
   void clear() {
@@ -58,6 +71,23 @@ class EditImages {
         image.compressed = true;
         image.bytes = compressedImageBytes;
       }
+    }
+  }
+
+  Future<void> _compressThumb() async {
+    final resultImages = [..._currentAnnouncementImages, ..._addedImages];
+    final deletedIds = _deletedImages.map((e) => e.id).toList();
+    resultImages.removeWhere((e) => deletedIds.contains(e.id));
+
+    _thumbImage = ImageData(
+      resultImages.first.id,
+      resultImages.first.bytes,
+      compressed: false,
+    );
+    if (!_thumbImage.compressed) {
+      final compressedImageBytes = await resizeAndcompressThumb(_thumbImage.bytes);
+      _thumbImage.compressed = true;
+      _thumbImage.bytes = compressedImageBytes;
     }
   }
 }

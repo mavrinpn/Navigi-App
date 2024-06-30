@@ -63,6 +63,7 @@ class _AdditionalMenuBottomSheetState extends State<AdditionalMenuBottomSheet> {
       context.read<AnnouncementEditCubit>().deleteAnnouncement(widget.announcement).then((value) {
         Dialogs.hide(context);
         BlocProvider.of<CreatorCubit>(context).setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
+
         Navigator.popUntil(context, ModalRoute.withName(AppRoutesNames.root));
       });
     } catch (e) {

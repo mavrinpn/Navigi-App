@@ -88,6 +88,13 @@ class CreatingAnnouncementManager {
     }
     return imagesAsBytes;
   }
+
+  Future<Uint8List> compressThumbToBytes() async {
+    final bytes = await images.first.readAsBytes();
+    final res = await resizeAndcompressThumb(bytes);
+    return res;
+  }
+
   // Future<void> _compressImages(List<XFile> images) async {
   //   for (var image in images) {
   //     final bytes = await image.readAsBytes();
@@ -208,12 +215,15 @@ class CreatingAnnouncementManager {
       final uid = user.$id;
       // await compressingImages;
       final imagesAsBytes = await compressImagesToBytes();
+      final thumbAsBytes = await compressThumbToBytes();
 
       final List<String> urls = await uploadImages(imagesAsBytes);
+      final String thumbUrl = await uploadThumb(thumbAsBytes);
 
       await dbService.announcements.createAnnouncement(
         uid,
         urls,
+        thumbUrl,
         creatingData,
         getParametersList(),
         cityDistrict!,
@@ -246,4 +256,6 @@ class CreatingAnnouncementManager {
 
   Future<List<String>> uploadImages(List<Uint8List> bytesList) async =>
       await storageManager.uploadAnnouncementImages(bytesList);
+
+  Future<String> uploadThumb(Uint8List bytesList) async => await storageManager.uploadThumb(bytesList);
 }

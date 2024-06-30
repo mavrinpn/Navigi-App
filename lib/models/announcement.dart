@@ -23,6 +23,7 @@ class Announcement {
   final PriceType priceType;
   final bool active;
   List images;
+  final String thumb;
   final String anouncesTableId;
   final String subTableId;
   final StaticParameters staticParameters;
@@ -54,6 +55,7 @@ class Announcement {
         price = double.parse(json['price'].toString()),
         priceType = PriceTypeExtendion.fromString(json['price_type']),
         images = json['images'],
+        thumb = json['thumb'] ?? '',
         staticParameters = json['parametrs'] is String
             ? StaticParameters(encodedParameters: '${json['parametrs']}')
             : StaticParameters(encodedParameters: '[]'),

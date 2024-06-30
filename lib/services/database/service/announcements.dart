@@ -226,6 +226,7 @@ class AnnouncementsService {
   Future<void> createAnnouncement(
     String uid,
     List<String> urls,
+    String thumbUrl,
     AnnouncementCreatingData creatingData,
     List<Parameter> subcategoryParameters,
     CityDistrict district,
@@ -233,7 +234,7 @@ class AnnouncementsService {
     MarksFilter? marksFilter,
     CarFilter? carFilter,
   ) async {
-    final data = creatingData.toJson(uid, urls);
+    final data = creatingData.toJson(uid, urls, thumbUrl);
 
     double lat = district.latitude;
     double lng = district.longitude;

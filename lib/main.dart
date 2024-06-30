@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart/feature/announcement_editing/ui/editing_announcement_screen.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
+import 'package:smart/feature/main/ui/main_page.dart';
 import 'package:smart/firebase_options.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/providers.dart';
@@ -13,6 +15,7 @@ import 'package:smart/restart_controller.dart';
 import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/services.dart';
 import 'package:smart/utils/app_theme.dart';
+import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/utils/routes/routes.dart';
 
 final ValueNotifier<String> currentLocaleShortName = ValueNotifier<String>('fr');
@@ -97,7 +100,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       title: 'Navigi',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.theme,
-      // routes: appRoutes,
+      routes: {
+        AppRoutesNames.root: (context) => const MainPage(),
+        AppRoutesNames.editingAnnouncement: (context) => const EditingAnnouncementScreen(),
+      },
       onGenerateRoute: onGenerateRoute,
       color: const Color(0xff292B57),
     );

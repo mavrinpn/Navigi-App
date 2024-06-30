@@ -4,7 +4,6 @@ import 'package:smart/feature/announcement/bloc/announcement/announcement_cubit.
 import 'package:smart/feature/announcement/bloc/related/related_announcement_cubit.dart';
 import 'package:smart/feature/announcement/ui/announcement_screen.dart';
 import 'package:smart/feature/announcement/ui/creator_screen.dart';
-import 'package:smart/feature/announcement_editing/ui/editing_announcement_screen.dart';
 import 'package:smart/feature/auth/ui/auth_error_screen.dart';
 import 'package:smart/feature/auth/ui/check_code_screen.dart';
 import 'package:smart/feature/auth/ui/code_screen.dart';
@@ -13,7 +12,6 @@ import 'package:smart/feature/auth/ui/login_second_screen.dart';
 import 'package:smart/feature/auth/ui/registration_screen.dart';
 import 'package:smart/feature/auth/ui/restore_password_screen.dart';
 import 'package:smart/feature/home/ui/home_screen.dart';
-import 'package:smart/feature/main/ui/main_page.dart';
 import 'package:smart/feature/main/ui/main_screen.dart';
 import 'package:smart/feature/messenger/ui/chat_screen.dart';
 import 'package:smart/feature/profile/ui/edit_profile_screen.dart';
@@ -180,7 +178,7 @@ class CustomPageRoute extends MaterialPageRoute {
 }
 
 final appRoutes = {
-  AppRoutesNames.root: (context) => const MainPage(),
+  // AppRoutesNames.root: (context) => const MainPage(),
   AppRoutesNames.restorePassword: (context) => const RestorePasswordScreen(),
   AppRoutesNames.loginSecond: (context) => const LoginSecondScreen(),
   AppRoutesNames.register: (context) => const RegistrationScreen(),
@@ -199,6 +197,6 @@ final appRoutes = {
   AppRoutesNames.settings: (context) => const SettingsScreen(),
   AppRoutesNames.settingsLanguage: (context) => const LanguageScreen(),
   AppRoutesNames.announcementCreator: (context) => const CreatorProfileScreen(),
-  AppRoutesNames.editingAnnouncement: (context) => const EditingAnnouncementScreen(),
+  // AppRoutesNames.editingAnnouncement: (context) => const EditingAnnouncementScreen(),
   AppRoutesNames.searchSelectSubcategory: (context) => const SearchSubcategoryScreen(),
 };
