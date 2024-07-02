@@ -48,6 +48,7 @@ class _CodeScreenState extends State<CodeScreen> {
           Navigator.popUntil(context, ModalRoute.withName(AppRoutesNames.root));
         } else if (state is AuthPasswordUpdateSuccessState) {
           Navigator.pop(context);
+          Navigator.pop(context);
           CustomSnackBar.showSnackBar(context, localizations.passwordUpdateSuccess);
         } else if (state is AuthErrorInvalidCode) {
           CustomSnackBar.showSnackBar(context, localizations.invalidCode);

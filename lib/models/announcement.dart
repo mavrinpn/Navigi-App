@@ -33,7 +33,7 @@ class Announcement {
   late final Widget previewImage;
   final String _createdAt;
   Uint8List? bytes;
-  final Future<Uint8List> futureBytes;
+  final Future<Uint8List?> futureBytes;
   bool liked;
   final String? itemId;
   final String model;

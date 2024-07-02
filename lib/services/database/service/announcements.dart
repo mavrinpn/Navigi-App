@@ -304,13 +304,17 @@ class AnnouncementsService {
         data: {activeAttribute: !currentValue});
   }
 
-  Future<Uint8List> getAnnouncementImage(String url) async {
-    final futureBytes = futureBytesForImageURL(
-      storage: _storage,
-      imageUrl: url,
-    );
+  Future<Uint8List?> getAnnouncementImage(String url) async {
+    try {
+      final futureBytes = futureBytesForImageURL(
+        storage: _storage,
+        imageUrl: url,
+      );
 
-    return futureBytes;
+      return futureBytes;
+    } catch (err) {
+      return Future.value(null);
+    }
   }
 
   Future<Announcement> getAnnouncementById(String announcementId) async {
@@ -320,7 +324,7 @@ class AnnouncementsService {
       documentId: announcementId,
     );
 
-    final futureBytes = getAnnouncementImage(res.data['images'][0]);
+    final Future<Uint8List?> futureBytes = getAnnouncementImage(res.data['images'][0]);
 
     return Announcement.fromJson(
       json: res.data,

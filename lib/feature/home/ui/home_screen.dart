@@ -14,6 +14,7 @@ import 'package:smart/main.dart';
 import 'package:smart/services/messaging_service.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/splash.dart';
 
 import '../../../utils/colors.dart';
 import '../../main/ui/main_screen.dart';
@@ -29,11 +30,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedTab = 0;
   int _targetTab = 0;
+  double _splashOpacity = 1;
+  final _splashKey = UniqueKey();
 
   @override
   void initState() {
     super.initState();
     _pushProcessing();
+
+    Future.delayed(const Duration(milliseconds: 4000), () {
+      setState(() {
+        _splashOpacity = 0;
+      });
+    });
   }
 
   @override
@@ -104,70 +113,82 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
 
-    return PopScope(
-      canPop: false,
-      child: Scaffold(
-        body: BlocListener<AppCubit, AppState>(
-          listener: (context, state) {
-            if (state is AppAuthState) {
-              _showTargetScreenOnLogin();
-            } else {
-              _showMainScreenOnLogout();
-            }
-          },
-          child: IndexedStack(
-            index: _selectedTab,
-            children: widgetOptions,
-          ),
-          // child: widgetOptions[_selectedTab],
-        ),
-        bottomNavigationBar: Container(
-          decoration: const BoxDecoration(border: Border(top: BorderSide(color: Color(0xffDEE2E7), width: 1))),
-          child: BottomNavigationBar(
-            backgroundColor: const Color(0xffFBFBFC),
-            iconSize: 30,
-            type: BottomNavigationBarType.fixed,
-            currentIndex: _selectedTab,
-            items: [
-              BottomNavigationBarItem(
-                  icon: NavigatorBarItem(
-                    asset: 'Assets/icons/search.svg',
-                    isSelected: _selectedTab == 0,
+    return Stack(
+      children: [
+        PopScope(
+          canPop: false,
+          child: Scaffold(
+            body: BlocListener<AppCubit, AppState>(
+              listener: (context, state) {
+                if (state is AppAuthState) {
+                  _showTargetScreenOnLogin();
+                } else {
+                  _showMainScreenOnLogout();
+                }
+              },
+              child: IndexedStack(
+                index: _selectedTab,
+                children: widgetOptions,
+              ),
+              // child: widgetOptions[_selectedTab],
+            ),
+            bottomNavigationBar: Container(
+              decoration: const BoxDecoration(border: Border(top: BorderSide(color: Color(0xffDEE2E7), width: 1))),
+              child: BottomNavigationBar(
+                backgroundColor: const Color(0xffFBFBFC),
+                iconSize: 30,
+                type: BottomNavigationBarType.fixed,
+                currentIndex: _selectedTab,
+                items: [
+                  BottomNavigationBarItem(
+                      icon: NavigatorBarItem(
+                        asset: 'Assets/icons/search.svg',
+                        isSelected: _selectedTab == 0,
+                      ),
+                      tooltip: MyApp.getLocale(context) == 'fr' ? 'Page daccueil' : 'الصفحة الرئيسية',
+                      label: MyApp.getLocale(context) == 'fr' ? 'Page daccueil' : 'الصفحة الرئيسية'),
+                  BottomNavigationBarItem(
+                    icon: MessengerIcon(
+                      isSelected: _selectedTab == 1,
+                    ),
+                    tooltip: localizations.messages,
+                    label: localizations.messages,
                   ),
-                  tooltip: MyApp.getLocale(context) == 'fr' ? 'Page daccueil' : 'الصفحة الرئيسية',
-                  label: MyApp.getLocale(context) == 'fr' ? 'Page daccueil' : 'الصفحة الرئيسية'),
-              BottomNavigationBarItem(
-                icon: MessengerIcon(
-                  isSelected: _selectedTab == 1,
-                ),
-                tooltip: localizations.messages,
-                label: localizations.messages,
+                  BottomNavigationBarItem(
+                    icon: NavigatorBarItem(
+                      asset: 'Assets/icons/like.svg',
+                      isSelected: _selectedTab == 2,
+                    ),
+                    tooltip: MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المفضلة',
+                    label: MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المفضلة',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: NavigatorBarItem(
+                      asset: 'Assets/icons/profile.svg',
+                      isSelected: _selectedTab == 3,
+                    ),
+                    tooltip: localizations.profile,
+                    label: localizations.profile,
+                  ),
+                ],
+                selectedLabelStyle: AppTypography.font10red,
+                unselectedLabelStyle: AppTypography.font10lightGray,
+                onTap: onSelectTab,
+                selectedItemColor: AppColors.red,
+                unselectedItemColor: AppColors.lightGray,
               ),
-              BottomNavigationBarItem(
-                icon: NavigatorBarItem(
-                  asset: 'Assets/icons/like.svg',
-                  isSelected: _selectedTab == 2,
-                ),
-                tooltip: MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المفضلة',
-                label: MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المفضلة',
-              ),
-              BottomNavigationBarItem(
-                icon: NavigatorBarItem(
-                  asset: 'Assets/icons/profile.svg',
-                  isSelected: _selectedTab == 3,
-                ),
-                tooltip: localizations.profile,
-                label: localizations.profile,
-              ),
-            ],
-            selectedLabelStyle: AppTypography.font10red,
-            unselectedLabelStyle: AppTypography.font10lightGray,
-            onTap: onSelectTab,
-            selectedItemColor: AppColors.red,
-            unselectedItemColor: AppColors.lightGray,
+            ),
           ),
         ),
-      ),
+        IgnorePointer(
+          child: AnimatedOpacity(
+            key: _splashKey,
+            duration: const Duration(milliseconds: 300),
+            opacity: _splashOpacity,
+            child: const Splash(showProgress: true),
+          ),
+        ),
+      ],
     );
   }
 

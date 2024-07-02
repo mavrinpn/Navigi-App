@@ -19,10 +19,14 @@ Future<Uint8List> futureBytesForImageURL({
   if (imageUrl != null) {
     final id = getIdFromUrl(imageUrl);
     if (id != null) {
-      futureBytes = storage.getFileView(
-        bucketId: announcementsBucketId,
-        fileId: id,
-      );
+      try {
+        futureBytes = storage.getFileView(
+          bucketId: announcementsBucketId,
+          fileId: id,
+        );
+      } catch (err) {
+        return futureBytes;
+      }
     } else if (imageUrl.isNotEmpty) {
       futureBytes = http.get(Uri.parse(imageUrl)).then((value) => value.bodyBytes);
     }
