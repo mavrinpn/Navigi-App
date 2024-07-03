@@ -4,7 +4,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image/image.dart';
 
 Future<Uint8List> resizeAndcompressImage(Uint8List list) async {
-  const width = 1600;
+  const width = 2000;
   const quality = 90;
 
   Image? img = decodeImage(list);
@@ -27,8 +27,8 @@ Future<Uint8List> resizeAndcompressImage(Uint8List list) async {
 }
 
 Future<Uint8List> resizeAndcompressThumb(Uint8List list) async { //TODO
-  const width = 260;
-  const quality = 85;
+  const width = 512;
+  const quality = 95;
 
   Image? img = decodeImage(list);
   if (img != null) {
