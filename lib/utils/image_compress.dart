@@ -4,8 +4,8 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image/image.dart';
 
 Future<Uint8List> resizeAndcompressImage(Uint8List list) async {
-  const width = 800;
-  const quality = 75;
+  const width = 1600;
+  const quality = 90;
 
   Image? img = decodeImage(list);
   if (img != null) {
