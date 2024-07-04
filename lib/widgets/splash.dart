@@ -16,10 +16,14 @@ class Splash extends StatelessWidget {
           child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          const CircularProgressIndicator(
+            color: Colors.transparent,
+          ),
+          const SizedBox(height: 40),
           SizedBox(
             height: 300,
             child: Image.asset(
-              'Assets/splash_logo.png',
+              'Assets/splash.png',
               width: MediaQuery.of(context).size.width * 0.6,
             ),
           ),

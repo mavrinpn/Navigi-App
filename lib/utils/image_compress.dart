@@ -26,7 +26,7 @@ Future<Uint8List> resizeAndcompressImage(Uint8List list) async {
   );
 }
 
-Future<Uint8List> resizeAndcompressThumb(Uint8List list) async { //TODO
+Future<Uint8List> resizeAndcompressThumb(Uint8List list) async {
   const width = 512;
   const quality = 95;
 
