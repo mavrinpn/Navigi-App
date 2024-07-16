@@ -103,6 +103,8 @@ class AnnouncementsService {
 
     queries.add(Query.isNotNull('announcements'));
 
+    queries.add(Query.orderDesc('\$createdAt'));
+
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
       collectionId: filterData.subcategory,
@@ -285,6 +287,7 @@ class AnnouncementsService {
       queries: [
         Query.equal("creator_id", userId),
         Query.orderDesc(DefaultDocumentParameters.createdAt),
+        Query.limit(1000),
       ],
     );
 

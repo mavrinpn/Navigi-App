@@ -24,14 +24,11 @@ void checkBlockedAndPushChat({
     return;
   }
 
-  RepositoryProvider.of<BlockedUsersManager>(context)
-      .isAuthUserBlockedFor(data.creatorData.uid)
-      .then((blocked) {
+  RepositoryProvider.of<BlockedUsersManager>(context).isAuthUserBlockedFor(data.creatorData.uid).then((blocked) {
     if (blocked) {
       CustomSnackBar.showSnackBar(context, localizations.chatBlocked);
     } else {
-      RepositoryProvider.of<MessengerRepository>(context)
-          .selectChat(announcement: data);
+      RepositoryProvider.of<MessengerRepository>(context).selectChat(announcement: data);
       Navigator.pushNamed(
         context,
         AppRoutesNames.chat,
@@ -47,13 +44,15 @@ void checkBlockedAndCall({
   required String phone,
 }) {
   final localizations = AppLocalizations.of(context)!;
-  RepositoryProvider.of<BlockedUsersManager>(context)
-      .isAuthUserBlockedFor(userId)
-      .then((blocked) {
+  RepositoryProvider.of<BlockedUsersManager>(context).isAuthUserBlockedFor(userId).then((blocked) {
     if (blocked) {
       CustomSnackBar.showSnackBar(context, localizations.chatBlocked);
     } else {
-      launchUrl(Uri.parse('tel://$phone'));
+      String localPhone = phone;
+      if (phone.startsWith('+')) {
+        localPhone = '+213$phone';
+      }
+      launchUrl(Uri.parse('tel://$localPhone'));
     }
   });
 }
