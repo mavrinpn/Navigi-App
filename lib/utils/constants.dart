@@ -3,14 +3,14 @@ const String serviceDomain = '143.244.206.96';
 
 const String carSubcategoryId = '65d45e64812538dfea60';
 
-const String immo1SubcategoryId = '65d45b996a6f6f196d83';
-const String immo2SubcategoryId = '65d45b8ab495cfe702ee';
-const String immo3SubcategoryId = '65d45b81a1a29940bba8';
-const String immo4SubcategoryId = '65d45b77aaa56e835261';
-const String immo5SubcategoryId = '65d45b6e982863c0ed55';
-const String immo6SubcategoryId = '65d45b61f214dc789d46';
-const String immo7SubcategoryId = '65d45b537ae36ed1eb9e';
-const String immo8SubcategoryId = '65d45b47006d9408b9ff';
+const String immoAppartementsId = '65d45b996a6f6f196d83'; //Appartements
+const String immoMaisonsEtVillasId = '65d45b8ab495cfe702ee'; //Maisons Et Villas
+const String immoBureauxEtPlateauxId = '65d45b81a1a29940bba8'; //Bureaux Et Plateaux
+const String immoLocationsDeVacancesId = '65d45b77aaa56e835261'; //Locations De Vacances
+const String immoMagasinsCommercesId = '65d45b6e982863c0ed55'; //Magasins, Commerces Et Locaux Industriels
+const String immoColocationsId = '65d45b61f214dc789d46'; //Colocations
+const String immoTerrainsEtFermesId = '65d45b537ae36ed1eb9e'; //Terrains Et Fermes
+const String immoAutreImmobilierId = '65d45b47006d9408b9ff'; //Autre Immobilier
 
 const String animalsSubcategoryId = '65d4455fe5a1a2b3c0bd';
 
