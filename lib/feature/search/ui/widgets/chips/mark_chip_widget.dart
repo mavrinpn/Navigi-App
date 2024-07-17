@@ -22,11 +22,9 @@ class _MarkChipWidgetState extends State<MarkChipWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<UpdateAppBarFilterCubit, UpdateAppBarFilterState>(
       builder: (context, state) {
-        final selectCategoryCubit =
-            BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+        final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
         final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-        final isSelected = searchCubit.marksFilter != null ||
-            selectCategoryCubit.autoFilter != null;
+        final isSelected = searchCubit.marksFilter != null || selectCategoryCubit.autoFilter != null;
         final foregroundColor = isSelected ? Colors.white : Colors.black;
 
         return FilterChip(
@@ -54,17 +52,6 @@ class _MarkChipWidgetState extends State<MarkChipWidget> {
                   isBottomSheet: true,
                 ),
               );
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (_) => SelectCarModelScreen(
-              //       needSelectModel: true,
-              //       subcategory: selectCategoryCubit.subcategoryId!,
-              //     ),
-              //   ),
-              // ).then((filter) {
-
-              // });
 
               if (filter != null) {
                 searchCubit.setMarksFilter(MarksFilter(
@@ -81,8 +68,7 @@ class _MarkChipWidgetState extends State<MarkChipWidget> {
                 setState(() {});
               }
             } else {
-              final needSelectModel =
-                  selectCategoryCubit.subcategoryFilters!.hasModel;
+              final needSelectModel = selectCategoryCubit.subcategoryFilters!.hasModel;
 
               final List<MarksFilter?> filter = await showMarksBottomSheet(
                 context: context,
@@ -94,8 +80,12 @@ class _MarkChipWidgetState extends State<MarkChipWidget> {
               );
 
               if (filter.isNotEmpty) {
-                setState(() {});
                 searchCubit.setMarksFilter(filter.first);
+
+                searchCubit.setFilters(
+                  parameters: selectCategoryCubit.parameters,
+                );
+                setState(() {});
               }
             }
           },
