@@ -20,6 +20,7 @@ import 'package:smart/feature/reviews/ui/reviews_screen.dart';
 import 'package:smart/feature/search/ui/search_screen.dart';
 import 'package:smart/feature/search/ui/select_subcategory.dart';
 import 'package:smart/feature/settings/ui/language_screen.dart';
+import 'package:smart/feature/settings/ui/notifications_screen.dart';
 import 'package:smart/feature/settings/ui/pdf_view_screen.dart';
 import 'package:smart/feature/settings/ui/settings_screen.dart';
 import 'package:smart/localization/app_localizations.dart';
@@ -196,6 +197,7 @@ final appRoutes = {
   AppRoutesNames.editProfile: (context) => const EditProfileScreen(),
   AppRoutesNames.settings: (context) => const SettingsScreen(),
   AppRoutesNames.settingsLanguage: (context) => const LanguageScreen(),
+  AppRoutesNames.notifications: (context) => const NotificationsScreen(),
   AppRoutesNames.announcementCreator: (context) => const CreatorProfileScreen(),
   // AppRoutesNames.editingAnnouncement: (context) => const EditingAnnouncementScreen(),
   AppRoutesNames.searchSelectSubcategory: (context) => const SearchSubcategoryScreen(),

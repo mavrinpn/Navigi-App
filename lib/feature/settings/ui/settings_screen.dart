@@ -68,7 +68,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             RowButton(
               title: localizations.notifications,
               icon: 'Assets/icons/notifications.svg',
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutesNames.notifications,
+                );
+              },
             ),
             RowButton(
               title: localizations.language,

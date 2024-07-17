@@ -6,14 +6,14 @@ enum PriceType { dzd, mln, mlrd }
 extension PriceTypeExtendion on PriceType {
   static List<PriceType> availableTypesFor(String subCategoryId) {
     if ([
-      immoAppartementsId,
-      immoMaisonsEtVillasId,
-      immoBureauxEtPlateauxId,
+      // immoAppartementsId,
+      // immoMaisonsEtVillasId,
+      // immoBureauxEtPlateauxId,
       // immoLocationsDeVacancesId,
-      immoMagasinsCommercesId,
-      // immoColocationsId,
-      immoTerrainsEtFermesId,
-      immoAutreImmobilierId,
+      // immoMagasinsCommercesId,
+      immoColocationsId,
+      // immoTerrainsEtFermesId,
+      // immoAutreImmobilierId,
     ].contains(subCategoryId)) {
       return [PriceType.mln, PriceType.mlrd];
     }

@@ -32,4 +32,5 @@ class AppRoutesNames {
   static const String reviews = '/reviews';
   static const String createReview = '/create_review';
   static const String pdfView = '/pdf_view';
+  static const String notifications = '/notifications';
 }
