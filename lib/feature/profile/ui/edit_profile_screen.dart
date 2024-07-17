@@ -80,7 +80,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     phoneController.text = maskPhoneFormatter.maskText(userRepo.userData?.phone ?? '');
     emailController.text = userRepo.loggedUser?.email ?? '';
 
-    isPhoneValid = maskPhoneFormatter.getUnmaskedText().length == 9;
     _checkActiveButton();
   }
 
@@ -178,6 +177,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           prefIcon: 'Assets/icons/profile.svg',
                           onChanged: (value) {
                             // changedName = o != user?.name ? o : null;
+                            _checkActiveButton();
                           },
                         ),
                         PhoneTextFormField(
@@ -192,7 +192,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             return null;
                           },
                           onChanged: (value) {
-                            isPhoneValid = maskPhoneFormatter.getUnmaskedText().length == 9;
                             _checkActiveButton();
                           },
                           mask: maskPhoneFormatter,
@@ -227,7 +226,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             if (isButtonActive) {
                               BlocProvider.of<UserCubit>(context).editProfile(
                                 name: nameController.text.trim(),
-                                phone: maskPhoneFormatter.getUnmaskedText(),
+                                phone: maskPhoneFormatter.getUnmaskedText().isNotEmpty
+                                    ? maskPhoneFormatter.getUnmaskedText()
+                                    : null,
                                 bytes: bytes,
                               );
                             }
@@ -249,11 +250,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   _checkActiveButton() {
-    if (isPhoneValid) {
+    final userRepo = RepositoryProvider.of<AuthRepository>(context);
+    final userPhone = userRepo.userData?.phone ?? '';
+    isPhoneValid = maskPhoneFormatter.unmaskText(phoneController.text).length == 9;
+
+    if (userPhone.isEmpty && !isPhoneValid) {
+      isButtonActive = false;
+      isPhoneValid = false;
+    } else if (phoneController.text == maskPhoneFormatter.maskText(userPhone)) {
       isButtonActive = true;
     } else {
-      isButtonActive = false;
+      if (isPhoneValid) {
+        isButtonActive = true;
+      } else {
+        isButtonActive = false;
+      }
     }
+
     setState(() {});
   }
 }
