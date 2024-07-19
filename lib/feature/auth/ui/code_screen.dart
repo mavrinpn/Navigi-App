@@ -49,6 +49,7 @@ class _CodeScreenState extends State<CodeScreen> {
         } else if (state is AuthPasswordUpdateSuccessState) {
           Navigator.pop(context);
           Navigator.pop(context);
+          Navigator.pop(context);
           CustomSnackBar.showSnackBar(context, localizations.passwordUpdateSuccess);
         } else if (state is AuthErrorInvalidCode) {
           CustomSnackBar.showSnackBar(context, localizations.invalidCode);

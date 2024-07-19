@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart/feature/settings/ui/notifications_screen.dart';
 import 'package:smart/services/database/database_service.dart';
 
 final StreamController<String> selectNotificationStream = StreamController<String>.broadcast();
@@ -14,13 +17,24 @@ class MessagingService {
 
   MessagingService({required DatabaseService databaseService}) : _databaseService = databaseService;
 
-  Future<void> initNotification() async {
-    await _firebaseMessaging.requestPermission();
-    final fCMToken = await _firebaseMessaging.getToken();
+  Future<void> initNotification(String userId) async {
+    this.userId = userId;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final isNotificationsEnabled = prefs.getBool(notificationsCommonKey) ?? true;
+    debugPrint('isNotificationsEnabled = $isNotificationsEnabled');
+    if (isNotificationsEnabled) {
+      await _firebaseMessaging.requestPermission();
+      final fCMToken = await _firebaseMessaging.getToken();
 
-    await saveTokenToDatabase(fCMToken);
+      await saveTokenToDatabase(fCMToken);
 
-    FirebaseMessaging.onMessage.listen(_onForegroundMessage);
+      FirebaseMessaging.onMessage.listen(_onForegroundMessage);
+
+      _handleTokenRefreshing();
+    } else {
+      await FirebaseMessaging.instance.deleteToken();
+      await removeTokenFromDatabase();
+    }
   }
 
   Future _onForegroundMessage(RemoteMessage message) async {
@@ -45,6 +59,11 @@ class MessagingService {
     }
   }
 
+  // void deteleToken() async {
+  //   await FirebaseMessaging.instance.deleteToken();
+  //   await removeTokenFromDatabase();
+  // }
+
   Future<void> saveTokenToDatabase(String? token) async {
     if (userId != null && token != null) {
       final tokenExists = await _databaseService.notifications.userExists(userId!);
@@ -66,7 +85,19 @@ class MessagingService {
     }
   }
 
-  void handleTokenRefreshing() {
+  Future<void> removeTokenFromDatabase() async {
+    if (userId != null) {
+      debugPrint('removeTokenFromDatabase $userId');
+      final tokenExists = await _databaseService.notifications.userExists(userId!);
+
+      final userExists = await _databaseService.users.userExists(userId!);
+      if (userExists && tokenExists) {
+        await _databaseService.notifications.updateNotificationToken(userId!, '');
+      }
+    }
+  }
+
+  void _handleTokenRefreshing() {
     _subscription?.cancel();
 
     if (userId != null) {

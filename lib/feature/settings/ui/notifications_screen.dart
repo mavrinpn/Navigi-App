@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/utils.dart';
 import 'package:smart/widgets/button/back_button.dart';
@@ -19,9 +21,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   final List<bool> paramList = [true, false];
   bool? isNotificationsEnabled;
 
+  late final AuthRepository authRepository;
+
   @override
   void initState() {
     super.initState();
+    authRepository = RepositoryProvider.of<AuthRepository>(context);
     getParam();
   }
 
@@ -77,7 +82,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                               onChanged: () => onParamSelected(e),
                             ),
                             Text(
-                              e.toString(),
+                              e ? localizations.enabled : localizations.disabled,
                               maxLines: 1,
                               overflow: TextOverflow.clip,
                               style: AppTypography.font14black.copyWith(fontSize: 16),
@@ -95,8 +100,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   void getParam() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    isNotificationsEnabled = prefs.getBool(notificationsCommonKey);
+    isNotificationsEnabled = prefs.getBool(notificationsCommonKey) ?? true;
     setState(() {});
   }
 
@@ -106,7 +110,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool(notificationsCommonKey, param);
 
-    //TODO firebase
+    authRepository.initNotification();
 
     setState(() {});
   }

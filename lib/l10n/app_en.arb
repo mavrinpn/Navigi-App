@@ -243,5 +243,7 @@
 "errorInvalidScore": "Rating error",
 "errorText": "Error in the text",
 "noConnection": "There is no Internet connection. Please make sure that wi-fi or cellular connection is enabled and try again.",
-"isConnection": "Internet connection has been restored"
+"isConnection": "Internet connection has been restored",
+"enabled": "Enabled",
+"disabled": "Disabled"
 }

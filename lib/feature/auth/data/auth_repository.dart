@@ -69,16 +69,14 @@ class AuthRepository {
 
   BehaviorSubject<LoadingStateEnum> profileState = BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.loading);
 
-  Future<void> _initMessaging() async {
-    _messagingService.userId = loggedUser?.$id ?? '';
-    _messagingService.initNotification();
-    _messagingService.handleTokenRefreshing();
-  }
-
   void _initialize() async {
     getUserData();
-    _initMessaging();
+    initNotification();
     _startOnlineTimer();
+  }
+
+  void initNotification() {
+    _messagingService.initNotification(loggedUser?.$id ?? '');
   }
 
   void checkLogin() async {
@@ -210,7 +208,7 @@ class AuthRepository {
 
       if (loggedUser!.emailVerification) {
         await getUserData();
-        _initMessaging();
+        _messagingService.initNotification(loggedUser?.$id ?? '');
         _startOnlineTimer();
 
         // authState.add(EntranceStateEnum.success);
@@ -321,7 +319,7 @@ class AuthRepository {
 
     if (status == 'ok') {
       await getUserData();
-      _initMessaging();
+      _messagingService.initNotification(loggedUser?.$id ?? '');
       _startOnlineTimer();
 
       // authState.add(EntranceStateEnum.success);

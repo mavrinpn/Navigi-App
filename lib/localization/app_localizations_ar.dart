@@ -694,4 +694,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get isConnection => 'تمت استعادة اتصال الإنترنت';
+
+  @override
+  String get enabled => 'ممكن';
+
+  @override
+  String get disabled => 'معاق';
 }

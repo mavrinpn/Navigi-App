@@ -1468,6 +1468,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Internet connection has been restored'**
   String get isConnection;
+
+  /// No description provided for @enabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get enabled;
+
+  /// No description provided for @disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get disabled;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

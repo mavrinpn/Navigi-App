@@ -243,5 +243,7 @@
 "errorInvalidScore": "Erreur dans la note",
 "errorText": "Erreur dans le texte",
 "noConnection": "Pas de connexion Internet. Veuillez vous assurer que le wi-fi ou la connexion cellulaire est activée et réessayez.",
-"isConnection": "Connexion Internet rétablie"
+"isConnection": "Connexion Internet rétablie",
+"enabled": "Activé",
+"disabled": "Désactivé"
 }

@@ -694,4 +694,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get isConnection => 'Connexion Internet rétablie';
+
+  @override
+  String get enabled => 'Activé';
+
+  @override
+  String get disabled => 'Désactivé';
 }
