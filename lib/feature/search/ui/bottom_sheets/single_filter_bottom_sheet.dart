@@ -91,7 +91,6 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
                                               } else if (parameter is MinMaxParameter) {}
                                             }
                                           }
-
                                           setState(() {});
                                         },
                                         child: Text(localizations.reset),

@@ -19,12 +19,13 @@ import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/utils/routes/routes.dart';
 
 final ValueNotifier<String> currentLocaleShortName = ValueNotifier<String>('fr');
+const langKey = 'langKey';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  currentLocaleShortName.value = prefs.getString('lang') ?? 'fr';
+  currentLocaleShortName.value = prefs.getString(langKey) ?? 'fr';
 
   PaintingBinding.instance.imageCache.maximumSizeBytes = 1024 * 1024 * 50;
 

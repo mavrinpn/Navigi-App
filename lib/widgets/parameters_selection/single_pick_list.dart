@@ -23,6 +23,7 @@ class _CustomSingleCheckBoxesState extends State<CustomSingleCheckBoxes> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: widget.parameters
           .map((e) => GestureDetector(
                 onTap: () => widget.onChange(e),

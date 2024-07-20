@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/bloc/app/app_cubit.dart';
 import 'package:smart/feature/announcement/bloc/creator_cubit/creator_cubit.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
@@ -9,11 +10,13 @@ import 'package:smart/feature/favorites/favorites_screen.dart';
 import 'package:smart/feature/home/bloc/scroll/scroll_cubit.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
 import 'package:smart/feature/messenger/ui/all_chats_screen.dart';
+import 'package:smart/feature/settings/widgets/language_selector.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
 import 'package:smart/services/messaging_service.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:smart/widgets/splash.dart';
 
 import '../../../utils/colors.dart';
@@ -37,11 +40,40 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _pushProcessing();
+    _setLanguage();
 
     Future.delayed(const Duration(milliseconds: 2700), () {
       setState(() {
         _splashOpacity = 0;
       });
+    });
+  }
+
+  void _setLanguage() {
+    SharedPreferences.getInstance().then((prefs) {
+      final lang = prefs.getString(langKey);
+
+      if (lang == null) {
+        final localizations = AppLocalizations.of(context)!;
+
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: const LanguageSelector(),
+            actions: [
+              CustomTextButton.orangeContinue(
+                callback: () => Navigator.of(context).pop(),
+                styleText: AppTypography.font14black.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                text: localizations.done,
+                active: true,
+              )
+            ],
+          ),
+        );
+      }
     });
   }
 

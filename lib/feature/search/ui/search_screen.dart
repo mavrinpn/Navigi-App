@@ -521,6 +521,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               selectCategoryCubit.subcategoryId!.isNotEmpty)
                             ...selectCategoryCubit.parameters.map((parameter) {
                               bool isSelected = false;
+
                               if (parameter is SelectParameter) {
                                 isSelected = parameter.selectedVariants.isNotEmpty;
                               } else if (parameter is SingleSelectParameter) {
