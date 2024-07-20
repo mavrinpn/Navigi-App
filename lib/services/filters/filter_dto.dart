@@ -80,8 +80,7 @@ class SubcategoryFilterDTO {
         radius: radius,
       );
 
-  List<dynamic> convertSelectedParametersToStringList(
-      List<ParameterOption> parameters) {
+  List<dynamic> convertSelectedParametersToStringList(List<ParameterOption> parameters) {
     final result = [];
 
     for (var i in parameters) {
@@ -96,20 +95,19 @@ class SubcategoryFilterDTO {
     for (final parameter in parameters) {
       if (parameter is InputParameter) {
         queries.add(Query.equal(parameter.key, parameter.currentValue));
-      } else if (parameter is SelectParameter &&
-          parameter.selectedVariants.isNotEmpty) {
-        queries.add(Query.equal(parameter.key,
-            convertSelectedParametersToStringList(parameter.selectedVariants)));
+      } else if (parameter is SelectParameter && parameter.selectedVariants.isNotEmpty) {
+        queries.add(Query.equal(parameter.key, convertSelectedParametersToStringList(parameter.selectedVariants)));
       } else if (parameter is SingleSelectParameter) {
-        queries.add(Query.equal(parameter.key, parameter.currentValue.key));
+        if (parameter.currentValue.key != emptyParameter) {
+          queries.add(Query.equal(parameter.key, parameter.currentValue.key));
+        }
+
         // } else if (parameter is SingleSelectParameter &&
         //     parameter.selectedVariants.isNotEmpty) {
         //   queries.add(Query.equal(parameter.key,
         //       convertSelectedParametersToStringList(parameter.selectedVariants)));
-      } else if (parameter is MultiSelectParameter &&
-          parameter.selectedVariants.isNotEmpty) {
-        queries.add(Query.contains(parameter.key,
-            convertSelectedParametersToStringList(parameter.selectedVariants)));
+      } else if (parameter is MultiSelectParameter && parameter.selectedVariants.isNotEmpty) {
+        queries.add(Query.contains(parameter.key, convertSelectedParametersToStringList(parameter.selectedVariants)));
       }
       if (parameter is MinMaxParameter) {
         if (parameter.min != null) {

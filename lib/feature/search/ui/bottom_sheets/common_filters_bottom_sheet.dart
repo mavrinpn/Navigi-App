@@ -151,7 +151,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                               if (param is SelectParameter) {
                                 param.selectedVariants = [];
                               } else if (param is SingleSelectParameter) {
-                                param.currentValue = param.variants.first;
+                                param.currentValue = emptyParameterOption;
                               } else if (param is MultiSelectParameter) {
                                 param.selectedVariants = [];
                               } else if (param is MinMaxParameter) {
