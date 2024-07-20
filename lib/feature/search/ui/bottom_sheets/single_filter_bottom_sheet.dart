@@ -33,7 +33,7 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    
+
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
 
@@ -77,7 +77,26 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
                                 if (state is FiltersGotState) {
                                   return Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    children: buildFiltersSelection(selectCategoryCubit.parameters),
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      ...buildFiltersSelection(selectCategoryCubit.parameters),
+                                      TextButton(
+                                        onPressed: () {
+                                          for (var parameter in selectCategoryCubit.parameters) {
+                                            if (parameter.key == widget.parameterKey) {
+                                              if (parameter is SelectParameter) {
+                                              } else if (parameter is SingleSelectParameter) {
+                                                parameter.setVariant(emptyParameterOption);
+                                              } else if (parameter is MultiSelectParameter) {
+                                              } else if (parameter is MinMaxParameter) {}
+                                            }
+                                          }
+
+                                          setState(() {});
+                                        },
+                                        child: Text(localizations.reset),
+                                      ),
+                                    ],
                                   );
                                 }
 

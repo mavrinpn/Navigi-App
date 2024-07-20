@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart/main.dart';
+import 'package:smart/models/item/item.dart';
 import 'package:smart/services/parameters_parser.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/checkBox/custom_check_box.dart';

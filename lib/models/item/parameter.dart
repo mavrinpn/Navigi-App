@@ -1,5 +1,12 @@
 part of 'item.dart';
 
+const emptyParameter = 'key';
+final emptyParameterOption = ParameterOption(
+  emptyParameter,
+  nameAr: 'nameAr',
+  nameFr: 'nameFr',
+);
+
 abstract class Parameter {
   String get key;
 
@@ -36,15 +43,15 @@ class SelectParameter implements Parameter {
 
   bool isSelected(ParameterOption value) => selectedVariants.contains(value);
 
-  SelectParameter(
-      {required this.key, required this.variants, ParameterOption? current, required this.arName, required this.frName})
-      : currentValue = current ??
-            variants.firstOrNull ??
-            ParameterOption(
-              'key',
-              nameAr: 'nameAr',
-              nameFr: 'nameFr',
-            );
+  SelectParameter({
+    required this.key,
+    required this.variants,
+    ParameterOption? current,
+    required this.arName,
+    required this.frName,
+  }) : currentValue = current ??
+            // variants.firstOrNull ??
+            emptyParameterOption;
 
   @override
   String toString() => '"$key": "$currentValue"';
@@ -87,12 +94,8 @@ class SingleSelectParameter implements Parameter {
     required this.arName,
     required this.frName,
   }) : currentValue = current ??
-            variants.firstOrNull ??
-            ParameterOption(
-              'key',
-              nameAr: 'nameAr',
-              nameFr: 'nameFr',
-            );
+            // variants.firstOrNull ??
+            emptyParameterOption;
 
   @override
   String toString() => '"$key": "$currentValue"';
@@ -143,12 +146,8 @@ class MultiSelectParameter implements Parameter {
     required this.arName,
     required this.frName,
   }) : currentValue = current ??
-            variants.firstOrNull ??
-            ParameterOption(
-              'key',
-              nameAr: 'nameAr',
-              nameFr: 'nameFr',
-            );
+            // variants.firstOrNull ??
+            emptyParameterOption;
 
   @override
   String toString() => '"$key": "$currentValue"';
