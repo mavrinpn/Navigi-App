@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:smart/feature/main/ui/main_page.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_keys.dart';
@@ -47,6 +51,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  late StreamSubscription<InternetStatus> _internetConnectionSubscription;
   final searchController = TextEditingController();
   final _controller = ScrollController();
   String? searchQueryString;
@@ -77,6 +82,26 @@ class _SearchScreenState extends State<SearchScreen> {
         }
       }
     });
+
+    _internetConnectionSubscription = internetConnection.onStatusChange.listen((InternetStatus status) {
+      switch (status) {
+        case InternetStatus.connected:
+          BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
+            searchText: lastQuery,
+            isNew: true,
+            showLoading: true,
+          );
+          break;
+        case InternetStatus.disconnected:
+          break;
+      }
+    });
+  }
+
+  @override
+  dispose() {
+    _internetConnectionSubscription.cancel();
+    super.dispose();
   }
 
   @override

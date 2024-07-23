@@ -97,7 +97,29 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
                 ),
                 const SizedBox(height: 12),
                 ..._buildLocationWidget(context),
-                const SizedBox(height: 16),
+                TextButton(
+                  onPressed: () {
+                    final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+                    searchCubit.clearCityFilters();
+
+                    selectedCityId = null;
+                    selectedCityTitle = null;
+                    selectedAreaId = null;
+                    selectedAreaTitle = null;
+
+                    final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
+                    updateAppBarFilterCubit.needUpdateAppBarFilters();
+
+                    RepositoryProvider.of<SearchManager>(context).setSearch(false);
+  
+                    searchCubit.setFilters(
+                      parameters: selectCategoryCubit.parameters,
+                    );
+                    Navigator.pop(context);
+                  },
+                  child: Text(localizations.reset),
+                ),
+                const SizedBox(height: 12),
                 CustomTextButton.orangeContinue(
                   callback: () {
                     RepositoryProvider.of<SearchManager>(context).setSearch(false);
@@ -122,7 +144,6 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
                     }
 
                     updateAppBarFilterCubit.needUpdateAppBarFilters();
-
                     setState(() {});
                   },
                   text: localizations.apply,
@@ -195,7 +216,6 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
         //       Text('${(sliderValue * kilometerRatio).toStringAsFixed(2)} km'),
         // ),
       ],
-      const SizedBox(height: 10),
     ];
   }
 }

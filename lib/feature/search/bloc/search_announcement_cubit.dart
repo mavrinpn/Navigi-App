@@ -74,6 +74,13 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     // setFilters();
   }
 
+  void clearCityFilters() {
+    _cityId = null;
+    _areaId = null;
+    _cityTitle = null;
+    _areaTitle = null;
+  }
+
   SearchAnnouncementCubit({required AnnouncementManager announcementManager})
       : _announcementManager = announcementManager,
         super(SearchAnnouncementInitial());
@@ -150,7 +157,6 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     _areaId = areaId;
     _cityTitle = cityTitle;
     _areaTitle = areaTitle;
-
     emit(SearchAnnouncementsLoadingState());
     // if (showLoading) {
     //   emit(SearchAnnouncementsLoadingState());

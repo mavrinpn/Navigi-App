@@ -7,8 +7,11 @@ import 'package:smart/bloc/app/app_cubit.dart';
 import 'package:smart/feature/home/ui/home_screen.dart';
 import 'package:smart/feature/search/ui/loading_mixin.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/restart_controller.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
 import 'package:smart/widgets/splash.dart';
+
+late InternetConnection internetConnection;
 
 class MainPage extends StatefulWidget {
   const MainPage({
@@ -21,21 +24,28 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> with LoadingMixin {
   bool hasConnection = true;
+  bool _needRefresh = false;
   late StreamSubscription<InternetStatus> _internetConnectionSubscription;
 
   @override
   void initState() {
     super.initState();
 
-    final connection = InternetConnection.createInstance(
+    internetConnection = InternetConnection.createInstance(
       checkInterval: const Duration(seconds: 20),
     );
-    _internetConnectionSubscription = connection.onStatusChange.listen((InternetStatus status) {
+    _internetConnectionSubscription = internetConnection.onStatusChange.listen((InternetStatus status) {
       final localizations = AppLocalizations.of(context)!;
       switch (status) {
         case InternetStatus.connected:
+          if (_needRefresh) {
+            _needRefresh = false;
+            HotRestartController.performHotRestart(context);
+          }
+
           break;
         case InternetStatus.disconnected:
+          _needRefresh = true;
           CustomSnackBar.showSnackBarWithIcon(
             context: context,
             text: localizations.noConnection,
