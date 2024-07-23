@@ -61,12 +61,14 @@ class _SearchScreenState extends State<SearchScreen> {
     _showFilterChips = !widget.showBackButton;
     final searchManager = RepositoryProvider.of<SearchManager>(context);
     searchManager.setSearch(widget.showSearchHelper);
+
     searchQueryString = widget.searchQueryString;
 
     _controller.addListener(() async {
       if (_controller.position.maxScrollExtent < _controller.offset + 250) {
         if (!isScrollLoading) {
           isScrollLoading = true;
+
           BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
             searchText: lastQuery,
             isNew: false,
@@ -74,18 +76,6 @@ class _SearchScreenState extends State<SearchScreen> {
           );
         }
       }
-      // if (_controller.position.atEdge) {
-      //   double maxScroll = _controller.position.maxScrollExtent;
-      //   double currentScroll = _controller.position.pixels;
-      //   if (currentScroll >= maxScroll * 0.5) {
-      //     print('searchAnnounces');
-      //     BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
-      //       searchText: lastQuery,
-      //       isNew: false,
-      //       showLoading: false,
-      //     );
-      //   }
-      // }
     });
   }
 
@@ -102,6 +92,7 @@ class _SearchScreenState extends State<SearchScreen> {
   void setSearch(String query, SearchManager? searchManager) {
     searchManager?.saveInHistory(query);
     // isScrollLoading = true;
+
     BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
       searchText: query,
       isNew: true,
@@ -170,6 +161,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 // }
 
                 // isScrollLoading = true;
+
                 BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
                   searchText: value,
                   isNew: true,
@@ -510,7 +502,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             parameterKey: FilterKeys.price,
                           ),
                           FilterChipWidget(
-                            isSelected: searchCubit.areaId != null || searchCubit.cityId != null,
+                            isSelected: searchCubit.distrinctId != null || searchCubit.cityId != null,
                             title: localizations.location,
                             parameterKey: FilterKeys.location,
                           ),

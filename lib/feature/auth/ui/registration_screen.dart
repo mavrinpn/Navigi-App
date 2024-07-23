@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:smart/feature/auth/data/validators.dart';
+import 'package:smart/feature/create_announcement/ui/widgets/select_location_widget.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/functions.dart';
 import 'package:smart/utils/routes/route_names.dart';
@@ -38,6 +43,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   bool isConfirmPasswordValid = false;
   bool isButtonActive = false;
   bool isTapCheckBox = false;
+
+  String _cityTitle = '';
 
   // bool checkFields(
   //   String phone,
@@ -90,214 +97,217 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           );
         }
       },
-      child: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: SafeArea(
-            child: Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Column(
-                      children: [
-                        SizedBox(height: height * 0.05),
-                        SvgPicture.asset(
-                          'Assets/icons/logo.svg',
-                          width: 195,
-                          height: 43,
-                        ),
-                        const SizedBox(height: 32),
-                        Text(
-                          localizations.registration,
-                          style: AppTypography.font24black.copyWith(fontSize: 20),
-                        ),
-                        const SizedBox(height: 30),
-                        CustomTextFormField(
-                          controller: nameController,
-                          hintText: localizations.yourName,
-                          keyboardType: TextInputType.text,
-                          width: width * 0.95,
-                          prefIcon: 'Assets/icons/profile.svg',
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return localizations.errorReviewOrEnterOther;
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            isNameValid = (value ?? '').isNotEmpty;
-                            _checkActiveButton();
-                          },
-                        ),
-                        CustomTextFormField(
-                          controller: emailController,
-                          hintText: 'E-mail',
-                          keyboardType: TextInputType.text,
-                          width: width * 0.95,
-                          prefIcon: 'Assets/icons/email.svg',
-                          validator: (value) => emailValidator(value: value, localizations: localizations),
-                          onChanged: (value) {
-                            isEmailValid = emailValidator(value: value, localizations: localizations) == null;
-                            _checkActiveButton();
-                          },
-                        ),
-                        PhoneTextFormField(
-                          controller: phoneController,
-                          hintText: '+213 (###) ## ## ##',
-                          keyboardType: TextInputType.phone,
-                          width: width * 0.95,
-                          prefIcon: 'Assets/icons/phone.svg',
-                          validator: (value) {
-                            if (maskPhoneFormatter.getUnmaskedText().length != 9) {
-                              return localizations.errorReviewOrEnterOther;
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            isPhoneValid = maskPhoneFormatter.getUnmaskedText().length == 9;
-                            _checkActiveButton();
-                          },
-                          mask: maskPhoneFormatter,
-                        ),
-                        CustomTextFormField(
-                            controller: firstPasswordController,
-                            hintText: localizations.createPassword,
-                            keyboardType: TextInputType.text,
-                            width: width * 0.95,
-                            prefIcon: 'Assets/icons/key.svg',
-                            obscureText: true,
-                            validator: (value) => passwordValidator(
-                                  value: value,
-                                  otherValue: secondPasswordController.text,
-                                  localizations: localizations,
-                                ),
-                            onChanged: (value) {
-                              isPasswordValid = passwordValidator(
-                                    value: value,
-                                    otherValue: secondPasswordController.text,
-                                    localizations: localizations,
-                                  ) ==
-                                  null;
-                              isConfirmPasswordValid = passwordValidator(
-                                    value: value,
-                                    otherValue: firstPasswordController.text,
-                                    localizations: localizations,
-                                  ) ==
-                                  null;
-                              _checkActiveButton();
-                            }),
-                        CustomTextFormField(
-                            controller: secondPasswordController,
-                            keyboardType: TextInputType.text,
-                            hintText: localizations.repeatePassword,
-                            width: width * 0.95,
-                            prefIcon: 'Assets/icons/key.svg',
-                            obscureText: true,
-                            validator: (value) => passwordValidator(
-                                  value: value,
-                                  otherValue: firstPasswordController.text,
-                                  localizations: localizations,
-                                ),
-                            onChanged: (value) {
-                              isPasswordValid = passwordValidator(
-                                    value: value,
-                                    otherValue: secondPasswordController.text,
-                                    localizations: localizations,
-                                  ) ==
-                                  null;
-                              isConfirmPasswordValid = passwordValidator(
-                                    value: value,
-                                    otherValue: firstPasswordController.text,
-                                    localizations: localizations,
-                                  ) ==
-                                  null;
-                              _checkActiveButton();
-                            }),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                          child: GestureDetector(
-                            onTap: _checkBoxPressed,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2.5),
-                                  child: SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: Checkbox(
-                                      splashRadius: 2,
-                                      checkColor: Colors.white,
-                                      activeColor: AppColors.red,
-                                      side: const BorderSide(width: 1, color: AppColors.lightGray),
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
-                                      value: isTapCheckBox,
-                                      onChanged: (bool? value) {
-                                        _checkBoxPressed();
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 15),
-                                SizedBox(
-                                  width: width - 75,
-                                  child: Text(
-                                    localizations.jacceptsTheConditionsForTheilization,
-                                    style: AppTypography.font14black,
-                                  ),
-                                )
-                              ],
+      child: Scaffold(
+        body: SafeArea(
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: height * 0.05),
+                  SvgPicture.asset(
+                    'Assets/icons/logo.svg',
+                    width: 195,
+                    height: 43,
+                  ),
+                  const SizedBox(height: 32),
+                  Text(
+                    localizations.registration,
+                    style: AppTypography.font24black.copyWith(fontSize: 20),
+                  ),
+                  const SizedBox(height: 30),
+                  CustomTextFormField(
+                    controller: nameController,
+                    hintText: localizations.yourName,
+                    keyboardType: TextInputType.text,
+                    width: width * 0.95,
+                    prefIcon: 'Assets/icons/profile.svg',
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return localizations.errorReviewOrEnterOther;
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      isNameValid = (value ?? '').isNotEmpty;
+                      _checkActiveButton();
+                    },
+                  ),
+                  CustomTextFormField(
+                    controller: emailController,
+                    hintText: 'E-mail',
+                    keyboardType: TextInputType.text,
+                    width: width * 0.95,
+                    prefIcon: 'Assets/icons/email.svg',
+                    validator: (value) => emailValidator(value: value, localizations: localizations),
+                    onChanged: (value) {
+                      isEmailValid = emailValidator(value: value, localizations: localizations) == null;
+                      _checkActiveButton();
+                    },
+                  ),
+                  PhoneTextFormField(
+                    controller: phoneController,
+                    hintText: '+213 (###) ## ## ##',
+                    keyboardType: TextInputType.phone,
+                    width: width * 0.95,
+                    prefIcon: 'Assets/icons/phone.svg',
+                    validator: (value) {
+                      if (maskPhoneFormatter.getUnmaskedText().length != 9) {
+                        return localizations.errorReviewOrEnterOther;
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      isPhoneValid = maskPhoneFormatter.getUnmaskedText().length == 9;
+                      _checkActiveButton();
+                    },
+                    mask: maskPhoneFormatter,
+                  ),
+                  CustomTextFormField(
+                      controller: firstPasswordController,
+                      hintText: localizations.createPassword,
+                      keyboardType: TextInputType.text,
+                      width: width * 0.95,
+                      prefIcon: 'Assets/icons/key.svg',
+                      obscureText: true,
+                      validator: (value) => passwordValidator(
+                            value: value,
+                            otherValue: secondPasswordController.text,
+                            localizations: localizations,
+                          ),
+                      onChanged: (value) {
+                        isPasswordValid = passwordValidator(
+                              value: value,
+                              otherValue: secondPasswordController.text,
+                              localizations: localizations,
+                            ) ==
+                            null;
+                        isConfirmPasswordValid = passwordValidator(
+                              value: value,
+                              otherValue: firstPasswordController.text,
+                              localizations: localizations,
+                            ) ==
+                            null;
+                        _checkActiveButton();
+                      }),
+                  CustomTextFormField(
+                    controller: secondPasswordController,
+                    keyboardType: TextInputType.text,
+                    hintText: localizations.repeatePassword,
+                    width: width * 0.95,
+                    prefIcon: 'Assets/icons/key.svg',
+                    obscureText: true,
+                    validator: (value) => passwordValidator(
+                      value: value,
+                      otherValue: firstPasswordController.text,
+                      localizations: localizations,
+                    ),
+                    onChanged: (value) {
+                      isPasswordValid = passwordValidator(
+                            value: value,
+                            otherValue: secondPasswordController.text,
+                            localizations: localizations,
+                          ) ==
+                          null;
+                      isConfirmPasswordValid = passwordValidator(
+                            value: value,
+                            otherValue: firstPasswordController.text,
+                            localizations: localizations,
+                          ) ==
+                          null;
+                      _checkActiveButton();
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                    child: SelectLocationWidget(
+                      onSetActive: (value) {},
+                      onChangeCity: (name) {
+                        _cityTitle = name;
+                      },
+                      onChangeDistrict: (cityDistrict) {
+                        _setDistrinct(
+                          distrinct: cityDistrict,
+                          cityTitle: _cityTitle,
+                        );
+                      },
+                      isProfile: true,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                    child: GestureDetector(
+                      onTap: _checkBoxPressed,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2.5),
+                            child: SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: Checkbox(
+                                splashRadius: 2,
+                                checkColor: Colors.white,
+                                activeColor: AppColors.red,
+                                side: const BorderSide(width: 1, color: AppColors.lightGray),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+                                value: isTapCheckBox,
+                                onChanged: (bool? value) {
+                                  _checkBoxPressed();
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 15),
+                          SizedBox(
+                            width: width - 75,
+                            child: Text(
+                              localizations.jacceptsTheConditionsForTheilization,
+                              style: AppTypography.font14black,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    // const Spacer(),
-                    const SizedBox(height: 20),
-                    Column(
-                      children: [
-                        CustomTextButton(
-                          callback: () {
-                            if (!_formKey.currentState!.validate() || !isButtonActive) {
-                              setState(() {});
-                              return;
-                            }
-                            // BlocProvider.of<AuthCubit>(context).registerWithPhone(
-                            //   phone: maskPhoneFormatter.getUnmaskedText(),
-                            //   name: nameController.text.trim(),
-                            //   password: firstPasswordController.text.trim(),
-                            // );
-                            BlocProvider.of<AuthCubit>(context).registerWithEmail(
-                              name: nameController.text.trim(),
-                              email: emailController.text.trim(),
-                              phone: maskPhoneFormatter.getUnmaskedText(),
-                              password: firstPasswordController.text.trim(),
-                            );
-                          },
-                          text: localizations.regg,
-                          styleText: AppTypography.font14white,
-                          height: 52,
-                          active: isButtonActive,
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-                          activeColor: AppColors.dark,
-                        ),
-                        const SizedBox(height: 16),
-                        InkWell(
-                          child: Text(localizations.entrance, style: AppTypography.font16UnderLinePink),
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 20),
+                  CustomTextButton(
+                    callback: () {
+                      if (!_formKey.currentState!.validate() || !isButtonActive) {
+                        setState(() {});
+                        return;
+                      }
+                      // BlocProvider.of<AuthCubit>(context).registerWithPhone(
+                      //   phone: maskPhoneFormatter.getUnmaskedText(),
+                      //   name: nameController.text.trim(),
+                      //   password: firstPasswordController.text.trim(),
+                      // );
+                      BlocProvider.of<AuthCubit>(context).registerWithEmail(
+                        name: nameController.text.trim(),
+                        email: emailController.text.trim(),
+                        phone: maskPhoneFormatter.getUnmaskedText(),
+                        password: firstPasswordController.text.trim(),
+                      );
+                    },
+                    text: localizations.regg,
+                    styleText: AppTypography.font14white,
+                    height: 52,
+                    active: isButtonActive,
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                    activeColor: AppColors.dark,
+                  ),
+                  const SizedBox(height: 16),
+                  InkWell(
+                    child: Text(localizations.entrance, style: AppTypography.font16UnderLinePink),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
             ),
           ),
@@ -318,5 +328,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   _checkBoxPressed() {
     isTapCheckBox = !isTapCheckBox;
     _checkActiveButton();
+  }
+
+  _setDistrinct({
+    required CityDistrict distrinct,
+    required String cityTitle,
+  }) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(cityDistrictKey, jsonEncode(distrinct.toMap(cityTitle)));
   }
 }

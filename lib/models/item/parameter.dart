@@ -3,8 +3,8 @@ part of 'item.dart';
 const emptyParameter = 'key';
 final emptyParameterOption = ParameterOption(
   emptyParameter,
-  nameAr: 'nameAr',
-  nameFr: 'nameFr',
+  nameAr: 'غير محدد',
+  nameFr: 'non sélectionné',
 );
 
 abstract class Parameter {

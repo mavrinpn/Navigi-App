@@ -100,11 +100,11 @@ class _MainScreenState extends State<MainScreen> {
           ));
 
       BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
-      BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
-        searchText: '',
-        isNew: true,
-        showLoading: false,
-      );
+      // BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
+      //   searchText: '',
+      //   isNew: true,
+      //   showLoading: false,
+      // );
       Navigator.pushNamed(
         context,
         AppRoutesNames.search,

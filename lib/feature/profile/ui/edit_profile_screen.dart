@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -5,8 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart/feature/create_announcement/ui/widgets/select_location_widget.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/dialogs.dart';
@@ -32,14 +36,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController placeController = TextEditingController();
 
   bool isButtonActive = false;
   bool isPhoneValid = false;
+  bool isPlaceValid = true;
 
   CroppedFile? image;
 
   Uint8List? bytes;
+  String _cityTitle = '';
   // String? changedName;
   // String? phone;
 
@@ -93,7 +98,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: AppColors.appBarColor,
           automaticallyImplyLeading: false,
@@ -130,11 +134,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 CustomSnackBar.showSnackBar(context, 'Essayez plus tard');
               }
             },
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Column(
                       children: [
@@ -196,14 +200,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           },
                           mask: maskPhoneFormatter,
                         ),
-                        // CustomTextFormField(
-                        //   controller: phoneController,
-                        //   keyboardType: TextInputType.text,
-                        //   prefIcon: 'Assets/icons/phone.svg',
-                        //   onChanged: (String? o) {
-                        //     phone = o != user?.phone ? o : null;
-                        //   },
-                        // ),
                         CustomTextFormField(
                           readOnly: true,
                           controller: emailController,
@@ -211,11 +207,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           prefIcon: 'Assets/icons/email.svg',
                           onChanged: (String? o) {},
                         ),
-                        CustomTextFormField(
-                          controller: placeController,
-                          keyboardType: TextInputType.text,
-                          prefIcon: 'Assets/icons/point2.svg',
-                          onChanged: (String? o) {},
+                        SelectLocationWidget(
+                          isProfile: true,
+                          onSetActive: (active) {
+                            isPlaceValid = active;
+                            _checkActiveButton();
+                          },
+                          onChangeCity: (name) {
+                            _cityTitle = name;
+                          },
+                          onChangeDistrict: (cityDistrict) {
+                            _setDistrinct(
+                              distrinct: cityDistrict,
+                              cityTitle: _cityTitle,
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -255,18 +261,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     isPhoneValid = maskPhoneFormatter.unmaskText(phoneController.text).length == 9;
 
     if (userPhone.isEmpty && !isPhoneValid) {
-      isButtonActive = false;
+      isButtonActive = isPlaceValid && false;
       isPhoneValid = false;
     } else if (phoneController.text == maskPhoneFormatter.maskText(userPhone)) {
-      isButtonActive = true;
+      isButtonActive = isPlaceValid;
     } else {
-      if (isPhoneValid) {
-        isButtonActive = true;
-      } else {
-        isButtonActive = false;
-      }
+      isButtonActive = isPlaceValid && isPhoneValid;
     }
 
     setState(() {});
+  }
+
+  _setDistrinct({
+    required CityDistrict distrinct,
+    required String cityTitle,
+  }) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(cityDistrictKey, jsonEncode(distrinct.toMap(cityTitle)));
   }
 }

@@ -55,13 +55,15 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 80),
         child: SelectLocationWidget(
+          isProfile: false,
           onSetActive: (active) {
             setState(() {
               _active = active;
             });
           },
-          onChangePlace: (place) {
-            _place = place;
+          onChangeCity: (name) {},
+          onChangeDistrict: (cityDistrict) {
+            _place = cityDistrict.name;
           },
         ),
       ),

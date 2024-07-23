@@ -318,6 +318,7 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                       const SliverToBoxAdapter(child: SizedBox(height: 26)),
                       SliverToBoxAdapter(
                         child: SelectLocationWidget(
+                          isProfile: false,
                           cityDistrict: announcementEditCubit.data?.area,
                           longitude: announcementEditCubit.data?.longitude,
                           latitude: announcementEditCubit.data?.latitude,
@@ -326,8 +327,9 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                               _areaSelected = active;
                             });
                           },
-                          onChangePlace: (place) {
-                            _place = place;
+                          onChangeCity: (name) {},
+                          onChangeDistrict: (cityDistrict) {
+                            _place = cityDistrict.name;
                           },
                         ),
                       ),

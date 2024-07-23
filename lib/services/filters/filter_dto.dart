@@ -101,7 +101,6 @@ class SubcategoryFilterDTO {
         if (parameter.currentValue.key != emptyParameter) {
           queries.add(Query.equal(parameter.key, parameter.currentValue.key));
         }
-
         // } else if (parameter is SingleSelectParameter &&
         //     parameter.selectedVariants.isNotEmpty) {
         //   queries.add(Query.equal(parameter.key,

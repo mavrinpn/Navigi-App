@@ -30,7 +30,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
   String? _cityId;
   String? _areaId;
   String? get cityId => _cityId;
-  String? get areaId => _areaId;
+  String? get distrinctId => _areaId;
   String? _cityTitle;
   String? _areaTitle;
   String? get cityTitle => _cityTitle;
@@ -141,7 +141,16 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     required bool isNew,
     required bool showLoading,
     List<Parameter> parameters = const <Parameter>[],
+    String? cityId,
+    String? areaId,
+    String? cityTitle,
+    String? areaTitle,
   }) async {
+    _cityId = cityId;
+    _areaId = areaId;
+    _cityTitle = cityTitle;
+    _areaTitle = areaTitle;
+
     emit(SearchAnnouncementsLoadingState());
     // if (showLoading) {
     //   emit(SearchAnnouncementsLoadingState());
@@ -157,6 +166,8 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
           sortBy: _sortBy,
           minPrice: _minPrice,
           maxPrice: _maxPrice,
+          cityId: cityId,
+          areaId: areaId,
         );
       } else {
         await _announcementManager.searchWithSubcategory(
@@ -167,6 +178,8 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
           sortBy: _sortBy,
           minPrice: _minPrice,
           maxPrice: _maxPrice,
+          cityId: cityId,
+          areaId: areaId,
         );
       }
       // await _announcementManager.loadSearchAnnouncement(

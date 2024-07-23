@@ -21,6 +21,7 @@ class CustomTextFormField extends StatefulWidget {
     this.validator,
     this.hintText = '',
     this.readOnly = false,
+    this.focusNode,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -33,6 +34,7 @@ class CustomTextFormField extends StatefulWidget {
   final void Function(String?) onChanged;
   final String hintText;
   final bool readOnly;
+  final FocusNode? focusNode;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -48,6 +50,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           padding: const EdgeInsets.all(10),
           child: TextFormField(
             readOnly: widget.readOnly,
+            focusNode: widget.focusNode,
             validator: widget.validator,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             maxLines: 1,

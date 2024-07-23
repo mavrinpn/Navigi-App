@@ -642,8 +642,8 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
       ),
       if (radiusOptionShown) ...[
         CityAreaFilterWidget(
-          cityTitle: searchCubit.cityTitle ?? '',
-          areaTitle: searchCubit.areaTitle ?? '',
+          cityTitle: searchCubit.cityTitle,
+          areaTitle: searchCubit.areaTitle,
           onSelecetCity: (id, title) {
             selectedCityId = id;
             selectedCityTitle = title;

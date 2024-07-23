@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/ui/specify_place.dart';
 import 'package:smart/localization/app_localizations.dart';
@@ -11,30 +14,37 @@ import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:smart/widgets/category/products.dart';
+import 'package:smart/widgets/textField/custom_text_field.dart';
 import 'package:smart/widgets/textField/outline_text_field.dart';
+
+const cityDistrictKey = 'cityDistrictKey';
 
 class SelectLocationWidget extends StatefulWidget {
   const SelectLocationWidget({
     super.key,
     required this.onSetActive,
-    required this.onChangePlace,
+    required this.onChangeCity,
+    required this.onChangeDistrict,
+    required this.isProfile,
     this.cityDistrict,
     this.longitude,
     this.latitude,
   });
 
+  final bool isProfile;
   final CityDistrict? cityDistrict;
   final double? longitude;
   final double? latitude;
   final Function(bool active) onSetActive;
-  final Function(String place) onChangePlace;
+  final Function(String name) onChangeCity;
+  final Function(CityDistrict city) onChangeDistrict;
 
   @override
   State<SelectLocationWidget> createState() => _SelectLocationWidgetState();
 }
 
 class _SelectLocationWidgetState extends State<SelectLocationWidget> {
-  final placeController = TextEditingController();
+  final distrinctController = TextEditingController();
   final cityController = TextEditingController();
 
   final placeFocusNode = FocusNode();
@@ -52,9 +62,26 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
 
     if (widget.cityDistrict != null) {
       _cityDistrict = widget.cityDistrict;
-      placeController.text = _cityDistrict!.name;
+      distrinctController.text = _cityDistrict!.name;
     }
     BlocProvider.of<PlacesCubit>(context).initialLoad();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadPersistDate());
+  }
+
+  _loadPersistDate() async {
+    if (widget.cityDistrict != null) {
+      return;
+    }
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final cityDistrictString = prefs.getString(cityDistrictKey);
+
+    if (cityDistrictString != null) {
+      final cityDistrict = CityDistrict.fromMap(jsonDecode(cityDistrictString));
+      distrinctController.text = cityDistrict.name;
+      cityController.text = cityDistrict.cityTitle;
+      setActive(true);
+    }
   }
 
   void setActive(bool value) {
@@ -74,13 +101,14 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
     await placesCubit.setCity(city).then((value) {
       BlocProvider.of<PlacesCubit>(context).searchPlaces('');
       cityController.text = city.name;
+      widget.onChangeCity(city.name);
       selectingCity = false;
 
-      placeController.text = '';
-      widget.onChangePlace('');
+      distrinctController.text = '';
+      widget.onChangeDistrict(CityDistrict.none());
 
       setActive(false);
-      // setState(() {});
+      setState(() {});
       // cityFocusNode.requestFocus();
       placeFocusNode.requestFocus();
     });
@@ -93,8 +121,8 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
     placesCubit.setPlaceName(selectedDistrict.name);
     creatingManager.setPlace(selectedDistrict);
 
-    placeController.text = selectedDistrict.name;
-    widget.onChangePlace(selectedDistrict.name);
+    distrinctController.text = selectedDistrict.name;
+    widget.onChangeDistrict(selectedDistrict);
 
     _cityDistrict = selectedDistrict;
 
@@ -115,52 +143,76 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 13),
-          child: Text(
-            localizations.city,
-            style: AppTypography.font16black.copyWith(fontSize: 14),
+        if (!widget.isProfile)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 13),
+            child: Text(
+              localizations.city,
+              style: AppTypography.font16black.copyWith(fontSize: 14),
+            ),
           ),
-        ),
-        OutlineTextField(
-          controller: cityController,
-          focusNode: cityFocusNode,
-          height: 55,
-          hintText: '',
-          width: double.infinity,
-          onChange: (value) {
-            setState(() {
-              selectingCity = true;
-              initial = false;
-              setActive(false);
-            });
-            BlocProvider.of<PlacesCubit>(context).searchCities(value);
-          },
-        ),
-        const SizedBox(height: 16),
+        if (widget.isProfile)
+          CustomTextFormField(
+            controller: cityController,
+            focusNode: cityFocusNode,
+            keyboardType: TextInputType.text,
+            hintText: localizations.city,
+            prefIcon: 'Assets/icons/point2.svg',
+            onChanged: (value) {
+              setState(() {
+                selectingCity = true;
+                initial = false;
+                setActive(false);
+              });
+              BlocProvider.of<PlacesCubit>(context).searchCities(value ?? '');
+            },
+          )
+        else
+          OutlineTextField(
+            controller: cityController,
+            focusNode: cityFocusNode,
+            height: 55,
+            hintText: '',
+            width: double.infinity,
+            onChange: (value) {
+              setState(() {
+                selectingCity = true;
+                initial = false;
+                setActive(false);
+              });
+              BlocProvider.of<PlacesCubit>(context).searchCities(value);
+            },
+          ),
         if (selectingCity && !initial) ...[
           BlocBuilder<PlacesCubit, PlacesState>(
             builder: (context, state) {
               if (state is PlacesSuccessState || state is PlacesLoadingState) {
-                return Wrap(
-                  children: placesCubit
-                      .getCities()
-                      .map((e) => Padding(
-                            padding: const EdgeInsets.all(3),
-                            child: ProductWidget(
-                              onTap: () => selectCity(e),
-                              name: e.name,
-                            ),
-                          ))
-                      .toList(),
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
+                  child: Wrap(
+                    children: placesCubit
+                        .getCities()
+                        .map((e) => Padding(
+                              padding: const EdgeInsets.all(3),
+                              child: ProductWidget(
+                                onTap: () => selectCity(e),
+                                name: e.name,
+                              ),
+                            ))
+                        .toList(),
+                  ),
                 );
               } else if (state is PlacesEmptyState) {
-                return Center(
-                  child: Text(localizations.notFound),
-                );
+                return const SizedBox.shrink();
+                // return Center(
+                //   child: Text(localizations.notFound),
+                // );
               } else if (state is PlacesFailState) {
-                return Center(
-                  child: Text(localizations.errorReviewOrEnterOther),
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
+                  child: Center(
+                    child: Text(localizations.errorReviewOrEnterOther),
+                  ),
                 );
               } else {
                 return Center(
@@ -170,27 +222,45 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
             },
           ),
         ],
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 16, 0, 13),
-          child: Text(
-            localizations.area,
-            style: AppTypography.font16black.copyWith(fontSize: 14),
+        if (!widget.isProfile)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
+            child: Text(
+              localizations.area,
+              style: AppTypography.font16black.copyWith(fontSize: 14),
+            ),
           ),
-        ),
-        OutlineTextField(
-          controller: placeController,
-          focusNode: placeFocusNode,
-          height: 55,
-          hintText: '',
-          width: double.infinity,
-          readonly: selectingCity,
-          onChange: (value) {
-            BlocProvider.of<PlacesCubit>(context).searchPlaces(value);
-            widget.onChangePlace(value);
-            // setActive(placeManager.searchCityIdByName(value) != null);
-            setState(() {});
-          },
-        ),
+        if (widget.isProfile)
+          CustomTextFormField(
+            controller: distrinctController,
+            focusNode: placeFocusNode,
+            hintText: localizations.area,
+            readOnly: selectingCity,
+            keyboardType: TextInputType.text,
+            prefIcon: 'Assets/icons/point2.svg',
+            onChanged: (value) {
+              BlocProvider.of<PlacesCubit>(context).searchPlaces(value ?? '');
+              // widget.onChangeDistrict(value ?? '');
+              setActive(false);
+              // setActive(placeManager.searchCityIdByName(value) != null);
+              setState(() {});
+            },
+          )
+        else
+          OutlineTextField(
+            controller: distrinctController,
+            focusNode: placeFocusNode,
+            height: 55,
+            hintText: '',
+            width: double.infinity,
+            readonly: selectingCity,
+            onChange: (value) {
+              BlocProvider.of<PlacesCubit>(context).searchPlaces(value);
+              widget.onChangeDistrict(CityDistrict.none());
+              // setActive(placeManager.searchCityIdByName(value) != null);
+              setState(() {});
+            },
+          ),
         const SizedBox(height: 16),
         if (!selectingCity) ...[
           BlocBuilder<PlacesCubit, PlacesState>(

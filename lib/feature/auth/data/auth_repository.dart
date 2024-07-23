@@ -22,6 +22,7 @@ class AuthRepository {
   final FileStorageManager _fileStorageManager;
 
   final deleteAccountFunc = '666c00bba70155719253';
+  final deleteUserDataFunc = '669e74e0e58a01240ecf';
 
   User? loggedUser;
   UserData? userData;
@@ -159,6 +160,22 @@ class AuthRepository {
       try {
         final res = await _functions.createExecution(
           functionId: deleteAccountFunc,
+          body: encodedBody,
+        );
+
+        // ignore: avoid_print
+        print('${res.responseStatusCode}');
+
+        sessionID = null;
+        loggedUser = null;
+        userData = null;
+      } catch (e) {
+        log(e.toString());
+      }
+
+      try {
+        final res = await _functions.createExecution(
+          functionId: deleteUserDataFunc,
           body: encodedBody,
         );
 

@@ -71,8 +71,7 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
     final localizations = AppLocalizations.of(context)!;
 
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-    final selectCategoryCubit =
-        BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+    final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
 
     return Container(
@@ -93,8 +92,7 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
                     height: 4,
                     decoration: ShapeDecoration(
                         color: const Color(0xFFDDE1E7),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(1))),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(1))),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -102,8 +100,7 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
                 const SizedBox(height: 16),
                 CustomTextButton.orangeContinue(
                   callback: () {
-                    RepositoryProvider.of<SearchManager>(context)
-                        .setSearch(false);
+                    RepositoryProvider.of<SearchManager>(context).setSearch(false);
 
                     searchCubit.setFilters(
                       parameters: selectCategoryCubit.parameters,
@@ -169,8 +166,8 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
       ),
       if (radiusOptionShown) ...[
         CityAreaFilterWidget(
-          cityTitle: searchCubit.cityTitle ?? '',
-          areaTitle: searchCubit.areaTitle ?? '',
+          cityTitle: searchCubit.cityTitle,
+          areaTitle: searchCubit.areaTitle,
           onSelecetCity: (id, title) {
             selectedCityId = id;
             selectedCityTitle = title;

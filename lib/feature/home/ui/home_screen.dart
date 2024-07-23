@@ -40,7 +40,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _pushProcessing();
-    _setLanguage();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _setLanguage();
+    });
 
     Future.delayed(const Duration(milliseconds: 2700), () {
       setState(() {
@@ -62,7 +65,13 @@ class _HomeScreenState extends State<HomeScreen> {
             content: const LanguageSelector(),
             actions: [
               CustomTextButton.orangeContinue(
-                callback: () => Navigator.of(context).pop(),
+                callback: () {
+                  final lang = prefs.getString(langKey);
+                  if (lang == null) {
+                    prefs.setString(langKey, 'fr');
+                  }
+                  Navigator.of(context).pop();
+                },
                 styleText: AppTypography.font14black.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,

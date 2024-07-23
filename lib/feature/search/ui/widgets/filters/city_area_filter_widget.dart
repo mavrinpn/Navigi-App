@@ -18,8 +18,8 @@ class CityAreaFilterWidget extends StatefulWidget {
     required this.areaTitle,
   });
 
-  final String cityTitle;
-  final String areaTitle;
+  final String? cityTitle;
+  final String? areaTitle;
   final Function(String? id, String? title) onSelecetCity;
   final Function(String? id, String? title) onSelecetArea;
 
@@ -88,6 +88,26 @@ class _CityAreaFilterWidgetState extends State<CityAreaFilterWidget> {
     BlocProvider.of<PlacesCubit>(context).searchCities('');
     super.initState();
   }
+
+  // void _loadUserCity() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   final cityDistrictString = prefs.getString(cityDistrictKey);
+
+  //   if (cityDistrictString != null) {
+  //     final cityDistrict = CityDistrict.fromMap(jsonDecode(cityDistrictString));
+
+  //     placesCubit.setPlaceName(cityDistrict.name);
+  //     // ignore: use_build_context_synchronously
+  //     BlocProvider.of<PlacesCubit>(context).searchCities(cityDistrict.cityTitle);
+  //     placeController.text = cityDistrict.name;
+  //     cityController.text = cityDistrict.cityTitle;
+  //   } else {
+  //     // ignore: use_build_context_synchronously
+  //     BlocProvider.of<PlacesCubit>(context).searchCities('');
+  //     placeController.text = widget.areaTitle ?? '';
+  //     cityController.text = widget.cityTitle ?? '';
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
