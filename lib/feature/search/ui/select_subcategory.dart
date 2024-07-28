@@ -46,7 +46,6 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> with 
         final cityDistrictString = prefs.getString(cityDistrictKey);
 
         if (cityDistrictString != null) {
-          //TODO
           final cityDistrict = CityDistrict.fromMap(jsonDecode(cityDistrictString));
           searchCubit.searchAnnounces(
             searchText: '',

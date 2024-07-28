@@ -10,24 +10,30 @@ class CategoryRowWidget extends StatefulWidget {
     super.key,
     required this.category,
     required this.currentSubcategoryId,
-    required this.onSubcategoryChanged,
+    required this.onSubcategoryTapped,
+    required this.isExpanded,
   });
 
+  final bool isExpanded;
   final Category category;
   final String? currentSubcategoryId;
-  final Function(Subcategory subcategory) onSubcategoryChanged;
+  final Function(Subcategory subcategory) onSubcategoryTapped;
 
   @override
   State<CategoryRowWidget> createState() => _CategoryRowWidgetState();
 }
 
 class _CategoryRowWidgetState extends State<CategoryRowWidget> {
-  bool opened = false;
+  late bool opened;
 
   @override
   void initState() {
     super.initState();
-    opened = widget.category.subcategories.where((item) => item.id == widget.currentSubcategoryId).isNotEmpty;
+    if (widget.isExpanded) {
+      opened = true;
+    } else {
+      opened = widget.category.subcategories.where((item) => item.id == widget.currentSubcategoryId).isNotEmpty;
+    }
   }
 
   @override
@@ -89,14 +95,17 @@ class _CategoryRowWidgetState extends State<CategoryRowWidget> {
                   final isSelected = subcategory.id == widget.currentSubcategoryId;
 
                   return InkWell(
-                    onTap: () => widget.onSubcategoryChanged(subcategory),
+                    onTap: () => widget.onSubcategoryTapped(subcategory),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 28.0, right: 16),
                       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                        CustomCheckBox(
-                          isActive: isSelected,
-                          onChanged: () => widget.onSubcategoryChanged(subcategory),
-                        ),
+                        if (!widget.isExpanded)
+                          CustomCheckBox(
+                            isActive: isSelected,
+                            onChanged: () => widget.onSubcategoryTapped(subcategory),
+                          )
+                        else
+                          const SizedBox(height: 40),
                         Expanded(
                           child: Text(
                             subcategory.localizedName(),

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:smart/models/review.dart';
 import 'package:smart/models/user.dart';
 import 'package:smart/utils/fonts.dart';
+import 'package:smart/widgets/accuont/user_avatar.dart';
 import 'package:smart/widgets/checkBox/star_row_widget.dart';
 
 class ReviewsListWidget extends StatelessWidget {
@@ -31,13 +32,13 @@ class ReviewsListWidget extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 12),
-              child: review.creator.imageUrl != ''
-                  ? CircleAvatar(
-                      foregroundImage: NetworkImage(review.creator.imageUrl),
-                    )
-                  : const CircleAvatar(),
+              child: UserAvatar(
+                size: 40,
+                imageUrl: review.creator.avatarImageUrl,
+                userName: review.creator.name,
+              ),
             ),
-            const SizedBox(width: 20),
+            const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,8 +51,7 @@ class ReviewsListWidget extends StatelessWidget {
                         style: AppTypography.font12black,
                       ),
                       Text(
-                        DateFormat(DateFormat.YEAR_MONTH_DAY)
-                            .format(review.createdAt),
+                        DateFormat(DateFormat.YEAR_MONTH_DAY).format(review.createdAt),
                         style: AppTypography.font12gray,
                       ),
                     ],

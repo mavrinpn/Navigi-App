@@ -34,7 +34,7 @@ class CreatorData {
         id: uid,
         name: name,
         verified: verified,
-        imageUrl: imageUrl,
+        avatarImageUrl: imageUrl,
         rating: rating,
         phone: phone,
         createdAt: '',

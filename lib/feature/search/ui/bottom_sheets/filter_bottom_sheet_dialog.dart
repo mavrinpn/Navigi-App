@@ -35,7 +35,7 @@ Future<void> showFilterBottomSheet({
           height: MediaQuery.of(context).size.height * 0.8,
           child: Padding(
             padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 12),
-            child: const SubcategoryFilterBottomSheet(),
+            child: const SubcategoriesWidget(isBottomSheet: true),
           ),
         );
       } else if (parameterKey != null) {

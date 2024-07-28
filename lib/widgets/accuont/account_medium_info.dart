@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/reviews/ui/widgets/user_score_widget.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
-import 'package:smart/widgets/images/network_image.dart';
+import 'package:smart/widgets/accuont/user_avatar.dart';
 
 import '../../localization/app_localizations.dart';
 import '../../models/user.dart';
@@ -36,11 +36,10 @@ class _AccountMediumInfoState extends State<AccountMediumInfo> {
               width: 100,
               height: 100,
               child: Stack(children: [
-                CustomNetworkImage(
-                  width: 100,
-                  height: 100,
-                  url: widget.user.imageUrl,
-                  borderRadius: 50,
+                UserAvatar(
+                  size: 100,
+                  imageUrl: widget.user.avatarImageUrl,
+                  userName: widget.user.name,
                 ),
                 Container(
                     alignment: Alignment.topRight,

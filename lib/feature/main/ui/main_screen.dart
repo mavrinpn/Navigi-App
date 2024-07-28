@@ -166,7 +166,7 @@ class _MainScreenState extends State<MainScreen> {
                 slivers: [
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.all(15),
+                      padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                       child: PopularQueriesWidget(
                         onSearch: (e) {
                           openSearchScreen(query: e, showKeyboard: false);

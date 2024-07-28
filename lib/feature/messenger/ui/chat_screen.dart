@@ -21,6 +21,7 @@ import 'package:smart/utils/fonts.dart';
 import 'package:smart/feature/messenger/ui/widgets/announcement_short_info.dart';
 import 'package:smart/feature/messenger/ui/widgets/date_splitter_widget.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/accuont/user_avatar.dart';
 import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/button/custom_text_button.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
@@ -158,15 +159,14 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
                       userData: null,
                     )
                         .then((_) {
-                          hideLoadingOverlay(context);
+                      hideLoadingOverlay(context);
                       Navigator.pushNamed(context, AppRoutesNames.announcementCreator);
                     });
                   },
-                  child: CircleAvatar(
-                    radius: 20,
-                    backgroundImage: (messengerRepository.currentRoom!.otherUserAvatarUrl ?? '').isNotEmpty
-                        ? NetworkImage(messengerRepository.currentRoom!.otherUserAvatarUrl ?? '')
-                        : null,
+                  child: UserAvatar(
+                    size: 40,
+                    imageUrl: messengerRepository.currentRoom!.otherUserAvatarUrl ?? '',
+                    userName: messengerRepository.currentRoom!.otherUserName,
                   ),
                 ),
                 const SizedBox(width: 10),

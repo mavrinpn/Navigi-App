@@ -9,6 +9,7 @@ import 'package:smart/models/messenger/room.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/functions.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/accuont/user_avatar.dart';
 
 class ChatContainer extends StatefulWidget {
   const ChatContainer({
@@ -56,8 +57,7 @@ class _ChatContainerState extends State<ChatContainer> {
         sliver: SliverToBoxAdapter(
             child: InkWell(
           onTap: () {
-            RepositoryProvider.of<MessengerRepository>(context)
-                .selectChat(id: widget.roomId);
+            RepositoryProvider.of<MessengerRepository>(context).selectChat(id: widget.roomId);
             Navigator.pushNamed(context, AppRoutesNames.chat);
             // final blockedUsersManager =
             //     RepositoryProvider.of<BlockedUsersManager>(context);
@@ -81,10 +81,7 @@ class _ChatContainerState extends State<ChatContainer> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
-                BoxShadow(
-                    color: Colors.black12, offset: Offset.zero, blurRadius: 18)
-              ],
+              boxShadow: const [BoxShadow(color: Colors.black12, offset: Offset.zero, blurRadius: 18)],
             ),
             width: double.infinity,
             height: 102,
@@ -96,19 +93,12 @@ class _ChatContainerState extends State<ChatContainer> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.grey[300],
-                          image: DecorationImage(
-                              image: NetworkImage(widget.chatImageUrl),
-                              fit: BoxFit.cover)),
+                    UserAvatar(
+                      size: 40,
+                      imageUrl: widget.chatImageUrl,
+                      userName: widget.otherUserName,
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    const SizedBox(width: 10),
                     SizedBox(
                       width: MediaQuery.sizeOf(context).width - 100,
                       height: 40,
@@ -128,8 +118,7 @@ class _ChatContainerState extends State<ChatContainer> {
                                     if (snapshot.hasData) {
                                       return snapshot.data
                                           ? Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 2, bottom: 5),
+                                              padding: const EdgeInsets.only(left: 2, bottom: 5),
                                               child: SvgPicture.asset(
                                                 'Assets/icons/online_circle.svg',
                                                 width: 5,
@@ -140,8 +129,7 @@ class _ChatContainerState extends State<ChatContainer> {
                                     }
                                     return widget.userOnline
                                         ? Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 2, bottom: 5),
+                                            padding: const EdgeInsets.only(left: 2, bottom: 5),
                                             child: SvgPicture.asset(
                                               'Assets/icons/online_circle.svg',
                                               width: 5,
@@ -152,8 +140,7 @@ class _ChatContainerState extends State<ChatContainer> {
                                   }),
                               if (widget.message != null) ...[
                                 const Spacer(),
-                                if (widget.message!.owned &&
-                                    widget.message!.wasRead != null) ...[
+                                if (widget.message!.owned && widget.message!.wasRead != null) ...[
                                   Padding(
                                     padding: const EdgeInsets.only(right: 2),
                                     child: SvgPicture.asset(
@@ -187,8 +174,7 @@ class _ChatContainerState extends State<ChatContainer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        if (!widget.message!.owned &&
-                            widget.message!.wasRead == null) ...[
+                        if (!widget.message!.owned && widget.message!.wasRead == null) ...[
                           Padding(
                             padding: const EdgeInsets.only(right: 3, top: 3),
                             child: SvgPicture.asset(
@@ -201,9 +187,7 @@ class _ChatContainerState extends State<ChatContainer> {
                         SizedBox(
                           width: MediaQuery.sizeOf(context).width - 115,
                           child: Text(
-                            (widget.message!.images ?? []).isEmpty
-                                ? widget.message!.content
-                                : localizations.photo,
+                            (widget.message!.images ?? []).isEmpty ? widget.message!.content : localizations.photo,
                             style: AppTypography.font12lightGray,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,

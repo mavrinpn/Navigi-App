@@ -83,7 +83,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get relatedAnnouncements => 'Annonces connexes';
 
   @override
-  String get viewAll => 'Regarder tout';
+  String get viewAll => 'Afficher tous';
 
   @override
   String get city => 'Ville';

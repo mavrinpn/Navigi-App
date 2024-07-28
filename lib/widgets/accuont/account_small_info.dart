@@ -7,7 +7,7 @@ import 'package:smart/feature/search/ui/loading_mixin.dart';
 import 'package:smart/generated/assets.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
-import 'package:smart/widgets/images/network_image.dart';
+import 'package:smart/widgets/accuont/user_avatar.dart';
 
 import '../../localization/app_localizations.dart';
 import '../../models/announcement.dart';
@@ -26,7 +26,7 @@ class AccountSmallInfo extends StatefulWidget {
   State<AccountSmallInfo> createState() => _AccountSmallInfoState();
 }
 
-class _AccountSmallInfoState extends State<AccountSmallInfo> with LoadingMixin  {
+class _AccountSmallInfoState extends State<AccountSmallInfo> with LoadingMixin {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
@@ -39,7 +39,7 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> with LoadingMixin  
         userData: widget.creatorData.toUserData(),
       )
           .then((_) {
-            hideLoadingOverlay(context);
+        hideLoadingOverlay(context);
         Navigator.pushNamed(context, AppRoutesNames.announcementCreator);
       });
       // BlocProvider.of<CreatorCubit>(context).setUserId(widget.creatorData.uid);
@@ -70,24 +70,11 @@ class _AccountSmallInfoState extends State<AccountSmallInfo> with LoadingMixin  
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              widget.creatorData.imageUrl.isEmpty
-                  ? Container(
-                      width: 64,
-                      height: 64,
-                      decoration: const ShapeDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(Assets.assetsRandomPeople),
-                          fit: BoxFit.fill,
-                        ),
-                        shape: OvalBorder(),
-                      ),
-                    )
-                  : CustomNetworkImage(
-                      width: 64,
-                      height: 64,
-                      url: widget.creatorData.imageUrl,
-                      borderRadius: 32,
-                    ),
+              UserAvatar(
+                size: 64,
+                imageUrl: widget.creatorData.imageUrl,
+                userName: widget.creatorData.name,
+              ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),

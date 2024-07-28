@@ -156,7 +156,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     ? CustomNetworkImage(
                                         width: 100,
                                         height: 100,
-                                        url: user?.imageUrl ?? '',
+                                        url: user?.avatarImageUrl ?? '',
                                         borderRadius: 50,
                                       )
                                     : ClipOval(child: Image.memory(bytes!, width: 100)),

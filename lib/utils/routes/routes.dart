@@ -13,6 +13,7 @@ import 'package:smart/feature/auth/ui/registration_screen.dart';
 import 'package:smart/feature/auth/ui/restore_password_screen.dart';
 import 'package:smart/feature/home/ui/home_screen.dart';
 import 'package:smart/feature/main/ui/main_screen.dart';
+import 'package:smart/feature/main/ui/sections/all_categories_page.dart';
 import 'package:smart/feature/messenger/ui/chat_screen.dart';
 import 'package:smart/feature/profile/ui/edit_profile_screen.dart';
 import 'package:smart/feature/reviews/ui/create_review_screen.dart';
@@ -201,4 +202,5 @@ final appRoutes = {
   AppRoutesNames.announcementCreator: (context) => const CreatorProfileScreen(),
   // AppRoutesNames.editingAnnouncement: (context) => const EditingAnnouncementScreen(),
   AppRoutesNames.searchSelectSubcategory: (context) => const SearchSubcategoryScreen(),
+  AppRoutesNames.allCategories: (context) => const AllCategoriesPage(),
 };

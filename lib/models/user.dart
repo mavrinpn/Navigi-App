@@ -3,7 +3,7 @@ class UserData {
   String name;
   final double rating;
   final bool verified;
-  final String imageUrl;
+  final String avatarImageUrl;
   final String _atService;
   final String phone;
 
@@ -12,7 +12,7 @@ class UserData {
     required this.name,
     required this.rating,
     required this.verified,
-    required this.imageUrl,
+    required this.avatarImageUrl,
     required this.phone,
     required String createdAt,
   }) : _atService = createdAt;
@@ -22,7 +22,7 @@ class UserData {
         name = json['name'],
         rating = json['rating'] != null ? (double.tryParse('${json['rating']['score']}') ?? 0) : 0,
         verified = json['verified'],
-        imageUrl = json['image_url'] ?? '',
+        avatarImageUrl = json['image_url'] ?? '',
         _atService = json['\$createdAt'],
         phone = json['phone'];
 

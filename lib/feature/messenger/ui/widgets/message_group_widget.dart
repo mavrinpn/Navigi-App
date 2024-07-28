@@ -8,8 +8,9 @@ import 'package:smart/feature/search/ui/loading_mixin.dart';
 import 'package:smart/models/messenger/messages_group.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/accuont/user_avatar.dart';
 
-class MessageGroupWidget extends StatelessWidget with LoadingMixin  {
+class MessageGroupWidget extends StatelessWidget with LoadingMixin {
   const MessageGroupWidget({
     super.key,
     required this.data,
@@ -88,14 +89,14 @@ class MessageGroupWidget extends StatelessWidget with LoadingMixin  {
                     userData: null,
                   )
                       .then((_) {
-                        hideLoadingOverlay(context);
+                    hideLoadingOverlay(context);
                     Navigator.pushNamed(context, AppRoutesNames.announcementCreator);
                   });
                 },
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.grey[300],
-                  backgroundImage: avatarUrl != '' ? NetworkImage(avatarUrl) : null,
+                child: UserAvatar(
+                  size: 40,
+                  imageUrl: avatarUrl,
+                  userName: '',
                 ),
               ),
             ),
