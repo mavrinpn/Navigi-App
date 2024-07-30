@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:smart/bloc/app/app_cubit.dart';
 import 'package:smart/feature/home/ui/home_screen.dart';
+import 'package:smart/feature/main/bloc/announcement/announcement_container_cubit.dart';
 import 'package:smart/feature/search/ui/loading_mixin.dart';
 import 'package:smart/localization/app_localizations.dart';
-import 'package:smart/restart_controller.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
 import 'package:smart/widgets/splash.dart';
 
@@ -40,7 +40,7 @@ class _MainPageState extends State<MainPage> with LoadingMixin {
         case InternetStatus.connected:
           if (_needRefresh) {
             _needRefresh = false;
-            HotRestartController.performHotRestart(context);
+            BlocProvider.of<AnnouncementContainerCubit>(context).reloadImages();
           }
 
           break;

@@ -23,10 +23,12 @@ class SubcategoriesWidget extends StatefulWidget {
     super.key,
     this.needOpenNewScreen = false,
     required this.isBottomSheet,
+    this.searchText,
   });
 
   final bool needOpenNewScreen;
   final bool isBottomSheet;
+  final String? searchText;
 
   @override
   State<SubcategoriesWidget> createState() => _FiltersBottomSheetState();
@@ -76,7 +78,6 @@ class _FiltersBottomSheetState extends State<SubcategoriesWidget> {
                         TextButton(
                           onPressed: () {
                             Navigator.pop(context);
-
                             searchCubit.setSubcategory(null);
                             searchCubit.setSearchMode(SearchModeEnum.simple);
                             subcategoriesCubit.getSubcategoryFilters('').then((value) => searchCubit.searchAnnounces(
@@ -152,7 +153,7 @@ class _FiltersBottomSheetState extends State<SubcategoriesWidget> {
                   subcategoriesCubit
                       .getSubcategoryFilters(newSubcategory!.id)
                       .then((value) => searchCubit.searchAnnounces(
-                            searchText: '',
+                            searchText: widget.searchText,
                             isNew: true,
                             showLoading: true,
                             parameters: value,

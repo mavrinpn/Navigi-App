@@ -19,7 +19,7 @@ import '../../../managers/announcement_manager.dart';
 import '../../../widgets/conatainers/advertisement_containers.dart';
 import '../../../widgets/conatainers/announcement_container.dart';
 import '../../search/bloc/search_announcement_cubit.dart';
-import '../bloc/announcements/announcement_cubit.dart';
+import '../bloc/announcements/announcements_cubit.dart';
 import '../bloc/popularQueries/popular_queries_cubit.dart';
 
 class MainScreen extends StatefulWidget {

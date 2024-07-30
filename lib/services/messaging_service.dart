@@ -25,6 +25,7 @@ class MessagingService {
     if (isNotificationsEnabled) {
       await _firebaseMessaging.requestPermission();
       final fCMToken = await _firebaseMessaging.getToken();
+      debugPrint('fCMToken: $fCMToken');
 
       await saveTokenToDatabase(fCMToken);
 

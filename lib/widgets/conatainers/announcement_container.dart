@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
+import 'package:smart/feature/main/bloc/announcement/announcement_container_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/colors.dart';
@@ -63,28 +64,33 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            clipBehavior: Clip.hardEdge,
-            width: imageWidth,
-            height: imageHeight,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
-            child: CachedNetworkImage(
-              imageUrl: widget.announcement.thumb != ''
-                  ? widget.announcement.thumb
-                  : widget.announcement.images.firstOrNull ?? '',
-              fit: BoxFit.cover,
-              progressIndicatorBuilder: (context, url, progress) {
-                return Shimmer.fromColors(
-                  baseColor: Colors.grey[300]!,
-                  highlightColor: Colors.grey[100]!,
-                  child: Container(
-                    height: imageHeight,
-                    width: imageWidth,
-                    color: Colors.grey[300],
-                  ),
-                );
-              },
-            ),
+          BlocBuilder<AnnouncementContainerCubit, AnnouncementContainerState>(
+            builder: (context, state) {
+              return Container(
+                clipBehavior: Clip.hardEdge,
+                width: imageWidth,
+                height: imageHeight,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+                child: CachedNetworkImage(
+                  key: UniqueKey(),
+                  imageUrl: widget.announcement.thumb != ''
+                      ? widget.announcement.thumb
+                      : widget.announcement.images.firstOrNull ?? '',
+                  fit: BoxFit.cover,
+                  progressIndicatorBuilder: (context, url, progress) {
+                    return Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        height: imageHeight,
+                        width: imageWidth,
+                        color: Colors.grey[300],
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
           ),
           const SizedBox(height: 5),
           SizedBox(
@@ -143,7 +149,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                   ),
                 ),
               ],
-            ),  
+            ),
           ),
           const SizedBox(height: 5),
           Row(

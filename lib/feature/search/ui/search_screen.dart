@@ -1,10 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:smart/feature/main/ui/main_page.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_keys.dart';
@@ -30,6 +26,9 @@ import '../../main/bloc/popularQueries/popular_queries_cubit.dart';
 import '../../main/bloc/search/search_announcements_cubit.dart';
 import '../bloc/search_announcement_cubit.dart';
 
+// final GlobalKey<FormFieldState<String>> searchScreenTextControllerKey = GlobalKey<FormFieldState<String>>();
+final searchScreenTextController = TextEditingController();
+
 class SearchScreen extends StatefulWidget {
   const SearchScreen({
     super.key,
@@ -51,8 +50,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  late StreamSubscription<InternetStatus> _internetConnectionSubscription;
-  final searchController = TextEditingController();
+  // late StreamSubscription<InternetStatus> _internetConnectionSubscription;
   final _controller = ScrollController();
   String? searchQueryString;
   bool _showFilterChips = true;
@@ -83,24 +81,25 @@ class _SearchScreenState extends State<SearchScreen> {
       }
     });
 
-    _internetConnectionSubscription = internetConnection.onStatusChange.listen((InternetStatus status) {
-      switch (status) {
-        case InternetStatus.connected:
-          BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
-            searchText: lastQuery,
-            isNew: true,
-            showLoading: true,
-          );
-          break;
-        case InternetStatus.disconnected:
-          break;
-      }
-    });
+    // _internetConnectionSubscription = internetConnection.onStatusChange.listen((InternetStatus status) {
+    //   switch (status) {
+    //     case InternetStatus.connected:
+    //       BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
+    //         searchText: lastQuery,
+    //         isNew: true,
+    //         showLoading: true,
+    //       );
+    //       break;
+    //     case InternetStatus.disconnected:
+    //       break;
+    //   }
+    // });
   }
 
   @override
   dispose() {
-    _internetConnectionSubscription.cancel();
+    // _internetConnectionSubscription.cancel();
+    searchScreenTextController.text = '';
     super.dispose();
   }
 
@@ -111,7 +110,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void setSearchText(String text) {
-    searchController.text = text;
+    searchScreenTextController.text = text;
   }
 
   void setSearch(String query, SearchManager? searchManager) {
@@ -138,8 +137,8 @@ class _SearchScreenState extends State<SearchScreen> {
     final localizations = AppLocalizations.of(context)!;
     final announcementRepository = RepositoryProvider.of<AnnouncementManager>(context);
 
-    searchController.selection =
-        TextSelection(baseOffset: searchController.text.length, extentOffset: searchController.text.length);
+    searchScreenTextController.selection = TextSelection(
+        baseOffset: searchScreenTextController.text.length, extentOffset: searchScreenTextController.text.length);
 
     Widget announcementGridBuilder(BuildContext context, int index) {
       return AnnouncementContainer(
@@ -212,7 +211,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   _showFilterChips = false;
                 });
               },
-              searchController: searchController,
+              searchController: searchScreenTextController,
+              searchControllerKey: null,
               autofocus: widget.showKeyboard,
             ),
           ),
@@ -236,8 +236,7 @@ class _SearchScreenState extends State<SearchScreen> {
               _showFilterChips = true;
             });
 
-            final String currentLocale = MyApp.getLocale(context) ?? 'fr';
-            final query = currentLocale == 'fr' ? keyword.nameFr : keyword.nameAr;
+            final query = keyword.localizedName();
 
             final subcategoriesCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
             final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);

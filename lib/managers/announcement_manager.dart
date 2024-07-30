@@ -159,6 +159,8 @@ class AnnouncementManager {
         areaId: areaId,
       );
 
+      //TODO
+
       searchAnnouncements.addAll(await dbService.announcements.searchAnnouncementsInSubcategory(filter));
 
       _searchLastId = searchAnnouncements.last.subTableId;

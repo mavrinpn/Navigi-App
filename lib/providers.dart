@@ -20,6 +20,7 @@ import 'package:smart/feature/create_announcement/bloc/tipwords/tipwords_cubit.d
 import 'package:smart/feature/create_announcement/data/car_marks_repository.dart';
 import 'package:smart/feature/create_announcement/data/marks_repository.dart';
 import 'package:smart/feature/home/bloc/scroll/scroll_cubit.dart';
+import 'package:smart/feature/main/bloc/announcement/announcement_container_cubit.dart';
 import 'package:smart/feature/messenger/bloc/blocked_users/blocked_users_cubit.dart';
 import 'package:smart/feature/messenger/bloc/message_images_cubit.dart';
 import 'package:smart/feature/profile/bloc/user_cubit.dart';
@@ -48,7 +49,7 @@ import 'managers/places_manager.dart';
 import 'managers/search_manager.dart';
 
 import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
-import 'package:smart/feature/main/bloc/announcements/announcement_cubit.dart';
+import 'package:smart/feature/main/bloc/announcements/announcements_cubit.dart';
 import 'package:smart/feature/main/bloc/popularQueries/popular_queries_cubit.dart';
 import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
 import 'package:smart/feature/messenger/data/messenger_repository.dart';
@@ -222,6 +223,10 @@ class MyBlocProviders extends StatelessWidget {
             announcementManager: RepositoryProvider.of<AnnouncementManager>(context),
           ),
           lazy: false,
+        ),
+        BlocProvider(
+          create: (_) => AnnouncementContainerCubit(),
+          lazy: true,
         ),
         BlocProvider(
           create: (_) => SearchSelectSubcategoryCubit(RepositoryProvider.of<CategoriesManager>(context)),

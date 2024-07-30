@@ -4,14 +4,14 @@ import 'package:smart/enum/enum.dart';
 
 import '../../../../managers/announcement_manager.dart';
 
-part 'announcement_state.dart';
+part 'announcements_state.dart';
 
 class AnnouncementsCubit extends Cubit<AnnouncementsState> {
   final AnnouncementManager _announcementManager;
 
   AnnouncementsCubit({required AnnouncementManager announcementManager})
       : _announcementManager = announcementManager,
-        super(AnnouncementInitial()) {
+        super(AnnouncementsInitial()) {
     //loadAnnounces(true);
     announcementManager.announcementsLoadingState.stream.listen((event) {
       if (event == LoadingStateEnum.loading) emit(AnnouncementsLoadingState());

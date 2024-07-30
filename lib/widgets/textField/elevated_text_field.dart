@@ -22,6 +22,7 @@ class ElevatedTextField extends StatelessWidget {
   final TextInputAction? action;
   final bool readOnly;
   final bool autofocus;
+  final GlobalKey<FormFieldState<String>>? searchControllerKey;
 
   const ElevatedTextField({
     Key? key,
@@ -40,6 +41,7 @@ class ElevatedTextField extends StatelessWidget {
     this.action,
     this.readOnly = false,
     this.autofocus = false,
+    this.searchControllerKey,
   }) : super(key: key);
 
   @override
@@ -63,6 +65,7 @@ class ElevatedTextField extends StatelessWidget {
       ),
       alignment: Alignment.center,
       child: TextField(
+        key: searchControllerKey,
         autofocus: autofocus,
         readOnly: readOnly,
         onTap: onTap,

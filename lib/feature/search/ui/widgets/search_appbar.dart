@@ -11,6 +11,7 @@ class SearchAppBar extends StatefulWidget {
     required this.onSubmitted,
     required this.onChange,
     required this.searchController,
+    required this.searchControllerKey,
     required this.onTap,
     required this.showBackButton,
     required this.autofocus,
@@ -19,6 +20,7 @@ class SearchAppBar extends StatefulWidget {
   final Function(String) onChange;
   final Function() onTap;
   final TextEditingController searchController;
+  final GlobalKey<FormFieldState<String>>? searchControllerKey;
   final bool showBackButton;
   final bool autofocus;
 
@@ -35,6 +37,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
         if (widget.showBackButton) const CustomBackButton(),
         Expanded(
           child: ElevatedTextField(
+            searchControllerKey: widget.searchControllerKey,
             action: TextInputAction.search,
             onSubmitted: widget.onSubmitted,
             onChange: widget.onChange,
