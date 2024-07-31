@@ -59,7 +59,11 @@ class AnnouncementsService {
     return newAnnounces;
   }
 
-  Future<List<Announcement>> searchAnnouncementsInSubcategory(SubcategoryFilterDTO filterData) async {
+  Future<({List<Announcement> list, int total})> searchAnnouncementsInSubcategory({
+    required SubcategoryFilterDTO filterData,
+    String? excludeCityId,
+    String? excludeAreaId,
+  }) async {
     List<String> queries = ParametersFilterBuilder.getSearchQueries(
       filterData.toDefaultFilter(),
       subcategory: true,
@@ -83,11 +87,15 @@ class AnnouncementsService {
       queries.add(Query.equal('type', filterData.type));
     }
 
-    if (filterData.cityId != null) {
+    if (excludeCityId != null) {
+      queries.add(Query.notEqual('city_id', excludeCityId));
+    } else if (filterData.cityId != null) {
       queries.add(Query.equal('city_id', filterData.cityId));
     }
 
-    if (filterData.areaId != null) {
+    if (excludeAreaId != null) {
+      queries.add(Query.notEqual('area_id', excludeAreaId));
+    } else if (filterData.areaId != null) {
       queries.add(Query.equal('area_id', filterData.areaId));
     }
 
@@ -133,7 +141,7 @@ class AnnouncementsService {
       }
     }
 
-    return newAnnounces;
+    return (list: newAnnounces, total: res.total);
   }
 
   Future<void> writeAnnouncementSubcategoryParameters({

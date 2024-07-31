@@ -18,6 +18,7 @@ class AnnouncementManager {
 
   String? _lastId;
   String? _searchLastId;
+  bool _excludeCity = false;
   bool _canGetMoreAnnouncement = true;
 
   List<String> viewsAnnouncements = [];
@@ -137,13 +138,14 @@ class AnnouncementManager {
     String? cityId,
     String? areaId,
   }) async {
-    print('searchWithSubcategory');
-    print('cityId $cityId');
-    print('areaId $areaId');
+    // print('searchWithSubcategory');
+    // print('cityId $cityId');
+    // print('areaId $areaId');
     try {
       if (isNew) {
         searchAnnouncements.clear();
         _searchLastId = '';
+        _excludeCity = false;
       }
       final filter = SubcategoryFilterDTO(
         lastId: _searchLastId,
@@ -162,38 +164,45 @@ class AnnouncementManager {
         areaId: areaId,
       );
 
-      final results = await dbService.announcements.searchAnnouncementsInSubcategory(filter);
-      searchAnnouncements.addAll(results);
-      _searchLastId = searchAnnouncements.last.subTableId;
-      print('results.length ${results.length}');
-      // if (results.length < 24) {
-      //   //TODO default limit
-      //   _searchLastId = null;
-      //   final filter = SubcategoryFilterDTO(
-      //     lastId: _searchLastId,
-      //     text: searchText,
-      //     keyword: keyword,
-      //     sortBy: sortBy,
-      //     minPrice: minPrice,
-      //     maxPrice: maxPrice,
-      //     radius: radius,
-      //     subcategory: subcategoryId,
-      //     parameters: parameters,
-      //     mark: mark,
-      //     model: model,
-      //     type: type,
-      //     cityId: null,
-      //     areaId: null,
-      //   );
-      //   final results = await dbService.announcements.searchAnnouncementsInSubcategory(filter);
-      //   searchAnnouncements.addAll(results);
-      //   _searchLastId = searchAnnouncements.last.subTableId;
-      // }
+      if (!_excludeCity) {
+        await _searchWithCityInclude(filter);
+      }
+
+      if (_excludeCity) {
+        await _searchWithCityExclude(filter);
+      }
     } catch (e) {
       if (e.toString() != 'Bad state: No element') {
         rethrow;
       }
     }
+  }
+
+  _searchWithCityInclude(SubcategoryFilterDTO filter) async {
+    final results = await dbService.announcements.searchAnnouncementsInSubcategory(
+      filterData: filter,
+    );
+    searchAnnouncements.addAll(results.list);
+    _searchLastId = searchAnnouncements.last.subTableId;
+
+    if (searchAnnouncements.length >= results.total) {
+      _searchLastId = null;
+      _excludeCity = true;
+    }
+
+    // print('results.length ${results.list.length}');
+    // print('searchAnnouncements.length ${searchAnnouncements.length}');
+    // print('total ${results.total}');
+  }
+
+  _searchWithCityExclude(SubcategoryFilterDTO filter) async {
+    final results = await dbService.announcements.searchAnnouncementsInSubcategory(
+      filterData: filter,
+      excludeCityId: filter.cityId,
+      excludeAreaId: filter.areaId,
+    );
+    searchAnnouncements.addAll(results.list);
+    _searchLastId = searchAnnouncements.last.subTableId;
   }
 
   Future<void> loadSearchAnnouncement({

@@ -47,24 +47,19 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> with 
 
         if (cityDistrictString != null) {
           final cityDistrict = CityDistrict.fromMap(jsonDecode(cityDistrictString));
-          searchCubit.searchAnnounces(
-            searchText: '',
-            isNew: true,
-            showLoading: true,
-            parameters: value,
+          searchCubit.setCity(
             cityId: cityDistrict.cityId,
             areaId: cityDistrict.id,
             cityTitle: cityDistrict.cityTitle,
             areaTitle: cityDistrict.name,
           );
-        } else {
-          searchCubit.searchAnnounces(
-            searchText: '',
-            isNew: true,
-            showLoading: true,
-            parameters: value,
-          );
         }
+        searchCubit.searchAnnounces(
+          searchText: '',
+          isNew: true,
+          showLoading: true,
+          parameters: value,
+        );
       });
 
       RepositoryProvider.of<SearchManager>(context).setSearch(false);
