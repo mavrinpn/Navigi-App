@@ -143,20 +143,32 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     }
   }
 
+  void setCity({
+    String? cityId,
+    String? areaId,
+    String? cityTitle,
+    String? areaTitle,
+  }) {
+    _cityId = cityId;
+    _distrinctId = areaId;
+    _cityTitle = cityTitle;
+    _distrinctTitle = areaTitle;
+  }
+
   void searchAnnounces({
     required String? searchText,
     required bool isNew,
     required bool showLoading,
     List<Parameter> parameters = const <Parameter>[],
-    String? cityId,
-    String? areaId,
-    String? cityTitle,
-    String? areaTitle,
+    // String? cityId,
+    // String? areaId,
+    // String? cityTitle,
+    // String? areaTitle,
   }) async {
-    _cityId = cityId;
-    _distrinctId = areaId;
-    _cityTitle = cityTitle;
-    _distrinctTitle = areaTitle;
+    // _cityId = cityId;
+    // _distrinctId = areaId;
+    // _cityTitle = cityTitle;
+    // _distrinctTitle = areaTitle;
     emit(SearchAnnouncementsLoadingState());
     // if (showLoading) {
     //   emit(SearchAnnouncementsLoadingState());
@@ -173,7 +185,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
           minPrice: _minPrice,
           maxPrice: _maxPrice,
           cityId: cityId,
-          areaId: areaId,
+          areaId: distrinctId,
         );
       } else {
         await _announcementManager.searchWithSubcategory(
@@ -185,7 +197,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
           minPrice: _minPrice,
           maxPrice: _maxPrice,
           cityId: cityId,
-          areaId: areaId,
+          areaId: distrinctId,
         );
       }
       // await _announcementManager.loadSearchAnnouncement(

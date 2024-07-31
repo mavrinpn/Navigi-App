@@ -37,9 +37,10 @@ class RelatedAnnouncementCubit extends Cubit<RelatedAnnouncementState> {
         type: type,
       );
 
-      final res = await _announcementManager.dbService.announcements.searchAnnouncementsInSubcategory(filter);
+      final res =
+          await _announcementManager.dbService.announcements.searchAnnouncementsInSubcategory(filterData: filter);
 
-      emit(RelatedAnnouncementsSuccessState(announcements: res));
+      emit(RelatedAnnouncementsSuccessState(announcements: res.list));
     } catch (e) {
       emit(RelatedAnnouncementsFailState());
       rethrow;
