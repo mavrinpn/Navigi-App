@@ -137,6 +137,9 @@ class AnnouncementManager {
     String? cityId,
     String? areaId,
   }) async {
+    print('searchWithSubcategory');
+    print('cityId $cityId');
+    print('areaId $areaId');
     try {
       if (isNew) {
         searchAnnouncements.clear();
@@ -159,11 +162,33 @@ class AnnouncementManager {
         areaId: areaId,
       );
 
-      //TODO
-
-      searchAnnouncements.addAll(await dbService.announcements.searchAnnouncementsInSubcategory(filter));
-
+      final results = await dbService.announcements.searchAnnouncementsInSubcategory(filter);
+      searchAnnouncements.addAll(results);
       _searchLastId = searchAnnouncements.last.subTableId;
+      print('results.length ${results.length}');
+      // if (results.length < 24) {
+      //   //TODO default limit
+      //   _searchLastId = null;
+      //   final filter = SubcategoryFilterDTO(
+      //     lastId: _searchLastId,
+      //     text: searchText,
+      //     keyword: keyword,
+      //     sortBy: sortBy,
+      //     minPrice: minPrice,
+      //     maxPrice: maxPrice,
+      //     radius: radius,
+      //     subcategory: subcategoryId,
+      //     parameters: parameters,
+      //     mark: mark,
+      //     model: model,
+      //     type: type,
+      //     cityId: null,
+      //     areaId: null,
+      //   );
+      //   final results = await dbService.announcements.searchAnnouncementsInSubcategory(filter);
+      //   searchAnnouncements.addAll(results);
+      //   _searchLastId = searchAnnouncements.last.subTableId;
+      // }
     } catch (e) {
       if (e.toString() != 'Bad state: No element') {
         rethrow;

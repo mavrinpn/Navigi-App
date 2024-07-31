@@ -28,13 +28,13 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
   PriceType _priceType = PriceType.dzd;
 
   String? _cityId;
-  String? _areaId;
+  String? _distrinctId;
   String? get cityId => _cityId;
-  String? get distrinctId => _areaId;
+  String? get distrinctId => _distrinctId;
   String? _cityTitle;
-  String? _areaTitle;
+  String? _distrinctTitle;
   String? get cityTitle => _cityTitle;
-  String? get areaTitle => _areaTitle;
+  String? get distrinctTitle => _distrinctTitle;
 
   String? subcategoryId;
   Subcategory? subcategory;
@@ -67,18 +67,18 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     _minPrice = null;
     _maxPrice = null;
     _cityId = null;
-    _areaId = null;
+    _distrinctId = null;
     _cityTitle = null;
-    _areaTitle = null;
+    _distrinctTitle = null;
     marksFilter = null;
     // setFilters();
   }
 
   void clearCityFilters() {
     _cityId = null;
-    _areaId = null;
+    _distrinctId = null;
     _cityTitle = null;
-    _areaTitle = null;
+    _distrinctTitle = null;
   }
 
   SearchAnnouncementCubit({required AnnouncementManager announcementManager})
@@ -106,9 +106,9 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     emit(SearchAnnouncementsLoadingState());
     try {
       _cityId = cityId;
-      _areaId = areaId;
+      _distrinctId = areaId;
       _cityTitle = cityTitle;
-      _areaTitle = areaTitle;
+      _distrinctTitle = areaTitle;
 
       if (searchMode == SearchModeEnum.simple) {
         await _announcementManager.loadSearchAnnouncement(
@@ -154,9 +154,9 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
     String? areaTitle,
   }) async {
     _cityId = cityId;
-    _areaId = areaId;
+    _distrinctId = areaId;
     _cityTitle = cityTitle;
-    _areaTitle = areaTitle;
+    _distrinctTitle = areaTitle;
     emit(SearchAnnouncementsLoadingState());
     // if (showLoading) {
     //   emit(SearchAnnouncementsLoadingState());

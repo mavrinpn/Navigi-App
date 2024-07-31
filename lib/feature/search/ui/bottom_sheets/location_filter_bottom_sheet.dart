@@ -188,7 +188,7 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
       if (radiusOptionShown) ...[
         CityAreaFilterWidget(
           cityTitle: searchCubit.cityTitle,
-          areaTitle: searchCubit.areaTitle,
+          areaTitle: searchCubit.distrinctTitle,
           onSelecetCity: (id, title) {
             selectedCityId = id;
             selectedCityTitle = title;
