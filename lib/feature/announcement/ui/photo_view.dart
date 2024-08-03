@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:smart/feature/announcement/ui/announcement_screen.dart';
 import 'package:smart/feature/announcement/ui/widgets/images_amount_indicators.dart';
 import 'package:smart/utils/utils.dart';
 import 'package:smart/widgets/button/back_button.dart';
@@ -10,15 +9,27 @@ class PhotoViews extends StatefulWidget {
   const PhotoViews({
     required this.images,
     super.key,
+    required this.activePage,
+    required this.onPageChanged,
   });
 
   final List images;
+  final int activePage;
+  final Function(int) onPageChanged;
 
   @override
   State<PhotoViews> createState() => _PhotoViewsState();
 }
 
 class _PhotoViewsState extends State<PhotoViews> {
+  int activePage = 0;
+
+  @override
+  void initState() {
+    activePage = widget.activePage;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     PageController pageController = PageController(initialPage: activePage);
@@ -61,6 +72,7 @@ class _PhotoViewsState extends State<PhotoViews> {
               onPageChanged: (int page) {
                 setState(() {
                   activePage = page;
+                  widget.onPageChanged(activePage);
                 });
               },
               itemCount: widget.images.length,

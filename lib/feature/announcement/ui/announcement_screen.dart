@@ -39,8 +39,6 @@ import '../../../widgets/button/custom_icon_button.dart';
 import '../bloc/announcement/announcement_cubit.dart';
 import 'map.dart';
 
-int activePage = 0;
-
 class AnnouncementScreen extends StatefulWidget {
   const AnnouncementScreen({
     super.key,
@@ -54,6 +52,8 @@ class AnnouncementScreen extends StatefulWidget {
 }
 
 class _AnnouncementScreenState extends State<AnnouncementScreen> {
+  int activePage = 0;
+
   @override
   void initState() {
     BlocProvider.of<AnnouncementCubit>(context).loadAnnouncementById(widget.announcementId);
@@ -79,7 +79,6 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     final localizations = AppLocalizations.of(context)!;
     PageController pageController = PageController(viewportFraction: 0.9, initialPage: activePage);
 
-    final width = MediaQuery.of(context).size.width;
     const maxImageCount = 10;
 
     return BlocConsumer<AnnouncementCubit, AnnouncementState>(
@@ -158,20 +157,31 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: width,
+                      // width: width,
                       height: 260,
                       child: GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
+                            MaterialPageRoute<int>(
                               builder: (_) => PhotoViews(
                                 images: state.data.images.take(maxImageCount).toList(),
+                                activePage: activePage,
+                                onPageChanged: (value) {
+                                  activePage = value;
+                                },
                               ),
                             ),
-                          );
+                          ).then((_) {
+                            pageController.animateToPage(
+                              activePage,
+                              duration: Durations.medium2,
+                              curve: Curves.bounceInOut,
+                            );
+                          });
                         },
                         child: PageView.builder(
+                            clipBehavior: Clip.none,
                             itemCount: min(state.data.images.length, maxImageCount),
                             pageSnapping: true,
                             controller: pageController,
@@ -182,10 +192,13 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             },
                             itemBuilder: (context, index) {
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 6),
+                                padding: EdgeInsets.only(
+                                  right: activePage == 0 ? 12 : 6,
+                                  left: activePage == 0 ? 0 : 6,
+                                ),
                                 child: Container(
                                   clipBehavior: Clip.hardEdge,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(6)),
                                   child: Container(
                                     width: double.infinity,
                                     height: double.infinity,
@@ -199,8 +212,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                                     ),
                                     child: BackdropFilter(
                                       filter: ImageFilter.blur(
-                                        sigmaX: 15,
-                                        sigmaY: 15,
+                                        sigmaX: 25,
+                                        sigmaY: 25,
                                       ),
                                       child: CachedNetworkImage(
                                         imageUrl: state.data.images[index],
@@ -209,11 +222,6 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                                       ),
                                     ),
                                   ),
-                                  // child: CustomNetworkImage(
-                                  //   width: 320,
-                                  //   height: 258,
-                                  //   url: state.data.images[index],
-                                  // ),
                                 ),
                               );
                             }),

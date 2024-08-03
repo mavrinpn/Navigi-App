@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:smart/feature/home/bloc/scroll/scroll_cubit.dart';
 import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
 import 'package:smart/feature/main/ui/sections/categories_section.dart';
@@ -8,7 +7,6 @@ import 'package:smart/feature/main/ui/widgets/appbar_with_search_field.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
 import 'package:smart/feature/search/ui/sections/popular_queries.dart';
-import 'package:smart/feature/search/ui/widgets/announcement_shimmer.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/constants.dart';
 import 'package:smart/utils/routes/route_names.dart';
@@ -74,7 +72,7 @@ class _MainScreenState extends State<MainScreen> {
           crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
           mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
           maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-          childAspectRatio: AppSizes.anouncementAspectRatio,
+          childAspectRatio: AppSizes.anouncementAspectRatio(context),
         ),
         delegate: SliverChildBuilderDelegate(
           (context, index) => AnnouncementContainer(announcement: announcementRepository.announcements[index]),
@@ -209,30 +207,39 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     sliver: getAnnouncementsGrid(),
                   ),
-                  if (state is AnnouncementsLoadingState) ...[
+                  // if (state is AnnouncementsLoadingState) ...[
+                  //   SliverToBoxAdapter(
+                  //     child: SingleChildScrollView(
+                  //       child: Shimmer.fromColors(
+                  //         baseColor: Colors.grey[300]!,
+                  //         highlightColor: Colors.grey[100]!,
+                  //         child: Center(
+                  //           child: Wrap(
+                  //             spacing: AppSizes.anouncementGridCrossSpacing,
+                  //             runSpacing: AppSizes.anouncementRunSpacing,
+                  //             children: const [
+                  //               AnnouncementShimmer(),
+                  //               AnnouncementShimmer(),
+                  //               AnnouncementShimmer(),
+                  //               AnnouncementShimmer(),
+                  //               AnnouncementShimmer(),
+                  //               AnnouncementShimmer(),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   )
+                  // ],
+                  if (announcementRepository.announcements.length >= 20)
                     SliverToBoxAdapter(
-                      child: SingleChildScrollView(
-                        child: Shimmer.fromColors(
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[100]!,
-                          child: Center(
-                            child: Wrap(
-                              spacing: AppSizes.anouncementGridCrossSpacing,
-                              runSpacing: AppSizes.anouncementRunSpacing,
-                              children: const [
-                                AnnouncementShimmer(),
-                                AnnouncementShimmer(),
-                                AnnouncementShimmer(),
-                                AnnouncementShimmer(),
-                                AnnouncementShimmer(),
-                                AnnouncementShimmer(),
-                              ],
-                            ),
-                          ),
+                      child: Center(
+                        child: SizedBox(
+                          height: 200,
+                          child: AppAnimations.bouncingLine,
                         ),
                       ),
-                    )
-                  ],
+                    ),
                 ],
               ),
             );

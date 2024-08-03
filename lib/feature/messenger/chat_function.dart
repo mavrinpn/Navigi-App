@@ -49,7 +49,7 @@ void checkBlockedAndCall({
       CustomSnackBar.showSnackBar(context, localizations.chatBlocked);
     } else {
       String localPhone = phone;
-      if (phone.startsWith('+')) {
+      if (!phone.startsWith('+')) {
         localPhone = '+213$phone';
       }
       launchUrl(Uri.parse('tel://$localPhone'));

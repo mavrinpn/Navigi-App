@@ -42,15 +42,25 @@ class _MainPageState extends State<MainPage> with LoadingMixin {
             _needRefresh = false;
             BlocProvider.of<AnnouncementContainerCubit>(context).reloadImages();
           }
-
           break;
+
         case InternetStatus.disconnected:
           _needRefresh = true;
-          CustomSnackBar.showSnackBarWithIcon(
-            context: context,
-            text: localizations.noConnection,
-            iconData: Icons.wifi_off,
+          Future.delayed(
+            const Duration(milliseconds: 1000),
+            () {
+              InternetConnection().hasInternetAccess.then((connected) {
+                if (!connected) {
+                  CustomSnackBar.showSnackBarWithIcon(
+                    context: context,
+                    text: localizations.noConnection,
+                    iconData: Icons.wifi_off,
+                  );
+                }
+              });
+            },
           );
+
           break;
       }
     });

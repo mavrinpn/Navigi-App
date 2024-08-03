@@ -141,49 +141,46 @@ class AnnouncementManager {
     // print('searchWithSubcategory');
     // print('cityId $cityId');
     // print('areaId $areaId');
-    try {
-      if (isNew) {
-        searchAnnouncements.clear();
-        _searchLastId = '';
-        _excludeCity = false;
-      }
-      final filter = SubcategoryFilterDTO(
-        lastId: _searchLastId,
-        text: searchText,
-        keyword: keyword,
-        sortBy: sortBy,
-        minPrice: minPrice,
-        maxPrice: maxPrice,
-        radius: radius,
-        subcategory: subcategoryId,
-        parameters: parameters,
-        mark: mark,
-        model: model,
-        type: type,
-        cityId: cityId,
-        areaId: areaId,
-      );
 
-      if (!_excludeCity) {
-        await _searchWithCityInclude(filter);
-      }
+    if (isNew) {
+      searchAnnouncements.clear();
+      _searchLastId = '';
+      _excludeCity = false;
+    }
+    final filter = SubcategoryFilterDTO(
+      lastId: _searchLastId,
+      text: searchText,
+      keyword: keyword,
+      sortBy: sortBy,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      radius: radius,
+      subcategory: subcategoryId,
+      parameters: parameters,
+      mark: mark,
+      model: model,
+      type: type,
+      cityId: cityId,
+      areaId: areaId,
+    );
 
-      if (_excludeCity) {
-        await _searchWithCityExclude(filter);
-      }
-    } catch (e) {
-      if (e.toString() != 'Bad state: No element') {
-        rethrow;
-      }
+    if (!_excludeCity) {
+      await _searchWithCityInclude(filter);
+    }
+
+    if (_excludeCity) {
+      await _searchWithCityExclude(filter);
     }
   }
 
   _searchWithCityInclude(SubcategoryFilterDTO filter) async {
-    final results = await dbService.announcements.searchAnnouncementsInSubcategory(
+    ({List<Announcement> list, int total}) results;
+    results = await dbService.announcements.searchAnnouncementsInSubcategory(
       filterData: filter,
     );
+
     searchAnnouncements.addAll(results.list);
-    _searchLastId = searchAnnouncements.last.subTableId;
+    _searchLastId = searchAnnouncements.lastOrNull?.subTableId ?? '';
 
     if (searchAnnouncements.length >= results.total) {
       _searchLastId = null;
@@ -196,11 +193,13 @@ class AnnouncementManager {
   }
 
   _searchWithCityExclude(SubcategoryFilterDTO filter) async {
-    final results = await dbService.announcements.searchAnnouncementsInSubcategory(
+    ({List<Announcement> list, int total}) results;
+    results = await dbService.announcements.searchAnnouncementsInSubcategory(
       filterData: filter,
       excludeCityId: filter.cityId,
       excludeAreaId: filter.areaId,
     );
+
     searchAnnouncements.addAll(results.list);
     _searchLastId = searchAnnouncements.last.subTableId;
   }

@@ -139,7 +139,9 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
       emit(SearchAnnouncementsSuccessState());
     } catch (err) {
       emit(SearchAnnouncementsFailState(error: err.toString()));
-      rethrow;
+      // if (err.toString() != 'Bad state: No element') {
+      //   rethrow;
+      // }
     }
   }
 
@@ -210,7 +212,9 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
       emit(SearchAnnouncementsSuccessState());
     } catch (err) {
       emit(SearchAnnouncementsFailState(error: err.toString()));
-      rethrow;
+      // if (err.toString() != 'Bad state: No element') {
+      //   rethrow;
+      // }
     }
   }
 
@@ -244,7 +248,9 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
       emit(SearchAnnouncementsSuccessState());
     } catch (err) {
       emit(SearchAnnouncementsFailState(error: err.toString()));
-      rethrow;
+      // if (err.toString() != 'Bad state: No element') {
+      //   rethrow;
+      // }
     }
   }
 }

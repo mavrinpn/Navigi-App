@@ -69,7 +69,7 @@ class _RelatedAnnouncementWidgetState extends State<RelatedAnnouncementWidget> {
                     crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
                     mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
                     maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-                    childAspectRatio: AppSizes.anouncementAspectRatio,
+                    childAspectRatio: AppSizes.anouncementAspectRatio(context),
                   ),
                 ),
                 const SizedBox(height: 50),

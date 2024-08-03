@@ -150,7 +150,7 @@ class _SearchScreenState extends State<SearchScreen> {
       crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
       mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
       maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-      childAspectRatio: AppSizes.anouncementAspectRatio,
+      childAspectRatio: AppSizes.anouncementAspectRatio(context),
     );
 
     AppBar searchAppBar = AppBar(
@@ -316,7 +316,10 @@ class _SearchScreenState extends State<SearchScreen> {
 
     Widget gridBuild() {
       return SliverPadding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSizes.anouncementGridSidePadding,
+          vertical: AppSizes.anouncementGridSidePadding,
+        ),
         sliver: SliverGrid(
           gridDelegate: gridDelegate,
           delegate: SliverChildBuilderDelegate(
@@ -361,23 +364,33 @@ class _SearchScreenState extends State<SearchScreen> {
         );
       }
 
-      return CustomScrollView(
-        controller: _controller,
-        physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
-        slivers: [
-          gridBuild(),
-          // if (state is SearchAnnouncementsScrollLoadingState) ...[
-          if (announcementRepository.searchAnnouncements.length >= 20)
-            SliverToBoxAdapter(
-              child: Center(
-                child: SizedBox(
-                  height: 200,
-                  child: AppAnimations.bouncingLine,
+      return RefreshIndicator(
+        color: AppColors.red,
+        onRefresh: () async {
+          BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
+            searchText: lastQuery,
+            isNew: true,
+            showLoading: false,
+          );
+        },
+        child: CustomScrollView(
+          controller: _controller,
+          physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
+          slivers: [
+            gridBuild(),
+            // if (state is SearchAnnouncementsScrollLoadingState) ...[
+            if (announcementRepository.searchAnnouncements.length >= 20)
+              SliverToBoxAdapter(
+                child: Center(
+                  child: SizedBox(
+                    height: 200,
+                    child: AppAnimations.bouncingLine,
+                  ),
                 ),
               ),
-            )
-          // ]
-        ],
+            // ]
+          ],
+        ),
       );
     }
 

@@ -113,35 +113,38 @@ class AnnouncementsService {
 
     queries.add(Query.orderDesc('\$createdAt'));
 
-    final res = await _databases.listDocuments(
-      databaseId: mainDatabase,
-      collectionId: filterData.subcategory,
-      queries: queries,
-    );
+    try {
+      final res = await _databases.listDocuments(
+        databaseId: mainDatabase,
+        collectionId: filterData.subcategory,
+        queries: queries,
+      );
+      List<Announcement> newAnnounces = [];
 
-    List<Announcement> newAnnounces = [];
+      for (var doc in res.documents) {
+        if (doc.data['announcements'] != null) {
+          Future<Uint8List> futureBytes = Future.value(Uint8List.fromList([]));
+          if (doc.data['announcements']['images'] != null) {
+            final imageUrl = doc.data['announcements']['images'][0];
+            futureBytes = futureBytesForImageURL(
+              storage: _storage,
+              imageUrl: imageUrl,
+            );
+          }
 
-    for (var doc in res.documents) {
-      if (doc.data['announcements'] != null) {
-        Future<Uint8List> futureBytes = Future.value(Uint8List.fromList([]));
-        if (doc.data['announcements']['images'] != null) {
-          final imageUrl = doc.data['announcements']['images'][0];
-          futureBytes = futureBytesForImageURL(
-            storage: _storage,
-            imageUrl: imageUrl,
+          final ann = Announcement.fromJson(
+            json: doc.data['announcements'],
+            futureBytes: futureBytes,
+            subcollTableId: doc.$id,
           );
+          newAnnounces.add(ann);
         }
-
-        final ann = Announcement.fromJson(
-          json: doc.data['announcements'],
-          futureBytes: futureBytes,
-          subcollTableId: doc.$id,
-        );
-        newAnnounces.add(ann);
       }
-    }
 
-    return (list: newAnnounces, total: res.total);
+      return (list: newAnnounces, total: res.total);
+    } catch (err) {
+      return (list: <Announcement>[], total: 0);
+    }
   }
 
   Future<void> writeAnnouncementSubcategoryParameters({

@@ -37,7 +37,7 @@ class _FavoritesScreen extends State<FavoritesScreen> {
           crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
           mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
           maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-          childAspectRatio: AppSizes.anouncementAspectRatio,
+          childAspectRatio: AppSizes.anouncementAspectRatio(context),
         ),
       );
     }
