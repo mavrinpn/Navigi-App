@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:smart/managers/categories_manager.dart';
 import 'package:smart/models/sort_types.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/filters/parameter_dto.dart';
@@ -35,10 +36,20 @@ class ParametersFilterBuilder {
 
       List<String> orQueries = [];
       if (frAndQueries.isNotEmpty) {
-        orQueries.add(Query.and(frAndQueries));
+        // orQueries.add(Query.and(frAndQueries));
+        if (frAndQueries.length > 1) {
+          orQueries.add(Query.and(frAndQueries));
+        } else {
+          orQueries.add(frAndQueries.first);
+        }
       }
       if (arAndQueries.isNotEmpty) {
-        orQueries.add(Query.and(arAndQueries));
+        // orQueries.add(Query.and(arAndQueries));
+        if (arAndQueries.length > 1) {
+          orQueries.add(Query.and(arAndQueries));
+        } else {
+          orQueries.add(arAndQueries.first);
+        }
       }
 
       if (orQueries.length > 1) {
@@ -49,8 +60,40 @@ class ParametersFilterBuilder {
     }
 
     if (filterData.text != null && filterData.text != '') {
+      List<String> categoriesQueries = [];
+      List<String> textQueries = [];
       for (final textRow in filterData.text!.split(' ')) {
-        queries.add(Query.contains('keywords', textRow.toLowerCase()));
+        textQueries.add(Query.contains('keywords', textRow.toLowerCase()));
+
+        for (final category in CategoriesManager.allCategories) {
+          for (final subcategory in category.subcategories) {
+            if (subcategory.name.toLowerCase().contains(textRow.toLowerCase())) {
+              categoriesQueries.add(Query.equal('subcategoryId', subcategory.id));
+            }
+          }
+        }
+      }
+
+      List<String> orQueries = [];
+      if (textQueries.isNotEmpty) {
+        if (textQueries.length > 1) {
+          orQueries.add(Query.and(textQueries));
+        } else {
+          orQueries.add(textQueries.first);
+        }
+      }
+      if (categoriesQueries.isNotEmpty) {
+        if (categoriesQueries.length > 1) {
+          orQueries.add(Query.and(categoriesQueries));
+        } else {
+          orQueries.add(categoriesQueries.first);
+        }
+      }
+
+      if (orQueries.length > 1) {
+        queries.add(Query.or(orQueries));
+      } else if (orQueries.isNotEmpty) {
+        queries.add(orQueries.first);
       }
     }
 
