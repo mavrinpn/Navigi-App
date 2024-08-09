@@ -700,4 +700,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get disabled => 'معاق';
+
+  @override
+  String get enterPhoneNumberAtSettings => 'لإنشاء إعلان ، أدخل رقم هاتفك في الإعدادات';
 }

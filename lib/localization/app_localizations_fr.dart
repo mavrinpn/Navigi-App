@@ -700,4 +700,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get disabled => 'Désactivé';
+
+  @override
+  String get enterPhoneNumberAtSettings => 'Pour créer une annonce, entrez votre numéro de téléphone dans les paramètres';
 }

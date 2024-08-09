@@ -245,5 +245,6 @@
 "noConnection": "Pas de connexion Internet. Veuillez vous assurer que le wi-fi ou la connexion cellulaire est activée et réessayez.",
 "isConnection": "Connexion Internet rétablie",
 "enabled": "Activé",
-"disabled": "Désactivé"
+"disabled": "Désactivé",
+"enterPhoneNumberAtSettings": "Pour créer une annonce, entrez votre numéro de téléphone dans les paramètres"
 }

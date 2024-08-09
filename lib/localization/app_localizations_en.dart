@@ -700,4 +700,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get disabled => 'Disabled';
+
+  @override
+  String get enterPhoneNumberAtSettings => 'To create an ad, enter your phone number in the settings';
 }

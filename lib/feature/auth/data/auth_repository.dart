@@ -285,10 +285,10 @@ class AuthRepository {
         password: password,
       );
 
-      await _account.updatePhone(
-        phone: '+213$phone',
-        password: password,
-      );
+      // await _account.updatePhone(
+      //   phone: '+213$phone',
+      //   password: password,
+      // );
       loggedUser = await _account.get();
     } catch (err) {
       // ignore: avoid_print

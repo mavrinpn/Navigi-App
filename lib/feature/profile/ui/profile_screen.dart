@@ -10,6 +10,7 @@ import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/conatainers/announcement_horizontal.dart';
+import 'package:smart/widgets/snackBar/snack_bar.dart';
 
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
@@ -94,6 +95,15 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: CustomTextButton.withIcon(
         callback: () {
+          final loggedUser = RepositoryProvider.of<AuthRepository>(context).userData;
+          if (loggedUser?.phone == '') {
+            CustomSnackBar.showSnackBar(
+              context,
+              localizations.enterPhoneNumberAtSettings,
+            );
+            return;
+          }
+
           final creatingManager = context.read<CreatingAnnouncementManager>();
           creatingManager.isCreating = true;
           Navigator.pushNamed(context, AppRoutesNames.announcementCreatingCategory);

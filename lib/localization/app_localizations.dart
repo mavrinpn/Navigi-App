@@ -1480,6 +1480,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Disabled'**
   String get disabled;
+
+  /// No description provided for @enterPhoneNumberAtSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'To create an ad, enter your phone number in the settings'**
+  String get enterPhoneNumberAtSettings;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

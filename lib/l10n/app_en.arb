@@ -245,5 +245,6 @@
 "noConnection": "There is no Internet connection. Please make sure that wi-fi or cellular connection is enabled and try again.",
 "isConnection": "Internet connection has been restored",
 "enabled": "Enabled",
-"disabled": "Disabled"
+"disabled": "Disabled",
+"enterPhoneNumberAtSettings": "To create an ad, enter your phone number in the settings"
 }
