@@ -214,15 +214,14 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                               separatorBuilder: (context, index) => const SizedBox(height: 12),
                             )
                     ],
-                    if (creatorState is CreatorLoadingState && (_available.isEmpty)) ...[
+                    if (creatorState is CreatorLoadingState && (_available.isEmpty))
                       SliverToBoxAdapter(
                         child: SizedBox(
-                          height: 100,
+                          height: MediaQuery.sizeOf(context).height/2.5,
                           width: 50,
                           child: AppAnimations.circleFadingAnimation,
                         ),
-                      )
-                    ],
+                      ),
                     if (!_showAll && (creatorState is CreatorSuccessState && creatorState.available.length > 4))
                       SliverPadding(
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),

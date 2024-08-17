@@ -80,24 +80,63 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
       child: SafeArea(
         child: SingleChildScrollView(
           clipBehavior: Clip.none,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(height: 16),
-                Center(
-                  child: Container(
-                    width: 120,
-                    height: 4,
-                    decoration: ShapeDecoration(
-                        color: const Color(0xFFDDE1E7),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(1))),
-                  ),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const SizedBox(height: 16),
+                    Center(
+                      child: Container(
+                        width: 120,
+                        height: 4,
+                        decoration: ShapeDecoration(
+                            color: const Color(0xFFDDE1E7),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(1))),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    ..._buildLocationWidget(context),
+                    const SizedBox(height: 12),
+                    CustomTextButton.orangeContinue(
+                      callback: () {
+                        RepositoryProvider.of<SearchManager>(context).setSearch(false);
+
+                        searchCubit.setFilters(
+                          parameters: selectCategoryCubit.parameters,
+                          cityId: selectedCityId,
+                          areaId: selectedAreaId,
+                          cityTitle: selectedCityTitle,
+                          areaTitle: selectedAreaTitle,
+                        );
+                        Navigator.pop(context);
+
+                        if (widget.needOpenNewScreen) {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutesNames.search,
+                            arguments: {
+                              'showSearchHelper': false,
+                            },
+                          );
+                        }
+
+                        updateAppBarFilterCubit.needUpdateAppBarFilters();
+                        setState(() {});
+                      },
+                      text: localizations.apply,
+                      active: true,
+                    ),
+                    const SizedBox(height: 16),
+                  ],
                 ),
-                const SizedBox(height: 12),
-                ..._buildLocationWidget(context),
-                TextButton(
+              ),
+              Positioned(
+                right: 12,
+                top: 28,
+                child: TextButton(
                   onPressed: () {
                     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
                     searchCubit.clearCityFilters();
@@ -111,7 +150,7 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
                     updateAppBarFilterCubit.needUpdateAppBarFilters();
 
                     RepositoryProvider.of<SearchManager>(context).setSearch(false);
-  
+
                     searchCubit.setFilters(
                       parameters: selectCategoryCubit.parameters,
                     );
@@ -119,39 +158,8 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
                   },
                   child: Text(localizations.reset),
                 ),
-                const SizedBox(height: 12),
-                CustomTextButton.orangeContinue(
-                  callback: () {
-                    RepositoryProvider.of<SearchManager>(context).setSearch(false);
-
-                    searchCubit.setFilters(
-                      parameters: selectCategoryCubit.parameters,
-                      cityId: selectedCityId,
-                      areaId: selectedAreaId,
-                      cityTitle: selectedCityTitle,
-                      areaTitle: selectedAreaTitle,
-                    );
-                    Navigator.pop(context);
-
-                    if (widget.needOpenNewScreen) {
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutesNames.search,
-                        arguments: {
-                          'showSearchHelper': false,
-                        },
-                      );
-                    }
-
-                    updateAppBarFilterCubit.needUpdateAppBarFilters();
-                    setState(() {});
-                  },
-                  text: localizations.apply,
-                  active: true,
-                ),
-                const SizedBox(height: 16),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

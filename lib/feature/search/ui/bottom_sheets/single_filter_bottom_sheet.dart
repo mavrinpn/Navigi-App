@@ -75,25 +75,14 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
                             BlocBuilder<SearchSelectSubcategoryCubit, SearchSelectSubcategoryState>(
                               builder: (context, state) {
                                 if (state is FiltersGotState) {
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  return Stack(
                                     children: [
-                                      ...buildFiltersSelection(selectCategoryCubit.parameters),
-                                      TextButton(
-                                        onPressed: () {
-                                          for (var parameter in selectCategoryCubit.parameters) {
-                                            if (parameter.key == widget.parameterKey) {
-                                              if (parameter is SelectParameter) {
-                                              } else if (parameter is SingleSelectParameter) {
-                                                parameter.setVariant(emptyParameterOption);
-                                              } else if (parameter is MultiSelectParameter) {
-                                              } else if (parameter is MinMaxParameter) {}
-                                            }
-                                          }
-                                          setState(() {});
-                                        },
-                                        child: Text(localizations.reset),
+                                      Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          ...buildFiltersSelection(selectCategoryCubit.parameters),
+                                        ],
                                       ),
                                     ],
                                   );
@@ -108,6 +97,25 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
                       )),
                     ],
                   ),
+                ),
+              ),
+              Positioned(
+                right: 12,
+                top: 32,
+                child: TextButton(
+                  onPressed: () {
+                    for (var parameter in selectCategoryCubit.parameters) {
+                      if (parameter.key == widget.parameterKey) {
+                        if (parameter is SelectParameter) {
+                        } else if (parameter is SingleSelectParameter) {
+                          parameter.setVariant(emptyParameterOption);
+                        } else if (parameter is MultiSelectParameter) {
+                        } else if (parameter is MinMaxParameter) {}
+                      }
+                    }
+                    setState(() {});
+                  },
+                  child: Text(localizations.reset),
                 ),
               ),
               Positioned(

@@ -6,6 +6,7 @@ import 'package:smart/feature/main/ui/sections/categories_section.dart';
 import 'package:smart/feature/main/ui/widgets/appbar_with_search_field.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
+import 'package:smart/feature/search/ui/bottom_sheets/filter_keys.dart';
 import 'package:smart/feature/search/ui/sections/popular_queries.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/constants.dart';
@@ -120,7 +121,7 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     void openFilters() {
-      openSearchScreen(query: null, showKeyboard: true);
+      openSearchScreen(query: null, showKeyboard: false);
       context.read<SearchAnnouncementCubit>().setSearchMode(SearchModeEnum.simple);
       showFilterBottomSheet(context: context);
     }
@@ -185,7 +186,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 25, 15, 15),
+                      padding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -194,9 +195,16 @@ class _MainScreenState extends State<MainScreen> {
                             textAlign: TextAlign.center,
                             style: AppTypography.font20black,
                           ),
-                          // Text(AppLocalizations.of(context)!.viewAll,
-                          //     style: AppTypography.font14lightGray
-                          //         .copyWith(fontSize: 12)),
+                          TextButton(
+                            onPressed: () {
+                              //TODO
+                              showFilterBottomSheet(
+                                context: context,
+                                parameterKey: FilterKeys.location,
+                              );
+                            },
+                            child: Text(_cityName(context)),
+                          ),
                         ],
                       ),
                     ),
@@ -247,5 +255,21 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+
+  String _cityName(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+    String name = localizations.location;
+
+    if (searchCubit.cityTitle != null) {
+      name = searchCubit.cityTitle!;
+    }
+
+    if (searchCubit.distrinctTitle != null) {
+      name += ' / ${searchCubit.distrinctTitle}';
+    }
+
+    return name;
   }
 }

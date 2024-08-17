@@ -5,6 +5,7 @@ import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
 import 'package:smart/models/tip_word.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:smart/utils/extensions/string_extension.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/category/products.dart';
 
@@ -83,11 +84,14 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
               height: 55,
               hintText: '',
               width: double.infinity,
-              onChange: (value) {
-                if (value.isEmpty) {
+              onChange: (newValue) {
+                final trimmedValue = newValue.trimLeft().capitalize();
+                productsController.text = trimmedValue;
+
+                if (trimmedValue.isEmpty) {
                   _selectedTipWord = null;
                 }
-                String lastWord = value.trimRight().split(' ').lastOrNull ?? '';
+                String lastWord = trimmedValue.trimRight().split(' ').lastOrNull ?? '';
 
                 final creatingManager = RepositoryProvider.of<CreatingAnnouncementManager>(context);
                 final markId = creatingManager.carFilter?.markId ?? creatingManager.marksFilter?.markId;
@@ -96,7 +100,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                 BlocProvider.of<TipWordsCubit>(context).getTipWordsBy(
                   subcategoryId: creatingManager.creatingData.subcategoryId ?? '',
                   lastWord: lastWord,
-                  wholeString: value,
+                  wholeString: trimmedValue,
                   markId: _selectedTipWord == null ? markId : null,
                   //modelId: _selectedTipWord == null ? modelId : null,
                   modelId: null,
@@ -104,7 +108,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                   previousWordGroupId: _selectedTipWord?.groupId,
                 );
 
-                setIsTouch(value.isNotEmpty);
+                setIsTouch(trimmedValue.isNotEmpty);
                 setState(() {});
               },
             ),

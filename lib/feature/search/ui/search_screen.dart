@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
+import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_keys.dart';
 import 'package:smart/feature/search/ui/sections/history.dart';
 import 'package:smart/feature/search/ui/sections/popular_queries.dart';
@@ -514,6 +515,16 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                       ),
                     ),
+                    TextButton(
+                      onPressed: () {
+                        showFilterBottomSheet(
+                          context: context,
+                          parameterKey: FilterKeys.location,
+                        );
+                      },
+                      child: Text(_cityName(context)),
+                    ),
+                    const SizedBox(width: 6),
                   ],
                 ),
               if (showFilterChips)
@@ -538,11 +549,11 @@ class _SearchScreenState extends State<SearchScreen> {
                             title: localizations.price,
                             parameterKey: FilterKeys.price,
                           ),
-                          FilterChipWidget(
-                            isSelected: searchCubit.distrinctId != null || searchCubit.cityId != null,
-                            title: localizations.location,
-                            parameterKey: FilterKeys.location,
-                          ),
+                          // FilterChipWidget(
+                          //   isSelected: searchCubit.distrinctId != null || searchCubit.cityId != null,
+                          //   title: localizations.location,
+                          //   parameterKey: FilterKeys.location,
+                          // ),
                           if (selectCategoryCubit.subcategoryId != null &&
                               selectCategoryCubit.subcategoryId!.isNotEmpty)
                             if (selectCategoryCubit.subcategoryFilters?.hasMark ?? false) const MarkChipWidget(),
@@ -580,5 +591,21 @@ class _SearchScreenState extends State<SearchScreen> {
         },
       ),
     );
+  }
+
+  String _cityName(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+    String name = localizations.location;
+
+    if (searchCubit.cityTitle != null) {
+      name = searchCubit.cityTitle!;
+    }
+
+    if (searchCubit.distrinctTitle != null) {
+      name += ' / ${searchCubit.distrinctTitle}';
+    }
+
+    return name;
   }
 }

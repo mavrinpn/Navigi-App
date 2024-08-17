@@ -27,8 +27,8 @@ class RelatedAnnouncementCubit extends Cubit<RelatedAnnouncementState> {
     emit(RelatedAnnouncementsLoadingState());
     try {
       final filter = SubcategoryFilterDTO(
-        minPrice: minPrice,
-        maxPrice: maxPrice,
+        // minPrice: minPrice,
+        // maxPrice: maxPrice,
         subcategory: subcategoryId,
         parameters: parameters ?? [],
         limit: 6,
