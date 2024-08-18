@@ -19,10 +19,18 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
     });
   }
 
-  void loadAnnounces(bool isNew) async {
+  void loadAnnounces(
+    bool isNew, {
+    String? cityId,
+    String? areaId,
+  }) async {
     //emit(AnnouncementsLoadingState());
     try {
-      await _announcementManager.addLimitAnnouncements(isNew);
+      await _announcementManager.addLimitAnnouncements(
+        isNew,
+        cityId: cityId,
+        areaId: areaId,
+      );
       //emit(AnnouncementsSuccessState());
     } catch (err) {
       emit(AnnouncementsFailState());

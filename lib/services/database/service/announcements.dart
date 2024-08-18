@@ -10,14 +10,30 @@ class AnnouncementsService {
       : _databases = databases,
         _storage = storage;
 
-  Future<List<Announcement>> getAnnouncements({
+  Future<({List<Announcement> list, int total})> getAnnouncements({
     required String? lastId,
     required String? excudeUserId,
+    String? cityId,
+    String? areaId,
+    String? excludeCityId,
+    String? excludeAreaId,
   }) async {
     List<String> queries = ParametersFilterBuilder.getQueriesForGet(lastId);
 
     if (excudeUserId != null) {
       queries.add(Query.notEqual('creator_id', excudeUserId));
+    }
+
+    if (excludeCityId != null) {
+      queries.add(Query.notEqual('city_id', excludeCityId));
+    } else if (cityId != null) {
+      queries.add(Query.equal('city_id', cityId));
+    }
+
+    if (excludeAreaId != null) {
+      queries.add(Query.notEqual('area_id', excludeAreaId));
+    } else if (areaId != null) {
+      queries.add(Query.equal('area_id', areaId));
     }
 
     final res = await _databases.listDocuments(
@@ -28,7 +44,7 @@ class AnnouncementsService {
 
     List<Announcement> newAnnounces = announcementsFromDocuments(res.documents, _storage);
 
-    return newAnnounces;
+    return (list: newAnnounces, total: res.total);
   }
 
   Future<List<Announcement>> searchLimitAnnouncements(DefaultFilterDto filterData) async {

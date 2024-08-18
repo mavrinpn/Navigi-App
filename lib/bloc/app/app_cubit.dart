@@ -24,7 +24,7 @@ class AppCubit extends Cubit<AppState> {
   }) : super(AppInitial()) {
     appRepository.appState.stream.listen((event) {
       if (event == AuthStateEnum.auth) {
-        announcementManager.addLimitAnnouncements(true);
+        // announcementManager.addLimitAnnouncements(true);
         favouritesManager.userId = appRepository.userId;
         favouritesManager.getFavourites();
         messengerRepository.userId = appRepository.userId;
@@ -36,7 +36,7 @@ class AppCubit extends Cubit<AppState> {
         emit(AppAuthState());
       }
       if (event == AuthStateEnum.unAuth) {
-        announcementManager.addLimitAnnouncements(true);
+        // announcementManager.addLimitAnnouncements(true);
         favouritesManager.userId = null;
         favouritesManager.announcements = [];
         messengerRepository.clear();

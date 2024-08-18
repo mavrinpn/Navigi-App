@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +9,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/feature/announcement_editing/ui/editing_announcement_screen.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
+import 'package:smart/feature/create_announcement/ui/widgets/select_location_widget.dart';
 import 'package:smart/feature/main/ui/main_page.dart';
+import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/firebase_options.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/models/announcement.dart';
 import 'package:smart/providers.dart';
 import 'package:smart/restart_controller.dart';
 import 'package:smart/services/messaging_service.dart';
@@ -38,12 +43,17 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(MessagingService.onBackgroundMessage);
 
   runApp(HotRestartController(
-    child: MyRepositoryProviders(),
+    child: MyRepositoryProviders(prefs: prefs),
   ));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({
+    super.key,
+    required this.prefs,
+  });
+
+  final SharedPreferences prefs;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -90,6 +100,18 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     ]);
 
     setLocale(Locale(currentLocaleShortName.value));
+
+    final searchCubit = context.read<SearchAnnouncementCubit>();
+    final cityDistrictString = widget.prefs.getString(cityDistrictKey);
+    if (cityDistrictString != null) {
+      final cityDistrict = CityDistrict.fromMap(jsonDecode(cityDistrictString));
+      searchCubit.setCity(
+        cityId: cityDistrict.cityId,
+        areaId: cityDistrict.id,
+        cityTitle: cityDistrict.cityTitle,
+        areaTitle: cityDistrict.name,
+      );
+    }
   }
 
   @override

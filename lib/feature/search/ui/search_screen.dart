@@ -549,11 +549,12 @@ class _SearchScreenState extends State<SearchScreen> {
                             title: localizations.price,
                             parameterKey: FilterKeys.price,
                           ),
-                          // FilterChipWidget(
-                          //   isSelected: searchCubit.distrinctId != null || searchCubit.cityId != null,
-                          //   title: localizations.location,
-                          //   parameterKey: FilterKeys.location,
-                          // ),
+                          if (selectCategoryCubit.subcategoryId == null || selectCategoryCubit.subcategoryId!.isEmpty)
+                            FilterChipWidget(
+                              isSelected: searchCubit.areaId != null || searchCubit.cityId != null,
+                              title: localizations.location,
+                              parameterKey: FilterKeys.location,
+                            ),
                           if (selectCategoryCubit.subcategoryId != null &&
                               selectCategoryCubit.subcategoryId!.isNotEmpty)
                             if (selectCategoryCubit.subcategoryFilters?.hasMark ?? false) const MarkChipWidget(),

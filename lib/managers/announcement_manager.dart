@@ -19,6 +19,7 @@ class AnnouncementManager {
   String? _lastId;
   String? _searchLastId;
   bool _excludeCity = false;
+  bool _excludeRecomendationsCity = false;
   bool _canGetMoreAnnouncement = true;
 
   List<String> viewsAnnouncements = [];
@@ -29,7 +30,11 @@ class AnnouncementManager {
 
   BehaviorSubject<LoadingStateEnum> announcementsLoadingState = BehaviorSubject.seeded(LoadingStateEnum.loading);
 
-  Future<void> addLimitAnnouncements(bool isNew) async {
+  Future<void> addLimitAnnouncements(
+    bool isNew, {
+    String? cityId,
+    String? areaId,
+  }) async {
     announcementsLoadingState.add(LoadingStateEnum.loading);
 
     if (_canGetMoreAnnouncement) {
@@ -43,17 +48,37 @@ class AnnouncementManager {
 
       try {
         if (isNew) {
+          // print('isNew');
           announcements.clear();
           _lastId = '';
+          _excludeRecomendationsCity = false;
         }
 
-        final newAnnouncements = await dbService.announcements.getAnnouncements(
-          lastId: _lastId,
-          excudeUserId: uid,
-        );
+        if (!_excludeRecomendationsCity) {
+          await _recomendationsWithCityInclude(
+            uid,
+            cityId: cityId,
+            areaId: areaId,
+          );
+        }
 
-        announcements.addAll(newAnnouncements);
-        _lastId = announcements.last.anouncesTableId;
+        if (_excludeRecomendationsCity) {
+          await _recomendationsWithCityExclude(
+            uid,
+            cityId: cityId,
+            areaId: areaId,
+          );
+        }
+
+        // final newAnnouncements = await dbService.announcements.getAnnouncements(
+        //   lastId: _lastId,
+        //   excudeUserId: uid,
+        //   cityId: cityId,
+        //   areaId: areaId,
+        // );
+
+        // announcements.addAll(newAnnouncements);
+        // _lastId = announcements.last.anouncesTableId;
       } catch (e) {
         if (e.toString() != 'Bad state: No element') {
           rethrow;
@@ -63,6 +88,47 @@ class AnnouncementManager {
       }
     }
     announcementsLoadingState.add(LoadingStateEnum.success);
+  }
+
+  _recomendationsWithCityInclude(
+    String? uid, {
+    String? cityId,
+    String? areaId,
+  }) async {
+    ({List<Announcement> list, int total}) results;
+    results = await dbService.announcements.getAnnouncements(
+      lastId: _lastId,
+      excudeUserId: uid,
+      cityId: cityId,
+      areaId: areaId,
+    );
+    // print('_recomendationsWithCityInclude ${results.list.length} from ${results.total}');
+
+    announcements.addAll(results.list);
+    _lastId = announcements.last.anouncesTableId;
+
+    if (announcements.length >= results.total) {
+      _lastId = null;
+      _excludeRecomendationsCity = true;
+    }
+  }
+
+  _recomendationsWithCityExclude(
+    String? uid, {
+    String? cityId,
+    String? areaId,
+  }) async {
+    ({List<Announcement> list, int total}) results;
+    results = await dbService.announcements.getAnnouncements(
+      lastId: _lastId,
+      excudeUserId: uid,
+      excludeCityId: cityId,
+      excludeAreaId: areaId,
+    );
+    // print('_recomendationsWithCityExclude ${results.list.length}');
+
+    announcements.addAll(results.list);
+    _lastId = announcements.last.anouncesTableId;
   }
 
   Future<Announcement?> getAnnouncementById(String id) async {
@@ -138,10 +204,6 @@ class AnnouncementManager {
     String? cityId,
     String? areaId,
   }) async {
-    // print('searchWithSubcategory');
-    // print('cityId $cityId');
-    // print('areaId $areaId');
-
     if (isNew) {
       searchAnnouncements.clear();
       _searchLastId = '';

@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/bloc/app/app_cubit.dart';
 import 'package:smart/feature/announcement/bloc/medium_price/medium_price_cubit.dart';
 import 'package:smart/feature/announcement/data/creator_repository.dart';
@@ -60,7 +61,12 @@ import 'package:smart/feature/auth/bloc/auth_cubit.dart';
 import 'package:appwrite/appwrite.dart' as appwrite;
 
 class MyRepositoryProviders extends StatelessWidget {
-  MyRepositoryProviders({Key? key}) : super(key: key);
+  MyRepositoryProviders({
+    Key? key,
+    required this.prefs,
+  }) : super(key: key);
+
+  final SharedPreferences prefs;
 
   final client = appwrite.Client().setEndpoint('$serviceProtocol$serviceDomain/v1').setProject('65d8fa703a95c4ef256b');
 
@@ -145,12 +151,17 @@ class MyRepositoryProviders extends StatelessWidget {
       RepositoryProvider(create: (_) => CarMarksRepository(databaseService)),
       RepositoryProvider(create: (_) => MarksRepository(databaseService)),
       RepositoryProvider(create: (_) => AnnouncementEditingRepository(databaseService, storageManager))
-    ], child: const MyBlocProviders());
+    ], child: MyBlocProviders(prefs: prefs));
   }
 }
 
 class MyBlocProviders extends StatelessWidget {
-  const MyBlocProviders({Key? key}) : super(key: key);
+  const MyBlocProviders({
+    Key? key,
+    required this.prefs,
+  }) : super(key: key);
+
+  final SharedPreferences prefs;
 
   @override
   Widget build(BuildContext context) {
@@ -317,7 +328,7 @@ class MyBlocProviders extends StatelessWidget {
           lazy: false,
         ),
       ],
-      child: const MyApp(),
+      child: MyApp(prefs: prefs),
     );
   }
 }

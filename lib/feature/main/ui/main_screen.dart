@@ -4,9 +4,9 @@ import 'package:smart/feature/home/bloc/scroll/scroll_cubit.dart';
 import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
 import 'package:smart/feature/main/ui/sections/categories_section.dart';
 import 'package:smart/feature/main/ui/widgets/appbar_with_search_field.dart';
+import 'package:smart/feature/main/ui/widgets/city_button.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
-import 'package:smart/feature/search/ui/bottom_sheets/filter_keys.dart';
 import 'package:smart/feature/search/ui/sections/popular_queries.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/utils/constants.dart';
@@ -48,7 +48,12 @@ class _MainScreenState extends State<MainScreen> {
           double maxScroll = _controller.position.maxScrollExtent;
           double currentScroll = _controller.position.pixels;
           if (currentScroll >= maxScroll * 0.8) {
-            BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(false);
+            final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+            BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(
+              false,
+              cityId: searchCubit.cityId,
+              areaId: searchCubit.areaId,
+            );
           }
         }
       }
@@ -157,7 +162,12 @@ class _MainScreenState extends State<MainScreen> {
             return RefreshIndicator(
               color: AppColors.red,
               onRefresh: () async {
-                BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(true);
+                final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+                BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(
+                  true,
+                  cityId: searchCubit.cityId,
+                  areaId: searchCubit.areaId,
+                );
               },
               child: CustomScrollView(
                 controller: _controller,
@@ -195,16 +205,7 @@ class _MainScreenState extends State<MainScreen> {
                             textAlign: TextAlign.center,
                             style: AppTypography.font20black,
                           ),
-                          TextButton(
-                            onPressed: () {
-                              //TODO
-                              showFilterBottomSheet(
-                                context: context,
-                                parameterKey: FilterKeys.location,
-                              );
-                            },
-                            child: Text(_cityName(context)),
-                          ),
+                          const CityButton(),
                         ],
                       ),
                     ),
@@ -255,21 +256,5 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
-  }
-
-  String _cityName(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-    final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-    String name = localizations.location;
-
-    if (searchCubit.cityTitle != null) {
-      name = searchCubit.cityTitle!;
-    }
-
-    if (searchCubit.distrinctTitle != null) {
-      name += ' / ${searchCubit.distrinctTitle}';
-    }
-
-    return name;
   }
 }

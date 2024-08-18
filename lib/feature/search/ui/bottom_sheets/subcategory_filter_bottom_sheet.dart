@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/feature/create_announcement/bloc/category/category_cubit.dart';
-import 'package:smart/feature/create_announcement/ui/widgets/select_location_widget.dart';
 import 'package:smart/feature/main/bloc/popularQueries/popular_queries_cubit.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
@@ -12,7 +8,6 @@ import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_fil
 import 'package:smart/feature/search/ui/bottom_sheets/category_row_widget.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/managers/search_manager.dart';
-import 'package:smart/models/announcement.dart';
 import 'package:smart/models/models.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/utils/utils.dart';
@@ -185,18 +180,17 @@ class _FiltersBottomSheetState extends State<SubcategoriesWidget> {
       searchCubit.setSubcategory(subcategory);
       searchCubit.setSearchMode(SearchModeEnum.subcategory);
       subcategoriesCubit.getSubcategoryFilters(subcategory.id).then((value) async {
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        final cityDistrictString = prefs.getString(cityDistrictKey);
-
-        if (cityDistrictString != null) {
-          final cityDistrict = CityDistrict.fromMap(jsonDecode(cityDistrictString));
-          searchCubit.setCity(
-            cityId: cityDistrict.cityId,
-            areaId: cityDistrict.id,
-            cityTitle: cityDistrict.cityTitle,
-            areaTitle: cityDistrict.name,
-          );
-        }
+        // final SharedPreferences prefs = await SharedPreferences.getInstance();
+        // final cityDistrictString = prefs.getString(cityDistrictKey);
+        // if (cityDistrictString != null) {
+        //   final cityDistrict = CityDistrict.fromMap(jsonDecode(cityDistrictString));
+        //   searchCubit.setCity(
+        //     cityId: cityDistrict.cityId,
+        //     areaId: cityDistrict.id,
+        //     cityTitle: cityDistrict.cityTitle,
+        //     areaTitle: cityDistrict.name,
+        //   );
+        // }
 
         searchCubit.searchAnnounces(
           searchText: '',
