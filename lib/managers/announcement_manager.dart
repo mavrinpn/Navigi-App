@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smart/enum/enum.dart';
 import 'package:smart/models/item/item.dart';
@@ -18,8 +19,14 @@ class AnnouncementManager {
 
   String? _lastId;
   String? _searchLastId;
+
   bool _excludeCity = false;
+  bool _excludeArea = false;
+  int _cityIncludeTotal = 0;
   bool _excludeRecomendationsCity = false;
+  bool _excludeRecomendationsArea = false;
+  int _cityIncludeRecomendationsTotal = 0;
+
   bool _canGetMoreAnnouncement = true;
 
   List<String> viewsAnnouncements = [];
@@ -48,26 +55,23 @@ class AnnouncementManager {
 
       try {
         if (isNew) {
-          // print('isNew');
           announcements.clear();
           _lastId = '';
           _excludeRecomendationsCity = false;
+          _excludeRecomendationsArea = false;
+          _cityIncludeRecomendationsTotal = 0;
         }
 
-        if (!_excludeRecomendationsCity) {
-          await _recomendationsWithCityInclude(
-            uid,
-            cityId: cityId,
-            areaId: areaId,
-          );
+        if (!_excludeRecomendationsCity && !_excludeRecomendationsArea) {
+          await _recomendationsWithCityInclude(uid, cityId: cityId, areaId: areaId);
         }
 
-        if (_excludeRecomendationsCity) {
-          await _recomendationsWithCityExclude(
-            uid,
-            cityId: cityId,
-            areaId: areaId,
-          );
+        if (!_excludeCity && _excludeRecomendationsArea) {
+          await _recomendationsWithAreaExclude(uid, cityId: cityId, areaId: areaId);
+        }
+
+        if (_excludeRecomendationsCity && _excludeRecomendationsArea) {
+          await _recomendationsWithCityExclude(uid, cityId: cityId, areaId: areaId);
         }
 
         // final newAnnouncements = await dbService.announcements.getAnnouncements(
@@ -95,6 +99,7 @@ class AnnouncementManager {
     String? cityId,
     String? areaId,
   }) async {
+    debugPrint('_recomendationsWithCityInclude');
     ({List<Announcement> list, int total}) results;
     results = await dbService.announcements.getAnnouncements(
       lastId: _lastId,
@@ -107,8 +112,43 @@ class AnnouncementManager {
     announcements.addAll(results.list);
     _lastId = announcements.last.anouncesTableId;
 
+    _cityIncludeRecomendationsTotal = results.total;
+
+    debugPrint('results.length ${results.list.length}');
+    debugPrint('announcements.length ${announcements.length}');
+    debugPrint('total ${results.total}');
+
     if (announcements.length >= results.total) {
       _lastId = null;
+      _excludeRecomendationsArea = true;
+    }
+  }
+
+  _recomendationsWithAreaExclude(
+    String? uid, {
+    String? areaId,
+    String? cityId,
+  }) async {
+    debugPrint('_recomendationsWithAreaExclude');
+    ({List<Announcement> list, int total}) results;
+    results = await dbService.announcements.getAnnouncements(
+      lastId: _lastId,
+      excudeUserId: uid,
+      cityId: cityId,
+      excludeAreaId: areaId,
+    );
+    // print('_recomendationsWithCityExclude ${results.list.length}');
+
+    announcements.addAll(results.list);
+    _lastId = announcements.last.anouncesTableId;
+
+    debugPrint('results.length ${results.list.length}');
+    debugPrint('announcements.length ${announcements.length}');
+    debugPrint('total ${results.total}');
+
+    if (announcements.length >= results.total + _cityIncludeRecomendationsTotal) {
+      _lastId = null;
+      _excludeRecomendationsArea = true;
       _excludeRecomendationsCity = true;
     }
   }
@@ -118,6 +158,7 @@ class AnnouncementManager {
     String? cityId,
     String? areaId,
   }) async {
+    debugPrint('_recomendationsWithCityExclude');
     ({List<Announcement> list, int total}) results;
     results = await dbService.announcements.getAnnouncements(
       lastId: _lastId,
@@ -125,7 +166,10 @@ class AnnouncementManager {
       excludeCityId: cityId,
       excludeAreaId: areaId,
     );
-    // print('_recomendationsWithCityExclude ${results.list.length}');
+
+    debugPrint('results.length ${results.list.length}');
+    debugPrint('announcements.length ${announcements.length}');
+    debugPrint('total ${results.total}');
 
     announcements.addAll(results.list);
     _lastId = announcements.last.anouncesTableId;
@@ -208,6 +252,8 @@ class AnnouncementManager {
       searchAnnouncements.clear();
       _searchLastId = '';
       _excludeCity = false;
+      _excludeArea = false;
+      _cityIncludeTotal = 0;
     }
     final filter = SubcategoryFilterDTO(
       lastId: _searchLastId,
@@ -226,16 +272,21 @@ class AnnouncementManager {
       areaId: areaId,
     );
 
-    if (!_excludeCity) {
+    if (!_excludeCity && !_excludeArea) {
       await _searchWithCityInclude(filter);
     }
 
-    if (_excludeCity) {
+    if (!_excludeCity && _excludeArea) {
+      await _searchWithAreaExclude(filter);
+    }
+
+    if (_excludeCity && _excludeArea) {
       await _searchWithCityExclude(filter);
     }
   }
 
   _searchWithCityInclude(SubcategoryFilterDTO filter) async {
+    debugPrint('_searchWithCityInclude');
     ({List<Announcement> list, int total}) results;
     results = await dbService.announcements.searchAnnouncementsInSubcategory(
       filterData: filter,
@@ -244,17 +295,42 @@ class AnnouncementManager {
     searchAnnouncements.addAll(results.list);
     _searchLastId = searchAnnouncements.lastOrNull?.subTableId ?? '';
 
+    debugPrint('results.length ${results.list.length}');
+    debugPrint('searchAnnouncements.length ${searchAnnouncements.length}');
+    debugPrint('total ${results.total}');
+
+    _cityIncludeTotal = results.total;
+
     if (searchAnnouncements.length >= results.total) {
       _searchLastId = null;
+      _excludeArea = true;
+    }
+  }
+
+  _searchWithAreaExclude(SubcategoryFilterDTO filter) async {
+    debugPrint('_searchWithAreaExclude');
+    ({List<Announcement> list, int total}) results;
+    results = await dbService.announcements.searchAnnouncementsInSubcategory(
+      filterData: filter,
+      excludeAreaId: filter.areaId,
+    );
+
+    searchAnnouncements.addAll(results.list);
+    _searchLastId = searchAnnouncements.last.subTableId;
+
+    debugPrint('results.length ${results.list.length}');
+    debugPrint('searchAnnouncements.length ${searchAnnouncements.length}');
+    debugPrint('total ${results.total}');
+
+    if (searchAnnouncements.length >= results.total + _cityIncludeTotal) {
+      _searchLastId = null;
+      _excludeArea = true;
       _excludeCity = true;
     }
-
-    // print('results.length ${results.list.length}');
-    // print('searchAnnouncements.length ${searchAnnouncements.length}');
-    // print('total ${results.total}');
   }
 
   _searchWithCityExclude(SubcategoryFilterDTO filter) async {
+    debugPrint('_searchWithCityExclude');
     ({List<Announcement> list, int total}) results;
     results = await dbService.announcements.searchAnnouncementsInSubcategory(
       filterData: filter,
@@ -264,6 +340,10 @@ class AnnouncementManager {
 
     searchAnnouncements.addAll(results.list);
     _searchLastId = searchAnnouncements.last.subTableId;
+
+    debugPrint('results.length ${results.list.length}');
+    debugPrint('searchAnnouncements.length ${searchAnnouncements.length}');
+    debugPrint('total ${results.total}');
   }
 
   Future<void> loadSearchAnnouncement({
