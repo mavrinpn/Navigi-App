@@ -92,7 +92,6 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
     if (isCoordinatesSelected) {
       widget.onSetActive(value);
     }
-    //TODO
     // final creatingManager = RepositoryProvider.of<CreatingAnnouncementManager>(context);
     // if (creatingManager.specialOptions.contains(SpecialAnnouncementOptions.customPlace)) {
     //   if (isCoordinatesSelected) {
