@@ -78,21 +78,29 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
 
     if (cityDistrictString != null) {
       final cityDistrict = CityDistrict.fromMap(jsonDecode(cityDistrictString));
+      _cityDistrict = cityDistrict;
       distrinctController.text = cityDistrict.name;
       cityController.text = cityDistrict.cityTitle;
+      widget.onChangeCity(cityDistrict.cityTitle);
+      widget.onChangeDistrict(cityDistrict);
       setActive(true);
+      setState(() {});
     }
   }
 
   void setActive(bool value) {
-    final creatingManager = RepositoryProvider.of<CreatingAnnouncementManager>(context);
-    if (creatingManager.specialOptions.contains(SpecialAnnouncementOptions.customPlace)) {
-      if (isCoordinatesSelected) {
-        widget.onSetActive(value);
-      }
-    } else {
+    if (isCoordinatesSelected) {
       widget.onSetActive(value);
     }
+    //TODO
+    // final creatingManager = RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    // if (creatingManager.specialOptions.contains(SpecialAnnouncementOptions.customPlace)) {
+    //   if (isCoordinatesSelected) {
+    //     widget.onSetActive(value);
+    //   }
+    // } else {
+    //   widget.onSetActive(value);
+    // }
   }
 
   void selectCity(City city) async {
@@ -295,33 +303,32 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
           ),
         ],
         const SizedBox(height: 16),
-        if (creatingManager.specialOptions.contains(SpecialAnnouncementOptions.customPlace)) ...[
-          CustomTextButton.orangeContinue(
-            active: _cityDistrict != null,
-            callback: () async {
-              if (_cityDistrict != null) {
-                final LatLng? latLng = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => SpecifyPlaceScreen(
-                      placeData: _cityDistrict!,
-                      longitude: widget.longitude ?? _cityDistrict!.longitude,
-                      latitude: widget.latitude ?? _cityDistrict!.latitude,
-                    ),
+        // if (creatingManager.specialOptions.contains(SpecialAnnouncementOptions.customPlace))
+        CustomTextButton.orangeContinue(
+          active: _cityDistrict != null,
+          callback: () async {
+            if (_cityDistrict != null) {
+              final LatLng? latLng = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SpecifyPlaceScreen(
+                    placeData: _cityDistrict!,
+                    longitude: widget.longitude ?? _cityDistrict!.longitude,
+                    latitude: widget.latitude ?? _cityDistrict!.latitude,
                   ),
-                );
-                if (latLng != null) {
-                  setState(() {
-                    isCoordinatesSelected = true;
-                    setActive(true);
-                  });
-                  creatingManager.customPosition = latLng;
-                }
+                ),
+              );
+              if (latLng != null) {
+                setState(() {
+                  isCoordinatesSelected = true;
+                  setActive(true);
+                });
+                creatingManager.customPosition = latLng;
               }
-            },
-            text: "Indiquer l'emplacement sur la carte",
-          )
-        ]
+            }
+          },
+          text: "Indiquer l'emplacement sur la carte",
+        ),
       ],
     );
   }

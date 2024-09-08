@@ -43,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
   void _initScrollListener() {
     _controller.addListener(() async {
       final announcementRepository = RepositoryProvider.of<AnnouncementManager>(context);
-      if (announcementRepository.announcements.isNotEmpty) {
+      if (announcementRepository.recommendationAnnouncements.isNotEmpty) {
         if (_controller.position.atEdge) {
           double maxScroll = _controller.position.maxScrollExtent;
           double currentScroll = _controller.position.pixels;
@@ -81,8 +81,11 @@ class _MainScreenState extends State<MainScreen> {
           childAspectRatio: AppSizes.anouncementAspectRatio(context),
         ),
         delegate: SliverChildBuilderDelegate(
-          (context, index) => AnnouncementContainer(announcement: announcementRepository.announcements[index]),
-          childCount: announcementRepository.announcements.length,
+          (context, index) => AnnouncementContainer(announcement: announcementRepository.recommendationAnnouncements[index]),
+          // childCount: announcementRepository.announcements.length,
+          childCount: announcementRepository.recommendationAnnouncements.length % 2 == 0
+              ? announcementRepository.recommendationAnnouncements.length
+              : announcementRepository.recommendationAnnouncements.length - 1,
         ),
       );
     }
@@ -240,7 +243,7 @@ class _MainScreenState extends State<MainScreen> {
                   //     ),
                   //   )
                   // ],
-                  if (announcementRepository.announcements.length >= 20)
+                  if (announcementRepository.recommendationAnnouncements.length >= 20)
                     SliverToBoxAdapter(
                       child: Center(
                         child: SizedBox(

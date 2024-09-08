@@ -64,6 +64,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
           onChangeCity: (name) {},
           onChangeDistrict: (cityDistrict) {
             _place = cityDistrict.name;
+            placeManager.selectCity(cityDistrict.cityId);
           },
         ),
       ),

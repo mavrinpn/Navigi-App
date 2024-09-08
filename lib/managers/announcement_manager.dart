@@ -31,7 +31,7 @@ class AnnouncementManager {
 
   List<String> viewsAnnouncements = [];
   List<String> contactsAnnouncements = [];
-  List<Announcement> announcements = [];
+  List<Announcement> recommendationAnnouncements = [];
   List<Announcement> searchAnnouncements = [];
   Announcement? lastAnnouncement;
 
@@ -55,7 +55,7 @@ class AnnouncementManager {
 
       try {
         if (isNew) {
-          announcements.clear();
+          recommendationAnnouncements.clear();
           _lastId = '';
           _excludeRecomendationsCity = false;
           _excludeRecomendationsArea = false;
@@ -66,7 +66,7 @@ class AnnouncementManager {
           await _recomendationsWithCityInclude(uid, cityId: cityId, areaId: areaId);
         }
 
-        if (!_excludeCity && _excludeRecomendationsArea) {
+        if (!_excludeRecomendationsCity && _excludeRecomendationsArea) {
           await _recomendationsWithAreaExclude(uid, cityId: cityId, areaId: areaId);
         }
 
@@ -99,7 +99,6 @@ class AnnouncementManager {
     String? cityId,
     String? areaId,
   }) async {
-    debugPrint('_recomendationsWithCityInclude');
     ({List<Announcement> list, int total}) results;
     results = await dbService.announcements.getAnnouncements(
       lastId: _lastId,
@@ -107,18 +106,18 @@ class AnnouncementManager {
       cityId: cityId,
       areaId: areaId,
     );
-    // print('_recomendationsWithCityInclude ${results.list.length} from ${results.total}');
 
-    announcements.addAll(results.list);
-    _lastId = announcements.last.anouncesTableId;
+    recommendationAnnouncements.addAll(results.list);
+    _lastId = recommendationAnnouncements.last.anouncesTableId;
 
     _cityIncludeRecomendationsTotal = results.total;
 
+    debugPrint('_recomendationsWithCityInclude');
     debugPrint('results.length ${results.list.length}');
-    debugPrint('announcements.length ${announcements.length}');
+    debugPrint('announcements.length ${recommendationAnnouncements.length}');
     debugPrint('total ${results.total}');
 
-    if (announcements.length >= results.total) {
+    if (recommendationAnnouncements.length >= results.total) {
       _lastId = null;
       _excludeRecomendationsArea = true;
     }
@@ -129,7 +128,6 @@ class AnnouncementManager {
     String? areaId,
     String? cityId,
   }) async {
-    debugPrint('_recomendationsWithAreaExclude');
     ({List<Announcement> list, int total}) results;
     results = await dbService.announcements.getAnnouncements(
       lastId: _lastId,
@@ -137,16 +135,16 @@ class AnnouncementManager {
       cityId: cityId,
       excludeAreaId: areaId,
     );
-    // print('_recomendationsWithCityExclude ${results.list.length}');
 
-    announcements.addAll(results.list);
-    _lastId = announcements.last.anouncesTableId;
+    recommendationAnnouncements.addAll(results.list);
+    _lastId = recommendationAnnouncements.last.anouncesTableId;
 
+    debugPrint('_recomendationsWithAreaExclude');
     debugPrint('results.length ${results.list.length}');
-    debugPrint('announcements.length ${announcements.length}');
+    debugPrint('announcements.length ${recommendationAnnouncements.length}');
     debugPrint('total ${results.total}');
 
-    if (announcements.length >= results.total + _cityIncludeRecomendationsTotal) {
+    if (recommendationAnnouncements.length >= results.total + _cityIncludeRecomendationsTotal) {
       _lastId = null;
       _excludeRecomendationsArea = true;
       _excludeRecomendationsCity = true;
@@ -158,7 +156,6 @@ class AnnouncementManager {
     String? cityId,
     String? areaId,
   }) async {
-    debugPrint('_recomendationsWithCityExclude');
     ({List<Announcement> list, int total}) results;
     results = await dbService.announcements.getAnnouncements(
       lastId: _lastId,
@@ -167,12 +164,13 @@ class AnnouncementManager {
       excludeAreaId: areaId,
     );
 
+    debugPrint('_recomendationsWithCityExclude');
     debugPrint('results.length ${results.list.length}');
-    debugPrint('announcements.length ${announcements.length}');
+    debugPrint('announcements.length ${recommendationAnnouncements.length}');
     debugPrint('total ${results.total}');
 
-    announcements.addAll(results.list);
-    _lastId = announcements.last.anouncesTableId;
+    recommendationAnnouncements.addAll(results.list);
+    _lastId = recommendationAnnouncements.last.anouncesTableId;
   }
 
   Future<Announcement?> getAnnouncementById(String id) async {
@@ -184,7 +182,7 @@ class AnnouncementManager {
   }
 
   Future<Announcement?> refreshAnnouncement(String id) async {
-    for (var a in announcements) {
+    for (var a in recommendationAnnouncements) {
       if (a.anouncesTableId == id) {
         a = await dbService.announcements.getAnnouncementById(id);
         lastAnnouncement = a;
@@ -203,7 +201,7 @@ class AnnouncementManager {
   }
 
   Announcement? _getAnnouncementFromLocal(String id) {
-    for (var a in announcements) {
+    for (var a in recommendationAnnouncements) {
       if (a.anouncesTableId == id) {
         lastAnnouncement = a;
         return a;
