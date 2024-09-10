@@ -384,6 +384,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           if (offerPriceString != null) {
                             incContactsIfNeed(state);
                             checkBlockedAndPushChat(
+                              // ignore: use_build_context_synchronously
                               context: context,
                               data: state.data,
                               message: '${localizations.offerMessage} $offerPriceString',

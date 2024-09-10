@@ -18,6 +18,7 @@ void creatorShowMoreAction({
 
   blockedUsersManager.isUserBlockedForAuth(userId).then((isBlocked) {
     showModalBottomSheet(
+      // ignore: use_build_context_synchronously
       context: context,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),

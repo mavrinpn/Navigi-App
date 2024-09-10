@@ -89,7 +89,7 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
 
     return PopScope(
       canPop: true,
-      onPopInvoked: (v) async {
+      onPopInvokedWithResult: (_, __) async {
         messengerRepository.closeChat();
       },
       child: BlocListener<MessageImagesCubit, MessageImagesState>(

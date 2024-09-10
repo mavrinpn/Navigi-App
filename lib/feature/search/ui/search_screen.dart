@@ -399,7 +399,7 @@ class _SearchScreenState extends State<SearchScreen> {
       color: AppColors.mainBackground,
       child: SafeArea(
         child: PopScope(
-          onPopInvoked: (didPop) {
+          onPopInvokedWithResult: (_, __) async {
             final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
             final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
             final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();

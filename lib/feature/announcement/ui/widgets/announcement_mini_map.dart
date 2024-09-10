@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:map_kit/map_kit.dart';
+import 'package:map_kit_interface/map_kit.dart';
 import 'package:smart/feature/announcement/ui/map.dart';
 import 'package:smart/models/announcement.dart';
 
@@ -20,41 +21,40 @@ class AnnouncementMiniMap extends StatefulWidget {
 }
 
 class _AnnouncementMiniMapState extends State<AnnouncementMiniMap> {
-  late CameraPosition cameraPosition;
-  Set<Marker> markers = {};
-  BitmapDescriptor customMarker = BitmapDescriptor.defaultMarker;
+  // late CameraPosition cameraPosition;
+  // Set<Marker> markers = {};
+  // BitmapDescriptor customMarker = BitmapDescriptor.defaultMarker;
 
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    cameraPosition = CameraPosition(
-      target: LatLng(
-        widget.latitude,
-        widget.longitude,
-      ),
-      zoom: 14,
-    );
+  // cameraPosition = CameraPosition(
+  //   target: LatLng(
+  //     widget.latitude,
+  //     widget.longitude,
+  //   ),
+  //   zoom: 14,
+  // );
 
-    BitmapDescriptor.fromAssetImage(
-            ImageConfiguration.empty, 'Assets/map_marker.png')
-        .then((icon) {
-      markers.add(Marker(
-        icon: icon,
-        // markerId: MarkerId(widget.cityDistrict.name),
-        markerId: const MarkerId(''),
-        position: cameraPosition.target,
-      ));
-      setState(() {});
-    });
-  }
+  // BitmapDescriptor.fromAssetImage(
+  //         ImageConfiguration.empty, 'Assets/map_marker.png')
+  //     .then((icon) {
+  //   markers.add(Marker(
+  //     icon: icon,
+  //     // markerId: MarkerId(widget.cityDistrict.name),
+  //     markerId: const MarkerId(''),
+  //     position: cameraPosition.target,
+  //   ));
+  //   setState(() {});
+  // });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.latitude == 0 &&
-        widget.longitude == 0) {
+    if (widget.latitude == 0 && widget.longitude == 0) {
       return const SizedBox.shrink();
-    } 
+    }
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -77,14 +77,23 @@ class _AnnouncementMiniMapState extends State<AnnouncementMiniMap> {
               borderRadius: BorderRadius.circular(14),
             ),
             height: 220,
-            child: GoogleMap(
+            child: CommonMap().buildMap(
               myLocationEnabled: true,
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
-              mapType: MapType.normal,
-              initialCameraPosition: cameraPosition,
-              markers: markers,
+              initial: CommonLatLng(widget.latitude, widget.longitude),
+              markers: {
+                CommonLatLng(widget.latitude, widget.longitude),
+              },
             ),
+            // child: GoogleMap( //TODO
+            //   myLocationEnabled: true,
+            //   myLocationButtonEnabled: false,
+            //   zoomControlsEnabled: false,
+            //   mapType: MapType.normal,
+            //   initialCameraPosition: cameraPosition,
+            //   markers: markers,
+            // ),
           ),
         ),
       ),

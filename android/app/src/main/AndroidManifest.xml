@@ -6,6 +6,13 @@
 
         <meta-data android:name="com.google.android.geo.API_KEY"
                    android:value="AIzaSyCfXnfJAD4JnbM5JjF8zRD4HxW_0cc1MLU"/>
+        
+        <meta-data
+            android:name="com.huawei.hms.client.appid"
+            android:value="appid=ВАШ_APP_ID" />
+        <meta-data
+            android:name="com.huawei.hms.client.apiKey"
+            android:value="ВАШ_API_KEY" />
 
         <meta-data
           android:name="com.google.firebase.messaging.default_notification_icon"

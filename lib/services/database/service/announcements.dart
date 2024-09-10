@@ -259,7 +259,7 @@ class AnnouncementsService {
     AnnouncementCreatingData creatingData,
     List<Parameter> subcategoryParameters,
     CityDistrict district,
-    LatLng? customPosition,
+    CommonLatLng? customPosition,
     MarksFilter? marksFilter,
     CarFilter? carFilter,
   ) async {

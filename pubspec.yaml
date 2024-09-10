@@ -14,6 +14,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  map_kit_interface:
+    path: ./local_plugins/interface/map_kit
+  map_kit:
+    path: ./local_plugins/gms/map_kit
+
   intl: any
 
   bloc: ^8.1.2
@@ -50,7 +55,7 @@ dependencies:
 
   shimmer: ^3.0.0
   pinput: ^3.0.1
-  google_maps_flutter: ^2.6.0
+  # google_maps_flutter: ^2.6.0
   dio: ^5.3.0
   http: ^1.2.1
   flutter_dotenv: ^5.1.0
@@ -63,8 +68,6 @@ dependencies:
   easy_debounce: ^2.0.3
   connectivity_plus: ^6.0.3
   internet_connection_checker_plus: ^2.3.0
-
-  huawei_map: ^6.11.2+303
 
 dev_dependencies:
   flutter_test:
