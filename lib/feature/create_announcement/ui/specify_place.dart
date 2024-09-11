@@ -22,41 +22,15 @@ class SpecifyPlaceScreen extends StatefulWidget {
 }
 
 class SpecifyPlaceScreenState extends State<SpecifyPlaceScreen> {
-  // bool loading = true;
-
-  // BitmapDescriptor customMarker = BitmapDescriptor.defaultMarker;
-  // late final CameraPosition initialCenter;
-  // late CameraPosition markerPosition;
-  // late Marker marker;
   late final CommonLatLng initialCenter;
   late CommonLatLng markerPosition;
 
   @override
   void initState() {
-    // loadMarker();
-    // initialCenter = CameraPosition(
-    //   target: LatLng(widget.latitude, widget.longitude),
-    //   zoom: 14.4746,
-    // );
-    // markerPosition = initialCenter;
-    // marker = Marker(
-    //   icon: customMarker,
-    //   markerId: MarkerId(widget.placeData.name),
-    //   position: markerPosition.target,
-    // );
     initialCenter = CommonLatLng(widget.latitude, widget.longitude);
     markerPosition = initialCenter;
-
     super.initState();
   }
-
-  // void loadMarker() async {
-  // final icon = await BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, 'Assets/map_marker.png');
-  // setState(() {
-  //   customMarker = icon;
-  //   loading = false;
-  // });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -66,12 +40,7 @@ class SpecifyPlaceScreenState extends State<SpecifyPlaceScreen> {
       appBar: AppBar(
         title: Text(localizations.specifyPlace),
       ),
-      body:
-          // loading
-          // ? Center(
-          //     child: Text(localizations.loading),
-          //   )
-          CommonMap().buildMap(
+      body: CommonMap().buildMap(
         myLocationEnabled: true,
         myLocationButtonEnabled: true,
         zoomControlsEnabled: false,
@@ -82,28 +51,7 @@ class SpecifyPlaceScreenState extends State<SpecifyPlaceScreen> {
             markerPosition = position;
           });
         },
-      ), //TODO
-      // : GoogleMap(
-      //     myLocationEnabled: true,
-      //     myLocationButtonEnabled: true,
-      //     zoomControlsEnabled: false,
-      //     mapType: MapType.normal,
-      //     initialCameraPosition: initialCenter,
-      //     // onMapCreated: (GoogleMapController controller) {
-      //     //   _controller.complete(controller);
-      //     // },
-      //     onTap: (CommonLatLng target) {
-      //       setState(() {
-      //         markerPosition = CameraPosition(target: target);
-      //         marker = Marker(
-      //           icon: customMarker,
-      //           markerId: MarkerId(widget.placeData.name),
-      //           position: markerPosition.target,
-      //         );
-      //       });
-      //     },
-      //     markers: {marker},
-      //   ),
+      ),
       floatingActionButton: CustomTextButton.orangeContinue(
         callback: () {
           Navigator.pop(context, markerPosition);

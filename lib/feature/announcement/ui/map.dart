@@ -48,27 +48,6 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
-  // final Completer<GoogleMapController> _controller =
-  //     Completer<GoogleMapController>();
-
-  // BitmapDescriptor customMarker = BitmapDescriptor.defaultMarker;
-  // bool loading = true;
-
-  // @override
-  // void initState() {
-  //   loadMarker();
-  //   super.initState();
-  // }
-
-  // void loadMarker() async {
-  // final icon = await BitmapDescriptor.fromAssetImage(
-  //     ImageConfiguration.empty, 'Assets/map_marker.png');
-  // setState(() {
-  //   customMarker = icon;
-  //   loading = false;
-  // });
-  // }
-
   void showInformation() {
     showBottomSheet(
         context: context,
@@ -101,20 +80,9 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
-    // CameraPosition center = CameraPosition(
-    //   target: LatLng(widget.latitude, widget.longitude),
-    //   zoom: 14.4746,
-    // );
-
     return Scaffold(
       key: GlobalKey<ScaffoldState>(),
-      body:
-          // loading
-          //   ? const Center(
-          //       child: Text('loading'),
-          //     )
-          //   :
-          CommonMap().buildMap(
+      body: CommonMap().buildMap(
         myLocationEnabled: true,
         myLocationButtonEnabled: true,
         zoomControlsEnabled: true,
@@ -122,24 +90,7 @@ class MapSampleState extends State<MapSample> {
         markers: {
           CommonLatLng(widget.latitude, widget.longitude),
         },
-      ), //TODO
-      // : GoogleMap(
-      //     myLocationEnabled: true,
-      //     myLocationButtonEnabled: true,
-      //     mapType: MapType.normal,
-      //     initialCameraPosition: center,
-      //     // onMapCreated: (GoogleMapController controller) {
-      //     //   _controller.complete(controller);
-      //     // },
-      //     markers: {
-      //       Marker(
-      //         icon: customMarker,
-      //         //markerId: MarkerId(widget.placeData.name),
-      //         markerId: const MarkerId(''),
-      //         position: CommonLatLng(widget.latitude, widget.longitude),
-      //       )
-      //     },
-      //   ),
+      ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
