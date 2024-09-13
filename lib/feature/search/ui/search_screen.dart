@@ -158,6 +158,7 @@ class _SearchScreenState extends State<SearchScreen> {
       backgroundColor: AppColors.appBarColor,
       automaticallyImplyLeading: false,
       elevation: 0,
+      scrolledUnderElevation: 0,
       titleSpacing: 0,
       clipBehavior: Clip.none,
       //bottom: !widget.showBackButton ? _buildCategoryAppBarBottom(_showFilterChips) : null,

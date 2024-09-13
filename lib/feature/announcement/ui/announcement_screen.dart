@@ -266,12 +266,12 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       alignment: Alignment.topLeft,
                       child: Text(
                         state.data.title,
-                        style: AppTypography.font18black,
+                        style: AppTypography.font20black,
                         softWrap: true,
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 12, 15, 18),
+                      padding: const EdgeInsets.fromLTRB(15, 12, 15, 12),
                       child: InkWell(
                         onTap: () {
                           Navigator.push(
@@ -298,7 +298,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -310,6 +310,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 16),
                     if (state.data.subcategoryId == carSubcategoryId)
                       MarketPriceWidget(
                         announcement: state.data,
@@ -394,16 +395,16 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       text: AppLocalizations.of(context)!.offrirVotrePrix,
                       styleText: AppTypography.font14black,
                       icon: SvgPicture.asset('Assets/icons/dzd.svg'),
-                      disableColor: AppColors.backgroundLightGray,
+                      disableColor: AppColors.whiteGray,
                     ),
-                    const SizedBox(height: 26),
+                    const SizedBox(height: 32),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Row(
                         children: [
                           Text(
                             AppLocalizations.of(context)!.features,
-                            style: AppTypography.font16black.copyWith(fontWeight: FontWeight.w700),
+                            style: AppTypography.font20black,
                           ),
                         ],
                       ),
@@ -419,7 +420,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                         children: [
                           Text(
                             AppLocalizations.of(context)!.description,
-                            style: AppTypography.font16black.copyWith(fontWeight: FontWeight.w700),
+                            style: AppTypography.font20black,
                           ),
                         ],
                       ),

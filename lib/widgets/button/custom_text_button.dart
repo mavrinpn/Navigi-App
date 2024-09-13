@@ -39,7 +39,7 @@ class CustomTextButton extends StatelessWidget {
     this.padding = EdgeInsets.zero,
     this.active = false,
     this.activeColor = AppColors.red,
-    this.disableColor = AppColors.disable,
+    this.disableColor = AppColors.whiteGray,
     required Widget icon,
   })  : child = Row(
           mainAxisAlignment: MainAxisAlignment.center,

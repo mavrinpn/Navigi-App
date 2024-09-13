@@ -291,7 +291,7 @@ class MessengerIcon extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: SvgPicture.asset(
-                  'Assets/icons/email.svg',
+                  'Assets/icons/message.svg',
                   height: 24,
                   width: 24,
                   colorFilter: ColorFilter.mode(
