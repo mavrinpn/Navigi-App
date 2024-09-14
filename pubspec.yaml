@@ -17,7 +17,7 @@ dependencies:
   map_kit_interface:
     path: ./local_plugins/interface/map_kit
   map_kit:
-    path: ./local_plugins/hms/map_kit
+    path: ./local_plugins/gms/map_kit
 
   intl: any
 
