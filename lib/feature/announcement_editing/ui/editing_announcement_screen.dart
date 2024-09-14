@@ -160,7 +160,7 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
     final localizations = AppLocalizations.of(context)!;
     return PopScope(
         canPop: true,
-        onPopInvoked: (v) {
+        onPopInvokedWithResult: (_, __) {
           announcementEditCubit.closeEdit();
         },
         child: BlocConsumer<AnnouncementEditCubit, AnnouncementEditState>(

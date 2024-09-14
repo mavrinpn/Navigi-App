@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:map_kit_interface/map_kit.dart';
 import 'package:smart/feature/announcement_editing/data/models/edit_data.dart';
 import 'package:smart/feature/create_announcement/data/models/car_filter.dart';
 import 'package:smart/feature/create_announcement/data/models/mark.dart';

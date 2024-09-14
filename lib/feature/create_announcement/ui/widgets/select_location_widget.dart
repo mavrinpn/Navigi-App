@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:map_kit_interface/map_kit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart/feature/create_announcement/bloc/places_search/places_cubit.dart';
 import 'package:smart/feature/create_announcement/ui/specify_place.dart';
@@ -307,7 +307,7 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
           active: _cityDistrict != null,
           callback: () async {
             if (_cityDistrict != null) {
-              final LatLng? latLng = await Navigator.push(
+              final CommonLatLng? latLng = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (_) => SpecifyPlaceScreen(

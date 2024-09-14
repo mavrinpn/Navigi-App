@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:map_kit_interface/map_kit.dart';
 import 'package:smart/feature/announcement_editing/data/models/edit_data.dart';
 import 'package:smart/feature/announcement_editing/data/models/image_data.dart';
 import 'package:smart/feature/announcement_editing/data/images.dart';
@@ -58,7 +58,7 @@ class AnnouncementEditingRepository {
     editData!.areaId = newPlace.id;
   }
 
-  void setCustomCoordinate(LatLng newLatLng) {
+  void setCustomCoordinate(CommonLatLng newLatLng) {
     editData!.longitude = newLatLng.longitude;
     editData!.latitude = newLatLng.latitude;
   }

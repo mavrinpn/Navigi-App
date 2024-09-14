@@ -6,10 +6,17 @@
 
         <meta-data android:name="com.google.android.geo.API_KEY"
                    android:value="AIzaSyCfXnfJAD4JnbM5JjF8zRD4HxW_0cc1MLU"/>
-
         <meta-data
           android:name="com.google.firebase.messaging.default_notification_icon"
           android:resource="@drawable/notification_icon" />
+        
+
+        <meta-data
+            android:name="com.huawei.hms.client.appid"
+            android:value="appid=5765880207855372331" />
+        <meta-data
+            android:name="com.huawei.hms.client.apiKey"
+            android:value="DQEDAHl5zuyR9zCY+JusLjnkip4G4L8GkJ/DjPbtb7lAwpQLDgEB1COcg3hLzfVt0YA1CKj0MuQK2glFa6FLGU3KC3EJeh+SGP+aig==" />
 
         <activity
                 android:name="com.yalantis.ucrop.UCropActivity"

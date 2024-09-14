@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:map_kit_interface/map_kit.dart';
 import 'package:smart/feature/announcement_editing/data/announcement_editing_repository.dart';
 import 'package:smart/feature/announcement_editing/data/models/edit_data.dart';
 import 'package:smart/feature/announcement_editing/data/models/image_data.dart';
@@ -29,7 +29,8 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
   /// Повесить на экран [PopScope] и вызывать когда он закрывается
   void closeEdit() => repository.closeEdit();
 
-  Future<void> deleteAnnouncement(Announcement announcement) => repository.deleteAnnouncement(announcement.anouncesTableId);
+  Future<void> deleteAnnouncement(Announcement announcement) =>
+      repository.deleteAnnouncement(announcement.anouncesTableId);
 
   /// Вызывать в initState экрана, либо если будет агрессировать то до пуша
   Future setAnnouncement(Announcement announcement) async {
@@ -47,7 +48,7 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
     }
   }
 
-  void onCustomCoordinateChange(LatLng? newCoordinate) {
+  void onCustomCoordinateChange(CommonLatLng? newCoordinate) {
     if (newCoordinate != null) {
       repository.setCustomCoordinate(newCoordinate);
     }

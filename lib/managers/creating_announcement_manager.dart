@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:map_kit_interface/map_kit.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smart/feature/create_announcement/bloc/creating/creating_announcement_cubit.dart';
 import 'package:smart/feature/create_announcement/data/models/car_filter.dart';
@@ -47,7 +47,7 @@ class CreatingAnnouncementManager {
   List<XFile> images = [];
 
   CityDistrict? cityDistrict;
-  LatLng? customPosition;
+  CommonLatLng? customPosition;
 
   BehaviorSubject<LoadingStateEnum> creatingState = BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.wait);
 

@@ -81,7 +81,8 @@ class _MainScreenState extends State<MainScreen> {
           childAspectRatio: AppSizes.anouncementAspectRatio(context),
         ),
         delegate: SliverChildBuilderDelegate(
-          (context, index) => AnnouncementContainer(announcement: announcementRepository.recommendationAnnouncements[index]),
+          (context, index) =>
+              AnnouncementContainer(announcement: announcementRepository.recommendationAnnouncements[index]),
           // childCount: announcementRepository.announcements.length,
           childCount: announcementRepository.recommendationAnnouncements.length % 2 == 0
               ? announcementRepository.recommendationAnnouncements.length
@@ -176,6 +177,21 @@ class _MainScreenState extends State<MainScreen> {
                 controller: _controller,
                 physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
+                  //TODO test map
+                  // SliverToBoxAdapter(
+                  //   child: SizedBox(
+                  //     height: 300,
+                  //     child: CommonMap().buildMap(
+                  //       myLocationEnabled: true,
+                  //       myLocationButtonEnabled: true,
+                  //       zoomControlsEnabled: true,
+                  //       initial: CommonLatLng(51.507220, -0.127500),
+                  //       markers: {
+                  //         CommonLatLng(51.507220, -0.127500),
+                  //       },
+                  //     ),
+                  //   ),
+                  // ),
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
