@@ -246,5 +246,6 @@
 "isConnection": "Internet connection has been restored",
 "enabled": "Enabled",
 "disabled": "Disabled",
-"enterPhoneNumberAtSettings": "To create an ad, enter your phone number in the settings"
+"enterPhoneNumberAtSettings": "To create an ad, enter your phone number in the settings",
+"otherCity": "Ads in other areas"
 }

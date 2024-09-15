@@ -112,6 +112,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
 
     choosedMarksFilter = searchCubit.marksFilter;
     choosedCarFilter = selectCategoryCubit.autoFilter;
+    final subcategoryId = searchCubit.subcategoryId;
 
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.9,
@@ -187,7 +188,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                         minPriceController: _minPriceController,
                         maxPriceController: _maxPriceController,
                         priceType: _priceType,
-                        subcategoryId: selectCategoryCubit.subcategoryId ?? '',
+                        subcategoryId: subcategoryId ?? '',
                         onChangePriceType: (priceType) {
                           setState(() {
                             _priceType = priceType;
@@ -205,11 +206,12 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                         },
                         currentKey: searchCubit.sortBy,
                       ),
-                      if (selectCategoryCubit.subcategoryId == carSubcategoryId) ..._buildCarMarkWidget(context),
-                      if (selectCategoryCubit.subcategoryFilters != null &&
-                          selectCategoryCubit.subcategoryFilters!.hasMark &&
-                          selectCategoryCubit.subcategoryId != carSubcategoryId)
-                        ..._buildSelectMarkWidget(context),
+                      _buildMarkWidget(context, subcategoryId),
+                      // if (selectCategoryCubit.subcategoryId == carSubcategoryId) _buildCarMarkWidget(context),
+                      // if (selectCategoryCubit.subcategoryFilters != null &&
+                      //     selectCategoryCubit.subcategoryFilters!.hasMark &&
+                      //     selectCategoryCubit.subcategoryId != carSubcategoryId)
+                      // _buildSelectMarkWidget(context),
                       ..._buildLocationWidget(context),
                       if (searchCubit.marksFilter?.modelParameters != null) ...buildModelFilters(),
                       if (searchCubit.searchMode == SearchModeEnum.subcategory) ...[
@@ -397,155 +399,173 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
     return children;
   }
 
-  List<Widget> _buildCarMarkWidget(BuildContext context) {
+  Widget _buildMarkWidget(BuildContext context, String? subcategoryId) {
+    final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+    if (subcategoryId == carSubcategoryId) {
+      return _buildCarMarkWidget(context);
+    }
+    if (selectCategoryCubit.subcategoryFilters != null &&
+        selectCategoryCubit.subcategoryFilters!.hasMark &&
+        subcategoryId != carSubcategoryId) {
+      return _buildSelectMarkWidget(context);
+    }
+    return const SizedBox.shrink();
+  }
+
+  Widget _buildCarMarkWidget(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
 
-    return [
-      Material(
-        color: Colors.transparent,
-        clipBehavior: Clip.hardEdge,
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-        child: InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => SelectCarMarkScreen(
-                  needSelectModel: true,
-                  subcategory: selectCategoryCubit.subcategoryId!,
+    return Column(
+      children: [
+        Material(
+          color: Colors.transparent,
+          clipBehavior: Clip.hardEdge,
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SelectCarMarkScreen(
+                    needSelectModel: true,
+                    subcategory: selectCategoryCubit.subcategoryId!,
+                  ),
                 ),
-              ),
-            ).then((filter) {
-              if (filter != null) {
-                setState(() {
-                  choosedCarFilter = filter;
-                });
-                searchCubit.setMarksFilter(MarksFilter(
-                  markId: filter.markId,
-                  markTitle: filter.markTitle,
-                  modelTitle: filter.modelTitle,
-                ));
-                selectCategoryCubit.setAutoFilter(filter);
+              ).then((filter) {
+                if (filter != null) {
+                  setState(() {
+                    choosedCarFilter = filter;
+                  });
+                  searchCubit.setMarksFilter(MarksFilter(
+                    markId: filter.markId,
+                    modelId: filter.modelId,
+                    markTitle: filter.markTitle,
+                    modelTitle: filter.modelTitle,
+                  ));
+                  selectCategoryCubit.setAutoFilter(filter);
 
-                searchCubit.setFilters(
-                  parameters: selectCategoryCubit.parameters,
-                  cityId: selectedCityId,
-                  areaId: selectedAreaId,
-                  cityTitle: selectedCityTitle,
-                  areaTitle: selectedAreaTitle,
-                );
-                setState(() {});
-              }
-              updateAppBarFilterCubit.needUpdateAppBarFilters();
-            });
-          },
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(6, 8, 4, 8),
-            child: Row(
-              children: [
-                Text(
-                  localizations.choosingCarBrand,
-                  style: AppTypography.font16black.copyWith(fontSize: 18),
-                ),
-                const Spacer(),
-                choosedCarFilter == null
-                    ? const Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        size: 16,
-                        color: AppColors.lightGray,
-                      )
-                    : const Icon(
-                        Icons.keyboard_arrow_down_sharp,
-                        color: AppColors.lightGray,
-                      )
-              ],
+                  searchCubit.setFilters(
+                    parameters: selectCategoryCubit.parameters,
+                    cityId: selectedCityId,
+                    areaId: selectedAreaId,
+                    cityTitle: selectedCityTitle,
+                    areaTitle: selectedAreaTitle,
+                  );
+                  setState(() {});
+                }
+                updateAppBarFilterCubit.needUpdateAppBarFilters();
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(6, 8, 4, 8),
+              child: Row(
+                children: [
+                  Text(
+                    localizations.choosingCarBrand,
+                    style: AppTypography.font16black.copyWith(fontSize: 18),
+                  ),
+                  const Spacer(),
+                  choosedCarFilter == null
+                      ? const Icon(
+                          Icons.arrow_forward_ios_outlined,
+                          size: 16,
+                          color: AppColors.lightGray,
+                        )
+                      : const Icon(
+                          Icons.keyboard_arrow_down_sharp,
+                          color: AppColors.lightGray,
+                        )
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      if (choosedCarFilter != null) ...[
-        const SizedBox(height: 16),
-        Text(
-          '${choosedCarFilter.markTitle} ${choosedCarFilter.modelTitle}',
-          style: AppTypography.font18lightGray,
-        ),
+        if (choosedCarFilter != null) ...[
+          const SizedBox(height: 16),
+          Text(
+            '${choosedCarFilter.markTitle} ${choosedCarFilter.modelTitle}',
+            style: AppTypography.font18lightGray,
+          ),
+        ],
+        const SizedBox(height: 10),
       ],
-      const SizedBox(height: 10),
-    ];
+    );
   }
 
-  List<Widget> _buildSelectMarkWidget(BuildContext context) {
+  Widget _buildSelectMarkWidget(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
 
-    return [
-      Material(
-        color: Colors.transparent,
-        clipBehavior: Clip.hardEdge,
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-        child: InkWell(
-          onTap: () async {
-            final needSelectModel = selectCategoryCubit.subcategoryFilters!.hasModel;
-            final List<MarksFilter?> filter = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => SelectMarkScreen(
-                  needSelectModel: needSelectModel,
-                  subcategory: selectCategoryCubit.subcategoryId!,
+    return Column(
+      children: [
+        Material(
+          color: Colors.transparent,
+          clipBehavior: Clip.hardEdge,
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          child: InkWell(
+            onTap: () async {
+              final needSelectModel = selectCategoryCubit.subcategoryFilters!.hasModel;
+              final List<MarksFilter?>? filter = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SelectMarkScreen(
+                    needSelectModel: needSelectModel,
+                    subcategory: selectCategoryCubit.subcategoryId!,
+                  ),
                 ),
-              ),
-            );
+              );
 
-            if (filter.isNotEmpty) {
-              setState(() {
-                choosedMarksFilter = filter.first;
-              });
-              searchCubit.setMarksFilter(filter.first);
-            }
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-            child: Row(
-              children: [
-                Text(
-                  localizations.choosingMark,
-                  style: AppTypography.font16black.copyWith(fontSize: 18),
-                ),
-                const Spacer(),
-                choosedMarksFilter == null
-                    ? const Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        size: 16,
-                        color: AppColors.lightGray,
-                      )
-                    : const Icon(
-                        Icons.keyboard_arrow_down_sharp,
-                        color: AppColors.lightGray,
-                      )
-              ],
+              if (filter != null && filter.isNotEmpty) {
+                setState(() {
+                  choosedMarksFilter = filter.first;
+                });
+                searchCubit.setMarksFilter(filter.first);
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+              child: Row(
+                children: [
+                  Text(
+                    localizations.choosingMark,
+                    style: AppTypography.font16black.copyWith(fontSize: 18),
+                  ),
+                  const Spacer(),
+                  choosedMarksFilter == null
+                      ? const Icon(
+                          Icons.arrow_forward_ios_outlined,
+                          size: 16,
+                          color: AppColors.lightGray,
+                        )
+                      : const Icon(
+                          Icons.keyboard_arrow_down_sharp,
+                          color: AppColors.lightGray,
+                        )
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      if (choosedMarksFilter != null) ...[
-        const SizedBox(height: 16),
-        Text(
-          '${choosedMarksFilter.markTitle} ${choosedMarksFilter.modelTitle}',
-          style: AppTypography.font18lightGray,
-        ),
+        if (choosedMarksFilter != null) ...[
+          const SizedBox(height: 16),
+          Text(
+            '${choosedMarksFilter.markTitle} ${choosedMarksFilter.modelTitle}',
+            style: AppTypography.font18lightGray,
+          ),
+        ],
+        const SizedBox(height: 10),
       ],
-      const SizedBox(height: 10),
-    ];
+    );
   }
 
   List<Widget> _buildSelectCategoryWidget(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-    final subcategoryId = searchCubit.subcategoryId; //
+    final subcategoryId = searchCubit.subcategoryId;
     final subcategory = CategoriesManager.subcategory(subcategoryId);
 
     return [

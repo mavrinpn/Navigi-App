@@ -43,7 +43,9 @@ class _MainScreenState extends State<MainScreen> {
   void _initScrollListener() {
     _controller.addListener(() async {
       final announcementRepository = RepositoryProvider.of<AnnouncementManager>(context);
-      if (announcementRepository.recommendationAnnouncements.isNotEmpty) {
+      if (announcementRepository.recommendationAnnouncementsWithExactLocation.length +
+              announcementRepository.recommendationAnnouncementsWithOtherLocation.length >
+          0) {
         if (_controller.position.atEdge) {
           double maxScroll = _controller.position.maxScrollExtent;
           double currentScroll = _controller.position.pixels;
@@ -71,25 +73,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final announcementRepository = RepositoryProvider.of<AnnouncementManager>(context);
-
-    Widget getAnnouncementsGrid() {
-      return SliverGrid(
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
-          mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
-          maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-          childAspectRatio: AppSizes.anouncementAspectRatio(context),
-        ),
-        delegate: SliverChildBuilderDelegate(
-          (context, index) =>
-              AnnouncementContainer(announcement: announcementRepository.recommendationAnnouncements[index]),
-          // childCount: announcementRepository.announcements.length,
-          childCount: announcementRepository.recommendationAnnouncements.length % 2 == 0
-              ? announcementRepository.recommendationAnnouncements.length
-              : announcementRepository.recommendationAnnouncements.length - 1,
-        ),
-      );
-    }
 
     void openSearchScreen({
       required String? query,
@@ -233,33 +216,66 @@ class _MainScreenState extends State<MainScreen> {
                     padding: EdgeInsets.symmetric(
                       horizontal: AppSizes.anouncementGridSidePadding,
                     ),
-                    sliver: getAnnouncementsGrid(),
+                    sliver: SliverGrid(
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
+                        mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
+                        maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+                        childAspectRatio: AppSizes.anouncementAspectRatio(context),
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) => AnnouncementContainer(
+                            announcement: announcementRepository.recommendationAnnouncementsWithExactLocation[index]),
+                        childCount: announcementRepository.recommendationAnnouncementsWithExactLocation.length,
+                        // childCount: announcementRepository.recommendationAnnouncements.length % 2 == 0
+                        //     ? announcementRepository.recommendationAnnouncements.length
+                        //     : announcementRepository.recommendationAnnouncements.length - 1,
+                      ),
+                    ),
                   ),
-                  // if (state is AnnouncementsLoadingState) ...[
-                  //   SliverToBoxAdapter(
-                  //     child: SingleChildScrollView(
-                  //       child: Shimmer.fromColors(
-                  //         baseColor: Colors.grey[300]!,
-                  //         highlightColor: Colors.grey[100]!,
-                  //         child: Center(
-                  //           child: Wrap(
-                  //             spacing: AppSizes.anouncementGridCrossSpacing,
-                  //             runSpacing: AppSizes.anouncementRunSpacing,
-                  //             children: const [
-                  //               AnnouncementShimmer(),
-                  //               AnnouncementShimmer(),
-                  //               AnnouncementShimmer(),
-                  //               AnnouncementShimmer(),
-                  //               AnnouncementShimmer(),
-                  //               AnnouncementShimmer(),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   )
-                  // ],
-                  if (announcementRepository.recommendationAnnouncements.length >= 20)
+                  if (announcementRepository.recommendationAnnouncementsWithOtherLocation.isNotEmpty)
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppSizes.anouncementGridSidePadding,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset('Assets/search_other_city.jpg'),
+                            const SizedBox(height: 12),
+                            Text(
+                              AppLocalizations.of(context)!.otherCity,
+                              style: AppTypography.font20black,
+                            ),
+                            const SizedBox(height: 12),
+                          ],
+                        ),
+                      ),
+                    ),
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSizes.anouncementGridSidePadding,
+                    ),
+                    sliver: SliverGrid(
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
+                        mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
+                        maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+                        childAspectRatio: AppSizes.anouncementAspectRatio(context),
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) => AnnouncementContainer(
+                            announcement: announcementRepository.recommendationAnnouncementsWithOtherLocation[index]),
+                        childCount: announcementRepository.recommendationAnnouncementsWithOtherLocation.length % 2 == 0
+                            ? announcementRepository.recommendationAnnouncementsWithOtherLocation.length
+                            : announcementRepository.recommendationAnnouncementsWithOtherLocation.length - 1,
+                      ),
+                    ),
+                  ),
+                  if (announcementRepository.recommendationAnnouncementsWithExactLocation.length +
+                          announcementRepository.recommendationAnnouncementsWithOtherLocation.length >=
+                      20)
                     SliverToBoxAdapter(
                       child: Center(
                         child: SizedBox(

@@ -141,12 +141,6 @@ class _SearchScreenState extends State<SearchScreen> {
     searchScreenTextController.selection = TextSelection(
         baseOffset: searchScreenTextController.text.length, extentOffset: searchScreenTextController.text.length);
 
-    Widget announcementGridBuilder(BuildContext context, int index) {
-      return AnnouncementContainer(
-        announcement: announcementRepository.searchAnnouncements[index],
-      );
-    }
-
     SliverGridDelegateWithMaxCrossAxisExtent gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
       crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
       mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
@@ -316,22 +310,6 @@ class _SearchScreenState extends State<SearchScreen> {
       );
     }
 
-    Widget gridBuild() {
-      return SliverPadding(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSizes.anouncementGridSidePadding,
-          vertical: AppSizes.anouncementGridSidePadding,
-        ),
-        sliver: SliverGrid(
-          gridDelegate: gridDelegate,
-          delegate: SliverChildBuilderDelegate(
-            announcementGridBuilder,
-            childCount: announcementRepository.searchAnnouncements.length,
-          ),
-        ),
-      );
-    }
-
     Widget announcementsBuilder(context, state) {
       if (state is SearchAnnouncementsLoadingState && !isScrollLoading) {
         return SingleChildScrollView(
@@ -357,7 +335,10 @@ class _SearchScreenState extends State<SearchScreen> {
         );
       }
 
-      if (state is SearchAnnouncementsFailState || announcementRepository.searchAnnouncements.isEmpty) {
+      if (state is SearchAnnouncementsFailState ||
+          announcementRepository.searchAnnouncementsWithExactLocation.length +
+                  announcementRepository.searchAnnouncementsWithOtherLocation.length ==
+              0) {
         if (state is SearchAnnouncementsFailState) {
           CustomSnackBar.showSnackBar(context, state.error, 10);
         }
@@ -379,9 +360,61 @@ class _SearchScreenState extends State<SearchScreen> {
           controller: _controller,
           physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
           slivers: [
-            gridBuild(),
-            // if (state is SearchAnnouncementsScrollLoadingState) ...[
-            if (announcementRepository.searchAnnouncements.length >= 20)
+            SliverPadding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSizes.anouncementGridSidePadding,
+                vertical: AppSizes.anouncementGridSidePadding,
+              ),
+              sliver: SliverGrid(
+                gridDelegate: gridDelegate,
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => AnnouncementContainer(
+                    announcement: announcementRepository.searchAnnouncementsWithExactLocation[index],
+                  ),
+                  childCount: announcementRepository.searchAnnouncementsWithExactLocation.length,
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSizes.anouncementGridSidePadding,
+              ),
+              sliver: SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.asset('Assets/search_other_city.jpg'),
+                    const SizedBox(height: 12),
+                    Text(
+                      AppLocalizations.of(context)!.otherCity,
+                      style: AppTypography.font20black,
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                ),
+              ),
+            ),
+            if (announcementRepository.searchAnnouncementsWithOtherLocation.isNotEmpty)
+              SliverPadding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSizes.anouncementGridSidePadding,
+                  vertical: AppSizes.anouncementGridSidePadding,
+                ),
+                sliver: SliverGrid(
+                  gridDelegate: gridDelegate,
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) => AnnouncementContainer(
+                      announcement: announcementRepository.searchAnnouncementsWithOtherLocation[index],
+                    ),
+                    childCount: announcementRepository.searchAnnouncementsWithOtherLocation.length % 2 == 0
+                        ? announcementRepository.searchAnnouncementsWithOtherLocation.length
+                        : announcementRepository.searchAnnouncementsWithOtherLocation.length - 1,
+                  ),
+                ),
+              ),
+            if (announcementRepository.searchAnnouncementsWithExactLocation.length +
+                    announcementRepository.searchAnnouncementsWithOtherLocation.length >=
+                20)
               SliverToBoxAdapter(
                 child: Center(
                   child: SizedBox(

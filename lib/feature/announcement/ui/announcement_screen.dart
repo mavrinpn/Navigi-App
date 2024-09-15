@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -53,11 +54,36 @@ class AnnouncementScreen extends StatefulWidget {
 
 class _AnnouncementScreenState extends State<AnnouncementScreen> {
   int activePage = 0;
+  // PageController pageController = PageController(viewportFraction: 0.9, initialPage: 0);
+  CarouselController carouselController = CarouselController();
+  bool carouselControllerInited = false;
+  double carouselItemWidth = 0;
 
   @override
   void initState() {
     BlocProvider.of<AnnouncementCubit>(context).loadAnnouncementById(widget.announcementId);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    carouselItemWidth = MediaQuery.sizeOf(context).width * 0.85;
+    _initCarousel();
+  }
+
+  void _initCarousel() {
+    if (!carouselControllerInited) {
+      carouselControllerInited = true;
+      carouselController.addListener(() {
+        final newActivePage = (carouselController.offset / carouselItemWidth) * 1.15;
+        if (newActivePage.toInt() != activePage) {
+          setState(() {
+            activePage = newActivePage.toInt();
+          });
+        }
+      });
+    }
   }
 
   void incViewsIfNeed(AnnouncementSuccessState state) {
@@ -77,7 +103,6 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    PageController pageController = PageController(viewportFraction: 0.9, initialPage: activePage);
 
     const maxImageCount = 10;
 
@@ -97,6 +122,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
           if (isUserAuth) {
             incViewsIfNeed(state);
           }
+
+          final itemCounts = min(state.data.images.length, maxImageCount);
 
           return RefreshIndicator(
             onRefresh: () async {
@@ -157,75 +184,140 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      // width: width,
                       height: 260,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute<int>(
-                              builder: (_) => PhotoViews(
-                                images: state.data.images.take(maxImageCount).toList(),
-                                activePage: activePage,
-                                onPageChanged: (value) {
-                                  activePage = value;
-                                },
-                              ),
-                            ),
-                          ).then((_) {
-                            pageController.animateToPage(
-                              activePage,
-                              duration: Durations.medium2,
-                              curve: Curves.bounceInOut,
-                            );
-                          });
-                        },
-                        child: PageView.builder(
-                            clipBehavior: Clip.none,
-                            itemCount: min(state.data.images.length, maxImageCount),
-                            pageSnapping: true,
-                            controller: pageController,
-                            onPageChanged: (int page) {
-                              setState(() {
-                                activePage = page;
-                              });
-                            },
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                  right: activePage == 0 ? 12 : 6,
-                                  left: activePage == 0 ? 0 : 6,
+                      child: Container(
+                        clipBehavior: Clip.none,
+                        // padding: const EdgeInsets.only(right: 12),
+                        child: CarouselView(
+                          controller: carouselController,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          // padding: const EdgeInsets.symmetric(horizontal: 6),
+                          padding: const EdgeInsets.only(left: 12),
+                          itemExtent: carouselItemWidth,
+                          shrinkExtent: carouselItemWidth,
+                          itemSnapping: true,
+                          onTap: (value) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<int>(
+                                builder: (_) => PhotoViews(
+                                  images: state.data.images.take(maxImageCount).toList(),
+                                  activePage: activePage,
+                                  onPageChanged: (value) {
+                                    activePage = value;
+                                  },
                                 ),
-                                child: Container(
-                                  clipBehavior: Clip.hardEdge,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(6)),
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: CachedNetworkImageProvider(
-                                          state.data.images[index],
-                                        ),
-                                        fit: BoxFit.fill,
-                                      ),
+                              ),
+                            ).then((_) {
+                              carouselController.jumpTo(
+                                activePage * carouselItemWidth,
+                              );
+                              setState(() {});
+                            });
+                          },
+                          children: List<Widget>.generate(itemCounts, (int index) {
+                            return Padding(
+                              padding: index == itemCounts - 1 ? const EdgeInsets.only(right: 12) : EdgeInsets.zero,
+                              child: Container(
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  image: DecorationImage(
+                                    image: CachedNetworkImageProvider(
+                                      state.data.images[index],
                                     ),
-                                    child: BackdropFilter(
-                                      filter: ImageFilter.blur(
-                                        sigmaX: 25,
-                                        sigmaY: 25,
-                                      ),
-                                      child: CachedNetworkImage(
-                                        imageUrl: state.data.images[index],
-                                        fit: BoxFit.contain,
-                                        fadeInDuration: Duration.zero,
-                                      ),
-                                    ),
+                                    fit: BoxFit.fill,
                                   ),
                                 ),
-                              );
-                            }),
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                    sigmaX: 25,
+                                    sigmaY: 25,
+                                  ),
+                                  child: FancyShimmerImage(
+                                    imageUrl: state.data.images[index],
+                                    boxFit: BoxFit.contain,
+                                    shimmerBaseColor: Colors.grey[300]!,
+                                    shimmerHighlightColor: Colors.grey[100]!,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
                       ),
+                      //   child: GestureDetector(
+                      //     onTap: () {
+                      //       Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute<int>(
+                      //           builder: (_) => PhotoViews(
+                      //             images: state.data.images.take(maxImageCount).toList(),
+                      //             activePage: activePage,
+                      //             onPageChanged: (value) {
+                      //               activePage = value;
+                      //             },
+                      //           ),
+                      //         ),
+                      //       ).then(
+                      //         (_) {
+                      //           pageController.animateToPage(
+                      //             activePage,
+                      //             duration: Durations.medium2,
+                      //             curve: Curves.bounceInOut,
+                      //           );
+                      //         },
+                      //       );
+                      //     },
+                      //     child: PageView.builder(
+                      //       clipBehavior: Clip.none,
+                      //       itemCount: min(state.data.images.length, maxImageCount),
+                      //       pageSnapping: true,
+                      //       controller: pageController,
+                      //       onPageChanged: (int page) {
+                      //         setState(() {
+                      //           activePage = page;
+                      //         });
+                      //       },
+                      //       itemBuilder: (context, index) {
+                      //         return Padding(
+                      //           padding: EdgeInsets.only(
+                      //             right: activePage == 0 ? 12 : 6,
+                      //             left: activePage == 0 ? 0 : 6,
+                      //           ),
+                      //           child: Container(
+                      //             clipBehavior: Clip.hardEdge,
+                      //             decoration: BoxDecoration(borderRadius: BorderRadius.circular(6)),
+                      //             child: Container(
+                      //               width: double.infinity,
+                      //               height: double.infinity,
+                      //               decoration: BoxDecoration(
+                      //                 image: DecorationImage(
+                      //                   image: CachedNetworkImageProvider(
+                      //                     state.data.images[index],
+                      //                   ),
+                      //                   fit: BoxFit.fill,
+                      //                 ),
+                      //               ),
+                      //               child: BackdropFilter(
+                      //                 filter: ImageFilter.blur(
+                      //                   sigmaX: 25,
+                      //                   sigmaY: 25,
+                      //                 ),
+                      //                 child: FancyShimmerImage(
+                      //                   imageUrl: state.data.images[index],
+                      //                   boxFit: BoxFit.contain,
+                      //                   shimmerBaseColor: Colors.grey[300]!,
+                      //                   shimmerHighlightColor: Colors.grey[100]!,
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         );
+                      //       },
+                      //     ),
+                      //   ),
+                      // ),
                     ),
                     const SizedBox(height: 5),
                     ImagesIndicators(
@@ -266,12 +358,12 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       alignment: Alignment.topLeft,
                       child: Text(
                         state.data.title,
-                        style: AppTypography.font20black,
+                        style: AppTypography.font24black,
                         softWrap: true,
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 12, 15, 12),
+                      padding: const EdgeInsets.fromLTRB(15, 12, 15, 10),
                       child: InkWell(
                         onTap: () {
                           Navigator.push(
@@ -290,9 +382,14 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                           children: [
                             SvgPicture.asset('Assets/icons/point.svg'),
                             RichText(
-                                text: TextSpan(children: [
-                              TextSpan(text: ' ${state.data.area.name}', style: AppTypography.font14black),
-                            ]))
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                      text: ' ${state.data.area.name}'.replaceAll('\n', ' '),
+                                      style: AppTypography.font14black),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),

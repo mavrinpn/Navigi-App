@@ -43,8 +43,8 @@ class _FavouriteIndicatorState extends State<FavouriteIndicator> {
             child: Center(
               child: SvgPicture.asset(
                 'Assets/icons/follow.svg',
-                width: 24,
-                height: 24,
+                width: 36,
+                height: 36,
                 colorFilter: ColorFilter.mode(
                   _liked ? AppColors.red : AppColors.whiteGray,
                   BlendMode.srcIn,

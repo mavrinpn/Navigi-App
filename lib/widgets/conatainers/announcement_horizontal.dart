@@ -79,6 +79,7 @@ class _AnnouncementContainerHorizontalState extends State<AnnouncementContainerH
               child: CachedNetworkImage(
                 imageUrl: widget.announcement.images.firstOrNull,
                 fit: BoxFit.cover,
+                fadeInDuration: Duration.zero,
               ),
             ),
             const SizedBox(width: 10),

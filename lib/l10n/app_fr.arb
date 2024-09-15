@@ -246,5 +246,6 @@
 "isConnection": "Connexion Internet rétablie",
 "enabled": "Activé",
 "disabled": "Désactivé",
-"enterPhoneNumberAtSettings": "Pour créer une annonce, entrez votre numéro de téléphone dans les paramètres"
+"enterPhoneNumberAtSettings": "Pour créer une annonce, entrez votre numéro de téléphone dans les paramètres",
+"otherCity": "Les annonces dans d’autres wilaya"
 }

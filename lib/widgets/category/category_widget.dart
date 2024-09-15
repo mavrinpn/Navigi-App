@@ -1,4 +1,4 @@
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:smart/main.dart';
 import 'package:smart/models/category.dart';
@@ -33,11 +33,10 @@ class _CategoryWidgetState extends State<CategoryWidget> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: FancyShimmerImage(
+              child: CachedNetworkImage(
                 imageUrl: widget.category.imageUrl!,
-                boxFit: BoxFit.cover,
-                shimmerBaseColor: Colors.grey[300]!,
-                shimmerHighlightColor: Colors.grey[100]!,
+                fit: BoxFit.cover,
+                fadeInDuration: Duration.zero,
               ),
             ),
           ),

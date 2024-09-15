@@ -705,4 +705,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get enterPhoneNumberAtSettings => 'Pour créer une annonce, entrez votre numéro de téléphone dans les paramètres';
+
+  @override
+  String get otherCity => 'Les annonces dans d’autres wilaya';
 }

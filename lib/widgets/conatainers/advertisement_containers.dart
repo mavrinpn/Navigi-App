@@ -24,6 +24,11 @@ class AdvertisementContainer extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
           ),
+          // child: CachedNetworkImage(
+          //   imageUrl: imageUrl,
+          //   fit: BoxFit.cover,
+          //   fadeInDuration: Duration.zero,
+          // ),
           child: FancyShimmerImage(
             imageUrl: imageUrl,
             boxFit: BoxFit.cover,

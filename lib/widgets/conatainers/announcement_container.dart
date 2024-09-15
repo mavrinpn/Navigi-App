@@ -73,6 +73,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
                 child: CachedNetworkImage(
                   key: UniqueKey(),
+                  fadeInDuration: Duration.zero,
                   imageUrl: widget.announcement.thumb != ''
                       ? widget.announcement.thumb
                       : widget.announcement.images.firstOrNull ?? '',

@@ -705,4 +705,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get enterPhoneNumberAtSettings => 'لإنشاء إعلان ، أدخل رقم هاتفك في الإعدادات';
+
+  @override
+  String get otherCity => 'إعلانات في مدن أخرى';
 }

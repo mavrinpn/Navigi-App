@@ -705,4 +705,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterPhoneNumberAtSettings => 'To create an ad, enter your phone number in the settings';
+
+  @override
+  String get otherCity => 'Ads in other areas';
 }

@@ -246,5 +246,6 @@
 "isConnection": "تمت استعادة اتصال الإنترنت",
 "enabled": "ممكن",
 "disabled": "معاق",
-"enterPhoneNumberAtSettings": "لإنشاء إعلان ، أدخل رقم هاتفك في الإعدادات"
+"enterPhoneNumberAtSettings": "لإنشاء إعلان ، أدخل رقم هاتفك في الإعدادات",
+"otherCity": "إعلانات في مدن أخرى"
 }
