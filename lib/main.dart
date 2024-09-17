@@ -107,9 +107,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       final cityDistrict = CityDistrict.fromMap(jsonDecode(cityDistrictString));
       searchCubit.setCity(
         cityId: cityDistrict.cityId,
-        areaId: cityDistrict.id,
+        // areaId: cityDistrict.id,
         cityTitle: cityDistrict.cityTitle,
-        areaTitle: cityDistrict.name,
+        // areaTitle: cityDistrict.name,
       );
     }
   }

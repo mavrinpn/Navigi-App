@@ -160,21 +160,6 @@ class _MainScreenState extends State<MainScreen> {
                 controller: _controller,
                 physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
-                  //TODO test map
-                  // SliverToBoxAdapter(
-                  //   child: SizedBox(
-                  //     height: 300,
-                  //     child: CommonMap().buildMap(
-                  //       myLocationEnabled: true,
-                  //       myLocationButtonEnabled: true,
-                  //       zoomControlsEnabled: true,
-                  //       initial: CommonLatLng(51.507220, -0.127500),
-                  //       markers: {
-                  //         CommonLatLng(51.507220, -0.127500),
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),

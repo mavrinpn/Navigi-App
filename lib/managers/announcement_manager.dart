@@ -22,10 +22,11 @@ class AnnouncementManager {
 
   bool _excludeCity = false;
   bool _excludeArea = false;
-  // int _cityIncludeTotal = 0;
+  int _cityIncludeTotal = 0;
+
   bool _excludeRecomendationsCity = false;
   bool _excludeRecomendationsArea = false;
-  // int _cityIncludeRecomendationsTotal = 0;
+  int _cityIncludeRecomendationsTotal = 0;
 
   bool _canGetMoreAnnouncement = true;
 
@@ -33,9 +34,11 @@ class AnnouncementManager {
   List<String> contactsAnnouncements = [];
 
   List<Announcement> recommendationAnnouncementsWithExactLocation = [];
+  // List<Announcement> recommendationAnnouncementsWithCityLocation = [];
   List<Announcement> recommendationAnnouncementsWithOtherLocation = [];
 
   List<Announcement> searchAnnouncementsWithExactLocation = [];
+  // List<Announcement> searchAnnouncementsWithCityLocation = [];
   List<Announcement> searchAnnouncementsWithOtherLocation = [];
 
   Announcement? lastAnnouncement;
@@ -61,11 +64,12 @@ class AnnouncementManager {
       try {
         if (isNew) {
           recommendationAnnouncementsWithExactLocation.clear();
+          // recommendationAnnouncementsWithCityLocation.clear();
           recommendationAnnouncementsWithOtherLocation.clear();
           _lastId = '';
           _excludeRecomendationsCity = false;
           _excludeRecomendationsArea = false;
-          // _cityIncludeRecomendationsTotal = 0;
+          _cityIncludeRecomendationsTotal = 0;
         }
 
         if (!_excludeRecomendationsCity && !_excludeRecomendationsArea) {
@@ -95,6 +99,14 @@ class AnnouncementManager {
     String? cityId,
     String? areaId,
   }) async {
+    debugPrint('_recomendationsWithCityInclude');
+
+    if (areaId == null) {
+      _lastId = null;
+      _excludeRecomendationsArea = true;
+      return;
+    }
+
     ({List<Announcement> list, int total}) results;
     results = await dbService.announcements.getAnnouncements(
       lastId: _lastId,
@@ -104,11 +116,10 @@ class AnnouncementManager {
     );
 
     recommendationAnnouncementsWithExactLocation.addAll(results.list);
-    _lastId = recommendationAnnouncementsWithExactLocation.last.anouncesTableId;
+    _lastId = recommendationAnnouncementsWithExactLocation.lastOrNull?.anouncesTableId;
 
-    // _cityIncludeRecomendationsTotal = results.total;
+    _cityIncludeRecomendationsTotal = results.total;
 
-    debugPrint('_recomendationsWithCityInclude');
     debugPrint('results.length ${results.list.length}');
     debugPrint('announcements.length ${recommendationAnnouncementsWithExactLocation.length}');
     debugPrint('total ${results.total}');
@@ -134,15 +145,14 @@ class AnnouncementManager {
       excludeAreaId: areaId,
     );
 
-    recommendationAnnouncementsWithOtherLocation.addAll(results.list);
-    _lastId = recommendationAnnouncementsWithOtherLocation.lastOrNull?.anouncesTableId;
+    recommendationAnnouncementsWithExactLocation.addAll(results.list);
+    _lastId = recommendationAnnouncementsWithExactLocation.lastOrNull?.anouncesTableId;
 
     debugPrint('results.length ${results.list.length}');
-    debugPrint('announcements.length ${recommendationAnnouncementsWithOtherLocation.length}');
+    debugPrint('announcements.length ${recommendationAnnouncementsWithExactLocation.length}');
     debugPrint('total ${results.total}');
 
-    if (recommendationAnnouncementsWithOtherLocation.length >= results.total) {
-      // if (recommendationAnnouncementsWithOtherLocation.length >= results.total + _cityIncludeRecomendationsTotal) {
+    if (recommendationAnnouncementsWithExactLocation.length >= results.total + _cityIncludeRecomendationsTotal) {
       _lastId = null;
       _excludeRecomendationsArea = true;
       _excludeRecomendationsCity = true;
@@ -188,6 +198,13 @@ class AnnouncementManager {
         return a;
       }
     }
+    // for (var a in recommendationAnnouncementsWithCityLocation) {
+    //   if (a.anouncesTableId == id) {
+    //     a = await dbService.announcements.getAnnouncementById(id);
+    //     lastAnnouncement = a;
+    //     return a;
+    //   }
+    // }
     for (var a in recommendationAnnouncementsWithOtherLocation) {
       if (a.anouncesTableId == id) {
         a = await dbService.announcements.getAnnouncementById(id);
@@ -220,6 +237,12 @@ class AnnouncementManager {
         return a;
       }
     }
+    // for (var a in recommendationAnnouncementsWithCityLocation) {
+    //   if (a.anouncesTableId == id) {
+    //     lastAnnouncement = a;
+    //     return a;
+    //   }
+    // }
     for (var a in recommendationAnnouncementsWithOtherLocation) {
       if (a.anouncesTableId == id) {
         lastAnnouncement = a;
@@ -277,7 +300,7 @@ class AnnouncementManager {
       _searchLastId = '';
       _excludeCity = false;
       _excludeArea = false;
-      // _cityIncludeTotal = 0;
+      _cityIncludeTotal = 0;
     }
     final filter = SubcategoryFilterDTO(
       lastId: _searchLastId,
@@ -311,6 +334,13 @@ class AnnouncementManager {
 
   _searchWithCityInclude(SubcategoryFilterDTO filter) async {
     debugPrint('_searchWithCityInclude');
+
+    if (filter.areaId == null) {
+      _searchLastId = null;
+      _excludeArea = true;
+      return;
+    }
+
     ({List<Announcement> list, int total}) results;
     results = await dbService.announcements.searchAnnouncementsInSubcategory(
       filterData: filter,
@@ -323,7 +353,7 @@ class AnnouncementManager {
     debugPrint('searchAnnouncements.length ${searchAnnouncementsWithExactLocation.length}');
     debugPrint('total ${results.total}');
 
-    // _cityIncludeTotal = results.total;
+    _cityIncludeTotal = results.total;
 
     if (searchAnnouncementsWithExactLocation.length >= results.total) {
       _searchLastId = null;
@@ -339,15 +369,14 @@ class AnnouncementManager {
       excludeAreaId: filter.areaId,
     );
 
-    searchAnnouncementsWithOtherLocation.addAll(results.list);
-    _searchLastId = searchAnnouncementsWithOtherLocation.last.subTableId;
+    searchAnnouncementsWithExactLocation.addAll(results.list);
+    _searchLastId = searchAnnouncementsWithExactLocation.lastOrNull?.subTableId;
 
     debugPrint('results.length ${results.list.length}');
-    debugPrint('searchAnnouncements.length ${searchAnnouncementsWithOtherLocation.length}');
+    debugPrint('searchAnnouncements.length ${searchAnnouncementsWithExactLocation.length}');
     debugPrint('total ${results.total}');
 
-    if (searchAnnouncementsWithOtherLocation.length >= results.total) {
-      // if (searchAnnouncementsWithOtherLocation.length >= results.total + _cityIncludeTotal) {
+    if (searchAnnouncementsWithExactLocation.length >= results.total + _cityIncludeTotal) {
       _searchLastId = null;
       _excludeArea = true;
       _excludeCity = true;
@@ -364,7 +393,7 @@ class AnnouncementManager {
     );
 
     searchAnnouncementsWithOtherLocation.addAll(results.list);
-    _searchLastId = searchAnnouncementsWithOtherLocation.last.subTableId;
+    _searchLastId = searchAnnouncementsWithOtherLocation.lastOrNull?.subTableId;
 
     debugPrint('results.length ${results.list.length}');
     debugPrint('searchAnnouncements.length ${searchAnnouncementsWithOtherLocation.length}');

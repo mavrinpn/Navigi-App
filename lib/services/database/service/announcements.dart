@@ -36,15 +36,19 @@ class AnnouncementsService {
       queries.add(Query.equal('area_id', areaId));
     }
 
-    final res = await _databases.listDocuments(
-      databaseId: mainDatabase,
-      collectionId: postCollection,
-      queries: queries,
-    );
+    try {
+      final res = await _databases.listDocuments(
+        databaseId: mainDatabase,
+        collectionId: postCollection,
+        queries: queries,
+      );
 
-    List<Announcement> newAnnounces = announcementsFromDocuments(res.documents, _storage);
+      List<Announcement> newAnnounces = announcementsFromDocuments(res.documents, _storage);
 
-    return (list: newAnnounces, total: res.total);
+      return (list: newAnnounces, total: res.total);
+    } catch (err) {
+      rethrow;
+    }
   }
 
   Future<List<Announcement>> searchLimitAnnouncements(DefaultFilterDto filterData) async {
