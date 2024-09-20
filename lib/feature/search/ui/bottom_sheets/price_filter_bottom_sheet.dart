@@ -62,6 +62,7 @@ class _FiltersBottomSheetState extends State<PriceFilterBottomSheet> {
       color: Colors.white,
       child: SafeArea(
         child: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           clipBehavior: Clip.none,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),

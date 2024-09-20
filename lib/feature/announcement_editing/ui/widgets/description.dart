@@ -16,34 +16,32 @@ class DescriptionSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 16,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(
+          height: 16,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Text(
+            localizations.description,
+            style: AppTypography.font16black.copyWith(fontSize: 18),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Text(
-              localizations.description,
-              style: AppTypography.font16black.copyWith(fontSize: 18),
-            ),
-          ),
-          const SizedBox(height: 5),
-          OutlineTextField(
-            keyBoardType: TextInputType.multiline,
-            hintText: localizations.description,
-            controller: descriptionController,
-            maxLines: 20,
-            height: 310,
-            width: double.infinity,
-            maxLength: 500,
-            onChange: onChange,
-          )
-        ],
-      ),
+        ),
+        const SizedBox(height: 5),
+        OutlineTextField(
+          keyBoardType: TextInputType.multiline,
+          hintText: localizations.description,
+          controller: descriptionController,
+          maxLines: 20,
+          height: 310,
+          width: double.infinity,
+          maxLength: 500,
+          onChange: onChange,
+        )
+      ],
     );
   }
 }

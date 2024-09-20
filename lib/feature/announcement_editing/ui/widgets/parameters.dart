@@ -37,17 +37,16 @@ class _ParametersSectionState extends State<ParametersSection> {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-        child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: widget.paramaters
-          .map((e) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: buildParameter(e),
-              ))
-          .toList(),
-    ));
+    return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: widget.paramaters
+      .map((e) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: buildParameter(e),
+          ))
+      .toList(),
+        );
   }
 
   void loadCurrentParametersValue() {

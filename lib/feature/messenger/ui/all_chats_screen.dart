@@ -26,6 +26,7 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.appBarColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(localizations.messages, style: AppTypography.font20black),
       ),
       body: StreamBuilder<List<Room>>(
@@ -33,11 +34,14 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
           initialData: const [],
           builder: (context, snapshot) {
             return CustomScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               slivers: [
                 SliverAppBar(
                   expandedHeight: 40,
                   collapsedHeight: 40,
                   toolbarHeight: 40,
+                  elevation: 0,
+                  scrolledUnderElevation: 0,
                   floating: true,
                   title: SizedBox(
                     height: 44,
@@ -48,16 +52,18 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
                         repository.searchChat(searchController.text);
                       },
                       decoration: InputDecoration(
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: SvgPicture.asset('Assets/icons/search_simple.svg', width: 22),
-                          ),
-                          prefixIconConstraints: const BoxConstraints(maxWidth: 50, maxHeight: 22),
-                          contentPadding: EdgeInsets.zero,
-                          filled: true,
-                          fillColor: const Color(0xffF4F5F6),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10), gapPadding: 0, borderSide: BorderSide.none)),
+                        hintText: localizations.searchInMessages,
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: SvgPicture.asset('Assets/icons/search_simple.svg', width: 22),
+                        ),
+                        prefixIconConstraints: const BoxConstraints(maxWidth: 50, maxHeight: 22),
+                        contentPadding: EdgeInsets.zero,
+                        filled: true,
+                        fillColor: const Color(0xffF4F5F6),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10), gapPadding: 0, borderSide: BorderSide.none),
+                      ),
                     ),
                   ),
                 ),

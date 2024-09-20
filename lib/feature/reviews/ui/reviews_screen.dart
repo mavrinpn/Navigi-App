@@ -43,6 +43,8 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
             size: 26,
           ),
         ),
+        elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(
           widget.user.displayName,
           overflow: TextOverflow.ellipsis,
@@ -77,6 +79,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
         builder: (context, state) {
           if (state is ReviewsSuccessState) {
             return ListView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.fromLTRB(15, 0, 15, 100),
               children: [
                 const SizedBox(height: 24),

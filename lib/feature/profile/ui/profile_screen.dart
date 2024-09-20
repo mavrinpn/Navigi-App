@@ -66,6 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.appBarColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
         titleSpacing: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,6 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 }
 
                 return CustomScrollView(
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   slivers: [
                     const SliverToBoxAdapter(child: SizedBox(height: 8)),
                     SliverPadding(
@@ -217,7 +219,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                     if (creatorState is CreatorLoadingState && (_available.isEmpty))
                       SliverToBoxAdapter(
                         child: SizedBox(
-                          height: MediaQuery.sizeOf(context).height/2.5,
+                          height: MediaQuery.sizeOf(context).height / 2.5,
                           width: 50,
                           child: AppAnimations.circleFadingAnimation,
                         ),

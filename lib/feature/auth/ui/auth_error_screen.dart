@@ -26,6 +26,8 @@ class _FavoritesScreen extends State<AuthErrorScreen> {
           localizations.enter,
           style: AppTypography.font20black,
         ),
+        elevation: 0,
+        scrolledUnderElevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

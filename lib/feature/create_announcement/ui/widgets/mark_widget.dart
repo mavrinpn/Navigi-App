@@ -32,8 +32,7 @@ class _MarkWidgetState extends State<MarkWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final url =
-        widget.mark.image?.trim().replaceAll('\r', '').replaceAll('\n', '');
+    final url = widget.mark.image?.trim().replaceAll('\r', '').replaceAll('\n', '');
     // final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
 
     return Column(
@@ -80,6 +79,8 @@ class _MarkWidgetState extends State<MarkWidget> {
                       ? CachedNetworkImage(
                           imageUrl: url,
                           fadeInDuration: Duration.zero,
+                          fadeOutDuration: Duration.zero,
+                          placeholderFadeInDuration: Duration.zero,
                           errorWidget: (context, error, stackTrace) {
                             return Container();
                           },
@@ -103,8 +104,7 @@ class _MarkWidgetState extends State<MarkWidget> {
           ),
         ),
         if (opened) ...[
-          BlocBuilder<SelectMarkCubit, SelectMarkState>(
-              builder: (context, state) {
+          BlocBuilder<SelectMarkCubit, SelectMarkState>(builder: (context, state) {
             if (state is ModelsLoadingState) {
               if (state.markId != widget.mark.id) {
                 opened = false;
@@ -135,17 +135,14 @@ class _MarkWidgetState extends State<MarkWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomCheckBox(
-                            isActive:
-                                state.models[index].id == _selectedModelId,
-                            onChanged: () =>
-                                _onModelSelected(state.models[index]),
+                            isActive: state.models[index].id == _selectedModelId,
+                            onChanged: () => _onModelSelected(state.models[index]),
                           ),
                           Expanded(
                             child: Text(
                               state.models[index].name,
                               overflow: TextOverflow.ellipsis,
-                              style: AppTypography.font16black
-                                  .copyWith(fontWeight: FontWeight.w400),
+                              style: AppTypography.font16black.copyWith(fontWeight: FontWeight.w400),
                             ),
                           ),
                           const Icon(

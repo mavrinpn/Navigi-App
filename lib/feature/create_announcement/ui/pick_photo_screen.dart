@@ -20,8 +20,7 @@ class PickPhotosScreen extends StatefulWidget {
 class _PickPhotosScreenState extends State<PickPhotosScreen> {
   @override
   Widget build(BuildContext context) {
-    final creatingAnnouncementManager =
-        RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    final creatingAnnouncementManager = RepositoryProvider.of<CreatingAnnouncementManager>(context);
 
     final localizations = AppLocalizations.of(context)!;
 
@@ -35,6 +34,7 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
           iconTheme: const IconThemeData.fallback(),
           backgroundColor: AppColors.appBarColor,
           elevation: 0,
+          scrolledUnderElevation: 0,
           title: Text(
             localizations.photo,
             style: AppTypography.font20black,
@@ -70,25 +70,16 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                   : Expanded(
                       //height: MediaQuery.of(context).size.height - 320,
                       child: GridView.builder(
-                        physics: const BouncingScrollPhysics(
-                            decelerationRate: ScrollDecelerationRate.fast),
-                        itemCount:
-                            creatingAnnouncementManager.images.length + 1,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                mainAxisExtent: 113,
-                                mainAxisSpacing: 7,
-                                crossAxisSpacing: 7,
-                                crossAxisCount: 3),
+                        physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
+                        itemCount: creatingAnnouncementManager.images.length + 1,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            mainAxisExtent: 113, mainAxisSpacing: 7, crossAxisSpacing: 7, crossAxisCount: 3),
                         itemBuilder: (_, int index) {
-                          if (index !=
-                              creatingAnnouncementManager.images.length) {
+                          if (index != creatingAnnouncementManager.images.length) {
                             return ImageWidget(
-                              path: creatingAnnouncementManager
-                                  .images[index].path,
+                              path: creatingAnnouncementManager.images[index].path,
                               callback: () {
-                                creatingAnnouncementManager.images
-                                    .removeAt(index);
+                                creatingAnnouncementManager.images.removeAt(index);
                                 setState(() {});
                               },
                             );
@@ -108,11 +99,9 @@ class _PickPhotosScreenState extends State<PickPhotosScreen> {
                 width: MediaQuery.of(context).size.width - 30,
                 text: localizations.continue_,
                 callback: () {
-                  creatingAnnouncementManager
-                      .setImages(creatingAnnouncementManager.images);
+                  creatingAnnouncementManager.setImages(creatingAnnouncementManager.images);
 
-                  Navigator.pushNamed(
-                      context, AppRoutesNames.announcementCreatingOptions);
+                  Navigator.pushNamed(context, AppRoutesNames.announcementCreatingOptions);
 
                   // if ([servicesCategoryId, realEstateCategoryId].contains(
                   //         creatingAnnouncementManager

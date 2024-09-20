@@ -133,6 +133,7 @@ class _MainScreenState extends State<MainScreen> {
         appBar: AppBar(
           backgroundColor: AppColors.appBarColor,
           elevation: 0,
+          scrolledUnderElevation: 0,
           surfaceTintColor: Colors.transparent,
           flexibleSpace: MainAppBar(
             isSearch: isSearch,
@@ -158,6 +159,7 @@ class _MainScreenState extends State<MainScreen> {
               },
               child: CustomScrollView(
                 controller: _controller,
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
                   SliverToBoxAdapter(

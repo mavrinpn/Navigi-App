@@ -20,8 +20,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final repository =
-        RepositoryProvider.of<CreatingAnnouncementManager>(context);
+    final repository = RepositoryProvider.of<CreatingAnnouncementManager>(context);
 
     final width = MediaQuery.of(context).size.width;
 
@@ -32,6 +31,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
         iconTheme: const IconThemeData.fallback(),
         backgroundColor: AppColors.appBarColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(
           localizations.typeOfNews,
           style: AppTypography.font20black,
@@ -63,8 +63,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
                   const SizedBox(width: 14),
                   Text(
                     localizations.new_,
-                    style: AppTypography.font16black
-                        .copyWith(fontWeight: FontWeight.w400),
+                    style: AppTypography.font16black.copyWith(fontWeight: FontWeight.w400),
                   )
                 ],
               ),
@@ -86,9 +85,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
                         });
                       }),
                   const SizedBox(width: 14),
-                  Text(localizations.used,
-                      style: AppTypography.font16black
-                          .copyWith(fontWeight: FontWeight.w400)),
+                  Text(localizations.used, style: AppTypography.font16black.copyWith(fontWeight: FontWeight.w400)),
                 ],
               ),
             ),
@@ -100,8 +97,7 @@ class _ByNotByScreenState extends State<ByNotByScreen> {
         text: localizations.continue_,
         callback: () {
           repository.setType(!isBy);
-          Navigator.pushNamed(
-              context, AppRoutesNames.announcementCreatingOptions);
+          Navigator.pushNamed(context, AppRoutesNames.announcementCreatingOptions);
         },
         active: true,
       ),

@@ -81,6 +81,7 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> with 
         iconTheme: const IconThemeData.fallback(),
         backgroundColor: AppColors.appBarColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(
           localizations.selectSubcategory,
           style: AppTypography.font20black,
@@ -92,6 +93,7 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> with 
             if (!subcategoriesGot) subcategoriesGot = true;
 
             return ListView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               children: aearchSelectSubcategoryCubit.subcategories
                   .map((e) => SubCategoryWidget(
                         subcategory: e,

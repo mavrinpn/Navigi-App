@@ -104,6 +104,7 @@ class _CustomDropDownSingleCheckBoxState extends State<CustomDropDownSingleCheck
     }
 
     return SingleChildScrollView(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       padding: const EdgeInsets.only(left: 6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

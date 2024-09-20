@@ -51,6 +51,8 @@ class _ReviewsScreenState extends State<CreateReviewScreen> {
             size: 26,
           ),
         ),
+        elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(
           localizations.writeComment,
           overflow: TextOverflow.ellipsis,

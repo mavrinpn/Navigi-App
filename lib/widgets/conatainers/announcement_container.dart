@@ -74,6 +74,8 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                 child: CachedNetworkImage(
                   key: UniqueKey(),
                   fadeInDuration: Duration.zero,
+                  fadeOutDuration: Duration.zero,
+                  placeholderFadeInDuration: Duration.zero,
                   imageUrl: widget.announcement.thumb != ''
                       ? widget.announcement.thumb
                       : widget.announcement.images.firstOrNull ?? '',

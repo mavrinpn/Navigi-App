@@ -708,4 +708,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get otherCity => 'Ads in other areas';
+
+  @override
+  String get searchInMessages => 'Search in messages';
 }

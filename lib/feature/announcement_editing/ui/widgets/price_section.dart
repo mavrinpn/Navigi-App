@@ -44,38 +44,36 @@ class _PriceSectionState extends State<PriceSection> {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            widget.localizations.price,
-            style: AppTypography.font18black,
-          ),
-          UnderLineTextField(
-            width: double.infinity,
-            hintText: '',
-            controller: widget.priceController,
-            keyBoardType: TextInputType.number,
-            validator: widget.priceValidator,
-            onChange: widget.onChange,
-            onEditingComplete: widget.savePrice,
-            onTapOutside: (e) {
-              widget.savePrice();
-            },
-            priceType: _priceType,
-            availableTypes: _availableTypes,
-            onChangePriceType: (priceType) {
-              setState(() {
-                _priceType = priceType;
-              });
-              widget.onChangePriceType(_priceType);
-            },
-          ),
-          const SizedBox(height: 16),
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.localizations.price,
+          style: AppTypography.font18black,
+        ),
+        UnderLineTextField(
+          width: double.infinity,
+          hintText: '',
+          controller: widget.priceController,
+          keyBoardType: TextInputType.number,
+          validator: widget.priceValidator,
+          onChange: widget.onChange,
+          onEditingComplete: widget.savePrice,
+          onTapOutside: (e) {
+            widget.savePrice();
+          },
+          priceType: _priceType,
+          availableTypes: _availableTypes,
+          onChangePriceType: (priceType) {
+            setState(() {
+              _priceType = priceType;
+            });
+            widget.onChangePriceType(_priceType);
+          },
+        ),
+        const SizedBox(height: 16),
+      ],
     );
   }
 }

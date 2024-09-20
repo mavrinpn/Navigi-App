@@ -50,6 +50,8 @@ class _SelectMarkScreenState extends State<SelectMarkScreen> {
               backgroundColor: AppColors.appBarColor,
               automaticallyImplyLeading: false,
               toolbarHeight: 70,
+              elevation: 0,
+              scrolledUnderElevation: 0,
               flexibleSpace: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -80,6 +82,7 @@ class _SelectMarkScreenState extends State<SelectMarkScreen> {
               iconTheme: const IconThemeData.fallback(),
               backgroundColor: AppColors.appBarColor,
               elevation: 0,
+              scrolledUnderElevation: 0,
               title: Text(
                 localizations.choosingMark,
                 style: AppTypography.font20black,
@@ -92,6 +95,7 @@ class _SelectMarkScreenState extends State<SelectMarkScreen> {
             if (state is MarksGotState) marksPreloaded = true;
 
             return ListView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               children: cubit.marks
                   .where((element) => element.name.toLowerCase().startsWith(_searchString))
                   .map((mark) => MarkWidget(

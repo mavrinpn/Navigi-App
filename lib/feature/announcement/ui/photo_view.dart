@@ -42,6 +42,7 @@ class _PhotoViewsState extends State<PhotoViews> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
+        scrolledUnderElevation: 0,
         automaticallyImplyLeading: false,
         leading: const CustomBackButton(color: Colors.white),
         // title: Row(

@@ -43,6 +43,7 @@ class CategoriesScrollView extends StatelessWidget {
           );
         } else {
           return SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             padding: const EdgeInsets.symmetric(horizontal: 15),
             scrollDirection: Axis.horizontal,
             child: Shimmer.fromColors(

@@ -6,16 +6,17 @@ class AppTheme {
   static final theme = ThemeData(
     primaryColor: AppColors.mainBackground,
     scaffoldBackgroundColor: AppColors.mainBackground,
-    appBarTheme: const AppBarTheme(
-        backgroundColor: AppColors.mainBackground, elevation: 0),
+    appBarTheme: const AppBarTheme(backgroundColor: AppColors.mainBackground, elevation: 0),
     fontFamily: GoogleFonts.nunito().fontFamily,
     chipTheme: const ChipThemeData(
       showCheckmark: false,
       selectedColor: Color(0xffED5434),
       backgroundColor: Color(0xffF4F5F6),
       side: BorderSide.none,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(4))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
     ),
+    splashColor: Colors.transparent,
+    highlightColor: Colors.transparent,
+    hoverColor: Colors.transparent,
   );
 }

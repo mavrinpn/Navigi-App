@@ -113,9 +113,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
   }
 
   void getSubcategoryParameters(Subcategory subcategory) async {
-    final parameters = await context
-        .read<ItemSearchCubit>()
-        .getSubcategoryFilters(subcategory.id);
+    final parameters = await context.read<ItemSearchCubit>().getSubcategoryFilters(subcategory.id);
 
     if (subcategory.id == carSubcategoryId) {
       final carFilters = await getCarFilters(
@@ -137,9 +135,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
       context.read<ItemSearchCubit>().setSubcategory(subcategory.id);
       getSubcategoryParameters(subcategory);
     } else {
-      context
-          .read<SubcategoryCubit>()
-          .loadSubCategories(subcategoryId: subcategory.id);
+      context.read<SubcategoryCubit>().loadSubCategories(subcategoryId: subcategory.id);
     }
   }
 
@@ -152,6 +148,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
         iconTheme: const IconThemeData.fallback(),
         backgroundColor: AppColors.appBarColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
         titleSpacing: 0,
         title: FittedBox(
           child: Text(
@@ -164,6 +161,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
         builder: (context, state) {
           if (state is SubcategoriesSuccessState) {
             return ListView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               children: state.subcategories
                   .map(
                     (e) => SubCategoryWidget(

@@ -177,6 +177,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
             Padding(
               padding: const EdgeInsets.only(top: 90),
               child: SingleChildScrollView(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 clipBehavior: Clip.hardEdge,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),

@@ -193,6 +193,7 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                 automaticallyImplyLeading: false,
                 backgroundColor: AppColors.appBarColor,
                 elevation: 0,
+                scrolledUnderElevation: 0,
                 titleSpacing: 6,
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -220,104 +221,74 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
               body: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: CustomScrollView(
-                    slivers: [
-                      // SliverToBoxAdapter(
-                      //   child: Align(
-                      //     alignment: Alignment.topRight,
-                      //     child: InkWell(
-                      //       borderRadius: BorderRadius.circular(10),
-                      //       onTap: () {
-                      //         for (var param in _parameters) {
-                      //           if (param is SelectParameter) {
-                      //             param.currentValue = param.variants[0];
-                      //           } else if (param is SingleSelectParameter) {
-                      //             param.currentValue = param.variants[0];
-                      //           } else if (param is MultiSelectParameter) {
-                      //             param.selectedVariants = [];
-                      //           } else if (param is InputParameter) {
-                      //             param.value = null;
-                      //           } else if (param is TextParameter) {
-                      //             param.value = '';
-                      //           }
-                      //         }
-                      //         setState(() {});
-                      //       },
-                      //       child: Padding(
-                      //         padding: const EdgeInsets.all(4),
-                      //         child: Text(
-                      //           localizations.resetEverything,
-                      //           style: AppTypography.font12gray,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      ChangeCategoryButton(
-                        onTap: () async {
-                          final creatingManager = context.read<CreatingAnnouncementManager>();
-                          creatingManager.isCreating = false;
-                          await Navigator.pushNamed(context, AppRoutesNames.announcementCreatingCategory);
-                          final subcategoryId = creatingManager.creatingData.subcategoryId ?? '';
-                          final carModelId = creatingManager.carFilter?.modelId;
-                          final markModelId = creatingManager.marksFilter?.modelId;
-                          setParameretres(subcategoryId, carModelId ?? markModelId ?? '');
-                          _newSubcategoryId = subcategoryId;
-                          _newCarFilter = creatingManager.carFilter;
-                          _newMarksFilter = creatingManager.marksFilter;
-                        },
-                      ),
-                      const SliverToBoxAdapter(child: SizedBox(height: 10)),
-                      PriceSection(
-                        onChange: (String value) {
-                          final price = _priceType.fromPriceString(value);
-                          announcementEditCubit.onPriceChanged(price);
-                        },
-                        priceType: _priceType,
-                        subCategoryId: announcementEditCubit.data?.subcollectionId ?? '',
-                        onChangePriceType: (priceType) {
-                          setState(() {
-                            _priceType = priceType;
-                          });
-                          final price = _priceType.fromPriceString(priceController.text);
-                          announcementEditCubit.onPriceChanged(price);
-                          announcementEditCubit.onPriceTypeChanged(priceType);
-                        },
-                        priceController: priceController,
-                        priceValidator: priceValidator,
-                        localizations: localizations,
-                        savePrice: savePrice,
-                      ),
-                      TitleSection(
-                        titleController: titleController,
-                        onChange: (v) {
-                          if ((v ?? '').isEmpty) {
+                  child: SingleChildScrollView(
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                    child: Column(
+                      children: [
+                        ChangeCategoryButton(
+                          onTap: () async {
+                            final creatingManager = context.read<CreatingAnnouncementManager>();
+                            creatingManager.isCreating = false;
+                            await Navigator.pushNamed(context, AppRoutesNames.announcementCreatingCategory);
+                            final subcategoryId = creatingManager.creatingData.subcategoryId ?? '';
+                            final carModelId = creatingManager.carFilter?.modelId;
+                            final markModelId = creatingManager.marksFilter?.modelId;
+                            setParameretres(subcategoryId, carModelId ?? markModelId ?? '');
+                            _newSubcategoryId = subcategoryId;
+                            _newCarFilter = creatingManager.carFilter;
+                            _newMarksFilter = creatingManager.marksFilter;
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        PriceSection(
+                          onChange: (String value) {
+                            final price = _priceType.fromPriceString(value);
+                            announcementEditCubit.onPriceChanged(price);
+                          },
+                          priceType: _priceType,
+                          subCategoryId: announcementEditCubit.data?.subcollectionId ?? '',
+                          onChangePriceType: (priceType) {
                             setState(() {
-                              buttonActive = false;
+                              _priceType = priceType;
                             });
-                          } else {
-                            announcementEditCubit.onTitleChange(v);
-                          }
-                        },
-                        localizations: localizations,
-                      ),
-                      DescriptionSection(
+                            final price = _priceType.fromPriceString(priceController.text);
+                            announcementEditCubit.onPriceChanged(price);
+                            announcementEditCubit.onPriceTypeChanged(priceType);
+                          },
+                          priceController: priceController,
+                          priceValidator: priceValidator,
                           localizations: localizations,
-                          descriptionController: descriptionController,
+                          savePrice: savePrice,
+                        ),
+                        TitleSection(
+                          titleController: titleController,
                           onChange: (v) {
                             if ((v ?? '').isEmpty) {
                               setState(() {
                                 buttonActive = false;
                               });
                             } else {
-                              announcementEditCubit.onDescriptionChanged(v);
+                              announcementEditCubit.onTitleChange(v);
                             }
-                          }),
-                      const SliverToBoxAdapter(child: SizedBox(height: 26)),
-                      SliverToBoxAdapter(child: Text(localizations.location, style: AppTypography.font18black)),
-                      const SliverToBoxAdapter(child: SizedBox(height: 26)),
-                      SliverToBoxAdapter(
-                        child: SelectLocationWidget(
+                          },
+                          localizations: localizations,
+                        ),
+                        DescriptionSection(
+                            localizations: localizations,
+                            descriptionController: descriptionController,
+                            onChange: (v) {
+                              if ((v ?? '').isEmpty) {
+                                setState(() {
+                                  buttonActive = false;
+                                });
+                              } else {
+                                announcementEditCubit.onDescriptionChanged(v);
+                              }
+                            }),
+                        const SizedBox(height: 26),
+                        Text(localizations.location, style: AppTypography.font18black),
+                        const SizedBox(height: 26),
+                        SelectLocationWidget(
                           isProfile: false,
                           cityDistrict: announcementEditCubit.data?.area,
                           longitude: announcementEditCubit.data?.longitude,
@@ -332,22 +303,16 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                             _place = cityDistrict.name;
                           },
                         ),
-                      ),
-                      ParametersSection(
-                        paramaters: _parameters,
-                        staticParameters: announcementEditCubit.data?.staticParameters,
-                      ),
-                      const SliverToBoxAdapter(child: SizedBox(height: 26)),
-                      SliverToBoxAdapter(child: Text(localizations.photo, style: AppTypography.font18black)),
-                      const SliverToBoxAdapter(
-                        child: SizedBox(height: 26),
-                      ),
-                      buildImagesSection(),
-                      const SliverToBoxAdapter(
-                        child: SizedBox(height: 32),
-                      ),
-                      SliverToBoxAdapter(
-                        child: CustomTextButton.orangeContinue(
+                        ParametersSection(
+                          paramaters: _parameters,
+                          staticParameters: announcementEditCubit.data?.staticParameters,
+                        ),
+                        const SizedBox(height: 26),
+                        Text(localizations.photo, style: AppTypography.font18black),
+                        const SizedBox(height: 26),
+                        buildImagesSection(),
+                        const SizedBox(height: 32),
+                        CustomTextButton.orangeContinue(
                             active: buttonActive,
                             callback: () {
                               if (buttonActive) {
@@ -374,9 +339,9 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                                 );
                               }
                             },
-                            text: localizations.save),
-                      )
-                    ],
+                            text: localizations.save)
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -389,46 +354,51 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
     final cubit = context.read<AnnouncementEditCubit>();
     final localizations = AppLocalizations.of(context)!;
     return cubit.images.isEmpty
-        ? SliverToBoxAdapter(
-            child: CustomTextButton.withIcon(
-              active: true,
-              activeColor: AppColors.dark,
-              callback: cubit.pickImages,
-              text: localizations.addPictures,
-              styleText: AppTypography.font14white,
-              icon: const Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 24,
-              ),
+        ? CustomTextButton.withIcon(
+            active: true,
+            activeColor: AppColors.dark,
+            callback: cubit.pickImages,
+            text: localizations.addPictures,
+            styleText: AppTypography.font14white,
+            icon: const Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 24,
             ),
           )
-        : SliverGrid(
-            delegate: SliverChildBuilderDelegate(
-              childCount: cubit.images.length + 1,
-              (_, int index) {
-                final images = cubit.images;
-                if (index != images.length) {
-                  return ImageWidget(
-                    bytes: images[index].bytes,
-                    callback: () {
-                      cubit.deleteImage(images[index]);
-                    },
-                  );
-                } else {
-                  return AddImageWidget(
-                    callback: cubit.pickImages,
-                  );
-                }
-              },
-            ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisExtent: 106,
-              childAspectRatio: 0.938,
-              mainAxisSpacing: 7,
-              crossAxisSpacing: 7,
-              crossAxisCount: 3,
-            ),
+        : CustomScrollView(
+            shrinkWrap: true,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            physics: const NeverScrollableScrollPhysics(),
+            slivers: [
+              SliverGrid(
+                delegate: SliverChildBuilderDelegate(
+                  childCount: cubit.images.length + 1,
+                  (_, int index) {
+                    final images = cubit.images;
+                    if (index != images.length) {
+                      return ImageWidget(
+                        bytes: images[index].bytes,
+                        callback: () {
+                          cubit.deleteImage(images[index]);
+                        },
+                      );
+                    } else {
+                      return AddImageWidget(
+                        callback: cubit.pickImages,
+                      );
+                    }
+                  },
+                ),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisExtent: 106,
+                  childAspectRatio: 0.938,
+                  mainAxisSpacing: 7,
+                  crossAxisSpacing: 7,
+                  crossAxisCount: 3,
+                ),
+              ),
+            ],
           );
   }
 }

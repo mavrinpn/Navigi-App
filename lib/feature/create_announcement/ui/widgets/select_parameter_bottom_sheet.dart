@@ -43,6 +43,7 @@ class SelectParameterBottomSheet extends StatelessWidget {
                   child: Stack(
                     children: [
                       SingleChildScrollView(
+                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                         clipBehavior: Clip.none,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),

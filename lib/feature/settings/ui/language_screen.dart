@@ -21,6 +21,7 @@ class _SettingsScreenState extends State<LanguageScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.appBarColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
         titleSpacing: 6,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

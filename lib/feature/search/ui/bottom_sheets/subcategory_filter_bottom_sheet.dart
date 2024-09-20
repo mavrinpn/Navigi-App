@@ -47,6 +47,8 @@ class _FiltersBottomSheetState extends State<SubcategoriesWidget> {
               backgroundColor: AppColors.appBarColor,
               automaticallyImplyLeading: false,
               toolbarHeight: 76,
+              elevation: 0,
+              scrolledUnderElevation: 0,
               flexibleSpace: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -103,11 +105,14 @@ class _FiltersBottomSheetState extends State<SubcategoriesWidget> {
                 localizations.choosingCategory,
                 style: AppTypography.font18gray,
               ),
+              elevation: 0,
+              scrolledUnderElevation: 0,
             ),
       body: BlocBuilder<CategoryCubit, CategoryState>(
         builder: (context, state) {
           if (state is CategorySuccessState) {
             return SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.all(12),
               child: Column(
                 mainAxisSize: MainAxisSize.min,

@@ -53,6 +53,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
           iconTheme: const IconThemeData.fallback(),
           backgroundColor: AppColors.appBarColor,
           elevation: 0,
+          scrolledUnderElevation: 0,
           title: Text(
             AppLocalizations.of(context)!.features,
             style: AppTypography.font20black,
@@ -144,6 +145,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                 ),
                 const SizedBox(height: 16),
                 SingleChildScrollView(
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

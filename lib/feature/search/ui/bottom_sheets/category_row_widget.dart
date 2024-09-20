@@ -60,6 +60,8 @@ class _CategoryRowWidgetState extends State<CategoryRowWidget> {
                       ? CachedNetworkImage(
                           imageUrl: widget.category.imageUrl!,
                           fadeInDuration: Duration.zero,
+                          fadeOutDuration: Duration.zero,
+                          placeholderFadeInDuration: Duration.zero,
                           errorWidget: (context, error, stackTrace) {
                             return Container();
                           },

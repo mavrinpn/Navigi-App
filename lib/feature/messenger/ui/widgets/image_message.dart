@@ -32,14 +32,11 @@ class ImageMessage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 4),
         child: Container(
           decoration: BoxDecoration(
-              color: !isCurrentUser
-                  ? AppColors.backgroundLightGray
-                  : AppColors.red,
+              color: !isCurrentUser ? AppColors.backgroundLightGray : AppColors.red,
               borderRadius: BorderRadius.circular(16)),
           clipBehavior: Clip.hardEdge,
           padding: const EdgeInsets.all(2),
-          constraints:
-              BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
+          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
           child: Container(
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(14)),
             clipBehavior: Clip.hardEdge,
@@ -102,6 +99,8 @@ class PhotoScreen extends StatelessWidget {
         backgroundColor: Colors.black,
         automaticallyImplyLeading: false,
         titleSpacing: 6,
+        elevation: 0,
+        scrolledUnderElevation: 0,
         title: const Row(
           children: [
             CustomBackButton(

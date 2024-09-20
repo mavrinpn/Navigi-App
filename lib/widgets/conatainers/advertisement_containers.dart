@@ -1,5 +1,6 @@
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class AdvertisementContainer extends StatelessWidget {
   final VoidCallback onTap;
@@ -24,16 +25,21 @@ class AdvertisementContainer extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          // child: CachedNetworkImage(
-          //   imageUrl: imageUrl,
-          //   fit: BoxFit.cover,
-          //   fadeInDuration: Duration.zero,
-          // ),
-          child: FancyShimmerImage(
+          child: CachedNetworkImage(
+            fadeInDuration: Duration.zero,
+            fadeOutDuration: Duration.zero,
+            placeholderFadeInDuration: Duration.zero,
             imageUrl: imageUrl,
-            boxFit: BoxFit.cover,
-            shimmerBaseColor: Colors.grey[300]!,
-            shimmerHighlightColor: Colors.grey[100]!,
+            fit: BoxFit.cover,
+            progressIndicatorBuilder: (context, url, progress) {
+              return Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  color: Colors.grey[300],
+                ),
+              );
+            },
           ),
         ),
       ),

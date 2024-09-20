@@ -247,5 +247,6 @@
 "enabled": "ممكن",
 "disabled": "معاق",
 "enterPhoneNumberAtSettings": "لإنشاء إعلان ، أدخل رقم هاتفك في الإعدادات",
-"otherCity": "إعلانات في مدن أخرى"
+"otherCity": "إعلانات في مدن أخرى",
+"searchInMessages": "البحث في الرسائل"
 }

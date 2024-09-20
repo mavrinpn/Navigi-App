@@ -50,6 +50,8 @@ class _SelectCarMarkScreenState extends State<SelectCarMarkScreen> {
               backgroundColor: AppColors.appBarColor,
               automaticallyImplyLeading: false,
               toolbarHeight: 70,
+              elevation: 0,
+              scrolledUnderElevation: 0,
               flexibleSpace: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -80,6 +82,7 @@ class _SelectCarMarkScreenState extends State<SelectCarMarkScreen> {
               iconTheme: const IconThemeData.fallback(),
               backgroundColor: AppColors.appBarColor,
               elevation: 0,
+              scrolledUnderElevation: 0,
               title: Text(
                 localizations.choosingCarBrand,
                 style: AppTypography.font20black,
@@ -93,6 +96,7 @@ class _SelectCarMarkScreenState extends State<SelectCarMarkScreen> {
 
             return ListView(
               padding: const EdgeInsets.only(bottom: 120),
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               children: cubit.marks
                   .where((element) => element.name.toLowerCase().startsWith(_searchString))
                   .map(

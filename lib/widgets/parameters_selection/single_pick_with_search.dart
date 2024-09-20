@@ -54,6 +54,7 @@ class _SinglePickWithSearchState extends State<SinglePickWithSearch> {
         SizedBox(
           height: 400,
           child: ListView.builder(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               itemCount: searchedValues.length,
               itemBuilder: (context, index) {
                 final e = searchedValues[index];

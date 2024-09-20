@@ -39,6 +39,8 @@ class SpecifyPlaceScreenState extends State<SpecifyPlaceScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(localizations.specifyPlace),
+        elevation: 0,
+        scrolledUnderElevation: 0,
       ),
       body: CommonMap().buildMap(
         myLocationEnabled: true,

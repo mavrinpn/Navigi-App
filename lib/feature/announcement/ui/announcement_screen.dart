@@ -3,7 +3,6 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -134,6 +133,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                 automaticallyImplyLeading: false,
                 backgroundColor: AppColors.appBarColor,
                 elevation: 0,
+                scrolledUnderElevation: 0,
                 titleSpacing: 6,
                 title: Row(
                   children: [
@@ -177,6 +177,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                 ),
               ),
               body: SingleChildScrollView(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 physics: const BouncingScrollPhysics(
                   decelerationRate: ScrollDecelerationRate.fast,
                 ),
@@ -184,15 +185,14 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 260,
+                      height: 300,
                       child: Container(
                         clipBehavior: Clip.none,
-                        // padding: const EdgeInsets.only(right: 12),
                         child: CarouselView(
                           controller: carouselController,
+                          overlayColor: const WidgetStatePropertyAll(Colors.transparent),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                          // padding: const EdgeInsets.symmetric(horizontal: 6),
-                          padding: const EdgeInsets.only(left: 12),
+                          padding: const EdgeInsets.only(left: 16),
                           itemExtent: carouselItemWidth,
                           shrinkExtent: carouselItemWidth,
                           itemSnapping: true,
@@ -234,11 +234,21 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                                     sigmaX: 25,
                                     sigmaY: 25,
                                   ),
-                                  child: FancyShimmerImage(
+                                  child: CachedNetworkImage(
+                                    fadeInDuration: Duration.zero,
+                                    fadeOutDuration: Duration.zero,
+                                    placeholderFadeInDuration: Duration.zero,
                                     imageUrl: state.data.images[index],
-                                    boxFit: BoxFit.contain,
-                                    shimmerBaseColor: Colors.grey[300]!,
-                                    shimmerHighlightColor: Colors.grey[100]!,
+                                    fit: BoxFit.contain,
+                                    progressIndicatorBuilder: (context, url, progress) {
+                                      return Shimmer.fromColors(
+                                        baseColor: Colors.grey[300]!,
+                                        highlightColor: Colors.grey[100]!,
+                                        child: Container(
+                                          color: Colors.grey[300],
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                               ),

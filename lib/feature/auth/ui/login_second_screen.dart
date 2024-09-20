@@ -78,6 +78,8 @@ class _LoginSecondScreenState extends State<LoginSecondScreen> {
                 CustomBackButton(),
               ],
             ),
+            elevation: 0,
+            scrolledUnderElevation: 0,
           ),
           body: SafeArea(
             child: Center(

@@ -12,33 +12,31 @@ class TitleSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 16,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(
+          height: 16,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Text(
+            localizations.title,
+            style: AppTypography.font16black.copyWith(fontSize: 18),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Text(
-              localizations.title,
-              style: AppTypography.font16black.copyWith(fontSize: 18),
-            ),
-          ),
-          const SizedBox(height: 5),
-          OutlineTextField(
-            hintText: localizations.name,
-            controller: titleController,
-            maxLines: 5,
-            height: 100,
-            width: double.infinity,
-            maxLength: 100,
-            onChange: onChange,
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 5),
+        OutlineTextField(
+          hintText: localizations.name,
+          controller: titleController,
+          maxLines: 5,
+          height: 100,
+          width: double.infinity,
+          maxLength: 100,
+          onChange: onChange,
+        ),
+      ],
     );
   }
 }

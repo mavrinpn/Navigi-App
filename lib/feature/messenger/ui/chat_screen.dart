@@ -112,6 +112,8 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
           resizeToAvoidBottomInset: true,
           backgroundColor: AppColors.backgroundLightGray,
           appBar: AppBar(
+            elevation: 0,
+            scrolledUnderElevation: 0,
             backgroundColor: AppColors.appBarColor,
             automaticallyImplyLeading: false,
             actions: [
@@ -215,6 +217,7 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
                         initialData: const [],
                         builder: (context, snapshot) {
                           return ListView.builder(
+                            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                             itemBuilder: (ctx, i) {
                               final item = snapshot.data![i];
                               return item is MessagesGroupData

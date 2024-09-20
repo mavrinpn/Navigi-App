@@ -708,4 +708,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get otherCity => 'إعلانات في مدن أخرى';
+
+  @override
+  String get searchInMessages => 'البحث في الرسائل';
 }

@@ -102,6 +102,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           backgroundColor: AppColors.appBarColor,
           automaticallyImplyLeading: false,
           titleSpacing: 6,
+          elevation: 0,
+          scrolledUnderElevation: 0,
           title: Row(
             children: [
               const CustomBackButton(),
@@ -137,6 +139,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: SingleChildScrollView(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

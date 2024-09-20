@@ -708,4 +708,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get otherCity => 'Les annonces dans d’autres wilaya';
+
+  @override
+  String get searchInMessages => 'Recherche dans les messages';
 }

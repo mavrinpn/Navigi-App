@@ -1494,6 +1494,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ads in other areas'**
   String get otherCity;
+
+  /// No description provided for @searchInMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'Search in messages'**
+  String get searchInMessages;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

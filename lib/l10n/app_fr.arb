@@ -247,5 +247,6 @@
 "enabled": "Activé",
 "disabled": "Désactivé",
 "enterPhoneNumberAtSettings": "Pour créer une annonce, entrez votre numéro de téléphone dans les paramètres",
-"otherCity": "Les annonces dans d’autres wilaya"
+"otherCity": "Les annonces dans d’autres wilaya",
+"searchInMessages": "Recherche dans les messages"
 }

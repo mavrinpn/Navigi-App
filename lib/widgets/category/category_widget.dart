@@ -37,6 +37,8 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                 imageUrl: widget.category.imageUrl!,
                 fit: BoxFit.cover,
                 fadeInDuration: Duration.zero,
+                fadeOutDuration: Duration.zero,
+                placeholderFadeInDuration: Duration.zero,
               ),
             ),
           ),

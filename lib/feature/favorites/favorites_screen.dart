@@ -52,6 +52,7 @@ class _FavoritesScreen extends State<FavoritesScreen> {
               automaticallyImplyLeading: false,
               backgroundColor: AppColors.appBarColor,
               elevation: 0,
+              scrolledUnderElevation: 0,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -71,6 +72,7 @@ class _FavoritesScreen extends State<FavoritesScreen> {
                   return favouritesManager.announcements.isNotEmpty
                       ? CustomScrollView(
                           controller: controller,
+                          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                           physics: const BouncingScrollPhysics(),
                           slivers: [buildAnnouncementsGrid()],
                         )

@@ -46,6 +46,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.appBarColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
         titleSpacing: 6,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

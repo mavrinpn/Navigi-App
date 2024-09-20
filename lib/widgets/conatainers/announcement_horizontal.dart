@@ -80,6 +80,8 @@ class _AnnouncementContainerHorizontalState extends State<AnnouncementContainerH
                 imageUrl: widget.announcement.images.firstOrNull,
                 fit: BoxFit.cover,
                 fadeInDuration: Duration.zero,
+                fadeOutDuration: Duration.zero,
+                placeholderFadeInDuration: Duration.zero,
               ),
             ),
             const SizedBox(width: 10),

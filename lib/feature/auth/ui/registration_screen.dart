@@ -102,6 +102,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           child: Form(
             key: _formKey,
             child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

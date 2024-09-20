@@ -49,6 +49,7 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
           child: Stack(
             children: [
               SingleChildScrollView(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 clipBehavior: Clip.none,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -68,6 +69,7 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
                       ),
                       const SizedBox(height: 20),
                       SingleChildScrollView(
+                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                           child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

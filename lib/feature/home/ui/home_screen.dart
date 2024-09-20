@@ -180,6 +180,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 iconSize: 30,
                 type: BottomNavigationBarType.fixed,
                 currentIndex: _selectedTab,
+                selectedLabelStyle: AppTypography.font10red,
+                unselectedLabelStyle: AppTypography.font10lightGray,
+                onTap: onSelectTab,
+                selectedItemColor: AppColors.red,
+                unselectedItemColor: AppColors.lightGray,
                 items: [
                   BottomNavigationBarItem(
                       icon: NavigatorBarItem(
@@ -212,11 +217,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     label: localizations.profile,
                   ),
                 ],
-                selectedLabelStyle: AppTypography.font10red,
-                unselectedLabelStyle: AppTypography.font10lightGray,
-                onTap: onSelectTab,
-                selectedItemColor: AppColors.red,
-                unselectedItemColor: AppColors.lightGray,
               ),
             ),
           ),

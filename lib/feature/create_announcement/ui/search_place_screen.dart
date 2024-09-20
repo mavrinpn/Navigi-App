@@ -47,12 +47,14 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
         iconTheme: const IconThemeData.fallback(),
         backgroundColor: AppColors.appBarColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(
           localizations.place,
           style: AppTypography.font20black,
         ),
       ),
       body: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 80),
         child: SelectLocationWidget(
           isProfile: false,

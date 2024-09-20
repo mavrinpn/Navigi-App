@@ -72,6 +72,8 @@ class _CodeScreenState extends State<CodeScreen> {
                 CustomBackButton(),
               ],
             ),
+            elevation: 0,
+            scrolledUnderElevation: 0,
           ),
           body: SafeArea(
             child: Column(

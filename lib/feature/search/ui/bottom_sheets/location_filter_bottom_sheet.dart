@@ -79,6 +79,7 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
       color: Colors.white,
       child: SafeArea(
         child: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           clipBehavior: Clip.none,
           child: Stack(
             children: [

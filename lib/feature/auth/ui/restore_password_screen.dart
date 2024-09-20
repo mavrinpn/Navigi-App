@@ -96,6 +96,8 @@ class _RegistrationScreenState extends State<RestorePasswordScreen> {
                 CustomBackButton(),
               ],
             ),
+            elevation: 0,
+            scrolledUnderElevation: 0,
           ),
           resizeToAvoidBottomInset: false,
           body: SafeArea(

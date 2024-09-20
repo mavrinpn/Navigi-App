@@ -5,16 +5,18 @@ import 'package:smart/widgets/textField/elevated_text_field.dart';
 import '../../../../localization/app_localizations.dart';
 
 class MainAppBar extends StatelessWidget {
-  const MainAppBar(
-      {super.key,
-      required this.openSearchScreen,
-      required this.isSearch,
-      required this.openFilters,
-      required this.cancel});
+  const MainAppBar({
+    super.key,
+    required this.openSearchScreen,
+    required this.isSearch,
+    required this.openFilters,
+    required this.cancel,
+  });
   final VoidCallback openSearchScreen;
   final bool isSearch;
   final VoidCallback openFilters;
   final VoidCallback cancel;
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;

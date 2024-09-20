@@ -76,7 +76,6 @@ class _ChatInputState extends State<ChatInput> {
                     child: TextField(
                       readOnly: widget.blocked,
                       controller: widget.messageController,
-                      autofocus: true,
                       onChanged: widget.onChange,
                       cursorColor: AppColors.red,
                       cursorWidth: 1,

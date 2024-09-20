@@ -37,12 +37,14 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
         iconTheme: const IconThemeData.fallback(),
         backgroundColor: AppColors.appBarColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(
           localizations.information,
           style: AppTypography.font20black,
         ),
       ),
       body: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Column(
           children: [
             // Padding(

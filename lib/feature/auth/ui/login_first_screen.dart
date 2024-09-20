@@ -54,6 +54,8 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
             ? AppBar(
                 automaticallyImplyLeading: true,
                 leading: const CustomBackButton(),
+                elevation: 0,
+                scrolledUnderElevation: 0,
               )
             : null,
         body: SafeArea(

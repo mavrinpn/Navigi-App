@@ -39,6 +39,8 @@ class _CodeScreenState extends State<CheckCodeScreen> {
             CustomBackButton(),
           ],
         ),
+        elevation: 0,
+        scrolledUnderElevation: 0,
       ),
       body: SafeArea(
         child: Column(

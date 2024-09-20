@@ -31,8 +31,7 @@ class _CarMarkWidgetState extends State<CarMarkWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final url =
-        widget.mark.image?.trim().replaceAll('\r', '').replaceAll('\n', '');
+    final url = widget.mark.image?.trim().replaceAll('\r', '').replaceAll('\n', '');
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -68,6 +67,8 @@ class _CarMarkWidgetState extends State<CarMarkWidget> {
                       ? CachedNetworkImage(
                           imageUrl: url,
                           fadeInDuration: Duration.zero,
+                          fadeOutDuration: Duration.zero,
+                          placeholderFadeInDuration: Duration.zero,
                           errorWidget: (context, error, stackTrace) {
                             return Container();
                           },
@@ -109,24 +110,19 @@ class _CarMarkWidgetState extends State<CarMarkWidget> {
                     onTap: () => _onModelSelected(state.models[index]),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 28.0, right: 16),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomCheckBox(
-                              isActive:
-                                  state.models[index].id == _selectedModelId,
-                              onChanged: () =>
-                                  _onModelSelected(state.models[index]),
-                            ),
-                            Expanded(
-                              child: Text(
-                                state.models[index].name,
-                                overflow: TextOverflow.ellipsis,
-                                style: AppTypography.font16black
-                                    .copyWith(fontWeight: FontWeight.w400),
-                              ),
-                            ),
-                          ]),
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                        CustomCheckBox(
+                          isActive: state.models[index].id == _selectedModelId,
+                          onChanged: () => _onModelSelected(state.models[index]),
+                        ),
+                        Expanded(
+                          child: Text(
+                            state.models[index].name,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTypography.font16black.copyWith(fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                      ]),
                     ),
                   ),
                 ));

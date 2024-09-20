@@ -247,5 +247,6 @@
 "enabled": "Enabled",
 "disabled": "Disabled",
 "enterPhoneNumberAtSettings": "To create an ad, enter your phone number in the settings",
-"otherCity": "Ads in other areas"
+"otherCity": "Ads in other areas",
+"searchInMessages": "Search in messages"
 }

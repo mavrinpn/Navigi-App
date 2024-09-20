@@ -313,6 +313,7 @@ class _SearchScreenState extends State<SearchScreen> {
     Widget announcementsBuilder(context, state) {
       if (state is SearchAnnouncementsLoadingState && !isScrollLoading) {
         return SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           padding: const EdgeInsets.only(top: 16),
           child: Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
@@ -358,6 +359,7 @@ class _SearchScreenState extends State<SearchScreen> {
         },
         child: CustomScrollView(
           controller: _controller,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
           slivers: [
             SliverPadding(
@@ -479,6 +481,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   // },
                 ),
                 SingleChildScrollView(
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   physics: const ClampingScrollPhysics(),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -491,6 +494,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         color: Colors.white,
                         padding: const EdgeInsets.all(15),
                         child: SingleChildScrollView(
+                          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                           child: BlocBuilder<SearchItemsCubit, SearchItemsState>(
                             builder: searchScreenBuilder,
                           ),
@@ -565,6 +569,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 15, right: 15),
                   child: SingleChildScrollView(
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                     clipBehavior: Clip.none,
                     scrollDirection: Axis.horizontal,
                     child: SizedBox(

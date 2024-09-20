@@ -46,6 +46,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         iconTheme: const IconThemeData.fallback(),
         backgroundColor: AppColors.appBarColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(
           localizations.selectCategory,
           style: AppTypography.font20black,

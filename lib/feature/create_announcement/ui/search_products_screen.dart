@@ -66,6 +66,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
         iconTheme: const IconThemeData.fallback(),
         backgroundColor: AppColors.appBarColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(
           localizations.indicateTheName,
           style: AppTypography.font20black,
@@ -124,6 +125,7 @@ class _SearchProductsScreenState extends State<SearchProductsScreen> {
                 builder: (context, state) {
                   if (state is TipWordssSuccessState) {
                     return SingleChildScrollView(
+                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                       child: Wrap(
                         children: [
                           ...state.tipWords.take(8).map((tipWord) {

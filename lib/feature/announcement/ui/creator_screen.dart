@@ -63,6 +63,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen> with Single
         leading: const CustomBackButton(),
         backgroundColor: AppColors.appBarColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
         titleSpacing: 6,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -86,6 +87,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen> with Single
         child: BlocBuilder<CreatorCubit, CreatorState>(
           builder: (context, state) {
             return CustomScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               slivers: [
                 SliverToBoxAdapter(
                   child: AccountMediumInfo(user: RepositoryProvider.of<CreatorRepository>(context).userData!),

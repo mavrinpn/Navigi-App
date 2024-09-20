@@ -19,6 +19,7 @@ class StarRowWidget extends StatelessWidget {
     return SizedBox(
       height: size,
       child: ListView.builder(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
         itemCount: 5,

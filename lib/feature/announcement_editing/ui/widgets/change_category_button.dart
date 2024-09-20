@@ -16,34 +16,32 @@ class ChangeCategoryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    return SliverToBoxAdapter(
-      child: InkWell(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SvgPicture.asset(
-                'Assets/icons/categories.svg',
-                width: 20,
+    return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SvgPicture.asset(
+              'Assets/icons/categories.svg',
+              width: 20,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                localizations.category,
+                style: AppTypography.font16black.copyWith(fontSize: 18),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  localizations.category,
-                  style: AppTypography.font16black.copyWith(fontSize: 18),
-                ),
-              ),
-              const Icon(
-                Icons.arrow_forward_ios_outlined,
-                size: 16,
-                color: AppColors.lightGray,
-              ),
-            ],
-          ),
+            ),
+            const Icon(
+              Icons.arrow_forward_ios_outlined,
+              size: 16,
+              color: AppColors.lightGray,
+            ),
+          ],
         ),
       ),
     );
