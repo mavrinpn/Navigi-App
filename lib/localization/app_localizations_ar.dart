@@ -711,4 +711,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get searchInMessages => 'البحث في الرسائل';
+
+  @override
+  String get passwordMustContains => 'كلمة السر يجب أن تحتوي على حرف كبير واحد على الأقل وحرف صغير ورقم';
 }

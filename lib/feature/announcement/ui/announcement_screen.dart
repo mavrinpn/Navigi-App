@@ -27,6 +27,7 @@ import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/models/item/static_localized_parameter.dart';
 import 'package:smart/utils/animations.dart';
 import 'package:smart/utils/constants.dart';
+import 'package:smart/utils/extensions/string_extension.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/button/back_button.dart';
@@ -216,39 +217,42 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                             });
                           },
                           children: List<Widget>.generate(itemCounts, (int index) {
-                            return Padding(
-                              padding: index == itemCounts - 1 ? const EdgeInsets.only(right: 12) : EdgeInsets.zero,
-                              child: Container(
-                                clipBehavior: Clip.hardEdge,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  image: DecorationImage(
-                                    image: CachedNetworkImageProvider(
-                                      state.data.images[index],
+                            return Container(
+                              color: Colors.white,
+                              child: Padding(
+                                padding: index == itemCounts - 1 ? const EdgeInsets.only(right: 12) : EdgeInsets.zero,
+                                child: Container(
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    image: DecorationImage(
+                                      image: CachedNetworkImageProvider(
+                                        state.data.images[index],
+                                      ),
+                                      fit: BoxFit.fill,
                                     ),
-                                    fit: BoxFit.fill,
                                   ),
-                                ),
-                                child: BackdropFilter(
-                                  filter: ImageFilter.blur(
-                                    sigmaX: 25,
-                                    sigmaY: 25,
-                                  ),
-                                  child: CachedNetworkImage(
-                                    fadeInDuration: Duration.zero,
-                                    fadeOutDuration: Duration.zero,
-                                    placeholderFadeInDuration: Duration.zero,
-                                    imageUrl: state.data.images[index],
-                                    fit: BoxFit.contain,
-                                    progressIndicatorBuilder: (context, url, progress) {
-                                      return Shimmer.fromColors(
-                                        baseColor: Colors.grey[300]!,
-                                        highlightColor: Colors.grey[100]!,
-                                        child: Container(
-                                          color: Colors.grey[300],
-                                        ),
-                                      );
-                                    },
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                      sigmaX: 25,
+                                      sigmaY: 25,
+                                    ),
+                                    child: CachedNetworkImage(
+                                      fadeInDuration: Duration.zero,
+                                      fadeOutDuration: Duration.zero,
+                                      placeholderFadeInDuration: Duration.zero,
+                                      imageUrl: state.data.images[index],
+                                      fit: BoxFit.contain,
+                                      progressIndicatorBuilder: (context, url, progress) {
+                                        return Shimmer.fromColors(
+                                          baseColor: Colors.grey[300]!,
+                                          highlightColor: Colors.grey[100]!,
+                                          child: Container(
+                                            color: Colors.grey[300],
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
@@ -367,7 +371,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
                       alignment: Alignment.topLeft,
                       child: Text(
-                        state.data.title,
+                        state.data.title.trim().capitalize(),
                         style: AppTypography.font24black,
                         softWrap: true,
                       ),
@@ -503,7 +507,6 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       text: AppLocalizations.of(context)!.offrirVotrePrix,
                       styleText: AppTypography.font14black,
                       icon: SvgPicture.asset('Assets/icons/dzd.svg'),
-                      disableColor: AppColors.whiteGray,
                     ),
                     const SizedBox(height: 32),
                     Padding(
@@ -537,7 +540,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       width: MediaQuery.of(context).size.width - 30,
                       child: Text(
-                        state.data.description,
+                        state.data.description.trim().capitalize(),
                         style: AppTypography.font14black.copyWith(height: 2),
                         softWrap: true,
                       ),

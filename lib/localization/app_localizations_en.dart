@@ -711,4 +711,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchInMessages => 'Search in messages';
+
+  @override
+  String get passwordMustContains => 'The password must contain at least one uppercase, one lowercase letter and one digit';
 }

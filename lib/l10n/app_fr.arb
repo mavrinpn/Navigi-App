@@ -248,5 +248,6 @@
 "disabled": "Désactivé",
 "enterPhoneNumberAtSettings": "Pour créer une annonce, entrez votre numéro de téléphone dans les paramètres",
 "otherCity": "Les annonces dans d’autres wilaya",
-"searchInMessages": "Recherche dans les messages"
+"searchInMessages": "Recherche dans les messages",
+"passwordMustContains": "Le mot de passe doit contenir au moins une lettre majuscule, une minuscule et un chiffre"
 }

@@ -57,6 +57,7 @@ class _SearchPlaceScreenState extends State<SearchPlaceScreen> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 80),
         child: SelectLocationWidget(
+          showMapButton: true,
           isProfile: false,
           onSetActive: (active) {
             setState(() {

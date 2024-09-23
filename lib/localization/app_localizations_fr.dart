@@ -711,4 +711,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get searchInMessages => 'Recherche dans les messages';
+
+  @override
+  String get passwordMustContains => 'Le mot de passe doit contenir au moins une lettre majuscule, une minuscule et un chiffre';
 }

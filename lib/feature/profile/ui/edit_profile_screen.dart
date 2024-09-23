@@ -211,6 +211,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           onChanged: (String? o) {},
                         ),
                         SelectLocationWidget(
+                          showMapButton: false,
                           isProfile: true,
                           onSetActive: (active) {
                             isPlaceValid = active;

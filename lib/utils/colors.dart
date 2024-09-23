@@ -4,6 +4,7 @@ class AppColors {
   static const mainBackground = Colors.white;
   static const Color? appBarColor = null;
   static const lightGray = Color(0xff9B9FAA);
+  static const buttonLightGray = Color(0xffEDEDF0);
   static const radioButtonGray = Color.fromARGB(255, 203, 206, 211);
   static const empty = Colors.transparent;
   static const disable = Color(0xffDDE1E7);
@@ -15,7 +16,7 @@ class AppColors {
   static const starsActive = Color(0xffFFB039);
   static const blue = Color(0xFF0E7DE4);
   static const backgroundIcon = Color(0x19ED5434);
-  static const grey  = Color(0x33DDE1E7);
-  static const darkGrey  = Color(0xff9B9FAA);
+  static const grey = Color(0x33DDE1E7);
+  static const darkGrey = Color(0xff9B9FAA);
   static const darkGrayUnderline = Color(0xff9B9FAA);
 }

@@ -420,7 +420,7 @@ class _SearchScreenState extends State<SearchScreen> {
               SliverToBoxAdapter(
                 child: Center(
                   child: SizedBox(
-                    height: 200,
+                    height: 100,
                     child: AppAnimations.bouncingLine,
                   ),
                 ),

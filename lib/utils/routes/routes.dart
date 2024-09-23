@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/announcement/bloc/announcement/announcement_cubit.dart';
@@ -176,7 +178,13 @@ class CustomPageRoute extends MaterialPageRoute {
   CustomPageRoute({builder}) : super(builder: builder);
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 0);
+  Duration get transitionDuration {
+    if (Platform.isIOS) {
+      return const Duration(milliseconds: 300);
+    } else {
+      return const Duration(milliseconds: 0);
+    }
+  }
 }
 
 final appRoutes = {

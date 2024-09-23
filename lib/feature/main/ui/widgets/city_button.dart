@@ -60,7 +60,6 @@ class _CityButtonState extends State<CityButton> {
       name = searchCubit.cityTitle!;
     }
 
-    //TODO cityName
     if (searchCubit.distrinctTitle != null) {
       name += ' / ${searchCubit.distrinctTitle}';
     }

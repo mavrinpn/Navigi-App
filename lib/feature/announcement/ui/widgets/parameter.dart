@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart/utils/extensions/string_extension.dart';
 import 'package:smart/utils/fonts.dart';
 
 class ItemParameterWidget extends StatelessWidget {
@@ -20,13 +21,13 @@ class ItemParameterWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            name,
+            name.trim().capitalize(),
             style: AppTypography.font14lightGray,
           ),
           const SizedBox(width: 20),
           Expanded(
             child: Text(
-              currentValue,
+              currentValue.trim().capitalize(),
               textAlign: TextAlign.right,
               style: AppTypography.font14black.copyWith(fontWeight: FontWeight.w600),
             ),

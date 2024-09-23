@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -65,8 +66,9 @@ class _PhotoViewsState extends State<PhotoViews> {
             child: PhotoViewGallery.builder(
               scrollPhysics: const BouncingScrollPhysics(),
               builder: (BuildContext context, int index) {
+                print(widget.images[index]);
                 return PhotoViewGalleryPageOptions(
-                  imageProvider: NetworkImage(widget.images[index]),
+                  imageProvider: CachedNetworkImageProvider(widget.images[index]),
                   initialScale: PhotoViewComputedScale.contained,
                 );
               },

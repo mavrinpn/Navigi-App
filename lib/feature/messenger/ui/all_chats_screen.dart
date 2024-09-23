@@ -27,6 +27,7 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
         backgroundColor: AppColors.appBarColor,
         elevation: 0,
         scrolledUnderElevation: 0,
+        centerTitle: false,
         title: Text(localizations.messages, style: AppTypography.font20black),
       ),
       body: StreamBuilder<List<Room>>(
@@ -37,39 +38,43 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               slivers: [
                 SliverAppBar(
-                  expandedHeight: 40,
-                  collapsedHeight: 40,
-                  toolbarHeight: 40,
+                  expandedHeight: 68,
+                  collapsedHeight: 68,
+                  toolbarHeight: 68,
                   elevation: 0,
                   scrolledUnderElevation: 0,
                   floating: true,
                   title: SizedBox(
-                    height: 44,
+                    height: 68,
                     width: double.infinity,
-                    child: TextField(
-                      controller: searchController,
-                      onChanged: (v) {
-                        repository.searchChat(searchController.text);
-                      },
-                      decoration: InputDecoration(
-                        hintText: localizations.searchInMessages,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: SvgPicture.asset('Assets/icons/search_simple.svg', width: 22),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: SizedBox(
+                        height: 44,
+                        child: TextField(
+                          controller: searchController,
+                          onChanged: (v) {
+                            repository.searchChat(searchController.text);
+                          },
+                          decoration: InputDecoration(
+                            hintText: localizations.searchInMessages,
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              child: SvgPicture.asset('Assets/icons/search_simple.svg', width: 22),
+                            ),
+                            prefixIconConstraints: const BoxConstraints(maxWidth: 50, maxHeight: 22),
+                            contentPadding: EdgeInsets.zero,
+                            filled: true,
+                            fillColor: const Color(0xffF4F5F6),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10), gapPadding: 0, borderSide: BorderSide.none),
+                          ),
                         ),
-                        prefixIconConstraints: const BoxConstraints(maxWidth: 50, maxHeight: 22),
-                        contentPadding: EdgeInsets.zero,
-                        filled: true,
-                        fillColor: const Color(0xffF4F5F6),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10), gapPadding: 0, borderSide: BorderSide.none),
                       ),
                     ),
                   ),
                 ),
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: 16),
-                ),
+                const SliverToBoxAdapter(child: SizedBox(height: 8)),
                 ...List.generate(
                   snapshot.data!.length,
                   (index) => ChatContainer.fromRoom(snapshot.data![index]),

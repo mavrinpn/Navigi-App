@@ -26,11 +26,13 @@ class SelectLocationWidget extends StatefulWidget {
     required this.onChangeCity,
     required this.onChangeDistrict,
     required this.isProfile,
+    required this.showMapButton,
     this.cityDistrict,
     this.longitude,
     this.latitude,
   });
 
+  final bool showMapButton;
   final bool isProfile;
   final CityDistrict? cityDistrict;
   final double? longitude;
@@ -303,31 +305,32 @@ class _SelectLocationWidgetState extends State<SelectLocationWidget> {
         ],
         const SizedBox(height: 16),
         // if (creatingManager.specialOptions.contains(SpecialAnnouncementOptions.customPlace))
-        CustomTextButton.orangeContinue(
-          active: _cityDistrict != null,
-          callback: () async {
-            if (_cityDistrict != null) {
-              final CommonLatLng? latLng = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => SpecifyPlaceScreen(
-                    placeData: _cityDistrict!,
-                    longitude: widget.longitude ?? _cityDistrict!.longitude,
-                    latitude: widget.latitude ?? _cityDistrict!.latitude,
+        if (widget.showMapButton)
+          CustomTextButton.orangeContinue(
+            active: _cityDistrict != null,
+            callback: () async {
+              if (_cityDistrict != null) {
+                final CommonLatLng? latLng = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => SpecifyPlaceScreen(
+                      placeData: _cityDistrict!,
+                      longitude: widget.longitude ?? _cityDistrict!.longitude,
+                      latitude: widget.latitude ?? _cityDistrict!.latitude,
+                    ),
                   ),
-                ),
-              );
-              if (latLng != null) {
-                setState(() {
-                  isCoordinatesSelected = true;
-                  setActive(true);
-                });
-                creatingManager.customPosition = latLng;
+                );
+                if (latLng != null) {
+                  setState(() {
+                    isCoordinatesSelected = true;
+                    setActive(true);
+                  });
+                  creatingManager.customPosition = latLng;
+                }
               }
-            }
-          },
-          text: "Indiquer l'emplacement sur la carte",
-        ),
+            },
+            text: "Indiquer l'emplacement sur la carte",
+          ),
       ],
     );
   }

@@ -223,6 +223,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                     child: SelectLocationWidget(
+                      showMapButton: false,
                       onSetActive: (value) {},
                       onChangeCity: (name) {
                         _cityTitle = name;

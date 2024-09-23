@@ -1500,6 +1500,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search in messages'**
   String get searchInMessages;
+
+  /// No description provided for @passwordMustContains.
+  ///
+  /// In en, this message translates to:
+  /// **'The password must contain at least one uppercase, one lowercase letter and one digit'**
+  String get passwordMustContains;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

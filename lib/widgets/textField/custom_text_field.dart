@@ -63,6 +63,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               fillColor: AppColors.empty,
               hintStyle: AppTypography.font17black.copyWith(color: AppColors.whiteGray),
               filled: true,
+              errorMaxLines: 2,
               enabledBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(
                   color: AppColors.lightGray,

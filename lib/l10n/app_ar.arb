@@ -248,5 +248,6 @@
 "disabled": "معاق",
 "enterPhoneNumberAtSettings": "لإنشاء إعلان ، أدخل رقم هاتفك في الإعدادات",
 "otherCity": "إعلانات في مدن أخرى",
-"searchInMessages": "البحث في الرسائل"
+"searchInMessages": "البحث في الرسائل",
+"passwordMustContains": "كلمة السر يجب أن تحتوي على حرف كبير واحد على الأقل وحرف صغير ورقم"
 }

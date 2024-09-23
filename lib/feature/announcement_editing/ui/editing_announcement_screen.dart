@@ -290,6 +290,7 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                         const SizedBox(height: 26),
                         SelectLocationWidget(
                           isProfile: false,
+                          showMapButton: true,
                           cityDistrict: announcementEditCubit.data?.area,
                           longitude: announcementEditCubit.data?.longitude,
                           latitude: announcementEditCubit.data?.latitude,

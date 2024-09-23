@@ -248,5 +248,6 @@
 "disabled": "Disabled",
 "enterPhoneNumberAtSettings": "To create an ad, enter your phone number in the settings",
 "otherCity": "Ads in other areas",
-"searchInMessages": "Search in messages"
+"searchInMessages": "Search in messages",
+"passwordMustContains": "The password must contain at least one uppercase, one lowercase letter and one digit"
 }

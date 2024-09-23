@@ -88,7 +88,6 @@ class _ChatContainerState extends State<ChatContainer> {
             padding: const EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +158,7 @@ class _ChatContainerState extends State<ChatContainer> {
                           ),
                           Text(
                             widget.announcementName,
-                            style: AppTypography.font12dark,
+                            style: AppTypography.font14dark,
                             overflow: TextOverflow.ellipsis,
                           )
                         ],
@@ -167,6 +166,7 @@ class _ChatContainerState extends State<ChatContainer> {
                     )
                   ],
                 ),
+                const SizedBox(height: 4),
                 if (widget.message != null) ...[
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width - 100,
