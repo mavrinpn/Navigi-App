@@ -66,7 +66,6 @@ class _PhotoViewsState extends State<PhotoViews> {
             child: PhotoViewGallery.builder(
               scrollPhysics: const BouncingScrollPhysics(),
               builder: (BuildContext context, int index) {
-                print(widget.images[index]);
                 return PhotoViewGalleryPageOptions(
                   imageProvider: CachedNetworkImageProvider(widget.images[index]),
                   initialScale: PhotoViewComputedScale.contained,

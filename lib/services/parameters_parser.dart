@@ -40,8 +40,12 @@ class ParametersParser {
       options.add(ParameterOption.fromJson(optionJson));
     }
 
-    final parameter =
-        SelectParameter(key: json['id'], variants: options, arName: json['nameAr'], frName: json['nameFr']);
+    final parameter = SelectParameter(
+      key: json['id'],
+      variants: options,
+      arName: json['nameAr'],
+      frName: json['nameFr'] ?? '',
+    );
 
     decodedParameters.add(parameter);
   }

@@ -16,8 +16,7 @@ class ItemManager {
   String searchControllerText = '';
 
   Future<SubcategoryFilters> getSubcategoryFilters(String subcategoryId) async {
-    final res = await databaseService.categories
-        .getSubcategoryParameters(subcategoryId);
+    final res = await databaseService.categories.getSubcategoryParameters(subcategoryId);
     final parameters = res['parameters'];
     final decodedFilters = ParametersParser(parameters).decodedParameters;
     return SubcategoryFilters(
@@ -28,8 +27,7 @@ class ItemManager {
   }
 
   Future<MarksFilter?> getMarksFilters(String modelId) async {
-    final result =
-        await databaseService.models.getMarkModelById(modelId: modelId);
+    final result = await databaseService.models.getMarkModelById(modelId: modelId);
     if (result != null) {
       return MarksFilter(
         markId: '',
@@ -42,8 +40,7 @@ class ItemManager {
   }
 
   Future<CarFilter> getCarFilters(String modelId) async {
-    final result =
-        await databaseService.models.getCarModelById(modelId: modelId);
+    final result = await databaseService.models.getCarModelById(modelId: modelId);
     return CarFilter(
       markId: '',
       modelId: '',
@@ -55,8 +52,7 @@ class ItemManager {
   }
 
   Future initialLoadItems(String query, subcategoryId) async {
-    items =
-        await databaseService.categories.getItemsFromSubcategory(subcategoryId);
+    items = await databaseService.categories.getItemsFromSubcategory(subcategoryId);
   }
 
   void searchItemsByName(String query) {

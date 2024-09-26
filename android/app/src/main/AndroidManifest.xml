@@ -1,4 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="dev.platovco.navigi" 
+    xmlns:tools="http://schemas.android.com/tools">
     <application
         android:label="Navigi"
         android:name="${applicationName}"
@@ -11,12 +13,12 @@
           android:resource="@drawable/notification_icon" />
         
 
-        <meta-data
+        <!-- <meta-data
             android:name="com.huawei.hms.client.appid"
             android:value="appid=5765880207855372331" />
         <meta-data
             android:name="com.huawei.hms.client.apiKey"
-            android:value="DQEDAHl5zuyR9zCY+JusLjnkip4G4L8GkJ/DjPbtb7lAwpQLDgEB1COcg3hLzfVt0YA1CKj0MuQK2glFa6FLGU3KC3EJeh+SGP+aig==" />
+            android:value="DQEDAHl5zuyR9zCY+JusLjnkip4G4L8GkJ/DjPbtb7lAwpQLDgEB1COcg3hLzfVt0YA1CKj0MuQK2glFa6FLGU3KC3EJeh+SGP+aig==" /> -->
 
         <activity
                 android:name="com.yalantis.ucrop.UCropActivity"
@@ -61,6 +63,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission
+        android:name="android.permission.REQUEST_INSTALL_PACKAGES"
+        tools:node="remove"/>
 
     <queries>
         <intent>
