@@ -55,12 +55,14 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
   @override
   void initState() {
     messageController = TextEditingController(text: widget.message ?? '');
-    final messengerRepository = RepositoryProvider.of<MessengerRepository>(context);
-    //* preloadChats
-    messengerRepository.preloadChats();
-    messengerRepository.refreshSubscription();
-
+    _init();
     super.initState();
+  }
+
+  Future<void> _init() async {
+    final messengerRepository = RepositoryProvider.of<MessengerRepository>(context);
+    messengerRepository.refreshSubscription();
+    await messengerRepository.preloadChats();
   }
 
   @override
@@ -199,53 +201,60 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
               ],
             ),
           ),
-          body: Container(
-            color: AppColors.mainBackground,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: AnnouncementShortInfo(
-                    announcement: messengerRepository.currentRoom!.announcement,
+          body: RefreshIndicator(
+            color: AppColors.red,
+            onRefresh: () async {
+              await _init();
+            },
+            child: Container(
+              color: AppColors.mainBackground,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: AnnouncementShortInfo(
+                      announcement: messengerRepository.currentRoom!.announcement,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                    child: StreamBuilder<List<ChatItem>>(
-                        stream: messengerRepository.currentChatItemsStream,
-                        initialData: const [],
-                        builder: (context, snapshot) {
-                          return ListView.builder(
-                            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                            itemBuilder: (ctx, i) {
-                              final item = snapshot.data![i];
-                              return item is MessagesGroupData
-                                  ? MessageGroupWidget(
-                                      data: item, avatarUrl: messengerRepository.currentRoom!.otherUserAvatarUrl ?? '')
-                                  : DateSplitterWidget(
-                                      data: item as DateSplitter,
-                                    );
-                            },
-                            itemCount: snapshot.data!.length,
-                            reverse: true,
-                          );
-                        }),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                      child: StreamBuilder<List<ChatItem>>(
+                          stream: messengerRepository.currentChatItemsStream,
+                          initialData: const [],
+                          builder: (context, snapshot) {
+                            return ListView.builder(
+                              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                              itemBuilder: (ctx, i) {
+                                final item = snapshot.data![i];
+                                return item is MessagesGroupData
+                                    ? MessageGroupWidget(
+                                        data: item,
+                                        avatarUrl: messengerRepository.currentRoom!.otherUserAvatarUrl ?? '')
+                                    : DateSplitterWidget(
+                                        data: item as DateSplitter,
+                                      );
+                              },
+                              itemCount: snapshot.data!.length,
+                              reverse: true,
+                            );
+                          }),
+                    ),
                   ),
-                ),
-                if (preparing) ...[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      AppAnimations.bouncingLine,
-                      const SizedBox(
-                        width: 15,
-                      ),
-                    ],
-                  )
+                  if (preparing) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        AppAnimations.bouncingLine,
+                        const SizedBox(
+                          width: 15,
+                        ),
+                      ],
+                    )
+                  ],
+                  _buildInputRow(),
                 ],
-                _buildInputRow(),
-              ],
+              ),
             ),
           ),
         ),

@@ -38,12 +38,14 @@ class SearchScreen extends StatefulWidget {
     required this.showSearchHelper,
     required this.showKeyboard,
     this.searchQueryString,
+    required this.isSubcategory,
   });
 
   final bool showBackButton;
   final bool showSearchHelper;
   final bool showKeyboard;
   final String title;
+  final bool isSubcategory;
   final String? searchQueryString;
 
   @override
@@ -162,7 +164,19 @@ class _SearchScreenState extends State<SearchScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: SearchAppBar(
-              showBackButton: widget.showBackButton,
+              showBackButton: widget.isSubcategory ? widget.showBackButton : _showFilterChips,
+              showFilter: widget.isSubcategory ? _showFilterChips : _showFilterChips,
+              onCancelAction: () {
+                if (widget.isSubcategory) {
+                  FocusScope.of(context).unfocus();
+                  searchManager.setSearch(false);
+                  setState(() {
+                    _showFilterChips = true;
+                  });
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
               onSubmitted: (String? value) {
                 setState(() {
                   _showFilterChips = true;

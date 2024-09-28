@@ -82,7 +82,10 @@ class CategoriesScrollView extends StatelessWidget {
                 category: e,
                 onTap: () {
                   context.read<SearchSelectSubcategoryCubit>().getSubcategories(categoryId: e.id);
-                  Navigator.pushNamed(context, AppRoutesNames.searchSelectSubcategory);
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutesNames.searchSelectSubcategory,
+                  );
                 },
                 // width: 108,
                 // height: 140,

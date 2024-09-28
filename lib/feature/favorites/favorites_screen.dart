@@ -42,25 +42,26 @@ class _FavoritesScreen extends State<FavoritesScreen> {
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: () async {
-        favouritesManager.getFavourites();
-      },
-      child: SafeArea(
-        child: Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              backgroundColor: AppColors.appBarColor,
-              elevation: 0,
-              scrolledUnderElevation: 0,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(localizations.favourites, style: AppTypography.font20black),
-                ],
-              ),
+    return SafeArea(
+      child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: AppColors.appBarColor,
+            elevation: 0,
+            scrolledUnderElevation: 0,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(localizations.favourites, style: AppTypography.font20black),
+              ],
             ),
-            body: Padding(
+          ),
+          body: RefreshIndicator(
+            color: AppColors.red,
+            onRefresh: () async {
+              favouritesManager.getFavourites();
+            },
+            child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: BlocBuilder<FavouritesCubit, FavouritesState>(
                 builder: (context, state) {
@@ -73,7 +74,7 @@ class _FavoritesScreen extends State<FavoritesScreen> {
                       ? CustomScrollView(
                           controller: controller,
                           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                          physics: const BouncingScrollPhysics(),
+                          physics: const AlwaysScrollableScrollPhysics(),
                           slivers: [buildAnnouncementsGrid()],
                         )
                       : Padding(
@@ -92,8 +93,8 @@ class _FavoritesScreen extends State<FavoritesScreen> {
                         );
                 },
               ),
-            )),
-      ),
+            ),
+          )),
     );
   }
 }

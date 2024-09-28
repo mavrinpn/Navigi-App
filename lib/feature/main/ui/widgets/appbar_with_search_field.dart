@@ -24,7 +24,7 @@ class MainAppBar extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: ElevatedTextField(
@@ -36,11 +36,14 @@ class MainAppBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 15),
-          CustomIconButtonSearch(
-            assetName: 'Assets/icons/sliders.svg',
-            callback: openFilters,
+          SizedBox(
             height: 44,
-            width: 44,
+            child: CustomIconButtonSearch(
+              assetName: 'Assets/icons/sliders.svg',
+              callback: openFilters,
+              height: 44,
+              width: 44,
+            ),
           ),
           isSearch
               ? TextButton(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart/feature/create_announcement/bloc/creating_blocs.dart';
 import 'package:smart/feature/home/bloc/scroll/scroll_cubit.dart';
 import 'package:smart/feature/main/bloc/search/search_announcements_cubit.dart';
 import 'package:smart/feature/main/ui/sections/categories_section.dart';
@@ -9,6 +10,7 @@ import 'package:smart/feature/search/bloc/select_subcategory/search_select_subca
 import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
 import 'package:smart/feature/search/ui/sections/popular_queries.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/main.dart';
 import 'package:smart/utils/constants.dart';
 import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/utils/utils.dart';
@@ -31,6 +33,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final searchController = TextEditingController();
   final _controller = ScrollController();
+  bool showCategoriesAppBarBottom = false;
 
   @override
   void initState() {
@@ -46,9 +49,10 @@ class _MainScreenState extends State<MainScreen> {
       if (announcementRepository.recommendationAnnouncementsWithExactLocation.length +
               announcementRepository.recommendationAnnouncementsWithOtherLocation.length >
           0) {
+        double currentScroll = _controller.position.pixels;
         if (_controller.position.atEdge) {
           double maxScroll = _controller.position.maxScrollExtent;
-          double currentScroll = _controller.position.pixels;
+
           if (currentScroll >= maxScroll * 0.8) {
             final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
             BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(
@@ -56,6 +60,19 @@ class _MainScreenState extends State<MainScreen> {
               cityId: searchCubit.cityId,
               areaId: searchCubit.areaId,
             );
+          }
+        }
+        if (currentScroll > 400) {
+          if (showCategoriesAppBarBottom != true) {
+            setState(() {
+              showCategoriesAppBarBottom = true;
+            });
+          }
+        } else {
+          if (showCategoriesAppBarBottom != false) {
+            setState(() {
+              showCategoriesAppBarBottom = false;
+            });
           }
         }
       }
@@ -144,13 +161,17 @@ class _MainScreenState extends State<MainScreen> {
               setSearch(false);
             },
           ),
+          bottom: showCategoriesAppBarBottom ? _buildCategoriesAppBarBottom() : null,
         ),
         body: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
           builder: (context, state) {
             return RefreshIndicator(
               color: AppColors.red,
               onRefresh: () async {
+                announcementRepository.clear();
+                setState(() {});
                 final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+                BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
                 BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(
                   true,
                   cityId: searchCubit.cityId,
@@ -261,8 +282,11 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                   if (announcementRepository.recommendationAnnouncementsWithExactLocation.length +
-                          announcementRepository.recommendationAnnouncementsWithOtherLocation.length >=
-                      20)
+                              announcementRepository.recommendationAnnouncementsWithOtherLocation.length >=
+                          20 ||
+                      announcementRepository.recommendationAnnouncementsWithExactLocation.length +
+                              announcementRepository.recommendationAnnouncementsWithOtherLocation.length ==
+                          0)
                     SliverToBoxAdapter(
                       child: Center(
                         child: SizedBox(
@@ -276,6 +300,56 @@ class _MainScreenState extends State<MainScreen> {
             );
           },
         ),
+      ),
+    );
+  }
+
+  _buildCategoriesAppBarBottom() {
+    double height = 40;
+
+    return PreferredSize(
+      preferredSize: Size.fromHeight(height),
+      child: BlocBuilder<CategoryCubit, CategoryState>(
+        builder: (context, state) {
+          if (state is CategorySuccessState) {
+            final categories = state.categories;
+
+            return Padding(
+              padding: const EdgeInsets.only(left: 15, right: 15),
+              child: SingleChildScrollView(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                clipBehavior: Clip.none,
+                scrollDirection: Axis.horizontal,
+                child: SizedBox(
+                  child: Wrap(
+                    alignment: WrapAlignment.start,
+                    spacing: 6,
+                    children: [
+                      ...categories.map(
+                        (category) {
+                          final isSelected = false;
+                          final foregroundColor = isSelected ? Colors.white : Colors.black;
+                          return FilterChip(
+                            selected: isSelected,
+                            label: Text(
+                              category.getLocalizedName(MyApp.getLocale(context) ?? 'fr'),
+                              style: TextStyle(color: foregroundColor),
+                            ),
+                            onSelected: (value) {
+                              //TODO
+                            },
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
       ),
     );
   }

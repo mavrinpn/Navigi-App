@@ -45,6 +45,16 @@ class AnnouncementManager {
 
   BehaviorSubject<LoadingStateEnum> announcementsLoadingState = BehaviorSubject.seeded(LoadingStateEnum.loading);
 
+  void clear() {
+    recommendationAnnouncementsWithExactLocation.clear();
+    // recommendationAnnouncementsWithCityLocation.clear();
+    recommendationAnnouncementsWithOtherLocation.clear();
+    _lastId = '';
+    _excludeRecomendationsCity = false;
+    _excludeRecomendationsArea = false;
+    _cityIncludeRecomendationsTotal = 0;
+  }
+
   Future<void> addLimitAnnouncements(
     bool isNew, {
     String? cityId,
@@ -63,13 +73,7 @@ class AnnouncementManager {
 
       try {
         if (isNew) {
-          recommendationAnnouncementsWithExactLocation.clear();
-          // recommendationAnnouncementsWithCityLocation.clear();
-          recommendationAnnouncementsWithOtherLocation.clear();
-          _lastId = '';
-          _excludeRecomendationsCity = false;
-          _excludeRecomendationsArea = false;
-          _cityIncludeRecomendationsTotal = 0;
+          clear();
         }
 
         if (!_excludeRecomendationsCity && !_excludeRecomendationsArea) {

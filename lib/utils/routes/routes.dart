@@ -89,6 +89,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     final arguments = settings.arguments as Map<String, dynamic>;
     final query = arguments['query'] as String?;
     final title = arguments['title'] as String?;
+    final isSubcategory = arguments['isSubcategory'] as bool?;
     final showBackButton = arguments['showBackButton'] as bool?;
     final showSearchHelper = arguments['showSearchHelper'] as bool?;
     final showKeyboard = arguments['showKeyboard'] as bool?;
@@ -99,6 +100,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
           showBackButton: showBackButton ?? true,
           showSearchHelper: showSearchHelper ?? true,
           title: title ?? '',
+          isSubcategory: isSubcategory ?? false,
           searchQueryString: query,
           showKeyboard: showKeyboard ?? false,
         );

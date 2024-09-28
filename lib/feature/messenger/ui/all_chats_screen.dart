@@ -21,6 +21,7 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     final repository = RepositoryProvider.of<MessengerRepository>(context);
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -34,52 +35,56 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
           stream: repository.chatsStream.stream,
           initialData: const [],
           builder: (context, snapshot) {
-            return CustomScrollView(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              slivers: [
-                SliverAppBar(
-                  expandedHeight: 68,
-                  collapsedHeight: 68,
-                  toolbarHeight: 68,
-                  elevation: 0,
-                  scrolledUnderElevation: 0,
-                  floating: true,
-                  title: SizedBox(
-                    height: 68,
-                    width: double.infinity,
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: SizedBox(
-                        height: 44,
-                        child: TextField(
-                          controller: searchController,
-                          onChanged: (v) {
-                            repository.searchChat(searchController.text);
-                          },
-                          decoration: InputDecoration(
-                            hintText: localizations.searchInMessages,
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
-                              child: SvgPicture.asset('Assets/icons/search_simple.svg', width: 22),
+            return RefreshIndicator(
+              color: AppColors.red,
+              onRefresh: () async {},
+              child: CustomScrollView(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                slivers: [
+                  SliverAppBar(
+                    expandedHeight: 68,
+                    collapsedHeight: 68,
+                    toolbarHeight: 68,
+                    elevation: 0,
+                    scrolledUnderElevation: 0,
+                    floating: true,
+                    title: SizedBox(
+                      height: 68,
+                      width: double.infinity,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: SizedBox(
+                          height: 44,
+                          child: TextField(
+                            controller: searchController,
+                            onChanged: (v) {
+                              repository.searchChat(searchController.text);
+                            },
+                            decoration: InputDecoration(
+                              hintText: localizations.searchInMessages,
+                              prefixIcon: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                child: SvgPicture.asset('Assets/icons/search_simple.svg', width: 22),
+                              ),
+                              prefixIconConstraints: const BoxConstraints(maxWidth: 50, maxHeight: 22),
+                              contentPadding: EdgeInsets.zero,
+                              filled: true,
+                              fillColor: const Color(0xffF4F5F6),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10), gapPadding: 0, borderSide: BorderSide.none),
                             ),
-                            prefixIconConstraints: const BoxConstraints(maxWidth: 50, maxHeight: 22),
-                            contentPadding: EdgeInsets.zero,
-                            filled: true,
-                            fillColor: const Color(0xffF4F5F6),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10), gapPadding: 0, borderSide: BorderSide.none),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                const SliverToBoxAdapter(child: SizedBox(height: 8)),
-                ...List.generate(
-                  snapshot.data!.length,
-                  (index) => ChatContainer.fromRoom(snapshot.data![index]),
-                )
-              ],
+                  const SliverToBoxAdapter(child: SizedBox(height: 8)),
+                  ...List.generate(
+                    snapshot.data!.length,
+                    (index) => ChatContainer.fromRoom(snapshot.data![index]),
+                  )
+                ],
+              ),
             );
           }),
     );

@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/button/icon_button.dart';
 import 'package:smart/widgets/textField/elevated_text_field.dart';
@@ -14,6 +14,8 @@ class SearchAppBar extends StatefulWidget {
     required this.searchControllerKey,
     required this.onTap,
     required this.showBackButton,
+    required this.showFilter,
+    required this.onCancelAction,
     required this.autofocus,
   });
   final Function(String) onSubmitted;
@@ -22,7 +24,9 @@ class SearchAppBar extends StatefulWidget {
   final TextEditingController searchController;
   final GlobalKey<FormFieldState<String>>? searchControllerKey;
   final bool showBackButton;
+  final bool showFilter;
   final bool autofocus;
+  final Function onCancelAction;
 
   @override
   State<SearchAppBar> createState() => _SearchAppBarState();
@@ -31,6 +35,8 @@ class SearchAppBar extends StatefulWidget {
 class _SearchAppBarState extends State<SearchAppBar> {
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return Row(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -50,14 +56,22 @@ class _SearchAppBarState extends State<SearchAppBar> {
           ),
         ),
         const SizedBox(width: 10),
-        CustomIconButtonSearch(
-          assetName: 'Assets/icons/sliders.svg',
-          callback: () {
-            showFilterBottomSheet(context: context);
-          },
-          height: 44,
-          width: 44,
-        )
+        if (widget.showFilter)
+          CustomIconButtonSearch(
+            assetName: 'Assets/icons/sliders.svg',
+            callback: () {
+              showFilterBottomSheet(context: context);
+            },
+            height: 44,
+            width: 44,
+          )
+        else
+          TextButton(
+            onPressed: () {
+              widget.onCancelAction();
+            },
+            child: Text(localizations.cancelation),
+          ),
       ],
     );
   }

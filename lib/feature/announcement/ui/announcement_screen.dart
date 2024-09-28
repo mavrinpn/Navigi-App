@@ -8,14 +8,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smart/bloc/app/app_cubit.dart';
+import 'package:smart/feature/announcement/bloc/announcement/announcement_cubit.dart';
 import 'package:smart/feature/announcement/ui/dialogs/creator_show_more_bottom_sheet.dart';
-import 'package:smart/feature/announcement/ui/dialogs/offer_price_bottom_sheet.dart';
 import 'package:smart/feature/announcement/ui/widgets/announcement_mini_map.dart';
+import 'package:smart/feature/announcement/ui/widgets/float_contacts_buttons.dart';
 import 'package:smart/feature/announcement/ui/widgets/market_price_widget.dart';
 import 'package:smart/feature/announcement/ui/widgets/related_announcement_widget.dart';
 import 'package:smart/feature/create_announcement/bloc/creating_blocs.dart';
 import 'package:smart/feature/create_announcement/bloc/mark_model/mark_model_cubit.dart';
-import 'package:smart/feature/messenger/chat_function.dart';
 import 'package:smart/main.dart';
 import 'package:smart/feature/announcement/ui/photo_view.dart';
 import 'package:smart/feature/announcement/ui/widgets/favourite_indicator.dart';
@@ -24,20 +24,17 @@ import 'package:smart/feature/announcement/ui/widgets/parameter.dart';
 import 'package:smart/feature/announcement/ui/widgets/additional_menu_bottom_sheet.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/models/item/static_localized_parameter.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/constants.dart';
 import 'package:smart/utils/extensions/string_extension.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
+import 'package:smart/widgets/accuont/account_small_info.dart';
 import 'package:smart/widgets/button/back_button.dart';
-import 'package:smart/widgets/button/custom_text_button.dart';
 
-import '../../../managers/announcement_manager.dart';
-import '../../../utils/colors.dart';
-import '../../../widgets/accuont/account_small_info.dart';
-import '../../../widgets/button/custom_icon_button.dart';
-import '../bloc/announcement/announcement_cubit.dart';
 import 'map.dart';
 
 class AnnouncementScreen extends StatefulWidget {
@@ -58,10 +55,39 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
   CarouselController carouselController = CarouselController();
   bool carouselControllerInited = false;
   double carouselItemWidth = 0;
+  final scrollController = ScrollController();
+  bool showFloatContactsButton = false;
+  bool showAppBarTitle = false;
 
   @override
   void initState() {
     BlocProvider.of<AnnouncementCubit>(context).loadAnnouncementById(widget.announcementId);
+    scrollController.addListener(() {
+      double currentScroll = scrollController.position.pixels;
+
+      if (currentScroll > 600) {
+        if (showFloatContactsButton != true) {
+          showFloatContactsButton = true;
+          setState(() {});
+        }
+      } else {
+        if (showFloatContactsButton != false) {
+          showFloatContactsButton = false;
+          setState(() {});
+        }
+      }
+      if (currentScroll > 400) {
+        if (showAppBarTitle != true) {
+          showAppBarTitle = true;
+          setState(() {});
+        }
+      } else {
+        if (showAppBarTitle != false) {
+          showAppBarTitle = false;
+          setState(() {});
+        }
+      }
+    });
     super.initState();
   }
 
@@ -93,13 +119,6 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     }
   }
 
-  void incContactsIfNeed(AnnouncementSuccessState state) {
-    final userId = RepositoryProvider.of<AuthRepository>(context).userId;
-    if (userId != state.data.creatorData.uid) {
-      RepositoryProvider.of<AnnouncementManager>(context).incContactsViews(state.data.anouncesTableId);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
@@ -126,6 +145,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
           final itemCounts = min(state.data.images.length, maxImageCount);
 
           return RefreshIndicator(
+            color: AppColors.red,
             onRefresh: () async {
               BlocProvider.of<AnnouncementCubit>(context).refreshAnnouncement(state.data.anouncesTableId);
             },
@@ -139,7 +159,16 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                 title: Row(
                   children: [
                     const CustomBackButton(),
-                    const Spacer(),
+                    if (showAppBarTitle)
+                      Expanded(
+                          child: Text(
+                        state.data.title.trim().capitalize(),
+                        style: AppTypography.font22black,
+                        maxLines: 2,
+                        softWrap: true,
+                      ))
+                    else
+                      const Spacer(),
                     FavouriteIndicator(postId: state.data.anouncesTableId),
                     const SizedBox(width: 4),
                     IconButton(
@@ -177,11 +206,12 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                   ],
                 ),
               ),
+              floatingActionButton: showFloatContactsButton ? FloatContactsButtons(state: state) : null,
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
               body: SingleChildScrollView(
                 keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                physics: const BouncingScrollPhysics(
-                  decelerationRate: ScrollDecelerationRate.fast,
-                ),
+                physics: const BouncingScrollPhysics(),
+                controller: scrollController,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -426,95 +456,16 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       MarketPriceWidget(
                         announcement: state.data,
                       ),
-                    Row(
-                      children: [
-                        CustomTextButton.withIcon(
-                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                          disableColor: AppColors.red,
-                          width: MediaQuery.of(context).size.width - 62,
-                          callback: () {
-                            final isUserAuth = context.read<AppCubit>().state is AppAuthState;
-                            if (!isUserAuth) {
-                              Navigator.of(context).pushNamed(
-                                AppRoutesNames.loginFirst,
-                                arguments: {'showBackButton': true},
-                              );
-                              return;
-                            }
-                            incContactsIfNeed(state);
-                            checkBlockedAndPushChat(
-                              context: context,
-                              data: state.data,
-                            );
-                          },
-                          text: AppLocalizations.of(context)!.toWrite,
-                          styleText: AppTypography.font14white,
-                          icon: SvgPicture.asset(
-                            'Assets/icons/email.svg',
-                            color: Colors.white,
-                            width: 24,
-                            height: 24,
-                          ),
-                        ),
-                        CustomIconButton(
-                          callback: () {
-                            final isUserAuth = context.read<AppCubit>().state is AppAuthState;
-                            if (!isUserAuth) {
-                              Navigator.of(context).pushNamed(
-                                AppRoutesNames.loginFirst,
-                                arguments: {'showBackButton': true},
-                              );
-                              return;
-                            }
-                            incContactsIfNeed(state);
-                            checkBlockedAndCall(
-                              context: context,
-                              userId: state.data.creatorData.uid,
-                              phone: state.data.creatorData.phone,
-                            );
-                          },
-                          icon: 'Assets/icons/phone.svg',
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 32),
+                      child: FloatContactsButtons(state: state),
                     ),
-                    const SizedBox(height: 10),
-                    CustomTextButton.withIcon(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      callback: () {
-                        final isUserAuth = context.read<AppCubit>().state is AppAuthState;
-                        if (!isUserAuth) {
-                          Navigator.of(context).pushNamed(
-                            AppRoutesNames.loginFirst,
-                            arguments: {'showBackButton': true},
-                          );
-                          return;
-                        }
-                        showOfferPriceDialog(
-                          context: context,
-                          announcement: state.data,
-                        ).then((offerPriceString) {
-                          if (offerPriceString != null) {
-                            incContactsIfNeed(state);
-                            checkBlockedAndPushChat(
-                              // ignore: use_build_context_synchronously
-                              context: context,
-                              data: state.data,
-                              message: '${localizations.offerMessage} $offerPriceString',
-                            );
-                          }
-                        });
-                      },
-                      text: AppLocalizations.of(context)!.offrirVotrePrix,
-                      styleText: AppTypography.font14black,
-                      icon: SvgPicture.asset('Assets/icons/dzd.svg'),
-                    ),
-                    const SizedBox(height: 32),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Row(
                         children: [
                           Text(
-                            AppLocalizations.of(context)!.features,
+                            localizations.features,
                             style: AppTypography.font20black,
                           ),
                         ],
@@ -570,6 +521,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
           );
         } else {
           return Scaffold(
+            appBar: AppBar(),
             body: Center(
               child: AppAnimations.circleFadingAnimation,
             ),

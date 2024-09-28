@@ -134,115 +134,125 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   }
                 }
 
-                return CustomScrollView(
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                  slivers: [
-                    const SliverToBoxAdapter(child: SizedBox(height: 8)),
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      sliver: SliverToBoxAdapter(
-                        child: RepositoryProvider.of<AuthRepository>(context).userData != null
-                            ? AccountMediumInfo(
-                                user: RepositoryProvider.of<AuthRepository>(context).userData!,
-                              )
-                            : const SizedBox.shrink(),
+                return RefreshIndicator(
+                  color: AppColors.red,
+                  onRefresh: () async {
+                    _available = [];
+                    _sold = [];
+                    setState(() {});
+                    BlocProvider.of<CreatorCubit>(context)
+                        .setUserId(RepositoryProvider.of<AuthRepository>(context).userId);
+                  },
+                  child: CustomScrollView(
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                    slivers: [
+                      const SliverToBoxAdapter(child: SizedBox(height: 8)),
+                      SliverPadding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        sliver: SliverToBoxAdapter(
+                          child: RepositoryProvider.of<AuthRepository>(context).userData != null
+                              ? AccountMediumInfo(
+                                  user: RepositoryProvider.of<AuthRepository>(context).userData!,
+                                )
+                              : const SizedBox.shrink(),
+                        ),
                       ),
-                    ),
-                    const SliverToBoxAdapter(child: SizedBox(height: 20)),
-                    SliverToBoxAdapter(
-                      child: TabBar(
-                        isScrollable: true,
-                        tabAlignment: TabAlignment.start,
-                        labelColor: Colors.black,
-                        indicatorColor: Colors.black,
-                        indicatorWeight: 2,
-                        dividerHeight: 0,
-                        unselectedLabelColor: AppColors.lightGray,
-                        splashBorderRadius: BorderRadius.circular(12),
-                        indicator: const UnderlineTabIndicator(
-                            borderSide: BorderSide(color: AppColors.red, width: 4),
-                            insets: EdgeInsets.symmetric(horizontal: 60)),
-                        onTap: (int val) => setState(() {}),
-                        controller: _tabController,
-                        tabs: [
-                          Tab(
-                            child: Text(
-                                '${localizations.active} (${creatorState is CreatorSuccessState ? creatorState.available.length : 0})',
-                                style: AppTypography.font24black.copyWith(
-                                    fontSize: 14, color: _tabController.index == 0 ? Colors.black : Colors.grey)),
-                          ),
-                          Tab(
-                            child: Text(
-                                '${localizations.sold} (${creatorState is CreatorSuccessState ? creatorState.sold.length : 0})',
-                                style: AppTypography.font24black.copyWith(
-                                    fontSize: 14, color: _tabController.index == 1 ? Colors.black : Colors.grey)),
-                          ),
-                        ],
+                      const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                      SliverToBoxAdapter(
+                        child: TabBar(
+                          isScrollable: true,
+                          tabAlignment: TabAlignment.start,
+                          labelColor: Colors.black,
+                          indicatorColor: Colors.black,
+                          indicatorWeight: 2,
+                          dividerHeight: 0,
+                          unselectedLabelColor: AppColors.lightGray,
+                          splashBorderRadius: BorderRadius.circular(12),
+                          indicator: const UnderlineTabIndicator(
+                              borderSide: BorderSide(color: AppColors.red, width: 4),
+                              insets: EdgeInsets.symmetric(horizontal: 60)),
+                          onTap: (int val) => setState(() {}),
+                          controller: _tabController,
+                          tabs: [
+                            Tab(
+                              child: Text(
+                                  '${localizations.active} (${creatorState is CreatorSuccessState ? creatorState.available.length : 0})',
+                                  style: AppTypography.font24black.copyWith(
+                                      fontSize: 14, color: _tabController.index == 0 ? Colors.black : Colors.grey)),
+                            ),
+                            Tab(
+                              child: Text(
+                                  '${localizations.sold} (${creatorState is CreatorSuccessState ? creatorState.sold.length : 0})',
+                                  style: AppTypography.font24black.copyWith(
+                                      fontSize: 14, color: _tabController.index == 1 ? Colors.black : Colors.grey)),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                    if (creatorState is CreatorSuccessState || (_available.isNotEmpty)) ...[
-                      getGridHeight() == 100
-                          ? SliverPadding(
-                              padding: const EdgeInsets.symmetric(vertical: 40),
-                              sliver: SliverToBoxAdapter(
-                                child: Center(
-                                  child: Text(
-                                    localizations.youHaveNoAds,
-                                    style: const TextStyle(
-                                      color: Color(0xFF9B9FAA),
-                                      fontSize: 14,
-                                      fontFamily: 'SF Pro Display',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0.09,
+                      const SliverToBoxAdapter(child: SizedBox(height: 15)),
+                      if (creatorState is CreatorSuccessState || (_available.isNotEmpty)) ...[
+                        getGridHeight() == 100
+                            ? SliverPadding(
+                                padding: const EdgeInsets.symmetric(vertical: 40),
+                                sliver: SliverToBoxAdapter(
+                                  child: Center(
+                                    child: Text(
+                                      localizations.youHaveNoAds,
+                                      style: const TextStyle(
+                                        color: Color(0xFF9B9FAA),
+                                        fontSize: 14,
+                                        fontFamily: 'SF Pro Display',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0.09,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            )
-                          : SliverList.separated(
-                              itemCount: _tabController.index == 0
-                                  ? _showAll
-                                      ? _available.length
-                                      : min(_available.length, 4)
-                                  : _showAll
-                                      ? _sold.length
-                                      : min(_sold.length, 4),
-                              itemBuilder: (BuildContext context, int index) {
-                                return AnnouncementContainerHorizontal(
-                                  announcement: _tabController.index == 0 ? _available[index] : _sold[index],
-                                );
-                              },
-                              separatorBuilder: (context, index) => const SizedBox(height: 12),
-                            )
-                    ],
-                    if (creatorState is CreatorLoadingState && (_available.isEmpty))
-                      SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: MediaQuery.sizeOf(context).height / 2.5,
-                          width: 50,
-                          child: AppAnimations.circleFadingAnimation,
-                        ),
-                      ),
-                    if (!_showAll && (creatorState is CreatorSuccessState && creatorState.available.length > 4))
-                      SliverPadding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
-                        sliver: SliverToBoxAdapter(
-                          child: CustomTextButton.orangeContinue(
-                            callback: () {
-                              setState(() {
-                                _showAll = true;
-                              });
-                            },
-                            text: AppLocalizations.of(context)!.showAll,
-                            styleText: AppTypography.font14black,
-                            active: true,
-                            activeColor: AppColors.backgroundLightGray,
+                              )
+                            : SliverList.separated(
+                                itemCount: _tabController.index == 0
+                                    ? _showAll
+                                        ? _available.length
+                                        : min(_available.length, 4)
+                                    : _showAll
+                                        ? _sold.length
+                                        : min(_sold.length, 4),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return AnnouncementContainerHorizontal(
+                                    announcement: _tabController.index == 0 ? _available[index] : _sold[index],
+                                  );
+                                },
+                                separatorBuilder: (context, index) => const SizedBox(height: 12),
+                              )
+                      ],
+                      if (creatorState is CreatorLoadingState && (_available.isEmpty))
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: MediaQuery.sizeOf(context).height / 2.5,
+                            width: 50,
+                            child: AppAnimations.circleFadingAnimation,
                           ),
                         ),
-                      ),
-                    const SliverToBoxAdapter(child: SizedBox(height: 90)),
-                  ],
+                      if (!_showAll && (creatorState is CreatorSuccessState && creatorState.available.length > 4))
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
+                          sliver: SliverToBoxAdapter(
+                            child: CustomTextButton.orangeContinue(
+                              callback: () {
+                                setState(() {
+                                  _showAll = true;
+                                });
+                              },
+                              text: AppLocalizations.of(context)!.showAll,
+                              styleText: AppTypography.font14black,
+                              active: true,
+                              activeColor: AppColors.backgroundLightGray,
+                            ),
+                          ),
+                        ),
+                      const SliverToBoxAdapter(child: SizedBox(height: 90)),
+                    ],
+                  ),
                 );
               },
             );

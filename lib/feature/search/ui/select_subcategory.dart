@@ -66,6 +66,7 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> with 
           'showBackButton': false,
           'showSearchHelper': false,
           'title': subcategory.localizedName(),
+          'isSubcategory': true,
         },
       );
     }

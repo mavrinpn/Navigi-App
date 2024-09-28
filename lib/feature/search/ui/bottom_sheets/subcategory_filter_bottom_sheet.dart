@@ -214,6 +214,7 @@ class _FiltersBottomSheetState extends State<SubcategoriesWidget> {
         arguments: {
           'showBackButton': false,
           'showSearchHelper': false,
+          'isSubcategory': true,
           'title': subcategory.localizedName(),
         },
       );
