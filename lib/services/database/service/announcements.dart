@@ -318,7 +318,7 @@ class AnnouncementsService {
       queries: [
         Query.equal("creator_id", userId),
         Query.orderDesc(DefaultDocumentParameters.createdAt),
-        Query.limit(1000),
+        Query.limit(100),
       ],
     );
 
