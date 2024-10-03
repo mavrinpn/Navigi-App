@@ -33,7 +33,7 @@ class Announcement {
   late final Widget previewImage;
   final String _createdAt;
   Uint8List? bytes;
-  final Future<Uint8List?> futureBytes;
+  // final Future<Uint8List?> futureBytes;
   bool liked;
   final String? itemId;
   final String model;
@@ -44,7 +44,7 @@ class Announcement {
   Announcement.fromJson({
     required Map<String, dynamic> json,
     required String subcollTableId,
-    required this.futureBytes,
+    // required this.futureBytes,
     this.liked = false,
   })  : title = json['name'],
         subcategoryId = json['subcategoryId'],
@@ -82,12 +82,12 @@ class Announcement {
       }
     }
     images = l;
-    loadBytes();
+    // loadBytes();
   }
 
-  void loadBytes() async {
-    bytes = await futureBytes;
-  }
+  // void loadBytes() async {
+  //   bytes = await futureBytes;
+  // }
 
   @override
   String toString() => title;

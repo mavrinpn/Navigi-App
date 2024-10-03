@@ -38,15 +38,15 @@ Future<Uint8List> futureBytesForImageURL({
 List<Announcement> announcementsFromDocuments(List<Document> documents, Storage storage) {
   List<Announcement> newAnnounces = [];
   for (var doc in documents) {
-    final imageUrl = doc.data['images'][0] ?? '';
-    final futureBytes = futureBytesForImageURL(
-      storage: storage,
-      imageUrl: imageUrl,
-    );
+    // final imageUrl = doc.data['images'][0] ?? '';
+    // final futureBytes = futureBytesForImageURL(
+    //   storage: storage,
+    //   imageUrl: imageUrl,
+    // );
 
     newAnnounces.add(Announcement.fromJson(
       json: doc.data,
-      futureBytes: futureBytes,
+      // futureBytes: futureBytes,
       subcollTableId: '',
     ));
   }

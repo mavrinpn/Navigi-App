@@ -143,18 +143,18 @@ class AnnouncementsService {
 
       for (var doc in res.documents) {
         if (doc.data['announcements'] != null) {
-          Future<Uint8List> futureBytes = Future.value(Uint8List.fromList([]));
-          if (doc.data['announcements']['images'] != null) {
-            final imageUrl = doc.data['announcements']['images'][0];
-            futureBytes = futureBytesForImageURL(
-              storage: _storage,
-              imageUrl: imageUrl,
-            );
-          }
+          // Future<Uint8List> futureBytes = Future.value(Uint8List.fromList([]));
+          // if (doc.data['announcements']['images'] != null) {
+            // final imageUrl = doc.data['announcements']['images'][0];
+            // futureBytes = futureBytesForImageURL(
+            //   storage: _storage,
+            //   imageUrl: imageUrl,
+            // );
+          // }
 
           final ann = Announcement.fromJson(
             json: doc.data['announcements'],
-            futureBytes: futureBytes,
+            // futureBytes: futureBytes,
             subcollTableId: doc.$id,
           );
           newAnnounces.add(ann);
@@ -358,11 +358,11 @@ class AnnouncementsService {
       documentId: announcementId,
     );
 
-    final Future<Uint8List?> futureBytes = getAnnouncementImage(res.data['images'][0]);
+    // final Future<Uint8List?> futureBytes = getAnnouncementImage(res.data['images'][0]);
 
     return Announcement.fromJson(
       json: res.data,
-      futureBytes: futureBytes,
+      // futureBytes: futureBytes,
       subcollTableId: '',
     );
   }

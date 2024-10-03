@@ -102,7 +102,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     if (!carouselControllerInited) {
       carouselControllerInited = true;
       carouselController.addListener(() {
-        final newActivePage = (carouselController.offset / carouselItemWidth) * 1.15;
+        final newActivePage = (carouselController.offset / carouselItemWidth) * 1.35;
         if (newActivePage.toInt() != activePage) {
           setState(() {
             activePage = newActivePage.toInt();
@@ -514,6 +514,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       model: state.data.model,
                       staticParameters: state.data.staticParameters,
                     ),
+                    const SizedBox(height: 100),
                   ],
                 ),
               ),

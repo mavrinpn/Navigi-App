@@ -38,7 +38,7 @@ class Room {
   Room.fromDocument(Document doc, Future<Uint8List> announcementImage, ChatUserInfo otherUser, {this.onlineGetter})
       : announcement = Announcement.fromJson(
           json: doc.data['announcement'],
-          futureBytes: announcementImage,
+          // futureBytes: announcementImage,
           subcollTableId: '',
         ),
         chatName = '${otherUser.name} ${doc.data['announcement']['name']}',
