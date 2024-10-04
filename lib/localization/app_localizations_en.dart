@@ -247,6 +247,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get description => 'Description';
 
   @override
+  String get equipments => 'Equipments';
+
+  @override
   String get board => 'Board';
 
   @override

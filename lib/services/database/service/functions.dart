@@ -43,7 +43,6 @@ List<Announcement> announcementsFromDocuments(List<Document> documents, Storage 
     //   storage: storage,
     //   imageUrl: imageUrl,
     // );
-
     newAnnounces.add(Announcement.fromJson(
       json: doc.data,
       // futureBytes: futureBytes,

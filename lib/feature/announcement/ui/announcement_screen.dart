@@ -20,7 +20,7 @@ import 'package:smart/main.dart';
 import 'package:smart/feature/announcement/ui/photo_view.dart';
 import 'package:smart/feature/announcement/ui/widgets/favourite_indicator.dart';
 import 'package:smart/feature/announcement/ui/widgets/images_amount_indicators.dart';
-import 'package:smart/feature/announcement/ui/widgets/parameter.dart';
+import 'package:smart/feature/announcement/ui/widgets/item_parameter_widget.dart';
 import 'package:smart/feature/announcement/ui/widgets/additional_menu_bottom_sheet.dart';
 import 'package:smart/feature/auth/data/auth_repository.dart';
 import 'package:smart/localization/app_localizations.dart';
@@ -475,6 +475,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                     _categoryWidget(),
                     _markModelWidget(),
                     ..._staticParameters(state.data.staticParameters.parameters),
+                    ..._equipmentsParameters(state.data.staticParameters.parameters),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
                       child: Row(
@@ -619,7 +620,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     List<Widget> result = [];
 
     for (final param in parameters) {
-      if (param.runtimeType != MultiSelectStaticParameter) {
+      if (param.runtimeType != MultiSelectStaticParameter && param.key != 'equipments') {
         result.add(
           ItemParameterWidget(
             name: currentLocaleShortName.value == 'fr' ? param.nameFr : param.nameAr,
@@ -629,13 +630,61 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
       }
     }
     for (final param in parameters) {
-      if (param.runtimeType == MultiSelectStaticParameter) {
+      if (param.runtimeType == MultiSelectStaticParameter && param.key != 'equipments') {
         result.add(
           ItemParameterWidget(
             name: currentLocaleShortName.value == 'fr' ? param.nameFr : param.nameAr,
             currentValue: currentLocaleShortName.value == 'fr' ? param.valueFr : param.valueAr,
           ),
         );
+      }
+    }
+
+    return result;
+  }
+
+  List<Widget> _equipmentsParameters(List<StaticLocalizedParameter> parameters) {
+    List<Widget> result = [];
+
+    for (final param in parameters) {
+      final name = currentLocaleShortName.value == 'fr' ? param.nameFr : param.nameAr;
+      final values = (currentLocaleShortName.value == 'fr' ? param.valueFr : param.valueAr).split(',');
+      if (param.key == 'equipments') {
+        result.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: AppTypography.font20black,
+                ),
+              ],
+            ),
+          ),
+        );
+        result.add(Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Wrap(
+            spacing: 12,
+            children: [
+              ...values.map((item) => Chip(
+                    label: Text(
+                      item,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(13), // задаем радиус
+                    ),
+                    backgroundColor: const Color(0xCCED5434),
+                  )),
+            ],
+          ),
+        ));
       }
     }
 

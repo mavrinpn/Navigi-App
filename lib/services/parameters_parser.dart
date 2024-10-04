@@ -36,18 +36,24 @@ class ParametersParser {
   void parseOptionParameter(Map json) {
     final List<ParameterOption> options = [];
 
-    for (var optionJson in json['options']) {
-      options.add(ParameterOption.fromJson(optionJson));
+    final id = json['id'];
+    final arName = json['nameAr'];
+    final frName = json['nameFr'];
+
+    if (id is String && arName is String && frName is String) {
+      for (var optionJson in json['options']) {
+        options.add(ParameterOption.fromJson(optionJson));
+      }
+
+      final parameter = SelectParameter(
+        key: json['id'],
+        variants: options,
+        arName: json['nameAr'],
+        frName: json['nameFr'],
+      );
+
+      decodedParameters.add(parameter);
     }
-
-    final parameter = SelectParameter(
-      key: json['id'],
-      variants: options,
-      arName: json['nameAr'],
-      frName: json['nameFr'] ?? '',
-    );
-
-    decodedParameters.add(parameter);
   }
 
   void parseMultiOptionParameter(Map json) {

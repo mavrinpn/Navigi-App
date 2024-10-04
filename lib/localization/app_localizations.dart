@@ -577,6 +577,12 @@ abstract class AppLocalizations {
   /// **'Description'**
   String get description;
 
+  /// No description provided for @equipments.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipments'**
+  String get equipments;
+
   /// No description provided for @board.
   ///
   /// In en, this message translates to:

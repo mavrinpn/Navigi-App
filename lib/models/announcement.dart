@@ -46,15 +46,15 @@ class Announcement {
     required String subcollTableId,
     // required this.futureBytes,
     this.liked = false,
-  })  : title = json['name'],
-        subcategoryId = json['subcategoryId'],
-        description = json['description'],
+  })  : title = json['name'] ?? 'name',
+        subcategoryId = json['subcategoryId'] ?? 'subcategoryId',
+        description = json['description'] ?? 'description',
         // creatorData = CreatorData.fromJson(data: {}),
         creatorData =
             json['creator'] != null ? CreatorData.fromJson(data: json['creator']) : CreatorData.fromJson(data: {}),
-        price = double.parse(json['price'].toString()),
+        price = double.tryParse('${json['price']}') ?? 0,
         priceType = PriceTypeExtendion.fromString(json['price_type']),
-        images = json['images'],
+        images = json['images'] ?? [],
         thumb = json['thumb'] ?? '',
         staticParameters = json['parametrs'] is String
             ? StaticParameters(encodedParameters: '${json['parametrs']}')
@@ -64,14 +64,12 @@ class Announcement {
         _createdAt = json['\$createdAt'],
         anouncesTableId = json['\$id'],
         subTableId = subcollTableId,
-        active = json['active'],
+        active = json['active'] ?? false,
         itemId = json['itemId'],
         model = json['model'] ?? '',
         mark = json['mark'] ?? '',
         longitude = double.tryParse('${json['longitude']}') ?? 0,
         latitude = double.tryParse('${json['latitude']}') ?? 0,
-        // city = City.none(),
-        // area = CityDistrict.none() {
         city = json['city'] != null ? City.fromJson(json['city']) : City.none(),
         area = json['area2'] != null ? CityDistrict.fromJson(json['area2']) : CityDistrict.none() {
     var l = [];

@@ -391,25 +391,26 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
             ),
-            SliverPadding(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppSizes.anouncementGridSidePadding,
-              ),
-              sliver: SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.asset('Assets/search_other_city.jpg'),
-                    const SizedBox(height: 12),
-                    Text(
-                      AppLocalizations.of(context)!.otherCity,
-                      style: AppTypography.font20black,
-                    ),
-                    const SizedBox(height: 12),
-                  ],
+            if (announcementRepository.searchAnnouncementsWithOtherLocation.isNotEmpty)
+              SliverPadding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSizes.anouncementGridSidePadding,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.asset('Assets/search_other_city.jpg'),
+                      const SizedBox(height: 12),
+                      Text(
+                        AppLocalizations.of(context)!.otherCity,
+                        style: AppTypography.font20black,
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+                  ),
                 ),
               ),
-            ),
             if (announcementRepository.searchAnnouncementsWithOtherLocation.isNotEmpty)
               SliverPadding(
                 padding: EdgeInsets.symmetric(

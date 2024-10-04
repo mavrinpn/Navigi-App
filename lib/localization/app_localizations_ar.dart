@@ -247,6 +247,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get description => 'وصف الإعلان';
 
   @override
+  String get equipments => 'المعدات';
+
+  @override
   String get board => 'اللوحة';
 
   @override

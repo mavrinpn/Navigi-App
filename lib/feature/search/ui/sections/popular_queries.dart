@@ -29,28 +29,34 @@ class PopularQueriesWidget extends StatelessWidget {
               runSpacing: 6,
               children: searchManager.popularQueries.reversed
                   .map(
-                    (e) => GestureDetector(
-                      onTap: () {
-                        onSearch(e);
-                      },
-                      child: Container(
-                        height: 24,
-                        decoration: BoxDecoration(
-                          color: AppColors.backgroundLightGray,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                e,
-                                style: AppTypography.font12normal.copyWith(
-                                  color: AppColors.black,
+                    (e) => Container(
+                      clipBehavior: Clip.hardEdge,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        color: AppColors.backgroundLightGray,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          splashColor: Colors.black12,
+                          highlightColor: Colors.black12,
+                          onTap: () {
+                            onSearch(e);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  e,
+                                  style: AppTypography.font12normal.copyWith(
+                                    color: AppColors.black,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),

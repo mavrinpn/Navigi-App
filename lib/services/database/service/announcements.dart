@@ -36,6 +36,39 @@ class AnnouncementsService {
       queries.add(Query.equal('area_id', areaId));
     }
 
+    //Query.select
+    //Needs: anouncesTableId images thumb title stringPrice city area
+    // queries.add(Query.select([
+    //   'images', //images
+    //   'price',
+    //   'item_name',
+    //   'name',
+    //   'area_id',
+    //   'city_id',
+    //   'price_type',
+    //   'area2',
+    //   'city',
+    //   'thumb', //thumb
+    //   'itemId',
+    //   'description',
+    //   'type',
+    //   'parametrs',
+    //   'total_views',
+    //   'total_likes',
+    //   'creator_id',
+    //   'active',
+    //   'on_moderation',
+    //   'subcategoryId',
+    //   'latitude',
+    //   'longitude',
+    //   'creator',
+    //   'total_contacts',
+    //   'model',
+    //   'mark',
+    //   'contacts_views',
+    //   'keywords',
+    // ]));
+
     try {
       final res = await _databases.listDocuments(
         databaseId: mainDatabase,
@@ -47,6 +80,7 @@ class AnnouncementsService {
 
       return (list: newAnnounces, total: res.total);
     } catch (err) {
+      debugPrint(err.toString());
       rethrow;
     }
   }
@@ -145,11 +179,11 @@ class AnnouncementsService {
         if (doc.data['announcements'] != null) {
           // Future<Uint8List> futureBytes = Future.value(Uint8List.fromList([]));
           // if (doc.data['announcements']['images'] != null) {
-            // final imageUrl = doc.data['announcements']['images'][0];
-            // futureBytes = futureBytesForImageURL(
-            //   storage: _storage,
-            //   imageUrl: imageUrl,
-            // );
+          // final imageUrl = doc.data['announcements']['images'][0];
+          // futureBytes = futureBytesForImageURL(
+          //   storage: _storage,
+          //   imageUrl: imageUrl,
+          // );
           // }
 
           final ann = Announcement.fromJson(
