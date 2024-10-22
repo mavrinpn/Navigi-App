@@ -18,8 +18,10 @@ class FloatContactsButtons extends StatefulWidget {
   const FloatContactsButtons({
     super.key,
     required this.state,
+    required this.isFloat,
   });
 
+  final bool isFloat;
   final AnnouncementSuccessState state;
 
   @override
@@ -34,94 +36,55 @@ class _FloatContactsButtonsState extends State<FloatContactsButtons> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Row(
-          children: [
-            CustomTextButton.withIcon(
-              padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-              disableColor: AppColors.red,
-              width: MediaQuery.of(context).size.width - 62,
-              callback: () {
-                final isUserAuth = context.read<AppCubit>().state is AppAuthState;
-                if (!isUserAuth) {
-                  Navigator.of(context).pushNamed(
-                    AppRoutesNames.loginFirst,
-                    arguments: {'showBackButton': true},
-                  );
-                  return;
-                }
-                incContactsIfNeed(widget.state);
-                checkBlockedAndPushChat(
-                  context: context,
-                  data: widget.state.data,
-                );
-              },
-              text: AppLocalizations.of(context)!.toWrite,
-              styleText: AppTypography.font14white,
-              icon: SvgPicture.asset(
-                'Assets/icons/email.svg',
-                colorFilter: const ColorFilter.mode(
-                  Colors.white,
-                  BlendMode.srcIn,
-                ),
-                width: 24,
-                height: 24,
+        if (widget.isFloat)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Card(
+              color: Colors.white,
+              elevation: 6,
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: buttonsRow(),
               ),
             ),
-            Material(
-              color: Colors.transparent,
-              child: CustomIconButton(
-                callback: () {
-                  final isUserAuth = context.read<AppCubit>().state is AppAuthState;
-                  if (!isUserAuth) {
-                    Navigator.of(context).pushNamed(
-                      AppRoutesNames.loginFirst,
-                      arguments: {'showBackButton': true},
-                    );
-                    return;
-                  }
-                  incContactsIfNeed(widget.state);
-                  checkBlockedAndCall(
-                    context: context,
-                    userId: widget.state.data.creatorData.uid,
-                    phone: widget.state.data.creatorData.phone,
-                  );
-                },
-                icon: 'Assets/icons/phone.svg',
-              ),
-            ),
-          ],
-        ),
+          )
+        else
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: buttonsRow(),
+          ),
         const SizedBox(height: 10),
-        CustomTextButton.withIcon(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          callback: () {
-            final isUserAuth = context.read<AppCubit>().state is AppAuthState;
-            if (!isUserAuth) {
-              Navigator.of(context).pushNamed(
-                AppRoutesNames.loginFirst,
-                arguments: {'showBackButton': true},
-              );
-              return;
-            }
-            showOfferPriceDialog(
-              context: context,
-              announcement: widget.state.data,
-            ).then((offerPriceString) {
-              if (offerPriceString != null) {
-                incContactsIfNeed(widget.state);
-                checkBlockedAndPushChat(
-                  // ignore: use_build_context_synchronously
-                  context: context,
-                  data: widget.state.data,
-                  message: '${localizations.offerMessage} $offerPriceString',
+        if (!widget.isFloat)
+          CustomTextButton.withIcon(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            callback: () {
+              final isUserAuth = context.read<AppCubit>().state is AppAuthState;
+              if (!isUserAuth) {
+                Navigator.of(context).pushNamed(
+                  AppRoutesNames.loginFirst,
+                  arguments: {'showBackButton': true},
                 );
+                return;
               }
-            });
-          },
-          text: AppLocalizations.of(context)!.offrirVotrePrix,
-          styleText: AppTypography.font14black,
-          icon: SvgPicture.asset('Assets/icons/dzd.svg'),
-        ),
+              showOfferPriceDialog(
+                context: context,
+                announcement: widget.state.data,
+              ).then((offerPriceString) {
+                if (offerPriceString != null) {
+                  incContactsIfNeed(widget.state);
+                  checkBlockedAndPushChat(
+                    // ignore: use_build_context_synchronously
+                    context: context,
+                    data: widget.state.data,
+                    message: '${localizations.offerMessage} $offerPriceString',
+                  );
+                }
+              });
+            },
+            text: AppLocalizations.of(context)!.offrirVotrePrix,
+            styleText: AppTypography.font14black,
+            icon: SvgPicture.asset('Assets/icons/dzd.svg'),
+          ),
       ],
     );
   }
@@ -131,5 +94,66 @@ class _FloatContactsButtonsState extends State<FloatContactsButtons> {
     if (userId != state.data.creatorData.uid) {
       RepositoryProvider.of<AnnouncementManager>(context).incContactsViews(state.data.anouncesTableId);
     }
+  }
+
+  Widget buttonsRow() {
+    return Row(
+      children: [
+        Expanded(
+          child: CustomTextButton.withIcon(
+            padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
+            disableColor: AppColors.red,
+            callback: () {
+              final isUserAuth = context.read<AppCubit>().state is AppAuthState;
+              if (!isUserAuth) {
+                Navigator.of(context).pushNamed(
+                  AppRoutesNames.loginFirst,
+                  arguments: {'showBackButton': true},
+                );
+                return;
+              }
+              incContactsIfNeed(widget.state);
+              checkBlockedAndPushChat(
+                context: context,
+                data: widget.state.data,
+              );
+            },
+            text: AppLocalizations.of(context)!.toWrite,
+            styleText: AppTypography.font14white,
+            icon: SvgPicture.asset(
+              'Assets/icons/email.svg',
+              colorFilter: const ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcIn,
+              ),
+              width: 24,
+              height: 24,
+            ),
+          ),
+        ),
+        Material(
+          color: Colors.transparent,
+          child: CustomIconButton(
+            callback: () {
+              final isUserAuth = context.read<AppCubit>().state is AppAuthState;
+              if (!isUserAuth) {
+                Navigator.of(context).pushNamed(
+                  AppRoutesNames.loginFirst,
+                  arguments: {'showBackButton': true},
+                );
+                return;
+              }
+              incContactsIfNeed(widget.state);
+              checkBlockedAndCall(
+                context: context,
+                userId: widget.state.data.creatorData.uid,
+                phone: widget.state.data.creatorData.phone,
+              );
+            },
+            icon: 'Assets/icons/phone.svg',
+          ),
+        ),
+      ],
+    );
   }
 }

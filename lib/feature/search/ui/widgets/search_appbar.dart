@@ -15,8 +15,10 @@ class SearchAppBar extends StatefulWidget {
     required this.onTap,
     required this.showBackButton,
     required this.showFilter,
+    required this.showCancelAction,
     required this.onCancelAction,
     required this.autofocus,
+    required this.focusNode,
   });
   final Function(String) onSubmitted;
   final Function(String) onChange;
@@ -24,9 +26,11 @@ class SearchAppBar extends StatefulWidget {
   final TextEditingController searchController;
   final GlobalKey<FormFieldState<String>>? searchControllerKey;
   final bool showBackButton;
+  final bool showCancelAction;
   final bool showFilter;
   final bool autofocus;
   final Function onCancelAction;
+  final FocusNode focusNode;
 
   @override
   State<SearchAppBar> createState() => _SearchAppBarState();
@@ -53,6 +57,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
             icon: "Assets/icons/only_search.svg",
             onTap: widget.onTap,
             autofocus: widget.autofocus,
+            focusNode: widget.focusNode,
           ),
         ),
         const SizedBox(width: 10),
@@ -60,12 +65,15 @@ class _SearchAppBarState extends State<SearchAppBar> {
           CustomIconButtonSearch(
             assetName: 'Assets/icons/sliders.svg',
             callback: () {
-              showFilterBottomSheet(context: context);
+              showFilterBottomSheet(
+                context: context,
+                needOpenNewScreen: false,
+              );
             },
             height: 44,
             width: 44,
-          )
-        else
+          ),
+        if (widget.showCancelAction)
           TextButton(
             onPressed: () {
               widget.onCancelAction();

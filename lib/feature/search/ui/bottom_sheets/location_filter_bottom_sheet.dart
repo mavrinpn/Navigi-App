@@ -104,7 +104,8 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
                     CustomTextButton.orangeContinue(
                       callback: () {
                         RepositoryProvider.of<SearchManager>(context).setSearch(false);
-
+                        
+                        searchCubit.clearCityFilters();
                         searchCubit.setFilters(
                           parameters: selectCategoryCubit.parameters,
                           cityId: selectedCityId,

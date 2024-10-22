@@ -65,6 +65,7 @@ class _SearchSubcategoryScreenState extends State<SearchSubcategoryScreen> with 
         arguments: {
           'showBackButton': false,
           'showSearchHelper': false,
+          'showFilterChips': true,
           'title': subcategory.localizedName(),
           'isSubcategory': true,
         },

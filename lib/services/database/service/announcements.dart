@@ -102,6 +102,8 @@ class AnnouncementsService {
       queries.add(Query.equal('area_id', filterData.areaId));
     }
 
+    debugPrint(queries.toString());
+
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
       collectionId: postCollection,
@@ -166,6 +168,8 @@ class AnnouncementsService {
     queries.add(Query.isNotNull('announcements'));
 
     queries.add(Query.orderDesc('\$createdAt'));
+
+    debugPrint(queries.toString());
 
     try {
       final res = await _databases.listDocuments(

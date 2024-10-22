@@ -14,6 +14,7 @@ import 'package:smart/feature/announcement/ui/widgets/announcement_mini_map.dart
 import 'package:smart/feature/announcement/ui/widgets/float_contacts_buttons.dart';
 import 'package:smart/feature/announcement/ui/widgets/market_price_widget.dart';
 import 'package:smart/feature/announcement/ui/widgets/related_announcement_widget.dart';
+import 'package:smart/feature/announcement/ui/widgets/share_button.dart';
 import 'package:smart/feature/create_announcement/bloc/creating_blocs.dart';
 import 'package:smart/feature/create_announcement/bloc/mark_model/mark_model_cubit.dart';
 import 'package:smart/main.dart';
@@ -169,6 +170,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       ))
                     else
                       const Spacer(),
+                    ShareButton(postId: state.data.anouncesTableId),
+                    const SizedBox(width: 4),
                     FavouriteIndicator(postId: state.data.anouncesTableId),
                     const SizedBox(width: 4),
                     IconButton(
@@ -206,7 +209,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                   ],
                 ),
               ),
-              floatingActionButton: showFloatContactsButton ? FloatContactsButtons(state: state) : null,
+              floatingActionButton: showFloatContactsButton ? FloatContactsButtons(state: state, isFloat: true) : null,
               floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
               body: SingleChildScrollView(
                 keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -458,7 +461,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                       ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 32),
-                      child: FloatContactsButtons(state: state),
+                      child: FloatContactsButtons(state: state, isFloat: false),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),

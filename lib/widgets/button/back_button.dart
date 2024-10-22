@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart/feature/main/ui/main_page.dart';
 import 'package:smart/utils/app_icons_icons.dart';
 
 class CustomBackButton extends StatelessWidget {
@@ -11,7 +12,16 @@ class CustomBackButton extends StatelessWidget {
     return IconButton(
       onPressed: () {
         if (callback != null) callback!();
-        Navigator.pop(context);
+
+        if (Navigator.of(context).canPop()) {
+          Navigator.pop(context);
+        } else {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const MainPage()),
+            (Route<dynamic> route) => false,
+          );
+        }
       },
       icon: Icon(
         AppIcons.arrowleft,
@@ -19,23 +29,5 @@ class CustomBackButton extends StatelessWidget {
         color: color ?? Colors.black,
       ),
     );
-    // return InkWell(
-    //   focusColor: AppColors.empty,
-    //   hoverColor: AppColors.empty,
-    //   highlightColor: AppColors.empty,
-    //   splashColor: AppColors.empty,
-    //   onTap: () {
-    //     if (callback != null) callback!();
-    //     Navigator.pop(context);
-    //   },
-    //   child: SizedBox(
-    //     width: 35,
-    //     height: 48,
-    //     child: Icon(
-    //       Icons.arrow_back,
-    //       color: color ?? AppColors.black,
-    //     ),
-    //   ),
-    // );
   }
 }

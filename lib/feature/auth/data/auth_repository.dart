@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:typed_data';
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/enums.dart';
 import 'package:appwrite/models.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart/enum/enum.dart';
 import 'package:smart/models/user.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/messaging_service.dart';
 import 'package:smart/services/storage_service.dart';
-
-import '../../../enum/enum.dart';
 
 class AuthRepository {
   final Client client;
@@ -27,6 +27,8 @@ class AuthRepository {
   User? loggedUser;
   UserData? userData;
   String? sessionID;
+
+  String get userId => loggedUser?.$id ?? '';
 
   bool appMounted = true;
 
@@ -46,8 +48,6 @@ class AuthRepository {
 
   static const sessionIdKey = 'sessionID';
 
-  String get userId => loggedUser?.$id ?? '';
-
   AuthRepository({
     required this.client,
     required DatabaseService databaseService,
@@ -62,16 +62,11 @@ class AuthRepository {
     checkLogin();
   }
 
-  BehaviorSubject<bool> refresherStream = BehaviorSubject();
-
-  // BehaviorSubject<EntranceStateEnum> authState = BehaviorSubject<EntranceStateEnum>.seeded(EntranceStateEnum.wait);
-
   BehaviorSubject<AuthStateEnum> appState = BehaviorSubject<AuthStateEnum>.seeded(AuthStateEnum.wait);
-
   BehaviorSubject<LoadingStateEnum> profileState = BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.loading);
 
-  void _initialize() async {
-    getUserData();
+  Future<void> _initialize() async {
+    await getUserData();
     initNotification();
     _startOnlineTimer();
   }
@@ -80,19 +75,34 @@ class AuthRepository {
     _messagingService.initNotification(loggedUser?.$id ?? '');
   }
 
-  void checkLogin() async {
+  Future<String?> checkLogin() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      sessionID = prefs.getString(sessionIdKey);
-      if (sessionID != null) {
-        loggedUser = await _account.get();
-        _initialize();
-        appState.add(AuthStateEnum.auth);
-      } else {
+      final session = await _account.getSession(sessionId: 'current');
+      debugPrint('checkLogin session ${session.$id}');
+      sessionID = session.$id;
+
+      try {
+        final account = await _account.get();
+        loggedUser = account;
+
+        final userData = await _databaseService.users.getUserData(uid: account.$id);
+        if (userData != null && userData.name.isNotEmpty && userData.phone.isNotEmpty) {
+          await _initialize();
+          appState.add(AuthStateEnum.auth);
+          return null;
+        } else {
+          appState.add(AuthStateEnum.authWithNoData);
+          return null;
+        }
+      } catch (err) {
+        debugPrint('account.get ${err.toString()}');
         appState.add(AuthStateEnum.unAuth);
+        return 'account.get ${err.toString()}';
       }
-    } catch (e) {
+    } catch (err) {
+      debugPrint('getSession ${err.toString()}');
       appState.add(AuthStateEnum.unAuth);
+      return 'getSession ${err.toString()}';
     }
   }
 
@@ -110,11 +120,6 @@ class AuthRepository {
         phone: phone,
         imageUrl: imageUrl,
       );
-
-      // await _account.updatePhone(
-      //   phone: '+213$phone',
-      //   password: password,
-      // );
     } catch (e) {
       profileState.add(LoadingStateEnum.fail);
       rethrow;
@@ -143,7 +148,6 @@ class AuthRepository {
 
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
-    // authState.add(EntranceStateEnum.wait);
     _messagingService.userId = null;
     appState.add(AuthStateEnum.unAuth);
   }
@@ -163,8 +167,7 @@ class AuthRepository {
           body: encodedBody,
         );
 
-        // ignore: avoid_print
-        print('${res.responseStatusCode}');
+        debugPrint('${res.responseStatusCode}');
 
         sessionID = null;
         loggedUser = null;
@@ -179,8 +182,7 @@ class AuthRepository {
           body: encodedBody,
         );
 
-        // ignore: avoid_print
-        print('${res.responseStatusCode}');
+        debugPrint('${res.responseStatusCode}');
 
         sessionID = null;
         loggedUser = null;
@@ -192,10 +194,7 @@ class AuthRepository {
       log('loggedUser is null');
     }
 
-    final prefs = await SharedPreferences.getInstance();
-    prefs.clear();
-    _messagingService.userId = null;
-    appState.add(AuthStateEnum.unAuth);
+    logout();
   }
 
   Future<String?> login(String email, String password) async {
@@ -210,45 +209,38 @@ class AuthRepository {
           _account.deleteSessions();
         }
       } catch (err) {
-        // ignore: avoid_print
-        print(err);
+        debugPrint(err.toString());
       }
 
-      await _createSession(credentials);
+      try {
+        await _account.createEmailPasswordSession(
+          email: credentials.mail,
+          password: credentials.password,
+        );
+        loggedUser = await _account.get();
+      } catch (err) {
+        debugPrint(err.toString());
+        return err.toString();
+      }
 
-      await _createUserData(
-        uid: loggedUser!.$id,
-        email: credentials.mail,
-        name: '',
-        phone: '',
-      );
-
-      if (loggedUser!.emailVerification) {
-        await getUserData();
-        _messagingService.initNotification(loggedUser?.$id ?? '');
-        _startOnlineTimer();
-
-        // authState.add(EntranceStateEnum.success);
-        appState.add(AuthStateEnum.auth);
+      final userData = await _databaseService.users.getUserData(uid: loggedUser!.$id);
+      if (userData != null && userData.name.isNotEmpty && userData.phone.isNotEmpty) {
+        if (loggedUser!.emailVerification) {
+          await _initialize();
+          appState.add(AuthStateEnum.auth);
+        } else {
+          return 'user-not-verificated';
+        }
       } else {
-        return 'user-not-verificated';
+        appState.add(AuthStateEnum.authWithNoData);
+        return null;
       }
     } catch (err) {
-      // ignore: avoid_print
-      print(err);
+      debugPrint(err.toString());
       return err.toString();
-      // authState.add(EntranceStateEnum.fail);
     }
     return null;
   }
-
-  // Future<void> createAccountAndSendSms({
-  //   required String phone,
-  //   required bool isPasswordRestore,
-  // }) async {
-  //   await _createTempAccount(phone);
-  //   await _databaseService.users.sendSms();
-  // }
 
   Future<String?> createEmailAccount({
     required String email,
@@ -259,8 +251,7 @@ class AuthRepository {
     try {
       await _account.deleteSessions();
     } catch (err) {
-      // ignore: avoid_print
-      print('deleteSessions: $err');
+      debugPrint('deleteSessions: $err');
     }
 
     final accountName = email.split('@').firstOrNull ?? 'Guest';
@@ -274,8 +265,7 @@ class AuthRepository {
         name: accountName,
       );
     } catch (err) {
-      // ignore: avoid_print
-      print('account.create $err');
+      debugPrint('account.create $err');
       return err.toString();
     }
 
@@ -285,28 +275,21 @@ class AuthRepository {
         password: password,
       );
 
-      // await _account.updatePhone(
-      //   phone: '+213$phone',
-      //   password: password,
-      // );
       loggedUser = await _account.get();
     } catch (err) {
-      // ignore: avoid_print
-      print('createEmailPasswordSession $err');
+      debugPrint('createEmailPasswordSession $err');
       return err.toString();
     }
 
     final account = await _account.get();
     try {
-      await _createUserData(
+      await _databaseService.users.createUser(
         uid: account.$id,
-        email: email,
         name: name,
         phone: phone,
       );
     } catch (err) {
-      // ignore: avoid_print
-      print('createUserData $err');
+      debugPrint('createUserData $err');
       return err.toString();
     }
 
@@ -327,19 +310,13 @@ class AuthRepository {
     required String phone,
     required String email,
   }) async {
-    // authState.add(EntranceStateEnum.loading);
-
     final status = await _databaseService.users.confirmEmailCode(
       code: code,
       email: email,
     );
 
     if (status == 'ok') {
-      await getUserData();
-      _messagingService.initNotification(loggedUser?.$id ?? '');
-      _startOnlineTimer();
-
-      // authState.add(EntranceStateEnum.success);
+      await _initialize();
       appState.add(AuthStateEnum.auth);
     } else {
       return status;
@@ -392,157 +369,64 @@ class AuthRepository {
     }
   }
 
-  // Future<String?> _getEmailByPhone(String phone) async {
-  //   final String? email;
-  //   if (!_tempMail.startsWith('89$phone')) {
-  //     email = convertPhoneToTempEmail(phone);
-  //     _tempMail = email;
-  //   } else {
-  //     email = null;
-  //   }
-  //   return email;
-  // }
-
-  // Future _createTempAccount(String email) async {
-  //   const String password = 'temppassword123';
-  //   //final String? email = await _getEmailByPhone(phone);
-  //   try {
-  //     await _account.deleteSessions();
-  //   } catch (err) {
-  //     // ignore: avoid_print
-  //     print(err);
-  //   }
-
-  //   try {
-  //     await _account.create(
-  //       userId: ID.unique(),
-  //       email: email,
-  //       password: password,
-  //       name: 'Guest',
-  //     );
-  //   } catch (err) {
-  //     // ignore: avoid_print
-  //     print(err);
-  //   }
-
-  //   try {
-  //     await _account.createEmailPasswordSession(
-  //       email: email,
-  //       password: password,
-  //     );
-  //   } catch (err) {
-  //     // ignore: avoid_print
-  //     print(err);
-  //   }
-  // }
-
-  // Future<void> _registerWithCredentials({
-  //   required UserCredentials credentials,
-  //   String? registrationName,
-  //   required bool userExist,
-  //   bool needRegister = false,
-  // }) async {
-  //   assert(!needRegister || needRegister && registrationName != null, 'for registration required name');
-
-  //   await _createSession(credentials);
-
-  //   if (userExist) {
-  //     print('userExist');
-  //     await _createSession(credentials);
-  //   } else {
-  //     print('user not Exist');
-  //     await _createSession(credentials);
-  //     // try {
-  //     //   await _account.get();
-  //     //   final sessions = await _account.listSessions();
-  //     //   if (sessions.sessions.isNotEmpty) {
-  //     //     _user = await _account.get();
-  //     //     final session = await _account.getSession(sessionId: 'current');
-  //     //     await _saveSessionId(session.$id);
-  //     //   } else {
-  //     //     await _createSession(credentials);
-  //     //   }
-  //     // } catch (err) {
-  //     //   // ignore: avoid_print
-  //     //   print(err);
-  //     //   await _createSession(credentials);
-  //     // }
-
-  //     // if (needRegister) {
-  //     //   await _createUserData(credentials.mail, registrationName!);
-  //     // }
-  //   }
-
-  //   await _createUserData(credentials.mail, registrationName!);
-
-  //   // try {
-  //   //   print('try sessions');
-  //   //   final sessions = await _account.listSessions();
-  //   //   if (sessions.sessions.isNotEmpty) {
-  //   //     print('sessions.isNotEmpty');
-  //   //     _user = await _account.get();
-  //   //     final session = await _account.getSession(sessionId: 'current');
-  //   //     await _saveSessionId(session.$id);
-  //   //   } else {
-  //   //     print('sessions.isEmpty');
-  //   //     try {
-  //   //       final promise = await _account.createEmailPasswordSession(
-  //   //         email: credentials.mail,
-  //   //         password: credentials.password,
-  //   //       );
-  //   //       _user = await _account.get();
-  //   //       await _saveSessionId(promise.$id);
-  //   //     } catch (err) {
-  //   //       // ignore: avoid_print
-  //   //       print(err);
-  //   //       // AppwriteException (AppwriteException: user_session_already_exists, Creation of a session is prohibited when a session is active. (401))
-  //   //       rethrow;
-  //   //     }
-  //   //   }
-  //   // } catch (err) {
-  //   //   // ignore: avoid_print
-  //   //   print(err);
-  //   //   rethrow;
-  //   // }
-
-  //   await getUserData();
-  //   _initMessaging();
-  //   _startOnlineTimer();
-  // }
-
-  Future<void> _createSession(UserCredentials credentials) async {
+  Future<String?> signInWithApple() async {
+    debugPrint('signInWithApple');
     try {
-      final promise = await _account.createEmailPasswordSession(
-        email: credentials.mail,
-        password: credentials.password,
-      );
-      loggedUser = await _account.get();
-      await _saveSessionId(promise.$id);
+      await _account.deleteSessions();
     } catch (err) {
-      // ignore: avoid_print
-      print(err);
-      rethrow;
+      debugPrint('deleteSessions: $err');
     }
+
+    try {
+      await _account.createOAuth2Session(
+        provider: OAuthProvider.apple,
+      );
+    } catch (err) {
+      debugPrint('account.signInWithApple $err');
+      return err.toString();
+    }
+
+    return checkLogin();
   }
 
-  Future _saveSessionId(String newSessionId) async {
-    sessionID = newSessionId;
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString(sessionIdKey, sessionID!);
+  Future<String?> signInWithGoogle() async {
+    debugPrint('signInWithGoogle');
+    try {
+      await _account.deleteSessions();
+    } catch (err) {
+      debugPrint('deleteSessions: $err');
+    }
+
+    try {
+      await _account.createOAuth2Session(provider: OAuthProvider.google, scopes: [
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile',
+      ]);
+    } catch (err) {
+      debugPrint('account.signInWithGoogle $err');
+      return err.toString();
+    }
+
+    return checkLogin();
   }
 
-  Future _createUserData({
-    required String uid,
-    required String email,
+  Future<void> setUserData({
     required String name,
     required String phone,
   }) async {
-    // final phone = email.split('@')[0];
-
-    await _databaseService.users.createUser(
-      uid: uid,
-      name: name,
-      phone: phone,
-    );
+    if (loggedUser != null) {
+      try {
+        await _databaseService.users.createUser(
+          uid: loggedUser!.$id,
+          name: name,
+          phone: phone,
+        );
+        checkLogin();
+      } catch (err) {
+        debugPrint('createUserData $err');
+      }
+    } else {
+      debugPrint('setUserData loggedUser is null');
+    }
   }
 }

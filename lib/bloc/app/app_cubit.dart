@@ -35,6 +35,9 @@ class AppCubit extends Cubit<AppState> {
 
         emit(AppAuthState());
       }
+      if (event == AuthStateEnum.authWithNoData) {
+        emit(AppAuthWithNoDataState());
+      }
       if (event == AuthStateEnum.unAuth) {
         // announcementManager.addLimitAnnouncements(true);
         favouritesManager.userId = null;
@@ -43,5 +46,9 @@ class AppCubit extends Cubit<AppState> {
         emit(AppUnAuthState());
       }
     });
+  }
+
+  void resetLogin() {
+    emit(AppUnAuthState());
   }
 }

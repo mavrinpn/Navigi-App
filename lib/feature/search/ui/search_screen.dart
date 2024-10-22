@@ -37,6 +37,8 @@ class SearchScreen extends StatefulWidget {
     required this.title,
     required this.showSearchHelper,
     required this.showKeyboard,
+    required this.showCancelButton,
+    required this.showFilterChips,
     this.searchQueryString,
     required this.isSubcategory,
   });
@@ -44,6 +46,9 @@ class SearchScreen extends StatefulWidget {
   final bool showBackButton;
   final bool showSearchHelper;
   final bool showKeyboard;
+  final bool showCancelButton;
+  final bool showFilterChips;
+
   final String title;
   final bool isSubcategory;
   final String? searchQueryString;
@@ -55,16 +60,22 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   // late StreamSubscription<InternetStatus> _internetConnectionSubscription;
   final _controller = ScrollController();
+  final FocusNode _focusNode = FocusNode();
   String? searchQueryString;
   bool _showFilterChips = true;
+  bool _showCancelButton = true;
+  bool _showBackButton = true;
   String lastQuery = '';
 
   bool isScrollLoading = false;
+  final _searchAppBarKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    _showFilterChips = !widget.showBackButton;
+    _showFilterChips = widget.showFilterChips;
+    _showCancelButton = widget.showCancelButton;
+    _showBackButton = widget.showBackButton;
     final searchManager = RepositoryProvider.of<SearchManager>(context);
     searchManager.setSearch(widget.showSearchHelper);
 
@@ -97,6 +108,12 @@ class _SearchScreenState extends State<SearchScreen> {
     //       break;
     //   }
     // });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.showKeyboard) {
+        FocusScope.of(context).requestFocus(_focusNode);
+      }
+    });
   }
 
   @override
@@ -157,30 +174,33 @@ class _SearchScreenState extends State<SearchScreen> {
       scrolledUnderElevation: 0,
       titleSpacing: 0,
       clipBehavior: Clip.none,
-      //bottom: !widget.showBackButton ? _buildCategoryAppBarBottom(_showFilterChips) : null,
-      bottom: _buildCategoryAppBarBottom(_showFilterChips, !widget.showBackButton),
+      bottom: _buildCategoryAppBarBottom(_showFilterChips, !_showBackButton && !_showCancelButton),
       title: Column(
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: SearchAppBar(
-              showBackButton: widget.isSubcategory ? widget.showBackButton : _showFilterChips,
-              showFilter: widget.isSubcategory ? _showFilterChips : _showFilterChips,
+              key: _searchAppBarKey,
+              showBackButton: _showBackButton,
+              showFilter: _showFilterChips,
+              showCancelAction: _showCancelButton,
               onCancelAction: () {
                 if (widget.isSubcategory) {
                   FocusScope.of(context).unfocus();
                   searchManager.setSearch(false);
                   setState(() {
                     _showFilterChips = true;
+                    _showCancelButton = false;
+                    _showBackButton = true;
                   });
                 } else {
                   Navigator.of(context).pop();
                 }
               },
               onSubmitted: (String? value) {
-                setState(() {
-                  _showFilterChips = true;
-                });
+                _showFilterChips = true;
+                _showCancelButton = false;
+                _showBackButton = true;
 
                 searchManager.setSearch(false);
                 searchManager.saveInHistory(value!);
@@ -219,11 +239,14 @@ class _SearchScreenState extends State<SearchScreen> {
                 searchManager.setSearch(true);
                 setState(() {
                   _showFilterChips = false;
+                  _showCancelButton = true;
+                  _showBackButton = false;
                 });
               },
               searchController: searchScreenTextController,
               searchControllerKey: null,
-              autofocus: widget.showKeyboard,
+              focusNode: _focusNode,
+              autofocus: false,
             ),
           ),
         ],
@@ -242,9 +265,9 @@ class _SearchScreenState extends State<SearchScreen> {
             );
           },
           onKeywordTap: (keyword) {
-            setState(() {
-              _showFilterChips = true;
-            });
+            _showFilterChips = true;
+            _showCancelButton = false;
+            _showBackButton = true;
 
             final query = keyword.localizedName();
 
@@ -267,7 +290,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
             setState(() {});
 
-            FocusManager.instance.primaryFocus?.unfocus();
+            FocusScope.of(context).unfocus();
           },
         );
       } else if (searchQueryString != null || state is SearchItemsLoading) {
@@ -573,6 +596,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         showFilterBottomSheet(
                           context: context,
                           parameterKey: FilterKeys.location,
+                          needOpenNewScreen: false,
                         );
                       },
                       child: Text(_cityName(context)),

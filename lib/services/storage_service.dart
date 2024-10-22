@@ -45,5 +45,5 @@ class FileStorageManager {
   // String createViewUrl(String fileID, String bucketID) =>
   //     'http://admin.navigidz.online/v1/storage/buckets/$bucketID/files/$fileID/view?project=64fb37419dc681fa6860';
   String createViewUrl(String fileID, String bucketID) =>
-      '$serviceProtocol$serviceDomain/v1/storage/buckets/$bucketID/files/$fileID/view?project=65d8fa703a95c4ef256b';
+      '$serviceProtocol$serviceDomain/v1/storage/buckets/$bucketID/files/$fileID/view?project=$serviceProject';
 }

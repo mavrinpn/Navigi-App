@@ -2,6 +2,26 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+	<dict>
+		<key>CFBundleURLName</key>
+		<string>appwrite.navigidz.online</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+		<string>appwrite-callback-65d8fa703a95c4ef256b</string>
+		</array>
+	</dict>
+	</array>
+	<key>NSAppleIDUsageDescription</key>
+	<string>Требуется для входа с использованием Apple ID</string>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

@@ -17,3 +17,8 @@ class AppUnAuthState extends AppState {
   @override
   List<Object?> get props => [];
 }
+
+class AppAuthWithNoDataState extends AppState {
+  @override
+  List<Object?> get props => [];
+}

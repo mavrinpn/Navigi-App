@@ -100,10 +100,10 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
   }) async {
     emit(SearchAnnouncementsLoadingState());
     try {
-      _cityId = cityId;
-      _distrinctId = areaId;
-      _cityTitle = cityTitle;
-      _distrinctTitle = areaTitle;
+      _cityId = cityId ?? _cityId;
+      _distrinctId = areaId ?? _distrinctId;
+      _cityTitle = cityTitle ?? _cityTitle;
+      _distrinctTitle = areaTitle ?? _distrinctTitle;
 
       if (searchMode == SearchModeEnum.simple) {
         await _announcementManager.loadSearchAnnouncement(
@@ -112,8 +112,8 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
           sortBy: _sortBy,
           minPrice: _minPrice,
           maxPrice: _maxPrice,
-          cityId: cityId,
-          areaId: areaId,
+          cityId: _cityId,
+          areaId: _distrinctId,
         );
       } else {
         await _announcementManager.searchWithSubcategory(
@@ -126,8 +126,8 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
           maxPrice: _maxPrice,
           mark: marksFilter?.markId,
           model: marksFilter?.modelId,
-          cityId: cityId,
-          areaId: areaId,
+          cityId: _cityId,
+          areaId: _distrinctId,
         );
       }
 

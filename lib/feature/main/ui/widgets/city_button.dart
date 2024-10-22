@@ -43,6 +43,7 @@ class _CityButtonState extends State<CityButton> {
             showFilterBottomSheet(
               context: context,
               parameterKey: FilterKeys.location,
+              needOpenNewScreen: false,
             );
           },
           child: Text(_cityName(context)),

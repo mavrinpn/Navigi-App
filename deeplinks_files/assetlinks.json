@@ -1,0 +1,9 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "dev.platovco.navigi",
+      "sha256_cert_fingerprints":
+      ["3D:8A:81:F3:74:C4:7E:6C:E0:9F:79:60:4D:E9:6D:1C:3A:3C:58:56:78:18:EC:DE:8A:4B:37:23:63:F5:38:8B"]
+    }
+  }]

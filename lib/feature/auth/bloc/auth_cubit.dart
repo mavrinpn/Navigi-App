@@ -12,30 +12,11 @@ class AuthCubit extends Cubit<AuthState> {
   String _name = '';
   String _password = '';
 
-  AuthCubit({required this.authRepository}) : super(AuthInitial()) {
-    // authRepository.authState.stream.listen((event) {
-    //   if (event == EntranceStateEnum.success) emit(AuthSuccessState());
-    //   if (event == EntranceStateEnum.loading) emit(AuthLoadingState());
-    //   if (event == EntranceStateEnum.fail) emit(AuthFailState());
-    //   if (event == EntranceStateEnum.alreadyExist) emit(UserAlreadyExistState());
-    //   if (event == EntranceStateEnum.userNotFound) emit(NotFoundState());
-    // });
-  }
+  AuthCubit({required this.authRepository}) : super(AuthInitial());
 
   setPhoneForLogin(String newPhone) => _phone = newPhone;
   setEmailForLogin(String newEMail) => _email = newEMail;
   String getEmailForLogin() => _email;
-
-  // registerWithPhone({
-  //   required String phone,
-  //   required String name,
-  //   required String password,
-  // }) {
-  //   _name = name;
-  //   _password = password;
-  //   _phone = phone;
-  //   _sendSms(isPasswordRestore: false);
-  // }
 
   registerWithEmail({
     required String name,
@@ -65,21 +46,25 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  // void sendEmailCode() async {
-  //   await authRepository.sendEmailCode(
-  //     email: _email,
-  //     password: _password,
-  //   );
-  // }
+  registerWithApple() async {
+    emit(UserCreatingState());
+    final result = await authRepository.signInWithApple();
+    if (result == null) {
+      emit(UserSuccessCreatedState());
+    } else {
+      emit(UserAlreadyExistState());
+    }
+  }
 
-  // restorePassword({
-  //   required String phone,
-  //   required String password,
-  // }) {
-  //   _password = password;
-  //   _phone = phone;
-  //   _sendSms(isPasswordRestore: true);
-  // }
+  registerWithGoogle() async {
+    emit(UserCreatingState());
+    final result = await authRepository.signInWithGoogle();
+    if (result == null) {
+      emit(UserSuccessCreatedState());
+    } else {
+      emit(UserAlreadyExistState());
+    }
+  }
 
   void restorePasswordWithEmail({
     required String email,
@@ -94,11 +79,6 @@ class AuthCubit extends Cubit<AuthState> {
     );
     emit(UserSuccessCreatedState());
   }
-
-  // loginWithPhone({required String password}) {
-  //   final email = convertPhoneToVerifiedEmail(_phone);
-  //   authRepository.login(email, password);
-  // }
 
   loginWithEmail({required String password}) async {
     final email = _email;
@@ -116,14 +96,6 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthFailState());
     }
   }
-
-  // void _sendSms({required bool isPasswordRestore}) async {
-  //   if (_phone.isEmpty) throw Exception('phone must not be empty');
-  //   await authRepository.createAccountAndSendSms(
-  //     phone: _phone,
-  //     isPasswordRestore: isPasswordRestore,
-  //   );
-  // }
 
   Future<void> confirmEmailCode({
     required String code,
@@ -172,4 +144,14 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() => authRepository.logout();
 
   Future<void> deleteIdentity() => authRepository.deleteIdentity();
+
+  Future<void> setUserData({
+    required String name,
+    required String phone,
+  }) async {
+    authRepository.setUserData(
+      name: name,
+      phone: phone,
+    );
+  }
 }

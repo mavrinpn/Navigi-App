@@ -68,7 +68,7 @@ class MyRepositoryProviders extends StatelessWidget {
 
   final SharedPreferences prefs;
 
-  final client = appwrite.Client().setEndpoint('$serviceProtocol$serviceDomain/v1').setProject('65d8fa703a95c4ef256b');
+  final client = appwrite.Client().setEndpoint('$serviceProtocol$serviceDomain/v1').setProject(serviceProject);
 
   @override
   Widget build(BuildContext context) {

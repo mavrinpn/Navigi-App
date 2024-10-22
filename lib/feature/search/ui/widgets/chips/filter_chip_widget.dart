@@ -36,6 +36,7 @@ class FilterChipWidget extends StatelessWidget {
         showFilterBottomSheet(
           context: context,
           parameterKey: parameterKey,
+          needOpenNewScreen: false,
         );
       },
     );

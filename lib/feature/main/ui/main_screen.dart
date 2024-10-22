@@ -98,53 +98,58 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  void openSearchScreen({
+    required String? query,
+    required bool showKeyboard,
+  }) {
+    final subcategoriesCubit = context.read<SearchSelectSubcategoryCubit>();
+    final searchCubit = context.read<SearchAnnouncementCubit>();
+    searchCubit.setSubcategory(null);
+    searchCubit.setSearchMode(SearchModeEnum.simple);
+
+    subcategoriesCubit.getSubcategoryFilters('').then((value) => searchCubit.searchAnnounces(
+          searchText: '',
+          isNew: true,
+          showLoading: true,
+          parameters: [],
+        ));
+
+    BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
+    // BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
+    //   searchText: '',
+    //   isNew: true,
+    //   showLoading: false,
+    // );
+    Navigator.pushNamed(
+      context,
+      AppRoutesNames.search,
+      arguments: {
+        'query': query,
+        'showBackButton': false,
+        'showCancelButton': true,
+        'showFilterChips': false,
+        'showKeyboard': showKeyboard,
+      },
+    ).then((value) {
+      BlocProvider.of<SearchItemsCubit>(context).searchKeywords(
+        query: '',
+        subcategoryId: '',
+      );
+    });
+  }
+
+  void openFilters() {
+    // openSearchScreen(query: null, showKeyboard: false);
+    context.read<SearchAnnouncementCubit>().setSearchMode(SearchModeEnum.simple);
+    showFilterBottomSheet(
+      context: context,
+      needOpenNewScreen: true,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final announcementRepository = RepositoryProvider.of<AnnouncementManager>(context);
-
-    void openSearchScreen({
-      required String? query,
-      required bool showKeyboard,
-    }) {
-      final subcategoriesCubit = context.read<SearchSelectSubcategoryCubit>();
-      final searchCubit = context.read<SearchAnnouncementCubit>();
-      searchCubit.setSubcategory(null);
-      searchCubit.setSearchMode(SearchModeEnum.simple);
-
-      subcategoriesCubit.getSubcategoryFilters('').then((value) => searchCubit.searchAnnounces(
-            searchText: '',
-            isNew: true,
-            showLoading: true,
-            parameters: [],
-          ));
-
-      BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
-      // BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
-      //   searchText: '',
-      //   isNew: true,
-      //   showLoading: false,
-      // );
-      Navigator.pushNamed(
-        context,
-        AppRoutesNames.search,
-        arguments: {
-          'query': query,
-          'backButton': false,
-          'showKeyboard': showKeyboard,
-        },
-      ).then((value) {
-        BlocProvider.of<SearchItemsCubit>(context).searchKeywords(
-          query: '',
-          subcategoryId: '',
-        );
-      });
-    }
-
-    void openFilters() {
-      openSearchScreen(query: null, showKeyboard: false);
-      context.read<SearchAnnouncementCubit>().setSearchMode(SearchModeEnum.simple);
-      showFilterBottomSheet(context: context);
-    }
 
     return BlocListener<ScrollCubit, ScrollState>(
       listener: (context, state) {
@@ -213,7 +218,7 @@ class _MainScreenState extends State<MainScreen> {
                         child: AdvertisementContainer(
                           onTap: () {},
                           imageUrl:
-                              '$serviceProtocol$serviceDomain/v1/storage/buckets/661d74e7000bc76c563f/files/main_ad/view?project=65d8fa703a95c4ef256b&mode=admin',
+                              '$serviceProtocol$serviceDomain/v1/storage/buckets/661d74e7000bc76c563f/files/main_ad/view?project=$serviceProject&mode=admin',
                         ),
                       ),
                       SliverToBoxAdapter(
@@ -244,9 +249,15 @@ class _MainScreenState extends State<MainScreen> {
                             childAspectRatio: AppSizes.anouncementAspectRatio(context),
                           ),
                           delegate: SliverChildBuilderDelegate(
-                            (context, index) => AnnouncementContainer(
-                                announcement:
-                                    announcementRepository.recommendationAnnouncementsWithExactLocation[index]),
+                            (context, index) {
+                              if (index < announcementRepository.recommendationAnnouncementsWithExactLocation.length) {
+                                return AnnouncementContainer(
+                                    announcement:
+                                        announcementRepository.recommendationAnnouncementsWithExactLocation[index]);
+                              } else {
+                                return const SizedBox.shrink();
+                              }
+                            },
                             childCount: announcementRepository.recommendationAnnouncementsWithExactLocation.length,
                             // childCount: announcementRepository.recommendationAnnouncements.length % 2 == 0
                             //     ? announcementRepository.recommendationAnnouncements.length

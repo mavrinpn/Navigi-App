@@ -208,16 +208,18 @@ class _FiltersBottomSheetState extends State<SubcategoriesWidget> {
       RepositoryProvider.of<SearchManager>(context).setSearch(false);
       BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
 
-      Navigator.pushNamed(
-        context,
-        AppRoutesNames.search,
-        arguments: {
-          'showBackButton': false,
-          'showSearchHelper': false,
-          'isSubcategory': true,
-          'title': subcategory.localizedName(),
-        },
-      );
+      if (widget.needOpenNewScreen) {
+        Navigator.pushNamed(
+          context,
+          AppRoutesNames.search,
+          arguments: {
+            'showBackButton': false,
+            'showSearchHelper': false,
+            'isSubcategory': true,
+            'title': subcategory.localizedName(),
+          },
+        );
+      }
     }
   }
 }

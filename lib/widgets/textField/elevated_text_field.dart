@@ -7,23 +7,6 @@ import 'package:smart/utils/colors.dart';
 import '../../utils/fonts.dart';
 
 class ElevatedTextField extends StatelessWidget {
-  final double width;
-  final double height;
-  final String hintText;
-  final TextEditingController? controller;
-  final TextInputType keyBoardType;
-  final bool obscureText;
-  final int maxLines;
-  final int? maxLength;
-  final ValueChanged<String>? onChange;
-  final String icon;
-  final VoidCallback onTap;
-  final Function(String)? onSubmitted;
-  final TextInputAction? action;
-  final bool readOnly;
-  final bool autofocus;
-  final GlobalKey<FormFieldState<String>>? searchControllerKey;
-
   const ElevatedTextField({
     Key? key,
     required this.hintText,
@@ -42,7 +25,26 @@ class ElevatedTextField extends StatelessWidget {
     this.readOnly = false,
     this.autofocus = false,
     this.searchControllerKey,
+    this.focusNode,
   }) : super(key: key);
+
+  final double width;
+  final double height;
+  final String hintText;
+  final TextEditingController? controller;
+  final TextInputType keyBoardType;
+  final bool obscureText;
+  final int maxLines;
+  final int? maxLength;
+  final ValueChanged<String>? onChange;
+  final String icon;
+  final VoidCallback onTap;
+  final Function(String)? onSubmitted;
+  final TextInputAction? action;
+  final bool readOnly;
+  final bool autofocus;
+  final GlobalKey<FormFieldState<String>>? searchControllerKey;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,7 @@ class ElevatedTextField extends StatelessWidget {
       child: TextField(
         key: searchControllerKey,
         autofocus: autofocus,
+        focusNode: focusNode,
         readOnly: readOnly,
         onTap: onTap,
         textInputAction: action,

@@ -257,7 +257,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                     cityTitle: selectedCityTitle,
                     areaTitle: selectedAreaTitle,
                   );
-                  Navigator.pop(context);
+                  Navigator.pop(context, true);
 
                   if (widget.needOpenNewScreen) {
                     Navigator.pushNamed(
@@ -265,6 +265,10 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                       AppRoutesNames.search,
                       arguments: {
                         'showSearchHelper': false,
+                        'showBackButton': true,
+                        'showCancelButton': false,
+                        'showFilterChips': true,
+                        'showKeyboard': false,
                       },
                     );
                   }
@@ -579,6 +583,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
             await showFilterBottomSheet(
               context: context,
               parameterKey: FilterKeys.subcategory,
+              needOpenNewScreen: false,
             );
             setState(() {});
           },

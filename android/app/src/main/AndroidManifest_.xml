@@ -12,6 +12,7 @@
           android:name="com.google.firebase.messaging.default_notification_icon"
           android:resource="@drawable/notification_icon" />
         
+
         <!-- <meta-data
             android:name="com.huawei.hms.client.appid"
             android:value="appid=5765880207855372331" />
@@ -52,21 +53,29 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="navigidz.online" />
-                <data android:scheme="https" />
+                <data android:scheme="https"
+                    android:host="navigidz.online"
+                    android:pathPrefix="/panel" />
+            </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="appwrite.navigidz.online"/>
             </intent-filter>
 
         </activity>
-
         <activity android:name="com.linusu.flutter_web_auth_2.CallbackActivity" android:exported="true">
             <intent-filter android:label="flutter_web_auth_2">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="appwrite-callback-65d8fa703a95c4ef256b" />
+                <data android:scheme="appwrite-callback-64987d0f7f186b7e2b45" />
             </intent-filter>
         </activity>
-        
+        <!-- android:pathPrefix="/panel"  -->
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

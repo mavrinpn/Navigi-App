@@ -1,5 +1,7 @@
-const String serviceProtocol = 'http://';
-const String serviceDomain = '143.244.206.96';
+const String serviceProtocol = 'https://';
+const String serviceDomain = 'appwrite.navigidz.online';
+const String serviceProject = '65d8fa703a95c4ef256b';
+const String serviceCallback = 'appwrite-callback-$serviceProject';
 
 const String carSubcategoryId = '65d45e64812538dfea60';
 

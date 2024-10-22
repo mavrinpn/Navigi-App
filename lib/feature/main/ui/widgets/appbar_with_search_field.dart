@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/widgets/button/icon_button.dart';
 import 'package:smart/widgets/textField/elevated_text_field.dart';
-
-import '../../../../localization/app_localizations.dart';
 
 class MainAppBar extends StatelessWidget {
   const MainAppBar({

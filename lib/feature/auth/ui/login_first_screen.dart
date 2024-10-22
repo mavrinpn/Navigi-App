@@ -170,33 +170,43 @@ class _LoginFirstScreenState extends State<LoginFirstScreen> {
                     ],
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.all(10),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     children: [
-                //       RawMaterialButton(
-                //           onPressed: () {},
-                //           shape: const CircleBorder(),
-                //           constraints: const BoxConstraints(maxWidth: 40, maxHeight: 40),
-                //           child: SvgPicture.asset(
-                //             'Assets/icons/facebook.svg',
-                //             width: 40,
-                //           )),
-                //       const SizedBox(
-                //         width: 5,
-                //       ),
-                //       RawMaterialButton(
-                //           constraints: const BoxConstraints(maxWidth: 40, maxHeight: 40),
-                //           onPressed: () {},
-                //           shape: const CircleBorder(),
-                //           child: SvgPicture.asset(
-                //             'Assets/icons/google.svg',
-                //             width: 40,
-                //           )),
-                //     ],
-                //   ),
-                // ),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      RawMaterialButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          BlocProvider.of<AuthCubit>(context).registerWithApple();
+                        },
+                        shape: const CircleBorder(),
+                        constraints: const BoxConstraints(maxWidth: 40, maxHeight: 40),
+                        child: const CircleAvatar(
+                          backgroundColor: Colors.black,
+                          radius: 20,
+                          child: Icon(
+                            Icons.apple,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      RawMaterialButton(
+                        constraints: const BoxConstraints(maxWidth: 40, maxHeight: 40),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          BlocProvider.of<AuthCubit>(context).registerWithGoogle();
+                        },
+                        shape: const CircleBorder(),
+                        child: SvgPicture.asset(
+                          'Assets/icons/google.svg',
+                          width: 40,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(
                   height: 60,
                 ),

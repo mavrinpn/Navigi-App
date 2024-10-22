@@ -171,11 +171,12 @@ class CategoriesService {
       ]),
       Query.limit(10),
     ];
-    if (subcategoryId != null) {
+    if (subcategoryId != null && subcategoryId.isNotEmpty) {
       queries.add(
         Query.equal('subcategory_id', subcategoryId),
       );
     }
+
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
       collectionId: keyWordsCollection,

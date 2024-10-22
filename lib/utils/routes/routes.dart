@@ -13,6 +13,7 @@ import 'package:smart/feature/auth/ui/login_first_screen.dart';
 import 'package:smart/feature/auth/ui/login_second_screen.dart';
 import 'package:smart/feature/auth/ui/registration_screen.dart';
 import 'package:smart/feature/auth/ui/restore_password_screen.dart';
+import 'package:smart/feature/create_announcement/ui/creating_screens.dart';
 import 'package:smart/feature/home/ui/home_screen.dart';
 import 'package:smart/feature/main/ui/main_screen.dart';
 import 'package:smart/feature/main/ui/sections/all_categories_page.dart';
@@ -31,10 +32,32 @@ import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/models/user.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
-import '../../feature/create_announcement/ui/creating_screens.dart';
-
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
-  if (settings.name == AppRoutesNames.loginFirst) {
+  if (settings.name!.contains('/panel/announcements-promo/')) {
+    //adb shell 'am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "https://navigidz.online/panel/announcements-promo/?id=66f1a7d4a317c76c23dd"' dev.platovco.navigi
+    final announcementId = settings.name?.split('id=').lastOrNull ?? '';
+    return CustomPageRoute(
+      builder: (context) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => AnnouncementCubit(
+                announcementManager: RepositoryProvider.of<AnnouncementManager>(context),
+              ),
+              lazy: false,
+            ),
+            BlocProvider(
+              create: (_) => RelatedAnnouncementCubit(
+                announcementManager: RepositoryProvider.of<AnnouncementManager>(context),
+              ),
+              lazy: false,
+            ),
+          ],
+          child: AnnouncementScreen(announcementId: announcementId),
+        );
+      },
+    );
+  } else if (settings.name == AppRoutesNames.loginFirst) {
     final arguments = settings.arguments as Map<String, dynamic>;
     final showBackButton = arguments['showBackButton'] as bool?;
 
@@ -93,10 +116,14 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     final showBackButton = arguments['showBackButton'] as bool?;
     final showSearchHelper = arguments['showSearchHelper'] as bool?;
     final showKeyboard = arguments['showKeyboard'] as bool?;
+    final showCancelButton = arguments['showCancelButton'] as bool?;
+    final showFilterChips = arguments['showFilterChips'] as bool?;
 
     return CustomPageRoute(
       builder: (context) {
         return SearchScreen(
+          showCancelButton: showCancelButton ?? false,
+          showFilterChips: showFilterChips ?? false,
           showBackButton: showBackButton ?? true,
           showSearchHelper: showSearchHelper ?? true,
           title: title ?? '',
@@ -190,7 +217,6 @@ class CustomPageRoute extends MaterialPageRoute {
 }
 
 final appRoutes = {
-  // AppRoutesNames.root: (context) => const MainPage(),
   AppRoutesNames.restorePassword: (context) => const RestorePasswordScreen(),
   AppRoutesNames.loginSecond: (context) => const LoginSecondScreen(),
   AppRoutesNames.register: (context) => const RegistrationScreen(),
@@ -210,7 +236,6 @@ final appRoutes = {
   AppRoutesNames.settingsLanguage: (context) => const LanguageScreen(),
   AppRoutesNames.notifications: (context) => const NotificationsScreen(),
   AppRoutesNames.announcementCreator: (context) => const CreatorProfileScreen(),
-  // AppRoutesNames.editingAnnouncement: (context) => const EditingAnnouncementScreen(),
   AppRoutesNames.searchSelectSubcategory: (context) => const SearchSubcategoryScreen(),
   AppRoutesNames.allCategories: (context) => const AllCategoriesPage(),
 };

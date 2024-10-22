@@ -19,7 +19,7 @@ String? passwordValidator({
   required String otherValue,
   required AppLocalizations localizations,
 }) {
-  RegExp regex = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)$');
+  RegExp regex = RegExp(r'(?=.*[a-z])(?=.*[A-Z])(?=.*\d)');
 
   if (value == null || value.isEmpty) {
     return localizations.errorReviewOrEnterOther;
@@ -30,7 +30,8 @@ String? passwordValidator({
   if (value.length < 8) {
     return localizations.errorReviewOrEnterOther;
   }
-  if (!regex.hasMatch(value) || !regex.hasMatch(otherValue)) {
+
+  if (!regex.hasMatch(value)) {
     return localizations.passwordMustContains;
   }
 

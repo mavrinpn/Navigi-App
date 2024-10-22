@@ -7,11 +7,12 @@ import 'package:smart/feature/search/ui/bottom_sheets/single_filter_bottom_sheet
 import 'package:smart/feature/search/ui/bottom_sheets/subcategory_filter_bottom_sheet.dart';
 import 'package:smart/feature/search/ui/search_screen.dart';
 
-Future<void> showFilterBottomSheet({
+Future<bool?> showFilterBottomSheet({
   required BuildContext context,
+  required bool needOpenNewScreen,
   String? parameterKey,
 }) {
-  return showModalBottomSheet(
+  return showModalBottomSheet<bool?>(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(20),
@@ -33,7 +34,7 @@ Future<void> showFilterBottomSheet({
         );
       } else if (parameterKey == FilterKeys.subcategory) {
         final searchText = searchScreenTextController.text;
-        
+
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.8,
           child: Padding(
@@ -52,7 +53,7 @@ Future<void> showFilterBottomSheet({
       } else {
         return Padding(
           padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 12),
-          child: const CommonFiltersBottomSheet(),
+          child: CommonFiltersBottomSheet(needOpenNewScreen: needOpenNewScreen),
         );
       }
     },

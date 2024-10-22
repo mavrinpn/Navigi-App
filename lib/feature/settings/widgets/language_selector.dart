@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart/feature/create_announcement/bloc/category/category_cubit.dart';
 import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
 import 'package:smart/models/custom_locate.dart';
@@ -56,6 +58,8 @@ class _LanguageSelectorState extends State<LanguageSelector> {
               final SharedPreferences prefs = await SharedPreferences.getInstance();
               await prefs.setString(langKey, a.shortName);
               currentLocaleShortName.value = a.shortName;
+
+              context.read<CategoryCubit>().loadCategories();
 
               setState(() {});
             },
