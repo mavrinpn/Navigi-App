@@ -16,6 +16,7 @@
 "yourName": "Your name",
 "createPassword": "Pass a password",
 "repeatePassword": "Repeat the password",
+"repeat": "Repeat",
 "acceptPolicy": "I accept the conditions of use and confirm that I accept the privacy policy.",
 "errorIncorrectInfo": "Error! Try or enter other information.",
 "registration": "Registration",

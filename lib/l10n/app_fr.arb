@@ -16,6 +16,7 @@
 "yourName": "Votre nom",
 "createPassword": "Trouver un mot de passe",
 "repeatePassword": "Répétez le mot de passe",
+"repeat": "Répéter",
 "acceptPolicy": "J'accepte les conditions d'utilisation et confirme que j'accepte la politique de confidentialité.",
 "errorIncorrectInfo": "Erreur! Réessayez ou entrez d'autres informations.",
 "registration": "Enregistrement",

@@ -226,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
             key: _splashKey,
             duration: const Duration(milliseconds: 300),
             opacity: _splashOpacity,
-            child: const Splash(showProgress: true),
+            child: const Splash(showConnectedButton: false),
           ),
         ),
       ],

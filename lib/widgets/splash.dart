@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/utils/colors.dart';
+import 'package:smart/widgets/button/custom_text_button.dart';
 
 class Splash extends StatelessWidget {
   const Splash({
     super.key,
-    required this.showProgress,
+    required this.showConnectedButton,
+    this.resetLoginHasConnection,
   });
 
-  final bool showProgress;
+  final bool showConnectedButton;
+  final Function? resetLoginHasConnection;
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: const Color(0xffED5434),
       body: Center(
@@ -27,10 +34,46 @@ class Splash extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.6,
             ),
           ),
-          const SizedBox(height: 40),
-          const CircularProgressIndicator(
-            color: Colors.transparent,
-          ),
+          if (showConnectedButton)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                children: [
+                  const SizedBox(height: 40),
+                  Text(
+                    localizations.noConnection,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  CustomTextButton.orangeContinue(
+                    callback: () {
+                      resetLoginHasConnection?.call();
+                    },
+                    text: '',
+                    activeColor: Colors.white,
+                    disableColor: Colors.white,
+                    child: Text(
+                      localizations.repeat,
+                      style: const TextStyle(
+                        color: AppColors.red,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          else
+            const Column(
+              children: [
+                SizedBox(height: 40),
+                CircularProgressIndicator(
+                  color: Colors.transparent,
+                ),
+              ],
+            ),
         ],
       )),
     );

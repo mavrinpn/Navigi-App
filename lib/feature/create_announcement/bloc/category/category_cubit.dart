@@ -26,7 +26,7 @@ class CategoryCubit extends Cubit<CategoryState> {
           loadCategories();
         },
       );
-      rethrow;
+      // rethrow;
     }
   }
 }

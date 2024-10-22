@@ -58,6 +58,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get repeatePassword => 'Répétez le mot de passe';
 
   @override
+  String get repeat => 'Répéter';
+
+  @override
   String get acceptPolicy => 'J\'accepte les conditions d\'utilisation et confirme que j\'accepte la politique de confidentialité.';
 
   @override

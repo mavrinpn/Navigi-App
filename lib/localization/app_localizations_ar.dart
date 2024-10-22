@@ -58,6 +58,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get repeatePassword => 'كرر كلمة المرور';
 
   @override
+  String get repeat => 'كرر';
+
+  @override
   String get acceptPolicy => 'أقبل شروط الاستخدام وأؤكد أنني أقبل سياسة الخصوصية.';
 
   @override

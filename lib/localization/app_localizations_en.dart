@@ -58,6 +58,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get repeatePassword => 'Repeat the password';
 
   @override
+  String get repeat => 'Repeat';
+
+  @override
   String get acceptPolicy => 'I accept the conditions of use and confirm that I accept the privacy policy.';
 
   @override

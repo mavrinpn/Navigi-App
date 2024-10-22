@@ -16,6 +16,7 @@
 "yourName": "اسمك",
 "createPassword": "ادخل كلمة المرور جديد",
 "repeatePassword": "كرر كلمة المرور",
+"repeat": "كرر",
 "acceptPolicy": "أقبل شروط الاستخدام وأؤكد أنني أقبل سياسة الخصوصية.",
 "errorIncorrectInfo": "خطأ! جرب مجددا أو أدخل معلومات أخرى.",
 "registration": "تسجيل",

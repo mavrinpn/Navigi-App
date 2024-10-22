@@ -58,9 +58,7 @@ class AuthRepository {
         _functions = functions,
         _fileStorageManager = fileStorageManager,
         _messagingService = messagingService,
-        _databaseService = databaseService {
-    checkLogin();
-  }
+        _databaseService = databaseService;
 
   BehaviorSubject<AuthStateEnum> appState = BehaviorSubject<AuthStateEnum>.seeded(AuthStateEnum.wait);
   BehaviorSubject<LoadingStateEnum> profileState = BehaviorSubject<LoadingStateEnum>.seeded(LoadingStateEnum.loading);
@@ -100,9 +98,9 @@ class AuthRepository {
         return 'account.get ${err.toString()}';
       }
     } catch (err) {
-      debugPrint('getSession ${err.toString()}');
+      debugPrint('checkLogin getSession ${err.toString()}');
       appState.add(AuthStateEnum.unAuth);
-      return 'getSession ${err.toString()}';
+      return 'checkLogin getSession ${err.toString()}';
     }
   }
 

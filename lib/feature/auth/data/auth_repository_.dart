@@ -460,7 +460,7 @@ class AuthRepository {
 
       await _saveSessionId(session.$id);
     } catch (err) {
-      print('getSession ${err.toString()}');
+      debugPrint('dealAuth getSession ${err.toString()}');
       appState.add(AuthStateEnum.unAuth);
       return 'unAuth';
     }

@@ -199,6 +199,12 @@ abstract class AppLocalizations {
   /// **'Repeat the password'**
   String get repeatePassword;
 
+  /// No description provided for @repeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat'**
+  String get repeat;
+
   /// No description provided for @acceptPolicy.
   ///
   /// In en, this message translates to:

@@ -18,7 +18,7 @@ class PopularQueriesCubit extends Cubit<PopularQueriesState> {
       emit(PopularQueriesSuccess());
     } catch (e) {
       emit(PopularQueriesFail());
-      rethrow;
+      // rethrow;
     }
   }
 }
