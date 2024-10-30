@@ -65,19 +65,24 @@ class _MainScreenState extends State<MainScreen> {
         }
 
         if (currentScroll > 400) {
-          if (currentScroll > previousScrollOffset) {
-            if (showCategoriesAppBarBottom != false) {
-              setState(() {
-                showCategoriesAppBarBottom = false;
-              });
-            }
-          } else if (currentScroll < previousScrollOffset) {
-            if (showCategoriesAppBarBottom != true) {
-              setState(() {
-                showCategoriesAppBarBottom = true;
-              });
-            }
+          if (showCategoriesAppBarBottom != true) {
+            setState(() {
+              showCategoriesAppBarBottom = true;
+            });
           }
+          // if (currentScroll > previousScrollOffset) {
+          //   if (showCategoriesAppBarBottom != false) {
+          //     setState(() {
+          //       showCategoriesAppBarBottom = false;
+          //     });
+          //   }
+          // } else if (currentScroll < previousScrollOffset) {
+          //   if (showCategoriesAppBarBottom != true) {
+          //     setState(() {
+          //       showCategoriesAppBarBottom = true;
+          //     });
+          //   }
+          // }
           previousScrollOffset = currentScroll;
         } else {
           if (showCategoriesAppBarBottom != false) {
@@ -162,22 +167,23 @@ class _MainScreenState extends State<MainScreen> {
         }
       },
       child: MainScaffold(
+        topSafeArea: false,
         canPop: false,
-        appBar: AppBar(
-          backgroundColor: AppColors.appBarColor,
-          elevation: 0,
-          scrolledUnderElevation: 0,
-          surfaceTintColor: Colors.transparent,
-          flexibleSpace: MainAppBar(
-            isSearch: isSearch,
-            openSearchScreen: () => openSearchScreen(query: null, showKeyboard: true),
-            openFilters: openFilters,
-            cancel: () {
-              FocusScope.of(context).unfocus();
-              setSearch(false);
-            },
-          ),
-        ),
+        // appBar: AppBar(
+        //   backgroundColor: AppColors.red,
+        //   elevation: 0,
+        //   scrolledUnderElevation: 0,
+        //   surfaceTintColor: Colors.transparent,
+        //   flexibleSpace: MainAppBar(
+        //     isSearch: isSearch,
+        //     openSearchScreen: () => openSearchScreen(query: null, showKeyboard: true),
+        //     openFilters: openFilters,
+        //     cancel: () {
+        //       FocusScope.of(context).unfocus();
+        //       setSearch(false);
+        //     },
+        //   ),
+        // ),
         body: Stack(
           children: [
             BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
@@ -200,20 +206,91 @@ class _MainScreenState extends State<MainScreen> {
                     keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                     physics: const AlwaysScrollableScrollPhysics(),
                     slivers: [
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                          child: PopularQueriesWidget(
-                            onSearch: (e) {
-                              openSearchScreen(query: e, showKeyboard: false);
-                            },
+                      SliverAppBar(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(22),
+                            bottomRight: Radius.circular(22),
+                          ),
+                        ),
+                        backgroundColor: AppColors.red,
+                        expandedHeight: showCategoriesAppBarBottom ? 120 : 120,
+                        collapsedHeight: 60,
+                        floating: true,
+                        pinned: true,
+                        flexibleSpace: FlexibleSpaceBar(
+                          expandedTitleScale: 1,
+                          centerTitle: true,
+                          title: SafeArea(
+                            child: MainAppBar(
+                              isSearch: isSearch,
+                              openSearchScreen: () => openSearchScreen(query: null, showKeyboard: true),
+                              openFilters: openFilters,
+                              cancel: () {
+                                FocusScope.of(context).unfocus();
+                                setSearch(false);
+                              },
+                            ),
+                          ),
+                          background: Column(
+                            children: [
+                              const Spacer(),
+                              AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 250),
+                                transitionBuilder: (Widget child, Animation<double> animation) {
+                                  return FadeTransition(opacity: animation, child: child);
+                                },
+                                child: showCategoriesAppBarBottom
+                                    ? const Padding(
+                                        key: ValueKey(1),
+                                        padding: EdgeInsets.fromLTRB(15, 10, 15, 15),
+                                        child: CategoriesChips(),
+                                      )
+                                    : Padding(
+                                        key: const ValueKey(2),
+                                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 7),
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: PopularQueriesWidget(
+                                            onSearch: (e) {
+                                              openSearchScreen(query: e, showKeyboard: false);
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                              ),
+                              // Stack(
+                              //   children: [
+                              //     AnimatedOpacity(
+                              //       opacity: showCategoriesAppBarBottom ? 0 : 1,
+                              //       duration: const Duration(milliseconds: 250),
+                              //       child: Padding(
+                              //         padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                              //         child: Align(
+                              //           alignment: Alignment.topLeft,
+                              //           child: PopularQueriesWidget(
+                              //             onSearch: (e) {
+                              //               openSearchScreen(query: e, showKeyboard: false);
+                              //             },
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     AnimatedPositioned(
+                              //       top: showCategoriesAppBarBottom ? 12 : -50,
+                              //       left: 15,
+                              //       right: 15,
+                              //       duration: const Duration(milliseconds: 250),
+                              //       child: const CategoriesChips(),
+                              //     ),
+                              //   ],
+                              // ),
+                            ],
                           ),
                         ),
                       ),
                       const CategoriesSection(),
-                      const SliverToBoxAdapter(
-                        child: SizedBox(height: 8),
-                      ),
+                      const SliverToBoxAdapter(child: SizedBox(height: 8)),
                       SliverToBoxAdapter(
                         child: AdvertisementContainer(
                           onTap: () {},
@@ -223,7 +300,7 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                       SliverToBoxAdapter(
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
+                          padding: const EdgeInsets.fromLTRB(15, 15, 5, 5),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -326,13 +403,13 @@ class _MainScreenState extends State<MainScreen> {
                 );
               },
             ),
-            AnimatedPositioned(
-              top: showCategoriesAppBarBottom ? 0 : -44,
-              left: 0,
-              right: 0,
-              duration: const Duration(milliseconds: 250),
-              child: const CategoriesChips(),
-            ),
+            // AnimatedPositioned(
+            //   top: showCategoriesAppBarBottom ? 0 : -50,
+            //   left: 0,
+            //   right: 0,
+            //   duration: const Duration(milliseconds: 250),
+            //   child: const CategoriesChips(),
+            // ),
           ],
         ),
       ),

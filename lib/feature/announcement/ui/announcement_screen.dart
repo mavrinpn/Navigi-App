@@ -55,6 +55,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
   // PageController pageController = PageController(viewportFraction: 0.9, initialPage: 0);
   CarouselController carouselController = CarouselController();
   bool carouselControllerInited = false;
+  int imagesCounts = 0;
   double carouselItemWidth = 0;
   final scrollController = ScrollController();
   bool showFloatContactsButton = false;
@@ -95,7 +96,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    carouselItemWidth = MediaQuery.sizeOf(context).width * 0.85;
+    carouselItemWidth = imagesCounts > 1 ? MediaQuery.sizeOf(context).width * 0.85 : MediaQuery.sizeOf(context).width;
     _initCarousel();
   }
 
@@ -143,7 +144,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
             incViewsIfNeed(state);
           }
 
-          final itemCounts = min(state.data.images.length, maxImageCount);
+          imagesCounts = min(state.data.images.length, maxImageCount);
+          carouselItemWidth = imagesCounts > 1 ? MediaQuery.sizeOf(context).width * 0.85 : MediaQuery.sizeOf(context).width;
 
           return RefreshIndicator(
             color: AppColors.red,
@@ -249,11 +251,11 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                               setState(() {});
                             });
                           },
-                          children: List<Widget>.generate(itemCounts, (int index) {
+                          children: List<Widget>.generate(imagesCounts, (int index) {
                             return Container(
                               color: Colors.white,
                               child: Padding(
-                                padding: index == itemCounts - 1 ? const EdgeInsets.only(right: 12) : EdgeInsets.zero,
+                                padding: index == imagesCounts - 1 ? const EdgeInsets.only(right: 16) : EdgeInsets.zero,
                                 child: Container(
                                   clipBehavior: Clip.hardEdge,
                                   decoration: BoxDecoration(
@@ -276,7 +278,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                                       placeholderFadeInDuration: Duration.zero,
                                       imageUrl: state.data.images[index],
                                       fit: BoxFit.contain,
-                                      progressIndicatorBuilder: (context, url, progress) {
+                                      placeholder: (context, url) {
                                         return Shimmer.fromColors(
                                           baseColor: Colors.grey[300]!,
                                           highlightColor: Colors.grey[100]!,

@@ -87,7 +87,7 @@ class _SearchScreenState extends State<SearchScreen> {
     searchQueryString = widget.searchQueryString;
 
     _controller.addListener(() async {
-      if (_controller.position.maxScrollExtent < _controller.offset + 250) {
+      if (_controller.offset > 100 && _controller.position.maxScrollExtent < _controller.offset + 250) {
         if (!isScrollLoading) {
           isScrollLoading = true;
 
@@ -133,7 +133,6 @@ class _SearchScreenState extends State<SearchScreen> {
   void setSearch(String query, SearchManager? searchManager) {
     searchManager?.saveInHistory(query);
 
-    //TODO selectedKeyword
     selectedKeyword = null;
     BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
       searchText: query,
@@ -204,7 +203,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 searchManager.saveInHistory(value!);
                 setState(() {});
 
-                //TODO selectedKeyword
                 selectedKeyword = null;
                 BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
                   searchText: value,
@@ -633,7 +631,6 @@ class _SearchScreenState extends State<SearchScreen> {
                             title: localizations.price,
                             parameterKey: FilterKeys.price,
                           ),
-                          //TODO selectedKeyword
                           if (selectedKeyword != null ||
                               selectCategoryCubit.subcategoryId == null ||
                               selectCategoryCubit.subcategoryId!.isEmpty)

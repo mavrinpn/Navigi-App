@@ -33,10 +33,7 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-    final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
-
     final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
 
     return ConstrainedBox(
@@ -69,34 +66,34 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
                       ),
                       const SizedBox(height: 20),
                       SingleChildScrollView(
-                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                           child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (searchCubit.searchMode == SearchModeEnum.subcategory) ...[
-                            BlocBuilder<SearchSelectSubcategoryCubit, SearchSelectSubcategoryState>(
-                              builder: (context, state) {
-                                if (state is FiltersGotState) {
-                                  return Stack(
-                                    children: [
-                                      Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (searchCubit.searchMode == SearchModeEnum.subcategory) ...[
+                                BlocBuilder<SearchSelectSubcategoryCubit, SearchSelectSubcategoryState>(
+                                  builder: (context, state) {
+                                    if (state is FiltersGotState) {
+                                      return Stack(
                                         children: [
-                                          ...buildFiltersSelection(selectCategoryCubit.parameters),
+                                          Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              ...buildFiltersSelection(selectCategoryCubit.parameters),
+                                            ],
+                                          ),
                                         ],
-                                      ),
-                                    ],
-                                  );
-                                }
+                                      );
+                                    }
 
-                                return Container();
-                              },
-                            ),
-                          ],
-                          const SizedBox(height: 70),
-                        ],
-                      )),
+                                    return Container();
+                                  },
+                                ),
+                              ],
+                              const SizedBox(height: 70),
+                            ],
+                          )),
                     ],
                   ),
                 ),
@@ -109,13 +106,18 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
                     for (var parameter in selectCategoryCubit.parameters) {
                       if (parameter.key == widget.parameterKey) {
                         if (parameter is SelectParameter) {
+                          parameter.selectedVariants = [];
                         } else if (parameter is SingleSelectParameter) {
                           parameter.setVariant(emptyParameterOption);
                         } else if (parameter is MultiSelectParameter) {
-                        } else if (parameter is MinMaxParameter) {}
+                          parameter.selectedVariants = [];
+                        } else if (parameter is MinMaxParameter) {
+                          parameter.min = null;
+                          parameter.max = null;
+                        }
                       }
                     }
-                    setState(() {});
+                    _onSubmit();
                   },
                   child: Text(localizations.reset),
                 ),
@@ -126,25 +128,7 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
                 right: 20,
                 child: CustomTextButton.orangeContinue(
                   callback: () {
-                    RepositoryProvider.of<SearchManager>(context).setSearch(false);
-
-                    searchCubit.setFilters(
-                      parameters: selectCategoryCubit.parameters,
-                    );
-                    Navigator.pop(context);
-
-                    if (widget.needOpenNewScreen) {
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutesNames.search,
-                        arguments: {
-                          'showSearchHelper': false,
-                        },
-                      );
-                    }
-                    updateAppBarFilterCubit.needUpdateAppBarFilters();
-
-                    setState(() {});
+                    _onSubmit();
                   },
                   text: localizations.apply,
                   active: true,
@@ -155,6 +139,32 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
         ),
       ),
     );
+  }
+
+  void _onSubmit() {
+    final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+    final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
+    final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+
+    RepositoryProvider.of<SearchManager>(context).setSearch(false);
+
+    searchCubit.setFilters(
+      parameters: selectCategoryCubit.parameters,
+    );
+    Navigator.pop(context);
+
+    if (widget.needOpenNewScreen) {
+      Navigator.pushNamed(
+        context,
+        AppRoutesNames.search,
+        arguments: {
+          'showSearchHelper': false,
+        },
+      );
+    }
+    updateAppBarFilterCubit.needUpdateAppBarFilters();
+
+    setState(() {});
   }
 
   List<Widget> buildFiltersSelection(List<Parameter> parameters) {
@@ -169,6 +179,7 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
           ));
         } else if (i is SingleSelectParameter) {
           children.add(SelectParameterWidget(
+            isClickable: false,
             parameter: i,
             onChange: () => setState(() {}),
           ));

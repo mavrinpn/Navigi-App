@@ -63,13 +63,34 @@ class ParametersFilterBuilder {
       List<String> categoriesQueries = [];
       List<String> textQueries = [];
       for (final textRow in filterData.text!.split(' ')) {
-        textQueries.add(Query.contains('keywords', textRow.toLowerCase()));
+        final lowerTextRow = textRow.toLowerCase();
+        textQueries.add(Query.contains('keywords', lowerTextRow));
+
+        //TODO e
+        if (lowerTextRow.contains('e')) {
+          textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('e', 'é')));
+          textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('e', 'è')));
+        }
+        if (lowerTextRow.contains('é')) {
+          textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('é', 'e')));
+          textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('é', 'è')));
+        }
+        if (lowerTextRow.contains('è')) {
+          textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('è', 'e')));
+          textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('è', 'é')));
+        }
+        //TODO arThe
+        const arThe = 'ال';
+        RegExp arabicRegExp = RegExp(r'[\u0600-\u06FF]');
+        if (!lowerTextRow.contains(arThe) && arabicRegExp.hasMatch(lowerTextRow)) {
+          textQueries.add(Query.contains('keywords', '$lowerTextRow$arThe'));
+        }
 
         for (final category in CategoriesManager.allCategories) {
           for (final subcategory in category.subcategories) {
             final subcategoryWords = subcategory.name.toLowerCase().split(' ');
 
-            if (subcategoryWords.contains(textRow.toLowerCase())) {
+            if (subcategoryWords.contains(lowerTextRow)) {
               categoriesQueries.add(Query.equal('subcategoryId', subcategory.id));
             }
           }

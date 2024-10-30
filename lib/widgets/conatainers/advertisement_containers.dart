@@ -17,37 +17,39 @@ class AdvertisementContainer extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: InkWell(
         onTap: onTap,
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          height: 100,
-          decoration: ShapeDecoration(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-          child: CachedNetworkImage(
-            fadeInDuration: Duration.zero,
-            fadeOutDuration: Duration.zero,
-            placeholderFadeInDuration: Duration.zero,
-            imageUrl: imageUrl,
-            errorWidget: (context, url, _) => Container(
-              color: Colors.grey.withAlpha(80),
-              child: const Icon(
-                Icons.image_not_supported_outlined,
-                color: Colors.grey,
-                size: 64,
+        child: AspectRatio(
+          aspectRatio: 3.4,
+          child: Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: ShapeDecoration(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
-            fit: BoxFit.cover,
-            progressIndicatorBuilder: (context, url, progress) {
-              return Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  color: Colors.grey[300],
+            child: CachedNetworkImage(
+              fadeInDuration: Duration.zero,
+              fadeOutDuration: Duration.zero,
+              placeholderFadeInDuration: Duration.zero,
+              imageUrl: imageUrl,
+              errorWidget: (context, url, _) => Container(
+                color: Colors.grey.withAlpha(80),
+                child: const Icon(
+                  Icons.image_not_supported_outlined,
+                  color: Colors.grey,
+                  size: 64,
                 ),
-              );
-            },
+              ),
+              fit: BoxFit.cover,
+              progressIndicatorBuilder: (context, url, progress) {
+                return Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    color: Colors.grey[300],
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),

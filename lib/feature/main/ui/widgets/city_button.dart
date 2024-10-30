@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/main/bloc/announcements/announcements_cubit.dart';
+import 'package:smart/feature/main/ui/widgets/filled_text_button.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
@@ -38,7 +39,7 @@ class _CityButtonState extends State<CityButton> {
         _setCity();
       },
       builder: (context, state) {
-        return TextButton(
+        return FilledTextButton(
           onPressed: () {
             showFilterBottomSheet(
               context: context,
@@ -46,7 +47,8 @@ class _CityButtonState extends State<CityButton> {
               needOpenNewScreen: false,
             );
           },
-          child: Text(_cityName(context)),
+          title: _cityName(context),
+          icon: Icons.keyboard_arrow_down_rounded,
         );
       },
     );

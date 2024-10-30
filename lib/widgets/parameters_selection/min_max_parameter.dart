@@ -23,9 +23,13 @@ class _MinMaxParameterWidgetState extends State<MinMaxParameterWidget> {
   Widget build(BuildContext context) {
     if (widget.parameter.min != null) {
       minController.text = widget.parameter.min.toString();
+    } else {
+      minController.text = '';
     }
     if (widget.parameter.max != null) {
       maxController.text = widget.parameter.max.toString();
+    } else {
+      maxController.text = '';
     }
 
     return Padding(

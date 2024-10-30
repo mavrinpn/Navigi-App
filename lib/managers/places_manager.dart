@@ -26,8 +26,28 @@ class PlacesManager {
   void searchCities(String query) {
     List<City> resList = [];
     for (var item in cities) {
-      if (item.name.toLowerCase().contains(query.toLowerCase().trimLeft())) {
-        resList.add(item);
+      final name = item.name.toLowerCase();
+      final lowerTextRow = query.toLowerCase().trimLeft();
+      if (name.contains(lowerTextRow)) resList.add(item);
+
+      //TODO e
+      if (lowerTextRow.contains('e')) {
+        if (name.contains(lowerTextRow.replaceAll('e', 'é'))) resList.add(item);
+        if (name.contains(lowerTextRow.replaceAll('e', 'è'))) resList.add(item);
+      }
+      if (lowerTextRow.contains('é')) {
+        if (name.contains(lowerTextRow.replaceAll('é', 'e'))) resList.add(item);
+        if (name.contains(lowerTextRow.replaceAll('é', 'è'))) resList.add(item);
+      }
+      if (lowerTextRow.contains('è')) {
+        if (name.contains(lowerTextRow.replaceAll('è', 'e'))) resList.add(item);
+        if (name.contains(lowerTextRow.replaceAll('è', 'é'))) resList.add(item);
+      }
+      //TODO arThe
+      const arThe = 'ال';
+      RegExp arabicRegExp = RegExp(r'[\u0600-\u06FF]');
+      if (!lowerTextRow.contains(arThe) && arabicRegExp.hasMatch(lowerTextRow)) {
+        if (name.contains('$lowerTextRow$arThe')) resList.add(item);
       }
     }
     searchedCities = resList.take(10).toList();
@@ -36,8 +56,28 @@ class PlacesManager {
   void searchPlacesByName(String query) {
     List<CityDistrict> resList = [];
     for (var item in _places) {
-      if (item.name.toLowerCase().contains(query.toLowerCase().trimLeft())) {
-        resList.add(item);
+      final name = item.name.toLowerCase();
+      final lowerTextRow = query.toLowerCase().trimLeft();
+      if (name.contains(lowerTextRow)) resList.add(item);
+
+      //TODO e
+      if (lowerTextRow.contains('e')) {
+        if (name.contains(lowerTextRow.replaceAll('e', 'é'))) resList.add(item);
+        if (name.contains(lowerTextRow.replaceAll('e', 'è'))) resList.add(item);
+      }
+      if (lowerTextRow.contains('é')) {
+        if (name.contains(lowerTextRow.replaceAll('é', 'e'))) resList.add(item);
+        if (name.contains(lowerTextRow.replaceAll('é', 'è'))) resList.add(item);
+      }
+      if (lowerTextRow.contains('è')) {
+        if (name.contains(lowerTextRow.replaceAll('è', 'e'))) resList.add(item);
+        if (name.contains(lowerTextRow.replaceAll('è', 'é'))) resList.add(item);
+      }
+      //TODO arThe
+      const arThe = 'ال';
+      RegExp arabicRegExp = RegExp(r'[\u0600-\u06FF]');
+      if (!lowerTextRow.contains(arThe) && arabicRegExp.hasMatch(lowerTextRow)) {
+        if (name.contains('$lowerTextRow$arThe')) resList.add(item);
       }
     }
     searchedPlaces = resList.take(10).toList();

@@ -52,7 +52,7 @@ class _AnnouncementContainerHorizontalState extends State<AnnouncementContainerH
         );
       },
       child: Container(
-        height: 140,
+        height: 128,
         margin: const EdgeInsets.symmetric(horizontal: 15),
         padding: const EdgeInsets.fromLTRB(12, 12, 0, 0),
         decoration: ShapeDecoration(
@@ -93,7 +93,7 @@ class _AnnouncementContainerHorizontalState extends State<AnnouncementContainerH
                       widget.announcement.title,
                       style: AppTypography.font14dark,
                       softWrap: false,
-                      maxLines: 3,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
