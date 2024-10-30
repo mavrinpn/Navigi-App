@@ -80,6 +80,14 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                       ? widget.announcement.thumb
                       : widget.announcement.images.firstOrNull ?? '',
                   fit: BoxFit.cover,
+                  errorWidget: (context, url, _) => Container(
+                    color: Colors.grey.withAlpha(80),
+                    child: const Icon(
+                      Icons.image_not_supported_outlined,
+                      color: Colors.grey,
+                      size: 64,
+                    ),
+                  ),
                   progressIndicatorBuilder: (context, url, progress) {
                     return Shimmer.fromColors(
                       baseColor: Colors.grey[300]!,

@@ -103,7 +103,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     if (!carouselControllerInited) {
       carouselControllerInited = true;
       carouselController.addListener(() {
-        final newActivePage = (carouselController.offset / carouselItemWidth) * 1.35;
+        final newActivePage = (carouselController.offset / carouselItemWidth) * 1.1;
         if (newActivePage.toInt() != activePage) {
           setState(() {
             activePage = newActivePage.toInt();

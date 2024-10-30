@@ -1,0 +1,56 @@
+[
+    {
+        "method": "equal",
+        "attribute": "active",
+        "values": [
+            true
+        ]
+    },
+    {
+        "method": "and",
+        "values": [
+            {
+                "method": "contains",
+                "attribute": "keywords",
+                "values": [
+                    "ford"
+                ]
+            },
+            {
+                "method": "contains",
+                "attribute": "keywords",
+                "values": [
+                    "mondeo"
+                ]
+            }
+        ]
+    },
+    {
+        "method": "equal",
+        "attribute": "city_id",
+        "values": [
+            "2"
+        ]
+    },
+    {
+        "method": "equal",
+        "attribute": "area_id",
+        "values": [
+            "17"
+        ]
+    },
+    {
+        "method": "limit",
+        "values": [
+            24
+        ]
+    },
+    {
+        "method": "isNotNull",
+        "attribute": "announcements"
+    },
+    {
+        "method": "orderDesc",
+        "attribute": "$createdAt"
+    }
+]

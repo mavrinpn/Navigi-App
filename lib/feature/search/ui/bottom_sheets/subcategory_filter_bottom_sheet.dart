@@ -177,49 +177,34 @@ class _FiltersBottomSheetState extends State<SubcategoriesWidget> {
   void onSubcategoryTapped(Subcategory subcategory) async {
     final subcategoriesCubit = context.read<SearchSelectSubcategoryCubit>();
 
-    if (subcategory.containsOther) {
-      subcategoriesCubit.getSubcategories(subcategoryId: subcategory.id);
-    } else {
-      final searchCubit = context.read<SearchAnnouncementCubit>();
+    final searchCubit = context.read<SearchAnnouncementCubit>();
 
-      searchCubit.setSubcategory(subcategory);
-      searchCubit.setSearchMode(SearchModeEnum.subcategory);
-      subcategoriesCubit.getSubcategoryFilters(subcategory.id).then((value) async {
-        // final SharedPreferences prefs = await SharedPreferences.getInstance();
-        // final cityDistrictString = prefs.getString(cityDistrictKey);
-        // if (cityDistrictString != null) {
-        //   final cityDistrict = CityDistrict.fromMap(jsonDecode(cityDistrictString));
-        //   searchCubit.setCity(
-        //     cityId: cityDistrict.cityId,
-        //     areaId: cityDistrict.id,
-        //     cityTitle: cityDistrict.cityTitle,
-        //     areaTitle: cityDistrict.name,
-        //   );
-        // }
+    searchCubit.setSubcategory(subcategory);
+    searchCubit.setSearchMode(SearchModeEnum.subcategory);
+    subcategoriesCubit.getSubcategoryFilters(subcategory.id).then((value) async {
+      searchCubit.searchAnnounces(
+        searchText: '',
+        isNew: true,
+        showLoading: true,
+        parameters: value,
+      );
+    });
 
-        searchCubit.searchAnnounces(
-          searchText: '',
-          isNew: true,
-          showLoading: true,
-          parameters: value,
-        );
-      });
+    RepositoryProvider.of<SearchManager>(context).setSearch(false);
+    BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
 
-      RepositoryProvider.of<SearchManager>(context).setSearch(false);
-      BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
-
-      if (widget.needOpenNewScreen) {
-        Navigator.pushNamed(
-          context,
-          AppRoutesNames.search,
-          arguments: {
-            'showBackButton': false,
-            'showSearchHelper': false,
-            'isSubcategory': true,
-            'title': subcategory.localizedName(),
-          },
-        );
-      }
+    if (widget.needOpenNewScreen) {
+      Navigator.pushNamed(
+        context,
+        AppRoutesNames.search,
+        arguments: {
+          'showBackButton': false,
+          'showSearchHelper': false,
+          'showFilterChips': true,
+          'title': subcategory.localizedName(),
+          'isSubcategory': true,
+        },
+      );
     }
   }
 }

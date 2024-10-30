@@ -354,7 +354,7 @@ class AnnouncementManager {
     _searchLastId = searchAnnouncementsWithExactLocation.lastOrNull?.subTableId ?? '';
 
     debugPrint('results.length ${results.list.length}');
-    debugPrint('searchAnnouncements.length ${searchAnnouncementsWithExactLocation.length}');
+    debugPrint('searchAnnouncementsWithExactLocation.length ${searchAnnouncementsWithExactLocation.length}');
     debugPrint('total ${results.total}');
 
     _cityIncludeTotal = results.total;
@@ -377,7 +377,7 @@ class AnnouncementManager {
     _searchLastId = searchAnnouncementsWithExactLocation.lastOrNull?.subTableId;
 
     debugPrint('results.length ${results.list.length}');
-    debugPrint('searchAnnouncements.length ${searchAnnouncementsWithExactLocation.length}');
+    debugPrint('searchAnnouncementsWithExactLocation.length ${searchAnnouncementsWithExactLocation.length}');
     debugPrint('total ${results.total}');
 
     if (searchAnnouncementsWithExactLocation.length >= results.total + _cityIncludeTotal) {
@@ -400,7 +400,7 @@ class AnnouncementManager {
     _searchLastId = searchAnnouncementsWithOtherLocation.lastOrNull?.subTableId;
 
     debugPrint('results.length ${results.list.length}');
-    debugPrint('searchAnnouncements.length ${searchAnnouncementsWithOtherLocation.length}');
+    debugPrint('searchAnnouncementsWithOtherLocation.length ${searchAnnouncementsWithOtherLocation.length}');
     debugPrint('total ${results.total}');
   }
 

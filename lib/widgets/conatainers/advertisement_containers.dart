@@ -30,6 +30,14 @@ class AdvertisementContainer extends StatelessWidget {
             fadeOutDuration: Duration.zero,
             placeholderFadeInDuration: Duration.zero,
             imageUrl: imageUrl,
+            errorWidget: (context, url, _) => Container(
+              color: Colors.grey.withAlpha(80),
+              child: const Icon(
+                Icons.image_not_supported_outlined,
+                color: Colors.grey,
+                size: 64,
+              ),
+            ),
             fit: BoxFit.cover,
             progressIndicatorBuilder: (context, url, progress) {
               return Shimmer.fromColors(

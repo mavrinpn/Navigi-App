@@ -6,6 +6,9 @@ class AllCategoriesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SubcategoriesWidget(isBottomSheet: false);
+    return const SubcategoriesWidget(
+      isBottomSheet: false,
+      needOpenNewScreen: true,
+    );
   }
 }

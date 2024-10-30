@@ -1,5 +1,5 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:smart/managers/categories_manager.dart';
+import 'package:smart/managers/managers.dart';
 import 'package:smart/models/sort_types.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/filters/parameter_dto.dart';
@@ -67,7 +67,9 @@ class ParametersFilterBuilder {
 
         for (final category in CategoriesManager.allCategories) {
           for (final subcategory in category.subcategories) {
-            if (subcategory.name.toLowerCase().contains(textRow.toLowerCase())) {
+            final subcategoryWords = subcategory.name.toLowerCase().split(' ');
+
+            if (subcategoryWords.contains(textRow.toLowerCase())) {
               categoriesQueries.add(Query.equal('subcategoryId', subcategory.id));
             }
           }

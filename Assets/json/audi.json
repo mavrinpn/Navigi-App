@@ -1,0 +1,68 @@
+[
+    {
+        "method": "equal",
+        "attribute": "active",
+        "values": [
+            true
+        ]
+    },
+    {
+        "method": "or",
+        "values": [
+            {
+                "method": "and",
+                "values": [
+                    {
+                        "method": "contains",
+                        "attribute": "keywords",
+                        "values": [
+                            "audi"
+                        ]
+                    },
+                    {
+                        "method": "contains",
+                        "attribute": "keywords",
+                        "values": [
+                            "a3"
+                        ]
+                    }
+                ]
+            },
+            {
+                "method": "equal",
+                "attribute": "subcategoryId",
+                "values": [
+                    "65d6501b709b159d0285"
+                ]
+            }
+        ]
+    },
+    {
+        "method": "equal",
+        "attribute": "city_id",
+        "values": [
+            "2"
+        ]
+    },
+    {
+        "method": "notEqual",
+        "attribute": "area_id",
+        "values": [
+            "17"
+        ]
+    },
+    {
+        "method": "limit",
+        "values": [
+            24
+        ]
+    },
+    {
+        "method": "isNotNull",
+        "attribute": "announcements"
+    },
+    {
+        "method": "orderDesc",
+        "attribute": "$createdAt"
+    }
+]

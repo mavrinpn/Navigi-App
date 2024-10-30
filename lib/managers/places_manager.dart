@@ -15,11 +15,12 @@ class PlacesManager {
   List<City> cities = [];
   List<City> searchedCities = [];
 
-  Future initialLoadItems() async =>
-      cities = await databaseService.categories.getAllCities();
+  Future initialLoadItems() async => cities = await databaseService.categories.getAllCities();
 
   Future selectCity(final String city) async {
-    _places = await databaseService.categories.getCityDistricts(city);
+    if (city.isNotEmpty) {
+      _places = await databaseService.categories.getCityDistricts(city);
+    }
   }
 
   void searchCities(String query) {

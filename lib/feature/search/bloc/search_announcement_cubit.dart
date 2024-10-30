@@ -204,6 +204,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
       //     minPrice: _minPrice,
       //     maxPrice: _maxPrice);
       _lastText = searchText;
+
       emit(SearchAnnouncementsSuccessState());
     } catch (err) {
       emit(SearchAnnouncementsFailState(error: err.toString()));
@@ -222,7 +223,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
       if (searchMode == SearchModeEnum.simple) {
         await _announcementManager.loadSearchAnnouncement(
           keyword: keyword,
-          isNew: true,
+          isNew: isNew,
           sortBy: _sortBy,
           mark: keyword.mark,
           model: keyword.model,
@@ -232,7 +233,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
           subcategoryId: subcategoryId!,
           parameters: const <Parameter>[],
           keyword: keyword,
-          isNew: true,
+          isNew: isNew,
           sortBy: _sortBy,
           mark: keyword.mark,
           model: keyword.model,
@@ -240,6 +241,7 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
         );
       }
       _lastText = keyword.nameFr;
+
       emit(SearchAnnouncementsSuccessState());
     } catch (err) {
       emit(SearchAnnouncementsFailState(error: err.toString()));

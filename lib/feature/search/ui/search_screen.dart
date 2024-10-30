@@ -16,6 +16,7 @@ import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/main.dart';
 import 'package:smart/managers/categories_manager.dart';
 import 'package:smart/models/item/item.dart';
+import 'package:smart/models/key_word.dart';
 import 'package:smart/utils/utils.dart';
 import 'package:smart/widgets/button/back_button.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
@@ -66,6 +67,9 @@ class _SearchScreenState extends State<SearchScreen> {
   bool _showCancelButton = true;
   bool _showBackButton = true;
   String lastQuery = '';
+  String title = '';
+
+  KeyWord? selectedKeyword;
 
   bool isScrollLoading = false;
   final _searchAppBarKey = GlobalKey();
@@ -73,6 +77,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
+    title = widget.title;
     _showFilterChips = widget.showFilterChips;
     _showCancelButton = widget.showCancelButton;
     _showBackButton = widget.showBackButton;
@@ -86,28 +91,21 @@ class _SearchScreenState extends State<SearchScreen> {
         if (!isScrollLoading) {
           isScrollLoading = true;
 
-          BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
-            searchText: lastQuery,
-            isNew: false,
-            showLoading: false,
-          );
+          if (selectedKeyword != null) {
+            BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnouncesByKeyword(
+              keyword: selectedKeyword!,
+              isNew: false,
+            );
+          } else {
+            BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
+              searchText: lastQuery,
+              isNew: false,
+              showLoading: false,
+            );
+          }
         }
       }
     });
-
-    // _internetConnectionSubscription = internetConnection.onStatusChange.listen((InternetStatus status) {
-    //   switch (status) {
-    //     case InternetStatus.connected:
-    //       BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
-    //         searchText: lastQuery,
-    //         isNew: true,
-    //         showLoading: true,
-    //       );
-    //       break;
-    //     case InternetStatus.disconnected:
-    //       break;
-    //   }
-    // });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.showKeyboard) {
@@ -118,7 +116,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   dispose() {
-    // _internetConnectionSubscription.cancel();
     searchScreenTextController.text = '';
     super.dispose();
   }
@@ -135,8 +132,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void setSearch(String query, SearchManager? searchManager) {
     searchManager?.saveInHistory(query);
-    // isScrollLoading = true;
 
+    //TODO selectedKeyword
+    selectedKeyword = null;
     BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
       searchText: query,
       isNew: true,
@@ -206,16 +204,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 searchManager.saveInHistory(value!);
                 setState(() {});
 
-                // if (widget.showBackButton) {
-                //   final subcategoriesCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
-                //   final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-                //   searchCubit.setSubcategory(null);
-                //   searchCubit.setSearchMode(SearchModeEnum.simple);
-                //   subcategoriesCubit.getSubcategoryFilters('');
-                // }
-
-                // isScrollLoading = true;
-
+                //TODO selectedKeyword
+                selectedKeyword = null;
                 BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
                   searchText: value,
                   isNew: true,
@@ -273,10 +263,12 @@ class _SearchScreenState extends State<SearchScreen> {
 
             final subcategoriesCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
             final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-            searchCubit.setSubcategory(CategoriesManager.subcategory(keyword.subcategoryId));
+            final subcategory = CategoriesManager.subcategory(keyword.subcategoryId);
+            searchCubit.setSubcategory(subcategory);
             searchCubit.setSearchMode(SearchModeEnum.subcategory);
             subcategoriesCubit.getSubcategoryFilters(keyword.subcategoryId);
 
+            selectedKeyword = keyword;
             BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnouncesByKeyword(
               keyword: keyword,
               isNew: true,
@@ -287,6 +279,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
             RepositoryProvider.of<SearchManager>(context).setSearch(false);
             BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
+
+            // title = subcategory?.localizedName() ?? '';
+            // _showBackButton = false;
 
             setState(() {});
 
@@ -388,11 +383,18 @@ class _SearchScreenState extends State<SearchScreen> {
       return RefreshIndicator(
         color: AppColors.red,
         onRefresh: () async {
-          BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
-            searchText: lastQuery,
-            isNew: true,
-            showLoading: false,
-          );
+          if (selectedKeyword != null) {
+            BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnouncesByKeyword(
+              keyword: selectedKeyword!,
+              isNew: true,
+            );
+          } else {
+            BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnounces(
+              searchText: lastQuery,
+              isNew: true,
+              showLoading: false,
+            );
+          }
         },
         child: CustomScrollView(
           controller: _controller,
@@ -446,9 +448,11 @@ class _SearchScreenState extends State<SearchScreen> {
                     (context, index) => AnnouncementContainer(
                       announcement: announcementRepository.searchAnnouncementsWithOtherLocation[index],
                     ),
-                    childCount: announcementRepository.searchAnnouncementsWithOtherLocation.length % 2 == 0
-                        ? announcementRepository.searchAnnouncementsWithOtherLocation.length
-                        : announcementRepository.searchAnnouncementsWithOtherLocation.length - 1,
+                    childCount: announcementRepository.searchAnnouncementsWithOtherLocation.length == 1
+                        ? 1
+                        : announcementRepository.searchAnnouncementsWithOtherLocation.length % 2 == 0
+                            ? announcementRepository.searchAnnouncementsWithOtherLocation.length
+                            : announcementRepository.searchAnnouncementsWithOtherLocation.length - 1,
                   ),
                 ),
               ),
@@ -565,6 +569,8 @@ class _SearchScreenState extends State<SearchScreen> {
           final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
           final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
 
+          title = state.title ?? title;
+
           return Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -581,7 +587,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                     Expanded(
                       child: Text(
-                        state.title ?? widget.title,
+                        title,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                         style: const TextStyle(
@@ -627,7 +633,10 @@ class _SearchScreenState extends State<SearchScreen> {
                             title: localizations.price,
                             parameterKey: FilterKeys.price,
                           ),
-                          if (selectCategoryCubit.subcategoryId == null || selectCategoryCubit.subcategoryId!.isEmpty)
+                          //TODO selectedKeyword
+                          if (selectedKeyword != null ||
+                              selectCategoryCubit.subcategoryId == null ||
+                              selectCategoryCubit.subcategoryId!.isEmpty)
                             FilterChipWidget(
                               isSelected: searchCubit.areaId != null || searchCubit.cityId != null,
                               title: localizations.location,
