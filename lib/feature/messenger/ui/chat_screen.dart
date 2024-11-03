@@ -42,7 +42,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
   late final TextEditingController messageController;
-  bool _blockIsChecked = false;
+  // bool _blockIsChecked = false;
   bool _authUserIsBlocked = false;
   bool _otherUserIsBlocked = false;
 
@@ -79,7 +79,7 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
     Future.wait([isAuthUserBlockedFor, isUserBlockedForAuth]).then((value) {
       _authUserIsBlocked = value[0];
       _otherUserIsBlocked = value[1];
-      _blockIsChecked = true;
+      // _blockIsChecked = true;
       setState(() {});
     });
     super.didChangeDependencies();
@@ -331,35 +331,35 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
       );
     }
 
-    if (_blockIsChecked) {
-      return Container(
-        color: AppColors.backgroundLightGray,
-        child: SafeArea(
-          child: ChatInput(
-            blocked: _authUserIsBlocked,
-            messageController: messageController,
-            onChange: (s) {
-              setState(() {});
-            },
-            send: () async {
-              blockedUsersManager
-                  .isAuthUserBlockedFor(messengerRepository.currentRoom?.otherUserId ?? '')
-                  .then((isBlocked) {
-                if (isBlocked) {
-                  CustomSnackBar.showSnackBar(context, localizations.chatBlocked);
-                } else {
-                  if (!preparing) {
-                    _send();
-                  }
+    // if (_blockIsChecked) {
+    return Container(
+      color: AppColors.backgroundLightGray,
+      child: SafeArea(
+        child: ChatInput(
+          blocked: _authUserIsBlocked,
+          messageController: messageController,
+          onChange: (s) {
+            setState(() {});
+          },
+          send: () async {
+            blockedUsersManager
+                .isAuthUserBlockedFor(messengerRepository.currentRoom?.otherUserId ?? '')
+                .then((isBlocked) {
+              if (isBlocked) {
+                CustomSnackBar.showSnackBar(context, localizations.chatBlocked);
+              } else {
+                if (!preparing) {
+                  _send();
                 }
-              });
-            },
-            images: images,
-          ),
+              }
+            });
+          },
+          images: images,
         ),
-      );
-    }
+      ),
+    );
+    // }
 
-    return Container();
+    // return Container();
   }
 }

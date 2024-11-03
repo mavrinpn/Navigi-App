@@ -30,7 +30,6 @@ class PlacesManager {
       final lowerTextRow = query.toLowerCase().trimLeft();
       if (name.contains(lowerTextRow)) resList.add(item);
 
-      //TODO e
       if (lowerTextRow.contains('e')) {
         if (name.contains(lowerTextRow.replaceAll('e', 'é'))) resList.add(item);
         if (name.contains(lowerTextRow.replaceAll('e', 'è'))) resList.add(item);
@@ -43,7 +42,7 @@ class PlacesManager {
         if (name.contains(lowerTextRow.replaceAll('è', 'e'))) resList.add(item);
         if (name.contains(lowerTextRow.replaceAll('è', 'é'))) resList.add(item);
       }
-      //TODO arThe
+
       const arThe = 'ال';
       RegExp arabicRegExp = RegExp(r'[\u0600-\u06FF]');
       if (!lowerTextRow.contains(arThe) && arabicRegExp.hasMatch(lowerTextRow)) {
@@ -60,7 +59,6 @@ class PlacesManager {
       final lowerTextRow = query.toLowerCase().trimLeft();
       if (name.contains(lowerTextRow)) resList.add(item);
 
-      //TODO e
       if (lowerTextRow.contains('e')) {
         if (name.contains(lowerTextRow.replaceAll('e', 'é'))) resList.add(item);
         if (name.contains(lowerTextRow.replaceAll('e', 'è'))) resList.add(item);
@@ -73,7 +71,7 @@ class PlacesManager {
         if (name.contains(lowerTextRow.replaceAll('è', 'e'))) resList.add(item);
         if (name.contains(lowerTextRow.replaceAll('è', 'é'))) resList.add(item);
       }
-      //TODO arThe
+
       const arThe = 'ال';
       RegExp arabicRegExp = RegExp(r'[\u0600-\u06FF]');
       if (!lowerTextRow.contains(arThe) && arabicRegExp.hasMatch(lowerTextRow)) {

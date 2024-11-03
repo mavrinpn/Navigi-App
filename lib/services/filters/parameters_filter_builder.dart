@@ -66,7 +66,6 @@ class ParametersFilterBuilder {
         final lowerTextRow = textRow.toLowerCase();
         textQueries.add(Query.contains('keywords', lowerTextRow));
 
-        //TODO e
         if (lowerTextRow.contains('e')) {
           textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('e', 'é')));
           textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('e', 'è')));
@@ -79,7 +78,7 @@ class ParametersFilterBuilder {
           textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('è', 'e')));
           textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('è', 'é')));
         }
-        //TODO arThe
+
         const arThe = 'ال';
         RegExp arabicRegExp = RegExp(r'[\u0600-\u06FF]');
         if (!lowerTextRow.contains(arThe) && arabicRegExp.hasMatch(lowerTextRow)) {
