@@ -1,6 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/main.dart';
+import 'package:smart/managers/mark_model_manager.dart';
+import 'package:smart/managers/synonyms_manager.dart';
 import 'package:smart/services/parameters_parser.dart';
 
 part 'item_parameters.dart';

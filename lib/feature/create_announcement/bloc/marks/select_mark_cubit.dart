@@ -21,7 +21,30 @@ class SelectMarkCubit extends Cubit<SelectMarkState> {
 
     emit(MarksLoadingState());
     lastSubcategory = subcategory;
-    marks = await marksRepository.getMarks(subcategory);
+
+    final original = await marksRepository.getMarks(subcategory);
+    const subset = [
+      'Apple',
+      'Samsung',
+      'Xiaomi',
+      'Nokia',
+      'Tecno',
+      'Huawei',
+      'Infinix',
+      'Oppo',
+      'HTC',
+      'Sony',
+      'Huawei',
+      'LG',
+    ];
+
+    List<Mark> sortedSubset = original.where((item) => subset.contains(item.name)).toList()
+      ..sort((a, b) => subset.indexOf(a.name).compareTo(subset.indexOf(b.name)));
+    List<Mark> remainingElements = original.where((item) => !subset.contains(item.name)).toList()
+      ..sort((a, b) => a.name.compareTo(b.name));
+
+    marks = [...sortedSubset, ...remainingElements];
+
     emit(MarksGotState());
   }
 
@@ -33,8 +56,7 @@ class SelectMarkCubit extends Cubit<SelectMarkState> {
     lastMark = mark;
 
     emit(ModelsLoadingState(mark));
-    models =
-        await marksRepository.getModels(subcategory: subcategory, markId: mark);
+    models = await marksRepository.getModels(subcategory: subcategory, markId: mark);
     emit(ModelsGotState(models, mark));
   }
 }

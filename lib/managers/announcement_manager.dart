@@ -367,6 +367,14 @@ class AnnouncementManager {
 
   _searchWithAreaExclude(SubcategoryFilterDTO filter) async {
     debugPrint('_searchWithAreaExclude');
+
+    if (filter.cityId == null) {
+      _searchLastId = null;
+      _excludeArea = true;
+      _excludeCity = true;
+      return;
+    }
+
     ({List<Announcement> list, int total}) results;
     results = await dbService.announcements.searchAnnouncementsInSubcategory(
       filterData: filter,

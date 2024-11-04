@@ -334,6 +334,7 @@ class _EditingAnnouncementScreenState extends State<EditingAnnouncementScreen> {
                                 final newMarkModelId = _newMarksFilter?.modelId;
 
                                 announcementEditCubit.saveChanges(
+                                  context,
                                   _newSubcategoryId,
                                   newCarMarkId ?? newMarkMarkId,
                                   newCarModelId ?? newMarkModelId,

@@ -166,12 +166,12 @@ class _OptionsScreenState extends State<OptionsScreen> {
         floatingActionButton: CustomTextButton.orangeContinue(
           width: MediaQuery.of(context).size.width - 30,
           text: localizations.continue_,
-          callback: () {
+          callback: () async {
             if (buttonActive) {
               repository.setPrice(_priceType.fromPriceString(priceController.text) ?? 0);
 
               repository.setPriceType(_priceType);
-              repository.setInfoFormItem();
+              await repository.setInfoFormItem(context);
               Navigator.pushNamed(
                 context,
                 AppRoutesNames.announcementCreatingPlace,

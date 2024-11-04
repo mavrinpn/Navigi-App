@@ -35,6 +35,7 @@ import 'package:smart/managers/keywords_manager.dart';
 import 'package:smart/managers/mark_model_manager.dart';
 import 'package:smart/managers/meduim_price_manager.dart';
 import 'package:smart/managers/reviews_manager.dart';
+import 'package:smart/managers/synonyms_manager.dart';
 import 'package:smart/managers/tipwords_manager.dart';
 import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/messaging_service.dart';
@@ -98,6 +99,12 @@ class MyRepositoryProviders extends StatelessWidget {
       ),
       RepositoryProvider(
         create: (_) => KeyWordsManager(
+          client: client,
+          databaseService: databaseService,
+        ),
+      ),
+      RepositoryProvider(
+        create: (_) => SynonymsManager(
           client: client,
           databaseService: databaseService,
         ),

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:map_kit_interface/map_kit.dart';
 import 'package:smart/feature/announcement_editing/data/models/edit_data.dart';
@@ -133,6 +134,7 @@ class AnnouncementEditingRepository {
   }
 
   Future saveChanges(
+    BuildContext context,
     String? newSubcategiryid,
     String? newMarkId,
     String? newModelId,
@@ -140,6 +142,7 @@ class AnnouncementEditingRepository {
     await _saveImagesChanges();
     await _saveThumb();
     await _databaseService.announcements.editAnnouncement(
+      context: context,
       editData: editData!,
       newSubcategoryid: newSubcategiryid,
       newMarkId: newMarkId,

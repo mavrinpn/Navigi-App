@@ -227,6 +227,8 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
           sortBy: _sortBy,
           mark: keyword.mark,
           model: keyword.model,
+          cityId: cityId,
+          areaId: areaId,
         );
       } else {
         await _announcementManager.searchWithSubcategory(
@@ -238,6 +240,8 @@ class SearchAnnouncementCubit extends Cubit<SearchAnnouncementState> {
           mark: keyword.mark,
           model: keyword.model,
           type: keyword.type,
+          cityId: cityId,
+          areaId: areaId,
         );
       }
       _lastText = keyword.nameFr;

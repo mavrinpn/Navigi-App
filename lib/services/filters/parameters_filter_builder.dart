@@ -14,7 +14,11 @@ class ParametersFilterBuilder {
     return Query.search(attribute, '"${parameter.key}": "${parameter.value}"');
   }
 
-  static List<String> getSearchQueries(DefaultFilterDto filterData, {bool subcategory = false}) {
+  static List<String> getSearchQueries(
+    DefaultFilterDto filterData, {
+    bool subcategory = false,
+    // List<String> synonyms = const [],
+  }) {
     List<String> queries = [];
 
     queries.add(Query.equal(activeAttribute, true));
@@ -26,17 +30,18 @@ class ParametersFilterBuilder {
     if (filterData.keyword != null) {
       List<String> frAndQueries = [];
       for (final textRow in filterData.keyword!.nameFr.split(' ')) {
-        frAndQueries.add(Query.contains('keywords', textRow.toLowerCase()));
+        final queryWord = ' ${textRow.toLowerCase()} ';
+        frAndQueries.add(Query.contains('keywords', queryWord));
       }
 
       List<String> arAndQueries = [];
       for (final textRow in filterData.keyword!.nameAr.split(' ')) {
-        arAndQueries.add(Query.contains('keywords', textRow.toLowerCase()));
+        final queryWord = ' ${textRow.toLowerCase()} ';
+        arAndQueries.add(Query.contains('keywords', queryWord));
       }
 
       List<String> orQueries = [];
       if (frAndQueries.isNotEmpty) {
-        // orQueries.add(Query.and(frAndQueries));
         if (frAndQueries.length > 1) {
           orQueries.add(Query.and(frAndQueries));
         } else {
@@ -44,7 +49,6 @@ class ParametersFilterBuilder {
         }
       }
       if (arAndQueries.isNotEmpty) {
-        // orQueries.add(Query.and(arAndQueries));
         if (arAndQueries.length > 1) {
           orQueries.add(Query.and(arAndQueries));
         } else {
@@ -62,34 +66,43 @@ class ParametersFilterBuilder {
     if (filterData.text != null && filterData.text != '') {
       List<String> categoriesQueries = [];
       List<String> textQueries = [];
+      // List<String> synonymsQueries = [];
+
+      // for (final synonim in synonyms) {
+      //   if (synonim.toLowerCase() != filterData.text!.toLowerCase()) {
+      //     final lowerTextRow = synonim.toLowerCase();
+      //     synonymsQueries.add(Query.contains('keywords', lowerTextRow));
+      //   }
+      // }
+
       for (final textRow in filterData.text!.split(' ')) {
-        final lowerTextRow = textRow.toLowerCase();
-        textQueries.add(Query.contains('keywords', lowerTextRow));
+        final queryWord = ' ${textRow.toLowerCase()} ';
+        textQueries.add(Query.contains('keywords', queryWord));
 
-        if (lowerTextRow.contains('e')) {
-          textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('e', 'é')));
-          textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('e', 'è')));
-        }
-        if (lowerTextRow.contains('é')) {
-          textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('é', 'e')));
-          textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('é', 'è')));
-        }
-        if (lowerTextRow.contains('è')) {
-          textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('è', 'e')));
-          textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('è', 'é')));
-        }
+        // if (lowerTextRow.contains('e')) {
+        //   textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('e', 'é')));
+        //   textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('e', 'è')));
+        // }
+        // if (lowerTextRow.contains('é')) {
+        //   textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('é', 'e')));
+        //   textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('é', 'è')));
+        // }
+        // if (lowerTextRow.contains('è')) {
+        //   textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('è', 'e')));
+        //   textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('è', 'é')));
+        // }
 
-        const arThe = 'ال';
-        RegExp arabicRegExp = RegExp(r'[\u0600-\u06FF]');
-        if (!lowerTextRow.contains(arThe) && arabicRegExp.hasMatch(lowerTextRow)) {
-          textQueries.add(Query.contains('keywords', '$lowerTextRow$arThe'));
-        }
+        // const arThe = 'ال';
+        // RegExp arabicRegExp = RegExp(r'[\u0600-\u06FF]');
+        // if (!lowerTextRow.contains(arThe) && arabicRegExp.hasMatch(lowerTextRow)) {
+        //   textQueries.add(Query.contains('keywords', '$lowerTextRow$arThe'));
+        // }
 
         for (final category in CategoriesManager.allCategories) {
           for (final subcategory in category.subcategories) {
             final subcategoryWords = subcategory.name.toLowerCase().split(' ');
 
-            if (subcategoryWords.contains(lowerTextRow)) {
+            if (subcategoryWords.contains(textRow.toLowerCase())) {
               categoriesQueries.add(Query.equal('subcategoryId', subcategory.id));
             }
           }
@@ -111,6 +124,13 @@ class ParametersFilterBuilder {
           orQueries.add(categoriesQueries.first);
         }
       }
+      // if (synonymsQueries.isNotEmpty) {
+      //   if (synonymsQueries.length > 1) {
+      //     orQueries.add(Query.and(synonymsQueries));
+      //   } else {
+      //     orQueries.add(synonymsQueries.first);
+      //   }
+      // }
 
       if (orQueries.length > 1) {
         queries.add(Query.or(orQueries));

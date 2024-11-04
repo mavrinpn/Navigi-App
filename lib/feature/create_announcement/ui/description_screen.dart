@@ -120,11 +120,11 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
         //  && titleController.text.isNotEmpty,
         width: MediaQuery.of(context).size.width - 30,
         text: localizations.continue_,
-        callback: () {
+        callback: () async {
           repository.setDescription(descriptionController.text);
           // repository.setTitle(titleController.text);
-          repository.setInfoFormItem();
-          BlocProvider.of<CreatingAnnouncementCubit>(context).createAnnouncement();
+          await repository.setInfoFormItem(context);
+          BlocProvider.of<CreatingAnnouncementCubit>(context).createAnnouncement(context);
           Navigator.pushNamed(context, '/loading_screen');
         },
       ),

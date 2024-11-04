@@ -16,6 +16,7 @@ class DatabaseService {
   late final NotificationsDatabaseService notifications;
   late final ReviewsService reviews;
   late final KeyWordsService keyWords;
+  late final SynonymsService synonyms;
   late final TipWordsService tipWords;
   late final ModelsService models;
   late final MediumPriceService mediumPrices;
@@ -34,6 +35,7 @@ class DatabaseService {
     reviews = ReviewsService(_databases, _storage, _functions, _account);
     mediumPrices = MediumPriceService(_databases);
     keyWords = KeyWordsService(_databases);
+    synonyms = SynonymsService(_databases);
     tipWords = TipWordsService(_databases);
     models = ModelsService(_databases);
     blockedUsers = BlockedUsersService(_databases);

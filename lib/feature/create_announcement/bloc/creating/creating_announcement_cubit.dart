@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../enum/enum.dart';
 import '../../../../managers/creating_announcement_manager.dart';
@@ -25,5 +25,7 @@ class CreatingAnnouncementCubit extends Cubit<CreatingAnnouncementState> {
     });
   }
 
-  createAnnouncement() => creatingAnnouncementManager.createAnnouncement();
+  void createAnnouncement(BuildContext context) {
+    creatingAnnouncementManager.createAnnouncement(context);
+  }
 }

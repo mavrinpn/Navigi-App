@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/models/item/item.dart';
 import 'package:smart/models/item/static_parameters.dart';
@@ -51,33 +52,38 @@ class AnnouncementEditData {
   //   }
   // }
 
-  Map<String, dynamic> toJson(
+  Future<Map<String, dynamic>> toJson(
+    BuildContext context,
     String newSubcollectionId,
     String? newMarkId,
     String? newModelId,
     List<Parameter> parametersWithMarkAndModel,
-  ) =>
-      {
-        'name': title,
-        'description': description,
-        'city_id': cityId,
-        'area_id': areaId,
-        'city': cityId,
-        'area2': areaId,
-        'price': price,
-        'price_type': priceType.name,
-        'parametrs': ItemParameters().buildJsonFormatParameters(
-            addParameters: parametersWithMarkAndModel),
-        'keywords': ItemParameters().buildListFormatParameters(
-          addParameters: parametersWithMarkAndModel,
-          title: title,
-        ),
-        'images': images,
-        'thumb': thumb,
-        'mark': newMarkId ?? markId,
-        'model': newModelId ?? modelId,
-        'subcategoryId': newSubcollectionId,
-        'longitude': longitude,
-        'latitude': latitude,
-      };
+  ) async {
+    return {
+      'name': title,
+      'description': description,
+      'city_id': cityId,
+      'area_id': areaId,
+      'city': cityId,
+      'area2': areaId,
+      'price': price,
+      'price_type': priceType.name,
+      'parametrs': ItemParameters().buildJsonFormatParameters(addParameters: parametersWithMarkAndModel),
+      'keywords': await ItemParameters().buildKeywordsString(
+        context: context,
+        addParameters: parametersWithMarkAndModel,
+        title: title,
+        description: description,
+        markId: newMarkId ?? markId,
+        modelId: newModelId ?? modelId,
+      ),
+      'images': images,
+      'thumb': thumb,
+      'mark': newMarkId ?? markId,
+      'model': newModelId ?? modelId,
+      'subcategoryId': newSubcollectionId,
+      'longitude': longitude,
+      'latitude': latitude,
+    };
+  }
 }

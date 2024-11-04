@@ -70,7 +70,7 @@ class _MarkChipWidgetState extends State<MarkChipWidget> {
             } else {
               final needSelectModel = selectCategoryCubit.subcategoryFilters!.hasModel;
 
-              final List<MarksFilter?> filter = await showMarksBottomSheet(
+              final List<MarksFilter?>? filter = await showMarksBottomSheet(
                 context: context,
                 screen: SelectMarkScreen(
                   needSelectModel: needSelectModel,
@@ -79,7 +79,7 @@ class _MarkChipWidgetState extends State<MarkChipWidget> {
                 ),
               );
 
-              if (filter.isNotEmpty) {
+              if (filter != null && filter.isNotEmpty) {
                 searchCubit.setMarksFilter(filter.first);
 
                 searchCubit.setFilters(

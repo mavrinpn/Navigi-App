@@ -60,6 +60,8 @@ part 'service/models.dart';
 
 part 'service/keywords.dart';
 
+part 'service/synonyms.dart';
+
 part 'service/tipwords.dart';
 
 part 'service/blocked_users.dart';

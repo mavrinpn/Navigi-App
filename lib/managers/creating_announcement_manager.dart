@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:map_kit_interface/map_kit.dart';
 import 'package:rxdart/rxdart.dart';
@@ -140,7 +141,7 @@ class CreatingAnnouncementManager {
   void setPrice(double price) => creatingData.price = price;
   void setPriceType(PriceType type) => creatingData.priceType = type;
 
-  void _setParameters() {
+  Future<void> _setParameters(BuildContext context) async {
     if (subcategoryFilters != null) {
       final List<Parameter> parameters = [];
       if (carFilter != null) {
@@ -191,11 +192,30 @@ class CreatingAnnouncementManager {
         // }
         //parameters.addAll(marksFilter!.modelParameters!);
       }
+
+      String? markId;
+      String? modelId;
+      if (carFilter != null) {
+        markId = carFilter?.markId;
+        modelId = carFilter?.modelId;
+      }
+
+      if (marksFilter != null) {
+        markId = marksFilter?.markId;
+        if (marksFilter?.modelId != null) {
+          modelId = marksFilter?.modelId;
+        }
+      }
+
       parameters.addAll(subcategoryFilters!.parameters);
       creatingData.parameters = ItemParameters().buildJsonFormatParameters(addParameters: parameters);
-      creatingData.keywords = ItemParameters().buildListFormatParameters(
+      creatingData.keywords = await ItemParameters().buildKeywordsString(
+        context: context,
         addParameters: parameters,
         title: creatingData.title,
+        description: creatingData.description,
+        markId: markId,
+        modelId: modelId,
       );
     }
   }
@@ -204,11 +224,11 @@ class CreatingAnnouncementManager {
 
   void setTitle(String title) => creatingData.title = title;
 
-  void setInfoFormItem() {
-    _setParameters();
+  Future<void> setInfoFormItem(BuildContext context) async {
+    await _setParameters(context);
   }
 
-  void createAnnouncement() async {
+  void createAnnouncement(BuildContext context) async {
     creatingState.add(LoadingStateEnum.loading);
     try {
       final user = await account.get();
@@ -221,6 +241,7 @@ class CreatingAnnouncementManager {
       final String thumbUrl = await uploadThumb(thumbAsBytes);
 
       await dbService.announcements.createAnnouncement(
+        context,
         uid,
         urls,
         thumbUrl,

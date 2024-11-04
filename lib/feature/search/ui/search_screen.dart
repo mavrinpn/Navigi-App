@@ -341,6 +341,8 @@ class _SearchScreenState extends State<SearchScreen> {
     }
 
     Widget announcementsBuilder(context, state) {
+      final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+
       if (state is SearchAnnouncementsLoadingState && !isScrollLoading) {
         return SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -391,6 +393,7 @@ class _SearchScreenState extends State<SearchScreen> {
               searchText: lastQuery,
               isNew: true,
               showLoading: false,
+              parameters: context.read<SearchSelectSubcategoryCubit>().parameters,
             );
           }
         },
@@ -414,7 +417,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
             ),
-            if (announcementRepository.searchAnnouncementsWithOtherLocation.isNotEmpty)
+
+            if (announcementRepository.searchAnnouncementsWithOtherLocation.isNotEmpty &&
+                (searchCubit.areaId != null || searchCubit.cityId != null))
               SliverPadding(
                 padding: EdgeInsets.symmetric(
                   horizontal: AppSizes.anouncementGridSidePadding,

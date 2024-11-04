@@ -19,7 +19,35 @@ class CarModelsCubit extends Cubit<CarModelsState> {
     if (marks.isNotEmpty) return emit(MarksSuccessState());
 
     emit(MarksLoadingState());
-    marks = await carMarksRepository.getMarks(subcategory);
+
+    final original = await carMarksRepository.getMarks(subcategory);
+    const subset = [
+      'Audi',
+      'BMW',
+      'Hyundai',
+      'Volkswagen',
+      'Fiat',
+      'Seat',
+      'Citroen',
+      'Renault',
+      'Dacia',
+      'Chevrolet',
+      'Mercedes',
+      'Toyota',
+      'Skoda',
+      'Nissan',
+      'Opel',
+      'Land Rover',
+      'Suzuki',
+    ];
+
+    List<Mark> sortedSubset = original.where((item) => subset.contains(item.name)).toList()
+      ..sort((a, b) => subset.indexOf(a.name).compareTo(subset.indexOf(b.name)));
+    List<Mark> remainingElements = original.where((item) => !subset.contains(item.name)).toList()
+      ..sort((a, b) => a.name.compareTo(b.name));
+
+    marks = [...sortedSubset, ...remainingElements];
+
     emit(MarksSuccessState());
   }
 

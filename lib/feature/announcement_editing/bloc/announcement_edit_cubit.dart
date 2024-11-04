@@ -107,6 +107,7 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
   }
 
   void saveChanges(
+    BuildContext context,
     String? newSubcategiryid,
     String? newMarkId,
     String? newModelId,
@@ -114,6 +115,7 @@ class AnnouncementEditCubit extends Cubit<AnnouncementEditState> {
     emit(AnnouncementEditLoading());
     try {
       await repository.saveChanges(
+        context,
         newSubcategiryid,
         newMarkId,
         newModelId,

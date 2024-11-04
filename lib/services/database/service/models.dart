@@ -20,13 +20,17 @@ class ModelsService {
   Future<String?> getMarkNameById({
     required String markId,
   }) async {
-    final res = await _databases.getDocument(
-      documentId: markId,
-      databaseId: mainDatabase,
-      collectionId: marksCollection,
-    );
-
-    return res.data['name'];
+    try {
+      final res = await _databases.getDocument(
+        documentId: markId,
+        databaseId: mainDatabase,
+        collectionId: marksCollection,
+      );
+      return res.data['name'];
+    } catch (err) {
+      debugPrint(err.toString());
+    }
+    return null;
   }
 
   Future<MarkModel?> getMarkModelById({

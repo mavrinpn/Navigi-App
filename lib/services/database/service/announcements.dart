@@ -36,39 +36,6 @@ class AnnouncementsService {
       queries.add(Query.equal('area_id', areaId));
     }
 
-    //Query.select
-    //Needs: anouncesTableId images thumb title stringPrice city area
-    // queries.add(Query.select([
-    //   'images', //images
-    //   'price',
-    //   'item_name',
-    //   'name',
-    //   'area_id',
-    //   'city_id',
-    //   'price_type',
-    //   'area2',
-    //   'city',
-    //   'thumb', //thumb
-    //   'itemId',
-    //   'description',
-    //   'type',
-    //   'parametrs',
-    //   'total_views',
-    //   'total_likes',
-    //   'creator_id',
-    //   'active',
-    //   'on_moderation',
-    //   'subcategoryId',
-    //   'latitude',
-    //   'longitude',
-    //   'creator',
-    //   'total_contacts',
-    //   'model',
-    //   'mark',
-    //   'contacts_views',
-    //   'keywords',
-    // ]));
-
     try {
       final res = await _databases.listDocuments(
         databaseId: mainDatabase,
@@ -86,7 +53,12 @@ class AnnouncementsService {
   }
 
   Future<List<Announcement>> searchLimitAnnouncements(DefaultFilterDto filterData) async {
-    List<String> queries = ParametersFilterBuilder.getSearchQueries(filterData);
+    // List<String> synonyms = await _loadSynonyms(filterData.text);
+
+    List<String> queries = ParametersFilterBuilder.getSearchQueries(
+      filterData,
+      // synonyms: synonyms,
+    );
 
     queries.add(Query.limit(24));
 
@@ -120,9 +92,12 @@ class AnnouncementsService {
     String? excludeCityId,
     String? excludeAreaId,
   }) async {
+    // List<String> synonyms = await _loadSynonyms(filterData.text);
+
     List<String> queries = ParametersFilterBuilder.getSearchQueries(
       filterData.toDefaultFilter(),
       subcategory: true,
+      // synonyms: synonyms,
     );
 
     queries.addAll(filterData.convertParametersToQuery());
@@ -205,7 +180,26 @@ class AnnouncementsService {
     }
   }
 
+  // Future<List<String>> _loadSynonyms(String? query) async {
+  //   List<String> synonyms = [];
+  //   if (query != null) {
+  //     final synonymsRes = await _databases.listDocuments(
+  //       databaseId: mainDatabase,
+  //       collectionId: synonymsCollectionId,
+  //       queries: [Query.contains('words', query.toLowerCase())],
+  //     );
+
+  //     for (var doc in synonymsRes.documents) {
+  //       if (doc.data['words'] != null) {
+  //         synonyms.addAll(List<String>.from(doc.data['words']));
+  //       }
+  //     }
+  //   }
+  //   return synonyms;
+  // }
+
   Future<void> writeAnnouncementSubcategoryParameters({
+    required BuildContext context,
     required String id,
     required String announcement,
     required AnnouncementCreatingData creatingData,
@@ -215,6 +209,20 @@ class AnnouncementsService {
     required MarksFilter? marksFilter,
     required CarFilter? carFilter,
   }) async {
+    String? markId;
+    String? modelId;
+    if (carFilter != null) {
+      markId = carFilter.markId;
+      modelId = carFilter.modelId;
+    }
+
+    if (marksFilter != null) {
+      markId = marksFilter.markId;
+      if (marksFilter.modelId != null) {
+        modelId = marksFilter.modelId;
+      }
+    }
+
     final data = <String, dynamic>{
       'announcements': announcement,
       'latitude': lat,
@@ -225,23 +233,29 @@ class AnnouncementsService {
       'price_type': creatingData.priceType?.name ?? 'dzd',
       'title': creatingData.title,
       'active': true,
-      'keywords': ItemParameters().buildListFormatParameters(
+      'keywords': await ItemParameters().buildKeywordsString(
+        context: context,
         addParameters: parameters,
         title: creatingData.title,
+        description: creatingData.description,
+        markId: markId,
+        modelId: modelId,
       ),
+      if (markId != null) 'mark': markId,
+      if (modelId != null) 'model': modelId,
     };
 
-    if (carFilter != null) {
-      data.addAll({'mark': carFilter.markId});
-      data.addAll({'model': carFilter.modelId});
-    }
+    // if (carFilter != null) {
+    //   data.addAll({'mark': carFilter.markId});
+    //   data.addAll({'model': carFilter.modelId});
+    // }
 
-    if (marksFilter != null) {
-      data.addAll({'mark': marksFilter.markId});
-      if (marksFilter.modelId != null) {
-        data.addAll({'model': marksFilter.modelId});
-      }
-    }
+    // if (marksFilter != null) {
+    //   data.addAll({'mark': marksFilter.markId});
+    //   if (marksFilter.modelId != null) {
+    //     data.addAll({'model': marksFilter.modelId});
+    //   }
+    // }
 
     for (var parameter in parameters) {
       if (parameter is SelectParameter) {
@@ -295,6 +309,7 @@ class AnnouncementsService {
   }
 
   Future<void> createAnnouncement(
+    BuildContext context,
     String uid,
     List<String> urls,
     String thumbUrl,
@@ -338,6 +353,7 @@ class AnnouncementsService {
     );
 
     await writeAnnouncementSubcategoryParameters(
+      context: context,
       id: doc.$id,
       announcement: doc.$id,
       creatingData: creatingData,
@@ -406,14 +422,16 @@ class AnnouncementsService {
   }
 
   Future<void> editAnnouncement({
+    required BuildContext context,
     required AnnouncementEditData editData,
     required String? newSubcategoryid,
     required String? newMarkId,
     required String? newModelId,
   }) async {
-    final subcollectionUpdateData = _subcollectionUpdateData(editData);
+    final subcollectionUpdateData = await _subcollectionUpdateData(context, editData);
 
     final postCollectionUpdateData = await _postCollectionUpdateData(
+      context,
       editData,
       newSubcategoryid,
       newMarkId,
@@ -501,7 +519,10 @@ class AnnouncementsService {
     );
   }
 
-  _subcollectionUpdateData(AnnouncementEditData editData) {
+  Future<Map<String, dynamic>> _subcollectionUpdateData(
+    BuildContext context,
+    AnnouncementEditData editData,
+  ) async {
     final subcollectionUpdateData = <String, dynamic>{
       'price': editData.price,
       'price_type': editData.priceType.name,
@@ -510,9 +531,13 @@ class AnnouncementsService {
       'area_id': editData.areaId,
       'latitude': editData.latitude,
       'longitude': editData.longitude,
-      'keywords': ItemParameters().buildListFormatParameters(
+      'keywords': await ItemParameters().buildKeywordsString(
+        context: context,
         addParameters: editData.parameters,
         title: editData.title,
+        description: editData.description,
+        markId: editData.markId,
+        modelId: editData.modelId,
       ),
     };
 
@@ -533,7 +558,12 @@ class AnnouncementsService {
   }
 
   _postCollectionUpdateData(
-      AnnouncementEditData editData, String? newSubcategoryid, String? newMarkId, String? newModelId) async {
+    BuildContext context,
+    AnnouncementEditData editData,
+    String? newSubcategoryid,
+    String? newMarkId,
+    String? newModelId,
+  ) async {
     List<Parameter> parametersWithMarkAndModel = [];
 
     // final mark = await _databases.getDocument(
@@ -569,7 +599,8 @@ class AnnouncementsService {
     // }
 
     parametersWithMarkAndModel.addAll(editData.parameters);
-    final postCollectionUpdateData = editData.toJson(
+    final postCollectionUpdateData = await editData.toJson(
+      context,
       newSubcategoryid ?? editData.subcollectionId,
       newMarkId,
       newModelId,
