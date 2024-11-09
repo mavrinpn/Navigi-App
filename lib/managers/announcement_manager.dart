@@ -430,6 +430,8 @@ class AnnouncementManager {
       if (isNew) {
         searchAnnouncementsWithExactLocation.clear();
         searchAnnouncementsWithOtherLocation.clear();
+        recommendationAnnouncementsWithExactLocation.clear();
+        recommendationAnnouncementsWithOtherLocation.clear();
         _searchLastId = '';
       }
 

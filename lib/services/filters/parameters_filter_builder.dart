@@ -78,6 +78,7 @@ class ParametersFilterBuilder {
       for (final textRow in filterData.text!.split(' ')) {
         final queryWord = ' ${textRow.toLowerCase()} ';
         textQueries.add(Query.contains('keywords', queryWord));
+        //TODO Query.contains
 
         // if (lowerTextRow.contains('e')) {
         //   textQueries.add(Query.contains('keywords', lowerTextRow.replaceAll('e', 'é')));

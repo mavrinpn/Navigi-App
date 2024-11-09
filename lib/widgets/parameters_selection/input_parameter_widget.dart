@@ -4,9 +4,16 @@ import 'package:smart/models/item/item.dart';
 import 'package:smart/widgets/textField/outline_text_field.dart';
 
 class InputParameterWidget extends StatefulWidget {
-  const InputParameterWidget({super.key, required this.parameter});
+  const InputParameterWidget({
+    super.key,
+    required this.parameter,
+    this.onChange,
+    this.validator,
+  });
 
   final InputParameter parameter;
+  final String? Function(String?)? validator;
+  final Function? onChange;
 
   @override
   State<InputParameterWidget> createState() => _InputParameterWidgetState();
@@ -16,11 +23,11 @@ class _InputParameterWidgetState extends State<InputParameterWidget> {
   late final controller = TextEditingController();
   bool error = false;
 
-  @override
-  void didUpdateWidget(covariant InputParameterWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    controller.text = '${widget.parameter.value ?? ''}';
-  }
+  // @override
+  // void didUpdateWidget(covariant InputParameterWidget oldWidget) {
+  //   controller.text = '${widget.parameter.value ?? ''}';
+  //   super.didUpdateWidget(oldWidget);
+  // }
 
   @override
   void initState() {
@@ -31,20 +38,18 @@ class _InputParameterWidgetState extends State<InputParameterWidget> {
   @override
   Widget build(BuildContext context) {
     final type = widget.parameter.type;
-    final keyBoardType = ['int', 'double'].contains(type)
-        ? TextInputType.number
-        : TextInputType.text;
+    final keyBoardType = ['int', 'double'].contains(type) ? TextInputType.number : TextInputType.text;
 
     return OutlineTextField(
-      hintText: MyApp.getLocale(context) == 'fr'
-          ? widget.parameter.frName
-          : widget.parameter.arName,
+      hintText: MyApp.getLocale(context) == 'fr' ? widget.parameter.frName : widget.parameter.arName,
       controller: controller,
       keyBoardType: keyBoardType,
       width: double.infinity,
       maxLength: 100,
       error: error,
+      validator: widget.validator,
       onChange: (value) {
+        widget.onChange?.call();
         if (value.isNotEmpty) {
           final dynamic typedValue;
           switch (type) {

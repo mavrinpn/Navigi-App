@@ -29,12 +29,16 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin {
   final searchController = TextEditingController();
 
   final _controller = ScrollController();
   double previousScrollOffset = 0;
   bool showCategoriesAppBarBottom = false;
+  bool disableCategoriesAppBarBottom = true;
+
+  late AnimationController _appBarController;
+  late Animation<double> _heightAnimation;
 
   @override
   void initState() {
@@ -42,6 +46,30 @@ class _MainScreenState extends State<MainScreen> {
 
     BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
     _initScrollListener();
+
+    _initAppBarController();
+  }
+
+  @override
+  void dispose() {
+    _appBarController.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  final double minHeight = 60;
+  final double maxHeight = 100;
+
+  void _initAppBarController() {
+    _appBarController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 250),
+    );
+
+    _heightAnimation = Tween<double>(begin: minHeight, end: maxHeight).animate(CurvedAnimation(
+      parent: _appBarController,
+      curve: Curves.easeInOut,
+    ));
   }
 
   void _initScrollListener() {
@@ -64,35 +92,53 @@ class _MainScreenState extends State<MainScreen> {
           }
         }
 
-        if (currentScroll > 400) {
-          if (showCategoriesAppBarBottom != true) {
-            setState(() {
-              showCategoriesAppBarBottom = true;
-            });
+        if (currentScroll > 150) {
+          if (disableCategoriesAppBarBottom != false) {
+            disableCategoriesAppBarBottom = false;
+            setState(() {});
           }
-          // if (currentScroll > previousScrollOffset) {
-          //   if (showCategoriesAppBarBottom != false) {
-          //     setState(() {
-          //       showCategoriesAppBarBottom = false;
-          //     });
-          //   }
-          // } else if (currentScroll < previousScrollOffset) {
-          //   if (showCategoriesAppBarBottom != true) {
-          //     setState(() {
-          //       showCategoriesAppBarBottom = true;
-          //     });
-          //   }
-          // }
+        } else {
+          if (disableCategoriesAppBarBottom != true) {
+            disableCategoriesAppBarBottom = true;
+            setState(() {});
+          }
+        }
+
+        if (currentScroll > 400) {
+          if (currentScroll > previousScrollOffset) {
+            if (showCategoriesAppBarBottom != false) {
+              setState(() {
+                showCategoriesAppBarBottom = false;
+                _toggleAppBarHeight();
+              });
+            }
+          } else if (currentScroll < previousScrollOffset) {
+            if (showCategoriesAppBarBottom != true) {
+              setState(() {
+                showCategoriesAppBarBottom = true;
+                _toggleAppBarHeight();
+              });
+            }
+          }
           previousScrollOffset = currentScroll;
         } else {
           if (showCategoriesAppBarBottom != false) {
             setState(() {
               showCategoriesAppBarBottom = false;
+              _toggleAppBarHeight();
             });
           }
         }
       }
     });
+  }
+
+  void _toggleAppBarHeight() {
+    if (showCategoriesAppBarBottom) {
+      _appBarController.forward();
+    } else {
+      _appBarController.reverse();
+    }
   }
 
   bool isSearch = false;
@@ -169,249 +215,219 @@ class _MainScreenState extends State<MainScreen> {
       child: MainScaffold(
         topSafeArea: false,
         canPop: false,
-        // appBar: AppBar(
-        //   backgroundColor: AppColors.red,
-        //   elevation: 0,
-        //   scrolledUnderElevation: 0,
-        //   surfaceTintColor: Colors.transparent,
-        //   flexibleSpace: MainAppBar(
-        //     isSearch: isSearch,
-        //     openSearchScreen: () => openSearchScreen(query: null, showKeyboard: true),
-        //     openFilters: openFilters,
-        //     cancel: () {
-        //       FocusScope.of(context).unfocus();
-        //       setSearch(false);
-        //     },
-        //   ),
-        // ),
-        body: Stack(
-          children: [
-            BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
-              builder: (context, state) {
-                return RefreshIndicator(
-                  color: AppColors.red,
-                  onRefresh: () async {
-                    announcementRepository.clear();
-                    setState(() {});
-                    final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-                    BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
-                    BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(
-                      true,
-                      cityId: searchCubit.cityId,
-                      areaId: searchCubit.areaId,
-                    );
-                  },
-                  child: CustomScrollView(
-                    controller: _controller,
-                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    slivers: [
-                      SliverAppBar(
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(22),
-                            bottomRight: Radius.circular(22),
-                          ),
-                        ),
-                        backgroundColor: showCategoriesAppBarBottom ? Colors.white : AppColors.red,
-                        surfaceTintColor: Colors.white,
-                        expandedHeight: 120,
-                        collapsedHeight: 60,
-                        floating: true,
-                        pinned: true,
-                        flexibleSpace: FlexibleSpaceBar(
-                          expandedTitleScale: 1,
-                          centerTitle: true,
-                          title: SafeArea(
-                            child: MainAppBar(
-                              isSearch: isSearch,
-                              openSearchScreen: () => openSearchScreen(query: null, showKeyboard: true),
-                              openFilters: openFilters,
-                              cancel: () {
-                                FocusScope.of(context).unfocus();
-                                setSearch(false);
-                              },
-                            ),
-                          ),
-                          background: Column(
-                            children: [
-                              const Spacer(),
-                              AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 250),
-                                transitionBuilder: (Widget child, Animation<double> animation) {
-                                  return FadeTransition(opacity: animation, child: child);
-                                },
-                                child: showCategoriesAppBarBottom
-                                    ? const Padding(
-                                        key: ValueKey(1),
-                                        padding: EdgeInsets.fromLTRB(15, 10, 15, 15),
-                                        child: CategoriesChips(),
-                                      )
-                                    : Padding(
-                                        key: const ValueKey(2),
-                                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 7),
-                                        child: Align(
-                                          alignment: Alignment.topLeft,
-                                          child: PopularQueriesWidget(
-                                            onSearch: (e) {
-                                              openSearchScreen(query: e, showKeyboard: false);
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                              ),
-                              // Stack(
-                              //   children: [
-                              //     AnimatedOpacity(
-                              //       opacity: showCategoriesAppBarBottom ? 0 : 1,
-                              //       duration: const Duration(milliseconds: 250),
-                              //       child: Padding(
-                              //         padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                              //         child: Align(
-                              //           alignment: Alignment.topLeft,
-                              //           child: PopularQueriesWidget(
-                              //             onSearch: (e) {
-                              //               openSearchScreen(query: e, showKeyboard: false);
-                              //             },
-                              //           ),
-                              //         ),
-                              //       ),
-                              //     ),
-                              //     AnimatedPositioned(
-                              //       top: showCategoriesAppBarBottom ? 12 : -50,
-                              //       left: 15,
-                              //       right: 15,
-                              //       duration: const Duration(milliseconds: 250),
-                              //       child: const CategoriesChips(),
-                              //     ),
-                              //   ],
-                              // ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const CategoriesSection(),
-                      const SliverToBoxAdapter(child: SizedBox(height: 8)),
-                      SliverToBoxAdapter(
-                        child: AdvertisementContainer(
-                          onTap: () {},
-                          imageUrl:
-                              '$serviceProtocol$serviceDomain/v1/storage/buckets/661d74e7000bc76c563f/files/main_ad/view?project=$serviceProject&mode=admin',
-                        ),
-                      ),
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 15, 5, 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)!.recommendations,
-                                textAlign: TextAlign.center,
-                                style: AppTypography.font20black,
-                              ),
-                              const CityButton(),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SliverPadding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: AppSizes.anouncementGridSidePadding,
-                        ),
-                        sliver: SliverGrid(
-                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
-                            mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
-                            maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-                            childAspectRatio: AppSizes.anouncementAspectRatio(context),
-                          ),
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              if (index < announcementRepository.recommendationAnnouncementsWithExactLocation.length) {
-                                return AnnouncementContainer(
-                                    announcement:
-                                        announcementRepository.recommendationAnnouncementsWithExactLocation[index]);
-                              } else {
-                                return const SizedBox.shrink();
-                              }
-                            },
-                            childCount: announcementRepository.recommendationAnnouncementsWithExactLocation.length,
-                            // childCount: announcementRepository.recommendationAnnouncements.length % 2 == 0
-                            //     ? announcementRepository.recommendationAnnouncements.length
-                            //     : announcementRepository.recommendationAnnouncements.length - 1,
-                          ),
-                        ),
-                      ),
-                      if (announcementRepository.recommendationAnnouncementsWithOtherLocation.isNotEmpty)
-                        SliverPadding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppSizes.anouncementGridSidePadding,
-                          ),
-                          sliver: SliverToBoxAdapter(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Image.asset('Assets/search_other_city.jpg'),
-                                const SizedBox(height: 12),
-                                Text(
-                                  AppLocalizations.of(context)!.otherCity,
-                                  style: AppTypography.font20black,
-                                ),
-                                const SizedBox(height: 12),
-                              ],
-                            ),
-                          ),
-                        ),
-                      SliverPadding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: AppSizes.anouncementGridSidePadding,
-                        ),
-                        sliver: SliverGrid(
-                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
-                            mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
-                            maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-                            childAspectRatio: AppSizes.anouncementAspectRatio(context),
-                          ),
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) => AnnouncementContainer(
-                                announcement:
-                                    announcementRepository.recommendationAnnouncementsWithOtherLocation[index]),
-                            childCount:
-                                announcementRepository.recommendationAnnouncementsWithOtherLocation.length % 2 == 0
-                                    ? announcementRepository.recommendationAnnouncementsWithOtherLocation.length
-                                    : announcementRepository.recommendationAnnouncementsWithOtherLocation.length - 1,
-                          ),
-                        ),
-                      ),
-                      if (announcementRepository.recommendationAnnouncementsWithExactLocation.length +
-                                  announcementRepository.recommendationAnnouncementsWithOtherLocation.length >=
-                              20 ||
-                          announcementRepository.recommendationAnnouncementsWithExactLocation.length +
-                                  announcementRepository.recommendationAnnouncementsWithOtherLocation.length ==
-                              0)
-                        SliverToBoxAdapter(
-                          child: Center(
-                            child: SizedBox(
-                              height: 100,
-                              child: AppAnimations.bouncingLine,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
+        body: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
+          builder: (context, state) {
+            return RefreshIndicator(
+              color: AppColors.red,
+              onRefresh: () async {
+                announcementRepository.clear();
+                setState(() {});
+                final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+                BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
+                BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(
+                  true,
+                  cityId: searchCubit.cityId,
+                  areaId: searchCubit.areaId,
                 );
               },
-            ),
-            // AnimatedPositioned(
-            //   top: showCategoriesAppBarBottom ? 0 : -50,
-            //   left: 0,
-            //   right: 0,
-            //   duration: const Duration(milliseconds: 250),
-            //   child: const CategoriesChips(),
-            // ),
-          ],
+              child: CustomScrollView(
+                controller: _controller,
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                physics: const AlwaysScrollableScrollPhysics(),
+                slivers: [
+                  AnimatedBuilder(
+                      animation: _heightAnimation,
+                      builder: (context, child) {
+                        return SliverAppBar(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(22),
+                              bottomRight: Radius.circular(22),
+                            ),
+                          ),
+                          surfaceTintColor: Colors.transparent,
+                          expandedHeight: 120,
+                          collapsedHeight: _heightAnimation.value,
+                          floating: false,
+                          pinned: true,
+                          flexibleSpace: LayoutBuilder(
+                            builder: (BuildContext context, BoxConstraints constraints) {
+                              var appBarHeight = constraints.biggest.height;
+                              var t = (appBarHeight - kToolbarHeight) / (250.0 - kToolbarHeight);
+                              Color backgroundColor = Color.lerp(AppColors.red, AppColors.red, t)!;
+
+                              final opacity = (_heightAnimation.value - minHeight) / (maxHeight - minHeight);
+
+                              return FlexibleSpaceBar(
+                                expandedTitleScale: 1,
+                                centerTitle: true,
+                                titlePadding: EdgeInsets.zero,
+                                title: Column(
+                                  children: [
+                                    SafeArea(
+                                      child: MainAppBar(
+                                        isSearch: isSearch,
+                                        openSearchScreen: () => openSearchScreen(query: null, showKeyboard: true),
+                                        openFilters: openFilters,
+                                        cancel: () {
+                                          FocusScope.of(context).unfocus();
+                                          setSearch(false);
+                                        },
+                                      ),
+                                    ),
+                                    if (!disableCategoriesAppBarBottom) ...[
+                                      const SizedBox(height: 6),
+                                      Opacity(
+                                        opacity: opacity,
+                                        child: const Padding(
+                                          padding: EdgeInsets.only(left: 16, right: 16),
+                                          child: CategoriesChips(),
+                                        ),
+                                      ),
+                                    ]
+                                  ],
+                                ),
+                                background: Container(
+                                  decoration: BoxDecoration(
+                                    color: backgroundColor,
+                                    borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.circular(22),
+                                      bottomRight: Radius.circular(22),
+                                    ),
+                                  ),
+                                  child: Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 7),
+                                      child: PopularQueriesWidget(
+                                        onSearch: (e) {
+                                          openSearchScreen(query: e, showKeyboard: false);
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      }),
+                  const CategoriesSection(),
+                  const SliverToBoxAdapter(child: SizedBox(height: 8)),
+                  SliverToBoxAdapter(
+                    child: AdvertisementContainer(
+                      onTap: () {},
+                      imageUrl:
+                          '$serviceProtocol$serviceDomain/v1/storage/buckets/661d74e7000bc76c563f/files/main_ad/view?project=$serviceProject&mode=admin',
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 15, 5, 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.recommendations,
+                            textAlign: TextAlign.center,
+                            style: AppTypography.font20black,
+                          ),
+                          const CityButton(),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSizes.anouncementGridSidePadding,
+                    ),
+                    sliver: SliverGrid(
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
+                        mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
+                        maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+                        childAspectRatio: AppSizes.anouncementAspectRatio(context),
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          if (index < announcementRepository.recommendationAnnouncementsWithExactLocation.length) {
+                            return AnnouncementContainer(
+                                announcement:
+                                    announcementRepository.recommendationAnnouncementsWithExactLocation[index]);
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        },
+                        childCount: announcementRepository.recommendationAnnouncementsWithExactLocation.length,
+                        // childCount: announcementRepository.recommendationAnnouncements.length % 2 == 0
+                        //     ? announcementRepository.recommendationAnnouncements.length
+                        //     : announcementRepository.recommendationAnnouncements.length - 1,
+                      ),
+                    ),
+                  ),
+                  if (announcementRepository.recommendationAnnouncementsWithOtherLocation.isNotEmpty)
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppSizes.anouncementGridSidePadding,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset('Assets/search_other_city.jpg'),
+                            const SizedBox(height: 12),
+                            Text(
+                              AppLocalizations.of(context)!.otherCity,
+                              style: AppTypography.font20black,
+                            ),
+                            const SizedBox(height: 12),
+                          ],
+                        ),
+                      ),
+                    ),
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSizes.anouncementGridSidePadding,
+                    ),
+                    sliver: SliverGrid(
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        crossAxisSpacing: AppSizes.anouncementGridCrossSpacing,
+                        mainAxisSpacing: AppSizes.anouncementGridMainSpacing,
+                        maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+                        childAspectRatio: AppSizes.anouncementAspectRatio(context),
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) => AnnouncementContainer(
+                            announcement: announcementRepository.recommendationAnnouncementsWithOtherLocation[index]),
+                        childCount: announcementRepository.recommendationAnnouncementsWithOtherLocation.length % 2 == 0
+                            ? announcementRepository.recommendationAnnouncementsWithOtherLocation.length
+                            : announcementRepository.recommendationAnnouncementsWithOtherLocation.length - 1,
+                      ),
+                    ),
+                  ),
+                  if (announcementRepository.recommendationAnnouncementsWithExactLocation.length +
+                          announcementRepository.recommendationAnnouncementsWithOtherLocation.length ==
+                      0)
+                    _loadingWidget(height: 160),
+                  if (announcementRepository.recommendationAnnouncementsWithExactLocation.length +
+                          announcementRepository.recommendationAnnouncementsWithOtherLocation.length >=
+                      20)
+                    _loadingWidget(height: 100),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  SliverToBoxAdapter _loadingWidget({required double height}) {
+    return SliverToBoxAdapter(
+      child: Center(
+        child: SizedBox(
+          height: height,
+          child: AppAnimations.bouncingLine,
         ),
       ),
     );

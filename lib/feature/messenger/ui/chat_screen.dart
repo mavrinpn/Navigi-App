@@ -62,7 +62,8 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
   Future<void> _init() async {
     final messengerRepository = RepositoryProvider.of<MessengerRepository>(context);
     messengerRepository.refreshSubscription();
-    await messengerRepository.preloadChats();
+    //TODO
+    // await messengerRepository.preloadChats();
   }
 
   @override

@@ -20,6 +20,7 @@ class OutlineTextField extends StatelessWidget {
   final bool readonly;
   final bool error;
   final FocusNode? focusNode;
+  final String? Function(String?)? validator;
 
   const OutlineTextField({
     Key? key,
@@ -36,6 +37,7 @@ class OutlineTextField extends StatelessWidget {
     this.icon = "",
     this.error = false,
     this.focusNode,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -44,7 +46,7 @@ class OutlineTextField extends StatelessWidget {
       width: width,
       height: height,
       alignment: Alignment.center,
-      child: TextField(
+      child: TextFormField(
         keyboardType: keyBoardType,
         readOnly: readonly,
         maxLines: maxLines,
@@ -52,6 +54,8 @@ class OutlineTextField extends StatelessWidget {
         onChanged: onChange ?? (value) {},
         style: AppTypography.font16black.copyWith(fontSize: 15),
         textAlignVertical: TextAlignVertical.center,
+        validator: validator,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           counterText: '',
           hintText: hintText,

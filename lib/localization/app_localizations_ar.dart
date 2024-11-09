@@ -88,7 +88,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get relatedAnnouncements => 'إعلانات ذات صلة';
 
   @override
-  String get viewAll => 'انظر إلى كل شيء';
+  String get viewAll => 'كل الفئات';
 
   @override
   String get city => 'الولاية';

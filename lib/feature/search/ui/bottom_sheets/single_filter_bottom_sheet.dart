@@ -99,7 +99,8 @@ class _FiltersBottomSheetState extends State<SingleFilterBottomSheet> {
                 ),
               ),
               Positioned(
-                right: 12,
+                right: Directionality.of(context) == TextDirection.ltr ? 12 : null,
+                left: Directionality.of(context) == TextDirection.rtl ? 12 : null,
                 top: 32,
                 child: TextButton(
                   onPressed: () {

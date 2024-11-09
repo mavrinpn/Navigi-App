@@ -191,8 +191,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         asset: 'Assets/icons/search.svg',
                         isSelected: _selectedTab == 0,
                       ),
-                      tooltip: MyApp.getLocale(context) == 'fr' ? 'Page daccueil' : 'الصفحة الرئيسية',
-                      label: MyApp.getLocale(context) == 'fr' ? 'Page daccueil' : 'الصفحة الرئيسية'),
+                      tooltip: MyApp.getLocale(context) == 'fr' ? 'Page d’accueil' : 'الصفحة الرئيسية',
+                      label: MyApp.getLocale(context) == 'fr' ? 'Page d’accueil' : 'الصفحة الرئيسية'),
                   BottomNavigationBarItem(
                     icon: MessengerIcon(
                       isSelected: _selectedTab == 1,
@@ -205,8 +205,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       asset: 'Assets/icons/like.svg',
                       isSelected: _selectedTab == 2,
                     ),
-                    tooltip: MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المفضلة',
-                    label: MyApp.getLocale(context) == 'fr' ? 'Délection' : 'المفضلة',
+                    tooltip: MyApp.getLocale(context) == 'fr' ? 'Favoris' : 'المفضلة',
+                    label: MyApp.getLocale(context) == 'fr' ? 'Favoris' : 'المفضلة',
                   ),
                   BottomNavigationBarItem(
                     icon: NavigatorBarItem(
@@ -249,7 +249,11 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class NavigatorBarItem extends StatelessWidget {
-  const NavigatorBarItem({Key? key, required this.asset, required this.isSelected}) : super(key: key);
+  const NavigatorBarItem({
+    Key? key,
+    required this.asset,
+    required this.isSelected,
+  }) : super(key: key);
 
   final String asset;
   final bool isSelected;

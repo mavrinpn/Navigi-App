@@ -24,11 +24,11 @@ class OptionsScreen extends StatefulWidget {
 class _OptionsScreenState extends State<OptionsScreen> {
   final priceController = TextEditingController(text: '0');
   final _formKey = GlobalKey<FormState>();
-  bool buttonActive = true;
 
   late final List<PriceType> _availableTypes;
   late PriceType _priceType;
   List<Parameter> _parametersList = [];
+  final Map<String, bool> _parametersRequired = {'price': false};
 
   @override
   void initState() {
@@ -37,6 +37,19 @@ class _OptionsScreenState extends State<OptionsScreen> {
     _availableTypes = PriceTypeExtendion.availableTypesFor(repository.creatingData.subcategoryId ?? '');
     _priceType = _availableTypes.first;
     _parametersList = repository.getParametersList();
+
+    for (var parameter in _parametersList) {
+      if (parameter is SelectParameter) {
+        _parametersRequired[parameter.key] = parameter.currentValue.key != emptyParameter;
+      } else if (parameter is SingleSelectParameter) {
+        _parametersRequired[parameter.key] = parameter.currentValue.key != emptyParameter;
+      } else if (parameter is MultiSelectParameter) {
+      } else if (parameter is InputParameter) {
+        _parametersRequired[parameter.key] = parameter.currentValue != null && parameter.currentValue != '';
+      } else if (parameter is TextParameter) {
+        _parametersRequired[parameter.key] = parameter.currentValue != '';
+      }
+    }
   }
 
   @override
@@ -103,7 +116,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                   width: double.infinity,
                   hintText: '',
                   controller: priceController,
-                  keyBoardType: TextInputType.number,
+                  keyBoardType: const TextInputType.numberWithOptions(signed: false, decimal: true),
                   priceType: _priceType,
                   availableTypes: _availableTypes,
                   onChangePriceType: (priceType) {
@@ -112,35 +125,26 @@ class _OptionsScreenState extends State<OptionsScreen> {
                     });
                   },
                   validator: (value) {
-                    double? n;
-                    try {
-                      n = double.parse(priceController.text);
-                    } catch (e) {
-                      n = -1;
-                    }
-                    if (n < 0) {
-                      buttonActive = false;
+                    final n = double.tryParse(priceController.text.replaceAll(',', '.')) ?? -1;
+                    if (n <= 0) {
+                      _parametersRequired['price'] = false;
                       return localizations.errorReviewOrEnterOther;
                     }
-                    buttonActive = true;
+                    _parametersRequired['price'] = true;
                     return null;
                   },
                   onChange: (String value) {
-                    setState(() {
-                      _formKey.currentState!.validate();
-                    });
-                  },
-                  onEditingComplete: () {
-                    setState(() {
-                      priceController.text = double.parse(priceController.text).toString();
-                    });
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  },
-                  onTapOutside: (e) {
-                    setState(() {
-                      priceController.text = double.parse(priceController.text).toString();
-                    });
-                    FocusScope.of(context).requestFocus(FocusNode());
+                    if (priceController.text.contains(',')) {
+                      priceController.text = priceController.text.replaceAll(',', '.');
+                    }
+                    final n = double.tryParse(priceController.text.replaceAll(',', '.')) ?? -1;
+                    if (n <= 0) {
+                      _parametersRequired['price'] = false;
+                    } else {
+                      _parametersRequired['price'] = true;
+                    }
+                    _formKey.currentState?.validate();
+                    setState(() {});
                   },
                 ),
                 const SizedBox(height: 16),
@@ -184,43 +188,65 @@ class _OptionsScreenState extends State<OptionsScreen> {
     );
   }
 
-  Widget buildParameter(Parameter parameter) {
+  bool get buttonActive {
+    bool allTrue = _parametersRequired.values.every((value) => value == true);
+    return allTrue;
+  }
+
+  (Widget, bool?) _buildField(Parameter parameter) {
     final localizations = AppLocalizations.of(context)!;
+    late Widget child;
+    bool? isValid;
 
     if (parameter is SelectParameter) {
+      isValid = _parametersRequired[parameter.key];
       if (parameter.variants.length > 3) {
-        return SelectParameterBottomSheet(
+        child = SelectParameterBottomSheet(
           title: parameter.name,
           selected: parameter.currentValue.name,
           child: SelectParameterWidget(
             parameter: parameter,
             isClickable: false,
-            onChange: () => setState(() {}),
+            onChange: () => setState(() {
+              _parametersRequired[parameter.key] = parameter.currentValue.key != emptyParameter;
+              // _formKey.currentState?.validate();
+            }),
           ),
         );
       } else {
-        return SelectParameterWidget(
+        child = SelectParameterWidget(
           parameter: parameter,
           isClickable: false,
-          onChange: () => setState(() {}),
+          onChange: () => setState(() {
+            _parametersRequired[parameter.key] = parameter.currentValue.key != emptyParameter;
+            // _formKey.currentState?.validate();
+          }),
         );
       }
     } else if (parameter is SingleSelectParameter) {
+      isValid = _parametersRequired[parameter.key];
       if (parameter.variants.length > 3) {
-        return SelectParameterBottomSheet(
+        child = SelectParameterBottomSheet(
           title: parameter.name,
           selected: parameter.currentValue.name,
           child: SelectParameterWidget(
             parameter: parameter,
             isClickable: false,
-            onChange: () => setState(() {}),
+            onChange: () => setState(() {
+              _parametersRequired[parameter.key] = parameter.currentValue.key != emptyParameter;
+              // _formKey.currentState?.validate();
+            }),
           ),
         );
       } else {
-        return SelectParameterWidget(
+        child = SelectParameterWidget(
           parameter: parameter,
           isClickable: false,
-          onChange: () => setState(() {}),
+          onChange: () => setState(() {
+            _parametersRequired[parameter.key] = parameter.currentValue.key != emptyParameter;
+            isValid = _parametersRequired[parameter.key];
+            // _formKey.currentState?.validate();
+          }),
         );
       }
     } else if (parameter is MultiSelectParameter) {
@@ -231,7 +257,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
         } else if (parameter.selectedVariants.length > 1) {
           selected = '${localizations.selected}: ${parameter.selectedVariants.length}';
         }
-        return SelectParameterBottomSheet(
+        child = SelectParameterBottomSheet(
           title: parameter.name,
           selected: selected,
           child: MultipleCheckboxPicker(
@@ -241,19 +267,61 @@ class _OptionsScreenState extends State<OptionsScreen> {
           ),
         );
       } else {
-        return MultipleCheckboxPicker(
+        child = MultipleCheckboxPicker(
           parameter: parameter,
           wrapDirection: Axis.vertical,
           onChange: () => setState(() {}),
         );
       }
     } else if (parameter is InputParameter) {
-      return Padding(
+      child = Padding(
         padding: const EdgeInsets.only(bottom: 16.0),
-        child: InputParameterWidget(parameter: parameter),
+        child: InputParameterWidget(
+          parameter: parameter,
+          onChange: () => setState(() {
+            _parametersRequired[parameter.key] = parameter.currentValue != null && parameter.currentValue != '';
+            _formKey.currentState?.validate();
+          }),
+          validator: (value) {
+            if (value == null) {
+              _parametersRequired[parameter.key] = false;
+              return localizations.errorReviewOrEnterOther;
+            }
+            final n = double.tryParse(value.replaceAll(',', '.'));
+            if (n == null) {
+              _parametersRequired[parameter.key] = false;
+              return localizations.errorReviewOrEnterOther;
+            }
+            _parametersRequired[parameter.key] = true;
+            return null;
+          },
+        ),
       );
     } else {
-      return Container();
+      child = const SizedBox.shrink();
     }
+    return (child, isValid);
+  }
+
+  Widget buildParameter(Parameter parameter) {
+    final localizations = AppLocalizations.of(context)!;
+
+    final (child, isValid) = _buildField(parameter);
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        child,
+        if (isValid == false)
+          Text(
+            localizations.errorReviewOrEnterOther,
+            style: AppTypography.font12normal.copyWith(
+              color: const Color(0xFFCC6E69),
+              fontSize: 13,
+            ),
+          ),
+      ],
+    );
   }
 }
