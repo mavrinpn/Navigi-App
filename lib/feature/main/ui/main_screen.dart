@@ -149,10 +149,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
     });
   }
 
-  void openSearchScreen({
-    required String? query,
-    required bool showKeyboard,
-  }) {
+  void openSearchScreen({required String? query, required bool showKeyboard, required bool showFilterChips}) {
     final subcategoriesCubit = context.read<SearchSelectSubcategoryCubit>();
     final searchCubit = context.read<SearchAnnouncementCubit>();
     searchCubit.setSubcategory(null);
@@ -176,9 +173,9 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
       AppRoutesNames.search,
       arguments: {
         'query': query,
-        'showBackButton': false,
-        'showCancelButton': true,
-        'showFilterChips': false,
+        'showBackButton': showFilterChips ? true : false,
+        'showCancelButton': showFilterChips ? false : true,
+        'showFilterChips': showFilterChips ? true : false,
         'showKeyboard': showKeyboard,
       },
     ).then((value) {
@@ -267,7 +264,11 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                                     SafeArea(
                                       child: MainAppBar(
                                         isSearch: isSearch,
-                                        openSearchScreen: () => openSearchScreen(query: null, showKeyboard: true),
+                                        openSearchScreen: () => openSearchScreen(
+                                          query: null,
+                                          showKeyboard: true,
+                                          showFilterChips: false,
+                                        ),
                                         openFilters: openFilters,
                                         cancel: () {
                                           FocusScope.of(context).unfocus();
@@ -301,7 +302,11 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                                       padding: const EdgeInsets.fromLTRB(15, 10, 15, 7),
                                       child: PopularQueriesWidget(
                                         onSearch: (e) {
-                                          openSearchScreen(query: e, showKeyboard: false);
+                                          openSearchScreen(
+                                            query: e,
+                                            showKeyboard: false,
+                                            showFilterChips: true,
+                                          );
                                         },
                                       ),
                                     ),

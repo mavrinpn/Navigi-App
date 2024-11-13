@@ -4,7 +4,7 @@ class MessagesService {
   final Databases _databases;
   final Realtime _realtime;
   final Functions _functions;
-  final Storage _storage;
+  // final Storage _storage;
   final Account _account;
 
   final UserService _usersService;
@@ -19,7 +19,7 @@ class MessagesService {
     UserService userService,
     Account account,
   )   : _databases = databases,
-        _storage = storage,
+        // _storage = storage,
         _account = account,
         _functions = functions,
         _usersService = userService,
@@ -49,20 +49,20 @@ class MessagesService {
   Room _roomFromDoc(Document doc, String userId) {
     final otherUser = _getOtherUserNameAndImage(doc.data, userId);
 
-    Future<Uint8List> futureBytes;
-    if (doc.data['announcement'] != null && doc.data['announcement']['images'] != null) {
-      final imageUrl = doc.data['announcement']['images'][0];
-      futureBytes = futureBytesForImageURL(
-        storage: _storage,
-        imageUrl: imageUrl,
-      );
-    } else {
-      futureBytes = Future.value(Uint8List.fromList([]));
-    }
+    // Future<Uint8List> futureBytes;
+    // if (doc.data['announcement'] != null && doc.data['announcement']['images'] != null) {
+    //   final imageUrl = doc.data['announcement']['images'][0];
+    //   futureBytes = futureBytesForImageURL(
+    //     storage: _storage,
+    //     imageUrl: imageUrl,
+    //   );
+    // } else {
+    //   futureBytes = Future.value(Uint8List.fromList([]));
+    // }
 
     return Room.fromDocument(
       doc,
-      futureBytes,
+      // futureBytes,
       otherUser,
       onlineGetter: _onlineGetter,
     );

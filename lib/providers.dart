@@ -29,6 +29,7 @@ import 'package:smart/feature/reviews/bloc/reviews_cubit.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
+import 'package:smart/feature/search/bloc/update_city/update_city_cubit.dart';
 import 'package:smart/managers/blocked_users_manager.dart';
 import 'package:smart/managers/favourites_manager.dart';
 import 'package:smart/managers/keywords_manager.dart';
@@ -252,6 +253,10 @@ class MyBlocProviders extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => UpdateAppBarFilterCubit(UpdateAppBarFilterState(needUpdate: false, title: null)),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (_) => UpdateCityCubit(UpdateCityState()),
           lazy: false,
         ),
         BlocProvider(

@@ -9,6 +9,7 @@ import 'package:smart/feature/create_announcement/ui/widgets/select_parameter_bo
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
+import 'package:smart/feature/search/bloc/update_city/update_city_cubit.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_keys.dart';
 import 'package:smart/feature/search/ui/widgets/filters/city_area_filter_widget.dart';
@@ -109,6 +110,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
     final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
+    final updateCityCubit = context.read<UpdateCityCubit>();
 
     choosedMarksFilter = searchCubit.marksFilter;
     choosedCarFilter = selectCategoryCubit.autoFilter;
@@ -177,7 +179,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
             Padding(
               padding: const EdgeInsets.only(top: 90),
               child: SingleChildScrollView(
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 clipBehavior: Clip.hardEdge,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -274,6 +276,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                   }
 
                   updateAppBarFilterCubit.needUpdateAppBarFilters();
+                  updateCityCubit.needUpdateCity();
 
                   setState(() {});
                 },
@@ -421,6 +424,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
     final localizations = AppLocalizations.of(context)!;
     final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
+    final updateCityCubit = context.read<UpdateCityCubit>();
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
 
     return Column(
@@ -462,6 +466,7 @@ class _CommonFiltersBottomSheetState extends State<CommonFiltersBottomSheet> {
                   setState(() {});
                 }
                 updateAppBarFilterCubit.needUpdateAppBarFilters();
+                updateCityCubit.needUpdateCity();
               });
             },
             child: Padding(

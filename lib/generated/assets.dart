@@ -5,7 +5,6 @@ class Assets {
   static const String assetsFacebook = 'Assets/facebook.png';
   static const String assetsGoogle = 'Assets/google.png';
   static const String assetsLogo = 'Assets/logo.png';
-  static const String assetsMapMarker = 'Assets/map_marker.png';
   static const String assetsMask = 'Assets/mask.png';
   static const String assetsRandomPeople = 'Assets/randomPeople.png';
   static const String assetsSplash = 'Assets/splash.png';

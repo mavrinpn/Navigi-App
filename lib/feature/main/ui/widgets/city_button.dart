@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/main/bloc/announcements/announcements_cubit.dart';
 import 'package:smart/feature/main/ui/widgets/filled_text_button.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
-import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
+import 'package:smart/feature/search/bloc/update_city/update_city_cubit.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_bottom_sheet_dialog.dart';
 import 'package:smart/feature/search/ui/bottom_sheets/filter_keys.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/utils/colors.dart';
 
 class CityButton extends StatefulWidget {
   const CityButton({super.key});
@@ -34,7 +36,7 @@ class _CityButtonState extends State<CityButton> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UpdateAppBarFilterCubit, UpdateAppBarFilterState>(
+    return BlocConsumer<UpdateCityCubit, UpdateCityState>(
       listener: (context, state) {
         _setCity();
       },
@@ -48,7 +50,10 @@ class _CityButtonState extends State<CityButton> {
             );
           },
           title: _cityName(context),
-          icon: Icons.keyboard_arrow_down_rounded,
+          icon: SvgPicture.asset(
+            'Assets/icons/arrow_down.svg',
+            colorFilter: const ColorFilter.mode(AppColors.red, BlendMode.srcIn),
+          ),
         );
       },
     );

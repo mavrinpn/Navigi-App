@@ -16,7 +16,7 @@ class CommonMapHuawei extends CommonMapInterface {
 
     final iconFuture = BitmapDescriptor.fromAssetImage(
       ImageConfiguration.empty,
-      'Assets/map_marker.png',
+      'Assets/map_marker_big.png',
       package: 'map_kit_interface',
     );
 

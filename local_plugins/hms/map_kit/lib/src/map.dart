@@ -33,8 +33,9 @@ class CommonMap extends CommonMapInterface {
                   width: 50,
                   height: 50,
                   alignment: Alignment.center,
+                  rotate: true,
                   child: Image.asset(
-                    'Assets/map_marker.png',
+                    'Assets/map_marker_big.png',
                     package: 'map_kit_interface',
                   ),
                 ),

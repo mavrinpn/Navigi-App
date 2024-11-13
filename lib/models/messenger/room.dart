@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:appwrite/models.dart';
 import 'package:rxdart/rxdart.dart';
@@ -35,8 +34,12 @@ class Room {
     _refreshOnlineStatus();
   }
 
-  Room.fromDocument(Document doc, Future<Uint8List> announcementImage, ChatUserInfo otherUser, {this.onlineGetter})
-      : announcement = Announcement.fromJson(
+  Room.fromDocument(
+    Document doc,
+    // Future<Uint8List> announcementImage,
+    ChatUserInfo otherUser, {
+    this.onlineGetter,
+  })  : announcement = Announcement.fromJson(
           json: doc.data['announcement'],
           // futureBytes: announcementImage,
           subcollTableId: '',

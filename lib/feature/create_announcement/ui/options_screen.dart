@@ -58,131 +58,132 @@ class _OptionsScreenState extends State<OptionsScreen> {
 
     final localizations = AppLocalizations.of(context)!;
 
-    return Form(
-      key: _formKey,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          iconTheme: const IconThemeData.fallback(),
-          backgroundColor: AppColors.appBarColor,
-          elevation: 0,
-          scrolledUnderElevation: 0,
-          title: Text(
-            AppLocalizations.of(context)!.features,
-            style: AppTypography.font20black,
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Form(
+        key: _formKey,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            iconTheme: const IconThemeData.fallback(),
+            backgroundColor: AppColors.appBarColor,
+            elevation: 0,
+            scrolledUnderElevation: 0,
+            title: Text(
+              AppLocalizations.of(context)!.features,
+              style: AppTypography.font20black,
+            ),
           ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-          child: SingleChildScrollView(
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(10),
-                    onTap: () {
-                      for (var param in _parametersList) {
-                        if (param is SelectParameter) {
-                          param.currentValue = param.variants[0];
-                        } else if (param is SingleSelectParameter) {
-                          param.currentValue = param.variants.first;
-                        } else if (param is MultiSelectParameter) {
-                          param.selectedVariants = [];
-                        } else if (param is InputParameter) {
-                          param.value = null;
-                        } else if (param is TextParameter) {
-                          param.value = '';
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+            child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(10),
+                      onTap: () {
+                        for (var param in _parametersList) {
+                          if (param is SelectParameter) {
+                            param.currentValue = param.variants[0];
+                          } else if (param is SingleSelectParameter) {
+                            param.currentValue = param.variants.first;
+                          } else if (param is MultiSelectParameter) {
+                            param.selectedVariants = [];
+                          } else if (param is InputParameter) {
+                            param.value = null;
+                          } else if (param is TextParameter) {
+                            param.value = '';
+                          }
                         }
-                      }
-                      setState(() {});
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: Text(
-                        localizations.resetEverything,
-                        style: AppTypography.font12gray,
+                        setState(() {});
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Text(
+                          localizations.resetEverything,
+                          style: AppTypography.font12gray,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Text(
-                  AppLocalizations.of(context)!.price,
-                  style: AppTypography.font16black.copyWith(fontSize: 18),
-                ),
-                UnderLineTextField(
-                  width: double.infinity,
-                  hintText: '',
-                  controller: priceController,
-                  keyBoardType: const TextInputType.numberWithOptions(signed: false, decimal: true),
-                  priceType: _priceType,
-                  availableTypes: _availableTypes,
-                  onChangePriceType: (priceType) {
-                    setState(() {
-                      _priceType = priceType;
-                    });
-                  },
-                  validator: (value) {
-                    final n = double.tryParse(priceController.text.replaceAll(',', '.')) ?? -1;
-                    if (n <= 0) {
-                      _parametersRequired['price'] = false;
-                      return localizations.errorReviewOrEnterOther;
-                    }
-                    _parametersRequired['price'] = true;
-                    return null;
-                  },
-                  onChange: (String value) {
-                    if (priceController.text.contains(',')) {
-                      priceController.text = priceController.text.replaceAll(',', '.');
-                    }
-                    final n = double.tryParse(priceController.text.replaceAll(',', '.')) ?? -1;
-                    if (n <= 0) {
-                      _parametersRequired['price'] = false;
-                    } else {
-                      _parametersRequired['price'] = true;
-                    }
-                    _formKey.currentState?.validate();
-                    setState(() {});
-                  },
-                ),
-                const SizedBox(height: 16),
-                SingleChildScrollView(
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ..._parametersList
-                          .map((e) => Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 4),
-                                child: buildParameter(e),
-                              ))
-                          .toList(),
-                      const SizedBox(height: 120),
-                    ],
+                  Text(
+                    AppLocalizations.of(context)!.price,
+                    style: AppTypography.font16black.copyWith(fontSize: 18),
                   ),
-                ),
-              ],
+                  UnderLineTextField(
+                    width: double.infinity,
+                    hintText: '',
+                    controller: priceController,
+                    keyBoardType: const TextInputType.numberWithOptions(signed: false, decimal: true),
+                    priceType: _priceType,
+                    availableTypes: _availableTypes,
+                    onChangePriceType: (priceType) {
+                      setState(() {
+                        _priceType = priceType;
+                      });
+                    },
+                    validator: (value) {
+                      final n = double.tryParse(priceController.text.replaceAll(',', '.')) ?? -1;
+                      if (n <= 0) {
+                        _parametersRequired['price'] = false;
+                        return localizations.errorReviewOrEnterOther;
+                      }
+                      _parametersRequired['price'] = true;
+                      return null;
+                    },
+                    onChange: (String value) {
+                      if (priceController.text.contains(',')) {
+                        priceController.text = priceController.text.replaceAll(',', '.');
+                      }
+                      final n = double.tryParse(priceController.text.replaceAll(',', '.')) ?? -1;
+                      if (n <= 0) {
+                        _parametersRequired['price'] = false;
+                      } else {
+                        _parametersRequired['price'] = true;
+                      }
+                      _formKey.currentState?.validate();
+                      setState(() {});
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  ..._parametersList
+                      .map((e) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: buildParameter(e),
+                          ))
+                      .toList(),
+                  const SizedBox(height: 120),
+                ],
+              ),
             ),
           ),
-        ),
-        floatingActionButton: CustomTextButton.orangeContinue(
-          width: MediaQuery.of(context).size.width - 30,
-          text: localizations.continue_,
-          callback: () async {
-            if (buttonActive) {
-              repository.setPrice(_priceType.fromPriceString(priceController.text) ?? 0);
+          floatingActionButton: CustomTextButton.orangeContinue(
+            width: MediaQuery.of(context).size.width - 30,
+            text: localizations.continue_,
+            callback: () async {
+              if (buttonActive) {
+                repository.setPrice(_priceType.fromPriceString(priceController.text) ?? 0);
 
-              repository.setPriceType(_priceType);
-              await repository.setInfoFormItem(context);
-              Navigator.pushNamed(
-                context,
-                AppRoutesNames.announcementCreatingPlace,
-              );
-            }
-          },
-          active: buttonActive,
+                repository.setPriceType(_priceType);
+                await repository.setInfoFormItem(context);
+                Navigator.pushNamed(
+                  context,
+                  AppRoutesNames.announcementCreatingPlace,
+                );
+              }
+            },
+            active: buttonActive,
+          ),
         ),
       ),
     );

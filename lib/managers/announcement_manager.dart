@@ -60,6 +60,9 @@ class AnnouncementManager {
     String? cityId,
     String? areaId,
   }) async {
+    if (isNew) {
+      clear();
+    }
     announcementsLoadingState.add(LoadingStateEnum.loading);
 
     if (_canGetMoreAnnouncement) {
@@ -72,10 +75,6 @@ class AnnouncementManager {
       } catch (err) {}
 
       try {
-        if (isNew) {
-          clear();
-        }
-
         if (!_excludeRecomendationsCity && !_excludeRecomendationsArea) {
           await _recomendationsWithCityInclude(uid, cityId: cityId, areaId: areaId);
         }
@@ -430,8 +429,6 @@ class AnnouncementManager {
       if (isNew) {
         searchAnnouncementsWithExactLocation.clear();
         searchAnnouncementsWithOtherLocation.clear();
-        recommendationAnnouncementsWithExactLocation.clear();
-        recommendationAnnouncementsWithOtherLocation.clear();
         _searchLastId = '';
       }
 

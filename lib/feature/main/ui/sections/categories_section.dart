@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart/feature/main/ui/widgets/categories_scroll_view.dart';
 import 'package:smart/feature/main/ui/widgets/filled_text_button.dart';
 import 'package:smart/localization/app_localizations.dart';
+import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/fonts.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
@@ -28,7 +30,10 @@ class CategoriesSection extends StatelessWidget {
                     Navigator.of(context).pushNamed(AppRoutesNames.allCategories);
                   },
                   title: AppLocalizations.of(context)!.viewAll,
-                  icon: Icons.arrow_forward_ios_rounded,
+                  icon: SvgPicture.asset(
+                    'Assets/icons/arrow_right.svg',
+                    colorFilter: const ColorFilter.mode(AppColors.red, BlendMode.srcIn),
+                  ),
                 ),
               ],
             ),

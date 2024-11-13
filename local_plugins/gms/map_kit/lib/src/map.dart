@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:map_kit_interface/map_kit.dart';
@@ -15,7 +17,7 @@ class CommonMap extends CommonMapInterface {
     // ignore: deprecated_member_use
     final iconFuture = BitmapDescriptor.fromAssetImage(
       ImageConfiguration.empty,
-      'Assets/map_marker.png',
+      Platform.isIOS ? 'Assets/map_marker_small.png' : 'Assets/map_marker_big.png',
       package: 'map_kit_interface',
     );
 

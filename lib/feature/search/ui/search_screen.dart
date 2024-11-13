@@ -70,6 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
   String title = '';
 
   KeyWord? selectedKeyword;
+  List<KeyWord> searchedKeywords = [];
 
   bool isScrollLoading = false;
   final _searchAppBarKey = GlobalKey();
@@ -85,6 +86,9 @@ class _SearchScreenState extends State<SearchScreen> {
     searchManager.setSearch(widget.showSearchHelper);
 
     searchQueryString = widget.searchQueryString;
+    if (searchQueryString != null) {
+      searchScreenTextController.text = searchQueryString!;
+    }
 
     _controller.addListener(() async {
       if (_controller.offset > 100 && _controller.position.maxScrollExtent < _controller.offset + 250) {
@@ -195,6 +199,14 @@ class _SearchScreenState extends State<SearchScreen> {
                 }
               },
               onSubmitted: (String? value) {
+                final keywordIndex = searchedKeywords.indexWhere((item) =>
+                    item.nameAr.toLowerCase() == value?.toLowerCase() ||
+                    item.nameFr.toLowerCase() == value?.toLowerCase());
+                if (keywordIndex != -1) {
+                  _onKeywordTap(searchedKeywords[keywordIndex]);
+                  return;
+                }
+
                 _showFilterChips = true;
                 _showCancelButton = false;
                 _showBackButton = true;
@@ -244,6 +256,7 @@ class _SearchScreenState extends State<SearchScreen> {
     Widget searchScreenBuilder(context, state) {
       //if (state is SearchItemsSuccess && searchController.text.isNotEmpty && state.result.isNotEmpty) {
       if (state is SearchItemsSuccess) {
+        searchedKeywords = state.result;
         return SearchItemsWidget(
           state: state,
           onCurrentQueryTap: (currentQuery) {
@@ -253,40 +266,11 @@ class _SearchScreenState extends State<SearchScreen> {
             );
           },
           onKeywordTap: (keyword) {
-            _showFilterChips = true;
-            _showCancelButton = false;
-            _showBackButton = true;
-
-            final query = keyword.localizedName();
-
-            final subcategoriesCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
-            final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
-            final subcategory = CategoriesManager.subcategory(keyword.subcategoryId);
-            searchCubit.setSubcategory(subcategory);
-            searchCubit.setSearchMode(SearchModeEnum.subcategory);
-            subcategoriesCubit.getSubcategoryFilters(keyword.subcategoryId);
-
-            selectedKeyword = keyword;
-            BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnouncesByKeyword(
-              keyword: keyword,
-              isNew: true,
-            );
-            lastQuery = query;
-            searchManager.setSearch(false);
-            setSearchText(query);
-
-            RepositoryProvider.of<SearchManager>(context).setSearch(false);
-            BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
-
-            // title = subcategory?.localizedName() ?? '';
-            // _showBackButton = false;
-
-            setState(() {});
-
-            FocusScope.of(context).unfocus();
+            _onKeywordTap(keyword);
           },
         );
       } else if (searchQueryString != null || state is SearchItemsLoading) {
+        searchedKeywords.clear();
         // return Center(child: AppAnimations.bouncingLine);
         return const SizedBox.shrink();
       }
@@ -402,21 +386,22 @@ class _SearchScreenState extends State<SearchScreen> {
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
           slivers: [
-            SliverPadding(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppSizes.anouncementGridSidePadding,
-                vertical: AppSizes.anouncementGridSidePadding,
-              ),
-              sliver: SliverGrid(
-                gridDelegate: gridDelegate,
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) => AnnouncementContainer(
-                    announcement: announcementRepository.searchAnnouncementsWithExactLocation[index],
+            if (announcementRepository.searchAnnouncementsWithExactLocation.isNotEmpty)
+              SliverPadding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSizes.anouncementGridSidePadding,
+                  vertical: AppSizes.anouncementGridSidePadding,
+                ),
+                sliver: SliverGrid(
+                  gridDelegate: gridDelegate,
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) => AnnouncementContainer(
+                      announcement: announcementRepository.searchAnnouncementsWithExactLocation[index],
+                    ),
+                    childCount: announcementRepository.searchAnnouncementsWithExactLocation.length,
                   ),
-                  childCount: announcementRepository.searchAnnouncementsWithExactLocation.length,
                 ),
               ),
-            ),
 
             if (announcementRepository.searchAnnouncementsWithOtherLocation.isNotEmpty &&
                 (searchCubit.areaId != null || searchCubit.cityId != null))
@@ -483,8 +468,6 @@ class _SearchScreenState extends State<SearchScreen> {
           onPopInvokedWithResult: (_, __) async {
             final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
             final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
-            final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
-            updateAppBarFilterCubit.needUpdateAppBarFilters();
             searchCubit.clearFilters();
             selectCategoryCubit.clearFilters();
             for (var param in selectCategoryCubit.parameters) {
@@ -499,6 +482,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 param.max = null;
               }
             }
+
+            final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
+            updateAppBarFilterCubit.needUpdateAppBarFilters();
           },
           child: Scaffold(
             backgroundColor: AppColors.mainBackground,
@@ -554,6 +540,42 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
     );
+  }
+
+  void _onKeywordTap(KeyWord keyword) {
+    final searchManager = RepositoryProvider.of<SearchManager>(context);
+
+    _showFilterChips = true;
+    _showCancelButton = false;
+    _showBackButton = true;
+
+    final query = keyword.localizedName();
+
+    final subcategoriesCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
+    final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+    final subcategory = CategoriesManager.subcategory(keyword.subcategoryId);
+    searchCubit.setSubcategory(subcategory);
+    searchCubit.setSearchMode(SearchModeEnum.subcategory);
+    subcategoriesCubit.getSubcategoryFilters(keyword.subcategoryId);
+
+    selectedKeyword = keyword;
+    BlocProvider.of<SearchAnnouncementCubit>(context).searchAnnouncesByKeyword(
+      keyword: keyword,
+      isNew: true,
+    );
+    lastQuery = query;
+    searchManager.setSearch(false);
+    setSearchText(query);
+
+    RepositoryProvider.of<SearchManager>(context).setSearch(false);
+    BlocProvider.of<PopularQueriesCubit>(context).loadPopularQueries();
+
+    // title = subcategory?.localizedName() ?? '';
+    // _showBackButton = false;
+
+    setState(() {});
+
+    FocusScope.of(context).unfocus();
   }
 
   _buildCategoryAppBarBottom(bool showFilterChips, bool showBackButton) {

@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:smart/feature/search/bloc/search_announcement_cubit.dart';
 import 'package:smart/feature/search/bloc/select_subcategory/search_select_subcategory_cubit.dart';
 import 'package:smart/feature/search/bloc/update_appbar_filter/update_appbar_filter_cubit.dart';
+import 'package:smart/feature/search/bloc/update_city/update_city_cubit.dart';
 import 'package:smart/feature/search/ui/widgets/filters/city_area_filter_widget.dart';
 import 'package:smart/main.dart';
 import 'package:smart/managers/search_manager.dart';
@@ -73,6 +74,7 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
     final selectCategoryCubit = BlocProvider.of<SearchSelectSubcategoryCubit>(context);
     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
+    final updateCityCubit = context.read<UpdateCityCubit>();
 
     return Container(
       // height: MediaQuery.sizeOf(context).height * 0.9,
@@ -126,6 +128,7 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
                         }
 
                         updateAppBarFilterCubit.needUpdateAppBarFilters();
+                        updateCityCubit.needUpdateCity();
                         setState(() {});
                       },
                       text: localizations.apply,
@@ -150,6 +153,7 @@ class _FiltersBottomSheetState extends State<LocationFilterBottomSheet> {
 
                     final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
                     updateAppBarFilterCubit.needUpdateAppBarFilters();
+                    updateCityCubit.needUpdateCity();
 
                     RepositoryProvider.of<SearchManager>(context).setSearch(false);
 

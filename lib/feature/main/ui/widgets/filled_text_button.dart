@@ -12,7 +12,7 @@ class FilledTextButton extends StatelessWidget {
 
   final Function onPressed;
   final String title;
-  final IconData icon;
+  final Widget icon;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +31,7 @@ class FilledTextButton extends StatelessWidget {
           child: SizedBox(
             height: 24,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   title,
@@ -41,10 +42,13 @@ class FilledTextButton extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 4),
-                Icon(
-                  icon,
-                  size: icon == Icons.keyboard_arrow_down_rounded ? 22 : 14,
-                  color: AppColors.red,
+                Padding(
+                  padding: const EdgeInsets.only(top: 1),
+                  child: SizedBox(
+                    height: 9,
+                    width: 9,
+                    child: icon,
+                  ),
                 ),
               ],
             ),
