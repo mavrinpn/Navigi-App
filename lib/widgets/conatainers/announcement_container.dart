@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_debouncer/flutter_debouncer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smart/feature/favorites/bloc/favourites_cubit.dart';
@@ -26,22 +27,36 @@ class AnnouncementContainer extends StatefulWidget {
 
 class _AnnouncementContainerState extends State<AnnouncementContainer> {
   bool liked = false;
+  bool lastLikeState = false;
 
   @override
   void initState() {
     liked = BlocProvider.of<FavouritesCubit>(context).isLiked(widget.announcement.anouncesTableId);
+    lastLikeState = liked;
     super.initState();
   }
 
+  final Debouncer _debouncer = Debouncer();
+
   void onLikeTapped() {
     final localizations = AppLocalizations.of(context)!;
-    BlocProvider.of<FavouritesCubit>(context).likeUnlike(widget.announcement.anouncesTableId);
+
+    _debouncer.debounce(
+      duration: const Duration(milliseconds: 750),
+      onDebounce: () {
+        if (lastLikeState != liked) {
+          lastLikeState = liked;
+          BlocProvider.of<FavouritesCubit>(context).likeUnlike(widget.announcement.anouncesTableId);
+          CustomSnackBar.showSnackBar(
+            context,
+            liked ? localizations.adRemovedFromFavorites : localizations.adAddedToFavorites,
+            2,
+          );
+        }
+      },
+    );
+
     setState(() {
-      CustomSnackBar.showSnackBar(
-        context,
-        liked ? localizations.adRemovedFromFavorites : localizations.adAddedToFavorites,
-        2,
-      );
       liked = !liked;
     });
   }

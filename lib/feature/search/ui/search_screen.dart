@@ -444,9 +444,10 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
               ),
-            if (announcementRepository.searchAnnouncementsWithExactLocation.length +
-                    announcementRepository.searchAnnouncementsWithOtherLocation.length >=
-                20)
+            if (state is SearchAnnouncementsLoadingState &&
+                announcementRepository.searchAnnouncementsWithExactLocation.length +
+                        announcementRepository.searchAnnouncementsWithOtherLocation.length >=
+                    20)
               SliverToBoxAdapter(
                 child: Center(
                   child: SizedBox(

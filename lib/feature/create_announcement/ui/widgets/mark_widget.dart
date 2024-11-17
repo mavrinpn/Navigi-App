@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart/feature/create_announcement/bloc/marks/select_mark_cubit.dart';
@@ -32,7 +31,7 @@ class _MarkWidgetState extends State<MarkWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final url = widget.mark.image?.trim().replaceAll('\r', '').replaceAll('\n', '');
+    // final url = widget.mark.image?.trim().replaceAll('\r', '').replaceAll('\n', '');
     // final updateAppBarFilterCubit = context.read<UpdateAppBarFilterCubit>();
 
     return Column(
@@ -72,22 +71,22 @@ class _MarkWidgetState extends State<MarkWidget> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  height: 24,
-                  width: 28,
-                  child: url != null
-                      ? CachedNetworkImage(
-                          imageUrl: url,
-                          fadeInDuration: Duration.zero,
-                          fadeOutDuration: Duration.zero,
-                          placeholderFadeInDuration: Duration.zero,
-                          errorWidget: (context, error, stackTrace) {
-                            return Container();
-                          },
-                        )
-                      : Container(),
-                ),
-                const SizedBox(width: 6),
+                // SizedBox(
+                //   height: 24,
+                //   width: 28,
+                //   child: url != null
+                //       ? CachedNetworkImage(
+                //           imageUrl: url,
+                //           fadeInDuration: Duration.zero,
+                //           fadeOutDuration: Duration.zero,
+                //           placeholderFadeInDuration: Duration.zero,
+                //           errorWidget: (context, error, stackTrace) {
+                //             return Container();
+                //           },
+                //         )
+                //       : Container(),
+                // ),
+                // const SizedBox(width: 6),
                 Expanded(
                   child: Text(
                     widget.mark.name,

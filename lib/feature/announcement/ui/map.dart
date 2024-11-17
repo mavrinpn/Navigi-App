@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:map_kit/map_kit.dart';
 import 'package:map_kit_interface/map_kit.dart';
 import 'package:smart/models/announcement.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../utils/colors.dart';
 import '../../../utils/fonts.dart';
@@ -51,36 +52,6 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
-  void showInformation() {
-    showBottomSheet(
-        context: context,
-        builder: (BuildContext context) => Container(
-              height: MediaQuery.of(context).size.height * 0.3,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
-                color: AppColors.whiteGray,
-              ),
-              child: Column(
-                children: [
-                  const SizedBox(height: 10),
-                  Container(
-                    width: 100,
-                    height: 5,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(2), color: Colors.white),
-                  ),
-                  const SizedBox(height: 20),
-                  RichText(
-                      text: TextSpan(children: [
-                    TextSpan(
-                        text: ' ${widget.placeData.name}', style: AppTypography.font14black.copyWith(fontSize: 20)),
-                    TextSpan(text: '  4 km', style: AppTypography.font14lightGray.copyWith(fontSize: 20)),
-                  ]))
-                ],
-              ),
-            ));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,25 +65,57 @@ class MapSampleState extends State<MapSample> {
           CommonLatLng(widget.latitude, widget.longitude),
         },
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(
-            width: 35,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButton: CircleAvatar(
+        radius: 24,
+        backgroundColor: AppColors.dark,
+        child: IconButton(
+          onPressed: () => directionToPoint(),
+          icon: const Icon(
+            Icons.navigation_rounded,
+            color: Colors.white,
           ),
-          CircleAvatar(
-            radius: 24,
-            backgroundColor: AppColors.dark,
-            child: IconButton(
-              onPressed: () => showInformation(),
-              icon: const Icon(
-                Icons.expand_less,
-                color: Colors.white,
-              ),
+        ),
+      ),
+    );
+  }
+
+  void directionToPoint() async {
+    final lat = widget.latitude;
+    final lng = widget.longitude;
+    final googleMapsUrl = 'https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=driving';
+
+    if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
+      await launchUrl(Uri.parse(googleMapsUrl), mode: LaunchMode.externalApplication);
+    }
+  }
+
+  void showInformation() {
+    showBottomSheet(
+      context: context,
+      builder: (BuildContext context) => Container(
+        height: MediaQuery.of(context).size.height * 0.3,
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+          color: AppColors.whiteGray,
+        ),
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            Container(
+              width: 100,
+              height: 5,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(2), color: Colors.white),
             ),
-          )
-        ],
+            const SizedBox(height: 20),
+            RichText(
+                text: TextSpan(children: [
+              TextSpan(text: ' ${widget.placeData.name}', style: AppTypography.font14black.copyWith(fontSize: 20)),
+              TextSpan(text: '  4 km', style: AppTypography.font14lightGray.copyWith(fontSize: 20)),
+            ]))
+          ],
+        ),
       ),
     );
   }

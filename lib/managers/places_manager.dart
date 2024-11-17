@@ -25,6 +25,10 @@ class PlacesManager {
 
   void searchCities(String query) {
     List<City> resList = [];
+    if (query.isEmpty) {
+      searchedCities = resList;
+      return;
+    }
     for (var item in cities) {
       final name = item.name.toLowerCase();
       final lowerTextRow = query.toLowerCase().trimLeft();

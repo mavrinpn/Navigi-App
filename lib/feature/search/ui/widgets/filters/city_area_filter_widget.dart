@@ -34,6 +34,7 @@ class _CityAreaFilterWidgetState extends State<CityAreaFilterWidget> {
   bool active = false;
   bool initial = false;
   bool selectingCity = true;
+  bool placeSelected = false;
 
   CityDistrict? district;
 
@@ -64,9 +65,9 @@ class _CityAreaFilterWidgetState extends State<CityAreaFilterWidget> {
       selectedDistrict.name,
     );
     district = selectedDistrict;
-    // setState(() {
-    //   selectingCity = true;
-    // });
+    setState(() {
+      placeSelected = true;
+    });
   }
 
   void _resetPlace() {
@@ -186,12 +187,15 @@ class _CityAreaFilterWidgetState extends State<CityAreaFilterWidget> {
             width: double.infinity,
             readonly: selectingCity,
             onChange: (value) {
+              placeSelected = false;
               BlocProvider.of<PlacesCubit>(context).searchPlaces(value);
               setState(() {});
             },
           ),
           const SizedBox(height: 16),
-          if (!selectingCity) ...[
+          if (placeSelected)
+            const SizedBox.shrink()
+          else if (!selectingCity) ...[
             BlocBuilder<PlacesCubit, PlacesState>(
               builder: (context, state) {
                 if (state is PlacesSuccessState || state is PlacesLoadingState) {

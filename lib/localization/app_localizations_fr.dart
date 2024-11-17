@@ -553,7 +553,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get specifyPlace => 'Précisez le localisation';
 
   @override
-  String get change => 'Changement';
+  String get change => 'Confirmer';
 
   @override
   String get loading => 'Chargement';

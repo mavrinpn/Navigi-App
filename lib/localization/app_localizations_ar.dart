@@ -553,7 +553,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get specifyPlace => 'تحديد المكان';
 
   @override
-  String get change => 'تغيير';
+  String get change => 'تأكيد';
 
   @override
   String get loading => 'تحميل';

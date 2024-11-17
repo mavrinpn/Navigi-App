@@ -14,7 +14,7 @@
 	</dict>
 	</array>
 	<key>NSAppleIDUsageDescription</key>
-	<string>Требуется для входа с использованием Apple ID</string>
+	<string>Requis pour la connexion à l'aide d'un identifiant Apple</string>
 	<key>FlutterDeepLinkingEnabled</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
