@@ -63,13 +63,13 @@ class SelectParameterBottomSheet extends StatelessWidget {
                               ),
                               const SizedBox(height: 20),
                               child,
-                              const SizedBox(height: 80),
+                              const SizedBox(height: 100),
                             ],
                           ),
                         ),
                       ),
                       Positioned(
-                        bottom: 0,
+                        bottom: 20,
                         left: 20,
                         right: 20,
                         child: CustomTextButton.orangeContinue(

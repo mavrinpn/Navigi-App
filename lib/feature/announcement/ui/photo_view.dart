@@ -69,6 +69,8 @@ class _PhotoViewsState extends State<PhotoViews> {
                 return PhotoViewGalleryPageOptions(
                   imageProvider: CachedNetworkImageProvider(widget.images[index]),
                   initialScale: PhotoViewComputedScale.contained,
+                  minScale: PhotoViewComputedScale.contained,
+                  maxScale: PhotoViewComputedScale.covered,
                 );
               },
               onPageChanged: (int page) {

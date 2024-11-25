@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none"
 
-version: 1.0.14+193
+version: 1.0.14+196
 
 environment:
   sdk: ">=3.4.0 <4.0.0"
@@ -17,8 +17,8 @@ dependencies:
   map_kit_interface:
     path: ./local_plugins/interface/map_kit
   map_kit:
-    path: ./local_plugins/gms/map_kit
-    # path: ./local_plugins/hms/map_kit
+    # path: ./local_plugins/gms/map_kit
+    path: ./local_plugins/hms/map_kit
     # Nav109559*
 
   intl: any

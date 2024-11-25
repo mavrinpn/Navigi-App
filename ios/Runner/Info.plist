@@ -15,6 +15,10 @@
 	</array>
 	<key>NSAppleIDUsageDescription</key>
 	<string>Requis pour la connexion à l'aide d'un identifiant Apple</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Nous utilisons votre emplacement pour fournir un contenu personnalisé et améliorer l'expérience utilisateur.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Nous utilisons votre position pour afficher les objets et les offres les plus proches de vous.</string>
 	<key>FlutterDeepLinkingEnabled</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
