@@ -21,7 +21,7 @@ class UserAvatar extends StatelessWidget {
       radius: size / 2,
       foregroundColor: AppColors.red,
       backgroundColor: AppColors.red,
-      foregroundImage: CachedNetworkImageProvider(imageUrl),
+      foregroundImage: imageUrl.isNotEmpty ? CachedNetworkImageProvider(imageUrl) : null,
       child: imageUrl.isNotEmpty
           ? Shimmer.fromColors(
               baseColor: Colors.grey[300]!,

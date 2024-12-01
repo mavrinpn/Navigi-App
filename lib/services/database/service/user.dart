@@ -36,6 +36,9 @@ class UserService {
           userName: name,
           userPhone: phone,
         },
+        permissions: [
+          Permission.write(Role.user(uid)),
+        ],
       );
     } else {
       final data = {};
@@ -186,6 +189,7 @@ class UserService {
 
   Future<void> updateOnlineStatus(String userId) async {
     final time = DateTime.now();
+
     await _databases.updateDocument(
         databaseId: mainDatabase,
         collectionId: usersCollection,

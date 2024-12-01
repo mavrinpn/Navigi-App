@@ -2,13 +2,21 @@ part of '../database_service.dart';
 
 class FavouritesService {
   final Databases _databases;
-  // final Storage _storage;
+  final Functions _functions;
 
-  FavouritesService(Databases databases, Storage storage)
-      : _databases = databases;
-        // _storage = storage;
+  FavouritesService(
+    Databases databases,
+    Storage storage,
+    Functions functions,
+  )   : _databases = databases,
+        _functions = functions;
 
-  Future<void> likePost({required String postId, required String userId}) async {
+  static const updateStatFunc = '67464802debf6fa7ccca';
+
+  Future<void> likePost({
+    required String postId,
+    required String userId,
+  }) async {
     final docs = await _databases.listDocuments(
         databaseId: mainDatabase,
         collectionId: likesCollection,
@@ -17,11 +25,34 @@ class FavouritesService {
     if (docs.documents.isNotEmpty) return;
 
     await _databases.createDocument(
-        databaseId: mainDatabase,
-        collectionId: likesCollection,
-        documentId: ID.unique(),
-        permissions: [Permission.delete(Role.user(userId)), Permission.read(Role.user(userId))],
-        data: {"user_id": userId, "postCollection": postId});
+      databaseId: mainDatabase,
+      collectionId: likesCollection,
+      documentId: ID.unique(),
+      data: {
+        'user_id': userId,
+        'postCollection': postId,
+      },
+      permissions: [
+        Permission.read(Role.user(userId)),
+        Permission.delete(Role.user(userId)),
+      ],
+    );
+
+    final encodedBody = jsonEncode({
+      'announcementID': postId,
+      'type': 'like',
+    });
+
+    try {
+      final res = await _functions.createExecution(
+        functionId: updateStatFunc,
+        body: encodedBody,
+      );
+
+      debugPrint(res.responseBody);
+    } catch (err) {
+      debugPrint(err.toString());
+    }
   }
 
   Future<void> unlikePost({required String postId, required String userId}) async {
@@ -53,13 +84,13 @@ class FavouritesService {
     for (var doc in documents.documents) {
       // Future<Uint8List> futureBytes;
       // if (doc.data['postCollection'] != null && doc.data['postCollection']['images'] != null) {
-        // final imageUrl = doc.data['postCollection']['images'][0];
-        // futureBytes = futureBytesForImageURL(
-        //   storage: _storage,
-        //   imageUrl: imageUrl,
-        // );
+      // final imageUrl = doc.data['postCollection']['images'][0];
+      // futureBytes = futureBytesForImageURL(
+      //   storage: _storage,
+      //   imageUrl: imageUrl,
+      // );
       // } else {
-        // futureBytes = Future.value(Uint8List.fromList([]));
+      // futureBytes = Future.value(Uint8List.fromList([]));
       // }
       if (doc.data['postCollection'] != null) {
         final announcement = Announcement.fromJson(

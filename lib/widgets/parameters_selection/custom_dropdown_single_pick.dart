@@ -89,7 +89,16 @@ class _CustomDropDownSingleCheckBoxState extends State<CustomDropDownSingleCheck
             ),
           ),
         ),
-        if (isOpen) ...[!showAll ? buildSimplePicker() : SinglePickWithSearch(parameter: widget.parameter)]
+        if (isOpen) ...[
+          !showAll
+              ? buildSimplePicker()
+              : SinglePickWithSearch(
+                  parameter: widget.parameter,
+                  onChange: (parametrOption) {
+                    widget.onChange(parametrOption);
+                  },
+                )
+        ]
       ]),
     );
   }
@@ -112,16 +121,25 @@ class _CustomDropDownSingleCheckBoxState extends State<CustomDropDownSingleCheck
           ...(widget.parameter.variants.sublist(0, maximum))
               .map(
                 (parametrOption) => InkWell(
-                  onTap: () => widget.onChange(parametrOption),
+                  onTap: () {
+                    setState(() {});
+                    widget.onChange(parametrOption);
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 2),
                     child: GestureDetector(
-                      onTap: () => widget.onChange(parametrOption),
+                      onTap: () {
+                        setState(() {});
+                        widget.onChange(parametrOption);
+                      },
                       child: Row(
                         children: [
                           CustomCheckBox(
                             isActive: parametrOption.key.toString() == widget.currentKey,
-                            onChanged: () => widget.onChange(parametrOption),
+                            onChanged: () {
+                              setState(() {});
+                              widget.onChange(parametrOption);
+                            },
                           ),
                           Expanded(
                             child: Text(

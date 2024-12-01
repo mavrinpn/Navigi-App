@@ -4,6 +4,7 @@ class AppColors {
   static const mainBackground = Colors.white;
   static const Color? appBarColor = null;
   static const lightGray = Color(0xff9B9FAA);
+  static const superLightGray = Color(0xffF4F5F6);
   static const buttonLightGray = Color(0xffEDEDF0);
   static const radioButtonGray = Color.fromARGB(255, 203, 206, 211);
   static const empty = Colors.transparent;

@@ -37,14 +37,14 @@ class _MainPageState extends State<MainPage> with LoadingMixin {
     internetConnection = InternetConnection.createInstance(
       checkInterval: const Duration(seconds: 20),
     );
-    _internetConnectionSubscription = internetConnection.onStatusChange.listen((InternetStatus status) {
+    _internetConnectionSubscription = internetConnection.onStatusChange.listen((InternetStatus status) async {
       final localizations = AppLocalizations.of(context)!;
       switch (status) {
         case InternetStatus.connected:
           _firstLoginHasConnection = true;
 
           final authRepository = RepositoryProvider.of<AuthRepository>(context);
-          authRepository.checkLogin();
+          await authRepository.checkLogin();
 
           if (_needRefresh) {
             _needRefresh = false;

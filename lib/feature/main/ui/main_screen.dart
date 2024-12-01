@@ -40,6 +40,8 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   late AnimationController _appBarController;
   late Animation<double> _heightAnimation;
 
+  bool isScrollLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -79,10 +81,24 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
               announcementRepository.recommendationAnnouncementsWithOtherLocation.length >
           0) {
         double currentScroll = _controller.position.pixels;
-        if (_controller.position.atEdge) {
-          double maxScroll = _controller.position.maxScrollExtent;
 
-          if (currentScroll >= maxScroll * 0.8) {
+        // if (_controller.position.atEdge) {
+        //   double maxScroll = _controller.position.maxScrollExtent;
+
+        //   if (currentScroll >= maxScroll * 0.8) {
+        //     final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
+        //     BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(
+        //       false,
+        //       cityId: searchCubit.cityId,
+        //       areaId: searchCubit.areaId,
+        //     );
+        //   }
+        // }
+
+        if (_controller.offset > 100 && _controller.position.maxScrollExtent < _controller.offset + 400) {
+          if (!isScrollLoading) {
+            isScrollLoading = true;
+
             final searchCubit = BlocProvider.of<SearchAnnouncementCubit>(context);
             BlocProvider.of<AnnouncementsCubit>(context).loadAnnounces(
               false,
@@ -214,6 +230,9 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
         canPop: false,
         body: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
           builder: (context, state) {
+            if (state is AnnouncementsSuccessState) {
+              isScrollLoading = false;
+            }
             return RefreshIndicator(
               color: AppColors.red,
               onRefresh: () async {

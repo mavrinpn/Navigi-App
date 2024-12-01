@@ -91,7 +91,7 @@ class _SearchScreenState extends State<SearchScreen> {
     }
 
     _controller.addListener(() async {
-      if (_controller.offset > 100 && _controller.position.maxScrollExtent < _controller.offset + 250) {
+      if (_controller.offset > 100 && _controller.position.maxScrollExtent < _controller.offset + 400) {
         if (!isScrollLoading) {
           isScrollLoading = true;
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -59,10 +61,27 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
     super.initState();
   }
 
+  Timer? refreshSubscriptionTimer;
+
   Future<void> _init() async {
     final messengerRepository = RepositoryProvider.of<MessengerRepository>(context);
     messengerRepository.refreshSubscription();
+    refreshSubscriptionTimer?.cancel();
+    refreshSubscriptionTimer = Timer.periodic(
+      const Duration(seconds: 120),
+      (_) {
+        if (mounted) {
+          messengerRepository.refreshSubscription();
+        }
+      },
+    );
     // await messengerRepository.preloadChats();
+  }
+
+  @override
+  void dispose() {
+    refreshSubscriptionTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -179,25 +198,26 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
                   style: AppTypography.font12lightGray,
                 ),
                 StreamBuilder(
-                    stream: messengerRepository.currentRoom!.onlineRefreshStream.stream,
-                    builder: (ctx, snapshot) {
-                      if (snapshot.hasData) {
-                        return snapshot.data ?? false
-                            ? Container(
-                                width: 8,
-                                height: 20,
-                                alignment: Alignment.topCenter,
-                                padding: const EdgeInsets.only(left: 2, top: 4),
-                                child: SvgPicture.asset(
-                                  'Assets/icons/online_circle.svg',
-                                  width: 4,
-                                  height: 4,
-                                ),
-                              )
-                            : Container();
-                      }
-                      return Container();
-                    })
+                  stream: messengerRepository.currentRoom!.onlineRefreshStream.stream,
+                  builder: (ctx, snapshot) {
+                    if (snapshot.hasData) {
+                      return snapshot.data ?? false
+                          ? Container(
+                              width: 8,
+                              height: 20,
+                              alignment: Alignment.topCenter,
+                              padding: const EdgeInsets.only(left: 2, top: 4),
+                              child: SvgPicture.asset(
+                                'Assets/icons/online_circle.svg',
+                                width: 4,
+                                height: 4,
+                              ),
+                            )
+                          : Container();
+                    }
+                    return Container();
+                  },
+                ),
               ],
             ),
           ),
@@ -220,38 +240,39 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                       child: StreamBuilder<List<ChatItem>>(
-                          stream: messengerRepository.currentChatItemsStream,
-                          initialData: const [],
-                          builder: (context, snapshot) {
-                            return ListView.builder(
-                              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                              itemBuilder: (ctx, i) {
-                                final item = snapshot.data![i];
-                                return item is MessagesGroupData
-                                    ? MessageGroupWidget(
-                                        data: item,
-                                        avatarUrl: messengerRepository.currentRoom!.otherUserAvatarUrl ?? '')
-                                    : DateSplitterWidget(
-                                        data: item as DateSplitter,
-                                      );
-                              },
-                              itemCount: snapshot.data!.length,
-                              reverse: true,
-                            );
-                          }),
+                        stream: messengerRepository.currentChatItemsStream,
+                        initialData: const [],
+                        builder: (context, snapshot) {
+                          return ListView.builder(
+                            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                            itemBuilder: (ctx, i) {
+                              final item = snapshot.data![i];
+                              return item is MessagesGroupData
+                                  ? MessageGroupWidget(
+                                      data: item, avatarUrl: messengerRepository.currentRoom!.otherUserAvatarUrl ?? '')
+                                  : DateSplitterWidget(
+                                      data: item as DateSplitter,
+                                    );
+                            },
+                            itemCount: snapshot.data!.length,
+                            reverse: true,
+                          );
+                        },
+                      ),
                     ),
                   ),
-                  if (preparing) ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        AppAnimations.bouncingLine,
-                        const SizedBox(
-                          width: 15,
-                        ),
-                      ],
-                    )
-                  ],
+                  // if (preparing) ...[
+                  //   Padding(
+                  //     padding: const EdgeInsets.all(16),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.end,
+                  //       children: [
+                  //         AppAnimations.bouncingLine,
+                  //         const SizedBox(width: 15),
+                  //       ],
+                  //     ),
+                  //   )
+                  // ],
                   _buildInputRow(),
                 ],
               ),
@@ -282,7 +303,7 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
           .catchError((err) {
             CustomSnackBar.showSnackBar(context, err.toString());
           })
-          .timeout(const Duration(seconds: 4))
+          .timeout(const Duration(seconds: 11))
           .whenComplete(
             () {
               setState(() {
@@ -331,12 +352,12 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
       );
     }
 
-    // if (_blockIsChecked) {
     return Container(
       color: AppColors.backgroundLightGray,
       child: SafeArea(
         child: ChatInput(
           blocked: _authUserIsBlocked,
+          sending: preparing,
           messageController: messageController,
           onChange: (s) {
             setState(() {});
@@ -358,8 +379,5 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
         ),
       ),
     );
-    // }
-
-    // return Container();
   }
 }

@@ -9,11 +9,11 @@ import 'package:smart/utils/routes/route_names.dart';
 import 'package:smart/widgets/snackBar/snack_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void checkBlockedAndPushChat({
+Future<void> checkBlockedAndPushChat({
   required BuildContext context,
   required Announcement data,
   String? message,
-}) {
+}) async {
   final localizations = AppLocalizations.of(context)!;
   final userId = RepositoryProvider.of<AuthRepository>(context).userId;
   if (data.creatorData.uid == userId) {
@@ -24,18 +24,17 @@ void checkBlockedAndPushChat({
     return;
   }
 
-  RepositoryProvider.of<BlockedUsersManager>(context).isAuthUserBlockedFor(data.creatorData.uid).then((blocked) {
-    if (blocked) {
-      CustomSnackBar.showSnackBar(context, localizations.chatBlocked);
-    } else {
-      RepositoryProvider.of<MessengerRepository>(context).selectChat(announcement: data);
-      Navigator.pushNamed(
-        context,
-        AppRoutesNames.chat,
-        arguments: message,
-      );
-    }
-  });
+  final blocked = await RepositoryProvider.of<BlockedUsersManager>(context).isAuthUserBlockedFor(data.creatorData.uid);
+  if (blocked) {
+    CustomSnackBar.showSnackBar(context, localizations.chatBlocked);
+  } else {
+    RepositoryProvider.of<MessengerRepository>(context).selectChat(announcement: data);
+    await Navigator.pushNamed(
+      context,
+      AppRoutesNames.chat,
+      arguments: message,
+    );
+  }
 }
 
 void checkBlockedAndCall({

@@ -7,9 +7,14 @@ import 'package:smart/widgets/checkBox/custom_check_box.dart';
 import 'package:smart/widgets/textField/under_line_text_field.dart';
 
 class SinglePickWithSearch extends StatefulWidget {
-  const SinglePickWithSearch({super.key, required this.parameter});
+  const SinglePickWithSearch({
+    super.key,
+    required this.parameter,
+    required this.onChange,
+  });
 
   final dynamic parameter;
+  final Function(dynamic parametrOption) onChange;
 
   @override
   State<SinglePickWithSearch> createState() => _SinglePickWithSearchState();
@@ -63,6 +68,7 @@ class _SinglePickWithSearchState extends State<SinglePickWithSearch> {
                   onTap: () {
                     widget.parameter.setVariant(e);
                     setState(() {});
+                    widget.onChange(e);
                   },
                   child: Row(
                     children: [
@@ -71,6 +77,7 @@ class _SinglePickWithSearchState extends State<SinglePickWithSearch> {
                           onChanged: () {
                             widget.parameter.setVariant(e);
                             setState(() {});
+                            widget.onChange(e);
                           }),
                       Expanded(
                         child: Text(

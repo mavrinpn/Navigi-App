@@ -232,7 +232,7 @@ class CreatingAnnouncementManager {
     creatingState.add(LoadingStateEnum.loading);
     try {
       final user = await account.get();
-      final uid = user.$id;
+      final userId = user.$id;
       // await compressingImages;
       final imagesAsBytes = await compressImagesToBytes();
       final thumbAsBytes = await compressThumbToBytes();
@@ -242,7 +242,7 @@ class CreatingAnnouncementManager {
 
       await dbService.announcements.createAnnouncement(
         context,
-        uid,
+        userId,
         urls,
         thumbUrl,
         creatingData,

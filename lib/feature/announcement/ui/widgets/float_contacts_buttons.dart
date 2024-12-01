@@ -29,6 +29,8 @@ class FloatContactsButtons extends StatefulWidget {
 }
 
 class _FloatContactsButtonsState extends State<FloatContactsButtons> {
+  bool buttonIsActive = true;
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
@@ -103,7 +105,10 @@ class _FloatContactsButtonsState extends State<FloatContactsButtons> {
           child: CustomTextButton.withIcon(
             padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
             disableColor: AppColors.red,
-            callback: () {
+            callback: () async {
+              if (!buttonIsActive) return;
+              buttonIsActive = false;
+
               final isUserAuth = context.read<AppCubit>().state is AppAuthState;
               if (!isUserAuth) {
                 Navigator.of(context).pushNamed(
@@ -113,10 +118,11 @@ class _FloatContactsButtonsState extends State<FloatContactsButtons> {
                 return;
               }
               incContactsIfNeed(widget.state);
-              checkBlockedAndPushChat(
+              await checkBlockedAndPushChat(
                 context: context,
                 data: widget.state.data,
               );
+              buttonIsActive = true;
             },
             text: AppLocalizations.of(context)!.toWrite,
             styleText: AppTypography.font14white,

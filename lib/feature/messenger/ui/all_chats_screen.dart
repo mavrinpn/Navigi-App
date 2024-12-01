@@ -20,7 +20,7 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    final repository = RepositoryProvider.of<MessengerRepository>(context);
+    final messengerRepository = RepositoryProvider.of<MessengerRepository>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -32,12 +32,15 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
         title: Text(localizations.messages, style: AppTypography.font20black),
       ),
       body: StreamBuilder<List<Room>>(
-          stream: repository.chatsStream.stream,
+          stream: messengerRepository.chatsStream.stream,
           initialData: const [],
           builder: (context, snapshot) {
             return RefreshIndicator(
               color: AppColors.red,
-              onRefresh: () async {},
+              onRefresh: () async {
+                messengerRepository.preloadChats();
+                messengerRepository.refreshSubscription();
+              },
               child: CustomScrollView(
                 keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 slivers: [
@@ -58,7 +61,7 @@ class _MessengerMainScreenState extends State<MessengerMainScreen> {
                           child: TextField(
                             controller: searchController,
                             onChanged: (v) {
-                              repository.searchChat(searchController.text);
+                              messengerRepository.searchChat(searchController.text);
                             },
                             decoration: InputDecoration(
                               hintText: localizations.searchInMessages,

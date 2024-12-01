@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/colors.dart';
@@ -45,33 +46,29 @@ class AnnouncementShortInfo extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
                 ),
-                child: Image.network(
-                  announcement.images.first,
+                child: CachedNetworkImage(
+                  imageUrl: announcement.images.first,
                   fit: BoxFit.cover,
                 ),
               ),
-            // AnnouncementImage(
-            //   announcement: announcement,
-            //   width: 65,
-            //   height: 55,
-            // ),
             const SizedBox(width: 10),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  announcement.title,
-                  style: AppTypography.font12dark,
-                ),
-                Text(
-                  announcement.stringPrice,
-                  style: const TextStyle(
-                      fontSize: 12,
-                      color: AppColors.red,
-                      fontWeight: FontWeight.w600),
-                )
-              ],
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    announcement.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTypography.font12dark,
+                  ),
+                  Text(
+                    announcement.stringPrice,
+                    style: const TextStyle(fontSize: 12, color: AppColors.red, fontWeight: FontWeight.w600),
+                  )
+                ],
+              ),
             )
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -40,8 +41,8 @@ class ImageMessage extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(14)),
             clipBehavior: Clip.hardEdge,
-            child: Image.network(
-              imageUrl,
+            child: CachedNetworkImage(
+              imageUrl: imageUrl,
               fit: BoxFit.fitWidth,
             ),
           ),
@@ -73,8 +74,8 @@ class PhotoHero extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: onTap,
-            child: Image.network(
-              photo,
+            child: CachedNetworkImage(
+              imageUrl: photo,
               fit: BoxFit.contain,
             ),
           ),

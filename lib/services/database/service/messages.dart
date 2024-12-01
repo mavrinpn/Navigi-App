@@ -10,6 +10,7 @@ class MessagesService {
   final UserService _usersService;
 
   final sendMessageFunc = '657f16bf26ccb6ca8093';
+  final readMessageFunc = '6746467a6f3f51b5b370';
 
   MessagesService(
     Databases databases,
@@ -25,8 +26,9 @@ class MessagesService {
         _usersService = userService,
         _realtime = realtime;
 
-  RealtimeSubscription getMessagesSubscription() =>
-      _realtime.subscribe(['databases.$mainDatabase.collections.$messagesCollection.documents']);
+  RealtimeSubscription getMessagesSubscription() {
+    return _realtime.subscribe(['databases.$mainDatabase.collections.$messagesCollection.documents']);
+  }
 
   ChatUserInfo _getOtherUserNameAndImage(Map<String, dynamic> documentData, String userId) {
     final user1 = documentData['announcement']['creator'];
@@ -49,21 +51,10 @@ class MessagesService {
   Room _roomFromDoc(Document doc, String userId) {
     final otherUser = _getOtherUserNameAndImage(doc.data, userId);
 
-    // Future<Uint8List> futureBytes;
-    // if (doc.data['announcement'] != null && doc.data['announcement']['images'] != null) {
-    //   final imageUrl = doc.data['announcement']['images'][0];
-    //   futureBytes = futureBytesForImageURL(
-    //     storage: _storage,
-    //     imageUrl: imageUrl,
-    //   );
-    // } else {
-    //   futureBytes = Future.value(Uint8List.fromList([]));
-    // }
-
     return Room.fromDocument(
       doc,
-      // futureBytes,
       otherUser,
+      userId,
       onlineGetter: _onlineGetter,
     );
   }
@@ -125,7 +116,13 @@ class MessagesService {
   Future<void> refreshOnlineStatus(String userId) async {
     final time = DateTime.now().toIso8601String();
     _databases.updateDocument(
-        databaseId: mainDatabase, collectionId: usersCollection, documentId: userId, data: {'lastSeen': time});
+      databaseId: mainDatabase,
+      collectionId: usersCollection,
+      documentId: userId,
+      data: {
+        'lastSeen': time,
+      },
+    );
   }
 
   Future<DateTime?> userLastSeen(String userId) async {
@@ -147,69 +144,43 @@ class MessagesService {
 
     for (var doc in docs.documents) {
       if (doc.data['wasRead'] == null) {
-        final data = {'wasRead': DateTime.now().millisecondsSinceEpoch};
-
-        _databases.updateDocument(
-          databaseId: mainDatabase,
-          collectionId: messagesCollection,
-          documentId: doc.$id,
-          data: data,
-        );
+        await markMessageAsRead(doc.$id);
       }
     }
   }
 
   Future<void> markMessageAsRead(String messageId) async {
-    _databases.updateDocument(
-        databaseId: mainDatabase,
-        collectionId: messagesCollection,
-        documentId: messageId,
-        data: {'wasRead': DateTime.now().millisecondsSinceEpoch});
-  }
-
-  Future<String> createRoomDirect(
-    // String userId,
-    String announcementUserId,
-    String announcementId,
-  ) async {
-    final myUserId = (await _account.get()).$id;
-    final existRoom = await _databases.listDocuments(
-      databaseId: mainDatabase,
-      collectionId: roomsCollection,
-      queries: [
-        Query.equal('otherUser', myUserId),
-        Query.equal('announcement', announcementId),
-      ],
-    );
-
-    if (existRoom.documents.isNotEmpty) {
-      return existRoom.documents.first.$id;
+    final encodedBody = jsonEncode({
+      'messageID': messageId,
+    });
+    try {
+      final res = await _functions.createExecution(
+        functionId: readMessageFunc,
+        body: encodedBody,
+      );
+      debugPrint(res.responseBody);
+    } catch (err) {
+      debugPrint(err.toString());
     }
-
-    final room = await _databases.createDocument(
-      databaseId: mainDatabase,
-      collectionId: roomsCollection,
-      documentId: ID.unique(),
-      data: {
-        'otherUser': myUserId,
-        'members': [announcementUserId, myUserId],
-        'announcement': announcementId,
-      },
-    );
-
-    return room.$id;
+    // _databases.updateDocument(
+    //   databaseId: mainDatabase,
+    //   collectionId: messagesCollection,
+    //   documentId: messageId,
+    //   data: {'wasRead': DateTime.now().millisecondsSinceEpoch},
+    // );
   }
 
-  // Future<String> createRoomByFunc(
-  //   String userId,
-  //   String otherUserId,
+  // Future<String> createRoomDirect(
+  //   // String userId,
+  //   String announcementUserId,
   //   String announcementId,
   // ) async {
+  //   final myUserId = (await _account.get()).$id;
   //   final existRoom = await _databases.listDocuments(
   //     databaseId: mainDatabase,
   //     collectionId: roomsCollection,
   //     queries: [
-  //       Query.equal('otherUser', otherUserId),
+  //       Query.equal('otherUser', myUserId),
   //       Query.equal('announcement', announcementId),
   //     ],
   //   );
@@ -218,87 +189,93 @@ class MessagesService {
   //     return existRoom.documents.first.$id;
   //   }
 
-  //   final jwt = await getJwt();
-  //   final encodedBody = jsonEncode({
-  //     'jwt': jwt,
-  //     'announcement': announcementId,
-  //     'receiverId': otherUserId,
-  //   });
+  //   final room = await _databases.createDocument(
+  //     databaseId: mainDatabase,
+  //     collectionId: roomsCollection,
+  //     documentId: ID.unique(),
+  //     data: {
+  //       'otherUser': myUserId,
+  //       'members': [announcementUserId, myUserId],
+  //       'announcement': announcementId,
+  //     },
+  //   );
 
-  //   try {
-  //     final res = await _functions.createExecution(
-  //       functionId: sendMessageFunc,
-  //       body: encodedBody,
-  //     );
-
-  //     final resBody = jsonDecode(res.responseBody);
-  //     return resBody['room_id'] != null ? resBody['room_id'] as String : '';
-  //   } catch (err) {
-  //     // ignore: avoid_print
-  //     print(err);
-  //     return '';
-  //   }
+  //   return room.$id;
   // }
 
-  Future<String> getJwt() => _account.createJWT().then((value) => value.jwt);
+  Future<String> createRoomByFunc(
+    String otherUserId,
+    String announcementId,
+  ) async {
+    final existRoom = await _databases.listDocuments(
+      databaseId: mainDatabase,
+      collectionId: roomsCollection,
+      queries: [
+        Query.equal('otherUser', otherUserId),
+        Query.equal('announcement', announcementId),
+      ],
+    );
 
-  Future<void> sendMessageDirect({
-    required String roomId,
-    required String content,
-    required String senderId,
-    List<String>? images,
-  }) async {
+    if (existRoom.documents.isNotEmpty) {
+      return existRoom.documents.first.$id;
+    }
+
+    final jwt = await getJwt();
     final encodedBody = jsonEncode({
-      'roomId': roomId,
-      'senderId': senderId,
-      'message': content,
-      'images': images ?? [],
+      'jwt': jwt,
+      'announcement': announcementId,
+      'receiverId': otherUserId,
     });
+
     try {
       final res = await _functions.createExecution(
         functionId: sendMessageFunc,
         body: encodedBody,
       );
 
-      // ignore: avoid_print
-      print('${res.responseStatusCode}');
-      if (res.responseStatusCode == 500) {
-        // throw Exception('Error: ${res.responseStatusCode}');
-      }
+      final resBody = jsonDecode(res.responseBody);
+
+      return resBody['room_id'] != null ? resBody['room_id'] as String : '';
     } catch (err) {
       // ignore: avoid_print
       print(err);
-      // throw Exception(err.toString());
+      return '';
     }
   }
 
+  Future<String> getJwt() {
+    return _account.createJWT().then((value) => value.jwt);
+  }
+
   Future<void> sendMessageByFunc({
+    required Room room,
     required String roomId,
     required String content,
     required String senderId,
     List<String>? images,
   }) async {
     final jwt = await getJwt();
+
     final encodedBody = jsonEncode({
-      'roomId': roomId,
       'jwt': jwt,
+      'roomId': roomId,
       'message': content,
       'images': images ?? [],
     });
+
     try {
       final res = await _functions.createExecution(
         functionId: sendMessageFunc,
         body: encodedBody,
       );
 
-      // ignore: avoid_print
-      print('${res.responseStatusCode}');
+      debugPrint(res.responseBody);
+      debugPrint('${res.responseStatusCode}');
       if (res.responseStatusCode == 500) {
         // throw Exception('Error: ${res.responseStatusCode}');
       }
     } catch (err) {
-      // ignore: avoid_print
-      print(err);
+      debugPrint(err.toString());
       // throw Exception(err.toString());
     }
   }

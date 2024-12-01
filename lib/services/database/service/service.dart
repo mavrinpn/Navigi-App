@@ -31,7 +31,7 @@ class DatabaseService {
     categories = CategoriesService(_databases);
     notifications = NotificationsDatabaseService(_databases);
     users = UserService(_databases, _functions, _account);
-    announcements = AnnouncementsService(_databases, _storage);
+    announcements = AnnouncementsService(_databases, _functions, _storage, client);
     reviews = ReviewsService(_databases, _storage, _functions, _account);
     mediumPrices = MediumPriceService(_databases);
     keyWords = KeyWordsService(_databases);
@@ -39,7 +39,7 @@ class DatabaseService {
     tipWords = TipWordsService(_databases);
     models = ModelsService(_databases);
     blockedUsers = BlockedUsersService(_databases);
-    favourites = FavouritesService(_databases, _storage);
+    favourites = FavouritesService(_databases, _storage, _functions);
     messages = MessagesService(_databases, _realtime, _functions, _storage, users, _account);
   }
 }

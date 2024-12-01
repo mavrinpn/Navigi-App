@@ -7,6 +7,8 @@ import 'package:smart/localization/app_localizations.dart';
 import 'package:smart/managers/announcement_manager.dart';
 import 'package:smart/models/announcement.dart';
 import 'package:smart/utils/animations.dart';
+import 'package:smart/utils/app_icons_icons.dart';
+import 'package:smart/utils/colors.dart';
 import 'package:smart/utils/dialogs.dart';
 import 'package:smart/utils/routes/route_names.dart';
 
@@ -81,8 +83,8 @@ class _AdditionalMenuBottomSheetState extends State<AdditionalMenuBottomSheet> {
       child: Column(
         children: [
           RowSettingsButton(onTap: changeActivity, children: [
-            const Icon(
-              Icons.edit,
+            Icon(
+              widget.announcement.active ? AppIcons.archive : AppIcons.revert,
               color: Colors.black,
               size: 24,
             ),
@@ -94,7 +96,7 @@ class _AdditionalMenuBottomSheetState extends State<AdditionalMenuBottomSheet> {
           ]),
           RowSettingsButton(onTap: openEditing, children: [
             const Icon(
-              Icons.edit,
+              AppIcons.edit,
               color: Colors.black,
               size: 24,
             ),
@@ -106,13 +108,11 @@ class _AdditionalMenuBottomSheetState extends State<AdditionalMenuBottomSheet> {
           ]),
           RowSettingsButton(onTap: deleteAnnouncement, children: [
             const Icon(
-              Icons.edit,
+              AppIcons.delete,
               color: Colors.black,
               size: 24,
             ),
-            const SizedBox(
-              width: 12,
-            ),
+            const SizedBox(width: 12),
             Text(
               localizations.delete,
               style: AppTypography.font18black,
@@ -139,6 +139,9 @@ class RowSettingsButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: InkWell(
+        splashColor: AppColors.superLightGray,
+        highlightColor: AppColors.superLightGray,
+        hoverColor: AppColors.superLightGray,
         customBorder: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),

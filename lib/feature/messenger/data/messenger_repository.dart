@@ -15,7 +15,7 @@ import 'package:smart/services/database/database_service.dart';
 import 'package:smart/services/storage_service.dart';
 
 class MessengerRepository {
-  static const String _needCreateRoomId = 'NEED_CREATE_ROOM';
+  static const String needCreateRoomId = 'NEED_CREATE_ROOM';
 
   final DatabaseService _databaseService;
   final FileStorageManager _storageManager;
@@ -67,13 +67,13 @@ class MessengerRepository {
   }
 
   Future<void> preloadChats() async {
-    _chats = await _databaseService.messages.getUserChats(_userId!);
+    _chats = await _databaseService.messages.getUserChats(userId);
     // chatsStream.add(_chats);
     _loadChatsPreviewMessages();
   }
 
   Future<void> sendImages(List<XFile> images) async {
-    if (currentRoom?.id == _needCreateRoomId) await _createRoom();
+    if (currentRoom?.id == needCreateRoomId) await _createRoom();
     final List<Uint8List> bytes = [];
 
     for (var i in images) {
@@ -83,7 +83,8 @@ class MessengerRepository {
     final urls = await _storageManager.uploadMessageImages(bytes);
 
     for (var i in urls) {
-      await _databaseService.messages.sendMessageDirect(
+      await _databaseService.messages.sendMessageByFunc(
+        room: currentRoom!,
         roomId: currentRoom!.id,
         content: '',
         senderId: _userId!,
@@ -93,9 +94,10 @@ class MessengerRepository {
   }
 
   Future<void> sendMessage(String content) async {
-    if (currentRoom?.id == _needCreateRoomId) await _createRoom();
+    if (currentRoom?.id == needCreateRoomId) await _createRoom();
 
-    await _databaseService.messages.sendMessageDirect(
+    await _databaseService.messages.sendMessageByFunc(
+      room: currentRoom!,
       roomId: currentRoom!.id,
       content: content,
       senderId: _userId!,
@@ -126,15 +128,22 @@ class MessengerRepository {
   }
 
   void refreshSubscription() async {
-    await _listener?.cancel();
+    // try {
     //   await _messageListener?.close();
+    // } catch (err) {
+    //   print(err);
+    // }
+
+    await _listener?.cancel();
+    _listener = null;
+    await _messageListener?.close();
     _messageListener = _databaseService.messages.getMessagesSubscription();
-    _listener = _messageListener?.stream.listen(_listenMessages);
+    _listener = _messageListener!.stream.listen(_listenMessages);
     log('subscription refreshed');
   }
 
   Future<void> _createRoom() async {
-    final roomId = await _databaseService.messages.createRoomDirect(
+    final roomId = await _databaseService.messages.createRoomByFunc(
       currentRoom!.announcement.creatorData.uid,
       currentRoom!.announcement.anouncesTableId,
     );
@@ -144,8 +153,6 @@ class MessengerRepository {
     _chats.add(currentRoom!);
     _sortChats();
     chatsStream.add(_chats);
-
-    refreshSubscription();
   }
 
   void _selectRoomById(String id) {
@@ -172,7 +179,7 @@ class MessengerRepository {
 
   void _createEmptyRoom(Announcement announcement) {
     currentRoom = Room(
-        id: _needCreateRoomId,
+        id: needCreateRoomId,
         chatName: '',
         otherUserId: announcement.creatorData.uid,
         otherUserName: announcement.creatorData.displayName,
@@ -193,13 +200,13 @@ class MessengerRepository {
       _databaseService.messages.getChatMessages(chatId, _userId!, limit: limit);
 
   void _loadChatsPreviewMessages() async {
-    for (int i = 0; i < _chats.length; i++) {
-      final chat = _chats[i];
-      final messages = await _getChatMessages(chat.id, limit: 1);
-      if (messages.isNotEmpty) {
-        _chats[i].lastMessage = messages.last;
-      }
-    }
+    // for (int i = 0; i < _chats.length; i++) {
+    //   final chat = _chats[i];
+    //   final messages = await _getChatMessages(chat.id, limit: 1);
+    //   if (messages.isNotEmpty) {
+    //     _chats[i].lastMessage = messages.last;
+    //   }
+    // }
     _sortChats();
     chatsStream.add(_chats);
   }

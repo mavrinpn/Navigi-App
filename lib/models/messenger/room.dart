@@ -36,12 +36,11 @@ class Room {
 
   Room.fromDocument(
     Document doc,
-    // Future<Uint8List> announcementImage,
-    ChatUserInfo otherUser, {
+    ChatUserInfo otherUser,
+    String userId, {
     this.onlineGetter,
   })  : announcement = Announcement.fromJson(
           json: doc.data['announcement'],
-          // futureBytes: announcementImage,
           subcollTableId: '',
         ),
         chatName = '${otherUser.name} ${doc.data['announcement']['name']}',
@@ -49,6 +48,7 @@ class Room {
         otherUserId = otherUser.id,
         otherUserAvatarUrl = otherUser.image,
         otherUserName = otherUser.name,
+        lastMessage = doc.data['lastMessage'] != null ? Message.fromJson(doc.data['lastMessage'], userId) : null,
         id = doc.$id {
     _refreshOnlineStatus();
   }

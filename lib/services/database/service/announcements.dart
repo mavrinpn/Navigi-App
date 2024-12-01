@@ -3,11 +3,21 @@ part of '../database_service.dart';
 class AnnouncementsService {
   final Databases _databases;
   final Storage _storage;
+  final Functions _functions;
+  final Client client;
+  final Account account;
 
   static const String activeAttribute = 'active';
+  static const updateStatFunc = '67464802debf6fa7ccca';
 
-  AnnouncementsService(Databases databases, Storage storage)
-      : _databases = databases,
+  AnnouncementsService(
+    Databases databases,
+    Functions functions,
+    Storage storage,
+    this.client,
+  )   : _databases = databases,
+        account = Account(client),
+        _functions = functions,
         _storage = storage;
 
   Future<({List<Announcement> list, int total})> getAnnouncements({
@@ -39,7 +49,7 @@ class AnnouncementsService {
     try {
       final res = await _databases.listDocuments(
         databaseId: mainDatabase,
-        collectionId: postCollection,
+        collectionId: anouncesCollection,
         queries: queries,
       );
 
@@ -78,7 +88,7 @@ class AnnouncementsService {
 
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
-      collectionId: postCollection,
+      collectionId: anouncesCollection,
       queries: queries,
     );
 
@@ -200,6 +210,7 @@ class AnnouncementsService {
 
   Future<void> writeAnnouncementSubcategoryParameters({
     required BuildContext context,
+    required String userId,
     required String id,
     required String announcement,
     required AnnouncementCreatingData creatingData,
@@ -275,42 +286,75 @@ class AnnouncementsService {
       collectionId: creatingData.subcategoryId!,
       documentId: id,
       data: data,
+      permissions: [
+        Permission.update(Role.user(userId)),
+        Permission.delete(Role.user(userId)),
+      ],
     );
   }
 
-  Future<void> incTotalViewsById(String id) async {
-    final res = await _databases.getDocument(
-      databaseId: mainDatabase,
-      collectionId: postCollection,
-      documentId: id,
-    );
+  Future<void> incTotalViewsById(String announcementId) async {
+    final encodedBody = jsonEncode({
+      'announcementID': announcementId,
+      'type': 'view',
+    });
 
-    await _databases.updateDocument(
-      databaseId: mainDatabase,
-      collectionId: postCollection,
-      documentId: id,
-      data: {totalViews: res.data[totalViews] + 1},
-    );
+    try {
+      final res = await _functions.createExecution(
+        functionId: updateStatFunc,
+        body: encodedBody,
+      );
+
+      debugPrint(res.responseBody);
+    } catch (err) {
+      debugPrint(err.toString());
+    }
+    // final res = await _databases.getDocument(
+    //   databaseId: mainDatabase,
+    //   collectionId: anouncesCollection,
+    //   documentId: id,
+    // );
+    // await _databases.updateDocument(
+    //   databaseId: mainDatabase,
+    //   collectionId: anouncesCollection,
+    //   documentId: id,
+    //   data: {totalViews: res.data[totalViews] + 1},
+    // );
   }
 
-  Future<void> incContactsViewsById(String id) async {
-    final res = await _databases.getDocument(
-      databaseId: mainDatabase,
-      collectionId: postCollection,
-      documentId: id,
-    );
-    final count = res.data[contactsViews] ?? 0;
-    await _databases.updateDocument(
-      databaseId: mainDatabase,
-      collectionId: postCollection,
-      documentId: id,
-      data: {contactsViews: count + 1},
-    );
+  Future<void> incContactsViewsById(String announcementId) async {
+    final encodedBody = jsonEncode({
+      'announcementID': announcementId,
+      'type': 'contact',
+    });
+
+    try {
+      final res = await _functions.createExecution(
+        functionId: updateStatFunc,
+        body: encodedBody,
+      );
+
+      debugPrint(res.responseBody);
+    } catch (err) {
+      debugPrint(err.toString());
+    }
+    // final res = await _databases.getDocument(
+    //   databaseId: mainDatabase,
+    //   collectionId: anouncesCollection,
+    //   documentId: id,
+    // );
+    // final count = res.data[contactsViews] ?? 0;
+    // await _databases.updateDocument(
+    //   databaseId: mainDatabase,
+    //   collectionId: anouncesCollection,
+    //   documentId: id,
+    //   data: {contactsViews: count + 1},
+    // );
   }
 
   Future<void> createAnnouncement(
     BuildContext context,
-    String uid,
+    String userId,
     List<String> urls,
     String thumbUrl,
     AnnouncementCreatingData creatingData,
@@ -320,7 +364,7 @@ class AnnouncementsService {
     MarksFilter? marksFilter,
     CarFilter? carFilter,
   ) async {
-    final data = creatingData.toJson(uid, urls, thumbUrl);
+    final data = creatingData.toJson(userId, urls, thumbUrl);
 
     double lat = district.latitude;
     double lng = district.longitude;
@@ -347,13 +391,18 @@ class AnnouncementsService {
 
     final doc = await _databases.createDocument(
       databaseId: mainDatabase,
-      collectionId: postCollection,
+      collectionId: anouncesCollection,
       documentId: ID.unique(),
       data: data,
+      permissions: [
+        Permission.update(Role.user(userId)),
+        Permission.delete(Role.user(userId)),
+      ],
     );
 
     await writeAnnouncementSubcategoryParameters(
       context: context,
+      userId: userId,
       id: doc.$id,
       announcement: doc.$id,
       creatingData: creatingData,
@@ -368,7 +417,7 @@ class AnnouncementsService {
   Future getUserAnnouncements({required String userId}) async {
     final res = await _databases.listDocuments(
       databaseId: mainDatabase,
-      collectionId: postCollection,
+      collectionId: anouncesCollection,
       queries: [
         Query.equal("creator_id", userId),
         Query.orderDesc(DefaultDocumentParameters.createdAt),
@@ -381,13 +430,13 @@ class AnnouncementsService {
 
   Future changeAnnouncementActivity(String announcementsId) async {
     final res = await _databases.getDocument(
-        databaseId: mainDatabase, collectionId: postCollection, documentId: announcementsId);
+        databaseId: mainDatabase, collectionId: anouncesCollection, documentId: announcementsId);
 
     final bool currentValue = res.data[activeAttribute];
 
     await _databases.updateDocument(
         databaseId: mainDatabase,
-        collectionId: postCollection,
+        collectionId: anouncesCollection,
         documentId: announcementsId,
         data: {activeAttribute: !currentValue});
   }
@@ -408,7 +457,7 @@ class AnnouncementsService {
   Future<Announcement> getAnnouncementById(String announcementId) async {
     final res = await _databases.getDocument(
       databaseId: mainDatabase,
-      collectionId: postCollection,
+      collectionId: anouncesCollection,
       documentId: announcementId,
     );
 
@@ -440,7 +489,7 @@ class AnnouncementsService {
 
     await _databases.updateDocument(
       databaseId: mainDatabase,
-      collectionId: postCollection,
+      collectionId: anouncesCollection,
       documentId: editData.id,
       data: postCollectionUpdateData,
     );
@@ -470,11 +519,18 @@ class AnnouncementsService {
       //   );
       // }
 
+      final user = await account.get();
+      final userId = user.$id;
+
       await _databases.createDocument(
         databaseId: mainDatabase,
         collectionId: newSubcategoryid,
         documentId: editData.id,
         data: subcollectionCreateData,
+        permissions: [
+          Permission.update(Role.user(userId)),
+          Permission.delete(Role.user(userId)),
+        ],
       );
 
       //* deleteDocument
@@ -502,13 +558,13 @@ class AnnouncementsService {
   Future<void> deleteAnnouncement(String id) async {
     final res = await _databases.getDocument(
       databaseId: mainDatabase,
-      collectionId: postCollection,
+      collectionId: anouncesCollection,
       documentId: id,
     );
 
     await _databases.deleteDocument(
       databaseId: mainDatabase,
-      collectionId: postCollection,
+      collectionId: anouncesCollection,
       documentId: id,
     );
 

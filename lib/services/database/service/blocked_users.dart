@@ -56,6 +56,10 @@ class BlockedUsersService {
         collectionId: blockedUsersCollection,
         documentId: ID.unique(),
         data: data,
+        permissions: [
+          Permission.read(Role.user(authorId)),
+          Permission.delete(Role.user(authorId)),
+        ],
       );
     } catch (err) {
       return Future.value(err.toString());
