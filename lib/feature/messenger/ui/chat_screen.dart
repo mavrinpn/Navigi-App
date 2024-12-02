@@ -249,7 +249,10 @@ class _ChatScreenState extends State<ChatScreen> with LoadingMixin {
                               final item = snapshot.data![i];
                               return item is MessagesGroupData
                                   ? MessageGroupWidget(
-                                      data: item, avatarUrl: messengerRepository.currentRoom!.otherUserAvatarUrl ?? '')
+                                      data: item,
+                                      avatarUrl: messengerRepository.currentRoom!.otherUserAvatarUrl ?? '',
+                                      otherUserName: messengerRepository.currentRoom!.otherUserName,
+                                    )
                                   : DateSplitterWidget(
                                       data: item as DateSplitter,
                                     );

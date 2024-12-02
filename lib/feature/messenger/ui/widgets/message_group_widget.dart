@@ -15,9 +15,11 @@ class MessageGroupWidget extends StatelessWidget with LoadingMixin {
     super.key,
     required this.data,
     required this.avatarUrl,
+    required this.otherUserName,
   });
 
   final String avatarUrl;
+  final String otherUserName;
   final MessagesGroupData data;
 
   List<Widget> generateMessages() {
@@ -96,7 +98,7 @@ class MessageGroupWidget extends StatelessWidget with LoadingMixin {
                 child: UserAvatar(
                   size: 40,
                   imageUrl: avatarUrl,
-                  userName: '',
+                  userName: otherUserName,
                 ),
               ),
             ),
