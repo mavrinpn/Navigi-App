@@ -145,7 +145,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
           }
 
           imagesCounts = min(state.data.images.length, maxImageCount);
-          carouselItemWidth = imagesCounts > 1 ? MediaQuery.sizeOf(context).width * 0.85 : MediaQuery.sizeOf(context).width;
+          carouselItemWidth =
+              imagesCounts > 1 ? MediaQuery.sizeOf(context).width * 0.85 : MediaQuery.sizeOf(context).width;
 
           return RefreshIndicator(
             color: AppColors.red,
@@ -672,21 +673,27 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
         result.add(Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Wrap(
-            spacing: 12,
+            spacing: 10,
+            runSpacing: 10,
             children: [
-              ...values.map((item) => Chip(
-                    label: Text(
-                      item,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
+              ...values.map(
+                (item) => Container(
+                  height: 30,
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: const Color(0xCCED5434),
+                    borderRadius: BorderRadius.circular(13),
+                  ),
+                  child: Text(
+                    item,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(13), // задаем радиус
-                    ),
-                    backgroundColor: const Color(0xCCED5434),
-                  )),
+                  ),
+                ),
+              ),
             ],
           ),
         ));
